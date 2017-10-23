@@ -171,6 +171,111 @@ export default {
             render: _=>_.map(_=>`${_.title}-${_.serial}`),
 
           },
+          {
+            type: 'text',
+            label: '委案时间',
+            prop: 'entrusting_time',
+            is_import: true,
+            width: '263',         
+          },
+          {
+            type: 'text',
+            label: '返发明人稿时间',
+            prop: 'first_edition_to_inventor_time',
+            is_import: true,
+            width: '263'
+          },
+          {
+            type: 'text',
+            label: '发明审核时间',
+            prop: 'inventor_review_time',
+            is_import: true,
+            width: '263'
+          },
+          {
+            type: 'text',
+            label: '发明人审核次数',
+            prop: 'inventor_review_times',
+            is_import: true,
+            width: '200'
+          },
+          {
+            type: 'text',
+            label: '发明人评分',
+            prop: 'inventor_rank',
+            is_import: true,
+            width: '200'
+          },
+          {
+            type: 'text',
+            label: '返IPR稿时间',
+            prop: 'first_edition_to_ipr_time',
+            is_import: true,
+            width: '263'
+          },
+          {
+            type: 'text',
+            label: 'IPR定稿时间',
+            prop: 'ipr_final_edition_time',
+            is_import: true,
+            width: '263'
+          },
+          {
+            type: 'text',
+            label: 'IPR审核次数',
+            prop: 'ipr_review-times',
+            is_import: true,
+            width: '200'
+          },
+          {
+            type: 'text',
+            label: 'IPR首次评分',
+            prop: 'first_ipr_rank',
+            is_import: true,
+            width: '263'
+          },
+          {
+            type: 'text',
+            label: 'IPR终稿评分',
+            prop: 'final_ipr_rank',
+            is_import: true,
+            width: '263'
+          },
+          {
+            type: 'text',
+            label: '代理人撰稿耗时',
+            prop: 'agent_drafting_period',
+            is_import: true,
+            width: '263'
+          },
+          {
+            type: 'text',
+            label: '发明人审核耗时',
+            prop: 'inventor_review_period',
+            is_import: true,
+            width: '263'
+          },
+          {
+            type: 'text',
+            label: 'IPR审核耗时',
+            prop: 'ipr_review_period',
+            is_import: true,
+            width: '263'
+          },
+          {
+            type: 'text',
+            label: '代理人修改耗时',
+            prop: 'amending_period',
+            is_import: true,
+            width: '263'
+          },
+          
+          
+          
+          
+          
+          
+          
           // {
           //   type: 'action',
           //   width: '145',
