@@ -13,6 +13,9 @@
             <el-form-item label="产品分类">
               <product v-model="product" multiple></product>
             </el-form-item>
+            <el-form-item label="部门">
+              <branch v-model="branch" multiple></branch>
+            </el-form-item>
           </el-col>
           <el-col :span="12">
             <el-form-item label="发明人">
@@ -24,6 +27,9 @@
             <el-form-item label="标签">
               <static-select type="tag" v-model="tags" multiple></static-select>
             </el-form-item>
+            <el-form-item label="提案时间">
+              <el-date-picker type="daterange" placeholder="请选择提案时间" v-model="create_time"></el-date-picker>
+            </el-form-item>
           </el-col>
         </el-row>
         <el-row style="text-align: center">
@@ -32,11 +38,12 @@
         </el-row>
       </el-form>
     </app-collapse>
-
+    
 		<table-component :tableOption="tableOption" :data="tableData" ref="table" @refreshTableData="refreshTableData" :refresh-proxy="refreshProxy">
-      <template slot="action" scope="scope">
+      <el-button v-if="menusMap && !menusMap.get('/proposals/proposer')" type="primary" icon="d-arrow-right" @click="transferPop" slot="transfer" style="margin-left: 5px;">移交</el-button>
+      
+      <template slot="action" slot-scope="scope">
         <el-button type="text" icon="edit" size="mini" @click="edit(scope.row)" :disabled="scope.row.status ? true : false" >编辑</el-button>
-        <el-button type="text" icon="delete" size="mini" @click="deleteSingle(scope.row)" :disabled="scope.row.status ? true : false">删除</el-button>
       </template>
     </table-component>
 
@@ -61,6 +68,7 @@ import AppFilter from '@/components/common/AppFilter'
 import AppCollapse from '@/components/common/AppCollapse'
 import Classification from '@/components/form/Classification'
 import Product from '@/components/form/Product'
+import Branch from '@/components/form/Branch'
 import AppShrink from '@/components/common/AppShrink'
 import ProposalDetail from '@/components/page_extension/Proposal_detail'
 
@@ -68,11 +76,13 @@ import RemoteSelect from '@/components/form/RemoteSelect'
 import StaticSelect from '@/components/form/StaticSelect'
 import AxiosMixins from '@/mixins/axios-mixins'
 
+import {mapGetters} from 'vuex'
+
 const URL = '/api/proposals';
 const url = 'http://www.zhiq.wang/proposal/lists';
 const delete_url = 'http://www.zhiq.wang/proposal/lists';
 const tag_url = 'http://www.zhiq.wang/tag/lists';
-const strainerArr = ['classification', 'product', 'proposer', 'tags', 'inventors'];
+const strainerArr = ['classification', 'product', 'proposer', 'tags', 'inventors', 'branch', 'create_time'];
 const map = new Map([['flownodes', 'progress'],['time', 'create_time']]);
 export default {
   name: 'proposalList',
@@ -130,7 +140,14 @@ export default {
       const obj = {};
       
       obj.title = this.title;
-      strainerArr.forEach(d=>{obj[d] = this[d].join(',')});
+      strainerArr.forEach(d=>{
+        if(d == 'create_time') {
+          obj[d] = this[d].map(_=>this.$tool.getDate(_)).join(',');
+        }else {
+          obj[d] = this[d].join(',')  
+        }
+        
+      });
 
       this.filter = obj;
       this.$refs.table.refresh();
@@ -150,7 +167,6 @@ export default {
           window.location.href = _.proposals.downloadUrl;
         }else {
           this.tableData = _.proposals;
-          this.filters = _.proposals.filters;
         }
       }
       
@@ -204,17 +220,18 @@ export default {
         'rowClick': this.handleRowClick,
         'header_btn': [
           { type: 'add', click: this.add },
-          { type: 'delete', click: this.deleteMul },
+          { type: 'delete' },
           { type: 'export' },
-          { type: 'custom', label: '移交', icon: 'd-arrow-right', click: this.transferPop },
-          { type: 'control', label: '字段' },
+          
+          { type: 'control' },
         ],
+        'header_slot': ['transfer'],
         'columns': [
           { type: 'selection'},
           { type: 'text', label: '案号', prop: 'serial', sortable: true, width: '200' },
           { type: 'text', label: '提案标题', prop: 'title', sortable: true, width: '300' },
           { type: 'text', label: '当前节点', prop: 'flow_node', sortable: true, width: '300' },
-          { type: 'text', label: '提案摘要', prop: 'abstract', sortable: true, width: '400' },
+          { type: 'text', label: '提案简介', prop: 'abstract', sortable: true, width: '400' },
           { type: 'text', label: '创建时间', prop: 'create_time', sortable: true, width: '250' },
           { type: 'text', label: '部门', prop: 'branch', render_simple: 'name', sortable: true, width: '200' },
           { type: 'text', label: '技术分类', prop: 'classification', render_simple: 'name', sortable: true, width: '200' },
@@ -236,6 +253,8 @@ export default {
       title: '',
       classification: [],
       product: [],
+      branch: [],
+      create_time: [],
       proposer: [],
       tags: [],
       inventors: [],
@@ -247,6 +266,11 @@ export default {
       transferProposal: '',
       transferDisabled: false,
     }
+  },
+  computed: {
+    ...mapGetters([
+      'menusMap',
+    ])
   },
   mounted () {
     this.refresh();
@@ -260,7 +284,8 @@ export default {
     RemoteSelect,  
     AppShrink, 
     ProposalDetail, 
-    StaticSelect 
+    StaticSelect,
+    Branch,
   }, 
 }
 </script>

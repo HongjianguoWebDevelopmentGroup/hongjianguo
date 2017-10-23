@@ -2,7 +2,7 @@
   	<div class="main">
   		<el-row>
 	  		<el-col :span="18">
-		  		<el-form label-width="100px" :rules="formRules" :model="formData" ref="form">
+		  		<el-form label-width="92px" :rules="formRules" :model="formData" ref="form">
             
             <el-form-item label="提案人">{{ proposer_name }}</el-form-item>
             
@@ -18,7 +18,7 @@
               <el-input v-model="formData.title" placeholder="请输入案件名称" v-else>
               </el-input>
             </el-form-item>
-            <el-form-item label="案件摘要" prop="abstract">
+            <el-form-item label="提案简介" prop="abstract">
               <span v-if="pageType == 'detail'" class="form-detail-item">{{ formData.abstract }}</span>
               <el-input type="textarea" v-model="formData.abstract" placeholder="请输入案件摘要" v-else></el-input>
             </el-form-item>
@@ -27,6 +27,9 @@
               <inventors v-model="formData.inventors" :disabled="pageType == 'detail'"></inventors>
             </el-form-item>
 
+            <el-form-item label="证件号码(第一发明人)" prop="identity">
+              <el-input v-model="formData.identity" placeholder="请填写第一发明人证件号码"></el-input>
+            </el-form-item>
 
             <el-form-item label="技术分类" prop="classification">
               <classification v-model="formData.classification" :disabled="pageType == 'detail'"></classification>
@@ -100,6 +103,7 @@ import Upload from '@/components/form/Upload'
 import TaskFinish from '@/components/common/TaskFinish'
 import StaticSelect from '@/components/form/StaticSelect'
 import { checkInventors } from '@/const/validator.js'
+import { mapGetters } from 'vuex'
 
 
 const typeMap = new Map([['/proposal/add', 'add'], ['/proposal/edit', 'edit'], ['/proposal/detail', 'detail']]);
@@ -117,7 +121,7 @@ export default {
     save ( callback=_=>{this.$message({message: '编辑成功', type: 'success'}); this.$router.push('/proposal/list')} ) {
       
       if(this.pageType == 'add' && !this.formData.proposer) {
-        this.formData.proposer = this.userId;
+        this.formData.proposer = this.userid;
       }
 
       this.$refs.form.validate(valid=>{
@@ -166,14 +170,6 @@ export default {
   			}
   		});
   	},
-    addInventor () {
-      this.formData.inventors.push({id: '', share: ''});
-      this.$refs.form.validateField('inventors');
-    },
-    deleteInventor (index) {
-      this.formData.inventors.splice(index, 1);
-      this.$refs.form.validateField('inventors');
-    },
     refreshCommon () {
       const t = this.pageType;
       
@@ -218,11 +214,10 @@ export default {
           this.$tool.coverObj(this.formData, data);
         });
       }else {
-        this.proposer_name = this.userName;
-        if(this.userId && this.userName) {
-          this.formData.inventors = [{id: '', share: '100'}];  
-        }
-        
+        this.proposer_name = this.username;
+        if(this.userid && this.username) {
+          this.formData.inventors = [{ id: this.userid, name: this.username, share: '100', identity: this.useridentity }];  
+        }        
       }
     }
   },
@@ -242,7 +237,8 @@ export default {
         tags: [],
         attachments: [],
         classification: '',
-        products: [], 
+        products: [],
+        identity: '',
       },
       attachments: [],
       create_time: '',
@@ -272,6 +268,7 @@ export default {
 
           },
         },
+        'identity': {required: true, message: '第一发明人证件号码不能为空'},
         'attachments': {type: 'array', required: true, message: '附件不能为空', trigger: 'change'}     	
       },
       tableOption: {
@@ -327,17 +324,11 @@ export default {
     this.refreshCommon();
   },
   computed: {
-    user () {
-      return this.$store.getters.getUser;
-    },
-    userId () {
-      const user = this.$store.getters.getUser;
-      return user ? user.id : ''; 
-    },
-    userName () {
-      const user = this.$store.getters.getUser;
-      return user ? user.name : '';
-    },
+    ...mapGetters([
+      'username',
+      'userid',
+      'useridentity',
+    ]),
     tagOptions () {
       return this.$store.getters.tagOptions;
     },
@@ -353,11 +344,29 @@ export default {
     }
   },
   watch: {
-    userName () {
+    userid () {
       this.refreshCommon();
+    },
+    'formData.inventors': {
+      handler(val) {
+        if(val[0] && val[0]['identity']) {
+          this.formData.identity = val[0]['identity'];
+        }
+      }
     }
   },
-  components: { PopTree, TableComponent, Inventors, PcSubmit, Upload, Member, Classification, Product, TaskFinish, StaticSelect },
+  components: { 
+    PopTree, 
+    TableComponent, 
+    Inventors, 
+    PcSubmit, 
+    Upload, 
+    Member, 
+    Classification, 
+    Product, 
+    TaskFinish, 
+    StaticSelect 
+  },
 
 }
 </script>

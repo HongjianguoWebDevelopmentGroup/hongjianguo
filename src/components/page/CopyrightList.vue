@@ -2,9 +2,14 @@
   <div class="main">
     <strainer v-model="filter" @refresh="refresh"></strainer>
     <table-component :tableOption="tableOption" :data="tableData" @refreshTableData="refreshTableData" ref="table"></table-component>
-    <app-shrink :title="currentRow.title" :visible.sync="shrinkVisible" @close="close">
-      <common-detail type="copyright" :id="currentRow.id"></common-detail>
-    </app-shrink>
+    
+      <common-detail
+        :title="currentRow.title"
+        :visible.sync="shrinkVisible" 
+        type="copyright" 
+        :id="currentRow.id">
+      </common-detail>
+
   </div>
 </template>
 
@@ -60,14 +65,14 @@ export default {
           { type: 'text', label: '提案人', prop: 'proposer', is_import: true, render_simple: 'name', width: '200' },
           { type: 'array', label: '标签', prop: 'tags', is_import: true, width: '150' },
           { type: 'array', label: '产品名称', prop: 'products', sortable: true, is_import: true, render: _=>_.map(_=>_.name), width: '150' },
-          {
-            type: 'action',
-            width: '150',
-            btns: [
-              // { type: 'detail', click: this.detail },
-              { type: 'delete', click: this.deleteSingle },
-            ], 
-          },
+          // {
+          //   type: 'action',
+          //   width: '150',
+          //   btns: [
+          //     // { type: 'detail', click: this.detail },
+          //     { type: 'delete', click: this.deleteSingle },
+          //   ], 
+          // },
         ] 
       },
       tableData: [],

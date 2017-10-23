@@ -2,6 +2,7 @@ let url = '/api/userinfo'
 
 const state = {
 	data: null,
+	loading: true,
 }
 
 const getters = {
@@ -25,20 +26,35 @@ const getters = {
           				: '';
     return name;
 	},
-	menusStats: state=>{
-		// const user = state.data;
-		// let stats = {};
-		// if(user && user.stats) {
-		// 	stats = user.stats;
-		// }
-		// return stats;
-		return {};
-	}
+	userid: state=>{
+		const user = state.data;
+		const id = user ? user.id : '';
+		return id; 
+	},
+	useridentity: state=>{
+		const user = state.data;
+		const i = user ? user.identity : '';
+		return i;
+	},
+	pendingTaskCount: state=>{
+		const user = state.data;
+		const count = user ? user.pendingTaskCount : 0;
+		return count;
+	},
+	pendingTask: state=>{
+		const user = state.data;
+		const pendingTask = user && user.pendingTask ? user.pendingTask : null;
+		return pendingTask;
+	},
+	userLoading: state=>state.loading,
 }
 
 const mutations = {
 	setUser (state, d) {
 		state.data = d;
+	},
+	setUserLoading (state, boolean) {
+		state.loading = boolean;
 	}
 }
 
@@ -46,6 +62,7 @@ const actions = {
 	refreshUser ({commit, rootState, state}) {
 		url = rootState.status ? url.replace(/\/api/, '') : url;
 		const params = {};
+		commit('setUserLoading', true);
 		rootState.axios
 			.get(url, { params })
 			.then(response=>{
@@ -55,6 +72,8 @@ const actions = {
 				}else {
 					// alert('请求Ipr数据失败');
 				}
+
+				commit('setUserLoading', false);
 			})
 			.catch(error=>{console.log(error)});
 	}

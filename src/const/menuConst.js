@@ -56,6 +56,12 @@ menu.data = [
 				path: '/task/finish',
 				icon: 'iconfont icon-task-finish',
 				type: 'item',
+			},
+			{
+				text: '期限管控',
+				path: '/task/expiring',
+				icon: 'iconfont icon-task-pending',
+				type: 'item',
 			}
 		]
 	},
@@ -263,12 +269,13 @@ menu.data = [
 			path: '/setting/system',
 			icon: '',
 			type: 'item'
-		},{
-			text: '模板管理',
-			path: '/setting/template',
-			icon: '',
-			type: 'item'
 		},
+		// {
+		// 	text: '模板管理',
+		// 	path: '/setting/template',
+		// 	icon: '',
+		// 	type: 'item'
+		// },
 		// {
 		// 	text: '发文规则',
 		// 	path: '/setting/rule',

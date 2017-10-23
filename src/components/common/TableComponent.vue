@@ -110,6 +110,7 @@
       @row-click="handleRowClick"
       :highlight-current-row="tableOption.highlightCurrentRow !== undefined ? tableOption.highlightCurrentRow : false"
       :height="tableHeight"
+      :class="tableOption.empty_text_position == 'topLeft' ? 'empty-top-left' : ''"
       ref="table"
     >
       <template v-for="(col, index) in tableOption.columns">
@@ -118,35 +119,39 @@
           <el-table-column type="selection" :fixed="col.fixed === false ? false : 'left'"></el-table-column>
         </template>
 
-        <template v-else-if="col.type == 'expand'">
+<!--         <template v-else-if="col.type == 'expand'">
           <el-table-column type="expand">
             <template scope="scope">
               <slot name="expand" :row="scope.row">
               </slot>
             </template>
           </el-table-column>
-        </template>
+        </template> -->
 
-        <template v-else-if="col.type == 'text'">
+        <template v-else-if="col.type == 'text' && tableControl[index]['show']" >
+          
           <template v-if="col.render ? true : false">
-            <el-table-column :label="col.label" :prop="col.prop" :width="col.width ? col.width : ''" v-if="tableControl[index]['show']" :sortable="col.sortable ? 'custom' : false" :show-overflow-tooltip="col.overflow !== undefined ? col.overflow : true">
-              <template scope="scope">
+            <el-table-column :label="col.label" :prop="col.prop" :width="col.width ? col.width : ''" :sortable="col.sortable ? 'custom' : false" :show-overflow-tooltip="col.overflow !== undefined ? col.overflow : true">
+              <template slot-scope="scope">
                 <table-render :render="col.render" :scope="scope" :prop="col.prop"></table-render>
               </template>
             </el-table-column>
           </template>
+
           <template v-else-if="col.render_simple ? true : false ">
-            <el-table-column :label="col.label" :prop="col.prop" :width="col.width ? col.width : ''" v-if="tableControl[index]['show']" :sortable="col.sortable ? 'custom' : false" :show-overflow-tooltip="col.overflow !== undefined ? col.overflow : true">
-              <template scope="scope">
+            <el-table-column :label="col.label" :prop="col.prop" :width="col.width ? col.width : ''" :sortable="col.sortable ? 'custom' : false" :show-overflow-tooltip="col.overflow !== undefined ? col.overflow : true">
+              <template slot-scope="scope">
                 <span class="table-column-render">{{ scope.row[col.prop][col.render_simple] }}</span>
               </template>
             </el-table-column>
           </template>
+
           <template v-else>
-            <el-table-column :label="col.label" :prop="col.prop" :width="col.width ? col.width : ''" v-if="tableControl[index]['show']" :sortable="col.sortable ? 'custom' : false" :show-overflow-tooltip="col.overflow !== undefined ? col.overflow : true">
-              <template v-if="col.default !== undefined" scope="scope">{{ scope.row[col.prop] ? scope.row[col.prop] : col.default }}</template>
+            <el-table-column :label="col.label" :prop="col.prop" :width="col.width ? col.width : ''" :sortable="col.sortable ? 'custom' : false" :show-overflow-tooltip="col.overflow !== undefined ? col.overflow : true">
+              <!-- <template v-if="col.default !== undefined" scope="scope">{{ scope.row[col.prop] ? scope.row[col.prop] : col.default }}</template> -->
             </el-table-column>
           </template>
+
         </template>
 
         <template v-else-if="col.type == 'date'">
@@ -156,7 +161,7 @@
 
         <template v-else-if="col.type == 'array'">
           <el-table-column :label="col.label" :prop="col.render ? `${col.prop}__render` : col.prop" :width="col.width ? col.width : ''" v-if="tableControl[index]['show']" :sortable="col.sortable ? 'custom' : false" :show-overflow-tooltip="col.overflow !== undefined ? col.overflow : true">
-            <template scope="scope">
+            <template slot-scope="scope">
 
               <el-tag v-for="(item, i) in scope.row[scope.column.property]" style="margin-left: 5px;" close-transition :key="i">{{ item }}</el-tag>
 
@@ -166,7 +171,7 @@
 
         <template v-else-if="col.type == 'action'">
           <el-table-column :label="col.label ? col.label : '操作'" :align="col.align ? col.align : 'left'" :width="col.width ? col.width : ''" :min-width="col.min_width ? col.min_width : ''" header-align="center" :fixed="col.fixed === false ? false : 'right'">
-            <template scope="scope">
+            <template slot-scope="scope">
               <template v-if="col.btns_render ? true : false">
                 <slot :name="col.btns_render" :row="scope.row">
                 </slot>
@@ -214,9 +219,9 @@
     >
     </el-pagination>
   
-    <el-dialog v-if="tableOption.import_type !== undefined" title="导入数据文件" :visible.sync="dialogImportVisible">
-      <app-import :columns="import_columns" :type="tableOption.import_type" @import-success="handleImportSuccess"></app-import>
-    </el-dialog>
+    
+      <app-import v-if="tableOption.import_type !== undefined" :visible.sync="dialogImportVisible" :columns="import_columns" :type="tableOption.import_type" @import-success="handleImportSuccess"></app-import>
+    
 
     <file-upload v-if="tableOption.upload_type !== undefined" :type="tableOption.upload_type" @upload-success="refresh" ref="file_upload"></file-upload>
   </div>
@@ -298,11 +303,14 @@ const methods = Object.assign({}, tableConst.methods, {
       if(s.length == 0) {
         this.$message({message: '请选择需要删除的列表项', type: 'warning'});
       }else {
-        this.$confirm('删除后不可恢复，确认删除？')
+        this.$confirm('删除后不可恢复，确认删除？', '删除确认', {type: 'warning'})
           .then(_=>{
             const url = this.url;
             const data = { id: this.$tool.splitObj(s, 'id') };
-            const success = _=>{ this.update() };
+            const success = _=>{ 
+              this.$message({type: 'success', message: '批量删除成功'});
+              this.update() 
+            };
             this.axiosDelete({ url, data, success });
           })
           .catch(_=>{console.log(_)});
@@ -404,7 +412,7 @@ const methods = Object.assign({}, tableConst.methods, {
   },
   handleControlChange () {
     const name = this.tableOption.name;
-    const value = JSON.stringify(this. tableControl);
+    const value = JSON.stringify(this.tableControl);
     this.$tool.setLocal(name, value);
   },
   handleRowClassName (row, index) {
@@ -531,6 +539,9 @@ export default {
         }else if(hk === 'default3') {
           height = this.innerHeight - 100;
           height = height < 300 ? 300 : height;
+        }else if(hk === 'default4') {
+          height = this.innerHeight - 55;
+          height = height < 300 ? 300 : height;
         }else {
           height = hk;
         }
@@ -553,18 +564,40 @@ export default {
 
     const d = this;
     const cols = d.tableOption.columns;
+    
+    //获得有配置数据得到的控制器
     let tableControl = [];
-    const cookieControl = this.$tool.getLocal(this.tableOption.name);
+    for (let c of d.tableOption.columns) {
+      let show = c.show == undefined ? true : c.show;
+      let type = c.type;
+      let label = c.label;
+      let show_option = c.show_option !== undefined ? c.show_option : true;
+      let prop = c.prop !== undefined ? c.prop : '';
+      tableControl.push({show, type, label, show_option, prop});        
+    }
+    //或得本地缓存的控制器
+    const cookieControl = JSON.parse(this.$tool.getLocal(this.tableOption.name));
+    
+    //当存在本地缓存时
+    //对两个控制器进行比对(主要针对代码修改阶段,字段不稳定)
     if(cookieControl) {
-      tableControl = JSON.parse(cookieControl);
-    }else {
-      for (let c of d.tableOption.columns) {
-        let show = c.show == undefined ? true : c.show;
-        let type = c.type;
-        let label = c.label;
-        let show_option = c.show_option !== undefined ? c.show_option : true;
-        let prop = c.prop !== undefined ? c.prop : '';
-        tableControl.push({show, type, label, show_option, prop});        
+      const r = (_=>{
+        let i = tableControl.length;
+        
+        while(i--) {
+          if( !cookieControl[i] || tableControl[i]['prop'] != cookieControl[i]['prop'] ) {
+            return false;
+          }
+        }
+
+        return true;
+      })();
+      //比对结果成功时使用缓存值,否则清空已有的无效缓存
+      console.log(r);
+      if(r) {
+        tableControl = cookieControl;
+      }else {
+        this.$tool.deleteLocal(this.tableOption.name);
       }
     }
 

@@ -96,11 +96,7 @@ const config = [
   ['flow_node', {
     placeholder: '请选择流程节点',
     url: '/api/flownodes',
-    handle (data) {
-      return data.flownodes.map(_=>{
-        return {id: _.value, name: _.label};
-      });
-    },
+    handle: _=>_.flownodes,
     // set: 'setFlowNodes',
     // refresh: 'refreshFlowNodes',
   }],
@@ -124,6 +120,14 @@ const config = [
     params: {
       debit: 0,
     }
+  }],
+  ['progress', {
+    placeholder: '请选择当前进度',
+    url: '/api/progress',
+  }],
+  ['branch', {
+    placeholder: '请选择部门',
+    options: 'branchOptions',
   }]
 ];
 
@@ -136,6 +140,7 @@ const dataMap = new Map([
   ['fee_code', {data: null}],
   ['tag', {data: null}],
   ['flow_node', {data: null}],
+  ['progress',{data: null}]
 ]);
 
 //-----------------------------配置数据分界线-----------------------------------------------
