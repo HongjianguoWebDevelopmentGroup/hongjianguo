@@ -2,7 +2,7 @@
 ## 更新提示
 - 页面位置:&nbsp;\application\index\view\test
 - static文件夹位置:&nbsp;\public\static
-- 更新:&nbsp;前台代码打包后(记得注释掉APP.VUE下面的模拟请求发送代码)，将打包获得的dist文件夹下的index.html覆盖页面位置下的index.html，static下的内容覆盖static文件夹位置里面的内容
+- 更新:&nbsp;前端代码覆盖到企业版项目的文件夹下，前台代码打包后(记得注释掉APP.VUE下面的模拟请求发送代码)，将打包获得的dist文件夹下的index.html覆盖页面位置下的index.html，static下的内容覆盖static文件夹位置里面的内容
 - git上传:
     1. git pull \[name\] \[branch\]
     2. git add \*(或者精确到文件夹或文件)
