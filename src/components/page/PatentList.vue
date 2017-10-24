@@ -177,6 +177,13 @@ export default {
             prop: 'entrusting_time',
             is_import: true,
             width: '263',         
+            render: (h,item)=>{
+              let t = item;
+              if(t) {
+                 t = this.$tool.getDate(new Date(t));
+              }
+              return h('span', t);
+            }
           },
           {
             type: 'text',
@@ -204,6 +211,7 @@ export default {
             label: '发明人评分',
             prop: 'inventor_rank',
             is_import: true,
+            render: this.rateRender,
             width: '200'
           },
           {
@@ -232,6 +240,7 @@ export default {
             label: 'IPR首次评分',
             prop: 'first_ipr_rank',
             is_import: true,
+            render: this.rateRender,
             width: '263'
           },
           {
@@ -239,6 +248,7 @@ export default {
             label: 'IPR终稿评分',
             prop: 'final_ipr_rank',
             is_import: true,
+            render: this.rateRender,
             width: '263'
           },
           {
@@ -363,6 +373,28 @@ export default {
     },
     save () {
       this.$refs.detail.edit();
+    },
+    rateRender (h,item) {
+      item = item ? item : 0;
+      // return (
+      //   <el-rate 
+      //     value={item}
+      //     disabled
+      //     show-text
+      //     text-color="#ff9900"
+      //     text-template="{value}">
+      //   </el-rate>
+      // );
+      return h('el-rate', {
+        attrs: {
+          value: item,
+          disabled: true,
+          showText: true,
+          textColor: '#f90',
+          textTemplate: '{value}',
+        }
+      })
+
     }
   },
   mounted () {
