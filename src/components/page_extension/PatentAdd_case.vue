@@ -28,7 +28,7 @@ export default {
       }
     }
   },
-  methods: {
+  methods: {  
     setForm (data) {
       this.$tool.coverObj(this.form, data);
     },

@@ -194,7 +194,7 @@ export default {
           },
           {
             type: 'text',
-            label: '发明审核时间',
+            label: '发明人审核时间',
             prop: 'inventor_review_time',
             is_import: true,
             width: '263'
