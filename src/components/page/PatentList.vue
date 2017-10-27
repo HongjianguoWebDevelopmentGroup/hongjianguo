@@ -39,6 +39,7 @@ import Strainer from '@/components/page_extension/PatentList_strainer'
 import AppShrink from '@/components/common/AppShrink'
 import CommonDetail from '@/components/page_extension/Common_detail'
 import StaticSelect from '@/components/form/StaticSelect'
+import { mapGetters } from 'vuex'
 
 const URL = '/api/patents';
 const PATENT_TYPE = ['发明专利', '实用新型', '外观设计']; 
@@ -67,11 +68,11 @@ export default {
         'import_type': 'patent',
         'upload_type': 'patent',
         'header_btn': [
-          { type: 'add', click: this.add },
-          { type: 'delete' }, 
-          { type: 'export' },
-          { type: 'import' },
-          { type: 'batch_upload' },
+          { type: 'add', click: this.add, map_if: '/patent/add', },
+          { type: 'delete', map_if: '/patent/delete' }, 
+          { type: 'export', map_if: '/patent/import' },
+          { type: 'import', map_if: '/patent/upload' },
+          { type: 'batch_upload', map_if: '/patent/download' },
           { type: 'control', label: '字段' },
         ],
         'header_slot': ['download'],
@@ -301,9 +302,9 @@ export default {
     };
   },
   computed: {
-    areaMap () {
-      return this.$store.getters.areaMap;
-    }
+    ...mapGetters([
+      'areaMap',
+    ])
   },
   methods: {
     add () {
@@ -394,8 +395,7 @@ export default {
           textTemplate: '{value}',
         }
       })
-
-    }
+    },
   },
   mounted () {
     this.$refs.table.refresh();

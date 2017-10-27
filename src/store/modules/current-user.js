@@ -14,7 +14,6 @@ const getters = {
 		let map = new Map();
 		const menus = state.data.menus ? state.data.menus : [];
 		menus.forEach(_=>{map.set(_, true)});
-
 		return map;
 	},
 	currentUser: state=>state.data,

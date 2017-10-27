@@ -15,7 +15,7 @@
       </el-popover>
 
       <template v-for="btn in tableOption.header_btn">
-        
+        <template v-if="headerBtnIf(btn)">
         <template v-if="btn.type == 'custom'">
           <el-button class="table-header-btn" type="primary" :icon="btn.icon ? btn.icon : ''" @click="handleCommand(btn.click, $event)">{{ btn.label }}</el-button>
         </template>
@@ -79,6 +79,7 @@
           <el-button class="table-header-btn" type="primary" icon="upload" @click="handleBatchUpload(btn.click, $event)">文件上传</el-button>
         </template>
 
+        </template>
       </template>
         
       <template v-if="tableOption.header_slot ? true : false">
@@ -237,6 +238,17 @@ import FileUpload from '@/components/common/FileUpload'
 import SearchInput from '@/components/common/SearchInput'
 import { mapGetters } from 'vuex'
 const methods = Object.assign({}, tableConst.methods, {
+  headerBtnIf (_) {
+    if( _.map_if ) {
+      if(this.menusMap && !this.menusMap.get(_.map_if)) {
+        return true;
+      }else {
+        return false;
+      }
+    }else {
+      return true;
+    }
+  },
   handleRowClick (a,b,c) {
     // if(c.fixed) return false;
     b.stopPropagation();
@@ -443,6 +455,7 @@ export default {
       'screen_obj',
       'innerHeight',
       'pagesize',
+      'menusMap',
     ]),
     tableData () {
       const d = this.data;
