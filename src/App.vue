@@ -444,7 +444,31 @@ nav {
 }
 /*这里放入重写element-ui样式的内容*/
 #app {
-
+  .el-tree-node__expand-icon.expanded {
+    -ms-transform: rotate(90deg);
+    transform: rotate(90deg);
+}
+  .el-tree-node__expand-icon {
+    cursor: pointer;
+    height: 0;
+    margin-left: 12px;
+    border: 8px solid transparent;
+    border-right-width: 0;
+    border-left-color: #97a8be;
+    border-left-width: 12px;
+    transition: transform .3s ease-in-out;
+}
+.el-tree-node__content>.el-checkbox, .el-tree-node__content>.el-tree-node__expand-icon {
+    margin-right: 10px;
+}
+.el-tree-node__content {
+    line-height: 36px;
+    height: 36px;
+}
+.el-tree-node__expand-icon.is-leaf {
+    border-color: transparent;
+    cursor: default;
+}
   .dialog-mini .el-dialog {
     width: 300px;
   }
