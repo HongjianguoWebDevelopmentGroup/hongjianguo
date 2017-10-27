@@ -85,12 +85,7 @@ export default {
       this.$refs.table.update();
     },
     handlePopRefresh (key) {
-      if(key == 'add') {
-        this.refresh();
-      }
-      if(key == 'edit') {
-        this.update();
-      }
+      this.refresh();
     }
   },
   mounted () {

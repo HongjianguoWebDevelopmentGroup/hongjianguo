@@ -9,7 +9,6 @@
           :data="data"
           :props="props"
           show-checkbox
-          default-expand-all
           :filter-node-method="filterNode"
           check-strictly
           node-key="id"

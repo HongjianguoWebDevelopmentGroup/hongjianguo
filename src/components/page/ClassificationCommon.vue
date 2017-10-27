@@ -8,7 +8,6 @@
 	  	:expand-on-click-node="false"
 	  	:render-content="renderContent"
 	  	:current-node-key="currentNodeKey"
-	  	default-expand-all
 	  	@current-change="handleCurrentChange"
       :style="`height: ${innerHeight - 400}px; overflow: auto; font-size: 14px;`"
 

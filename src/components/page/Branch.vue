@@ -21,7 +21,7 @@
 					<el-tree
 						:data="branchData"
 						:props="props"
-						default-expand-all
+					
 						highlight-current
 						:expand-on-click-node="false"
 						@node-click="nodeClick"

@@ -58,6 +58,7 @@
 
           }else {
             this.$alert(p.info);
+            this.clearFiles();
           }
         },
         onPreview (file) {
