@@ -24,7 +24,6 @@ export default {
   name: 'noticeCommon',
   mixins: [AxiosMixins],
   data () {
-  const url = map.get(this.type);
 	return {
 			tableOption: {
 				'header_btn': [
@@ -38,7 +37,7 @@ export default {
 					// { type: 'custom', label: '批量上传', icon: '', click: ()=>{alert("批量上传")}},
 				],
 				'height': 'default2',
-				url,
+				'url': '',
 				'import_type': '',				
 				'columns': [
 					{ type: 'selection' },
@@ -109,6 +108,7 @@ export default {
 	components: { TableComponent, Strainer },
 	created () {
 		this.tableOption.import_type = this.type == 'patent' ? 'patent_notice' : 'copyright_notice';		
+		this.tableOption.url = this.config.URL;
 	},
 	mounted () {
 		this.refresh();

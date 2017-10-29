@@ -1,7 +1,5 @@
     <template>
       <el-upload
-      class="upload-demo"
-      drag
       :on-success="handleUploadSuccess"
       :on-remove="handleUploadRemove"
       action="/api/files"

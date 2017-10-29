@@ -103,6 +103,7 @@ export default {
 
 			const success = _=>{
 				this.$message({message: '保存成功', type: 'success'});
+				this.$router.push('/news/mailList');
 			}
 			const complete = _=>{ this.btn_disabled = false };
 
@@ -164,13 +165,21 @@ export default {
 		if(this.type == 'edit') {
 			const id = this.$route.query.id;
 			const url = `${URL}/${id}`;
+			const mail_arr = {'to': true, 'cc': true, 'bcc': true};
 			const success = _=>{
 				const data = _.mail;
 				for(let k in this.form) {
-					const d = data[k];
+					let d = data[k];
 					if(k == 'attachments') {
 						this.attachments = d;
 						this.form[k] = d.map(_=>_.id);
+					}else if(mail_arr[k]) {
+						if(d && d[0] && !d[0].id) {
+							d = d.map(_=>{
+								return {id: _.value, name: _.label};
+							});
+						}
+						this.form[k] = d ? d : this.form[k];
 					}else {
 						this.form[k] = d ? d : this.form[k];
 					}
