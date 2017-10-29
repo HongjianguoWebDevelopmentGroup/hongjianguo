@@ -1,10 +1,15 @@
 <template>
-  <el-dialog :title="popType == 'add' ? '添加用户' : '编辑用户'" :visible.sync="dialogVisible" @close="close">
+  <el-dialog :key="popType" :title="popType == 'add' ? '添加用户' : '编辑用户'" :visible.sync="dialogVisible" @close="close">
 		<el-form :model="form" label-width="100px" ref="form" :rules="rules">
-			<el-form-item label="用户组" v-if="popType == 'add'">
-				<span class="form-item-text">{{ group && group.id !== 0  ? group.name : '未分配用户组' }}</span>
+			
+      <el-form-item label="用户组" prop="group_id" v-if="popType == 'add'" :rules="{ type: 'number', required: true, message: '用户组选择不能为空', trigger: 'change'}">
+        <static-select type="group" v-model="form.group_id"></static-select>
 			</el-form-item>
-      <el-form-item label="用户名" prop="username" v-if="popType == 'add'">
+
+      <el-form-item label="用户名" prop="username" v-if="popType == 'add'" :rules="[
+          { required: true, message: '用户名不能为空', trigger: 'blur'},
+          { pattern: /^[^~!@#$%^&*]+$/, message: '用户名不能包含非法字符', trigger: 'blur' }
+        ]">
         <el-input v-model="form.username" ></el-input>
       </el-form-item>
       <el-form-item label="用户名" v-if="popType == 'edit'">
@@ -12,13 +17,14 @@
       </el-form-item>
 
       <template v-if="popType == 'add'">
-        <el-form-item label="密码" prop="password">
+        <el-form-item label="密码" prop="password" :rules="{ required: true, message: '密码不能为空', trigger: 'blur' }">
           <el-input type="password" v-model="form.password"></el-input>
         </el-form-item>
-        <el-form-item label="确认密码" prop="password_again">
+        <el-form-item label="确认密码" prop="password_again" :rules="{ required: true, message: '确认密码不能为空', triggrt: 'blur' }">
           <el-input type="password" v-model="form.password_again"></el-input> 
         </el-form-item>
       </template>
+
       <template v-if="popType == 'edit'">
         <el-form-item label="密码">
           <edit-password v-model="form.password" ref="psd"></edit-password>
@@ -59,6 +65,7 @@ import UserRole from '@/components/form/UserRole'
 import AxiosMixins from '@/mixins/axios-mixins'
 import EditPassword from '@/components/form/EditPassword'
 import RemoteSelect from '@/components/form/RemoteSelect'
+import StaticSelect from '@/components/form/StaticSelect'
 
 const URL = 'api/members'
 
@@ -76,7 +83,8 @@ export default {
 		return {
 			'id': '',
 		  'form': {
-		  	groups: [],
+        group_id: '',//用于添加时使用
+        groups: [],//用于编辑时保存数据
 		  	username: '',
 		  	password: '',
 		  	password_again: '',
@@ -88,16 +96,6 @@ export default {
         parent: '',
 		  },
 		  'rules': {
-		  	'username': [
-		  		{ required: true, message: '用户名不能为空', trigger: 'blur'},
-		  		{ pattern: /^[^~!@#$%^&*]+$/, message: '用户名不能包含非法字符', trigger: 'blur' }
-		  	],
-		  	'password': [
-		  		{ required: true, message: '密码不能为空', trigger: 'blur'},
-		  	],
-		  	'password_again': [
-		  		{ required: true, message: '确认密码不能为空', triggrt: 'blur'},
-		  	],
 		  	'email': { pattern: /^[a-z0-9]+([._\\-]*[a-z0-9])*@([a-z0-9]+[-a-z0-9]*[a-z0-9]+.){1,63}[a-z0-9]+$/, message: '邮箱格式错误', trigger: 'blur' },
 		  	'mobile': { pattern: /^1[3|4|5|7|8][0-9]{9}$/, message: '手机号码格式错误', trigger: 'blur'},
 		  	'qq': { pattern: /^[1-9][0-9]{4,9}$/, message: 'qq号码格式错误', trigger: 'blur'},
@@ -114,20 +112,24 @@ export default {
   methods: {
   	show (row) {
   		this.dialogVisible = true;
-  		if(this.$refs.form) {
-				this.$refs.form.resetFields();
-				this.form.username = "";
-				this.form.password = "";
-				this.form.password_again = "";
-			}	
+  		
   		// console.log("----------------------------------")
   		// console.log(this.$refs.form.fields);
   		this.$nextTick(()=>{
   		// console.log(this.$refs.form.fields);
   		// console.log("------------------------------------")
-  			
+  			if(this.$refs.form) {
+          this.$refs.form.resetFields();
+          this.form.username = "";
+          this.form.password = "";
+          this.form.password_again = "";
+        } 
+        if(this.popType == 'add') {
+          this.form.group_id = this.group && this.group.id ? this.group.id : '';
+        }
+
   			if(this.popType == 'edit') {
-  				this.$tool.coverObj(this.form, row);
+  				this.$tool.coverObj(this.form, row); 
   				this.id = row.id;
   			}
   				
@@ -139,7 +141,7 @@ export default {
   		if( flag || this.psdCheck() ) return;
 
   		const url = URL;
-  		const data = Object.assign({}, this.form, { group_id: this.group.id });
+  		const data = this.form;
   		const success = _=>{
   			this.$message({message: '添加用户成功', type: 'success'});
   			this.dialogVisible = false;
@@ -154,7 +156,7 @@ export default {
   		if( flag || this.$refs.psd.check() ) return;
 
   		const url = `${URL}/${this.id}`;
-  		const data = this.form;
+  		const data = this.$tool.shallowCopy(this.form, {skip: ['group_id']});
   		const success = _=>{
   			this.$message({message: '编辑用户成功', type: 'success'});
   			this.dialogVisible = false;
@@ -193,7 +195,8 @@ export default {
   components: { 
   	UserRole,
   	EditPassword,
-    RemoteSelect
+    RemoteSelect,
+    StaticSelect,
   }
 }
 </script>

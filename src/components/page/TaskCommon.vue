@@ -85,6 +85,7 @@
       <span slot="header" style="float: right">
         <el-button size="small" type="primary" @click="dialogEditVisible = true" v-if="menusMap && !menusMap.get('/tasks/update')">编辑</el-button>
         <el-button size="small" style="margin-left: 0px;" v-if="menusMap && !menusMap.get('/tasks/transfer')" @click="dialogTranserVisible = true; transfer_person = {id: currentRow.person_in_charge, name: currentRow.person_in_charge_name }">移交</el-button>
+        <el-button size="small" @click="handleReject" style="margin-left: 0px;" v-if="menusMap && !menusMap.get('/tasks/reject')">退回</el-button>
       </span>
       <el-tabs v-model="activeName">        
         <el-tab-pane label="前往处理" name="finish" v-if="task_status == 0">
@@ -107,11 +108,7 @@
       :title="currentRow.title"
       @editSuccess="editProjectSuccess"
       ref="detail">
-    </common-detail>
-
-    </app-shrink>
-
-    
+    </common-detail>   
 
   </div>
 </template>
@@ -137,6 +134,7 @@ import CommonDetail from '@/components/page_extension/Common_detail'
 
 import { mapMutations } from 'vuex'
 import { mapGetters } from 'vuex'
+import { mapActions } from 'vuex'
 // import $ from 'jquery'
 
 const URL = '/api/tasks';
@@ -156,6 +154,23 @@ export default {
       'showAgencyLoad',
       'addScreen',
     ]),
+    ...mapActions([
+      'refreshUser',
+    ]),
+    handleReject () {
+      this.$confirm('此操作将退回当前任务，是否继续？', '提示', { 
+        type: 'warning'
+      }).then(_=>{
+        const url = `/tasks/${this.currentRow.id}/reject`;
+        const success = _=>{
+          this.$message('退回任务成功', {type: 'success'});
+          this.dialogShrinkVisible = false;
+          this.update();
+        };
+
+        this.$axiosPost({url, success});
+      }).catch(_=>{});
+    },
     handleMore (type) {
       this.moreVisible = true;
     },
@@ -276,6 +291,7 @@ export default {
         this.dialogTranserVisible = false;
         this.dialogShrinkVisible = false;
         this.$message({message: '移交成功', type: 'success'});
+        this.refreshUser();
 
         this.update();        
       }
@@ -308,7 +324,7 @@ export default {
         h.header_btn.splice(3,1,{type: 'custom', label: '恢复处理', click: _=>{ this.handleTask('/api/tasks/resume') }});
       }
       menusMap && !menusMap.get('/tasks/add_btn') ? h.header_btn.splice(0,1,{ type: 'add', click: this.addPop }) : h.header_btn.splice(0,1,{}); 
-      menusMap && !menusMap.get('/tasks/delete_btn') ? h.header_btn.splice(1,1,{ type: 'delete' }) : h.header_btn.splice(1,1,{});
+      menusMap && !menusMap.get('/tasks/delete_btn') ? h.header_btn.splice(1,1,{ type: 'delete', callback: this.refreshUser }) : h.header_btn.splice(1,1,{});
       menusMap && !menusMap.get('/tasks/agency_btn') && t != 1 ? h.header_btn.splice(2,1,{type: 'custom', label: '申请委案', click: this.agenPop}) : h.header_btn.splice(2,1,{});
 
       this.$forceUpdate();
@@ -399,6 +415,7 @@ export default {
         'name': 'taskList',
         'url': URL,
         'height': 'default',
+        'search_placeholder': '搜索案号、标题、申请号、代理人、备注',
         'is_filter': true,
         'row_class': ({due_time}, index)=> {
           return ;

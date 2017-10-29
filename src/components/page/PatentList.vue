@@ -3,7 +3,7 @@
     <strainer v-model="filter" @refresh="refresh"></strainer>
     
     <table-component :tableOption="tableOption" :data="tableData" @refreshTableData="refreshTableData" ref="table" :refresh-proxy="refreshProxy">
-      <el-button slot="download" :loading="downloadLoading" icon="share" @click="downloadPop" type="primary" style="margin-left: 5px;">批量下载</el-button>
+      <el-button v-if="!!(menusMap && !menusMap.get('/patent/download') )" slot="download" :loading="downloadLoading" icon="share" @click="downloadPop" type="primary" style="margin-left: 5px;">批量下载</el-button>
     </table-component>
     
     
@@ -49,6 +49,7 @@ export default {
   mixins: [ AxiosMixins ],
   data () {
     return {
+      value6: '',
       refreshProxy: '',
       currentRow: '',
       shrinkVisible: false,
@@ -62,7 +63,8 @@ export default {
         'name': 'patentList',
         'url': URL,
         'height': 'default',
-        'highlightCurrentRow': true, 
+        'search_placeholder': '搜索案号、标题、申请号', 
+        'highlightCurrentRow': true,
         'rowClick': this.handleRowClick,
         'is_filter': true,
         'import_type': 'patent',
@@ -70,9 +72,9 @@ export default {
         'header_btn': [
           { type: 'add', click: this.add, map_if: '/patent/add', },
           { type: 'delete', map_if: '/patent/delete' }, 
-          { type: 'export', map_if: '/patent/import' },
-          { type: 'import', map_if: '/patent/upload' },
-          { type: 'batch_upload', map_if: '/patent/download' },
+          { type: 'export', map_if: '/patent/export' },
+          { type: 'import', map_if: '/patent/import' },
+          { type: 'batch_upload', map_if: '/patent/upload' },
           { type: 'control', label: '字段' },
         ],
         'header_slot': ['download'],
@@ -80,9 +82,10 @@ export default {
 
           { type: 'selection' },
           // { type: 'text', label: '专利状态', prop: 'status', render: (h,item)=>h('span', item ? '正常' : '暂停处理') },
-          { type: 'text', label: '案号', prop: 'serial', sortable: true, width: '142' },
+          { type: 'text', label: '案号', prop: 'serial', sortable: true, width: '200' },
           { type: 'text', label: '专利类型', prop: 'type', render_simple: 'name', sortable: true, is_import: true, width: '142',  },
-          { type: 'text', label: '地区', prop: 'area', render_simple: 'name', sortable: true, is_import: true, width: '142' },
+          { type: 'text', label: '地区', prop: 'area', render_simple: 'name', sortable: true, is_import: true, width: '80' },
+          { type: 'text', label: 'IPR', prop: 'ipr', render_simple: 'name', sortable: true, is_import: true, width: '175' },
           { type: 'text', label: '专利标题', prop: 'title', sortable: true, is_import: true, width: '142' },
           { type: 'text', label: '当前状态', prop: 'progress', render_simple: 'name', sortable: true, width: '180' },
           { type: 'text', label: '专利摘要', prop: 'abstract', sortable: true, width: '500'},
@@ -94,7 +97,6 @@ export default {
           { type: 'text', label: '进入实审日', prop: 'sub_exam_start_date', sortable: true, width: '263'},
           { type: 'text', label: '公告日', prop: 'issue_date', sortable: true, is_import: true, width: '263'},
           { type: 'text', label: '公告号', prop: 'issue_number', sortable: true, is_import: true, width: '263'},
-          { type: 'text', label: 'IPR', prop: 'ipr', render_simple: 'name', sortable: true, is_import: true, width: '175' },
           { type: 'text', label: '主国际分类号', prop: 'main_ipc', sortable: true, width: '263'},
           { type: 'text', label: '国际申请日', prop: 'pct_apd', sortable: true, width: '263'},
           { type: 'text', label: '国际申请号', prop: 'pct_no', sortable: true, width: '263'},
@@ -304,6 +306,7 @@ export default {
   computed: {
     ...mapGetters([
       'areaMap',
+      'menusMap',
     ])
   },
   methods: {

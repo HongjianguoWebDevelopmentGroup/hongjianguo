@@ -7,7 +7,7 @@
 		</template>
 	</el-submenu>
 
-	<el-menu-item v-else-if="dd.type == 'item' && !menusMap.get(dd.path) ? true : false" :index="dd.path"><i :class="dd.icon"></i>{{ dd.text }}<span v-if="dd.path == '/task/pending' ">({{ pendingTaskCount }})</span></el-menu-item>
+	<el-menu-item v-else-if="dd.type == 'item' && !menusMap.get(dd.path) ? true : false" :index="dd.path"><i :class="dd.icon"></i>{{ dd.text }}<span v-if="map[dd.path] != undefined">({{ getCount(dd.path) }})</span></el-menu-item>
 
 </template>
 
@@ -17,6 +17,18 @@ import { mapGetters } from 'vuex'
 export default {
   name: 'appMenuItem',
   props: ['dd'],
+  data () {
+    return {
+      map: {
+        '/task/pending': 'pendingTaskCount',
+        '/task/pause': 'pausedTaskCount',
+        '/task/expiring': 'monitoredTaskCount',
+      }
+    }
+  },
+  computed: {
+
+  },
   methods: {
   	forChildren(item) {
   		if(item.children && item.children.length != 0) {
@@ -24,12 +36,17 @@ export default {
   		}else {
   			return false;
   		}
-  	}
+  	},
+    getCount (key) {
+      return this[this.map[this.dd.path]];
+    }
   },
   computed: {
     ...mapGetters([
       'menusMap',
       'pendingTaskCount',
+      'pausedTaskCount',
+      'monitoredTaskCount',
       // ...
     ])
   }

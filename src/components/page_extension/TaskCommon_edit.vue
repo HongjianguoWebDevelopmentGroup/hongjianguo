@@ -59,6 +59,7 @@ import Member from '@/components/form/Member'
 import Upload from '@/components/form/Upload'
 import AxiosMixins from '@/mixins/axios-mixins'
 import RemoteSelect from '@/components/form/RemoteSelect'
+import {mapActions} from 'vuex'
 
 const URL = '/api/tasks';
 
@@ -67,12 +68,16 @@ export default {
   mixins: [ AxiosMixins ],
   props: [ 'type', 'row' ],
   methods: {
+    ...mapActions([
+      'refreshUser',
+    ]),
     add () {
       const url = URL;
       const data = this.$tool.shallowCopy(this.form, {'date': true});
       const success = _=>{ 
         // this.dialogVisible  = false;
         this.$emit('addSuccess');
+        this.refreshUser();
       };
       const complete = _=>{ this.btn_disabled = false };
 

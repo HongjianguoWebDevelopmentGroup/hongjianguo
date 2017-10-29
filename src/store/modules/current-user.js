@@ -14,6 +14,7 @@ const getters = {
 		let map = new Map();
 		const menus = state.data.menus ? state.data.menus : [];
 		menus.forEach(_=>{map.set(_, true)});
+
 		return map;
 	},
 	currentUser: state=>state.data,
@@ -38,6 +39,16 @@ const getters = {
 	pendingTaskCount: state=>{
 		const user = state.data;
 		const count = user ? user.pendingTaskCount : 0;
+		return count;
+	},
+	pausedTaskCount: state=>{
+		const user = state.data;
+		const count = user ? user.pausedTaskCount : 0;
+		return count;
+	},
+	monitoredTaskCount: state=>{
+		const user = state.data;
+		const count = user ? user.monitoredTaskCount : 0;
 		return count;
 	},
 	pendingTask: state=>{

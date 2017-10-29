@@ -6,6 +6,7 @@
 
           <div class="left-tree-header" style="padding: 0 20px; ">
             <span style="font-size: 15px; font-weight: bold;">部门</span>
+            <el-tag v-if="!!branchUpdate" style="margin-left: 15px;">最后更新时间：{{ branchUpdate }}</el-tag>
             <div style="float: right;">
               <el-button icon="plus" size="mini" title="添加部门" @click="addPop"></el-button>
               <el-button icon="edit" size="mini" title="编辑部门" style="margin-left: 0;" @click="editPop"></el-button>
@@ -107,6 +108,7 @@ export default {
     ...mapGetters([
       'innerHeight',
       'branchData',
+      'branchUpdate',
     ]),
   },
   methods: {

@@ -24,12 +24,13 @@ export default {
   name: 'noticeCommon',
   mixins: [AxiosMixins],
   data () {
+  const url = map.get(this.type);
 	return {
 			tableOption: {
 				'header_btn': [
 					// { type: 'custom', label: '筛选', icon: '', click: ()=>{alert("筛选")} },
 					// { type: 'custom', label: '统计', icon: '', click: ()=>{alert("统计")} },
-					{ type: 'delete' },
+					{ type: 'delete', map_if: '/patent/notice/delete' },
 					{ type: 'export' },
 					{ type: 'import' },
 					{ type: 'control', label: '字段' },
@@ -37,21 +38,23 @@ export default {
 					// { type: 'custom', label: '批量上传', icon: '', click: ()=>{alert("批量上传")}},
 				],
 				'height': 'default2',
+				url,
 				'import_type': '',				
 				'columns': [
 					{ type: 'selection' },
 					// { type: 'text', label: '通知书案件名称', prop: 'title', width: '200', is_import: true },
+					{ type: 'text', label: '内部案号', prop: 'serial', width: '200' },
+					{ type: 'text', label: '事务所案号', prop: 'agency_serial', width: '200', is_import: true},
 					{ type: 'text', label: '案件名称', prop: 'project', render_simple: 'name', width: '200', is_import: true },
+					{ type: 'text', label: '申请号', prop: 'apn', width: '200', is_import: true },
 					{ type: 'text', label: '通知书名称', prop: 'code', render_simple: 'name', width: '200', is_import: true },
 					{ type: 'text', label: '发文日', prop: 'mail_date', width: '200', is_import: true },
 					{ type: 'text', label: '发文序列号', prop: 'notice_serial', width: '200', is_import: true },
-					{ type: 'text', label: '申请号', prop: 'apn', width: '200', is_import: true },
 					{ type: 'text', label: '申请日', prop: 'apd', width: '200', is_import: true },
 					{ type: 'text', label: '上传日', prop: 'create_time', width: '200' },
 					{ type: 'text', label: '上传用户', prop: 'uploader', render_simple: 'name', width: '200' },
 					{ type: 'text', label: '审查员', prop: 'examiner', width: '200' },
 					{ type: 'text', label: '审查部门', prop: 'examiner_dept', width: '200' },
-					{ type: 'text', label: '案号', prop: 'serial', width: '200' },
 					// { type: 'text', label: '处理状态', prop: 'status', width: '200' },
 					// { type: 'text', label: '备注', prop: 'remark', width: '200' },
 					{ 

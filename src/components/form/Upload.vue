@@ -10,10 +10,7 @@
       multiple
       ref="upload"
     >           <!-- <i class="el-icon-upload"></i> -->
-        <div class="el-upload__text">
-            <template v-if="uploadText ? true : false">{{ uploadText }}</template>
-            <template v-else>将文件拖到此处，或<em>点击上传</em></template>
-        </div>
+        <el-button size="small" type="primary">点击上传</el-button>
         <div class="el-upload__tip" slot="tip"><slot></slot></div>
     </el-upload>
     </template>

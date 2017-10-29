@@ -190,8 +190,8 @@ export default {
           const data = Object.assign({}, {'flow_node_id': this.next}, this.form);
           if(data.rank) {data.rank *= 20};
           const success = ()=>{ 
-            this.refreshUser();
             this.$emit('submitSuccess') 
+            this.refreshUser();
           };
           const complete = _=>{ this.btn_disabled=false }; 
           this.axiosPost({url, data, success, complete}); 

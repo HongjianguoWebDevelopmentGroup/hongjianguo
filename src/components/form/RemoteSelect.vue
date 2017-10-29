@@ -8,8 +8,9 @@
 	  :disabled="disabled"
 	  :remote-method="remoteMethod"
 	  :loading="loading"
+    :allow-create="allowCreate"
+    :default-first-option="choose.defaultFirstOption !== undefined ? choose.defaultFirstOption : false"
 	  :multiple="!single"
-	  :multiple-limit="multiple ? 0 : 1"
 	  ref="select"
 	  @visible-change.once="initialization"
 	>
@@ -25,7 +26,6 @@
 
 <script>
 import AxiosMixins from '@/mixins/axios-mixins'
-import RemoteSelect from '@/mixins/remote-select'
 
 const map = new Map([
 	['member', {
@@ -86,13 +86,29 @@ const map = new Map([
     DATA_KEY: 'invoices',
     PLACEHOLDER: '请输入付款单关键词',
     PARAMS: { debit: 0 },
+  }],
+  ['mail', {
+    URL: '/api/mailAddress',
+    DATA_KEY: 'list',
+    PLACEHOLDER: '请输入邮箱',
+    dynamicCreate: true,
+    defaultFirstOption: true,
   }]
 ]);
 
 export default {
   name: 'remoteSelect',
-  mixins: [ AxiosMixins, RemoteSelect ],
+  mixins: [ AxiosMixins ],
   props: {
+    'value': [Number, String, Array, Object],
+    'disabled': {
+      type: Boolean,
+      default: false,
+    },
+    'multiple': {
+      type: Boolean,
+      default: false,
+    },
   	'type': [String, Object],
     'para': {
       type: Object,
@@ -108,12 +124,28 @@ export default {
     }
   },
   data () {
-  	return { 
+  	return {
+      options: [],
+      loading: false, 
   		selected: [],
   		static_map: [],
   	};
   },
   methods: {
+    handleInput (val) {
+      if(!this.multiple && !this.single) {
+        let v = '';
+        if(val[0] && val[1]) {
+          v = val[1];
+        }
+        if(val[0] && !val[1]) {
+          v = val[0];
+        }
+        this.$emit('input', v);  
+      }else {
+        this.$emit('input', val);
+      }
+    },
   	initialization () {
       this.remoteMethod('');       
   	},	
@@ -141,9 +173,13 @@ export default {
         //selected通过map映射
         const arr = [];
         val.forEach(_=>{
+          //在map中搜索, 若不存在，则自定义
           const v = this.map.get(_);
+          
           if(v) {
             arr.push(v);
+          }else {
+            arr.push({id: _, name: _}); 
           }
         });
 
@@ -188,6 +224,20 @@ export default {
   			return this.type;
   		}		
   	},
+    allowCreate () {
+
+
+      if(this.choose.allowCreate) {
+        return true;
+      }
+
+
+      if(this.choose.dynamicCreate && this.options.length == 0) {
+        return true;
+      }
+
+      return false;
+    },  
   	URL () {
   		return this.choose.URL;
   	},
@@ -211,8 +261,8 @@ export default {
   	},
   	option_in () {
   		//由于一部分的val可能是通过object传入,单纯的options只含有动态部分
-  		//所以取selected和options的并集,取得selected的静态部分选项
-  		const arr = [ ...this.selected, ...this.options ];
+  		//所以取select_map和options的并集,取得selected的静态部分选项
+  		const arr = [ ...this.static_map, ...this.options ];
       // console.log(this.selected, this.options, arr);
   		// console.log(arr);
   		return this.$tool.singleObject(arr,'id');
@@ -223,7 +273,16 @@ export default {
   		this.static_map.forEach(_=>map.set(_.id, _));
   		this.options.forEach(_=>map.set(_.id, _));
   		return map;
-  	}
+  	},
+    value2 () {
+      // console.log(this.value);
+      if(!this.multiple && !this.single) {
+        // console.log(this.value == "" || (this.value instanceof Object && this.$tool.getObjLength(this.value) == 0 ) ? [] : [ this.value ]);
+        return this.value == "" || (this.value instanceof Object && this.$tool.getObjLength(this.value) == 0 ) ? [] : [ this.value ];
+      }else {
+        return this.value;
+      }
+    }
   },
   watch: {
   	value2 (val) {
@@ -231,7 +290,7 @@ export default {
       // console.log(val);
       // console.log('-------------val');
       //value类型为对象时，添加静态映射，并将其值转为id
-      this.refreshSelected(val);
+      this.refreshSelected(val);   
   	}
   },
   created () {

@@ -14,6 +14,7 @@
 					</ul>
 				</app-collapse>
 				<table-component @refreshTableData="refreshTableData" :tableOption="tableOption" :data="tableData" ref="table">
+					<el-tag v-if="lastUpdate !== ''" slot="last_update" style="margin-left: 15px;">最后更新时间：{{ lastUpdate }}</el-tag>
 					<!-- <user-role v-model="user_role" slot="userRole" default style="width: 200px; margin-left: 5px;"></user-role> -->
 				</table-component>
   		</div>
@@ -53,6 +54,7 @@ export default {
   mixins: [ AxiosMixins ],
   data () { 
 		return {
+			lastUpdate: '',
 		  formLabelWidth: '100px',
 		  popType: '',
 		  tableOption: {
@@ -61,6 +63,7 @@ export default {
 		  		{ type: 'control', label: '字段' },
 		  		{},
 		  	],
+		  	'header_slot': ['last_update'],
 		  	'height': 'default',
 		  	// 'header_slot': [ 'userRole' ],
 		  	columns: [
@@ -212,7 +215,10 @@ export default {
 			const group = this.group_id == 0 ? {} : { group: this.group_id };
 			const role = this.user_role == '' ? {} : { role: this.user_role };
 			const data = Object.assign({},group,option,role);
-			const success = _=>{ this.tableData = _.members };
+			const success = _=>{ 
+				this.tableData = _.members;
+				this.lastUpdate = _.last_update ? _.last_update : ''; 
+			};
 			
 			this.axiosGet({url, data, success})
 		},
@@ -239,6 +245,8 @@ export default {
   mounted () {
   	if(this.groupId) {
   		this.$refs.group.handleCurrentChange(this.groupId);
+  	}else {
+  		this.$refs.group.handleCurrentChange(0);
   	}
   },
   components: { AppTree, TableComponent, Group, Pop, AppCollapse, StaticSelect, UserRole },

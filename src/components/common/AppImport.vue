@@ -11,7 +11,7 @@
       <el-table-column fixed="left" label="序号" width="80">
         <template slot-scope="scope"><span style="color: #20a0ff">{{ scope.$index + 1 }}</span></template>
       </el-table-column>
-			<el-table-column fixed="left" label="案号" width="150" prop="serial"></el-table-column>
+			<el-table-column fixed="left" label="内部案号" width="150" prop="serial"></el-table-column>
 			
 			<template v-for="(col, index) in columns">
 
@@ -223,12 +223,12 @@ export default {
         this.$refs.upload.clearFiles();
         this.$emit('import-success'); 
       };
-      complete = _=>{
+      const complete = _=>{
         this.setImportLoading(false);
       }
 
       this.setImportLoading(true);
-  		this.$axiosPost({url, data, success});
+  		this.$axiosPost({url, data, success, complete});
   	},
   	handleSuccess (a,b,c) {
   		if(a.status) {

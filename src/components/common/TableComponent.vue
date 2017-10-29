@@ -60,7 +60,7 @@
         </template>
 
         <template v-else-if="btn.type == 'delete'">
-          <el-button class="table-header-btn" type="primary" icon="delete" @click="handleDelete(btn.click, $event)">{{ btn.label ? btn.label : '删除' }}</el-button>
+          <el-button class="table-header-btn" type="primary" icon="delete" @click="handleDelete(btn.click, $event, btn.callback)">{{ btn.label ? btn.label : '删除' }}</el-button>
         </template>
 
         <template v-else-if="btn.type == 'filter'">
@@ -87,8 +87,8 @@
       </template>
 	  	<search-input
         v-model="search_value"
-        placeholder="搜索..."
-        style="width: 200px;"
+        :placeholder="tableOption.search_placeholder == undefined ? '搜索...' : tableOption.search_placeholder"
+        style="width: 250px;"
         class="table-search"
         @click="handleSearch"
         @enter="handleSearch"
@@ -196,7 +196,7 @@
 
                 <el-button v-else-if="btn.type == 'download'" :type="btn.btn_type ? btn.btn_type : 'text'" :key="index" :size="btn.size ? btn.size : 'mini'" icon="share" @click="handleActionCommand(btn.click, scope, $event)" >下载</el-button>
 
-                <el-button v-else-if="btn.type == 'view'" :type="btn.btn_type ? btn.btn_type : 'text'" :key="index" :size="btn.size ? btn.size : 'mini'" icon="view" @click="handleActionCommand(btn.click, scope, $event)" >查看</el-button>
+                <el-button v-else-if="btn.type == 'view' && false" :type="btn.btn_type ? btn.btn_type : 'text'" :key="index" :size="btn.size ? btn.size : 'mini'" icon="view" @click="handleActionCommand(btn.click, scope, $event)" >查看</el-button>
 
                 <el-button v-else :type="btn.btn_type ? btn.btn_type : ''" :key="index" :size="btn.size ? btn.size : 'mini'" :icon="btn.icon" @click="handleActionCommand(btn.click, scope, $event)">{{ btn.label }}</el-button>
 
@@ -307,7 +307,7 @@ const methods = Object.assign({}, tableConst.methods, {
       fun(a, b);
     }
   },
-  handleDelete (func, e) {
+  handleDelete (func, e, callback) {
     if(func) {
       func(e)
     }else {
@@ -320,8 +320,12 @@ const methods = Object.assign({}, tableConst.methods, {
             const url = this.url;
             const data = { id: this.$tool.splitObj(s, 'id') };
             const success = _=>{ 
-              this.$message({type: 'success', message: '批量删除成功'});
-              this.update() 
+              this.$message({type: 'success', message: '删除成功'});
+              this.update();
+
+              if(callback) {
+                callback(_);
+              }
             };
             this.axiosDelete({ url, data, success });
           })

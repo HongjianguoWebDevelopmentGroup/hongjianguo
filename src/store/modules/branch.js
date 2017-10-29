@@ -1,6 +1,7 @@
 let url = '/api/branches';
 const state = {
 	data: [],
+	lastUpdate: '',
 }
 
 const getters = {
@@ -24,12 +25,17 @@ const getters = {
 		const arr = [...map.values()];
 
 		return arr;
+	},
+	branchUpdate: (state)=>{
+		const d = state.lastUpdate; 
+		return d ? d : ''; 
 	}
 }
 
 const mutations = {
 	setBranch (state, d) {
-		state.data = d;
+		state.data = d.branches;
+		state.lastUpdate = d.last_update;
 	}
 }
 
@@ -42,7 +48,7 @@ const actions = {
 				console.log(response);
 				const d = response.data;
 				if(d.status){
-					commit('setBranch', d.branches);
+					commit('setBranch', d);
 				}else {
 					// alert('请求部门数据失败');
 				}

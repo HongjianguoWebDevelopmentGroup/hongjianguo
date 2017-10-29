@@ -118,7 +118,7 @@ export default {
     handleSubmitSuccess () {
       this.$router.push('/proposal/list');
     },
-    save ( callback=_=>{this.$message({message: '编辑成功', type: 'success'}); this.$router.push('/proposal/list')} ) {
+    save ( callback=_=>{this.$message({message: '保存成功', type: 'success'}); this.$router.push('/proposal/list')} ) {
       
       if(this.pageType == 'add' && !this.formData.proposer) {
         this.formData.proposer = this.userid;
@@ -130,7 +130,10 @@ export default {
           this.btn_disabled = true;
           const flag = this.pageType == 'add';
           const url = flag ? URL : `${URL}/${this.id}`;
-          const success = callback;
+          const success = _=>{
+            // this.refreshUser();
+            callback(_);
+          };
           const data = this.formData;
           const complete = _=>{ this.btn_disabled = false };
           flag ? this.axiosPost({url, data, success, complete}) : this.axiosPut({url, data, success, complete});
@@ -328,6 +331,7 @@ export default {
       'username',
       'userid',
       'useridentity',
+      'refreshUser',
     ]),
     tagOptions () {
       return this.$store.getters.tagOptions;

@@ -216,6 +216,7 @@ export default {
         'url': URL,
         'is_filter': true,
         'height': 'default',
+        'search_placeholder': '搜索案号、标题、标签、发明人',
         'highlightCurrentRow': true, 
         'rowClick': this.handleRowClick,
         'header_btn': [

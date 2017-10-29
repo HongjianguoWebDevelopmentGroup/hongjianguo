@@ -9,11 +9,12 @@
 				<el-select 
 					:value="item.type" 
 					@input="val=>{ handleInput(val, 'type', index) }"
+					no-data-text="请输入文件名，回车确认"
 					multiple
     			filterable
     			allow-create
     			default-first-option
-    			placeholder="请输入文件名，回车确认..."
+    			placeholder=""
 				></el-select>
 			</el-col>
 

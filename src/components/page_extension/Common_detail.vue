@@ -1,9 +1,9 @@
 <template>
-  <app-shrink :title="title" :visible=visible @update:visible="handleVisible">
+  <app-shrink :title="title" :visible=visibleAuth @update:visible="handleVisible">
     <span slot="header" style="float: right">
       <el-button size="small" type="primary" @click="edit">保存</el-button>
     </span>
-    <div  v-loading="detailLoading && visible" :element-loading-text="config.loadingText" :style="divStyle">
+    <div  v-loading="detailLoading && visibleAuth" :element-loading-text="config.loadingText" :style="divStyle">
       <el-tabs v-model="activeName">
         <el-tab-pane label="基本信息" name="base">
     			<detail-patent page-type="edit" v-if="type == 'patent'" @editSuccess="editSuccess" ref="patent"></detail-patent>
@@ -43,9 +43,11 @@ import { mapActions } from 'vuex'
 const config = [
 	['patent', {
 		loadingText: '加载专利信息中...',
+    auth: '/patent/detail_panel',
 	}],
 	['copyright', {
 		loadingText: '加载版权信息中...',
+    auth: '/copyright/detail_panel'
 	}]
 ];
 const map = new Map(config);
@@ -70,7 +72,8 @@ export default {
   computed: {
     ...mapGetters([
       'shrinkHeight',
-      'detailLoading'
+      'detailLoading',
+      'menusMap',
     ]),
   	config () {
   		const config = map.get(this.type);
@@ -83,6 +86,14 @@ export default {
       }
 
       return s;
+    },
+    visibleAuth () {
+
+      if( this.menusMap && !this.menusMap.get(this.config.auth) ) {
+        return this.visible;
+      }
+
+      return false;
     }
   },
   methods: {
