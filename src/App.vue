@@ -234,8 +234,8 @@ export default {
     const success2 = _=>{
       this.axiosGet({url, success, error, catchFunc});
     }
-    this.axiosGet({url, success, error, catchFunc});
-    // this.axiosPost({url: '/api/login', success: success2, data: {username: 'admin', password: 'Z9jgM6FhdKWEqbbpJePv/6qeTO/Yk2b6lx7zF4tiBncRubwf0fz93hkqGXCiWvqXCDIq7x+kAH3TK5zhjDZ53jgt1Gx1vvBPHn3ga7HTqPrnc+VhhuVGeTefHShJBx32rnbhL6LbEqCAMGqtQXaovCtuJGY6uWYAPfecAOGMuadnxTigTTBwKtW2oVP4J/EwAroYKuy4MK4Pd7YGtFoJAhlpKVOponsgsYQ8EKGOSVxcZgcgnOw8LhPy28N+xoFCh0OBkMyjM80Ybjq+H8BO6CacnDzQReZL5wQZqBdTtW7CUBi6S4+JWDPBahqNgz7jD73UhEIeG0ivFLEdCWtlVw=='}});
+    // this.axiosGet({url, success, error, catchFunc});
+    this.axiosPost({url: '/api/login', success: success2, data: {username: 'admin', password: 'Z9jgM6FhdKWEqbbpJePv/6qeTO/Yk2b6lx7zF4tiBncRubwf0fz93hkqGXCiWvqXCDIq7x+kAH3TK5zhjDZ53jgt1Gx1vvBPHn3ga7HTqPrnc+VhhuVGeTefHShJBx32rnbhL6LbEqCAMGqtQXaovCtuJGY6uWYAPfecAOGMuadnxTigTTBwKtW2oVP4J/EwAroYKuy4MK4Pd7YGtFoJAhlpKVOponsgsYQ8EKGOSVxcZgcgnOw8LhPy28N+xoFCh0OBkMyjM80Ybjq+H8BO6CacnDzQReZL5wQZqBdTtW7CUBi6S4+JWDPBahqNgz7jD73UhEIeG0ivFLEdCWtlVw=='}});
   },
   beforeCreate () {
     const refreshWindow =  _=> {
@@ -546,6 +546,29 @@ nav {
   .input-no-radius input {
     border-radius: 0px;
   }
+  .el-form-item__content {
+    line-height: 36px;
+    position: relative;
+    font-size: 14px;
+  }
+  .el-breadcrumb:after, .el-breadcrumb:before, .el-button-group:after, .el-button-group:before, .el-form-item:after, .el-form-item:before, .el-form-item__content:after, .el-form-item__content:before {
+    display: table;
+    content: "";
+  }
+  .el-upload-list {
+    padding: 0;
+    list-style: none;
+    display: block;
+    margin-bottom: 40px;
+  }
+  .el-upload {
+    display: inline-block;
+    text-align: center;
+    cursor: pointer;
+    position: absolute;
+    bottom: 4px;
+    left: 0px;
+  }
 }
 .el-tooltip__popper {
   max-width: 500px;
@@ -563,22 +586,5 @@ nav {
   line-height: 1.4;
   word-wrap:break-word;
 }
-  .el-form-item__content {
-    line-height: 36px;
-    position: relative;
-    font-size: 14px;
-  }
-  .el-upload-list {
-    padding: 0;
-    list-style: none;
-    display: block;
-    margin-bottom: 40px;
-  }
-  .el-upload {
-    display: inline-block;
-    text-align: center;
-    cursor: pointer;
-    position: absolute;
-    bottom: 4px;
-  }
+  
 </style>
