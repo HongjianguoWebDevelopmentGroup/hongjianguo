@@ -1,5 +1,5 @@
 <template>
-	<div class="main">
+	<div class="main" id="expiring">
 	<div class="left">
 		<div style="padding-left: 2px;" class="left-tree-header">
 			<!-- <span>期限管控</span> -->
@@ -27,6 +27,7 @@
 			highlight-current
 		  	@current-change="handleCurrentChange"
 			:style="`font-size: 12px; height:${innerHeight - 98}px; overflow-y: auto; overflow-x: hidden;`"
+
 		>
 		</el-tree>
 	</div>
@@ -111,14 +112,14 @@ export default {
 			treeData: [],
 			currentRow: '',
 			currentNode: '',
-			day: -10,
+			day: 2,
 			date: 'due_time',
 			days: [
+				{label: '2天内到期', value: 2},
 				{label: '已过期10天及以上', value: -10},
 				{label: '已过期6-10天', value: -6},
 				{label: '已过期3-5天', value: -3},
 				{label: '已过期1-2天', value: -1},
-				{label: '2天内到期', value: 2},
 				{label: '5天内到期', value: 5},
 				{label: '10天内到期', value: 10},
 			],
@@ -214,3 +215,18 @@ export default {
 
 }
 </script>
+<style>
+	#expiring .el-tree-node__expand-icon {
+    cursor: pointer;
+    width: 0;
+    height: 0;
+     margin-left: 0px; 
+    border: 6px solid transparent;
+    border-right-width: 0;
+    border-left-color: #97a8be;
+    border-left-width: 7px;
+    -ms-transform: rotate(0);
+    transform: rotate(0);
+    transition: transform .3s ease-in-out;
+}
+</style>
