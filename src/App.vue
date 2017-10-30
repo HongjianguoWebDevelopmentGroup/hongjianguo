@@ -563,4 +563,22 @@ nav {
   line-height: 1.4;
   word-wrap:break-word;
 }
+  .el-form-item__content {
+    line-height: 36px;
+    position: relative;
+    font-size: 14px;
+  }
+  .el-upload-list {
+    padding: 0;
+    list-style: none;
+    display: block;
+    margin-bottom: 40px;
+  }
+  .el-upload {
+    display: inline-block;
+    text-align: center;
+    cursor: pointer;
+    position: absolute;
+    bottom: 4px;
+  }
 </style>
