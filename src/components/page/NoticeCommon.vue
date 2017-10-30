@@ -62,7 +62,7 @@ export default {
 						width: '150',
 						btns: [
 							{ type: 'view', btn_type: 'text', click: ({viewUrl})=>{window.open(viewUrl)} },
-							{ type: 'download', btn_type: 'text', click: ({downloadUrl})=>{window.location.href=downloadUrl} },
+							{ type: 'download', btn_type: 'text', click: ({downloadUrl})=>{window.open(downloadUrl)} },
 						],
 					}
 				],

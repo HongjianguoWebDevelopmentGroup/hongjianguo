@@ -68,12 +68,12 @@
       <el-input type="textarea" v-model="form.remark"></el-input>
     </el-form-item>
     <el-form-item prop="attachments" label="附件" v-if="fields.attachments && !hide_r_a">
-      <upload v-model="form.attachments" :file-list="attachments">
-        <ul v-if="data.description && data.description.length != 0" style="margin: 0; padding: 0;">
-          <li v-for="(item, index) in data.description" :key="index">{{ item }}</li>
-        </ul>
+      <upload v-model="form.attachments" :file-list="attachments"> 
       </upload>
     </el-form-item>
+     <ul v-if="data.description && data.description.length != 0" style="margin-left:115px;padding: 0;margin-top:-10px; font-size:14px;color:#bbb;">
+          <li v-for="(item, index) in data.description" :key="index">{{ item }}</li>
+        </ul>
     <el-form-item prop="rank" label="评分" v-if="fields.rank">
       <el-rate 
         v-model="form.rank" 
