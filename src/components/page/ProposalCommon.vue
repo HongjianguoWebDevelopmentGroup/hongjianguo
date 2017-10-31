@@ -109,8 +109,10 @@ export default {
       this.id = data.proposal_id;
       this.refreshUser();
     },
-    save ( callback=_=>{this.$message({message: '保存成功', type: 'success'});}, required=false ) {
+    save ( callback=_=>{this.$message({message: '保存成功', type: 'success'});}, required=false, showWarning=true ) {
       
+      if(!this.$refs.form) return;
+
       if(this.pageType == 'add' && !this.formData.proposer) {
         this.formData.proposer = this.userid;
       }
@@ -150,7 +152,7 @@ export default {
             
             //新建提案后更改当前的页面状态
             if(this.pageType == 'add') {
-              this.handleAddSuccess(data.id);
+              this.handleAddSuccess(_);
             }
 
             callback(_);
@@ -160,7 +162,9 @@ export default {
           const complete = _=>{ this.btn_disabled = false };
           flag ? this.$axiosPost({url, data, success, complete}) : this.$axiosPut({url, data, success, complete});
         }else {
-          this.$message({message: '请正确填写提案字段', type: 'warning'});
+          if(showWarning) {
+            this.$message({message: '请正确填写提案字段', type: 'warning'});  
+          }
         }
       });         
     },
@@ -245,6 +249,7 @@ export default {
         products: [],
         identity: '',
       },
+      timeInterval: '',
       attachments: [],
       create_time: '',
       update_time: '',
@@ -310,22 +315,26 @@ export default {
 
     //这里开一个30秒的线程用于自动保存已有提案
     const s = _=>{
-      //非编辑状态下,不发送
-      if( this.formData.title == '') return;
+      
+      if( this.btn_disabled && this.formData.title == '') return;
+      this.save(_=>{}, false, false);
       //验证未通过,不发送
-      this.$refs.form.validate(valid=>{
-        if(valid) {
-          const data = Object.assign({}, this.formData, {temp: 1});
-          if(this.pageType == 'edit') {
-            this.$axiosPut({ url: `${URL}/${this.id}`, data });
-          }else if(this.pageType == 'add') {
-            this.$axiosPost({ url: URL, data, success: this.handleAddSuccess });
-          }
-        }
-      })
+      // this.$refs.form.validate(valid=>{
+      //   if(valid) {
+      //     const data = Object.assign({}, this.formData, {temp: 1});
+      //     if(this.pageType == 'edit') {
+      //       this.$axiosPut({ url: `${URL}/${this.id}`, data });
+      //     }else if(this.pageType == 'add') {
+      //       this.$axiosPost({ url: URL, data, success: this.handleAddSuccess });
+      //     }
+      //   }
+      // })
     }
-    window.setInterval(s, 30000);
+    this.timeInterval = window.setInterval(s, 30000);
 
+  },
+  destroyed () {
+    window.clearInterval(this.timeInterval);
   },
   computed: {
     ...mapGetters([
