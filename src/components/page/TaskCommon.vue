@@ -336,6 +336,7 @@ export default {
         const success = _=>{ 
           this.$message({type: 'success', message: '操作成功'});
           this.update();
+          this.refreshUser();
         };
 
         this.axiosPut({ url, data, success });

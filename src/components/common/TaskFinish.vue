@@ -64,12 +64,12 @@
     <el-form-item prop="type" label="专利类型" v-if="fields.type" :rules="{type: 'number', required: true, message: '专利类型不能为空', trigger: 'blur'}">
       <static-select type="patent_type" v-model="form.type" key="patent_type"></static-select>
     </el-form-item>
-    <el-form-item prop="remark" label="任务备注" v-if="fields.remark && !hide_r_a">
-      <el-input type="textarea" v-model="form.remark"></el-input>
-    </el-form-item>
     <el-form-item prop="attachments" label="附件" v-if="fields.attachments && !hide_r_a">
       <upload v-model="form.attachments" :file-list="attachments"> 
       </upload>
+    </el-form-item>
+    <el-form-item prop="remark" label="任务备注" v-if="fields.remark && !hide_r_a">
+      <el-input type="textarea" v-model="form.remark"></el-input>
     </el-form-item>
      <ul v-if="data.description && data.description.length != 0" style="margin-left:115px;padding: 0;margin-top:-10px; font-size:14px;color:#bbb;">
           <li v-for="(item, index) in data.description" :key="index">{{ item }}</li>
@@ -240,6 +240,12 @@ export default {
                 this.form.person_in_charge = person_in_charge['id'];
               }else {
                 this.form.person_in_charge = person_in_charge;
+              }
+              //附件同步
+              const atta = d.attachments; 
+              if(this.attachments && atta && atta.length != 0 ) {
+                this.form.attachments = atta.map(_=>_.id);
+                this.attachments = atta;
               }
 
               this.$nextTick(_=>{

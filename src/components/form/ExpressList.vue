@@ -6,16 +6,7 @@
 			</el-col>
 			
 			<el-col :span="10" style="padding: 0 5px;">
-				<el-select 
-					:value="item.type" 
-					@input="val=>{ handleInput(val, 'type', index) }"
-					no-data-text="请输入文件名，回车确认"
-					multiple
-    			filterable
-    			allow-create
-    			default-first-option
-    			placeholder=""
-				></el-select>
+				<el-input :value="item.type.join(',')" placeholder="使用逗号分隔" @input="val=>{ handleInput(val, 'type', index, handleType) }"></el-input>
 			</el-col>
 
 			<el-col :span="4" style="padding-left: 5px; ">
@@ -35,6 +26,15 @@ import RemoteSelect from '@/components/form/RemoteSelect'
 export default {
   name: 'expresssList',
   mixins: [ Multiline ],
+  methods: {
+  	handleType (val) {
+  		if(!val) {
+  			return [];	
+  		}
+
+  		return val.split(',');  		
+  	}
+  },
   watch: {
 		value (val) {
 			if(val[0] && val[0]['name']) {

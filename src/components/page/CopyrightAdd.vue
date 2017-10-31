@@ -71,6 +71,8 @@ import Upload from '@/components/form/Upload'
 import RemoteSelect from '@/components/form/RemoteSelect'
 import StaticSelect from '@/components/form/StaticSelect'
 
+import {mapActions} from 'vuex'
+
 const URL = '/api/copyrights'
 
 export default {
@@ -126,6 +128,9 @@ export default {
     }
   },
   methods: {
+  	...mapActions([
+  		'refreshUser',
+  	]),
   	add () {
   		if(this.checkForm()) return;
 
@@ -133,7 +138,11 @@ export default {
   		const url = URL;
   		const data = this.$tool.shallowCopy(this.form, {'date': true});
   		data.ipr = this.user ? this.user.id : '';
-  		const success = _=>{ this.$router.push('/copyright/list') };
+  		const success = _=>{ 
+  			this.$message({message: '添加版权成功', type: 'success'});
+  			this.refreshUser();
+  			this.$router.push('/copyright/list') 
+  		};
   		const complete = _=>{ this.btn_disabled = false };
 
   		this.axiosPost({url, data, success, complete});

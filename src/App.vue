@@ -42,8 +42,6 @@
             <el-button size="mini" icon="warning" type="primary" @click="$router.push('/task/pending')" title="待办任务"></el-button>
           </el-badge>
           
-        
-
     </nav>
       <span class="nav-left-btn" @click="navToggle"><span class="nav-left-btn-arrow el-icon-arrow-left"></span></span>
       <div class="nav-left" :style="`height: ${innerHeight}px`">
@@ -447,7 +445,7 @@ nav {
   .el-tree-node__expand-icon.expanded {
     -ms-transform: rotate(90deg);
     transform: rotate(90deg);
-}
+  }
   .el-tree-node__expand-icon {
     cursor: pointer;
     height: 0;
@@ -457,18 +455,18 @@ nav {
     border-left-color: #97a8be;
     border-left-width: 12px;
     transition: transform .3s ease-in-out;
-}
-.el-tree-node__content>.el-checkbox, .el-tree-node__content>.el-tree-node__expand-icon {
+  }
+  .el-tree-node__content>.el-checkbox, .el-tree-node__content>.el-tree-node__expand-icon {
     margin-right: 10px;
-}
-.el-tree-node__content {
+  }
+  .el-tree-node__content {
     line-height: 36px;
     height: 36px;
-}
-.el-tree-node__expand-icon.is-leaf {
+  }
+  .el-tree-node__expand-icon.is-leaf {
     border-color: transparent;
     cursor: default;
-}
+  }
   .dialog-mini .el-dialog {
     width: 300px;
   }

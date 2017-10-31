@@ -106,7 +106,6 @@ export default {
 				'highlightCurrentRow': true, 
         'rowClick': this.handleRowClick,
 
-
 			},
 			tableData: [],
 			treeData: [],

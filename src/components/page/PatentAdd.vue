@@ -38,6 +38,7 @@ import Classification from '@/components/page_extension/PatentAdd_classification
 import Agent from '@/components/page_extension/PatentAdd_agent'
 import Case from '@/components/page_extension/PatentAdd_case'
 import Other from '@/components/page_extension/PatentAdd_other'
+import {mapActions} from 'vuex'
 export default {
   name: 'patentAdd',
   data () {
@@ -51,6 +52,9 @@ export default {
   props: ['pageType'],
   mixins: [ AxiosMixins ],
   methods: {
+    ...mapActions([
+      'refreshUser',
+    ]),
     add () {
       
       this.formCheck(_=>{
@@ -58,6 +62,7 @@ export default {
         const data = Object.assign( ...getKeys.map(_=>this.$refs[_].submitForm()) );
         const success = _=>{ 
           this.$message({message: '添加专利成功', type: 'success'});
+          this.refreshUser();
           this.$router.push('/patent/list'); 
         };
         const complete = _=>{

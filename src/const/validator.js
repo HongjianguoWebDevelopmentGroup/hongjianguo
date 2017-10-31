@@ -1,5 +1,4 @@
-export function checkInventors (a, b, c, required=true) {
-  console.log(a,b,c);
+export function checkInventors (a, b, c, required=false) {
 	let msg = '';
   let number = 0;
   const reg = /^[1-9][0-9]*$/;

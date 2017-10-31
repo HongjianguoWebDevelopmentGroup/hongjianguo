@@ -6,74 +6,56 @@
             
             <el-form-item label="提案人">{{ proposer_name }}</el-form-item>
             
-            
-            <el-form-item label="创建时间" v-if="pageType == 'detail'">
-              {{ create_time }}
-            </el-form-item>
-            <el-form-item label="更新时间" v-if="pageType == 'detail'">
-              {{ update_time }}
-            </el-form-item>
             <el-form-item label="案件名称" prop="title">
-              <span v-if="pageType == 'detail'" class="form-detail-item">{{ formData.title }}</span>
-              <el-input v-model="formData.title" placeholder="请输入案件名称" v-else>
-              </el-input>
-            </el-form-item>
-            <el-form-item label="提案简介" prop="abstract">
-              <span v-if="pageType == 'detail'" class="form-detail-item">{{ formData.abstract }}</span>
-              <el-input type="textarea" v-model="formData.abstract" placeholder="请输入案件摘要" v-else></el-input>
-            </el-form-item>
-            
-            <el-form-item label="发明人" prop="inventors">
-              <inventors v-model="formData.inventors" :disabled="pageType == 'detail'"></inventors>
+              <el-input v-model="formData.title" placeholder="请输入案件名称"></el-input>
             </el-form-item>
 
-            <el-form-item label="证件号码(第一发明人)" prop="identity">
+            <el-form-item label="提案简介" prop="abstract" class="is-required">
+              
+              <el-input type="textarea" v-model="formData.abstract" placeholder="请输入案件摘要"></el-input>
+            </el-form-item>
+            
+            <el-form-item label="发明人" prop="inventors" class="is-required">
+              <inventors v-model="formData.inventors"></inventors>
+            </el-form-item>
+
+            <el-form-item label="证件号码(第一发明人)" prop="identity" class="is-required">
               <el-input v-model="formData.identity" placeholder="请填写第一发明人证件号码"></el-input>
             </el-form-item>
 
             <el-form-item label="技术分类" prop="classification">
-              <classification v-model="formData.classification" :disabled="pageType == 'detail'"></classification>
+              <classification v-model="formData.classification"></classification>
             </el-form-item>
             <el-form-item label="产品名称" prop="products">
-              <product v-model="formData.products" multiple :disabled="pageType == 'detail'"></product>
+              <product v-model="formData.products" multiple></product>
             </el-form-item>
 						<el-form-item label="标签" prop="tags">
-							<static-select type='tag' v-model="formData.tags" :disabled="pageType == 'detail'" multiple></static-select>
+							<static-select type='tag' v-model="formData.tags" multiple></static-select>
 						</el-form-item>
-            <el-form-item label="备注" prop="remark">
-              <el-input type="textarea" v-model="formData.remark" :disabled="pageType == 'detail'"></el-input>
-            </el-form-item>
-						<el-form-item label="附件" prop="attachments" v-if="pageType != 'detail'">
+						<el-form-item label="附件" prop="attachments" class="is-required">
                <upload v-model="formData.attachments" :file-list="attachments" ref="upload"></upload>
 						</el-form-item>
-            <el-form-item label="附件" v-else>
-              <table-component :data="attachmentsData" :tableOption="tableOption"></table-component>
+            <el-form-item label="备注" prop="remark">
+              <el-input type="textarea" v-model="formData.remark"></el-input>
             </el-form-item>
-            <el-form-item label="相关专利" v-if="pageType == 'detail'">
-              <table-component :data="patent" :tableOption="patentOption"></table-component>
-            </el-form-item>
-						<el-form-item  v-if="pageType != 'detail'">
+
+						<el-form-item>
 						   <el-button @click="submit" type="primary" :disabled="btn_disabled">提交</el-button>
                <el-button @click="save()" :disabled="btn_disabled">暂存</el-button>
 						   <el-button @click="cancel" :disabled="btn_disabled">取消</el-button>
 						</el-form-item>
+
 			  	</el-form>
 		  	</el-col>
 		  	<el-col :span="6" style="padding-left: 40px;">
-          <template v-if="pageType=='detail'">
-  					<h3 style="margin-top: 0;">提案流程</h3>
-  					<el-steps :space="100" direction="vertical">
-              <el-step v-for="(item, index) in tasks" :key="item.id" :icon="item.status ? '' : 'loading'" :status="item.status ? 'success' : 'finish'" :title="item.node_name" :description="`承办人：${item.person_in_charge_name}；开始时间：${item.start_time}；完成时间：${item.end_time}；备注：${item.remark}`"></el-step>
-  					</el-steps>
-          </template>
-          <template v-else>
+
             <h3 style="margin-top: 40px;">提案模板</h3>
             <ul class="proposal-model">
               <li><i class="iconfont icon-docx"></i><a href="/files/204 ">交底书模板.doc</a></li>
               <!-- <li><i class="iconfont icon-docx"></i><a href="javascript:void(0)">技术交底书范例(软件类).doc</a></li>
               <li><i class="iconfont icon-ppt"></i><a href="javascript:void(0)">15分钟如何写一个专利底稿.pptx</a></li> -->
             </ul>
-          </template>
+
 		  	</el-col>
 	  	</el-row>
       <el-dialog title="提交任务" :visible.sync="dialogVisible">
@@ -90,7 +72,6 @@
 </template>
 
 <script>
-import axiosMixins from '@/mixins/axios-mixins'
 import TableComponent from '@/components/common/TableComponent'
 import PopTree from '@/components/common/PopTree'
 import PcSubmit from '@/components/page_extension/ProposalCommon_submit'
@@ -113,12 +94,11 @@ const URL = '/api/proposals';
 //https://jsonplaceholder.typicode.com/posts/
 export default {
   name: 'proposalCommon',
-  mixins: [axiosMixins],
   methods: {
     handleSubmitSuccess () {
       this.$router.push('/proposal/list');
     },
-    save ( callback=_=>{this.$message({message: '保存成功', type: 'success'}); this.$router.push('/proposal/list')} ) {
+    save ( callback=_=>{this.$message({message: '保存成功', type: 'success'});}, required=false ) {
       
       if(this.pageType == 'add' && !this.formData.proposer) {
         this.formData.proposer = this.userid;
@@ -127,16 +107,48 @@ export default {
       this.$refs.form.validate(valid=>{
         
         if(valid) {
+
+          //是否关闭后台完整性验证
+          let temp = {temp: 1};
+
+          //在调用提交接口前,进行字段完整性检测
+          if(required) {
+            if(this.formData.abstract == '') {
+              this.$message({message: '请填写提案简介', type: 'warning'});
+              return;
+            }
+            if(this.formData.inventors.length == 0) {
+              this.$message({message: '请填写发明人', type: 'warning'});
+              return;
+            }
+            if(this.formData.identity == 0) {
+              this.$message({message: '请填写第一发明人的证件号码', type: 'warning'});
+              return;
+            }
+            if(this.formData.attachments.length == 0) {
+              this.$message({message: '请添加附件', type: 'warning'});
+              return;
+            }
+            temp = {};
+          }
+
           this.btn_disabled = true;
           const flag = this.pageType == 'add';
           const url = flag ? URL : `${URL}/${this.id}`;
           const success = _=>{
-            // this.refreshUser();
+            
+            //新建提案后更改当前的页面状态
+            if(this.pageType != 'edit') {
+              this.pageType = 'edit';
+              this.id = _.proposal_id;
+              this.refreshUser();  
+            }
             callback(_);
           };
-          const data = this.formData;
+
+          const data = Object.assign({}, this.formData, temp);
           const complete = _=>{ this.btn_disabled = false };
-          flag ? this.axiosPost({url, data, success, complete}) : this.axiosPut({url, data, success, complete});
+          flag ? this.$axiosPost({url, data, success, complete}) : this.$axiosPut({url, data, success, complete});
         }else {
           this.$message({message: '请正确填写提案字段', type: 'warning'});
         }
@@ -144,10 +156,6 @@ export default {
     },
     submit () {      
       this.save(d=>{
-          if(this.pageType != 'edit') {
-            this.pageType = 'edit';
-            this.id = d.proposal_id;  
-          }
           
           this.update_id = d.task_id;
           this.dialogVisible = true;//触发组件内部的created和mounted函数,因为id不会变化,理论上只会触发一次任务完成面板请求
@@ -160,7 +168,7 @@ export default {
             this.$refs.task.proposalFinish({remark, attachments});  
           });
 
-      });        
+      },true);        
     },
     cancel () {
       this.$router.push('/proposal/list');
@@ -176,7 +184,7 @@ export default {
     refreshCommon () {
       const t = this.pageType;
       
-      if( t == 'detail' || t== 'edit' ) {
+      if( t== 'edit' ) {
         const id = this.$route.query.id;
         this.id = id;
         
@@ -189,14 +197,6 @@ export default {
           data.inventors = inventors.map((d)=>{return {id: d.id, share: d.share, name: d.name}});
           data.proposer = proposer.id;
           this.proposer_name = proposer.name;
-
-          if(t == 'detail') {
-            this.create_time = data.create_time;
-            this.update_time = data.update_time;
-            this.tasks = data.tasks;
-            this.patent = data.patents;
-            this.status = data.status;
-          }
           
           if(classification) {
             data.classification = classification.id;
@@ -249,17 +249,15 @@ export default {
       proposer_name: '',
       formRules: {
       	'title': [
-      		{required: true, message: '案件名不能为空',trigger: 'blur'},
+          {required: true, message: '案件名称不能为空'},
           {pattern: /^[^~!@#$%^&*]+$/, message: '案件名不能包含非法字符', trigger: 'blur'},
           {max: 150, message: '长度不能超过150个字符', trigger: 'blur' }
       	],
         'abstract': [
-          {required: true, message: '案件摘要不能为空', trigger: 'blur'},
           {max: 1000, message: '长度不能超过1000个字符', trigger: 'blur' }  
         ],
         'inventors': { 
           type: 'array',
-          required: true,
           trigger: 'change', 
           validator: (a,b,c)=>{
 
@@ -271,8 +269,7 @@ export default {
 
           },
         },
-        'identity': {required: true, message: '第一发明人证件号码不能为空'},
-        'attachments': {type: 'array', required: true, message: '附件不能为空', trigger: 'change'}     	
+        'identity': {pattern: /^[0-9]*$/, message: '第一发明人证件号码只能为数字'},   	
       },
       tableOption: {
         'is_search': false,
@@ -289,22 +286,6 @@ export default {
               {type: 'view', click: ({viewUrl})=>{window.open(viewUrl)}},
               {type: 'download', click: ({downloadUrl})=>{window.location.href = downloadUrl}},
             ],
-          }
-        ]
-      },
-      patentOption: {
-        'is_search': false,
-        'is_pagination': false,
-        'is_border': false,
-        'columns': [
-          { type: 'text', label: '案号', prop: 'serial' },
-          { type: 'text', label: '标题', prop: 'title' },
-          { type: 'text', label: '当前节点', prop: 'progress_name' },
-          { 
-            type: 'action',
-            btns: [
-              {type: 'detail', click: ({id})=>{this.$router.push(`/patent/list/detail/${id}`)}}
-            ]  
           }
         ]
       },
@@ -325,6 +306,19 @@ export default {
   },
   mounted () {
     this.refreshCommon();
+    //这里开一个30秒的线程用于自动保存已有提案
+    const s = _=>{
+      //非编辑状态下,不发送
+      if(this.pageType != 'edit' || this.formData.title == '') return;
+      //验证未通过,不发送
+      this.$refs.form.validate(valid=>{
+        if(valid) {
+          this.$axiosPut({ url: `${URL}/${this.id}`, data: Object.assign({}, this.formData, {temp: 1}) });
+        }
+      })
+    }
+    window.setInterval(s, 30000);
+
   },
   computed: {
     ...mapGetters([

@@ -7,9 +7,9 @@ export default {
     }
 	},
 	methods: {
-		handleInput (val, key, index) {
+		handleInput (val, key, index, func) {
   		const arr = this.$tool.deepCopy(this.value);
-  		arr[index][key] = val;
+  		arr[index][key] = func ? func(val) : val;
   		this.$emit('input', arr);
   	},
   	dataDelete (index) {
@@ -19,7 +19,6 @@ export default {
   	},
   	add (obj) {
   		const arr = this.$tool.deepCopy(this.value);
-      console.log(arr);
   		arr.push(obj);
   		this.$emit('input', arr);
   	}

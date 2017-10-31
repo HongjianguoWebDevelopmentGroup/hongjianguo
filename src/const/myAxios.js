@@ -38,7 +38,7 @@ function axiosDelete({ url='', data={}, success=()=>{}, error=d=>{this.$alert(d.
     .catch(catchFunc);
 }
 
-function axiosPost ({ url='', data={}, success=()=>{}, error=(d)=>{this.$alert(d.info)}, catchFunc=(err)=>{console.log(err); this.$message({message: '网络错误', type: 'error'})}, complete=()=>{} }) {
+function axiosPost ({ url='', data={}, success=()=>{}, error=(d)=>{this.$message({message: d.info, type: 'warning'})}, catchFunc=(err)=>{console.log(err); this.$message({message: '网络错误', type: 'error'})}, complete=()=>{} }) {
   url = status ? url.replace(/\/api/, '') : url;
   
   const res = this.$axios.post(url, data);
@@ -54,7 +54,7 @@ function axiosPost ({ url='', data={}, success=()=>{}, error=(d)=>{this.$alert(d
   return res;
 }
 
-function axiosPut ({ url='', data={}, success=()=>{}, error=(d)=>{this.$alert(d.info)}, catchFunc=(err)=>{console.log(err); this.$message({message: '网络错误', type: 'error'})}, complete=()=>{} }) {
+function axiosPut ({ url='', data={}, success=()=>{}, error=(d)=>{this.$message({message: d.info, type: 'warning'})}, catchFunc=(err)=>{console.log(err); this.$message({message: '网络错误', type: 'error'})}, complete=()=>{} }) {
   url = status ? url.replace(/\/api/, '') : url;
   
   const res = this.$axios.put(url, data);
