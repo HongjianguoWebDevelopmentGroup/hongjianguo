@@ -31,7 +31,7 @@ export default {
 		  	'columns': [
           { type: 'selection' },
 		  		{ type: 'text', label: '发明人姓名', prop: 'name', sortable: true, width: '200' },
-		  		{ type: 'text', label: '证件号码', prop: 'identity', sortable: true, width: '400' },
+		  		{ type: 'text', label: '证件号码', prop: 'identity', sortable: true, width: '300' },
 		  		{ type: 'text', label: '地区', prop: 'citizenship', sortable: true, width: '200' },
 		  		{ type: 'text', label: '手机', prop: 'mobile', sortable: true, width: '200' },
 		  		{ type: 'text', label: '邮箱', prop: 'email', sortable: true, width: '200' },

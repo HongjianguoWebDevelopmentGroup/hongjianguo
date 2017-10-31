@@ -232,7 +232,7 @@ export default {
           { type: 'text', label: '案号', prop: 'serial', sortable: true, width: '200' },
           { type: 'text', label: '提案标题', prop: 'title', sortable: true, width: '300' },
           { type: 'text', label: '当前节点', prop: 'flow_node', sortable: true, width: '300' },
-          { type: 'text', label: '提案简介', prop: 'abstract', sortable: true, width: '400' },
+          { type: 'text', label: '提案简介', prop: 'abstract', sortable: true, width: '300' },
           { type: 'text', label: '创建时间', prop: 'create_time', sortable: true, width: '250' },
           { type: 'text', label: '部门', prop: 'branch', render_simple: 'name', sortable: true, width: '200' },
           { type: 'text', label: '技术分类', prop: 'classification', render_simple: 'name', sortable: true, width: '200' },
@@ -240,7 +240,7 @@ export default {
           { type: 'text', label: '提案人', prop: 'proposer', render_simple: 'name', sortable: true, width: '200' },
           { type: 'array', label: '发明人', prop: 'inventors', render: _=>_.map(_=>`${_.name}：${_.share}%；`), overflow: true, width: '200' },
           { type: 'array', label: '标签', prop: 'tags', width: '200' },
-          { type: 'text', label: '备注', prop: 'remark', width: '400' },
+          { type: 'text', label: '备注', prop: 'remark', width: '280' },
           {
             type: 'action',
             label: '操作', 
