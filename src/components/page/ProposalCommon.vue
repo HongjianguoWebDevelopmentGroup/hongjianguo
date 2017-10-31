@@ -51,7 +51,9 @@
 
             <h3 style="margin-top: 40px;">提案模板</h3>
             <ul class="proposal-model">
-              <li><i class="iconfont icon-docx"></i><a href="/files/204 ">交底书模板.doc</a></li>
+              <li><i class="iconfont icon-docx"></i><a href="/files/1">交底书模板-结构.doc</a></li>
+              <li><i class="iconfont icon-docx"></i><a href="/files/2">交底书模板-硬件.doc</a></li>
+              <li><i class="iconfont icon-docx"></i><a href="/files/3">交底书-软件类.doc</a></li>
               <!-- <li><i class="iconfont icon-docx"></i><a href="javascript:void(0)">技术交底书范例(软件类).doc</a></li>
               <li><i class="iconfont icon-ppt"></i><a href="javascript:void(0)">15分钟如何写一个专利底稿.pptx</a></li> -->
             </ul>
@@ -85,6 +87,7 @@ import TaskFinish from '@/components/common/TaskFinish'
 import StaticSelect from '@/components/form/StaticSelect'
 import { checkInventors } from '@/const/validator.js'
 import { mapGetters } from 'vuex'
+import { mapActions } from 'vuex'
 
 
 const typeMap = new Map([['/proposal/add', 'add'], ['/proposal/edit', 'edit'], ['/proposal/detail', 'detail']]);
@@ -95,8 +98,16 @@ const URL = '/api/proposals';
 export default {
   name: 'proposalCommon',
   methods: {
+    ...mapActions([
+      'refreshUser',
+    ]),
     handleSubmitSuccess () {
       this.$router.push('/proposal/list');
+    },
+    handleAddSuccess (data) {
+      this.pageType = 'edit';
+      this.id = data.proposal_id;
+      this.refreshUser();
     },
     save ( callback=_=>{this.$message({message: '保存成功', type: 'success'});}, required=false ) {
       
@@ -138,11 +149,10 @@ export default {
           const success = _=>{
             
             //新建提案后更改当前的页面状态
-            if(this.pageType != 'edit') {
-              this.pageType = 'edit';
-              this.id = _.proposal_id;
-              this.refreshUser();  
+            if(this.pageType == 'add') {
+              this.handleAddSuccess(data.id);
             }
+
             callback(_);
           };
 
@@ -173,14 +183,6 @@ export default {
     cancel () {
       this.$router.push('/proposal/list');
     },
-  	createProposal () {
-  		const d = this;
-  		d.$refs.form.validate((valid)=>{
-        if(valid) {
-          d.$refs.submit.show();
-  			}
-  		});
-  	},
     refreshCommon () {
       const t = this.pageType;
       
@@ -301,19 +303,24 @@ export default {
     }
   },
   created () {
-    this.pageType = typeMap.get(this.$route.path);
-    
+    this.pageType = typeMap.get(this.$route.path);    
   },
   mounted () {
     this.refreshCommon();
+
     //这里开一个30秒的线程用于自动保存已有提案
     const s = _=>{
       //非编辑状态下,不发送
-      if(this.pageType != 'edit' || this.formData.title == '') return;
+      if( this.formData.title == '') return;
       //验证未通过,不发送
       this.$refs.form.validate(valid=>{
         if(valid) {
-          this.$axiosPut({ url: `${URL}/${this.id}`, data: Object.assign({}, this.formData, {temp: 1}) });
+          const data = Object.assign({}, this.formData, {temp: 1});
+          if(this.pageType == 'edit') {
+            this.$axiosPut({ url: `${URL}/${this.id}`, data });
+          }else if(this.pageType == 'add') {
+            this.$axiosPost({ url: URL, data, success: this.handleAddSuccess });
+          }
         }
       })
     }
@@ -325,7 +332,6 @@ export default {
       'username',
       'userid',
       'useridentity',
-      'refreshUser',
     ]),
     tagOptions () {
       return this.$store.getters.tagOptions;

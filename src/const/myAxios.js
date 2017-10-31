@@ -6,6 +6,8 @@ export default {
     Vue.prototype.$axiosPut = axiosPut;
 	}
 }
+const status = false;
+
 function axiosGet ({url='', data={}, success=()=>{}, error=(d)=>{this.$alert(d.info)}, catchFunc=(err)=>{console.log(err); this.$message({message: '网络错误', type: 'error'})}, complete=_=>{} }) {
   url = status ? url.replace(/\/api/, '') : url;
   
