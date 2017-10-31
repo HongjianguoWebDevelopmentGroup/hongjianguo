@@ -98,7 +98,7 @@ export default {
             label: '详情',
             btns: [
               {type: 'view', click: ({viewUrl})=>{window.open(viewUrl)}},
-              {type: 'download', click: ({downloadUrl})=>{window.location.href = downloadUrl}},
+              {type: 'download', click: ({downloadUrl})=>{window.open(downloadUrl)}},
             ],
           }
         ]

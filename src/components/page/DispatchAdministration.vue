@@ -37,7 +37,8 @@ export default {
           },
           { type: 'text', label: '发文描述', prop: 'description' },
           { 
-		  			type: 'action', 
+		  			type: 'action',
+            width: '200', 
 		  			btns: [
 		  				{ type: 'edit', click: this.editPop },
 		  				{ type: 'delete', click: this.deleteSingle },

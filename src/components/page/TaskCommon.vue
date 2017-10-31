@@ -1,5 +1,5 @@
 <template>
-  <div class="main">
+  <div class="main" id="task_common">
     <strainer @query="strainerQuery" @clear="strainerClear"></strainer>
     <table-component :tableOption="tableOption" :data="tableData" @refreshTableData="refreshTableData" :refresh-proxy="refreshProxy" ref="table">
       <el-select v-if="menusMap && !menusMap.get('/tasks/all')" slot="toggle" v-model="task_toggle" style="width: 110px; margin-left: 5px;">
@@ -588,7 +588,14 @@ export default {
 } 
 </script>
 <style>
-
+  #task_common .el-dialog--small  .el-upload--text {
+      display: inline-block;
+      text-align: center;
+      cursor: pointer;
+      position: absolute;
+      left: 0px;
+      bottom: 4px;
+  }
 </style>
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped lang="scss">

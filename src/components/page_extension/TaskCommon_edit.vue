@@ -1,57 +1,58 @@
 <template>  
-	<el-form label-width="100px" :model="form" ref="form">
-    <el-form-item label="关联案件" prop="project_id" v-if="type == 'add'">
-      <remote-select type="project" v-model="form.project_id" ref="project"></remote-select>
-    </el-form-item>
-    <el-form-item label="任务流程" prop="flow_id" v-if="type == 'add' && category != ''">
-      <el-select v-model="form.flow_id" placeholder="请选择任务流程">
-        <el-option
-          v-for="item in flowOptions"
-          :key="item.value"
-          :label="item.label"
-          :value="item.value"
-        >
-        </el-option>
-      </el-select>
-    </el-form-item>
-    <el-form-item label="任务类型" prop="task_def_id" v-if="type == 'add' && category != ''">
-      <el-select v-model="form.task_def_id" placeholder="请选择任务类型">
-        <el-option
-          v-for="item in defOptions"
-          :key="item.value"
-          :label="item.label"
-          :value="item.value"
-        >
-        </el-option>
-      </el-select>
-    </el-form-item>
+  	<el-form label-width="100px" :model="form" ref="form">
+      <el-form-item label="关联案件" prop="project_id" v-if="type == 'add'">
+        <remote-select type="project" v-model="form.project_id" ref="project"></remote-select>
+      </el-form-item>
+      <el-form-item label="任务流程" prop="flow_id" v-if="type == 'add' && category != ''">
+        <el-select v-model="form.flow_id" placeholder="请选择任务流程">
+          <el-option
+            v-for="item in flowOptions"
+            :key="item.value"
+            :label="item.label"
+            :value="item.value"
+          >
+          </el-option>
+        </el-select>
+      </el-form-item>
+      <el-form-item label="任务类型" prop="task_def_id" v-if="type == 'add' && category != ''">
+        <el-select v-model="form.task_def_id" placeholder="请选择任务类型">
+          <el-option
+            v-for="item in defOptions"
+            :key="item.value"
+            :label="item.label"
+            :value="item.value"
+          >
+          </el-option>
+        </el-select>
+      </el-form-item>
 
-		<el-form-item label="承办人" prop="person_in_charge" v-if="type == 'add' && category != ''">
-      <remote-select type="member" v-model="form.person_in_charge"></remote-select>
-		</el-form-item>
-    <el-row> 
-      <el-col :span="12"> 
-        <el-form-item label="承办期限" prop="due_time">
-          <el-date-picker type="date" v-model="form.due_time" placeholder="请选择承办期限"></el-date-picker>
-        </el-form-item>
-      </el-col>
-      <el-col :span="12">
-        <el-form-item label="法限" prop="deadline">
-          <el-date-picker type="date" v-model="form.deadline" placeholder="请选择法限"></el-date-picker>
-        </el-form-item>
-      </el-col>
-    </el-row>
-		<el-form-item label="备注" prop="remark">
-			<el-input type="textarea" placeholder="请填写备注" v-model="form.remark" :rows="1"></el-input>
-		</el-form-item>
-    <el-form-item label="附件" prop="attachments">
-      <upload v-model="form.attachments" :file-list="attachments"></upload>
-    </el-form-item>
-		<el-form-item style="margin-bottom: 0;">
-      <el-button type="primary" @click="add" v-if="type == 'add'" :disabled="btn_disabled">新增</el-button>
-			<el-button type="primary" @click="edit" v-if="type == 'edit'" :disabled="btn_disabled">保存</el-button>
-		</el-form-item>
-	</el-form>  
+  		<el-form-item label="承办人" prop="person_in_charge" v-if="type == 'add' && category != ''">
+        <remote-select type="member" v-model="form.person_in_charge"></remote-select>
+  		</el-form-item>
+
+      <el-row> 
+        <el-col :span="12"> 
+          <el-form-item label="承办期限" prop="due_time">
+            <el-date-picker type="date" v-model="form.due_time" placeholder="请选择承办期限"></el-date-picker>
+          </el-form-item>
+        </el-col>
+        <el-col :span="12">
+          <el-form-item label="法限" prop="deadline">
+            <el-date-picker type="date" v-model="form.deadline" placeholder="请选择法限"></el-date-picker>
+          </el-form-item>
+        </el-col>
+      </el-row>
+  		<el-form-item label="备注" prop="remark">
+  			<el-input type="textarea" placeholder="请填写备注" v-model="form.remark" :rows="1"></el-input>
+  		</el-form-item>
+      <el-form-item label="附件" prop="attachments">
+        <upload v-model="form.attachments" :file-list="attachments"></upload>
+      </el-form-item>
+  		<el-form-item style="margin-bottom: 0;">
+        <el-button type="primary" @click="add" v-if="type == 'add'" :disabled="btn_disabled">新增</el-button>
+  			<el-button type="primary" @click="edit" v-if="type == 'edit'" :disabled="btn_disabled">保存</el-button>
+  		</el-form-item>
+  	</el-form>  
 </template>
 
 <script>
