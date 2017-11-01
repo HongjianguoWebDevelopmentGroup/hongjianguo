@@ -10,7 +10,7 @@ import TableComponent from '@/components/common/TableComponent'
 export default {
   name: 'commonDetailFee',
   data () {
-		return {
+		return {			
 		  option: {
 		  	'is_search': false,
 				'columns': [
