@@ -1,4 +1,5 @@
 .DS_Store
+MOVE.BAT
 node_modules/
 dist/
 debug.log*
