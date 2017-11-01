@@ -86,26 +86,26 @@ export default {
           { type: 'text', label: '专利类型', prop: 'type', render_simple: 'name', sortable: true, is_import: true, width: '142',  },
           { type: 'text', label: '地区', prop: 'area', render_simple: 'name', sortable: true, is_import: true, width: '100' },
           { type: 'text', label: 'IPR', prop: 'ipr', render_simple: 'name', sortable: true, is_import: true, width: '175' },
-          { type: 'text', label: '专利标题', prop: 'title', sortable: true, is_import: true, width: '142' },
+          { type: 'text', label: '专利标题', prop: 'title', sortable: true, is_import: true, width: '160' },
           { type: 'text', label: '当前状态', prop: 'progress', render_simple: 'name', sortable: true, width: '180' },
-          { type: 'text', label: '专利摘要', prop: 'abstract', sortable: true, width: '300'},
-          { type: 'text', label: '申请日', prop: 'apd', sortable: true, is_import: true, width: '263'},
+          { type: 'text', label: '专利摘要', prop: 'abstract', sortable: true, width: '280'},
+          { type: 'text', label: '申请日', prop: 'apd', sortable: true, is_import: true, width: '175'},
           { type: 'text', label: '申请号', prop: 'apn', sortable: true, is_import: true, width: '263'},
-          { type: 'text', label: '公开日', prop: 'public_date', sortable: true, is_import: true, width: '263'},
+          { type: 'text', label: '公开日', prop: 'public_date', sortable: true, is_import: true, width: '175'},
           { type: 'text', label: '公开号', prop: 'public_number', sortable: true, is_import: true, width: '263'},
-          { type: 'text', label: '初审合格日', prop: 'pre_exam_ok_date', sortable: true, width: '263'},
-          { type: 'text', label: '进入实审日', prop: 'sub_exam_start_date', sortable: true, width: '263'},
-          { type: 'text', label: '公告日', prop: 'issue_date', sortable: true, is_import: true, width: '263'},
+          { type: 'text', label: '初审合格日', prop: 'pre_exam_ok_date', sortable: true, width: '175'},
+          { type: 'text', label: '进入实审日', prop: 'sub_exam_start_date', sortable: true, width: '175'},
+          { type: 'text', label: '公告日', prop: 'issue_date', sortable: true, is_import: true, width: '175'},
           { type: 'text', label: '公告号', prop: 'issue_number', sortable: true, is_import: true, width: '263'},
           { type: 'text', label: '主国际分类号', prop: 'main_ipc', sortable: true, width: '263'},
-          { type: 'text', label: '国际申请日', prop: 'pct_apd', sortable: true, width: '263'},
+          { type: 'text', label: '国际申请日', prop: 'pct_apd', sortable: true, width: '175'},
           { type: 'text', label: '国际申请号', prop: 'pct_no', sortable: true, width: '263'},
-          { type: 'text', label: '国际优先权日', prop: 'pct_priority_date', sortable: true, width: '263'},
-          { type: 'text', label: '国际公开日', prop: 'pct_public_date', sortable: true, width: '263'},
+          { type: 'text', label: '国际优先权日', prop: 'pct_priority_date', sortable: true, width: '175'},
+          { type: 'text', label: '国际公开日', prop: 'pct_public_date', sortable: true, width: '175'},
           { type: 'text', label: '国际公开语言', prop: 'pct_public_language', sortable: true, width: '263'},
           { type: 'text', label: '国际公开号', prop: 'pct_public_no', sortable: true, width: '263'},
           { type: 'text', label: '复审委内编号', prop: 'board_number', sortable: true, width: '263'},
-          { type: 'text', label: '说明书字数', prop: 'words', sortable: true, width: '263'},
+          { type: 'text', label: '说明书字数', prop: 'words', sortable: true, width: '145'},
           { type: 'text', label: '备注', prop: 'remark', sortable: true, width: '280'},
           { 
             type: 'text', 
@@ -139,7 +139,7 @@ export default {
             label: '标签',
             prop: 'tags',
             is_import: true,
-            width: '145',
+            width: '160',
           },
           { type: 'text', label: '部门名称', prop: 'branch', sortable: true, render:  (h,item)=>h('span', item.name), width: '142' },
           { 
@@ -161,7 +161,7 @@ export default {
           { 
             type: 'array', 
             label: '产品名称',
-            width: '212', 
+            width: '180', 
             prop: 'products', 
             sortable: true,
             render: _=>_.map(_=>_.name),
@@ -179,7 +179,7 @@ export default {
             label: '委案时间',
             prop: 'entrusting_time',
             is_import: true,
-            width: '263',         
+            width: '175',         
             render: (h,item)=>{
               let t = item;
               if(t) {
@@ -193,21 +193,21 @@ export default {
             label: '返发明人稿时间',
             prop: 'first_edition_to_inventor_time',
             is_import: true,
-            width: '263'
+            width: '175'
           },
           {
             type: 'text',
             label: '发明人审核时间',
             prop: 'inventor_review_time',
             is_import: true,
-            width: '263'
+            width: '175'
           },
           {
             type: 'text',
             label: '发明人审核次数',
             prop: 'inventor_review_times',
             is_import: true,
-            width: '200'
+            width: '175'
           },
           {
             type: 'text',
@@ -222,21 +222,21 @@ export default {
             label: '返IPR稿时间',
             prop: 'first_edition_to_ipr_time',
             is_import: true,
-            width: '263'
+            width: '175'
           },
           {
             type: 'text',
             label: 'IPR定稿时间',
             prop: 'ipr_final_edition_time',
             is_import: true,
-            width: '263'
+            width: '175'
           },
           {
             type: 'text',
             label: 'IPR审核次数',
             prop: 'ipr_review-times',
             is_import: true,
-            width: '200'
+            width: '175'
           },
           {
             type: 'text',
@@ -244,7 +244,7 @@ export default {
             prop: 'first_ipr_rank',
             is_import: true,
             render: this.rateRender,
-            width: '263'
+            width: '200'
           },
           {
             type: 'text',
@@ -252,35 +252,35 @@ export default {
             prop: 'final_ipr_rank',
             is_import: true,
             render: this.rateRender,
-            width: '263'
+            width: '200'
           },
           {
             type: 'text',
             label: '代理人撰稿耗时',
             prop: 'agent_drafting_period',
             is_import: true,
-            width: '263'
+            width: '175'
           },
           {
             type: 'text',
             label: '发明人审核耗时',
             prop: 'inventor_review_period',
             is_import: true,
-            width: '263'
+            width: '175'
           },
           {
             type: 'text',
             label: 'IPR审核耗时',
             prop: 'ipr_review_period',
             is_import: true,
-            width: '263'
+            width: '175'
           },
           {
             type: 'text',
             label: '代理人修改耗时',
             prop: 'amending_period',
             is_import: true,
-            width: '263'
+            width: '175'
           },
           
           

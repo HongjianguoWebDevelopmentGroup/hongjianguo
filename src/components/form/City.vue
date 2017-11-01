@@ -1,15 +1,16 @@
 <template>
   <div class="main">
-	  <el-cascader
-	  	placeholder="请选择省市"
-	    expand-trigger="hover"
-	    :options="options"
-	    :value=value
-	    :props="props"
-	    @input="handleInput"
-	    clearable
-	   >
-	  </el-cascader>
+  	  <el-cascader
+  	  	placeholder="请选择省市"
+  	    expand-trigger="hover"
+  	    :options="options"
+  	    :value=value
+  	    :props="props"
+  	    @input="handleInput"
+  	    clearable
+        change-on-select   
+  	   >
+  	  </el-cascader>
   </div>
 </template>
 

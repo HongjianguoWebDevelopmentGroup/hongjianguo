@@ -32,7 +32,7 @@ export default {
 				'header_slot': [ 'is_core_partner' ],
 				'columns': [
 					{ type: 'selection' },
-					{ type: 'text', label: '机构名称', prop: 'name', width: '318' },
+					{ type: 'text', label: '机构名称', prop: 'name', width: '150' },
 					{ type: 'text', label: '联系人', prop: 'contact', width: '84' },
 					{ type: 'text', label: '地址', prop: 'address', width: '341' },
 					{ type: 'text', label: '联系电话', prop: 'telephone', width: '179' },

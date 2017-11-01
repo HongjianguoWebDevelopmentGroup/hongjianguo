@@ -68,12 +68,12 @@ export default {
 		  	// 'header_slot': [ 'userRole' ],
 		  	columns: [
 		  		{ type: 'selection' },
-		  		{ type: 'text', label: '姓名', prop: 'name', width: '200' },
-		  		{ type: 'text', label: '用户名', prop: 'username', width: '200' },
+		  		{ type: 'text', label: '姓名', prop: 'name', width: '145' },
+		  		{ type: 'text', label: '用户名', prop: 'username', width: '175' },
 		  		{ type: 'text', label: '手机号', prop: 'mobile', width: '200' },
 		  		{ type: 'array', label: '所属用户组', prop: 'groups', width: '200', render: _=>_.map(_=>_.name) },
 		  		// { type: 'text', label: '用户角色', prop: 'role_name', width: '200' },
-		  		{ type: 'text', label: '邮箱', prop: 'email', width: '200' },
+		  		{ type: 'text', label: '邮箱', prop: 'email', width: '240' },
 		  		{ type: 'text', label: '微信号', prop: 'weixin', width: '200' },
 		  		{ type: 'text', label: 'QQ', prop: 'qq', width: '200' },
 		  		{ 

@@ -114,11 +114,11 @@ export default {
 			day: 2,
 			date: 'due_time',
 			days: [
-				{label: '2天内到期', value: 2},
 				{label: '已过期10天及以上', value: -10},
 				{label: '已过期6-10天', value: -6},
 				{label: '已过期3-5天', value: -3},
 				{label: '已过期1-2天', value: -1},
+				{label: '2天内到期', value: 2},
 				{label: '5天内到期', value: 5},
 				{label: '10天内到期', value: 10},
 			],

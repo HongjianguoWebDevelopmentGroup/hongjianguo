@@ -31,30 +31,30 @@ export default {
 		  		{ type: 'selection' },
 		  		{ type: 'text', label: '申请人姓名', prop: 'name', sortable: true, width: '250' },
 		  		{ type: 'text', label: '申请人类型', prop: 'type_name', sortable: true, width: '200' },
-		  		{ type: 'text', label: '证件号码', prop: 'identity', sortable: true, width: '200' },
-		  		{ type: 'text', label: '地区', prop: 'area', sortable: true, width: '200',
+		  		{ type: 'text', label: '证件号码', prop: 'identity', sortable: true, width: '240' },
+		  		{ type: 'text', label: '地区', prop: 'area', sortable: true, width: '175',
             render: (h,item)=>{
               const d = this.areaMap.get(item);
               return h('span', d ? d : '');
             }  
           },
-		  		{ type: 'text', label: '省份', prop: 'province', sortable: true, width: '200', 
+		  		{ type: 'text', label: '省份', prop: 'province', sortable: true, width: '175', 
             render: (h, item)=>{ 
               const d = this.provinceMap.get(Number.parseInt(item));
               return h('span', d ? d : '');
             } 
           },
-		  		{ type: 'text', label: '城市', prop: 'city', sortable: true, width: '200', 
+		  		{ type: 'text', label: '城市', prop: 'city', sortable: true, width: '175', 
             render: (h, item)=>{ 
               const d = this.cityMap.get(item);
               return h('span', d ? d : '');
             }
           },
-		  		{ type: 'text', label: '详细地址', prop: 'address', sortable: true, width: '200' },
-		  		{ type: 'text', label: '邮编', prop: 'postcode', sortable: true, width: '200' },
-		  		{ type: 'text', label: '费用备案', prop: 'fee_discount', sortable: true, width: '200', render: (h, item)=>h('span', item ? '已完成' : '未完成') },
-		  		{ type: 'text', label: '英文姓名', prop: 'ename', sortable: true, width: '200' },
-		  		{ type: 'text', label: '英文地址', prop: 'eaddress', sortable: true, width: '200' },
+		  		{ type: 'text', label: '详细地址', prop: 'address', sortable: true, width: '260' },
+		  		{ type: 'text', label: '邮编', prop: 'postcode', sortable: true, width: '145' },
+		  		{ type: 'text', label: '费用备案', prop: 'fee_discount', sortable: true, width: '145', render: (h, item)=>h('span', item ? '已完成' : '未完成') },
+		  		{ type: 'text', label: '英文姓名', prop: 'ename', sortable: true, width: '175' },
+		  		{ type: 'text', label: '英文地址', prop: 'eaddress', sortable: true, width: '260' },
 		  		{ 
 		  			type: 'action',
             width: '150',
