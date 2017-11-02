@@ -8,13 +8,15 @@
   	    :props="props"
   	    @input="handleInput"
   	    clearable
-        change-on-select   
   	   >
   	  </el-cascader>
   </div>
 </template>
 
 <script>
+import {mapGetters} from 'vuex'
+import {mapActions} from 'vuex'
+
 export default {
   name: 'city',
   props: {
@@ -35,19 +37,25 @@ export default {
   	}
   },	
   computed: {
+    ...mapGetters([
+      'cityData',
+    ]),
   	options () {
-      let op = this.$store.getters.cityData;
-
-      if(op == undefined) {
-        this.$store.commit('setCity', []);
-        this.$store.dispatch('refreshCity');
-        op = [];
-      }
-
-  		return op; 
+      let op = this.cityData;
+  		
+      return op.map(_=>{
+        
+        if(_.child && _.child.length == 0) {
+          return {'name': _.name, 'zipcode': _.zipcode};  
+        }
+        return _;
+      });
   	}
   },
   methods: {
+    ...mapActions([
+      'refreshCity',
+    ]),
   	handleInput(val) {
   		this.$emit('input', val);
   	}

@@ -37,6 +37,7 @@ const actions = {
 		if(d) {
 			commit('setCity', JSON.parse(d));
 		}else {
+			
 			rootState.axios
 				.get(url)
 				.then(response=>{

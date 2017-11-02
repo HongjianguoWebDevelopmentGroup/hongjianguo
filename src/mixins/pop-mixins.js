@@ -56,8 +56,7 @@ export default {
           this.btn_disabled = true;
           this.$axiosPost({url, data, success, complete});
         }
-      })
-      
+      })      
     },
     edit () {
       const url = `${this.$options.URL}/${this.id}`;

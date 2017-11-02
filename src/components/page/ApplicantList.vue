@@ -1,7 +1,7 @@
 <template>
   <div class="main">
 		<table-component :tableOption="option" :data="tableData" ref="table" @refreshTableData="refreshTableData"></table-component>
-		<pop  @refresh="refresh" ref="pop"></pop>
+		<pop @refresh="refresh" ref="pop"></pop>
   </div>
 </template>
 

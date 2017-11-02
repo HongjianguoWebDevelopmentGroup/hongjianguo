@@ -59,9 +59,9 @@
 				<el-input v-model="form.eaddress" placeholder="请输入英文地址"></el-input>
 			</el-form-item>
 
-			<el-form-item>
+			<el-form-item style="margin-bottom: 0;">
 				<el-button v-if="type == 'add'" @click="add">添加</el-button>
-				<el-button v-else-if="type == 'edit'" @click="edit">编辑</el-button>
+				<el-button v-if="type == 'edit'" @click="edit">编辑</el-button>
 			</el-form-item>
 
 		</el-form>
