@@ -1,27 +1,29 @@
 <template>
-	<el-select
-	  :value="value2"
-	  @input="handleInput"
-	  filterable
-	  remote
-	  :placeholder="PLACEHOLDER"
-	  :disabled="disabled"
-	  :remote-method="remoteMethod"
-	  :loading="loading"
-    :allow-create="allowCreate"
-    :default-first-option="choose.defaultFirstOption !== undefined ? choose.defaultFirstOption : false"
-	  :multiple="!single"
-	  ref="select"
-	  @visible-change.once="initialization"
-	>
-		<el-option
-			v-for="item in option_in"
-			:key="item.id"
-			:label="item.name"
-			:value="item.id"
-		>
-		</el-option>
-	</el-select>
+  <div id="select_list">
+  	<el-select
+  	  :value="value2"
+  	  @input="handleInput"
+  	  filterable
+  	  remote
+  	  :placeholder="PLACEHOLDER"
+  	  :disabled="disabled"
+  	  :remote-method="remoteMethod"
+  	  :loading="loading"
+      :allow-create="allowCreate"
+      :default-first-option="choose.defaultFirstOption !== undefined ? choose.defaultFirstOption : false"
+  	  :multiple="!single"
+  	  ref="select"
+  	  @visible-change.once="initialization"
+  	>
+  		<el-option
+  			v-for="item in option_in"
+  			:key="item.id"
+  			:label="item.name"
+  			:value="item.id"
+  		>
+  		</el-option>
+  	</el-select>
+  </div>
 </template>
 
 <script>
@@ -306,4 +308,15 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped lang="scss">
+</style>
+<style>
+  #select_list .el-select__tags{
+    max-width: 280px !important;
+  }
+  #select_list .el-select .el-input__inner {
+    height: 37px !important;
+  }
+  #select_list .el-select .el-tag {
+    margin: 0 0 0 3px; 
+  }
 </style>

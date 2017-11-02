@@ -30,7 +30,7 @@ export default {
           { type: 'text', label: '收件日期', default: '暂未收件', prop: 'receipt_date' },
           { type: 'text', label: '收件人', render_simple: 'name', prop: 'to' },
           { type: 'text', label: '发件人', render_simple: 'name', prop: 'from' },
-          { type: 'array', label: '文件信息', prop: 'projects', 
+          { type: 'array', label: '文件信息', prop: 'projects', width:'263',
             render (array) {
               return array.map(_=>`${_.name}: ${_.type.join(";")}`);
             }
