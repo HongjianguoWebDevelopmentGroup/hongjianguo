@@ -7,7 +7,8 @@
         :title="currentRow.title"
         :visible.sync="shrinkVisible" 
         type="copyright" 
-        :id="currentRow.id">
+        :id="currentRow.id"
+        @editSuccess="refresh">
       </common-detail>
 
   </div>

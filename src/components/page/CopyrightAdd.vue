@@ -155,7 +155,7 @@ export default {
   		const data = this.$tool.shallowCopy(this.form, {'date': true});
   		const success = _=>{ 
   			this.$message({message: '编辑成功', type: 'success'});
-  			this.$router.push('/copyright/list'); 
+  			this.$emit('editSuccess'); 
   		};
   		const complete = _=>{ this.btn_disabled = false };
 

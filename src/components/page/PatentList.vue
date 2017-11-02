@@ -12,7 +12,8 @@
         :visible.sync="shrinkVisible" 
         type="patent" 
         :id="currentRow.id" 
-        ref="detail">
+        ref="detail"
+        @editSuccess="refresh">
       </common-detail>
     
 
