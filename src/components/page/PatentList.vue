@@ -322,7 +322,6 @@ export default {
         }else {
           this.tableData = d.patents;
         }
-        this.refresh();
       };
 
       this.refreshProxy = this.axiosGet({url, data, success});

@@ -91,8 +91,7 @@ export default {
           window.location.href = d.copyrights.downloadUrl;
         }else {
           this.tableData = d.copyrights;  
-        }
-        this.refresh();
+        }      
       };
       this.axiosGet({url, data, success});
     },
