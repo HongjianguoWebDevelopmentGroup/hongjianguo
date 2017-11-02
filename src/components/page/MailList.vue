@@ -44,8 +44,8 @@ export default {
 		  	// 'is_search': false,
 		  	'columns': [
 		  		{ type: 'selection', width: '50' },
-		  		{ type: 'text', label: '发件人邮箱', prop: 'from', render_simple: 'label', sortable: true, overflow: true, width: '200' },
-		  		{ type: 'array', label: '收件人邮箱', prop: 'to', sortable: true, overflow: true, width: '200',
+		  		{ type: 'text', label: '发件人邮箱', prop: 'from', render_simple: 'label', sortable: true, overflow: true, width: '280' },
+		  		{ type: 'array', label: '收件人邮箱', prop: 'to', sortable: true, overflow: true, width: '280',
             render: _=>{
               if(_ instanceof Array) {
                 return _.map(_=>_.label)
