@@ -311,7 +311,7 @@ export default {
 </style>
 <style>
   #select_list .el-select__tags{
-    max-width: 280px !important;
+    min-width: 260px !important;
   }
   #select_list .el-select .el-input__inner {
     height: 37px !important;

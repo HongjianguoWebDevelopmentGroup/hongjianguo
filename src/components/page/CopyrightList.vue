@@ -92,6 +92,7 @@ export default {
         }else {
           this.tableData = d.copyrights;  
         }
+        this.refresh();
       };
       this.axiosGet({url, data, success});
     },
