@@ -20,7 +20,7 @@
     </el-popover>
 
     <nav>
-        <img src="/static/static_img/cvte_log.png" style="vertical-align: middle; height: 28px;">
+        <img src="/static/static_img/hjg_logo.png" style="vertical-align: middle; height: 28px;">
         <el-dropdown  trigger="click" style="float: right; margin-right: 40px;" @command="handleCommond">
           <span class="el-dropdown-link" style="color: #20a0ff; cursor: pointer;">
             {{ username }}<i class="el-icon-caret-bottom el-icon--right"></i>
