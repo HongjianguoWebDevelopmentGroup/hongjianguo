@@ -279,7 +279,7 @@ a {
   color: #20a0ff;
 }
 #app {
-  posiion: relative;
+  position: relative;
   padding: {
     top: $nav_height;
     left: $navL_width;
