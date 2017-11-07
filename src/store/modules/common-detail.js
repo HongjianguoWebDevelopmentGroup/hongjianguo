@@ -1,6 +1,7 @@
 const keys = new Map([
 	['patent', 'patent'],
 	['copyright', 'Copyright'],
+	['trademark', 'trademark'],
 ]);
 
 const state = {
@@ -24,6 +25,13 @@ const getters = {
   detailBaseCopyright: state=>{
   	if(state.true_type == 'copyright') {
   		return state.data; 
+  	}else {
+  		return null;
+  	}
+  },
+  detailBaseTrademark: state=>{
+  	if(state.true_type == '') {
+  		return state.data;
   	}else {
   		return null;
   	}

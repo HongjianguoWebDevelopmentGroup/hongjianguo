@@ -117,30 +117,6 @@ menu.data = [
 			}
 		]
 	},
-	// {
-	// 	text: '商标',
-	// 	path: '/trademark',
-	// 	icon: 'iconfont	 icon-task',
-	// 	type: 'submenu',
-	// 	children: [
-	// 		{
-	// 			text: '商标管理',
-	// 			path: '/trademark/list',
-	// 			icon: '',
-	// 			type: 'item'
-	// 		},{
-	// 			text: '通知书管理',
-	// 			path: '/trademark/notice',
-	// 			icon: '',
-	// 			type: 'item'
-
-	// 		},{
-	// 			text: '商标统计',
-	// 			icon: '',
-	// 			path: '/trademark/statistics',
-	// 			type: 'item',
-	// 		}]
-	// },
 	{
 		text: '版权',
 		path: '/copyright',
@@ -166,6 +142,24 @@ menu.data = [
 			// 	type: 'item',
 			// },
 		]
+	},
+	{
+		text: '商标',
+		path: '/trademark',
+		icon: 'iconfont	 icon-task',
+		type: 'submenu',
+		children: [
+			{
+				text: '新建商标',
+				path: '/trademark/add',
+				icon: '',
+				type: 'item'
+			},{
+				text: '商标管理',
+				icon: '',
+				path: '/trademark/list',
+				type: 'item',
+			}]
 	},
 	{
 		text: '费用',

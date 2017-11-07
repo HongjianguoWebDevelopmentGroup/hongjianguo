@@ -13,6 +13,7 @@ import ApplyingPatent from '@/components/page/ApplyingPatent'
 import PatentAdd from '@/components/page/PatentAdd'
 import NoticeCommon from '@/components/page/NoticeCommon'
 import TrademarkList from '@/components/page/TrademarkList'
+import TrademarkAdd from '@/components/page/TrademarkAdd'
 import TrademarkNotice from '@/components/page/TrademarkNotice'
 import TrademarkStatistics from '@/components/page/TrademarkStatistics'
 import CopyrightList from '@/components/page/CopyrightList'
@@ -153,6 +154,11 @@ const router = new Router({
       path: '/trademark/list',
       name: 'TrademarkList',
       component: TrademarkList
+    },
+    {
+      path: '/trademark/add',
+      name: 'TrademarkAdd',
+      component: TrademarkAdd
     }, 
     {
       path: '/trademark/notice',

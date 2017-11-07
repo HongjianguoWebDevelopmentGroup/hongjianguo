@@ -76,7 +76,12 @@ const config = [
 		action: 'getCopyrightDocuments',
 		url: '/copyrights/documents',
 		type: 'copyright',
-	}]
+	}],
+  ['trademark', {
+    action: 'getTrademarkDocuments',
+    url: '/trademark/documents',
+    type: 'trademark',
+  }]
 ]
 const map = new Map(config);
 

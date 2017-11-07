@@ -8,6 +8,7 @@
         <el-tab-pane label="基本信息" name="base">
     			<detail-patent page-type="edit" v-if="type == 'patent'" @editSuccess="editSuccess" ref="patent"></detail-patent>
           <detail-copyright page-type="edit" v-if="type == 'copyright'" @editSuccess="editSuccess" ref="copyright"></detail-copyright>
+          <detail-trademark page-type="edit" v-if="type == 'trademark'" @editSuccess="editSuccess" ref="trademark"></detail-trademark>
         </el-tab-pane>
         <el-tab-pane label="流程管理" name="control">
     			<detail-control></detail-control>
@@ -33,6 +34,7 @@
 import AppShrink from '@/components/common/AppShrink'
 import DetailPatent from '@/components/page/PatentAdd'
 import DetailCopyright from '@/components/page/CopyrightAdd'
+import DetailTrademark from '@/components/page/TrademarkAdd'
 import DetailControl from '@/components/page_extension/CommonDetail_control'
 import DetailNotice from '@/components/page_extension/CommonDetail_notice'
 import DetailFee from '@/components/page_extension/CommonDetail_fee'
@@ -47,8 +49,12 @@ const config = [
 	}],
 	['copyright', {
 		loadingText: '加载版权信息中...',
-    auth: '/copyright/detail_panel'
-	}]
+    auth: '/copyright/detail_panel',
+	}],
+  ['trademark', {
+    loadingText: '加载商标信息中...',
+    auth: '/trademark/detail_panel',
+  }]
 ];
 const map = new Map(config);
 
@@ -141,11 +147,12 @@ export default {
     AppShrink,
     DetailPatent,
     DetailCopyright,
-  	DetailControl,
-  	DetailNotice,
-  	DetailFee,
-  	DetailEmail,
-  	DetailDocuments,
+    DetailTrademark,
+    DetailControl,
+    DetailNotice,
+    DetailFee,
+    DetailEmail,
+    DetailDocuments,
   }
 }
 </script>

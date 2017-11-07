@@ -4,7 +4,7 @@
     <a v-if="config.model ? true : false" :href="config.model">{{ config.model_name }}</a>
 		<el-table
 			height="250"
-			style="width: 100%"
+			style="width: 100%; margin: 10px 0;"
 			empty-text="暂无可导入数据"
 			:data="tableData"
 		> 
@@ -102,12 +102,19 @@ const config = [
     model: '/static/templates/copyright_batch_template.xlsx',
     model_name: '版权导入模板',
 	}],
+  ['trademark', {
+    action: 'getTrademarks',
+    title: '导入商标',
+    url: '/trademarks/import',
+    category: 2,
+    model: '/static/templates/trademark_batch_template.',
+    model_name: '商标导入模板',
+  }],
 	['patent_notice', {
 		action: 'getPatentNotices',
     title: '导入专利通知书',
 		url: '/notices/import',
 		category: 1,
-    // model: '',
 	}],
 	['copyright_notice', {
 		action: 'getCopyrightNotices',
