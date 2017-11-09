@@ -1,7 +1,9 @@
 export default {
+	//深拷贝
 	deepCopy (obj) {
 		return JSON.parse(JSON.stringify(obj));
 	},
+	//浅拷贝
 	shallowCopy (obj, {date, array, skip}) {
 		
 		const data = {};
@@ -24,6 +26,7 @@ export default {
 
         return data;
 	},
+	//清空对象
 	clearObj (obj) {
 		for(let key in obj) {
 			if(typeof obj[key] === 'object') {
@@ -34,6 +37,7 @@ export default {
 		}
 		return obj;
 	},
+	//获取日期
 	getDate (date) {
 		if(date instanceof Date) {
 			return `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}`;
@@ -67,6 +71,9 @@ export default {
 			}
 		}
 	},
+	//arr = [{id:1,name: 'aaa'},{id: 2, name: 'bbb'}];
+	//splitObj(arr, ['id','name']) = {'id': [1,2], 'name': ['aaa','bbb']};
+	//splitObj(arr, 'id') = [1,2];
 	splitObj (arr, keys) {
 		let result;
 		if(keys instanceof Array) {
@@ -130,6 +137,7 @@ export default {
 	      document.cookie= name + "="+cval+";expires="+exp.toGMTString();
 	    }
 	},
+	//设置LocalStorage
 	setLocal (name, value) {
 		if( name === undefined || !(typeof name === 'string') ) return;
 

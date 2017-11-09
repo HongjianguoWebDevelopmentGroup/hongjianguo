@@ -5,7 +5,7 @@
       action="/api/files"
       :on-preview="onPreview"
       :file-list="fileList"
-      multiple
+      :multiple="multiple"
       ref="upload"
     >           <!-- <i class="el-icon-upload"></i> -->
         <el-button size="small" type="primary">点击上传</el-button>
@@ -30,6 +30,10 @@
             }
         },
         'uploadText': String,
+        'multiple': {
+          type: Boolean,
+          default: true,  
+        }
       },
       data () {
         return {};

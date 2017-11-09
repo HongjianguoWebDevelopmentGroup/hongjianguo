@@ -1,3 +1,4 @@
+<!-- table表格公共组件 -->
 <template>
   <div class="hjg-table">
     
@@ -32,7 +33,7 @@
             </el-dropdown-menu>
           </el-dropdown>
         </template>
-
+        <!-- 这段是做什么的 -->
         <template v-else-if="btn.type == 'dropdown'">
           <el-dropdown trigger="click" menu-align="start">
             <el-button class="table-header-btn" type="primary" :icon="btn.icon ? btn.icon : ''">
@@ -238,6 +239,26 @@ import FileUpload from '@/components/common/FileUpload'
 import SearchInput from '@/components/common/SearchInput'
 import { mapGetters } from 'vuex'
 const methods = Object.assign({}, tableConst.methods, {
+  getPageData (c) {
+    const d = this,
+        start = (c - 1) * d.pageSize,
+        end = c * d.pageSize;
+  
+    return d.tableData.slice(start, end);
+  },
+  getSelection () {
+    return this.tableSelect;
+  },
+  handleCurrentChange(c) {
+    const d = this;
+
+    d.currentPage = c;
+    d.pageData = d.getPageData(c);
+  },
+  handleselectionChange(selection) {
+    const d = this;
+    d.tableSelect = selection;
+  },
   headerBtnIf (_) {
     if( _.map_if ) {
       if(this.menusMap && !this.menusMap.get(_.map_if)) {
@@ -268,9 +289,9 @@ const methods = Object.assign({}, tableConst.methods, {
     if(func) {
       func(e)
     }else {
-      
+      //合并获得导出请求的请求参数
       this.$emit('refreshTableData', Object.assign({}, this.getRequestOption(), {format: 'excel'}, {'fields': JSON.stringify(fields) } ) );
-      
+      //Vue Api.
       this.$nextTick(_=>{
         if(this.refreshProxy) {
           this.exportLoading = true;
@@ -318,7 +339,7 @@ const methods = Object.assign({}, tableConst.methods, {
         this.$confirm('删除后不可恢复，确认删除？', '删除确认', {type: 'warning'})
           .then(_=>{
             const url = this.url;
-            const data = { id: this.$tool.splitObj(s, 'id') };
+            const data = { id: this.$tool.splitObj(s, 'id') }; // 见/const/tool.js splitObj函数的注释
             const success = _=>{ 
               this.$message({type: 'success', message: '删除成功'});
               this.update();
@@ -398,6 +419,7 @@ const methods = Object.assign({}, tableConst.methods, {
     this.date = [];
     this.reset();
   },
+  //获取列表参数,包括page,listRows,查询关键字,排序参数
   getRequestOption () {
     const copy = this.$tool.deepCopy(this.requesOption);
     return copy;
@@ -429,7 +451,7 @@ const methods = Object.assign({}, tableConst.methods, {
   handleControlChange () {
     const name = this.tableOption.name;
     const value = JSON.stringify(this.tableControl);
-    this.$tool.setLocal(name, value);
+    this.$tool.setLocal(name, value);//设置LocalStorage
   },
   handleRowClassName (row, index) {
 
@@ -508,11 +530,11 @@ export default {
         page: this.page,
         listRows: this.pagesize,
       };
-
+      //查询关键字
       if(this.search_value) {
         obj.keyword = this.search_value;
       }
-
+      //排序参数
       if(this.sort.field) {
         const field = this.sort.field;
         const order = this.sort.order == 'descending' ? 'desc' : 'asc';
@@ -620,6 +642,12 @@ export default {
 
 
     const data = {
+      pageData: [],
+      pageSize: 5,
+      pagesizes: [10, 20, 40, 100, 10000],
+      currentPage: 1,
+      //tableSelect 当前列表如果有checkbox,已选择的行数据
+      tableSelect: [],
       tableControl,
       expands: [],
       getRowKeys (row) {

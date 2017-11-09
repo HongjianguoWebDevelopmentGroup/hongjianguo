@@ -30,6 +30,7 @@ export default {
 			tableOption: {
 				'name': 'trademark',
 				'url': '/api/trademarks',
+				'is_filter' : true,
 				'header_btn': [{
 					'type': 'add',
 					click: _=>{
@@ -55,7 +56,7 @@ export default {
 				'import_type': 'trademark',
 				'upload_type': 'trademark',
 				'highlightCurrentRow': true, 
-	      'rowClick': this.handleRowClick,
+	      		'rowClick': this.handleRowClick,
 				'height': 'default',
 				'columns': [{
 					'show': true,
@@ -134,6 +135,12 @@ export default {
 					'show': true,
 					'type': 'text',
 					'label': '商品分类'
+			  },  
+			  {
+					'show': true,
+					'type': 'text',
+					'label': '商品数量',
+					 'width' : '268'
 			  },
 			  { 'show': false, 'type': 'text', 'label': '商品描述' },
 			  { 'show': false, 'type': 'text', 'label': '详细分类' },
