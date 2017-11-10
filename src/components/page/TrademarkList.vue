@@ -18,9 +18,6 @@ import AppDatePicker from '@/components/common/AppDatePicker'
 import CommonDetail from '@/components/page_extension/Common_detail'
 import Strainer from '@/components/page_extension/TrademarkList_strainer'
 
-const text1 = '测试';
-const text2 = '测试';
-const text3 = '测试';
 
 export default {
   name: 'trademarkList', 
@@ -66,98 +63,139 @@ export default {
 					'show': true,//默认为true
 					'type': 'text',
 					'label': '案号',
-					'prop': 'text1',
+					'prop': 'serial',
+					'width': '198',
 				},
 				{
 					'show': true,
 					'type': 'text',
 					'label': '商标名称',
 					'prop': 'title',
+					'width': '168',
 				},
-			  {
+				{
+					'show': true,
+					'type': 'text',
+					'label': '商标类型',
+					'prop': 'type',
+					'render_simple':'name',
+					'width': '145',
+				},
+			  	{
 					'show': true,
 					'type': 'text',
 					'label': '地区',
-					'prop': 'text2',
+					'prop': 'area',
 					'is_import': true,
+					'render_simple': 'name',
+					'width': '145',
 			  },
 			  {
 					'show': true,
 					'type': 'text',
-					'label': '客户',
-					'prop': 'text3',
+					'label': '详细类别',
+					'prop': 'detail',
 					'is_import': true,
+					'width': '260',
 			  },
 			  {
-					'show': false,
-					'type': 'text',
-					'label': '商标名称',
-					'prop': 'text3',
+					'show': true,
+					'type': 'array',
+					'label': '申请人',
+					'prop': 'applicants',
 					'is_import': true,
-			  },
-			  {
-					'show': false,
-					'type': 'text',
-					'label': '委案日',
-					'prop': 'text3'
-			  },
-			  {
-					'show': false,
-					'type': 'text',
-					'label': '申请日',
-					'prop': 'text3'
+					'width': '260',
+					render:_=>_.map(_=>_.name),
 			  },
 			  {
 					'show': true,
 					'type': 'text',
 					'label': '申请号',
-					'prop': 'text3'
-			  },
-			  {
-					'show': false,
-					'type': 'text',
-					'label': '注册号',
-					'prop': 'text3'
-			  },
-			  {
-					'show': false,
-					'type': 'text',
-					'label': '初审公告日',
-					'prop': 'text3'
-			  },
-			  {
-					'show': false,
-					'type': 'text',
-					'label': '核准注册日',
-					'prop': 'text3'
+					'prop': 'apn',
+					'width': '240',
 			  },
 			  {
 					'show': true,
 					'type': 'text',
-					'label': '商品分类'
+					'label': '申请日',
+					'prop': 'apd',
+					'width': '168',
+			  },
+			  {
+					'show': true,
+					'type': 'text',
+					'label': '初审公告日',
+					'prop': 'public_date',
+					'width': '168',
+			  },
+			  {
+					'show': true,
+					'type': 'text',
+					'label': '初审公告期数',
+					'prop': 'public_number',
+					'width': '168'
+			  },
+			  {
+					'show': true,
+					'type': 'text',
+					'label': '核准注册日',
+					'prop': 'issue_date',
+					'width': '168',
+			  },
+			  {
+					'show': true,
+					'type': 'text',
+					'label': '核准公告期数',
+					'prop' : 'issue_number',
+					'width': '168',
 			  },  
 			  {
 					'show': true,
 					'type': 'text',
-					'label': '商品数量',
-					 'width' : '268'
+					'label': '专用权期限',
+					'prop': 'expiring_date',
+					 'width' : '145',
 			  },
-			  { 'show': false, 'type': 'text', 'label': '商品描述' },
-			  { 'show': false, 'type': 'text', 'label': '详细分类' },
-			  { 'show': true, 'type': 'text', 'label': '代理人' },
-			  { 'show': true, 'type': 'text', 'label': 'IPR' },
-			  { 
-			  	'show': true, 'type': 'text', 'label': '当前状态' 
-			  }] 
+			  {
+					'show': true,
+					'type': 'text',
+					'label': '备注',
+					'prop': 'remark',
+					'width': '280',
+			  },] 
 			},
 			tableData: [
-				{title: '商标1', text1, text2, text3, id: 1},
-				{title: '商标2', text1, text2, text3, id: 2},
-				{title: '商标3', text1, text2, text3, id: 3},
-				{title: '商标4', text1, text2, text3, id: 4},
-				{title: '商标5', text1, text2, text3, id: 5},
-				{title: '商标6', text1, text2, text3, id: 6},
-				{title: '商标7', text1, text2, text3, id: 7}
+				{
+				"id":83,
+				"serial":"CVTE20171110002",
+				"area":{"id":"CN","name":"CN"},
+				"create_time":"2017-11-10",
+				"title":"新建商标测试",
+				"type":{"id":1,"name":"文字"},
+				"apn":"申请号","apd":"2017-11-09",
+				"public_number":"1470",
+				"public_date":"2017-08-27",
+				"issue_number":"1470",
+				"issue_date":"2017-08-27",
+				"agency_serial":"",
+				"remark":"商标备注",
+				"progress":{"id":0,"name":null},
+				"categories":{"id":1,"name":"[1]化学品"},
+				"detail":"123456",
+				"figure": {
+					id: 40, 
+					name: "b.txt", 
+					ext: "txt", 
+					size: "0KB", 
+					create_time: "2017-11-10 09:51:56", 
+					is_view: 1,
+					viewUrl: "/files/40/preview/b.txt",
+					downloadUrl: "/files/40",
+				},
+				"expiring_date":"2025-12-07",
+				"attachments":[{"id":40,"name":"b.txt","ext":"txt","size":"0KB","viewUrl":"\/files\/40\/preview\/b.txt","downloadUrl":"\/files\/40"}],
+				"applicants":[{id: 7, name: '广州视源电子科技股份有限公司'}],
+			}
 			],
 			currentRow: '',
 			shrinkVisible: false,
