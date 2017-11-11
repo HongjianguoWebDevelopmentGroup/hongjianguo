@@ -1,5 +1,5 @@
 <template>
-	<div class="main">
+	<div class="main" id="trademarkAdd">
 		<el-form :model="form" ref="form" label-width="120px" :rules="rules">
 			<el-form-item label="商标名" prop="title">
 				<el-input v-model="form.title"></el-input>
@@ -8,10 +8,33 @@
 				<static-select type="type" v-model="form.type"></static-select>
 			</el-form-item>
 			<el-form-item label="商标类别" prop="categories">
-				<static-select type="categories" v-model="form.categories"></static-select>
+				<static-select type="categories" v-model="form.categories" multiple></static-select>
 			</el-form-item>
 			<el-form-item label="详细类别" prop="detail">
 				<el-input v-model="form.detail" type="textarea"></el-input>
+			</el-form-item>
+			<el-form-item>
+				<el-button type=primary @click="trademarkJson">商标分类</el-button>
+				<el-dialog title="商标分类" :visible.sync='dialogVisible' top="25%">
+					<div class="classify_detail">
+						{{ detailContent }}
+					</div>
+					<div class="classify_content" v-for="(item,index) in classifyContent">
+						<div class="left_side">
+							<div class="classify_num">
+							<p>{{ item.name }}</p>
+						</div>
+						<div class="comment">
+							<p>{{ item.description }}</p>
+						</div>
+						</div>
+						<div class="right_side">
+							<ul >
+								<li v-for = "(group,index2) in item['groups']" @click="show(index,index2)">{{group.name}}</li>
+							</ul>
+						</div>
+					</div>
+				</el-dialog>
 			</el-form-item>
 			<el-form-item label="申请人" prop="applicants">
 				<remote-select type="applicant" v-model="form.applicants" multiple></remote-select>
@@ -63,7 +86,6 @@
 <script>
 import {mapGetters} from 'vuex'
 import AxiosMixins from '@/mixins/axios-mixins'
-
 import Classification from '@/components/form/Classification'
 import Product from '@/components/form/Product'
 import Branch from '@/components/form/Branch'
@@ -93,7 +115,7 @@ export default {
 		  		type: '',
 			  	applicants: [],
 			  	area: this.pageType == 'add' ? [] : '',
-			  	categories: '',
+			  	categories: [],
 			  	detail: '',
 			  	figure: '',
 			  	description: '',
@@ -113,11 +135,15 @@ export default {
 		  	type: { type: 'number', required: true, message: '商标类型不能为空', trigger: 'change' },
 		  	applicants: { type: 'array',  required: true, message: '申请人不能为空', trigger: 'blur' },
 		  	detail: {required: true, message: '详细类别不能为空', trigger: 'blur'},
-		  	categories: {type: 'number', required: true, message: '商标类别不能为空', trigger: 'change'}
+		  	categories: {type: 'array', required: true, message: '商标类别不能为空', trigger: 'change'}
 		  },
 		  attachments: [],
 		  btn_disabled: false,
 		  figure: [],
+		  dialogVisible: false,
+		  classifyContent: [],
+		  groups:[],
+		  detailContent:''
 		}
 	},
 	computed: {
@@ -126,6 +152,10 @@ export default {
 		])
 	},
 	methods:{
+		show (i1,i2) {
+			console.log(112);
+			return this.detailContent = this.classifyContent[i1]['groups'][i2]['description']
+		},
 		add () {
   		if(this.checkForm()) return;
 
@@ -178,7 +208,34 @@ export default {
   				this.form.figure = this.form.figure.id;	
   			}
   		}
-  	}
+  	},
+  	trademarkJson () {
+  		const url = '/static/js/categories.json';
+  		this.dialogVisible = true;
+  		this.$axios.get(
+  			url,{
+  				params:'',
+  			}
+  		).then(res=>{
+  			// console.log(res);
+  			this.classifyContent = res.data;
+  			// console.log(this.classifyContent[0].groups);
+  
+  			// for( var i = 0; i < this.classifyContent.length; i++ ){
+  			// 	this.groups = [];
+  			// 	for( var j = 0; j< this.classifyContent[i].groups.length; j++ ){
+
+  			// 	this.groups.push(this.classifyContent[i].groups[j].name);
+  					
+  			// 	}	
+  			// 	console.log(this.groups);
+  			// }
+  			
+  			
+  		}).catch(err=>{
+
+  		})
+  	},
 	},
 	created () {
 		this.refreshForm();
@@ -199,3 +256,42 @@ export default {
 	},
 }
 </script>
+<style scoped lang="scss">
+	.classify_content {
+		display: flex;
+		display: -webkit-flex;
+		justify-content: space-around;
+		margin-top: 10px;
+		padding: 5px 10px;
+		border: 1px solid #e1e1e1;
+		height: auto;
+		.left_side {
+			width: 400px;
+			height: auto;
+			margin-bottom: -3000px;
+			padding-bottom: 3000px;
+			.classify_num {
+				font-size: 16px;
+				font-weight: bold;
+			}
+			.comment {
+				font-size: 14px;
+			}
+		}
+		.right_side {
+			width:600px;
+			height: auto;
+			margin-bottom: -3000px;
+			padding-bottom: 3000px;
+			ul li {
+				list-style: none;
+			}
+		}
+	}
+</style>
+<style>
+	#trademarkAdd .el-dialog--small{
+		height: 500px;
+		overflow-y:scroll; 
+	}
+</style>

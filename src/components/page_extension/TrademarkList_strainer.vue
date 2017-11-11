@@ -3,14 +3,44 @@
     <el-form :model="form" ref="form" label-width="120px">
       <el-row>
         <el-col :span="12">
-        	<el-form-item label="商标名称" prop="title">
-          	<el-input v-model="form.title"></el-input>
+        	<el-form-item label="商标类型" prop="type">
+          	<static-select type="type" v-model="form.type"></static-select>
         	</el-form-item>
         </el-col>
         <el-col :span="12">
-        	<el-form-item label="商标描述" prop="text1">
-          	<el-input v-model="form.text1"></el-input>
+          <el-form-item label="申请日" >
+           <el-date-picker type="date" v-model="form.apd" placeholder="请选择申请日"></el-date-picker>
+          </el-form-item>
+        </el-col>
+        <el-col :span="12">
+        	<el-form-item label="地区" >
+          	<static-select type="area" v-model="form.area" multiple></static-select>
         	</el-form-item>
+        </el-col>
+        <el-col :span="12">
+          <el-form-item label="初审公告日" >
+           <el-date-picker type="date" v-model="form.public_date" placeholder="请选择初审公告日"></el-date-picker>
+          </el-form-item>
+        </el-col>
+        <el-col :span="12">
+          <el-form-item label="商标类别" >
+            <static-select type="categories" v-model="form.categories"></static-select>
+          </el-form-item>
+        </el-col>
+         <el-col :span="12">
+          <el-form-item label="核准注册日" >
+           <el-date-picker type="date" v-model="form.issue_date" placeholder="请选择核准注册日"></el-date-picker>
+          </el-form-item>
+        </el-col>
+        <el-col :span="12">
+          <el-form-item label="申请人" >
+           <remote-select type="applicant" v-model="form.applicants" multiple></remote-select>
+          </el-form-item>
+        </el-col>
+        <el-col :span="12">
+          <el-form-item label="专用权期限" >
+            <el-date-picker type="date" v-model="form.expiring_date" placeholder="请选择专用权期数"></el-date-picker>
+          </el-form-item>
         </el-col>
       </el-row>
       <el-row style="text-align: center;">
@@ -25,6 +55,7 @@
 import AppCollapse from '@/components/common/AppCollapse'
 import Strainer from '@/mixins/strainer'
 import Product from '@/components/form/Product'
+import StaticSelect from '@/components/form/StaticSelect'
 import RemoteSelect from '@/components/form/RemoteSelect'
 
 export default {
@@ -33,13 +64,19 @@ export default {
   data () {
 		return {      
 		  form: {
-      	title: '',
-      	text1: '',
+      	type: [],
+      	area: [],
+        categories: [],
+        applicants: [],
+        apd: '',
+        public_date: '',
+        issue_date: '',
+        expiring_date: ''
       }
 		}
   },
   watch: {},
-  components: { AppCollapse, Product, RemoteSelect },
+  components: { AppCollapse, Product, RemoteSelect ,StaticSelect},
 }
 </script>
 

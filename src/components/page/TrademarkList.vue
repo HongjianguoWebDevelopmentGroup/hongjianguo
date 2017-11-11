@@ -81,6 +81,20 @@ export default {
 					'render_simple':'name',
 					'width': '145',
 				},
+				{
+					'show': true,
+					'type': 'text',
+					'label': '商标图形',
+					'prop': 'figure',
+					render:(h,item)=>{
+						return h('img',{
+							attrs:{
+								src:item.viewUrl,
+							}
+						})
+					},
+					'width': '145',
+				},
 			  	{
 					'show': true,
 					'type': 'text',
@@ -95,6 +109,15 @@ export default {
 					'type': 'text',
 					'label': '详细类别',
 					'prop': 'detail',
+					'is_import': true,
+					'width': '260',
+			  },
+			   {
+					'show': true,
+					'type': 'array',
+					'label': '商标类别',
+					'prop': 'categories',
+					render:_=>_.map(_=>_.name),
 					'is_import': true,
 					'width': '260',
 			  },
