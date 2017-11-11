@@ -1,4 +1,4 @@
-let url = '/api/static/js/states.json';
+let url = '/static/js/states.json';
 const state = {
 	data: [],
 }
