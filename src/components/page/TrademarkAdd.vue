@@ -35,8 +35,8 @@
 			<el-form-item label="初审公告日" prop="public_date">
 				<el-date-picker type="date" v-model="form.public_date" placeholder="请选择初审公告日"></el-date-picker>
 			</el-form-item>
-			<el-form-item label="初审公告期数" prop="public_num">
-				<el-input v-model="form.public_num" placeholder="请填写初审公告期数"></el-input>
+			<el-form-item label="初审公告期数" prop="public_number">
+				<el-input v-model="form.public_number" placeholder="请填写初审公告期数"></el-input>
 			</el-form-item>
 			<el-form-item label="核准注册日" prop="issue_date">
 				<el-date-picker type="date" v-model="form.issue_date" placeholder="请选择核准注册日"></el-date-picker>
@@ -98,7 +98,7 @@ export default {
 			  	figure: '',
 			  	description: '',
 			  	public_date: '',
-			  	public_num: '',
+			  	public_number: '',
 			  	expiring_date: '',
 			  	attachments: [],
 			  	remark: '',

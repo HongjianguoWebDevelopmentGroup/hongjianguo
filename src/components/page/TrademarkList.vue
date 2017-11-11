@@ -172,12 +172,18 @@ export default {
   },
   methods: {
   	refreshTableData(option) {
+  		
+  		const success = d=>{
+  			if(option['format'] == 'excel') {
+          window.location.href = d.trademarks.downloadUrl;
+        }else {
+          this.tableData = d.trademarks;  
+        }
+  		}
   		this.$axiosGet({
   			url: URL,
   			data: option,
-  			success:  _=>{
-  				this.tableData = _.trademarks;
-  			}
+  			success,
   		})
   	},
   	refresh () {
