@@ -4,9 +4,6 @@
 			<el-form-item label="商标名" prop="title">
 				<el-input v-model="form.title"></el-input>
 			</el-form-item>
-				<el-form-item label="商标描述" prop="description">
-			<el-input type="textarea" v-model="form.description" placeholder="请填写案件摘要" ></el-input>
-			</el-form-item>
 			<el-form-item label="商标类型" prop="type">
 				<static-select type="type" v-model="form.type"></static-select>
 			</el-form-item>
@@ -14,32 +11,26 @@
 				<static-select type="categories" v-model="form.categories"></static-select>
 			</el-form-item>
 			<el-form-item label="详细类别" prop="detail">
-				<el-input v-model="form.detail"></el-input>
+				<el-input v-model="form.detail" type="textarea"></el-input>
 			</el-form-item>
 			<el-form-item label="申请人" prop="applicants">
 				<remote-select type="applicant" v-model="form.applicants" multiple></remote-select>
 			</el-form-item>
-			<el-form-item label="地区" prop="area">
-				<static-select type="area" v-model="form.area" multiple></static-select>
+			<el-form-item label="地区" prop="area" :rules="{ type: pageType=='add' ? 'array' : 'string',required: true, message: '地区不能为空', trigger: 'change'}">
+				<static-select type="area" v-model="form.area" :multiple="pageType == 'add'"></static-select>
 			</el-form-item>
 			</el-form-item>
 			<el-form-item label="商标图形" prop="figure">
-				<upload v-model="form.figure" :file-list="figure"></upload>
-			</el-form-item>
-			<el-form-item label="附件" prop="attachments">
-				<upload v-model="form.attachments" :file-list="attachments"></upload>
-			</el-form-item>
-			<el-form-item label="备注" prop="remark">
-				<el-input type="textarea" v-model="form.remark" placeholder="请填写备注"></el-input>
+				<upload v-model="form.figure" :file-list="figure" :multiple="false"></upload>
 			</el-form-item>
 			<el-form-item label="优先权" prop="priorities">
 				<priorities v-model="form.priorities"></priorities>
 			</el-form-item>
-			<el-form-item label="申请号" prop="apn">
-				<el-input v-model="form.apn" placeholder="请填写申请号"></el-input>
-			</el-form-item>
 			<el-form-item label="申请日" prop="apd">
 				<el-date-picker type="date" v-model="form.apd" placeholder="请选择申请日"></el-date-picker>
+			</el-form-item>
+			<el-form-item label="申请号" prop="apn">
+				<el-input v-model="form.apn" placeholder="请填写申请号"></el-input>
 			</el-form-item>
 			<el-form-item label="初审公告日" prop="public_date">
 				<el-date-picker type="date" v-model="form.public_date" placeholder="请选择初审公告日"></el-date-picker>
@@ -56,9 +47,15 @@
 			<el-form-item label="专用权期数" prop="expiring_date">
 				<el-date-picker type="date" v-model="form.expiring_date" placeholder="请选择专用权期数"></el-date-picker>
 			</el-form-item>
-			<el-form-item>
-				<el-button  @click="add" v-if="type == 'add'" :disabled="btn_disabled" type="primary">添加</el-button>
-				<el-button  v-if="type == 'edit'" :disable="btn_disabled" type="primary">编辑</el-button>
+			<el-form-item label="附件" prop="attachments">
+				<upload v-model="form.attachments" :file-list="attachments"></upload>
+			</el-form-item>
+			<el-form-item label="备注" prop="remark">
+				<el-input type="textarea" v-model="form.remark" placeholder="请填写备注"></el-input>
+			</el-form-item>
+			<el-form-item >
+				<el-button  @click="add" v-if="pageType == 'add'" :disabled="btn_disabled" type="primary">添加</el-button>
+				<!-- <el-button  v-if="type == 'edit'" :disable="btn_disabled" type="primary">编辑</el-button> -->
 			</el-form-item>
 		</el-form>
 	</div>
@@ -95,10 +92,10 @@ export default {
 				title: '',
 		  		type: '',
 			  	applicants: [],
-			  	area: [],
+			  	area: this.pageType == 'add' ? [] : '',
 			  	categories: '',
 			  	detail: '',
-			  	figure: [],
+			  	figure: '',
 			  	description: '',
 			  	public_date: '',
 			  	public_num: '',
@@ -115,7 +112,6 @@ export default {
 		  	title: { required: true, message: '商标名称不能为空', trigger: 'blur' },
 		  	type: { type: 'number', required: true, message: '商标类型不能为空', trigger: 'change' },
 		  	applicants: { type: 'array',  required: true, message: '申请人不能为空', trigger: 'blur' },
-		  	area: {type: 'array',required: true, message: '地区不能为空', trigger: 'change'},
 		  	detail: {required: true, message: '详细类别不能为空', trigger: 'blur'},
 		  	categories: {type: 'number', required: true, message: '商标类别不能为空', trigger: 'change'}
 		  },
@@ -127,16 +123,8 @@ export default {
 	computed: {
 		...mapGetters([
 			'detailBaseTrademark',
-		]),
-		type () {
-  		return this.pageType ? this.pageType : this.$route.meta.pageType;
-  	},
-
+		])
 	},
-	created () {
-		console.log(this.detailBaseTrademark);
-	},
-	components:{ Classification, Product, Branch, Upload, RemoteSelect, StaticSelect, Priorities},
 	methods:{
 		add () {
   		if(this.checkForm()) return;
@@ -144,25 +132,70 @@ export default {
   		this.btn_disabled = true;
   		const url = URL;
   		const data = this.$tool.shallowCopy(this.form, {'date': true});
+  		data['figure'] = data['figure'][0];
   		const success = _=>{ 
-  			this.$message({message: '添加版权成功', type: 'success'});
-  			this.refreshUser();
+  			this.$message({message: _.info, type: 'success'});
   			this.$router.push('/trademark/list') 
   		};
   		const complete = _=>{ this.btn_disabled = false };
 
-  		this.axiosPost({url, data, success, complete});
-  		},
-  		checkForm () {
+  		this.$axiosPost({url, data, success, complete});
+  	},
+  	edit () {
+  		if(this.checkForm()) return;
+
+  		this.btn_disabled = true;
+  		const url = URL;
+  		const data = this.$tool.shallowCopy(this.form, {'date': true});
+  		data['figure'] = data['figure'][0];
+  		const success = _=>{ 
+  			this.$message({message: _.info, type: 'success'});
+  			this.$emit('editSuccess');
+  		};
+  		const complete = _=>{ this.btn_disabled = false };
+
+  		this.$axiosPut({url, data, success, complete});
+  	},
+  	checkForm () {
   		let flag = false;
   		this.$refs.form.validate(_=>{flag = !_});
 
   		if(flag) {
-  			this.$message({message: '请正确填写版权字段', type: 'warning'});
+  			this.$message({message: '请正确填写商标字段', type: 'warning'});
   		}
 
   		return flag;
   	},
-	}
+  	refreshForm () {
+  		if(this.pageType == 'edit' && this.detailBaseTrademark) {
+  			this.$tool.coverObj(this.form, this.detailBaseTrademark, {'obj': ['area', 'type', 'categories']});
+
+  			this.attachments = this.$tool.deepCopy(this.form.attachments);
+  			this.form.attachments = this.attachments.map( _=>_.id );
+
+  			if(this.form.figure) {
+  				this.figure = this.$tool.deepCopy([ this.form.figure ]);
+  				this.form.figure = this.form.figure.id;	
+  			}
+  		}
+  	}
+	},
+	created () {
+		this.refreshForm();
+	},
+	watch: {
+		detailBaseTrademark () {
+			this.refreshForm();
+		}
+	},
+	components:{ 
+		Classification, 
+		Product, 
+		Branch, 
+		Upload, 
+		RemoteSelect, 
+		StaticSelect, 
+		Priorities
+	},
 }
 </script>

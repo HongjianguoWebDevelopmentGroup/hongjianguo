@@ -54,7 +54,7 @@
 		</el-form-item>
 		<el-form-item>
 			<el-button @click="add" v-if="type == 'add'" :disabled="btn_disabled" type="primary">添加</el-button>
-			<el-button @click="edit" v-if="type == 'edit'" :disable="btn_disabled" type="primary">编辑</el-button>
+			<!-- <el-button @click="edit" v-if="type == 'edit'" :disable="btn_disabled" type="primary">编辑</el-button> -->
 		</el-form-item>
   	</el-form>
   </div>

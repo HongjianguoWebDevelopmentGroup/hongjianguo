@@ -17,12 +17,7 @@
     export default {
       name: 'upload',
       props: {
-        'value': {
-            type: Array,
-            default () {
-                return [];
-            },
-        },
+        'value': null,
         'fileList': {
             type: Array,
             default () {
@@ -48,11 +43,17 @@
         handleUploadSuccess (p, f) {
           if(p.status) {
             const id = p.data.file.id;
-            const copy = [...this.value];
+            let copy;
+            if(this.multiple) {
+              copy = [...this.value];
+              copy.push(id);
+            }else {
+              copy = id;
+            }
+            
             
             f.id = id;
             f.downloadUrl = p.data.file.downloadUrl;
-            copy.push(id);
             this.$emit('input', copy);
 
           }else {
@@ -66,13 +67,20 @@
         handleUploadRemove (f) {
           const id = f.id;
           const v = this.value;
-          let i = v.length;
 
-          while(i--) {
-            if(v[i] == id) break;
+          let copy;
+
+          if(this.multiple) {
+            let i = v.length;
+            while(i--) {
+              if(v[i] == id) break;
+            }
+            copy = [...v];
+            copy.splice(i, 1); 
+          }else {
+            copy = "";
           }
-          const copy = [...v];
-          copy.splice(i, 1);
+
           this.$emit('input', copy);
 
         },

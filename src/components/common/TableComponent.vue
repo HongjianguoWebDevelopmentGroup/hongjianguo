@@ -487,6 +487,8 @@ export default {
       const d = this.data;
       let r;
       
+      if(!d) return [];
+
       if(d instanceof Array) {
         r = d;
       }else {

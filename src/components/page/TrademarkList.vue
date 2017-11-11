@@ -1,7 +1,7 @@
 <template>
   <div class="main">
   	<strainer v-model="filter" @refresh="refresh"></strainer>
-		<table-component :tableOption="tableOption" :data="tableData" ref="table" ></table-component>
+		<table-component :tableOption="tableOption" :data="tableData" ref="table" @refreshTableData="refreshTableData"></table-component>
 		<common-detail
       :title="currentRow.title"
       :visible.sync="shrinkVisible" 
@@ -18,7 +18,7 @@ import AppDatePicker from '@/components/common/AppDatePicker'
 import CommonDetail from '@/components/page_extension/Common_detail'
 import Strainer from '@/components/page_extension/TrademarkList_strainer'
 
-
+const URL = '/api/trademarks'
 export default {
   name: 'trademarkList', 
   data () {
@@ -26,7 +26,7 @@ export default {
 			dialogScreenVisible: false,
 			tableOption: {
 				'name': 'trademark',
-				'url': '/api/trademarks',
+				'url': URL,
 				'is_filter' : true,
 				'header_btn': [{
 					'type': 'add',
@@ -164,47 +164,23 @@ export default {
 					'width': '280',
 			  },] 
 			},
-			tableData: [
-				{
-				"id":83,
-				"serial":"CVTE20171110002",
-				"area":{"id":"CN","name":"CN"},
-				"create_time":"2017-11-10",
-				"title":"新建商标测试",
-				"type":{"id":1,"name":"文字"},
-				"apn":"申请号","apd":"2017-11-09",
-				"public_number":"1470",
-				"public_date":"2017-08-27",
-				"issue_number":"1470",
-				"issue_date":"2017-08-27",
-				"agency_serial":"",
-				"remark":"商标备注",
-				"progress":{"id":0,"name":null},
-				"categories":{"id":1,"name":"[1]化学品"},
-				"detail":"123456",
-				"figure": {
-					id: 40, 
-					name: "b.txt", 
-					ext: "txt", 
-					size: "0KB", 
-					create_time: "2017-11-10 09:51:56", 
-					is_view: 1,
-					viewUrl: "/files/40/preview/b.txt",
-					downloadUrl: "/files/40",
-				},
-				"expiring_date":"2025-12-07",
-				"attachments":[{"id":40,"name":"b.txt","ext":"txt","size":"0KB","viewUrl":"\/files\/40\/preview\/b.txt","downloadUrl":"\/files\/40"}],
-				"applicants":[{id: 7, name: '广州视源电子科技股份有限公司'}],
-			}
-			],
+			tableData: '',
 			currentRow: '',
 			shrinkVisible: false,
 			filter: '',
 		};
   },
   methods: {
+  	refreshTableData(option) {
+  		this.$axiosGet({
+  			url: URL,
+  			data: option,
+  			success:  _=>{
+  				this.tableData = _.trademarks;
+  			}
+  		})
+  	},
   	refresh () {
-  		console.log(this.filter);
   		this.$refs.table.refresh();
   	},
   	handleRowClick (row) {
@@ -213,6 +189,9 @@ export default {
   			this.shrinkVisible = true;	
   		}
   	}
+  },
+  mounted () {
+  	this.refresh();
   },
   components: { 
   	TableComponent, 

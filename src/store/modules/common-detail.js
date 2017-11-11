@@ -30,7 +30,7 @@ const getters = {
   	}
   },
   detailBaseTrademark: state=>{
-  	if(state.true_type == '') {
+  	if(state.true_type == 'trademark') {
   		return state.data;
   	}else {
   		return null;

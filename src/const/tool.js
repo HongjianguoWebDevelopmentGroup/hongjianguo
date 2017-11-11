@@ -46,11 +46,22 @@ export default {
 		}
 		
 	},
-	coverObj (obj, obj1) {
-		for (let key in obj) {
-			obj[key] = obj1[key] == undefined ? obj[key] : obj1[key];
+	coverObj (a1, a2, { obj } = {}) {
+		
+		const map = new Map();
+		if(obj) {
+			obj.forEach(_=>{ map.set(_, true) });
 		}
-		return obj;
+
+		for (let key in a1) {
+			const v = a2[key];
+			if(obj && v instanceof Object && map.get(key)) {
+				a1[key] = v.id;
+			}else {
+				a1[key] = v == undefined ? a1[key] : v;	
+			}	
+		}
+		return a1;
 	},
 	searchTree (arr, id) {
 
