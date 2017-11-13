@@ -49,17 +49,26 @@ export default {
 	coverObj (a1, a2, { obj } = {}) {
 		
 		const map = new Map();
+		
 		if(obj) {
 			obj.forEach(_=>{ map.set(_, true) });
 		}
 
 		for (let key in a1) {
 			const v = a2[key];
-			if(obj && v instanceof Object && map.get(key)) {
-				a1[key] = v.id;
+
+			if(v === undefined) continue;
+			
+			if( obj && typeof v == 'object' && map.get(key) ) {
+				if( Array.isArray(v) ) {
+					a1[key] = v.map(_=>_.id);
+				}else {
+					a1[key] = v.id;	
+				}
 			}else {
 				a1[key] = v == undefined ? a1[key] : v;	
-			}	
+			}
+				
 		}
 		return a1;
 	},
