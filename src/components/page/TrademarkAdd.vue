@@ -324,7 +324,7 @@ export default {
 			cursor: pointer;
 		}
 		.right_side li:hover {
-			color: #58B7FF;
+			color: #58B7FF !important;
 		}
 	}
 </style>
