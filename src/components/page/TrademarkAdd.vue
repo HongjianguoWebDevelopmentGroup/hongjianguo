@@ -16,14 +16,14 @@
 			<el-form-item>
 				<el-button type=primary @click="trademarkJson">商标分类</el-button>
 				<el-dialog title="商标分类" :visible.sync='dialogVisible' :modal-append-to-body=false >
-					<div class="link_drop" style="height: 120px;overflow-y: auto; border: 1px solid #ccc;padding: 10px;">
+					<div class="link_drop" id="linkDrop" style="height: 120px;overflow-y: auto; border: 1px solid #ccc;padding: 10px;">
 						<div class="anchor" v-for="(item,index) in classifyContent">
-							<a :href="`#fl${index}`" @click="highLightColor('a',$event)">{{ `第${index+1}类` }}</a>
+							<a :href="`#fl${index}`" @click="highLightColors('linkDrop','a',$event)">{{ `第${index+1}类` }}</a>
 						</div>
 					</div>
 
-					<div style="height: 300px; overflow-y: auto; border: solid 1px #ccc;margin-top: 10px; padding: 10px;">
-						<div class="classify_content" v-for="(item,index) in classifyContent" :id="`fl${index}`">
+					<div style="height: 300px; overflow-y: auto; border: solid 1px #ccc;margin-top: 10px; padding: 10px;" id="classifyContent">
+						<div class="classify_content"  v-for="(item,index) in classifyContent" :id="`fl${index}`">
 							<div class="left_side">
 								<div class="classify_num">
 								<p>{{ item.name }}</p>
@@ -165,16 +165,17 @@ export default {
 		])
 	},
 	methods:{
-		highLightColor(tagName,event) {
-			var aList = document.getElementsByTagName(tagName);
+		highLightColors(id,tagName,event) {
+			var pId = document.getElementById(id);
+			var aList = pId.getElementsByTagName(tagName);
 			for (var i = 0;i < aList.length; i++ ) {
 				aList[i].style.color = '#000';
 			}
 			event.target.style.color = '#58B7FF';
 		},
 		show (i1,i2) {
-			console.log(this.classifyContent[i1]['groups'][i2]['description']);
-			this.highLightColor('li',event);
+			// console.log(this.classifyContent[i1]['groups'][i2]['description']);
+			this.highLightColors('classifyContent','li',event);
 			let con_detail = this.classifyContent[i1]['groups'][i2]['detail'];
 			let con_description = this.classifyContent[i1]['groups'][i2]['description'];
 			if(con_detail){
