@@ -122,6 +122,7 @@ export default {
 	mixins: [AxiosMixins],
 	data () {
 		return {
+			id: '',
 			form: {
 				title: '',
 		  		type: '',
@@ -209,7 +210,7 @@ export default {
   		if(this.checkForm()) return;
 
   		this.btn_disabled = true;
-  		const url = URL;
+  		const url = `${URL}/${this.id}`;
   		const data = this.$tool.shallowCopy(this.form, {'date': true});
   		data['figure'] = data['figure'][0];
   		const success = _=>{ 
@@ -232,6 +233,7 @@ export default {
   	},
   	refreshForm () {
   		if(this.pageType == 'edit' && this.detailBaseTrademark) {
+  			this.id = this.detailBaseTrademark.id;
   			this.$tool.coverObj(this.form, this.detailBaseTrademark, {'obj': ['area', 'type', 'categories']});
 
   			this.attachments = this.$tool.deepCopy(this.form.attachments);
