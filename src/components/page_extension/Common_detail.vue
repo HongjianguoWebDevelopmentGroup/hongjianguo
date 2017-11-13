@@ -124,6 +124,10 @@ export default {
       if(this.$refs.copyright) {
         this.$refs.copyright.edit();
       }
+
+      if(this.$refs.trademark) {
+        this.$refs.trademark.edit();
+      }
     },
     editSuccess () {
       this.refreshDetailData();
