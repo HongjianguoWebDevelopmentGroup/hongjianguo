@@ -15,7 +15,7 @@
 			</el-form-item>
 			<el-form-item>
 				<el-button type=primary @click="trademarkJson">商标分类</el-button>
-				<el-dialog title="商标分类" :visible.sync='dialogVisible'>
+				<el-dialog title="商标分类" :visible.sync='dialogVisible' :modal-append-to-body=false >
 					
 					<div style="height: 300px; overflow-y: auto; border: solid 1px #ccc; padding: 10px;">
 						<div class="classify_content" v-for="(item,index) in classifyContent" >
