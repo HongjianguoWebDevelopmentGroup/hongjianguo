@@ -190,7 +190,7 @@ export default {
 			tableData: '',
 			currentRow: '',
 			shrinkVisible: false,
-			filter: '',
+			filter: {},
 		};
   },
   methods: {
@@ -205,7 +205,7 @@ export default {
   		}
   		this.$axiosGet({
   			url: URL,
-  			data: option,
+  			data: Object.assign({}, this.filter, option),
   			success,
   		})
   	},

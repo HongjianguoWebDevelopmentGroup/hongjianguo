@@ -4,42 +4,42 @@
       <el-row>
         <el-col :span="12">
         	<el-form-item label="商标类型" prop="type">
-          	<static-select type="type" v-model="form.type"></static-select>
+          	<static-select type="type" v-model="form.type" multiple></static-select>
         	</el-form-item>
         </el-col>
         <el-col :span="12">
-          <el-form-item label="申请日" >
-           <el-date-picker type="date" v-model="form.apd" placeholder="请选择申请日"></el-date-picker>
+          <el-form-item label="申请日" prop="apd">
+           <el-date-picker type="daterange" v-model="form.apd" placeholder="请选择申请日"></el-date-picker>
           </el-form-item>
         </el-col>
         <el-col :span="12">
-        	<el-form-item label="地区" >
+        	<el-form-item label="地区" prop="area">
           	<static-select type="area" v-model="form.area" multiple></static-select>
         	</el-form-item>
         </el-col>
         <el-col :span="12">
-          <el-form-item label="初审公告日" >
-           <el-date-picker type="date" v-model="form.public_date" placeholder="请选择初审公告日"></el-date-picker>
+          <el-form-item label="初审公告日" prop="public_date">
+           <el-date-picker type="daterange" v-model="form.public_date" placeholder="请选择初审公告日"></el-date-picker>
           </el-form-item>
         </el-col>
         <el-col :span="12">
-          <el-form-item label="商标类别" >
-            <static-select type="categories" v-model="form.categories"></static-select>
+          <el-form-item label="商标类别" prop="categories">
+            <static-select type="categories" v-model="form.categories" multiple></static-select>
           </el-form-item>
         </el-col>
          <el-col :span="12">
-          <el-form-item label="核准注册日" >
-           <el-date-picker type="date" v-model="form.issue_date" placeholder="请选择核准注册日"></el-date-picker>
+          <el-form-item label="核准注册日" prop="issue_date">
+           <el-date-picker type="daterange" v-model="form.issue_date" placeholder="请选择核准注册日"></el-date-picker>
           </el-form-item>
         </el-col>
         <el-col :span="12">
-          <el-form-item label="申请人" >
+          <el-form-item label="申请人" prop="applicants">
            <remote-select type="applicant" v-model="form.applicants" multiple></remote-select>
           </el-form-item>
         </el-col>
         <el-col :span="12">
-          <el-form-item label="专用权期限" >
-            <el-date-picker type="date" v-model="form.expiring_date" placeholder="请选择专用权期数"></el-date-picker>
+          <el-form-item label="专用权期限" prop="expiring_date">
+            <el-date-picker type="daterange" v-model="form.expiring_date" placeholder="请选择专用权期数"></el-date-picker>
           </el-form-item>
         </el-col>
       </el-row>
