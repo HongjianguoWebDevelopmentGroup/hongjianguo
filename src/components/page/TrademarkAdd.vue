@@ -15,24 +15,27 @@
 			</el-form-item>
 			<el-form-item>
 				<el-button type=primary @click="trademarkJson">商标分类</el-button>
-				<el-dialog title="商标分类" :visible.sync='dialogVisible' top="25%">
-					<div class="classify_detail">
-						{{ detailContent }}
+				<el-dialog title="商标分类" :visible.sync='dialogVisible'>
+					
+					<div style="height: 300px; overflow-y: auto; border: solid 1px #ccc; padding: 10px;">
+						<div class="classify_content" v-for="(item,index) in classifyContent" >
+							<div class="left_side">
+								<div class="classify_num">
+								<p>{{ item.name }}</p>
+							</div>
+							<div class="comment">
+								<p>{{ item.description }}</p>
+							</div>
+							</div>
+							<div class="right_side">
+								<ul >
+									<li v-for = "(group,index2) in item['groups']" @click="show(index,index2)">{{group.name}}</li>
+								</ul>
+							</div>
+						</div>
 					</div>
-					<div class="classify_content" v-for="(item,index) in classifyContent">
-						<div class="left_side">
-							<div class="classify_num">
-							<p>{{ item.name }}</p>
-						</div>
-						<div class="comment">
-							<p>{{ item.description }}</p>
-						</div>
-						</div>
-						<div class="right_side">
-							<ul >
-								<li v-for = "(group,index2) in item['groups']" @click="show(index,index2)">{{group.name}}</li>
-							</ul>
-						</div>
+
+					<div class="classify_detail" style="height: 200px; overflow-y: auto; border: solid 1px #ccc; margin-top: 10px; padding: 10px;" v-html="detailContent">
 					</div>
 				</el-dialog>
 			</el-form-item>
@@ -153,8 +156,8 @@ export default {
 	},
 	methods:{
 		show (i1,i2) {
-			console.log(112);
-			return this.detailContent = this.classifyContent[i1]['groups'][i2]['description']
+			console.log(this.classifyContent[i1]['groups'][i2]['description']);
+			return this.detailContent = this.classifyContent[i1]['groups'][i2]['description'];
 		},
 		add () {
   		if(this.checkForm()) return;
@@ -210,31 +213,17 @@ export default {
   		}
   	},
   	trademarkJson () {
-  		const url = '/static/js/categories.json';
+  		
   		this.dialogVisible = true;
-  		this.$axios.get(
-  			url,{
-  				params:'',
-  			}
-  		).then(res=>{
-  			// console.log(res);
-  			this.classifyContent = res.data;
-  			// console.log(this.classifyContent[0].groups);
+  		
+  		if(this.classifyContent.length == 0) {
+  			const url = '/static/js/categories.json';
+
+  			this.$axios.get(url).then(res=>{
+  				this.classifyContent = res.data;
+  			}).catch(_=>{});	
+  		}
   
-  			// for( var i = 0; i < this.classifyContent.length; i++ ){
-  			// 	this.groups = [];
-  			// 	for( var j = 0; j< this.classifyContent[i].groups.length; j++ ){
-
-  			// 	this.groups.push(this.classifyContent[i].groups[j].name);
-  					
-  			// 	}	
-  			// 	console.log(this.groups);
-  			// }
-  			
-  			
-  		}).catch(err=>{
-
-  		})
   	},
 	},
 	created () {
@@ -287,11 +276,13 @@ export default {
 				list-style: none;
 			}
 		}
+		.right_side li {
+			cursor: pointer;
+		}
+		.right_side li:hover {
+			color: #58B7FF;
+		}
 	}
 </style>
 <style>
-	#trademarkAdd .el-dialog--small{
-		height: 500px;
-		overflow-y:scroll; 
-	}
 </style>
