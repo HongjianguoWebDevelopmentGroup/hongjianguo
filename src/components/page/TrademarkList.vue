@@ -86,14 +86,17 @@ export default {
 					'type': 'text',
 					'label': '商标图形',
 					'prop': 'figure',
+					'align': 'center',
+					'header_align': 'left',
 					render:(h,item)=>{
 						return h('img',{
 							attrs:{
 								src:item.viewUrl,
+								width: '150px',
 							}
 						})
 					},
-					'width': '145',
+					'width': '200',
 				},
 			  	{
 					'show': true,

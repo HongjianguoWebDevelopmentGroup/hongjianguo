@@ -133,7 +133,7 @@
         <template v-else-if="col.type == 'text' && tableControl[index]['show']" >
           
           <template v-if="col.render ? true : false">
-            <el-table-column :label="col.label" :prop="col.prop" :width="col.width ? col.width : ''" :sortable="col.sortable ? 'custom' : false" :show-overflow-tooltip="col.overflow !== undefined ? col.overflow : true">
+            <el-table-column :label="col.label" :prop="col.prop" :width="col.width ? col.width : ''" :sortable="col.sortable ? 'custom' : false" :show-overflow-tooltip="col.overflow !== undefined ? col.overflow : true" :align="col.align !== undefined ? col.align :'left'" :header-align="col.header_align !== undefined ? col.header_align :'left'">
               <template slot-scope="scope">
                 <table-render :render="col.render" :scope="scope" :prop="col.prop"></table-render>
               </template>

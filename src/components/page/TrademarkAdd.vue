@@ -197,7 +197,7 @@ export default {
   		this.btn_disabled = true;
   		const url = URL;
   		const data = this.$tool.shallowCopy(this.form, {'date': true});
-  		data['figure'] = data['figure'][0];
+
   		const success = _=>{ 
   			this.$message({message: _.info, type: 'success'});
   			this.$router.push('/trademark/list') 
@@ -212,7 +212,7 @@ export default {
   		this.btn_disabled = true;
   		const url = `${URL}/${this.id}`;
   		const data = this.$tool.shallowCopy(this.form, {'date': true});
-  		data['figure'] = data['figure'][0];
+ 
   		const success = _=>{ 
   			this.$message({message: _.info, type: 'success'});
   			this.$emit('editSuccess');
