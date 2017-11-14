@@ -92,7 +92,10 @@ export default {
 						return h('img',{
 							attrs:{
 								src:item.viewUrl,
-								width: '150px',
+								width: '150px',		
+							},
+							style:{
+								marginTop:'5px',
 							}
 						})
 					},

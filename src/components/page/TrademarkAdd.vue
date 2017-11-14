@@ -15,8 +15,16 @@
 			</el-form-item>
 			<el-form-item>
 				<el-button type=primary @click="trademarkJson">商标分类</el-button>
-				<el-dialog title="商标分类" :visible.sync='dialogVisible' :modal-append-to-body=false >
-					<div class="link_drop" id="linkDrop" style="height: 120px;overflow-y: auto; border: 1px solid #ccc;padding: 10px;">
+				<el-dialog title="商标分类" :visible.sync='dialogVisible' :modal-append-to-body=false top='8%' >
+					<div class="search" style="width: 200px;position: absolute;right: 50px;top: 15px">
+							<el-input
+							  placeholder="请输入关键字"
+							  icon="search"
+							  v-model="inputValue"
+							  :on-icon-click="searchDetail">
+							</el-input>
+					</div>
+					<div class="link_drop" id="linkDrop" style="height: 90px;overflow-y: auto; border: 1px solid #ccc;padding: 10px;">
 						<div class="anchor" v-for="(item,index) in classifyContent">
 							<a :href="`#fl${index}`" @click="highLightColors('linkDrop','a',$event)">{{ `第${index+1}类` }}</a>
 						</div>
@@ -26,11 +34,11 @@
 						<div class="classify_content"  v-for="(item,index) in classifyContent" :id="`fl${index}`">
 							<div class="left_side">
 								<div class="classify_num">
-								<p>{{ item.name }}</p>
-							</div>
-							<div class="comment">
-								<p>{{ item.description }}</p>
-							</div>
+									<p>{{ item.name }}</p>
+								</div>
+								<div class="comment">
+									<p>{{ item.description }}</p>
+								</div>
 							</div>
 							<div class="right_side">
 								<ul >
@@ -41,9 +49,12 @@
 					</div>
 
 					<div class="classify_detail" style="height: 200px; overflow-y: auto; border: solid 1px #ccc; margin-top: 10px; padding: 10px;" >
-						<div class="con_detail" v-html="detailContent"></div>
-						<div class="con_description" v-html="descriptionContent" style="color: red;">
-							
+						<div class="detail_click" v-if="flag">
+							<div class="con_detail" v-html="detailContent"></div>
+							<div class="con_description" v-html="descriptionContent" style="color: red;"></div>	
+						</div>
+						<div class="detail_search" v-else>
+							<span v-for="item in newArr" class="searchContent">{{ item }}</span>
 						</div>
 					</div>
 				</el-dialog>
@@ -56,7 +67,16 @@
 			</el-form-item>
 			</el-form-item>
 			<el-form-item label="商标图形" prop="figure">
-				<upload v-model="form.figure" :file-list="figure" :multiple="false"></upload>
+				<!-- <upload v-model="form.figure" :file-list="figure" :multiple="false"></upload> -->
+				<el-upload
+				  class="avatar-uploader"
+				  action="/api/files"
+				  :show-file-list="false"
+				  :on-success="successUpload"
+				  :before-upload="beforeUpload">
+				  <img v-if="form.figure" :src="form.figure" alt="" class="avatar">
+				  <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+				</el-upload>
 			</el-form-item>
 			<el-form-item label="优先权" prop="priorities">
 				<priorities v-model="form.priorities"></priorities>
@@ -157,7 +177,10 @@ export default {
 		  classifyContent: [],
 		  groups:[],
 		  detailContent:'',
-		  descriptionContent:''
+		  descriptionContent:'',
+		  inputValue:'',
+		  newArr:[],
+		  flag:false,
 		}
 	},
 	computed: {
@@ -176,6 +199,7 @@ export default {
 		},
 		show (i1,i2) {
 			// console.log(this.classifyContent[i1]['groups'][i2]['description']);
+			this.flag = true;
 			this.highLightColors('classifyContent','li',event);
 			let con_detail = this.classifyContent[i1]['groups'][i2]['detail'];
 			let con_description = this.classifyContent[i1]['groups'][i2]['description'];
@@ -258,6 +282,53 @@ export default {
   		}
   
   	},
+  	successUpload (p,f) {
+  		console.log(p);
+  		console.log(f);
+  		 if(p.status) {
+            const id = p.data.file.id;
+            // let copy;
+            // copy = id;
+            f.id = id;
+            f.downloadUrl = p.data.file.viewUrl;
+            // this.$emit('input', copy);
+
+            console.log(f.downloadUrl);
+            return this.form.figure =/api/+ f.downloadUrl;
+
+          }else {
+            this.$alert(p.info);
+            this.clearFiles();
+          }
+  	},
+  	beforeUpload (file) {
+  		const isJPG = file.type ;
+  		if (isJPG!== 'image/jpeg' && isJPG!== 'image/png' && isJPG!== 'image/gif') {
+  			this.$message.warning('上传商标图片必须是.gif,jpeg,jpg,png格式！');
+  			return false;
+  		}
+  		return isJPG;
+  	},
+  	searchDetail () {
+  		// console.log(this.classifyContent);
+  		if(!this.inputValue){
+           return this.newArr = [];
+  		}else{
+  			this.flag = false;
+  			let total = this.classifyContent;
+  			this.newArr = [];
+	  		for(var i=0; i < total.length; i++){
+	  			let group = total[i].groups;
+	  			for(var j=0; j < group.length; j++){
+	  				if(group[j].detail.indexOf(this.inputValue) > -1){
+	  					this.newArr.push(group[j]['detail']);
+	  				}
+	  			}
+	  		}
+  		}
+  		console.log(this.newArr);
+
+  	},
 	},
 	created () {
 		this.refreshForm();
@@ -281,6 +352,7 @@ export default {
 <style scoped lang="scss">
 	.link_drop {
 		.anchor a {
+			line-height: 26px;
 			color: #000;
 			text-decoration: none;
 			float: left;
@@ -326,7 +398,35 @@ export default {
 		.right_side li:hover {
 			color: #58B7FF !important;
 		}
+		.detail_search .searchContent{
+			display: inline-block;
+		}
 	}
+	
 </style>
 <style>
+
+	#trademarkAdd .avatar-uploader .el-upload {
+	    border: 1px dashed #d9d9d9;
+	    border-radius: 6px;
+	    cursor: pointer;
+	    position: relative;
+	    overflow: hidden;
+	}
+  	#trademarkAdd .avatar-uploader .el-upload:hover {
+		border-color: #20a0ff;
+	}
+	#trademarkAdd .avatar-uploader-icon {
+	    font-size: 28px;
+	    color: #8c939d;
+	    width: 148px;
+	    height: 148px;
+	    line-height: 148px;
+	    text-align: center;
+	}
+	#trademarkAdd .avatar {
+	    width: 148px;
+	    height: 148px;
+	    display: block;
+	}
 </style>
