@@ -7,15 +7,15 @@
 			<el-form-item label="商标类型" prop="type">
 				<static-select type="type" v-model="form.type"></static-select>
 			</el-form-item>
-			<el-form-item label="商标类别" prop="categories">
+			<el-form-item label="商标大类" prop="categories">
 				<static-select type="categories" v-model="form.categories" multiple></static-select>
 			</el-form-item>
-			<el-form-item label="详细类别" prop="detail">
+			<el-form-item label="商标小类" prop="detail">
 				<el-input v-model="form.detail" type="textarea"></el-input>
 			</el-form-item>
 			<el-form-item>
-				<el-button type=primary @click="trademarkJson">商标分类</el-button>
-				<el-dialog title="商标分类" :visible.sync='dialogVisible' :modal-append-to-body=false top='8%' >
+				<el-button type=primary @click="trademarkJson" size='small'>商标分类表（参考）</el-button>
+				<el-dialog title="商标分类（请选择并复制粘贴至“商标小类”文本框中）" :visible.sync='dialogVisible' :modal-append-to-body=false top='8%' >
 					<div class="search" style="width: 200px;position: absolute;right: 50px;top: 15px">
 							<el-input
 							  placeholder="请输入关键字"
@@ -169,8 +169,8 @@ export default {
 		  	title: { required: true, message: '商标名称不能为空', trigger: 'blur' },
 		  	type: { type: 'number', required: true, message: '商标类型不能为空', trigger: 'change' },
 		  	applicants: { type: 'array',  required: true, message: '申请人不能为空', trigger: 'blur' },
-		  	detail: {required: true, message: '详细类别不能为空', trigger: 'blur'},
-		  	categories: {type: 'array', required: true, message: '商标类别不能为空', trigger: 'change'}
+		  	detail: {required: true, message: '商标小类不能为空', trigger: 'blur'},
+		  	categories: {type: 'array', required: true, message: '商标大类不能为空', trigger: 'change'}
 		  },
 		  attachments: [],
 		  btn_disabled: false,
