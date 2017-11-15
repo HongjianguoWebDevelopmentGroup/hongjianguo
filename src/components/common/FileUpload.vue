@@ -14,7 +14,12 @@
       <el-table-column label="文件名称" prop="name"></el-table-column>
 			<el-table-column label="文件类型" prop="type">
         <template slot-scope="scope">
-          <static-select type="file_type" v-model="scope.row.type"></static-select>
+          <static-select :type="config.file_type" v-model="scope.row.type" ref="file_type"></static-select>
+        </template>
+      </el-table-column>
+      <el-table-column label="时间" prop="time" v-if="config.type == 'trademark'">
+        <template slot-scope="scope">
+          <el-date-picker type="date" placeholder="请选择时间" v-model="scope.row.time" style="width: 125px;"></el-date-picker>
         </template>
       </el-table-column>
       <el-table-column label="操作">
@@ -71,16 +76,19 @@ const config = [
 		action: 'getPatentDocuments',
 		url: '/patents/documents',
 		type: 'patent',
+    file_type: 'file_type',
 	}],
 	['copyright', {
 		action: 'getCopyrightDocuments',
 		url: '/copyrights/documents',
 		type: 'copyright',
+    file_type: 'file_type',
 	}],
   ['trademark', {
     action: 'getTrademarkDocuments',
-    url: '/trademark/documents',
+    url: '/trademarks/documents',
     type: 'trademark',
+    file_type: 'file_type_trademark',
   }]
 ]
 const map = new Map(config);
@@ -137,24 +145,36 @@ export default {
   		this.tableData.splice(scope.$index, 1);
   	},
   	importData () {
-  		console.log(this.tableData);
+  		
       if(this.tableData.length == 0) {
-  			this.$message({message: '上传数据不能为空', type: 'warning'});
-  			return;
+  			return this.$message({message: '上传数据不能为空', type: 'warning'});
   		}
 
       for(let d of this.tableData) {
-        if( !d.project || !d.type ) {
-          return this.$message({message: '关联案件与文件类型不能为空', type: 'warning'});
+        if( this.config.type == 'trademark' && !d.time ) {
+          return this.$message({message: '时间不能为空', type: 'warning'});
+        }
+        if( !d.project  ) {
+          return this.$message({message: '关联案件不能为空', type: 'warning'});
+        }
+        if( !d.type ) {
+          return this.$message({message: '文件类型不能为空', type: 'warning'});
         }
       }
 
   		const url = this.config.url;
-  		const data = {file: this.file, list: this.tableData};
+      const list = this.$tool.deepCopy(this.tableData);
+      list.forEach(_=>{
+        if(_.time) {
+          _.time = _.time.split('T')[0];
+        }
+      })
+  		const data = {file: this.file, list };
   		const success = _=>{
-  			this.dialogVisible = false;
-  			this.$message({message: '上传文件成功', type: 'success'});
-  			this.$emit('uploadSuccess'); 
+        this.clear();
+        this.dialogVisible = false;
+        this.$message({message: '上传文件成功', type: 'success'});
+  			this.$emit('uploadSuccess');
   		};
 
   		this.axiosPost({url, data, success});
@@ -173,6 +193,10 @@ export default {
   	},
     handleDelete (index) {
       this.tableData.splice(index, 1);
+    },
+    clear () {
+      this.file = [];
+      this.tableData = [];
     }
   },
   components: { 

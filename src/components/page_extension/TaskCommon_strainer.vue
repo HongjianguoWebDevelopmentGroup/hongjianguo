@@ -7,15 +7,7 @@
         
         
         <el-form-item label="案件类型" prop="category">
-          <el-select v-model="form.category">
-            <el-option
-              v-for="item in options.project_type"
-              :key="item.value"
-              :label="item.label"
-              :value="item.value"
-            >
-            </el-option>
-          </el-select>
+          <static-select type="case_type" v-model="form.category"></static-select>
         </el-form-item>
         <el-form-item label="代理机构" prop="agency">
           <remote-select type="agency" v-model="form.agency" multiple></remote-select>
@@ -86,14 +78,6 @@ export default {
 		  	'end_time': [],
         'apd': [],
         'inner_deadline': [],
-		  },
-		  options: {
-		  	'project_type': [
-		  		{label: '提案', value: 0},
-          {label: '专利', value: 1},
-		  		{label: '版权', value: 3},
-		  		// {label: '项目', value: 4},
-		  	]
 		  }
 		}
   },

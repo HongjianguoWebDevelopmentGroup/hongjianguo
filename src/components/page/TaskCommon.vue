@@ -107,6 +107,7 @@
       :visible.sync="moreVisible" 
       :title="currentRow.title"
       @editSuccess="editProjectSuccess"
+      :refresh-switch="false"
       ref="detail">
     </common-detail>   
 
@@ -514,11 +515,15 @@ export default {
     },
     categoryType () {
       let type = '';
+
       if(this.currentRow.category == 1) {
         type = 'patent';
       }
       if(this.currentRow.category == 3) {
         type = 'copyright';
+      }
+      if(this.currentRow.category == 2) {
+        type = 'trademark';
       }
 
       return type;

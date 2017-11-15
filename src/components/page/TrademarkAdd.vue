@@ -1,8 +1,8 @@
 <template>
 	<div class="main" id="trademarkAdd">
 		<el-form :model="form" ref="form" label-width="120px" :rules="rules">
-			<el-form-item label="商标名" prop="title">
-				<el-input v-model="form.title"></el-input>
+			<el-form-item label="商标名称" prop="title">
+				<el-input v-model="form.title" placeholder="请输入商标名称"></el-input>
 			</el-form-item>
 			<el-form-item label="商标类型" prop="type">
 				<static-select type="type" v-model="form.type"></static-select>
@@ -76,7 +76,7 @@
 				  :show-file-list="false"
 				  :on-success="successUpload"
 				  :before-upload="beforeUpload">
-				  <img v-if="form.figure" :src="form.figure" alt="" class="avatar">
+				  <img v-if="form.figure" :src="figure_src" alt="" class="avatar">
 				  <i v-else class="el-icon-plus avatar-uploader-icon"></i>
 				</el-upload>
 			</el-form-item>
@@ -174,7 +174,7 @@ export default {
 		  },
 		  attachments: [],
 		  btn_disabled: false,
-		  figure: [],
+		  figure_src: '',
 		  dialogVisible: false,
 		  classifyContent: [],
 		  groups:[],
@@ -267,8 +267,12 @@ export default {
   			this.form.attachments = this.attachments.map( _=>_.id );
 
   			if(this.form.figure) {
-  				this.figure = this.$tool.deepCopy([ this.form.figure ]);
-  				this.form.figure = this.form.figure.id;	
+  				const o = this.$tool.deepCopy(this.form.figure);
+  				this.form.figure = o.id;
+  				this.figure_src = o.viewUrl;	
+  			}else {
+  				this.form.figure = "";
+  				this.form_src = "";
   			}
   		}
   	},
@@ -285,24 +289,16 @@ export default {
   		}
   
   	},
-  	successUpload (p,f) {
-  		console.log(p);
-  		console.log(f);
-  		 if(p.status) {
-            const id = p.data.file.id;
-            // let copy;
-            // copy = id;
-            f.id = id;
-            f.downloadUrl = p.data.file.viewUrl;
-            // this.$emit('input', copy);
-
-            console.log(f.downloadUrl);
-            return this.form.figure =/api/+ f.downloadUrl;
-
-          }else {
-            this.$alert(p.info);
-            this.clearFiles();
-          }
+  	successUpload (p) {
+  		const d = p.data;
+		 	if(p.status) {
+            
+		 		this.form.figure = d.file.id;
+		 		this.figure_src = d.file.viewUrl;
+	    }else {
+	    	this.$message({message: p.info, type: 'warning'});
+	      // this.$messa(p.info);
+	    }
   	},
   	beforeUpload (file) {
   		const isJPG = file.type ;
@@ -335,7 +331,7 @@ export default {
 	  			
 	  		}
   		}
-  		console.log(this.newArr);
+  		// console.log(this.newArr);
 
   	},
 	},

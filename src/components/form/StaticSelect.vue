@@ -80,9 +80,22 @@ const config = [
       {id:6,name:"分析"}
     ]
   }],
+  ['case_type', {
+    placeholder: '请选择案件类型',
+    options: [
+      { id: 0, name: '提案' },
+      { id: 1, name: '专利' },
+      { id: 2, name: '商标' },
+      { id: 3, name: '版权' },
+    ]
+  }],
   ['file_type', {
     placeholder: '请选择文件类型',
     url: '/api/fileTypes',
+  }],
+  ['file_type_trademark', {
+    placeholder: '请选择商标文件类型',
+    url: '/api/fileTypesTrademark'
   }],
   ['group', {
     placeholder: '请选择用户组',
@@ -154,6 +167,7 @@ const dataMap = new Map([
   ['fee_target_income', {data: null}],
   ['fee_target_expenditure', {data: null}],
   ['file_type', {data: null}],
+  ['file_type_trademark',{data: null}],
   ['fee_code', {data: null}],
   ['tag', {data: null}],
   ['flow_node', {data: null}],

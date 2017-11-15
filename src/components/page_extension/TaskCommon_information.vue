@@ -121,6 +121,46 @@
         </template>
       </el-form>
 	  </el-collapse-item>
+    <el-collapse-item name="2" v-else-if="row.category == 2">
+      <template slot="title">
+        商标详情<el-button size="mini" type="text" style="margin-left: 10px;" @click.stop="editCopyright">更多...</el-button>
+      </template>
+      <el-form label-width="100px" label-position="left" class="form-information" v-loading="detailLoading" element-loading-text="加载商标信息中..." style="min-height: 300px;">
+        <template v-if="!!detailBaseTrademark" >
+          <el-row :gutter="20">
+            <el-col :span="12">
+              
+              <el-form-item label="申请人"><span class="form-item-text">{{ detailBaseTrademark.applicants.length ? detailBaseTrademark.applicants.map(_=>_.name).join(';') : '' }}</span></el-form-item>
+              <el-form-item label="申请地区"><span class="form-item-text">{{ detailBaseTrademark.area.name }}</span></el-form-item>
+              <el-form-item label="商标类型"><span class="form-item-text">{{ detailBaseTrademark.type.name }}</span></el-form-item>
+              <el-form-item label="初审公告日"><span class="form-item-text">{{ detailBaseTrademark.public_date }}</span></el-form-item>
+              <el-form-item label="初审公告期数"><span class="form-item-text">{{ detailBaseTrademark.public_number }}</span></el-form-item>
+              <!-- <el-form-item label="专用权期限"><span class="form-item-text">{{ detailBaseTrademark.expiring_date }}</span></el-form-item> -->
+            </el-col>
+            <el-col :span="12">
+              <el-form-item label="商标类别"><span class="form-item-text">{{ detailBaseTrademark.categories.length ? detailBaseTrademark.categories.map(_=>_.name).join(';') : '' }}</span></el-form-item>
+              <el-form-item label="申请日"><span class="form-item-text">{{ detailBaseTrademark.apd }}</span></el-form-item>
+              <el-form-item label="申请号"><span class="form-item-text">{{ detailBaseTrademark.apn }}</span></el-form-item>
+
+              <el-form-item label="核准注册日"><span class="form-item-text">{{ detailBaseTrademark.issue_date }}</span></el-form-item>
+              <el-form-item label="核准公告期数"><span class="form-item-text">{{ detailBaseTrademark.issue_number }}</span></el-form-item>
+              
+            </el-col>
+          </el-row>
+          <el-row>
+            <el-form-item label="详细类别"><span class="form-item-text">{{ detailBaseTrademark.detail }}</span></el-form-item>
+          </el-row>
+          <el-row>
+            <el-form-item label="备注"><span class="form-item-text">{{ detailBaseTrademark.remark }}</span></el-form-item>
+          </el-row>
+          <el-row>
+            <el-form-item label="附件">
+              <table-component :tableOption="attachmentsOption" :data="detailBaseTrademark.attachments"></table-component>
+            </el-form-item>
+          </el-row>
+        </template>
+      </el-form>
+    </el-collapse-item>
     <el-collapse-item name="2" v-else-if="row.category == 5" title="账单详情">
       <invoice-detail :id="row.project_id"></invoice-detail>
     </el-collapse-item>
@@ -132,8 +172,14 @@ import AxiosMixins from '@/mixins/axios-mixins'
 import TableComponent from '@/components/common/TableComponent'
 import InvoiceDetail from '@/components/page_extension/InvoiceCommon_detail'
 import { mapGetters } from 'vuex'
+import { mapActions } from 'vuex'
 
 const URL = '/api/tasks';
+const map = new Map([
+  [1, 'patent'],
+  [2, 'trademark'],
+  [3, 'copyright'],
+])
 
 export default {
   name: 'taskEdit',
@@ -208,19 +254,23 @@ export default {
     ...mapGetters([
       'detailBasePatent',
       'detailBaseCopyright',
+      'detailBaseTrademark',
       'detailLoading',
     ])  
   },
   methods: {
+    ...mapActions([
+      'refreshDetailData',
+    ]),
   	refresh () {
 	  	this.loading = true;
-	  	if(this.row.category == 0) {
+      const c = this.row.category; 
+	  	if( c == 0) {
 	  		this.refreshP();
-	  	}else if(this.row.category == 1) {
-	  		this.refreshPatent();
-	  	}else if(this.row.category == 3) {
-        this.refreshCopyright();
+	  	}else if(map.get(c)) {
+        this.refreshDetailData({id: this.row.project_id, type: map.get(c)});
       }
+
   	},
   	refreshP () {
   		const url = `/api/proposals/${this.row.project_id}`;

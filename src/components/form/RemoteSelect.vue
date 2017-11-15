@@ -71,6 +71,12 @@ const map = new Map([
 		PLACEHOLDER: '请输入专利关键词',
 		PARAMS: { category: 1 },
 	}],
+  ['trademark', {
+    URL: '/api/projects',
+    DATA_KEY: 'projects',
+    PLACEHOLDER: '请输入商标关键词',
+    PARAMS: { category: 2 },
+  }],
 	['copyright', {
 		URL: '/api/projects',
 		DATA_KEY: 'projects',

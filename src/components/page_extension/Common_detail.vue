@@ -68,6 +68,10 @@ export default {
       default: false,
     },
     'title': String,
+    'refreshSwitch': {//是否开启自动刷新
+      type: Boolean,
+      default: true,
+    },
   },
   data () {
 		return {
@@ -108,12 +112,12 @@ export default {
     ]),
     refreshDetail () {
       if(!this.type) return;
-
+      if(!this.refreshSwitch) return;
+      
       const type = this.type;
       const id = this.id;
-      this.$store.commit('setDetailType', type);
-
-      this.refreshDetailData({ id });
+      
+      this.refreshDetailData({ id, type });
     },
     edit () {
       
