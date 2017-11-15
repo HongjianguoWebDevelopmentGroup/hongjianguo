@@ -21,7 +21,9 @@
 							  placeholder="请输入关键字"
 							  icon="search"
 							  v-model="inputValue"
-							  :on-icon-click="searchDetail">
+							  :on-icon-click="searchDetail"
+							  @keyup.enter.native="searchDetail"
+							  >
 							</el-input>
 					</div>
 					<div class="link_drop" id="linkDrop" style="height: 90px;overflow-y: auto; border: 1px solid #ccc;padding: 10px;">
@@ -54,7 +56,7 @@
 							<div class="con_description" v-html="descriptionContent" style="color: red;"></div>	
 						</div>
 						<div class="detail_search" v-else>
-							<span v-for="item in newArr" class="searchContent">{{ item }}</span>
+							<span v-for="item in newArr2" class="searchContent" v-html="item"></span>
 						</div>
 					</div>
 				</el-dialog>
@@ -180,6 +182,7 @@ export default {
 		  descriptionContent:'',
 		  inputValue:'',
 		  newArr:[],
+		  newArr2:[],
 		  flag:false,
 		}
 	},
@@ -324,6 +327,12 @@ export default {
 	  					this.newArr.push(group[j]['detail']);
 	  				}
 	  			}
+	  		}
+	  		this.newArr2 = [];
+	  		for(var k = 0;k < this.newArr.length; k++){
+	  			this.newArr2.push(this.newArr[k].replace(new RegExp(this.inputValue,'g'),'<span style="color:red;">'+this.inputValue+'</span>'));	
+	  			// console.log(123);
+	  			
 	  		}
   		}
   		console.log(this.newArr);
