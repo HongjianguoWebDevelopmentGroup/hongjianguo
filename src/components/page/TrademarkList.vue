@@ -53,7 +53,7 @@ export default {
 				'import_type': 'trademark',
 				'upload_type': 'trademark',
 				'highlightCurrentRow': true, 
-	      		'rowClick': this.handleRowClick,
+	      'rowClick': this.handleRowClick,
 				'height': 'default',
 				'columns': [{
 					'show': true,
@@ -72,6 +72,7 @@ export default {
 					'label': '商标名称',
 					'prop': 'title',
 					'width': '168',
+					'is_import': true,
 				},
 				{
 					'show': true,
@@ -80,6 +81,7 @@ export default {
 					'prop': 'type',
 					'render_simple':'name',
 					'width': '145',
+					'is_import': true,
 				},
 				{
 					'show': true,
@@ -109,6 +111,7 @@ export default {
 					'is_import': true,
 					'render_simple': 'name',
 					'width': '145',
+					'is_import': true,
 			  },
 			  {
 					'show': true,
@@ -117,6 +120,7 @@ export default {
 					'prop': 'detail',
 					'is_import': true,
 					'width': '260',
+					'is_import': true,
 			  },
 			   {
 					'show': true,
@@ -126,6 +130,7 @@ export default {
 					render:_=>_.map(_=>_.name),
 					'is_import': true,
 					'width': '260',
+					'is_import': true,
 			  },
 			  {
 					'show': true,
@@ -135,6 +140,7 @@ export default {
 					'is_import': true,
 					'width': '260',
 					render:_=>_.map(_=>_.name),
+					'is_import': true,
 			  },
 			  {
 					'show': true,
@@ -142,6 +148,7 @@ export default {
 					'label': '申请号',
 					'prop': 'apn',
 					'width': '240',
+					'is_import': true,
 			  },
 			  {
 					'show': true,
@@ -149,6 +156,7 @@ export default {
 					'label': '申请日',
 					'prop': 'apd',
 					'width': '168',
+					'is_import': true,
 			  },
 			  {
 					'show': true,
@@ -156,13 +164,15 @@ export default {
 					'label': '初审公告日',
 					'prop': 'public_date',
 					'width': '168',
+					'is_import': true,
 			  },
 			  {
 					'show': true,
 					'type': 'text',
 					'label': '初审公告期数',
 					'prop': 'public_number',
-					'width': '168'
+					'width': '168',
+					'is_import': true,
 			  },
 			  {
 					'show': true,
@@ -170,6 +180,7 @@ export default {
 					'label': '核准注册日',
 					'prop': 'issue_date',
 					'width': '168',
+					'is_import': true,
 			  },
 			  {
 					'show': true,
@@ -177,6 +188,7 @@ export default {
 					'label': '核准公告期数',
 					'prop' : 'issue_number',
 					'width': '168',
+					'is_import': true,
 			  },  
 			  {
 					'show': true,
@@ -184,6 +196,7 @@ export default {
 					'label': '专用权期限',
 					'prop': 'expiring_date',
 					 'width' : '145',
+					 'is_import': true,
 			  },
 			  {
 					'show': true,
@@ -191,6 +204,7 @@ export default {
 					'label': '备注',
 					'prop': 'remark',
 					'width': '280',
+					'is_import': true,
 			  },] 
 			},
 			tableData: '',

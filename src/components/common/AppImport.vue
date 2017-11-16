@@ -11,7 +11,7 @@
       <el-table-column fixed="left" label="序号" width="80">
         <template slot-scope="scope"><span style="color: #20a0ff">{{ scope.$index + 1 }}</span></template>
       </el-table-column>
-			<el-table-column fixed="left" label="内部案号" width="150" prop="serial"></el-table-column>
+			<el-table-column fixed="left" label="内部案号" width="150" prop="serial" v-if="config.is_serial"></el-table-column>
 			
 			<template v-for="(col, index) in columns">
 
@@ -46,7 +46,7 @@
 
 			<el-table-column label="操作" width="150">
 	      <template slot-scope="scope">
-	        <el-button  type="text" size="small" @click="designPop(scope)">指定案号</el-button>
+	        <el-button  type="text" size="small" @click="designPop(scope)" v-if="config.is_serial">指定案号</el-button>
 	        <el-button type="text" size="small" @click="deleteSingle(scope)">删除</el-button>
 	      </template>
     	</el-table-column>
@@ -109,6 +109,7 @@ const config = [
     category: 2,
     model: '/static/templates/trademark_batch_template.',
     model_name: '商标导入模板',
+    is_serial: false,
   }],
 	['patent_notice', {
 		action: 'getPatentNotices',
@@ -175,6 +176,7 @@ export default {
     ]),
   	config () {
   		const config = map.get(this.type);
+      if(config.is_serial == undefined) {config.is_serial = true};
   		return config ? config : this.type;
   	},
   	upload_url () {
