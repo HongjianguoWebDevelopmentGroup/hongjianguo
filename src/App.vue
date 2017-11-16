@@ -20,7 +20,8 @@
     </el-popover>
 
     <nav>
-        <img src="/static/static_img/cvte_log.png" style="vertical-align: middle; height: 28px;">
+        <img src="/static/static_img/hjg_logo.png" style="vertical-align: middle; height: 28px;">
+        <span class="logo_name">知识产权管理系统</span>
         <el-dropdown  trigger="click" style="float: right; margin-right: 40px;" @command="handleCommond">
           <span class="el-dropdown-link" style="color: #20a0ff; cursor: pointer;">
             {{ username }}<i class="el-icon-caret-bottom el-icon--right"></i>
@@ -278,7 +279,7 @@ a {
   color: #20a0ff;
 }
 #app {
-  posiion: relative;
+  position: relative;
   padding: {
     top: $nav_height;
     left: $navL_width;
@@ -439,6 +440,14 @@ nav {
 }
 .hjg-table .el-pagination {
   margin-top: 10px;
+}
+.logo_name {
+  padding-left: 10px;
+  font-size: 18px;
+  height: 28px;
+  line-height: 28px;
+  // font-weight: bold;
+  display: inline-block;
 }
 /*这里放入重写element-ui样式的内容*/
 #app {
