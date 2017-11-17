@@ -71,9 +71,9 @@
     <el-form-item prop="remark" label="任务备注" v-if="fields.remark && !hide_r_a">
       <el-input type="textarea" v-model="form.remark"></el-input>
     </el-form-item>
-     <ul v-if="data.description && data.description.length != 0" style="margin-left:115px;padding: 0;margin-top:-10px; font-size:14px;color:#bbb;">
-          <li v-for="(item, index) in data.description" :key="index">{{ item }}</li>
-        </ul>
+    <ul v-if="data.description && data.description.length != 0" style="margin-left:115px;padding: 0;margin-top:-10px; font-size:14px;color:#bbb;">
+      <li v-for="(item, index) in data.description" :key="index">{{ item }}</li>
+    </ul>
     <el-form-item prop="rank" label="评分" v-if="fields.rank">
       <el-rate 
         v-model="form.rank" 
@@ -86,6 +86,9 @@
     <el-form-item v-if="next == '20'" prop="pconfirm" label="确认" :rules="confirmValidator">
       <el-checkbox v-model="form.pconfirm">已确认送件信息完整</el-checkbox><el-button type="text" size="mini" style="margin-left: 10px;" @click="$emit('more', 'patent')">查看</el-button>
     </el-form-item>
+    <el-form-item prop="is_supplement" label="补充" v-if="fields.is_supplement" >
+      <app-switch type="is" v-model="form.is_supplement"></app-switch>
+    </el-form-item>
   	<el-form-item style="margin-bottom: 0px;">
   		<el-button type="primary" @click="submitFunc" :disabled="btn_disabled">提交</el-button>
   	</el-form-item>
@@ -95,12 +98,11 @@
 
 <script>
 import axiosMixins from '@/mixins/axios-mixins'
-import Member from '@/components/form/Member'
-import Agent from '@/components/form/Agent'
-import Agency from '@/components/form/Agency'
+
 import Upload from '@/components/form/Upload'
 import RemoteSelect from '@/components/form/RemoteSelect'
 import StaticSelect from '@/components/form/StaticSelect'
+import AppSwitch from '@/components/form/AppSwitch'
 
 import {mapMutations} from 'vuex'
 import {mapActions} from 'vuex'
@@ -129,7 +131,7 @@ export default {
         area: [],
         type: '',
         pconfirm: false,
-
+        is_supplement: 0,
 			},
 			'defaultVal': '',
       'agencyMap': [],
@@ -237,7 +239,7 @@ export default {
               }
               if(this.fields.type) this.form.type = 1;
               if(this.defaultVal == 'ipr') {
-                this.form.person_in_charge = person_in_charge['id'];
+                this.form.person_in_charge = person_in_charge['id'] ? person_in_charge['id'] : '';
               }else {
                 this.form.person_in_charge = person_in_charge;
               }
@@ -290,7 +292,12 @@ export default {
       return this.data.next && this.data.next.length != 0 ? true : false;
     }
 	},
-	components: { Member, Agent, Agency, Upload, RemoteSelect, StaticSelect }
+	components: { 
+    Upload,
+    RemoteSelect, 
+    StaticSelect,
+    AppSwitch, 
+  }
 }
 </script>
 
