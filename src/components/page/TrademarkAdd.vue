@@ -192,7 +192,7 @@ export default {
 		])
 	},
 	methods:{
-		highLightColors(id,tagName,event) {
+		highLightColors(id,tagName,event) {				//点击标签颜色高亮
 			var pId = document.getElementById(id);
 			var aList = pId.getElementsByTagName(tagName);
 			for (var i = 0;i < aList.length; i++ ) {
@@ -202,6 +202,7 @@ export default {
 		},
 		show (i1,i2) {
 			// console.log(this.classifyContent[i1]['groups'][i2]['description']);
+			// 展示商标分类详情
 			this.flag = true;
 			this.highLightColors('classifyContent','li',event);
 			let con_detail = this.classifyContent[i1]['groups'][i2]['detail'];
@@ -290,19 +291,20 @@ export default {
   
   	},
   	successUpload (p) {
+  		//处理图片上传成功回调数据
   		const d = p.data;
-		 	if(p.status) {
+		 	if(p.status) {	
             
-		 		this.form.figure = d.file.id;
-		 		this.figure_src = d.file.viewUrl;
+		 		this.form.figure = d.file.id;	
+		 		this.figure_src = d.file.viewUrl;	
 	    }else {
 	    	this.$message({message: p.info, type: 'warning'});
 	      // this.$messa(p.info);
 	    }
   	},
   	beforeUpload (file) {
-  		const isJPG = file.type ;
-  		if (isJPG!== 'image/jpeg' && isJPG!== 'image/png' && isJPG!== 'image/gif') {
+  		const isJPG = file.type ;	//获取上传文件类型
+  		if (isJPG!== 'image/jpeg' && isJPG!== 'image/png' && isJPG!== 'image/gif') {    //判断文件格式
   			this.$message.warning('上传商标图片必须是.gif,jpeg,jpg,png格式！');
   			return false;
   		}
@@ -316,16 +318,17 @@ export default {
   			this.flag = false;
   			let total = this.classifyContent;
   			this.newArr = [];
-	  		for(var i=0; i < total.length; i++){
+	  		for(var i=0; i < total.length; i++){    //第一次遍历全部数据
 	  			let group = total[i].groups;
-	  			for(var j=0; j < group.length; j++){
-	  				if(group[j].detail.indexOf(this.inputValue) > -1){
-	  					this.newArr.push(group[j]['detail']);
+	  			for(var j=0; j < group.length; j++){	//第二次遍历每一类的数据
+	  				if(group[j].detail.indexOf(this.inputValue) > -1){	//检索匹配字符串
+	  					this.newArr.push(group[j]['detail']);		
 	  				}
 	  			}
 	  		}
 	  		this.newArr2 = [];
 	  		for(var k = 0;k < this.newArr.length; k++){
+	  			//用正则表达式将检索字段标红
 	  			this.newArr2.push(this.newArr[k].replace(new RegExp(this.inputValue,'g'),'<span style="color:red;">'+this.inputValue+'</span>'));	
 	  			// console.log(123);
 	  			
