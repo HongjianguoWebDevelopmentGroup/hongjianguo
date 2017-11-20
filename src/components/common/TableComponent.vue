@@ -133,7 +133,7 @@
         <template v-else-if="col.type == 'text' && tableControl[index]['show']" >
           
           <template v-if="col.render ? true : false">
-            <el-table-column :label="col.label" :prop="col.prop" :width="col.width ? col.width : ''" :sortable="col.sortable ? 'custom' : false" :show-overflow-tooltip="col.overflow !== undefined ? col.overflow : true" :align="col.align !== undefined ? col.align :'left'" :header-align="col.header_align !== undefined ? col.header_align :'left'">
+            <el-table-column :label="col.label" :prop="col.prop" :width="col.width ? col.width : ''" :min-width="col.min_width ? col.min_width : ''" :sortable="col.sortable ? 'custom' : false" :show-overflow-tooltip="col.overflow !== undefined ? col.overflow : true" :align="col.align !== undefined ? col.align :'left'" :header-align="col.header_align !== undefined ? col.header_align :'left'">
               <template slot-scope="scope">
                 <table-render :render="col.render" :scope="scope" :prop="col.prop"></table-render>
               </template>
@@ -141,7 +141,7 @@
           </template>
 
           <template v-else-if="col.render_simple ? true : false ">
-            <el-table-column :label="col.label" :prop="col.prop" :width="col.width ? col.width : ''" :sortable="col.sortable ? 'custom' : false" :show-overflow-tooltip="col.overflow !== undefined ? col.overflow : true">
+            <el-table-column :label="col.label" :prop="col.prop" :width="col.width ? col.width : ''" :min-width="col.min_width ? col.min_width : ''" :sortable="col.sortable ? 'custom' : false" :show-overflow-tooltip="col.overflow !== undefined ? col.overflow : true">
               <template slot-scope="scope">
                 <span class="table-column-render">{{ scope.row[col.prop][col.render_simple] }}</span>
               </template>
@@ -149,7 +149,7 @@
           </template>
 
           <template v-else>
-            <el-table-column :label="col.label" :prop="col.prop" :width="col.width ? col.width : ''" :sortable="col.sortable ? 'custom' : false" :show-overflow-tooltip="col.overflow !== undefined ? col.overflow : true">
+            <el-table-column :label="col.label" :prop="col.prop" :width="col.width ? col.width : ''" :min-width="col.min_width ? col.min_width : ''" :sortable="col.sortable ? 'custom' : false" :show-overflow-tooltip="col.overflow !== undefined ? col.overflow : true">
               <!-- <template v-if="col.default !== undefined" scope="scope">{{ scope.row[col.prop] ? scope.row[col.prop] : col.default }}</template> -->
             </el-table-column>
           </template>
@@ -162,7 +162,7 @@
         </template>
 
         <template v-else-if="col.type == 'array'">
-          <el-table-column :label="col.label" :prop="col.render ? `${col.prop}__render` : col.prop" :width="col.width ? col.width : ''" v-if="tableControl[index]['show']" :sortable="col.sortable ? 'custom' : false" :show-overflow-tooltip="col.overflow !== undefined ? col.overflow : true">
+          <el-table-column :label="col.label" :prop="col.render ? `${col.prop}__render` : col.prop" :width="col.width ? col.width : ''" :min-width="col.min_width ? col.min_width : ''" v-if="tableControl[index]['show']" :sortable="col.sortable ? 'custom' : false" :show-overflow-tooltip="col.overflow !== undefined ? col.overflow : true">
             <template slot-scope="scope">
 
               <el-tag v-for="(item, i) in scope.row[scope.column.property]" style="margin-left: 5px;" close-transition :key="i">{{ item }}</el-tag>

@@ -24,18 +24,18 @@ export default {
 		  	],
         'height': 'default2',
 		  	'columns': [
-		  		{ type: 'text', label: '快递公司', prop: 'company' },
-          { type: 'text', label: '快递单号', prop: 'number' },
-          { type: 'text', label: '发件日期', prop: 'mail_date' },
-          { type: 'text', label: '收件日期', default: '暂未收件', prop: 'receipt_date' },
-          { type: 'text', label: '收件人', render_simple: 'name', prop: 'to' },
-          { type: 'text', label: '发件人', render_simple: 'name', prop: 'from' },
+		  		{ type: 'text', label: '快递公司', prop: 'company', width:'160' },
+          { type: 'text', label: '快递单号', prop: 'number' , width:'240'},
+          { type: 'text', label: '发件日期', prop: 'mail_date', width:'178'},
+          { type: 'text', label: '收件日期', default: '暂未收件', prop: 'receipt_date', width:'178'},
+          { type: 'text', label: '收件人', render_simple: 'name', prop: 'to', width:'145' },
+          { type: 'text', label: '发件人', render_simple: 'name', prop: 'from', width:'145'},
           { type: 'array', label: '文件信息', prop: 'projects', width:'263',
             render (array) {
               return array.map(_=>`${_.name}: ${_.type.join(";")}`);
             }
           },
-          { type: 'text', label: '发文描述', prop: 'description' },
+          { type: 'text', label: '发文描述', prop: 'description', min_width:'210' },
           { 
 		  			type: 'action',
             width: '200', 

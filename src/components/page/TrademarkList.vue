@@ -53,7 +53,7 @@ export default {
 				'import_type': 'trademark',
 				'upload_type': 'trademark',
 				'highlightCurrentRow': true, 
-	      'rowClick': this.handleRowClick,
+	      		'rowClick': this.handleRowClick,
 				'height': 'default',
 				'columns': [{
 					'show': true,

@@ -356,6 +356,22 @@ export default {
     },
     titleRender (h,item,data) {
       const color = colorMap.get(data['color']);
+      let tipContent = '';
+      if(color === "#3c3"){
+        // console.log('绿色');
+        tipContent = "正常";
+      }else if(color === "#f90"){
+        // console.log('橙色');
+        tipContent = "即将到期";
+      }else if(color === "#c03"){
+        // console.log('红色');
+        tipContent = "已过期";
+      }else if(color === "#339"){
+        tipContent = "暂停处理";
+      }else if( color === "#09C"){
+        tipContent = "已完成";
+      }
+
       let str = '';
       if(data.flag == 1) {
         str += '(代)';
@@ -367,10 +383,14 @@ export default {
       str += item;
 
       return ( 
+        
         <span>
-          <i class="table-flag" style={`background-color: ${color}; margin-right: 10px;`}></i> 
-          <span>{ str }</span>
+          <el-tooltip effect="dark" content={`${tipContent}`} placement="top">
+            <i class="table-flag" style={`background-color: ${color}; margin-right: 10px;`}></i>  
+          </el-tooltip>  
+            <span>{ str }</span>
         </span>
+       
       );
     },
     titleClick (data) {

@@ -103,12 +103,24 @@ export default {
     },
   	mailDelete ({id}) {
   		const url = `${URL}/${id}`;
-  		const success = _=>{ 
-        this.update();
-        this.$message({message: '删除邮件成功', type: 'success'}) 
-      };
+      this.$confirm(
+        '此操作将永久删除该邮件, 是否继续?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(()=>{
+          const success = _=>{ 
+          this.update();
+          this.$message({message: '删除邮件成功', type: 'success'}) 
+        };
 
-  		this.axiosDelete({url, success});
+        this.axiosDelete({url, success});
+        }).catch(()=>{
+          this.$message({
+            type: 'info',
+            message: '已取消删除！'
+          })
+        })
   	},
     handleRowClick ({id}) {
       this.$refs.mail_detail.show(id);
