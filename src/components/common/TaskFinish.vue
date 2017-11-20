@@ -29,9 +29,10 @@
   		</el-select>
   	</el-form-item>
   	<el-form-item prop="person_in_charge" label="承办人" v-if="fields.person_in_charge">
-  		<remote-select type="member" v-model="form.person_in_charge" v-if="defaultVal =='proposer' || defaultVal == 'reviewer' || defaultVal == 'previous' "></remote-select>
-  		<remote-select type="agent" v-model="form.person_in_charge" v-else-if="defaultVal == 'agent'"></remote-select>
+  		
+  		<remote-select type="agent" v-model="form.person_in_charge" v-if="defaultVal == 'agent'"></remote-select>
   		<static-select type="ipr" v-model="form.person_in_charge" v-else-if="defaultVal == 'ipr'"></static-select>
+      <remote-select type="member" v-model="form.person_in_charge" v-else></remote-select>
   		<!-- <span v-else>{{ data[defaultVal]['name'] }}</span> -->
   	</el-form-item>
     <el-form-item prop="agency" label="代理机构" v-if="fields.agency"   :rules="{ required: true, type: 'number', message: '代理机构不能为空', trigger: 'change'}">
