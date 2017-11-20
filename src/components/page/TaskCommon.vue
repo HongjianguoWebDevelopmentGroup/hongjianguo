@@ -384,12 +384,12 @@ export default {
 
       return ( 
         
-          <span>
+        <span>
           <el-tooltip effect="dark" content={`${tipContent}`} placement="top">
             <i class="table-flag" style={`background-color: ${color}; margin-right: 10px;`}></i>  
-             </el-tooltip>  
+          </el-tooltip>  
             <span>{ str }</span>
-          </span>
+        </span>
        
       );
     },
