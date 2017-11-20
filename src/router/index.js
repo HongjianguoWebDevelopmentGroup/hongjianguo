@@ -75,6 +75,8 @@ const router = new Router({
     { path: '/copyright', redirect: '/copyright/list' },
     { path: '/news', redirect: '/news/mailList' },
     { path: '/dispatch', redirect: '/dispatch/administration' },
+    { path: '/fee', redirect: '/fee/income' },
+    { path: '/setting', redirect: '/setting/individual' },
     //###重定向###
     {
       path: '/statistics',
