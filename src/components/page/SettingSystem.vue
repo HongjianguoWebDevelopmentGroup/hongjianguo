@@ -5,7 +5,7 @@
 				<el-form-item v-for="f_item in item.configs" :label="f_item.label" :key="f_item.name"><el-input :placeholder="f_item.description" v-model="f_item.config_value"></el-input></el-form-item>
 			</el-form>
 		</app-collapse>
-		<el-button type="primary" @click="save">保存设置</el-button>
+		<el-button type="primary" style="margin: 10px 0px 20px 0px" @click="save">保存设置</el-button>
   </div>
 </template>
 
