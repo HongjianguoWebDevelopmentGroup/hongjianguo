@@ -107,6 +107,7 @@
       :visible.sync="moreVisible" 
       :title="currentRow.title"
       @editSuccess="editProjectSuccess"
+      :refresh-switch="false"
       ref="detail">
     </common-detail>   
 
@@ -145,7 +146,15 @@ const colorMap = new Map([
   [1, '#f90'],
   [2, '#c03'],
 ]);
-
+const typeMap = new Map([
+  [0, '提案'],
+  [1, '专利'],
+  [2, '商标'],
+  [3, '版权'],
+  [4, '项目'],
+  [5, '账单'],
+  [6, '发文'],
+]);
 export default {
   name: 'taskList',
   mixins: [ AxiosMixins ],
@@ -392,6 +401,12 @@ export default {
        
       );
     },
+    categoryRender (h,item,data) {
+      const typeNum = typeMap.get(data['category']);
+      return (
+        <span>{ typeNum }</span>
+      );
+    },
     titleClick (data) {
       if(data.category == 0) {
         this.$router.push(`/proposal/detail?id=${data.project_id}`);
@@ -468,6 +483,7 @@ export default {
           // { type: 'expand' },
           { type: 'selection' },
           { type: 'text', label: '案号', prop: 'serial', sortable: true, width: '210', show_option: false, render: this.titleRender },
+          { type: 'text', label: '案件类型', prop: 'category', sortable: true, width: '145', show_option: true,render:this.categoryRender},
           { type: 'text', label: '案件名称', prop: 'title', sortable: true, width: '200', overflow: true },
           { type: 'text', label: '管制事项', prop: 'name', sortable: true, width: '134' },
           { type: 'text', label: '流程节点', prop: 'flow_node', show:true, sortable: true, width: '159'},
@@ -534,11 +550,15 @@ export default {
     },
     categoryType () {
       let type = '';
+
       if(this.currentRow.category == 1) {
         type = 'patent';
       }
       if(this.currentRow.category == 3) {
         type = 'copyright';
+      }
+      if(this.currentRow.category == 2) {
+        type = 'trademark';
       }
 
       return type;
@@ -585,7 +605,7 @@ export default {
       this.$store.dispatch('refreshTaskDefs');
     }
 
-    if(this.task_status == 1) {
+    if(this.task_status == 1 || this.task_status == -1) {
       this.activeName = 'edit';
     }
 
