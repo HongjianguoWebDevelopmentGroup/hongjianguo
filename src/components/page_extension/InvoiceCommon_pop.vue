@@ -20,11 +20,11 @@
   			<el-form-item label="快递寄送日期" prop="date">
   				<el-date-picker placeholder="请选择快递寄送日期"></el-date-picker>
   			</el-form-item> -->
-  			<el-form-item label="备注" prop="remark">
-          <el-input type="textarea" placeholder="请填写备注" v-model="form.remark"></el-input>
-  			</el-form-item>
         <el-form-item label="附件" prop="attachments">
           <upload v-model="form.attachments"></upload>
+        </el-form-item>
+        <el-form-item label="备注" prop="remark">
+          <el-input type="textarea" placeholder="请填写备注" v-model="form.remark"></el-input>
         </el-form-item>
   			<el-form-item style="margin-bottom: 0px">
   				<el-button type="primary" @click="edit" v-if="popType == 'edit'" :loading="loading">{{ loading ? '编辑中...' : '编辑' }}</el-button>

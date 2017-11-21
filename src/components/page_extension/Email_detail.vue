@@ -46,7 +46,6 @@ import AppCollapse from '@/components/common/AppCollapse'
 
 export default {
   name: 'inventorListPop',
-  mixins: [ AxiosMixins ],
   data () {
 		return {
       form: {
@@ -70,11 +69,12 @@ export default {
 
       const url = `/api/mails/${id}`;
       const success = _=>{
+        // console.log(_);
         this.$tool.coverObj(this.form, _.mail);
         this.loading = false;
       }
 
-      this.axiosGet({url, success});
+      this.$axiosGet({url, success});
     }
   },
   components: { AppCollapse },

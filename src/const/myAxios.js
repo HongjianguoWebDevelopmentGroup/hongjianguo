@@ -6,9 +6,33 @@ export default {
     Vue.prototype.$axiosPut = axiosPut;
 	}
 }
+
+//------------------默认配置项start-------------------------
 const status = false;
 
-function axiosGet ({url='', data={}, success=()=>{}, error=(d)=>{this.$alert(d.info)}, catchFunc=(err)=>{console.log(err); this.$message({message: '网络错误', type: 'error'})}, complete=_=>{} }) {
+const URLDEFAULT = '';
+
+const dd = {};
+
+const successFunc = function (d, t) {}
+
+const errorFunc = function (d, t) {
+  if(d.info) {
+    t.$message({message: d.info, type: 'warning'});
+  }else {
+    t.$message({message: '网络错误！', type: 'warning'});
+  }
+}
+
+const catchFunct = function (err, t) {
+  console.log(err); 
+  this.$message({message: '网络错误！', type: 'error'});
+}
+
+const completeFunc = function (d, t) {}
+//------------------默认配置项end-------------------------
+
+function axiosGet ({url=URLDEFAULT, data=dd, success=_=>{successFunc(_, this)}, error=_=>{errorFunc(_, this)}, catchFunc=_=>{catchFunct(_, this)}, complete=_=>{completeFunc(_, this)} }) {
   url = status ? url.replace(/\/api/, '') : url;
   
   const res = this.$axios.get(url, { params: data });
@@ -25,22 +49,33 @@ function axiosGet ({url='', data={}, success=()=>{}, error=(d)=>{this.$alert(d.i
       complete(d);
 
     })
-    .catch(error=>{catchFunc(error); complete(error);});
+    .catch(err=>{
+      catchFunc(err); 
+      complete(err);
+    });
 
   return res;
 }
-function axiosDelete({ url='', data={}, success=()=>{}, error=d=>{this.$alert(d.info)}, catchFunc=err=>{console.log(err); this.$alert('网络错误');} }) {
+function axiosDelete({ url=URLDEFAULT, data=dd, success=_=>{successFunc(_, this)}, error=_=>{errorFunc(_, this)}, catchFunc=_=>{catchFunct(_, this)}, complete=_=>{completeFunc(_, this)} }) {
   url = status ? url.replace(/\/api/, '') : url;
-  this.$axios
-    .delete(url, { params: data })
+
+  const res = this.$axios.delete(url, { params: data });
+  res
     .then(response=>{
       const d = response.data;
       d.status ? success(d) : error(d);
+
+      complete(d);
     })
-    .catch(catchFunc);
+    .catch(err=>{ 
+      catchFunc(err); 
+      complete(err); 
+    });
+
+  return res;
 }
 
-function axiosPost ({ url='', data={}, success=()=>{}, error=(d)=>{this.$message({message: d.info, type: 'warning'})}, catchFunc=(err)=>{console.log(err); this.$message({message: '网络错误', type: 'error'})}, complete=()=>{} }) {
+function axiosPost ({ url=URLDEFAULT, data=dd, success=_=>{successFunc(_, this)}, error=_=>{errorFunc(_, this)}, catchFunc=_=>{catchFunct(_, this)}, complete=_=>{completeFunc(_, this)} }) {
   url = status ? url.replace(/\/api/, '') : url;
   
   const res = this.$axios.post(url, data);
@@ -51,12 +86,15 @@ function axiosPost ({ url='', data={}, success=()=>{}, error=(d)=>{this.$message
 
       complete(d);
     })
-    .catch(error=>{catchFunc(error); complete(error);});
+    .catch(error=>{
+      catchFunc(error); 
+      complete(error);
+    });
 
   return res;
 }
 
-function axiosPut ({ url='', data={}, success=()=>{}, error=(d)=>{this.$message({message: d.info, type: 'warning'})}, catchFunc=(err)=>{console.log(err); this.$message({message: '网络错误', type: 'error'})}, complete=()=>{} }) {
+function axiosPut ({ url=URLDEFAULT, data=dd, success=_=>{successFunc(_, this)}, error=_=>{errorFunc(_, this)}, catchFunc=_=>{catchFunct(_, this)}, complete=_=>{completeFunc(_, this)} }) {
   url = status ? url.replace(/\/api/, '') : url;
   
   const res = this.$axios.put(url, data);
@@ -67,7 +105,10 @@ function axiosPut ({ url='', data={}, success=()=>{}, error=(d)=>{this.$message(
       
       complete(d);
     })
-    .catch((d)=>{catchFunc(d); complete(d)});
+    .catch((d)=>{
+      catchFunc(d); 
+      complete(d);
+    });
 
   return res;
 }
