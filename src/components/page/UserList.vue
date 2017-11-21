@@ -73,6 +73,7 @@ export default {
 		  		{ type: 'text', label: '手机号', prop: 'mobile', width: '200' },
 		  		{ type: 'array', label: '所属用户组', prop: 'groups', width: '200', render: _=>_.map(_=>_.name) },
 		  		// { type: 'text', label: '用户角色', prop: 'role_name', width: '200' },
+		  		{ type: 'text', label: '入职日期', prop: 'begindate', width: '178'},
 		  		{ type: 'text', label: '邮箱', prop: 'email', width: '240' },
 		  		{ type: 'text', label: '微信号', prop: 'weixin', width: '200' },
 		  		{ type: 'text', label: 'QQ', prop: 'qq', width: '200' },
