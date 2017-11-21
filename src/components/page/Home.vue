@@ -1,20 +1,23 @@
 <template>
 	<div class="main">
     
-      <el-card v-if="pendingTask">
+      <el-card v-if="pendingTask" style="position: relative;">
+        <div style="display: table;">
         <span v-if="pendingTask.length != 0"  v-for="m in pendingTask" :key="m.label"
           title="点击跳转"
-          style="margin: 0px 10px 20px 0; border: 1px solid #ccc; border-radius: 5px; padding: 6px; cursor: pointer;display: block;float: left;" @click="toPending(m.value)">
+          style="margin: 5px 10px 5px 0; border: 1px solid #ccc; border-radius: 5px; padding: 6px; cursor: pointer;display: table;float: left;" @click="toPending(m.value)">
           <span style="font-size: 14px;">{{ m.label }}</span>
           <template v-if="m.count">
             <span>：</span>
             <span style="font-size: 18px; font-weight: bold; color: #c23531;">{{ m.count }}</span>
           </template>
         </span>
+        
         <span v-else style="font-size: 14px;
-    font-weight: bold;">
+    font-weight: bold;display:block;float: left;">
           暂无待办任务...
         </span>
+        </div>
       </el-card>
     
     <el-row v-for="(row, i) in arr" :gutter="20" :key="i">
