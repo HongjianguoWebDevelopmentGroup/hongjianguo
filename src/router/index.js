@@ -325,6 +325,7 @@ const router = new Router({
   ]
 });
 router.beforeEach((to, from, next)=>{
+  // console.log(to, from);
   const store = this.a.app.$store;
   if(store) {
     store.commit('clearScreen');

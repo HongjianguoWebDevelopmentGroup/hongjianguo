@@ -7,7 +7,7 @@
 		</template>
 	</el-submenu>
 
-	<el-menu-item v-else-if="dd.type == 'item' && !menusMap.get(dd.path) ? true : false" :index="dd.path"><i :class="dd.icon"></i>{{ dd.text }}<span v-if="map[dd.path] != undefined">({{ getCount(dd.path) }})</span></el-menu-item>
+	<el-menu-item @click="handleClick" v-else-if="dd.type == 'item' && !menusMap.get(dd.path) ? true : false" :index="dd.path"><i :class="dd.icon"></i>{{ dd.text }}<span v-if="map[dd.path] != undefined">({{ getCount(dd.path) }})</span></el-menu-item>
 
 </template>
 
@@ -30,6 +30,9 @@ export default {
 
   },
   methods: {
+    handleClick (a) {
+      console.log(a);
+    },
   	forChildren(item) {
   		if(item.children && item.children.length != 0) {
   			return true;
