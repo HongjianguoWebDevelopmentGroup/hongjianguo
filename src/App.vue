@@ -482,6 +482,9 @@ nav {
   .dialog-small .el-dialog {
     width: 600px;
   }
+  .dialog-size .el-dialog {
+    width: 800px;
+  }
   .dialog-medium .el-dialog {
     width: 900px;
   }

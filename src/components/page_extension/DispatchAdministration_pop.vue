@@ -1,5 +1,5 @@
 <template>
-  <el-dialog :title="title" :visible.sync="dialogVisible" class="dialog-small">
+  <el-dialog :title="title" :visible.sync="dialogVisible" class="dialog-size">
   	<el-form label-width="100px" ref="form" :model="form" :rules="rules">
   		
   		<!-- <el-form-item label="发件人" prop="from">
