@@ -13,6 +13,7 @@
 
 <script>
 import { mapGetters } from 'vuex'
+import { mapMutations } from 'vuex'
 
 export default {
   name: 'appMenuItem',
@@ -30,8 +31,13 @@ export default {
 
   },
   methods: {
+    ...mapMutations([
+      'clearScreen',
+    ]),
     handleClick (a) {
-      console.log(a);
+      if(a.index == '/task/pending') {
+        this.clearScreen();
+      }
     },
   	forChildren(item) {
   		if(item.children && item.children.length != 0) {
