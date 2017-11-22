@@ -12,19 +12,18 @@ export default {
 			const t = this.type;
 			const tex = this.$options.REMINDER_TEXT;
 
-			return t == 'add' ? `新增${tex}` : `编辑${tex}`;
+			return t == 'add' ? `新增${tex}` : `收文确认`;
 		}
 	},
 	methods: {
 		show ( type='add', data ) {
   		this.type = type;
       this.dialogVisible = true;
-     	
      	this.$nextTick(_=>{
      		
         this.$refs.form.resetFields();  
       	
-	      if(type == 'edit') {
+	      if(type === 'confirm') {
           if(data instanceof Object) {
             const copy = this.$tool.deepCopy(data);
             this.id = copy.id; 

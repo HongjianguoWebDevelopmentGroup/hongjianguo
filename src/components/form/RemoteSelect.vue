@@ -316,7 +316,7 @@ export default {
 <style scoped lang="scss">
 </style>
 <style>
-  #select_list .el-select__tags{
+  /*#select_list .el-select__tags{
     min-width: 260px !important;
   }
   #select_list .el-select .el-input__inner {
@@ -324,5 +324,5 @@ export default {
   }
   #select_list .el-select .el-tag {
     margin: 0 0 0 3px; 
-  }
+  }*/
 </style>

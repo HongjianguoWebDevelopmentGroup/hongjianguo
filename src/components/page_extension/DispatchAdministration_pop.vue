@@ -1,16 +1,16 @@
 <template>
-  <el-dialog :title="title" :visible.sync="dialogVisible" class="dialog-small">
+  <el-dialog :title="title" :visible.sync="dialogVisible" class="dialog-size" size="small">
   	<el-form label-width="100px" ref="form" :model="form" :rules="rules">
   		
   		<!-- <el-form-item label="发件人" prop="from">
   			<remote-select type="member" v-model="form.from"></remote-select>
   		</el-form-item> -->
 
-			<el-form-item label="收件人" prop="to">
+			<el-form-item label="收件人" prop="to" v-show="type !='confirm'">
 				<remote-select type="member" v-model="form.to"></remote-select>
 			</el-form-item>
 
-			<el-form-item label="快递公司" prop="company">
+			<el-form-item label="快递公司" prop="company" v-show="type !='confirm'">
 				<el-autocomplete
           v-model="form.company"
           :fetch-suggestions="querySearch"
@@ -18,28 +18,28 @@
         ></el-autocomplete>
 			</el-form-item>
 
-			<el-form-item label="快递单号" prop="number">
+			<el-form-item label="快递单号" prop="number" v-if="type !='confirm'">
 				<el-input v-model="form.number" placeholder="请填写快递单号"></el-input>
-			</el-form-item>
-
-			<el-form-item label="发文日期" prop="mail_date">
-				<el-date-picker v-model="form.mail_date" type="date" placeholder="请选择发文日期"></el-date-picker>
 			</el-form-item>
 
       <el-form-item label="收文日期" prop="receipt_date" v-if="type != 'add'">
         <el-date-picker v-model="form.receipt_date" type="date" placeholder="请选择收件日期"></el-date-picker>
       </el-form-item>
 
-			<el-form-item label="描述" prop="description">
+			<el-form-item label="描述" prop="description" v-show="type !='confirm'">
         <el-input type="textarea" v-model="form.description" placeholder="请填写描述信息..."></el-input>
       </el-form-item>
+
+      <el-form-item label="发文日期" prop="mail_date">
+        <el-date-picker v-model="form.mail_date" type="date" placeholder="请选择发文日期" ></el-date-picker>
+      </el-form-item>
       <el-form-item label="文件清单" prop="projects">
-				<express-list v-model="form.projects"></express-list>
+				<express-list v-model="form.projects" :typeMessage="type"></express-list>
 			</el-form-item>
 
 			<el-form-item style="margin-bottom: 0px;">
 				<el-button type="primary" @click="add" v-if="type === 'add'" :disabled="btn_disabled">添加</el-button>
-				<el-button type="primary" @click="edit" v-if="type === 'edit'" :disabled="btn_disabled">编辑</el-button>
+				<el-button type="primary" v-if="type === 'confirm'" :disabled="btn_disabled">确认收到上述文件</el-button>
 			</el-form-item>
 
   	</el-form>
@@ -57,6 +57,7 @@ export default {
   mixins: [ AxiosMixins, PopMixins ],
   data () {
 		return {
+      type: '',
       form: {
         to: '',
         company: '',

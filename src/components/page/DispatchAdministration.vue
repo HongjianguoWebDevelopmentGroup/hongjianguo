@@ -40,7 +40,7 @@ export default {
 		  			type: 'action',
             width: '200', 
 		  			btns: [
-		  				{ type: 'edit', click: this.editPop },
+		  				{ type: 'confirm', click: this.editPop },
 		  				{ type: 'delete', click: this.deleteSingle },
 		  			] 
 		  		},
@@ -74,7 +74,7 @@ export default {
   		this.$refs.pop.show('add');
   	},
   	editPop (row) {
-  		this.$refs.pop.show('edit', row);
+  		this.$refs.pop.show('confirm', row);
   	},
   	deleteSingle ({id}) {
   		this.$confirm('删除后不可恢复，确认删除当前收发文记录？', '提示', {type: 'warning'})
