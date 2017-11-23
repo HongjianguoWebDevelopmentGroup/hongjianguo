@@ -10,7 +10,7 @@
 			</el-col>
 
 			<el-col :span="2" style="padding-left: 5px; ">
-				<el-button type="text" size="mini" @click="dataDelete(index)"  :disabled='handleData'>删除</el-button>
+				<el-button type="text" size="mini" @click="dataDelete(index)" v-if="typeMessage==='add'">删除</el-button>
 			</el-col>
   	</el-row>
   	<el-row >
