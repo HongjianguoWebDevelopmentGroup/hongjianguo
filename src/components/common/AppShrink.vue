@@ -18,7 +18,6 @@
 </template>
 
 <script>
-import $ from 'jquery'
 import {mapGetters} from 'vuex'
 
 export default {
@@ -43,12 +42,12 @@ export default {
 			this.$emit('update:visible', false);
 			this.$emit('close');
 		},
-		fire (e) {
-			const _con = $('.app-shrink');   // 设置目标区域
-		  if(!_con.is(e.target) && _con.has(e.target).length === 0){ // Mark 1
-		    this.close();
-		  }
-		}
+		// fire (e) {
+		// 	const _con = $('.app-shrink');   // 设置目标区域
+		//   if(!_con.is(e.target) && _con.has(e.target).length === 0){ // Mark 1
+		//     this.close();
+		//   }
+		// }
 	}, 
 	computed: {
 		...mapGetters([

@@ -25,6 +25,9 @@ module.exports = {
       '@': resolve('src')
     }
   },
+  externals: {
+    "echarts": "echarts"
+  },
   module: {
     rules: [
       {

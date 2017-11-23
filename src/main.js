@@ -5,7 +5,6 @@ import App from './App'
 import router from './router'
 import store from './store'
 import ElementUI from 'element-ui'
-import VueResource from 'vue-resource'
 import VueQuillEditor from 'vue-quill-editor'
 import MyAxios from '@/const/MyAxios'
 import 'element-ui/lib/theme-default/index.css'
@@ -27,7 +26,6 @@ Vue.prototype.$tool = tool;
 
 Vue.config.productionTip = false;
 Vue.use(ElementUI);
-Vue.use(VueResource);
 Vue.use(VueQuillEditor);
 Vue.use(MyAxios);
 

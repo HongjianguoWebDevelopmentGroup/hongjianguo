@@ -25,8 +25,22 @@
 import AppFilter from '@/components/common/AppFilter'
 import AxiosMixins from '@/mixins/axios-mixins'
 import StaticSelect from '@/components/form/StaticSelect'
-import echarts from 'echarts'
 
+// // 引入 ECharts 主模块
+// import echarts from 'echarts/lib/echarts';
+// // 引入柱状图
+// import 'echarts/lib/chart/bar';
+// // 引入折线图
+// import 'echarts/lib/chart/line';
+// // 引入饼图
+// import 'echarts/lib/chart/pie';
+// // 引入工具栏
+// import 'echarts/lib/component/toolbox';
+// // 引入伸缩组件
+// import 'echarts/lib/component/dataZoom';
+// // 引入提示框和标题组件
+// import 'echarts/lib/component/tooltip';
+// import 'echarts/lib/component/title';
 
 let data;
 const URL = '/api/stats';

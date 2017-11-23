@@ -5,7 +5,7 @@
     <el-step v-for="(item, index) in data.tips" :key="index" :title="item.name" :status="item.current ? 'finish' : 'wait'"></el-step>
   </el-steps>
   
-  <el-form :model="form" label-width="100px" ref="form" style="min-height: 150px;" :key="next"><!--这里需要给form加key 保证每个form的验证规则互不影响-->
+  <el-form :model="form" label-width="100px" ref="form" style="min-height: 150px;" :key="`${id}-${next}`"><!--这里需要给form加key 保证每个form的验证规则互不影响-->
   	<el-form-item :label="data.procedure.label" v-if="data.fields && data.fields.procedure">
       <el-select v-model="next">
         <el-option
@@ -30,9 +30,9 @@
   	</el-form-item>
   	<el-form-item prop="person_in_charge" label="承办人" v-if="fields.person_in_charge">
   		
-  		<remote-select type="agent" v-model="form.person_in_charge" v-if="defaultVal == 'agent'"></remote-select>
+  		<remote-select type="agent" v-model="form.person_in_charge" v-if="defaultVal == 'agent'" :static-map="staticMap"></remote-select>
   		<static-select type="ipr" v-model="form.person_in_charge" v-else-if="defaultVal == 'ipr'"></static-select>
-      <remote-select type="member" v-model="form.person_in_charge" v-else></remote-select>
+      <remote-select type="member" v-model="form.person_in_charge" :static-map="staticMap" v-else></remote-select>
   		<!-- <span v-else>{{ data[defaultVal]['name'] }}</span> -->
   	</el-form-item>
     <el-form-item prop="agency" label="代理机构" v-if="fields.agency"   :rules="{ required: true, type: 'number', message: '代理机构不能为空', trigger: 'change'}">
@@ -117,6 +117,7 @@ export default {
   data () {
 		return {
 			'data': {},
+      'staticMap': [],
 			'next': '',
 			'form': {
         agency_serial: '',
@@ -143,17 +144,17 @@ export default {
       'attachments': [],
       'hide_r_a': false,
       'confirmValidator': { 
-          required: true,
-          validator: (a,b,c)=>{
+        required: true,
+        validator: (a,b,c)=>{
 
-            if(b) {
-              c();
-            }else {
-              c('必需确认送件信息完整');
-            }
+          if(b) {
+            c();
+          }else {
+            c('必需确认送件信息完整');
+          }
 
-          },
         },
+      },
       
 		}
   },
@@ -239,11 +240,12 @@ export default {
                 this.form.agency = this.data.agency.id;
               }
               if(this.fields.type) this.form.type = 1;
-              if(this.defaultVal == 'ipr') {
-                this.form.person_in_charge = person_in_charge['id'] ? person_in_charge['id'] : '';
-              }else {
-                this.form.person_in_charge = person_in_charge;
+              
+              this.form.person_in_charge = person_in_charge['id'] ? person_in_charge['id'] : '';
+              if(this.defaultVal != 'ipr') {
+                this.staticMap = [person_in_charge];
               }
+                
               //附件同步
               const atta = d.attachments; 
               if(this.attachments && atta && atta.length != 0 ) {

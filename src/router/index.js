@@ -1,67 +1,66 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import Home from '@/components/page/Home'
-import Proposal from '@/components/page/Proposal'
-import InventorList from '@/components/page/InventorList'
-import ApplicantList from '@/components/page/ApplicantList'
-import ProposalCommon from '@/components/page/ProposalCommon'
-import CheckProposal from '@/components/page/CheckProposal'
-import TaskCommon from '@/components/page/TaskCommon'
-import TaskExpiring from '@/components/page/TaskExpiring'
-import PatentList from '@/components/page/PatentList'
-import ApplyingPatent from '@/components/page/ApplyingPatent'
-import PatentAdd from '@/components/page/PatentAdd'
-import NoticeCommon from '@/components/page/NoticeCommon'
-import TrademarkList from '@/components/page/TrademarkList'
-import TrademarkAdd from '@/components/page/TrademarkAdd'
-import TrademarkNotice from '@/components/page/TrademarkNotice'
-import TrademarkStatistics from '@/components/page/TrademarkStatistics'
-import CopyrightList from '@/components/page/CopyrightList'
-import CopyrightAdd from '@/components/page/CopyrightAdd'
-import UserList from '@/components/page/UserList'
-import Technology from '@/components/page/Technology'
-import Branch from '@/components/page/Branch'
-import FeeCommon from '@/components/page/FeeCommon'
-import DispatchAdministration from '@/components/page/DispatchAdministration'
-import InvoiceCommon from '@/components/page/InvoiceCommon'
-import ClassificationCommon from '@/components/page/ClassificationCommon'
-import MailList from '@/components/page/MailList'
-import SystemMessage from '@/components/page/SystemMessage'
-import SystemMessageDetail from '@/components/page/SystemMessageDetail'
-import MailAdd from '@/components/page/MailAdd'
+const Home                     = () => import('@/components/page/Home')
+const Proposal                 = () => import('@/components/page/Proposal')
+const InventorList             = () => import('@/components/page/InventorList')
+const ApplicantList            = () => import('@/components/page/ApplicantList')
+const ProposalCommon           = () => import('@/components/page/ProposalCommon')
+const CheckProposal            = () => import('@/components/page/CheckProposal')
+const TaskCommon               = () => import('@/components/page/TaskCommon')
+const TaskExpiring             = () => import('@/components/page/TaskExpiring')
+const PatentList               = () => import('@/components/page/PatentList')
+const ApplyingPatent           = () => import('@/components/page/ApplyingPatent')
+const PatentAdd                = () => import('@/components/page/PatentAdd')
+const NoticeCommon             = () => import('@/components/page/NoticeCommon')
+const TrademarkList            = () => import('@/components/page/TrademarkList')
+const TrademarkAdd             = () => import('@/components/page/TrademarkAdd')
+const TrademarkNotice          = () => import('@/components/page/TrademarkNotice')
+const TrademarkStatistics      = () => import('@/components/page/TrademarkStatistics')
+const CopyrightList            = () => import('@/components/page/CopyrightList')
+const CopyrightAdd             = () => import('@/components/page/CopyrightAdd')
+const UserList                 = () => import('@/components/page/UserList')
+const Technology               = () => import('@/components/page/Technology')
+const Branch                   = () => import('@/components/page/Branch')
+const FeeCommon                = () => import('@/components/page/FeeCommon')
+const DispatchAdministration   = () => import('@/components/page/DispatchAdministration')
+const InvoiceCommon            = () => import('@/components/page/InvoiceCommon')
+const ClassificationCommon     = () => import('@/components/page/ClassificationCommon')
+const MailList                 = () => import('@/components/page/MailList')
+const SystemMessage            = () => import('@/components/page/SystemMessage')
+const SystemMessageDetail      = () => import('@/components/page/SystemMessageDetail')
+const MailAdd                  = () => import('@/components/page/MailAdd')
 //###################
-import CommonDetail from '@/components/page/CommonDetail'
-import Babel from '@/components/page_extension/CommonDetail_base'
-import Control from '@/components/page_extension/CommonDetail_control'
-import Notice from '@/components/page_extension/CommonDetail_notice'
-import Fee from '@/components/page_extension/CommonDetail_fee'
-import Email from '@/components/page_extension/CommonDetail_email'
-import Documents from '@/components/page_extension/CommonDetail_documents'
+const CommonDetail             = () => import('@/components/page/CommonDetail')
+const Babel                    = () => import('@/components/page_extension/CommonDetail_base')
+const Control                  = () => import('@/components/page_extension/CommonDetail_control')
+const Notice                   = () => import('@/components/page_extension/CommonDetail_notice')
+const Fee                      = () => import('@/components/page_extension/CommonDetail_fee')
+const Email                    = () => import('@/components/page_extension/CommonDetail_email')
+const Documents                = () => import('@/components/page_extension/CommonDetail_documents')
 //#################
 
 //-------------------设置 begin-----------------
-import SettingAgency from '@/components/page/SettingAgency'
-import SettingAgencyDetail from '@/components/page/SettingAgencyDetail'
-import SettingCase from '@/components/page/SettingCase'
-import SettingJurisdiction from '@/components/page/SettingJurisdiction'
-import SettingRule from '@/components/page/SettingRule'
-import SettingTemplate from '@/components/page/SettingTemplate'
-import SettingTemplateEdit from '@/components/page/SettingTemplateEdit'
-import SettingUser from '@/components/page/SettingUser'
+const SettingAgency            = () => import('@/components/page/SettingAgency')
+const SettingAgencyDetail      = () => import('@/components/page/SettingAgencyDetail')
+const SettingCase              = () => import('@/components/page/SettingCase')
+const SettingJurisdiction      = () => import('@/components/page/SettingJurisdiction')
+const SettingRule              = () => import('@/components/page/SettingRule')
+const SettingTemplate          = () => import('@/components/page/SettingTemplate')
+const SettingTemplateEdit      = () => import('@/components/page/SettingTemplateEdit')
+const SettingUser              = () => import('@/components/page/SettingUser')
 
 //#################
-import SettingIndividual from '@/components/page/SettingIndividual'
-import SI_Base from '@/components/page_extension/SettingIndividual_base'
-import SI_Notice from '@/components/page_extension/SettingIndividual_notice'
-import SI_Email from '@/components/page_extension/SettingIndividual_email'
-
+const SettingIndividual        = () => import('@/components/page/SettingIndividual')
+const SI_Base                  = () => import('@/components/page_extension/SettingIndividual_base')
+const SI_Notice                = () => import('@/components/page_extension/SettingIndividual_notice')
+const SI_Email                 = () => import('@/components/page_extension/SettingIndividual_email')
 //#################
-import SettingSystem from '@/components/page/SettingSystem'
-import SS_Base from '@/components/page_extension/SettingSystem_base'
-import SS_Email from '@/components/page_extension/SettingSystem_email'
-import SS_Number from '@/components/page_extension/SettingSystem_number'
-import SS_Case from '@/components/page_extension/SettingSystem_case'
-import SS_Fee from '@/components/page_extension/SettingSystem_fee'
+const SettingSystem            = () => import('@/components/page/SettingSystem')
+const SS_Base                  = () => import('@/components/page_extension/SettingSystem_base')
+const SS_Email                 = () => import('@/components/page_extension/SettingSystem_email')
+const SS_Number                = () => import('@/components/page_extension/SettingSystem_number')
+const SS_Case                  = () => import('@/components/page_extension/SettingSystem_case')
+const SS_Fee                   = () => import('@/components/page_extension/SettingSystem_fee')
 //-------------------设置 end---------------------
 
 Vue.use(Router);
