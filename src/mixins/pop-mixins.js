@@ -34,6 +34,10 @@ export default {
 	      }
      	});
   	},
+    confirmCallback () {
+      this.$message({message:'已确认收文',type:'success'});
+      this.dialogVisible = false;
+    },
   	add () {
       const url = this.$options.URL;
       const tex = this.$options.REMINDER_TEXT;

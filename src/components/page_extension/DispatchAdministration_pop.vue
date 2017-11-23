@@ -23,7 +23,7 @@
 			</el-form-item>
 
       <el-form-item label="收文日期" prop="receipt_date" v-if="type != 'add'">
-        <el-date-picker v-model="form.receipt_date" type="date" placeholder="请选择收件日期"></el-date-picker>
+        <el-date-picker v-model="form.receipt_date" type="date" placeholder="请选择收件日期" :disabled="dateDisabled"></el-date-picker>
       </el-form-item>
 
 			<el-form-item label="描述" prop="description" v-show="type !='confirm'">
@@ -31,7 +31,7 @@
       </el-form-item>
 
       <el-form-item label="发文日期" prop="mail_date">
-        <el-date-picker v-model="form.mail_date" type="date" placeholder="请选择发文日期" ></el-date-picker>
+        <el-date-picker v-model="form.mail_date" type="date" placeholder="请选择发文日期" :disabled="dateDisabled"></el-date-picker>
       </el-form-item>
       <el-form-item label="文件清单" prop="projects">
 				<express-list v-model="form.projects" :typeMessage="type"></express-list>
@@ -39,7 +39,7 @@
 
 			<el-form-item style="margin-bottom: 0px;">
 				<el-button type="primary" @click="add" v-if="type === 'add'" :disabled="btn_disabled">添加</el-button>
-				<el-button type="primary" v-if="type === 'confirm'" :disabled="btn_disabled">确认收到上述文件</el-button>
+				<el-button type="primary" @click="confirmCallback" v-if="type === 'confirm'" :disabled="btn_disabled">确认收到上述文件</el-button>
 			</el-form-item>
 
   	</el-form>
@@ -55,9 +55,10 @@ import ExpressList from '@/components/form/ExpressList'
 export default {
   name: 'inventorListPop',
   mixins: [ AxiosMixins, PopMixins ],
+  props:['confirm'],
   data () {
 		return {
-      type: '',
+      dateDisable:false,
       form: {
         to: '',
         company: '',
@@ -83,6 +84,11 @@ export default {
       ],
 		}
   },
+  computed: {
+     dateDisabled () {
+      return this.confirm === 'confirm' ? this.dateDisable = true :this.dateDisable = false;
+    }
+  },
   methods: {
     querySearch(queryString, cb) {
       var queryData = this.queryData;
@@ -94,7 +100,8 @@ export default {
       return _ => {
         return (_.value.indexOf(queryString.toLowerCase()) === 0);
       };
-    }
+    },
+   
   },
   components: {  ExpressList, RemoteSelect  },
   URL: '/api/expresses',
