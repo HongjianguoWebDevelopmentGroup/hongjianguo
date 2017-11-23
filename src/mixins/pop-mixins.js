@@ -12,7 +12,7 @@ export default {
 			const t = this.type;
 			const tex = this.$options.REMINDER_TEXT;
 
-			return t == 'add' ? `新增${tex}` : `收文确认`;
+			return t == 'add' ? `新增${tex}` : t == 'confirm'? `确认收文` : `编辑${tex}`;
 		}
 	},
 	methods: {
