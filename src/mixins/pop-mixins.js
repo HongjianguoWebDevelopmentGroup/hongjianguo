@@ -12,19 +12,19 @@ export default {
 			const t = this.type;
 			const tex = this.$options.REMINDER_TEXT;
 
-			return t == 'add' ? `新增${tex}` : `编辑${tex}`;
+			return t == 'add' ? `新增${tex}` : t == 'confirm' ? `收文确认` : `编辑${tex}`;
 		}
 	},
 	methods: {
 		show ( type='add', data ) {
   		this.type = type;
       this.dialogVisible = true;
-     	
+     	console.log(this.type)
      	this.$nextTick(_=>{
      		
         this.$refs.form.resetFields();  
       	
-	      if(type == 'edit') {
+	      if(type == 'confirm') {
           if(data instanceof Object) {
             const copy = this.$tool.deepCopy(data);
             this.id = copy.id; 
@@ -69,7 +69,7 @@ export default {
       const success = _=>{
         this.$message({message: `编辑${tex}成功`, type: 'success'});
         this.dialogVisible = false;
-        this.$emit('refresh', 'edit');
+        this.$emit('refresh', 'confirm');
       }
       const complete = _=>{
         this.btn_disabled = false;

@@ -1,5 +1,5 @@
 <template>
-  <el-select :value="value" @input="handleInput" :multiple="multiple" :disabled="disabled" placeholder="请选择地区" value-key="id">
+  <el-select :value="value" @input="handleInput" :multiple="multiple" :disabled="disabled" placeholder="请选择地区" value-key="id" ref="select">
   	<el-option
 			v-for="item in areaData"
 			:key="item.id"
@@ -32,6 +32,13 @@ export default {
   	handleInput (val) {
   		this.$emit('input', val);
   	}
+  },
+  watch: {
+    value (val) {
+      if (this.multiple) {
+        this.$refs.select.visible = false;
+      }
+    }
   }
 }
 </script>

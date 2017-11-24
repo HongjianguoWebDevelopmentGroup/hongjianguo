@@ -1,7 +1,7 @@
 <template>
   <div class="main">
 		<table-component :tableOption="option" :data="tableData" ref="table" @refreshTableData="refreshTableData"></table-component>
-  	<pop @refresh="handlePopRefresh" ref="pop"></pop>
+  	<pop @refresh="handlePopRefresh" ref="pop" :confirm="isConfirm"></pop>
   </div>
 </template>
 
@@ -17,6 +17,7 @@ export default {
   mixins: [ AxiosMixins ],
   data () {
 		return {
+      isConfirm: '',
 		  option: {
 		  	'header_btn': [
 		  		{ type: 'add', click: this.addPop },
@@ -40,7 +41,7 @@ export default {
             type: 'action',
             width: '200', 
             btns: [
-              { type: 'edit', click: this.editPop },
+              { type: 'confirm', click: this.editPop },
               { type: 'delete', click: this.deleteSingle },
             ] 
           },
@@ -71,10 +72,12 @@ export default {
   		this.$refs.table.update();
   	},
   	addPop () {
+      this.isConfirm = "";
   		this.$refs.pop.show('add');
   	},
   	editPop (row) {
-  		this.$refs.pop.show('edit', row);
+      this.isConfirm = this.option.columns[8].btns[0].type;
+  		this.$refs.pop.show('confirm', row);
   	},
   	deleteSingle ({id}) {
   		this.$confirm('删除后不可恢复，确认删除当前收发文记录？', '提示', {type: 'warning'})
@@ -90,6 +93,7 @@ export default {
   			.catch(_=>{})
   	},
   	handlePopRefresh (t) {
+      console.log(t);
   		t === 'add' ? this.refresh() : this.update();
   	}
   },
