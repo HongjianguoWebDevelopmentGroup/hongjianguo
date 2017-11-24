@@ -231,7 +231,7 @@ export default {
       this.options = val;
     },
     value (val) {
-      // this.$refs.select.visible = false;
+      this.$refs.select.visible = false;
     }
   },
   methods: {

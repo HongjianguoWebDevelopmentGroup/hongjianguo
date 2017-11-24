@@ -101,8 +101,8 @@
 			<el-form-item label="核准公告期数" prop="issue_number">
 				<el-input v-model="form.issue_number" placeholder="请填写核准公告期数"></el-input>
 			</el-form-item>
-			<el-form-item label="专用权期数" prop="expiring_date">
-				<el-date-picker type="date" v-model="form.expiring_date" placeholder="请选择专用权期数"></el-date-picker>
+			<el-form-item label="专用权期限" prop="expiring_date">
+				<el-date-picker type="date" v-model="form.expiring_date" placeholder="请选择专用权期限"></el-date-picker>
 			</el-form-item>
 			<el-form-item label="附件" prop="attachments">
 				<upload v-model="form.attachments" :file-list="attachments"></upload>

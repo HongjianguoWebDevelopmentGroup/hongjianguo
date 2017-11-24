@@ -298,8 +298,8 @@ export default {
       // console.log(val);
       // console.log('-------------val');
       //value类型为对象时，添加静态映射，并将其值转为id
-      //if( !this.single ) {
-      if( !this.multiple && !this.single && this.$refs.select) {
+      if( !this.single ) {
+      // if( !this.multiple && !this.single && this.$refs.select) {
         this.$refs.select.visible = false;
       }
       
