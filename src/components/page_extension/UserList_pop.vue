@@ -41,7 +41,7 @@
 	    <el-form-item label="邮箱" prop="email">
 	    	<el-input v-model="form.email"></el-input>	
 	    </el-form-item>
-	    <el-form-item label="手机号" prop="mobile">
+	    <el-form-item label="手机号/座机" prop="mobile">
 	    	<el-input v-model="form.mobile"></el-input>	
 	    </el-form-item>
 	    <el-form-item label="微信号" prop="weixin">
@@ -97,8 +97,8 @@ export default {
 		  },
 		  'rules': {
 		  	'email': { pattern: /^[a-z0-9]+([._\\-]*[a-z0-9])*@([a-z0-9]+[-a-z0-9]*[a-z0-9]+.){1,63}[a-z0-9]+$/, message: '邮箱格式错误', trigger: 'blur' },
-		  	'mobile': { pattern: /^1[3|4|5|7|8][0-9]{9}$/, message: '手机号码格式错误', trigger: 'blur'},
-		  	'qq': { pattern: /^[1-9][0-9]{4,9}$/, message: 'qq号码格式错误', trigger: 'blur'},
+		  	'mobile': { pattern: /(^[0-9]{3,4}\-[0-9]{7,8}$)|^1[3|4|5|7|8][0-9]{9}$/, message: '请正确填写11位手机号码或者座机格式\'区号-座机号码\'', trigger: 'blur'},
+		  	'qq': { pattern: /^[1-9][0-9]{4,9}$/, message: 'qq号码格式错误', trigger: 'blur,change'},
 		  },
 		  dialogVisible: false,
 		  editPsd: false,
