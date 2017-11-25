@@ -24,7 +24,7 @@ export default {
      		
         this.$refs.form.resetFields();  
       	
-	      if(type == 'confirm') {
+	      if(type == 'edit' || type == 'confirm') {
           if(data instanceof Object) {
             const copy = this.$tool.deepCopy(data);
             this.id = copy.id; 
@@ -69,7 +69,7 @@ export default {
       const success = _=>{
         this.$message({message: `编辑${tex}成功`, type: 'success'});
         this.dialogVisible = false;
-        this.$emit('refresh', 'confirm');
+        this.$emit('refresh', 'edit');
       }
       const complete = _=>{
         this.btn_disabled = false;
