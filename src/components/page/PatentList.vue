@@ -86,13 +86,13 @@ export default {
           { type: 'text', label: '案号', prop: 'serial', sortable: true, width: '200' },
           { type: 'text', label: '事务所案号', prop: 'agency_serial', sortable: true, width: '200' },
           { type: 'text', label: '专利类型', prop: 'type', render_simple: 'name', sortable: true, is_import: true, width: '142',  },
-          { type: 'text', label: '地区', prop: 'area', render_simple: 'name', sortable: true, is_import: true, width: '100' },
-          { type: 'text', label: 'IPR', prop: 'ipr', render_simple: 'name', sortable: true, is_import: true, width: '175' },
-          { type: 'text', label: '专利标题', prop: 'title', sortable: true, is_import: true, width: '160' },
+          { type: 'text', label: '地区', prop: 'area', render_simple: 'name', sortable: true, is_import: true, width: '100', is_agency: true },
+          { type: 'text', label: 'IPR', prop: 'ipr', render_simple: 'name', sortable: true, is_import: true, width: '175', is_agency: true },
+          { type: 'text', label: '专利标题', prop: 'title', sortable: true, is_import: true, width: '160', is_agency: true },
           { type: 'text', label: '当前状态', prop: 'progress', render_simple: 'name', sortable: true, width: '180' },
           { type: 'text', label: '专利摘要', prop: 'abstract', sortable: true, width: '280'},
-          { type: 'text', label: '申请日', prop: 'apd', sortable: true, is_import: true, width: '175'},
-          { type: 'text', label: '申请号', prop: 'apn', sortable: true, is_import: true, width: '263'},
+          { type: 'text', label: '申请日', prop: 'apd', sortable: true, is_import: true, width: '175', is_agency: true},
+          { type: 'text', label: '申请号', prop: 'apn', sortable: true, is_import: true, width: '263', is_agency: true},
           { type: 'text', label: '公开日', prop: 'public_date', sortable: true, is_import: true, width: '175'},
           { type: 'text', label: '公开号', prop: 'public_number', sortable: true, is_import: true, width: '263'},
           { type: 'text', label: '初审合格日', prop: 'pre_exam_ok_date', sortable: true, width: '175'},
@@ -108,7 +108,7 @@ export default {
           { type: 'text', label: '国际公开号', prop: 'pct_public_no', sortable: true, width: '263'},
           { type: 'text', label: '复审委内编号', prop: 'board_number', sortable: true, width: '263'},
           { type: 'text', label: '说明书字数', prop: 'words', sortable: true, width: '145'},
-          { type: 'text', label: '备注', prop: 'remark', sortable: true, width: '280'},
+          { type: 'text', label: '备注', prop: 'remark', sortable: true, width: '280' },
           { 
             type: 'text', 
             label: '提案人',
@@ -116,6 +116,7 @@ export default {
             sortable: true,
             width: '123',
             is_import: true,
+            is_agency: true,
             render_simple: 'name',
           },
           {
@@ -134,6 +135,7 @@ export default {
             width: '238',
             prop: 'inventors',
             is_import: true,
+            is_agency: true,
             render: _=>_.map(_=>`${_.name}:${_.share}%`),
           },
           {
@@ -309,11 +311,27 @@ export default {
     ...mapGetters([
       'areaMap',
       'menusMap',
+      'userrole',
+      'nextUser',
     ])
   },
   methods: {
     add () {
       this.$router.push('/patent/add');
+    },
+    ifAgency () {
+      const r = this.userrole;
+      if(r && r == 5) {
+        
+        const arr = this.tableOption.columns;
+        let i = arr.length;
+        while(i--) {
+          if( !arr[i]['is_agency'] ) {
+            arr.splice(i, 1);
+          }
+        }
+        this.$forceUpdate();
+      } 
     },
     refreshTableData (option) {
       const url = URL;
@@ -400,6 +418,9 @@ export default {
         }
       })
     },
+  },
+  created () {
+    this.ifAgency();
   },
   mounted () {
     this.$refs.table.refresh();

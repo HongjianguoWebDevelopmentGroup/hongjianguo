@@ -3,6 +3,7 @@ let url = '/api/userinfo'
 const state = {
 	data: null,
 	loading: true,
+	next: '',
 }
 
 const getters = {
@@ -18,6 +19,7 @@ const getters = {
 		return map;
 	},
 	currentUser: state=>state.data,
+	nextUser: state=>state.next,
 	username: state=>{
 	  const user = state.data;
        
@@ -34,6 +36,11 @@ const getters = {
 	useridentity: state=>{
 		const user = state.data;
 		const i = user ? user.identity : '';
+		return i;
+	},
+	userrole: state=>{
+		const user = state.data;
+		const i = user ? user.role : '';
 		return i;
 	},
 	pendingTaskCount: state=>{
@@ -65,6 +72,9 @@ const mutations = {
 	},
 	setUserLoading (state, boolean) {
 		state.loading = boolean;
+	},
+	setNext(state, next) {
+		state.next = next;
 	}
 }
 
@@ -73,8 +83,9 @@ const actions = {
 		url = rootState.status ? url.replace(/\/api/, '') : url;
 		const params = {};
 		commit('setUserLoading', true);
-		rootState.axios
-			.get(url, { params })
+		const next = rootState.axios.get(url, { params });
+		commit('setNext', next);
+		next
 			.then(response=>{
 				const d = response.data;
 				if(d.status){

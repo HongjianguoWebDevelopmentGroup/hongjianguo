@@ -90,6 +90,7 @@ import AgencyLoad from '@/components/form/AgencyLoad'
 import menu from '@/const/menuConst'
 import AppMenuItem from '@/components/common/AppMenuItem'
 import { mapGetters } from 'vuex'
+import { mapActions } from 'vuex'
 import $ from 'jquery'
 
 export default {
@@ -140,6 +141,7 @@ export default {
       'agencyLoadVisible',
       'menusMap',
       'pendingTaskCount',
+      'nextUser',
     ]),
   },
   data () {
@@ -152,6 +154,9 @@ export default {
     };
   },
   methods: {
+    ...mapActions([
+      'refreshUser',
+    ]),
     handleClose (index) {
       this.$store.commit('removeScreen', index);
     },
@@ -196,10 +201,9 @@ export default {
     }
   },
   created () {
-    const url = '/api/userinfo';
+
     const success = _=>{
       this.userinfoLoading = false;
-      this.$store.commit('setUser', _.member);
 
       // this.$store.dispatch('refreshTags');
       
@@ -231,10 +235,15 @@ export default {
       // window.location.href = '/login';
     }
     const success2 = _=>{
-      this.axiosGet({url, success, error, catchFunc});
+      this.refreshUser();
+      this.nextUser
+        .then(_=>{
+          _.status ? success(_) : error(_);
+        })
+        .catch(catchFunc);
     }
-    this.axiosGet({url, success, error, catchFunc});
-    // this.axiosPost({url: '/api/login', success: success2, data: {username: 'admin', password: 'Z9jgM6FhdKWEqbbpJePv/6qeTO/Yk2b6lx7zF4tiBncRubwf0fz93hkqGXCiWvqXCDIq7x+kAH3TK5zhjDZ53jgt1Gx1vvBPHn3ga7HTqPrnc+VhhuVGeTefHShJBx32rnbhL6LbEqCAMGqtQXaovCtuJGY6uWYAPfecAOGMuadnxTigTTBwKtW2oVP4J/EwAroYKuy4MK4Pd7YGtFoJAhlpKVOponsgsYQ8EKGOSVxcZgcgnOw8LhPy28N+xoFCh0OBkMyjM80Ybjq+H8BO6CacnDzQReZL5wQZqBdTtW7CUBi6S4+JWDPBahqNgz7jD73UhEIeG0ivFLEdCWtlVw=='}});
+    success2();
+    // this.axiosPost({url: '/api/login', success: success2, data: {username: 'dls1', password: 'Z9jgM6FhdKWEqbbpJePv/6qeTO/Yk2b6lx7zF4tiBncRubwf0fz93hkqGXCiWvqXCDIq7x+kAH3TK5zhjDZ53jgt1Gx1vvBPHn3ga7HTqPrnc+VhhuVGeTefHShJBx32rnbhL6LbEqCAMGqtQXaovCtuJGY6uWYAPfecAOGMuadnxTigTTBwKtW2oVP4J/EwAroYKuy4MK4Pd7YGtFoJAhlpKVOponsgsYQ8EKGOSVxcZgcgnOw8LhPy28N+xoFCh0OBkMyjM80Ybjq+H8BO6CacnDzQReZL5wQZqBdTtW7CUBi6S4+JWDPBahqNgz7jD73UhEIeG0ivFLEdCWtlVw=='}});
   },
   beforeCreate () {
     const refreshWindow =  _=> {

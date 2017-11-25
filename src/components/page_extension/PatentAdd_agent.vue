@@ -2,16 +2,16 @@
   <app-collapse col-title="委案信息">
       <el-form label-width="120px">
 				<el-form-item label="代理机构名称">
-					{{ agent }}
+					{{ agency }}
 				</el-form-item>
 				<el-form-item label="代理机构案号">
-					{{ agent_serial }}
+					{{ agency_serial }}
 				</el-form-item>
 				<el-form-item label="代理类型">
 					{{ agency_type }}
 				</el-form-item>
 				<el-form-item label="代理人信息">
-					{{ agency }}
+					{{ agent }}
 				</el-form-item>
       </el-form>
     </app-collapse>
@@ -26,7 +26,7 @@ export default {
 		return {
 			form: {
 				agency: '',
-				agent_serial: '',
+				agency_serial: '',
 				agency_type: '',
 				agent: '',
 			}
@@ -38,16 +38,16 @@ export default {
   	}
   },
   computed: {
-  	agent () {
+  	agency () {
   		return this.form.agency ? this.form.agency.name : '暂无代理机构信息';
   	},
-  	agent_serial () {
-  		return this.form.agent_serial ? this.form.agent_serial : '暂无代理机构信息';
+  	agency_serial () {
+  		return this.form.agency_serial ? this.form.agency_serial : '暂无代理机构信息';
   	},
   	agency_type () {
   		return this.form.agency_type ? this.form.agency_type : '未知代理类型';
   	},
-  	agency () {
+  	agent () {
   		return this.form.agent ? this.form.agent.name : '暂无代理人信息';
   	}
   },
