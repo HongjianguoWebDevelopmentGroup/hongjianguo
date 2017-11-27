@@ -27,7 +27,7 @@
 			</el-form-item>
 
       <el-form-item label="收文日期" prop="receipt_date" v-if="type != 'add'">
-        <el-date-picker v-model="form.receipt_date" type="date" placeholder="请选择收件日期"></el-date-picker>
+        <el-date-picker v-model="form.receipt_date" type="date" placeholder="请选择收件日期"  @change="keepSameTime"></el-date-picker>
       </el-form-item>
 
 			<el-form-item label="描述" prop="description" v-show="type !='confirm'">
@@ -100,6 +100,10 @@ export default {
       return _ => {
         return (_.value.indexOf(queryString.toLowerCase()) === 0);
       };
+    },
+    keepSameTime (val) {
+      // console.log(val);
+      this.form.receipt_date = val;
     }
   },
   components: {  ExpressList, RemoteSelect  },

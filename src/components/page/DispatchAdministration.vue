@@ -1,6 +1,11 @@
 <template>
   <div class="main">
-		<table-component :tableOption="option" :data="tableData" ref="table" @refreshTableData="refreshTableData"></table-component>
+		<table-component :tableOption="option" :data="tableData" ref="table" @refreshTableData="refreshTableData">
+      <template slot="action" slot-scope="scope">
+        <el-button type="text" icon="edit" size="mini" @click="editPop(scope.row)" :disabled="scope.row.receipt_date ? true : false" >确认</el-button>
+        <el-button type="text" icon="edit" size="mini" @click="deleteSingle(scope.row)">删除</el-button>
+      </template>  
+    </table-component>
   	<pop @refresh="handlePopRefresh" ref="pop" :confirm="isConfirm"></pop>
   </div>
 </template>
@@ -40,10 +45,12 @@ export default {
           { 
             type: 'action',
             width: '200', 
-            btns: [
-              { type: 'confirm', click: this.editPop },
-              { type: 'delete', click: this.deleteSingle },
-            ] 
+            // btns: [
+            //   { type: 'confirm', click: this.editPop },
+            //   { type: 'delete', click: this.deleteSingle },
+            // ] 
+            label: '操作',
+            btns_render: 'action'
           },
         ]
 		  },
@@ -76,7 +83,6 @@ export default {
   		this.$refs.pop.show('add');
   	},
   	editPop (row) {
-      this.isConfirm = this.option.columns[8].btns[0].type;
   		this.$refs.pop.show('confirm', row);
   	},
   	deleteSingle ({id}) {

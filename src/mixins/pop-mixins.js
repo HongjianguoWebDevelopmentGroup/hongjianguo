@@ -67,7 +67,7 @@ export default {
                       ? this.submitForm() : this.form;
       
       const success = _=>{
-        this.$message({message: `编辑${tex}成功`, type: 'success'});
+        this.$message({message: this.type = 'confirm'? `确认收文成功` : `编辑${tex}成功`, type: 'success'});
         this.dialogVisible = false;
         this.$emit('refresh', 'edit');
       }
@@ -76,10 +76,22 @@ export default {
       }
 
       this.$refs.form.validate(_=>{
-        if(_) {
-          this.btn_disabled = true;
-          this.$axiosPut({url, data, success, complete});        
-        }
+         // console.log(data);
+        if(data.hasOwnProperty('receipt_date')) {
+           if(!data.receipt_date) {
+            return this.$message({type: 'warning',message: '收文日期不能为空!'});
+          }else {
+            if(_) {
+            this.btn_disabled = true;
+            this.$axiosPut({url, data, success, complete});        
+            }
+          }
+        }else {
+          if(_) {
+            this.btn_disabled = true;
+            this.$axiosPut({url, data, success, complete});        
+            }
+        }  
       })
 
     }
