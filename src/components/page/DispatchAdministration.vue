@@ -18,6 +18,7 @@ export default {
   data () {
 		return {
       isConfirm: '',
+      isReceive: false,
 		  option: {
 		  	'header_btn': [
 		  		{ type: 'add', click: this.addPop },
@@ -41,7 +42,7 @@ export default {
 		  			type: 'action',
             width: '200', 
 		  			btns: [
-		  				{ type: 'confirm', click: this.editPop },
+		  				{ type: 'confirm', click: this.editPop ,btn_if: this.btnDisabled},
 		  				{ type: 'delete', click: this.deleteSingle },
 		  			] 
 		  		},
@@ -79,6 +80,11 @@ export default {
       this.isConfirm = this.option.columns[8].btns[0].type;
   		this.$refs.pop.show('confirm', row);
   	},
+    btnDisabled (row) {
+      if(row.receipt_date == "") {
+        return this.isReceive = true;
+      }
+    },
   	deleteSingle ({id}) {
   		this.$confirm('删除后不可恢复，确认删除当前收发文记录？', '提示', {type: 'warning'})
   			.then(_=>{
