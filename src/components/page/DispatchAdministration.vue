@@ -3,7 +3,7 @@
 		<table-component :tableOption="option" :data="tableData" ref="table" @refreshTableData="refreshTableData">
       <template slot="action" slot-scope="scope">
         <el-button type="text" icon="edit" size="mini" @click="editPop(scope.row)" :disabled="scope.row.receipt_date ? true : false" >确认</el-button>
-        <el-button type="text" icon="edit" size="mini" @click="deleteSingle(scope.row)">删除</el-button>
+        <el-button type="text" icon="delete" size="mini" @click="deleteSingle(scope.row)">删除</el-button>
       </template>  
     </table-component>
   	<pop @refresh="handlePopRefresh" ref="pop" :confirm="isConfirm"></pop>
