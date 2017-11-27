@@ -26,7 +26,7 @@
 				<el-date-picker v-model="form.mail_date" type="date" placeholder="请选择发文日期"></el-date-picker>
 			</el-form-item>
 
-      <el-form-item label="收文日期" prop="receipt_date" v-if="type != 'add'">
+      <el-form-item label="收文日期" prop="receipt_date" v-show="type != 'add'">
         <el-date-picker v-model="form.receipt_date" type="date" placeholder="请选择收件日期"  @change="keepSameTime"></el-date-picker>
       </el-form-item>
 
