@@ -67,6 +67,13 @@ export default {
 					'width': '198',
 				},
 				{
+					type: 'text',
+					label: '事务所案号',
+					prop: 'agency_serial',
+					width: '198',
+					show: true 
+				},
+				{
 					'show': true,
 					'type': 'text',
 					'label': '商标名称',
