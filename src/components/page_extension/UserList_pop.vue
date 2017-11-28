@@ -97,7 +97,7 @@ export default {
 		  },
 		  'rules': {
 		  	'email': { pattern: /^[a-z0-9]+([._\\-]*[a-z0-9])*@([a-z0-9]+[-a-z0-9]*[a-z0-9]+.){1,63}[a-z0-9]+$/, message: '邮箱格式错误', trigger: 'blur' },
-		  	'mobile': { pattern: /(^[0-9]{3,4}\-[0-9]{7,8}$)|^1[3|4|5|7|8][0-9]{9}$/, message: '请正确填写11位手机号码或者座机格式\'区号-座机号码\'', trigger: 'blur'},
+		  	'mobile': { pattern: /(^[0-9]{3,4}\-[0-9]{7,8})$|(^[0-9]{3,4}\-[0-9]{7,8})(-\d{1,6}?$)|^1[3|4|5|7|8][0-9]{9}$/, message: '手机号码或者座机号码格式错误', trigger: 'blur'},
 		  	'qq': { pattern: /^[1-9][0-9]{4,9}$/, message: 'qq号码格式错误', trigger: 'blur,change'},
 		  },
 		  dialogVisible: false,
@@ -123,6 +123,11 @@ export default {
           this.form.username = "";
           this.form.password = "";
           this.form.password_again = "";
+          this.form.name = "";
+          this.form.email = "";
+          this.form.mobile = "";
+          this.form.weixin = "";
+          this.form.qq = "";
         } 
         if(this.popType == 'add') {
           this.form.group_id = this.group && this.group.id ? this.group.id : '';
