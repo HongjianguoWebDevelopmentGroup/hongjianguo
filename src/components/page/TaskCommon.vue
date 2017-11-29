@@ -492,6 +492,8 @@ export default {
           { type: 'text', label: 'IPR', prop: 'ipr', sortable: true, width: '118'},
           { type: 'text', label: '承办人', prop: 'person_in_charge_name', show: false, sortable: true, width: '118'},
           { type: 'text', label: '代理机构', prop: 'agency', show: false, sortable: true, width: '130'},
+          { type: 'text', label: '部门', prop: 'branch', render_simple: 'name',sortable: true, width: '168'},
+          { type: 'text', label: '提案人', prop: 'proposer', render_simple: 'name', sortable: true, width: '148'},
           { type: 'text', label: '代理人', prop: 'agent', sortable: true, width: '118'},
           { type: 'text', label: '申请日', prop: 'apd', sortable: true, width: '190'},
           { type: 'text', label: '申请号', prop: 'apn', sortable: true, width: '130'},

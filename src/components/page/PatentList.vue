@@ -85,6 +85,7 @@ export default {
           // { type: 'text', label: '专利状态', prop: 'status', render: (h,item)=>h('span', item ? '正常' : '暂停处理') },
           { type: 'text', label: '案号', prop: 'serial', sortable: true, width: '200' },
           { type: 'text', label: '事务所案号', prop: 'agency_serial', sortable: true, width: '200' },
+          { type: 'text', label: '提案号', prop: 'proposal_serial', sortable: true, width: '200' },
           { type: 'text', label: '专利类型', prop: 'type', render_simple: 'name', sortable: true, is_import: true, width: '142',  },
           { type: 'text', label: '地区', prop: 'area', render_simple: 'name', sortable: true, is_import: true, width: '100', is_agency: true },
           { type: 'text', label: 'IPR', prop: 'ipr', render_simple: 'name', sortable: true, is_import: true, width: '175', is_agency: true },
@@ -108,7 +109,6 @@ export default {
           { type: 'text', label: '国际公开号', prop: 'pct_public_no', sortable: true, width: '263'},
           { type: 'text', label: '复审委内编号', prop: 'board_number', sortable: true, width: '263'},
           { type: 'text', label: '说明书字数', prop: 'words', sortable: true, width: '145'},
-          { type: 'text', label: '备注', prop: 'remark', sortable: true, width: '280' },
           { 
             type: 'text', 
             label: '提案人',
@@ -137,6 +137,22 @@ export default {
             is_import: true,
             is_agency: true,
             render: _=>_.map(_=>`${_.name}:${_.share}%`),
+          },
+          {
+            type: 'text',
+            label: '代理机构',
+            width: '200',
+            prop: 'agency',
+            render_simple: 'name',
+            is_import: true
+          },
+          {
+            type: 'text',
+            label: '代理人',
+            width: '200',
+            prop: 'agent',
+            render_simple: 'name',
+            is_import: true
           },
           {
             type: 'array',
@@ -286,7 +302,7 @@ export default {
             is_import: true,
             width: '175'
           },
-          
+           { type: 'text', label: '备注', prop: 'remark', sortable: true, width: '280' },
           
           
           
