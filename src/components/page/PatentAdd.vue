@@ -23,6 +23,7 @@ const map = new Map([
   ['classification', '请正确填写分类信息'],
   ['case', '请正确填写相关案件信息'],
   ['other', '请正确填写其他信息及附件'],
+  ['agent', '请正确填写委案信息！']
 ]);
 
 const getKeys = ['base', 'person', 'classification', 'case', 'other'];
@@ -77,7 +78,7 @@ export default {
     edit () {
       this.formCheck(_=>{
         const url = `${URL}/${this.id}`;
-        const data = Object.assign( ...getKeys.map(d=>this.$refs[d].submitForm()) );
+        const data = Object.assign( ...setKeys.map(d=>this.$refs[d].submitForm()) );
         const success = _=>{ 
           this.$message({message: '编辑专利成功', type: 'success'});
           this.$emit('editSuccess');
@@ -94,9 +95,9 @@ export default {
     formCheck (callback) {
       let key = "";
       let flag = false;
-
+      const keys = this.pageType == 'add' ? getKeys : setKeys;
       const check = (index)=>{
-        const key = getKeys[index];
+        const key = keys[index];
         if(key) {
           this.$refs[key].checkForm(_=>{
             if(_) {

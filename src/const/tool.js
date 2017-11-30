@@ -22,7 +22,7 @@ export default {
       }
     }
 
-        return data;
+    return data;
 	},
 	clearObj (obj) {
 		for(let key in obj) {
