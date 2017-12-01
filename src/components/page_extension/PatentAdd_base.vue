@@ -22,6 +22,9 @@
       <el-form-item label="发明人" prop="inventors">
         <inventors v-model="form.inventors"></inventors>
       </el-form-item>
+      <el-form-item label="证件号码(第一发明人)" prop="identity">
+        <el-input v-model="form.identity" placeholder="请填写第一发明人证件号码"></el-input>
+      </el-form-item>
       <el-form-item label="优先权">
         <priorities v-model="form.priorities"></priorities>
       </el-form-item>
@@ -72,6 +75,7 @@ export default {
         serial: '',
         title: '',
         area: this.type == 'add' ? [] : '',
+        identity: '',
         type: '',
         applicants: [],
         inventors: [],
@@ -151,6 +155,15 @@ export default {
   	handleUploadRemove () {
 
   	},
+  },
+  watch: {
+    'form.inventors': {
+      handler(val) {
+        if(val[0] && val[0]['identity']) {
+          this.form.identity = val[0]['identity'];
+        }
+      }
+    }
   },
   components: { 
     AppCollapse, 
