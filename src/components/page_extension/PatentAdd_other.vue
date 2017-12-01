@@ -49,6 +49,7 @@ export default {
   	},
     submitForm () {
       const data = this.$tool.shallowCopy(this.form, {skip: ['progress']});
+      return data;
     },
     checkForm (callback) {
       callback(true);
