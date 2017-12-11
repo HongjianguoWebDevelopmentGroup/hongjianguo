@@ -70,7 +70,7 @@ export default {
                       ? this.submitForm() : this.form;
       
       const success = _=>{
-        this.$message({message: this.type = 'confirm'? `确认收文成功` : `编辑${tex}成功`, type: 'success'});
+        this.$message({message: this.type == 'confirm'? `确认收文成功` : `编辑${tex}成功`, type: 'success'});
         this.dialogVisible = false;
         this.$emit('refresh', 'edit');
       }

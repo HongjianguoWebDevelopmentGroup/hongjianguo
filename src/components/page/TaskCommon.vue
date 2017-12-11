@@ -80,7 +80,7 @@
     <app-shrink :visible.sync="dialogShrinkVisible" :title="isCommon ? detailBase.title : shrinkTitle" @close="handleShrinkClose">
       <span slot="header" style="margin-left: 10px;">
         <el-tag>{{ currentRow.flow_node }}</el-tag>
-        <el-tag>{{ isCommon ? detailBase.serial : currentRow.serial }}</el-tag>
+        <el-tag v-if="currentRow.serial">{{ currentRow.serial }}</el-tag>
       </span>
       <span slot="header" style="float: right">
         <el-button size="small" type="primary" @click="dialogEditVisible = true" v-if="menusMap && !menusMap.get('/tasks/update')">编辑</el-button>
@@ -567,7 +567,7 @@ export default {
       return type;
     },
     isCommon () {
-      return this.currentRow.category == 1 || this.currentRow.category == 3;
+      return this.currentRow.category == 1 || this.currentRow.category == 3 || this.currentRow.category == 2;//专利 版权 商标
     }
   },  
   watch: {

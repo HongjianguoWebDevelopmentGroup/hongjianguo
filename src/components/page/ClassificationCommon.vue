@@ -1,5 +1,6 @@
 <template>
   <div class="main">
+    <el-button type="primary" @click="addPop(0)" style="margin-bottom: 10px;">添加根节点</el-button>
 	  <el-tree 
 	  	:data="options"
 	  	:props="props"
@@ -9,7 +10,7 @@
 	  	:render-content="renderContent"
 	  	:current-node-key="currentNodeKey"
 	  	@current-change="handleCurrentChange"
-      :style="`height: ${innerHeight - 400}px; overflow: auto; font-size: 14px;`"
+      :style="`height: ${innerHeight - 450}px; overflow: auto; font-size: 14px;`"
 
 	  >
 	  </el-tree>

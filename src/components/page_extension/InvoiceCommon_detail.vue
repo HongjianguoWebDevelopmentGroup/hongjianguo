@@ -69,7 +69,7 @@ export default {
           { type: 'text', label: '费用期限', prop: 'due_time', is_import: true, width: '200' },
           { type: 'text', label: '官方绝限', prop: 'deadline', width: '200' },
           { type: 'text', label: '付款时间', prop: 'pay_time', width: '200' },
-		  		{ type: 'text', label: '请款单', prop: 'invoice_id', width: '150' },
+		  		{ type: 'text', label: '账单号', prop: 'invoice_id', width: '150' },
 		  		//{ type: 'text', label: '请款单备注', prop: 'invoidce_remark', width: '150' },
 		  		//{ type: 'text', label: '发票抬头', prop: 'invoice_title', width: '330' },
 		  		//{ type: 'text', label: '纳税人识别号', prop: 'tax_payer_identifier', width: '160' },

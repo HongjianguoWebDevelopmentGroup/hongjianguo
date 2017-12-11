@@ -2,6 +2,7 @@
       <el-upload
       :on-success="handleUploadSuccess"
       :on-remove="handleUploadRemove"
+      :on-change="handleChange"
       action="/api/files"
       :on-preview="onPreview"
       :file-list="fileList"
@@ -40,7 +41,7 @@
         clearFiles () {
           this.$refs.upload.clearFiles();
         },
-        handleUploadSuccess (p, f) {
+        handleUploadSuccess (p, f, list) {
           if(p.status) {
             const id = p.data.file.id;
             let copy;
@@ -57,8 +58,7 @@
             this.$emit('input', copy);
 
           }else {
-            this.$alert(p.info);
-            this.clearFiles();
+            this.$message({message: p.info, type: 'warning'});
           }
         },
         onPreview (file) {
@@ -84,6 +84,14 @@
           this.$emit('input', copy);
 
         },
+        handleChange (file, list) {
+          if(file.response && !file.response.status) {
+            list.pop();
+          }
+          // if( !file.response.status ) {
+          //   list.pop();
+          // }
+        }
       }
     }
     </script>

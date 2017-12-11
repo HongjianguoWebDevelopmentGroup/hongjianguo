@@ -120,8 +120,9 @@ export default {
   	},
     addPop () {
       if(!this.currentNode) {
-        this.$message({message: '请选择添加部门的挂载项', type: 'warning'});
-        return;
+        this.currentNode = {id: 0};
+        // this.$message({message: '请选择添加部门的挂载项', type: 'warning'});
+        // return;
       }
 
       this.$refs.pop.show('add');
