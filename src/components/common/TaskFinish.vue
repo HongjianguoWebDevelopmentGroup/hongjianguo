@@ -71,9 +71,13 @@
     <el-form-item prop="remark" label="任务备注" v-if="fields.remark && !hide_r_a">
       <el-input type="textarea" v-model="form.remark"></el-input>
     </el-form-item>
-     <ul v-if="data.description && data.description.length != 0" style="margin-left:115px;padding: 0;margin-top:-10px; font-size:14px;color:#bbb;">
-          <li v-for="(item, index) in data.description" :key="index">{{ item }}</li>
-        </ul>
+    <el-form-item prop="level" label="案件等级" v-if="fields.level" :rules="{required: true, message: '安全等级必选', trigger: 'change'}">
+      <el-radio-group v-model="form.level">
+        <el-radio-button label="A"></el-radio-button>
+        <el-radio-button label="B"></el-radio-button>
+        <el-radio-button label="C"></el-radio-button>
+      </el-radio-group>
+    </el-form-item>
     <el-form-item prop="rank" label="评分" v-if="fields.rank">
       <el-rate 
         v-model="form.rank" 
@@ -84,6 +88,9 @@
       ></el-rate>
     </el-form-item>
     <el-form-item v-if="next == '20'" prop="pconfirm" label="确认" :rules="confirmValidator">
+    <ul v-if="data.description && data.description.length != 0" style="margin-left:115px;padding: 0;margin-top:-10px; font-size:14px;color:#bbb;">
+      <li v-for="(item, index) in data.description" :key="index">{{ item }}</li>
+    </ul>
       <el-checkbox v-model="form.pconfirm">已确认送件信息完整</el-checkbox><el-button type="text" size="mini" style="margin-left: 10px;" @click="$emit('more', 'patent')">查看</el-button>
     </el-form-item>
   	<el-form-item style="margin-bottom: 0px;">
@@ -129,7 +136,7 @@ export default {
         area: [],
         type: '',
         pconfirm: false,
-
+        level: '',
 			},
 			'defaultVal': '',
       'agencyMap': [],

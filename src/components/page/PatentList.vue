@@ -161,6 +161,12 @@ export default {
             is_import: true,
             width: '160',
           },
+          {
+            type: 'text',
+            label: '安全等级',
+            prop: 'level',
+            width: '100',
+          },
           { type: 'text', label: '部门名称', prop: 'branch', sortable: true, render:  (h,item)=>h('span', item.name), width: '142' },
           { 
             type: 'text', 
