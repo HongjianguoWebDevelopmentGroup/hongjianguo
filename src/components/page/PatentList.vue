@@ -163,7 +163,7 @@ export default {
           },
           {
             type: 'text',
-            label: '安全等级',
+            label: '案件等级',
             prop: 'level',
             width: '100',
           },

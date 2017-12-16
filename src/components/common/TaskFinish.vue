@@ -71,7 +71,7 @@
     <el-form-item prop="remark" label="任务备注" v-if="fields.remark && !hide_r_a">
       <el-input type="textarea" v-model="form.remark"></el-input>
     </el-form-item>
-    <el-form-item prop="level" label="案件等级" v-if="fields.level" :rules="{required: true, message: '安全等级必选', trigger: 'change'}">
+    <el-form-item prop="level" label="案件等级" v-if="fields.level" :rules="{required: true, message: '案件等级必选', trigger: 'change'}">
       <el-radio-group v-model="form.level">
         <el-radio-button label="A"></el-radio-button>
         <el-radio-button label="B"></el-radio-button>

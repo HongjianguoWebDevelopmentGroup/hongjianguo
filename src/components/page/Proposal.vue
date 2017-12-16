@@ -242,7 +242,7 @@ export default {
           { type: 'array', label: '产品分类', prop: 'products', render: _=>_.map(_=>_.name), width: '200' },
           { type: 'array', label: '发明人', prop: 'inventors', render: _=>_.map(_=>`${_.name}：${_.share}%；`), overflow: true, width: '200' },
           { type: 'array', label: '标签', prop: 'tags', width: '200' },
-          { type: 'text', label: '安全等级', porp: 'level', width: '100' },
+          { type: 'text', label: '案件等级', porp: 'level', width: '100' },
           { type: 'text', label: '备注', prop: 'remark', width: '280' },
           {
             type: 'action',
