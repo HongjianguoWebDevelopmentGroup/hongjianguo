@@ -21,7 +21,7 @@
 
     <nav>
         <img src="/static/static_img/hjg_logo.png" style="vertical-align: middle; height: 27px;">
-        <span class="logo_name">知识产权管理系统</span>
+        <!-- <span class="logo_name">知识产权管理系统</span> -->
         <el-dropdown  trigger="click" style="float: right; margin-right: 40px;" @command="handleCommond">
           <span class="el-dropdown-link" style="color: #20a0ff; cursor: pointer;">
             {{ username }}<i class="el-icon-caret-bottom el-icon--right"></i>
@@ -192,10 +192,10 @@ export default {
     }
   },
   created () {
-    const url = '/api/userinfo';
+  
     const success = _=>{
       this.userinfoLoading = false;
-      this.$store.commit('setUser', _.member);
+      this.$store.commit('setUser', window.appCache.userinfo);
 
       // this.$store.dispatch('refreshTags');
       
@@ -219,19 +219,7 @@ export default {
       // this.$store.dispatch('refreshFileType');
       // this.$store.dispatch('refreshMail');
     };
-    const error = _=>{
-      window.location.href = '/login';
-    };
-    const catchFunc = _=>{
-      console.log(_);
-      // window.location.href = '/login';
-    }
-    const success2 = _=>{
-      this.axiosGet({url, success, error, catchFunc});
-    }
-
-    // this.axiosGet({url, success, error, catchFunc});
-    this.axiosPost({url: '/api/login', success: success2, data: {username: 'admin', password: 'Z9jgM6FhdKWEqbbpJePv/6qeTO/Yk2b6lx7zF4tiBncRubwf0fz93hkqGXCiWvqXCDIq7x+kAH3TK5zhjDZ53jgt1Gx1vvBPHn3ga7HTqPrnc+VhhuVGeTefHShJBx32rnbhL6LbEqCAMGqtQXaovCtuJGY6uWYAPfecAOGMuadnxTigTTBwKtW2oVP4J/EwAroYKuy4MK4Pd7YGtFoJAhlpKVOponsgsYQ8EKGOSVxcZgcgnOw8LhPy28N+xoFCh0OBkMyjM80Ybjq+H8BO6CacnDzQReZL5wQZqBdTtW7CUBi6S4+JWDPBahqNgz7jD73UhEIeG0ivFLEdCWtlVw=='}});
+    success();
   },
   beforeCreate () {
     const refreshWindow =  _=> {
