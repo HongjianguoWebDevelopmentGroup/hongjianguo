@@ -84,8 +84,10 @@ export default {
 			this.indexCache = e.target.dataset.index;
 		},
 		drop (e) {
-			const start = this.indexCache;
-			const end = e.target.dataset.index;
+			if(this.search) return;
+
+			const start = this.indexCache - 0;
+			const end = e.target.dataset.index - 0;
 			const d = this.$tool.deepCopy(this.data);
 
 			const item = d.splice(start, 1)[0];
@@ -94,9 +96,12 @@ export default {
 			}else {
 				d.splice(end, 0, item);
 			}
+
 			this.$emit('update:data', d);
 		},
 		allowDrop (e) {
+			if(this.search) return;
+
 			const i = e.target.dataset.index; 
 			const i2 = this.indexCache;
 
@@ -115,7 +120,7 @@ export default {
 $width: 200px;
 
 .app-transfer-panel {
-	text-align: initial;
+	text-align: left;
 	border: 1px solid #d1dbe5;
   box-shadow: 0 2px 4px rgba(0,0,0,.12), 0 0 6px rgba(0,0,0,.04);
   display: inline-block;

@@ -480,6 +480,11 @@ const methods = Object.assign({}, tableConst.methods, {
     this.refreshRender = false;
     this.control = this.transferValue;
     this.dialogControl = false;
+
+    //存入cookie
+    this.$tool.setLocal(this.tableOption.name, JSON.stringify(this.control));
+
+    //element-ui的table插件因为一些缓存的设计在这里会发生错误,使用vue的v-if特性强制重新渲染table 
     this.$nextTick(_=>{this.refreshRender = true});
   }
 });
@@ -609,14 +614,16 @@ export default {
         const o = {};
         let s = '';
         let a = '';
+        const static_arr = [];
         cols.forEach(_=>{
           if(_.prop) {
             o[_.prop] = _;
           }
+          if(_.show_option == false) {static_arr.push(_)};
           if(_.type == 'selection') {s = _};
           if(_.type == 'action') {a = _};
         });
-        const arr = [];
+        let arr = [];
         c.forEach(_=>{
           const item = o[_.key];
           if(item) {
@@ -624,6 +631,7 @@ export default {
           }
         })
         if(a) {arr.push(a)};
+        if(static_arr.length != 0) {arr = [...static_arr, ...arr]};
         if(s) {arr.unshift(s)};
         return arr;
       }else {
@@ -645,9 +653,10 @@ export default {
 
     const d = this;
     const cols = d.tableOption.columns;
-    const control = [[],[]];
+    let tableCookie = JSON.parse(this.$tool.getLocal(this.tableOption.name));
     
-
+    //获取控制器
+    let control = [[],[]];
     for(let c of cols) {
       let show = c.show == undefined ? true : c.show;
       let show_option = c.show_option !== undefined ? c.show_option : true;
@@ -660,43 +669,86 @@ export default {
         }
       }
     }
+    
+    //检测缓存中是否存在控制器
+    if(tableCookie) {
+      
+      //一些本地缓存的异常检测
+      const error = (_=>{
+        //老版本缓存
+        if(!(tableCookie[0] instanceof Array)) {
+          return true
+        }
+
+        //字段统一性验证
+        const cookieO = {};
+        const localO = {};
+        tableCookie.forEach(_=>{
+          _.forEach(d=>{
+            cookieO[d.key] = true;
+          })
+        })
+        control.forEach(_=>{
+          _.forEach(d=>{
+            localO[d.key] = false;
+          })
+        })
+        const l = this.$tool.getObjLength(localO);
+        Object.assign(localO, cookieO);
+        if(this.$tool.getObjLength(localO) != l) {
+          return true;
+        }
+        for(let key in localO) {
+          if(!localO[key]) {
+            return true;
+          }
+        }
+      })();
+
+      //若存在错误,则将本地缓存清空,无错误则替换原有控制器
+      if(error) {
+        this.$tool.deleteLocal(this.tableOption.name);
+      }else {
+        control = tableCookie;  
+      }
+    }
+    
     const transferValue = control;
 
     
     //获得有配置数据得到的控制器
-    let tableControl = [];
-    for (let c of cols) {
-      let show = c.show == undefined ? true : c.show;
-      let type = c.type;
-      let label = c.label;
-      let show_option = c.show_option !== undefined ? c.show_option : true;
-      let prop = c.prop !== undefined ? c.prop : '';
-      tableControl.push({show, type, label, show_option, prop});        
-    }
+    // let tableControl = [];
+    // for (let c of cols) {
+    //   let show = c.show == undefined ? true : c.show;
+    //   let type = c.type;
+    //   let label = c.label;
+    //   let show_option = c.show_option !== undefined ? c.show_option : true;
+    //   let prop = c.prop !== undefined ? c.prop : '';
+    //   tableControl.push({show, type, label, show_option, prop});        
+    // }
     //或得本地缓存的控制器
-    const cookieControl = JSON.parse(this.$tool.getLocal(this.tableOption.name));
     
     //当存在本地缓存时
     //对两个控制器进行比对
-    if(cookieControl) {
-      const r = (_=>{
-        let i = tableControl.length;
+    // if(cookieControl) {
+    //   const r = (_=>{
+    //     let i = tableControl.length;
         
-        while(i--) {
-          if( !cookieControl[i] || tableControl[i]['prop'] != cookieControl[i]['prop'] ) {
-            return false;
-          }
-        }
+    //     while(i--) {
+    //       if( !cookieControl[i] || tableControl[i]['prop'] != cookieControl[i]['prop'] ) {
+    //         return false;
+    //       }
+    //     }
 
-        return true;
-      })();
+    //     return true;
+    //   })();
       //比对结果成功时使用缓存值,否则清空已有的无效缓存
-      if(r) {
-        tableControl = cookieControl;
-      }else {
-        this.$tool.deleteLocal(this.tableOption.name);
-      }
-    }
+    //   if(r) {
+    //     tableControl = cookieControl;
+    //   }else {
+    //     this.$tool.deleteLocal(this.tableOption.name);
+    //   }
+    // }
 
 
     const data = {
@@ -706,7 +758,6 @@ export default {
       currentPage: 1,
       //tableSelect 当前列表如果有checkbox,已选择的行数据
       tableSelect: [],
-      tableControl,
       expands: [],
       getRowKeys (row) {
         return row.id;
