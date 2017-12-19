@@ -1,11 +1,11 @@
 <template>
-  <div class="main">
-  		<table-component :tableOption="tableOption" :data="tableData" @refreshTableData="refreshTableData" ref="table" >
-        <el-select v-model="mailbox" slot="mailbox" style="width: 150px">
-          <el-option v-for="item in options.mailbox" :label="item.label" :value="item.value" :key="item.value"></el-option>
-        </el-select>
-      </table-component>
-      <Detail ref="mail_detail"></Detail>
+  <div class="main">  
+		<table-component :tableOption="tableOption" :data="tableData" @refreshTableData="refreshTableData" ref="table" >
+      <el-select v-model="mailbox" slot="mailbox" style="width: 150px">
+        <el-option v-for="item in options.mailbox" :label="item.label" :value="item.value" :key="item.value"></el-option>
+      </el-select>
+    </table-component>
+    <Detail ref="mail_detail"></Detail>
   </div>
 </template>
 
@@ -27,8 +27,18 @@ export default {
   		  	{ label: '收件箱', value: 1 },
   		  	{ label: '发件箱', value: 2 },
           { label: '草稿箱', value: 0 },
-  		  ] 
+  		  ],
       },
+      value2: [
+        [
+          {label: 'label1', value: 'value1', key: 1},
+          {label: 'label2', value: 'value2', key: 2},
+          {label: 'label3', value: 'value3', key: 3},
+          {label: 'label4', value: 'value4', key: 4},
+          {label: 'label5', value: 'value5', key: 5},
+        ],
+        []
+      ],
 		  props: {
 		  	'label': 'label',
 		  	'children': 'children',
@@ -134,10 +144,13 @@ export default {
   mounted () {
     this.refresh();
   },
-  components: { TableComponent, Strainer, Detail },
+  components: { 
+    TableComponent, 
+    Strainer, 
+    Detail, 
+  },
 }
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
-<style scoped lang="scss">
-</style>
+<style lang="scss"></style>

@@ -22,16 +22,16 @@
         </template>
 
         <template v-else-if="btn.type == 'control'">
-          <el-dropdown trigger="click" :hide-on-click="false" menu-align="start" >
-            <el-button class="table-header-btn" type="primary" :icon="btn.icon ? btn.icon : 'menu'">
-              {{ btn.label ? btn.label : '字段'}}<i class="el-icon-caret-bottom el-icon--right"></i>
+          <!-- <el-dropdown trigger="click" :hide-on-click="false" menu-align="start" > -->
+            <el-button class="table-header-btn" type="primary" :icon="btn.icon ? btn.icon : 'menu'" @click="dialogControl = true">
+              {{ btn.label ? btn.label : '字段'}}
             </el-button>
-            <el-dropdown-menu slot="dropdown" style="max-height: 500px; overflow-y: auto; overflow-x:  hidden;">
+<!--             <el-dropdown-menu slot="dropdown" style="max-height: 500px; overflow-y: auto; overflow-x:  hidden;">
               <el-dropdown-item style="padding: 0 20px; line-height: 25px;" v-for="(col, index) in tableControl" :key="index" v-if="col.type != 'selection' && col.type != 'action' && col.type != 'expand' && col.show_option">
                 <el-checkbox :label="col.label" v-model="col.show" @change="handleControlChange"></el-checkbox>
               </el-dropdown-item>
             </el-dropdown-menu>
-          </el-dropdown>
+          </el-dropdown> -->
         </template>
         <!-- 这段是做什么的 -->
         <template v-else-if="btn.type == 'dropdown'">
@@ -99,6 +99,7 @@
     
   	<el-table 
       :data="tableData"
+      v-if="refreshRender"
       stripe
       :border="tableOption.is_border != undefined ? tableOption.is_border : true" 
       @selection-change="handleselectionChange" 
@@ -115,7 +116,7 @@
       :class="tableOption.empty_text_position == 'topLeft' ? 'empty-top-left' : ''"
       ref="table"
     >
-      <template v-for="(col, index) in tableOption.columns">
+      <template v-for="(col, index) in columns">
         
         <template v-if="col.type == 'selection'">
           <el-table-column type="selection" :fixed="col.fixed === false ? false : 'left'"></el-table-column>
@@ -130,7 +131,7 @@
           </el-table-column>
         </template> -->
 
-        <template v-else-if="col.type == 'text' && tableControl[index]['show']" >
+        <template v-else-if="col.type == 'text'" >
           
           <template v-if="col.render ? true : false">
             <el-table-column :label="col.label" :prop="col.prop" :width="col.width ? col.width : ''" :min-width="col.min_width ? col.min_width : ''" :sortable="col.sortable ? 'custom' : false" :show-overflow-tooltip="col.overflow !== undefined ? col.overflow : true" :align="col.align !== undefined ? col.align :'left'" :header-align="col.header_align !== undefined ? col.header_align :'left'">
@@ -156,13 +157,8 @@
 
         </template>
 
-        <template v-else-if="col.type == 'date'">
-          <el-table-column :label="col.label" :prop="col.prop" v-if="tableControl[index]['show']">
-          </el-table-column>
-        </template>
-
         <template v-else-if="col.type == 'array'">
-          <el-table-column :label="col.label" :prop="col.render ? `${col.prop}__render` : col.prop" :width="col.width ? col.width : ''" :min-width="col.min_width ? col.min_width : ''" v-if="tableControl[index]['show']" :sortable="col.sortable ? 'custom' : false" :show-overflow-tooltip="col.overflow !== undefined ? col.overflow : true">
+          <el-table-column :label="col.label" :prop="col.render ? `${col.prop}__render` : col.prop" :width="col.width ? col.width : ''" :min-width="col.min_width ? col.min_width : ''" :sortable="col.sortable ? 'custom' : false" :show-overflow-tooltip="col.overflow !== undefined ? col.overflow : true">
             <template slot-scope="scope">
 
               <el-tag v-for="(item, i) in scope.row[scope.column.property]" style="margin-left: 5px;" close-transition :key="i">{{ item }}</el-tag>
@@ -224,10 +220,17 @@
     </el-pagination>
   
     
-      <app-import v-if="tableOption.import_type !== undefined" :visible.sync="dialogImportVisible" :columns="import_columns" :type="tableOption.import_type" @import-success="handleImportSuccess"></app-import>
+    <app-import v-if="tableOption.import_type !== undefined" :visible.sync="dialogImportVisible" :columns="import_columns" :type="tableOption.import_type" @import-success="handleImportSuccess"></app-import>
     
-
     <file-upload v-if="tableOption.upload_type !== undefined" :type="tableOption.upload_type" @upload-success="refresh" ref="file_upload"></file-upload>
+  
+    <el-dialog :visible.sync="dialogControl" title="字段控制" class="dialog-small" @close="transferValue = control; $refs.transfer.clear();">
+        <app-transfer ref="transfer" title1="未显示" title2="已显示" placeholder="查询字段..." v-model="transferValue" style="text-align: center;"></app-transfer>
+        <div style="margin-top: 20px;margin-left: 45px;">
+          <el-button type="primary" @click="controlSave">保存</el-button>
+          <el-button type="danger" @click="dialogControl = false">取消</el-button>
+        </div>
+    </el-dialog>
   </div>
 </template>
 
@@ -239,6 +242,7 @@ import AppFilter from '@/components/common/AppFilter'
 import AppImport from '@/components/common/AppImport'
 import FileUpload from '@/components/common/FileUpload'
 import SearchInput from '@/components/common/SearchInput'
+import AppTransfer from '@/components/common/AppTransfer'
 import { mapGetters } from 'vuex'
 const methods = Object.assign({}, tableConst.methods, {
   getPageData (c) {
@@ -471,6 +475,12 @@ const methods = Object.assign({}, tableConst.methods, {
   },
   setCurrentRow (row) {
     this.$refs.table.setCurrentRow(row);
+  },
+  controlSave () {
+    this.refreshRender = false;
+    this.control = this.transferValue;
+    this.dialogControl = false;
+    this.$nextTick(_=>{this.refreshRender = true});
   }
 });
 export default {
@@ -560,7 +570,7 @@ export default {
       return flag;
     },
     import_columns () {
-      const c =this.tableOption.columns;
+      const c = this.tableOption.columns;
       const a = c.filter(_=>_.is_import);
       if(this.tableOption.import_columns) {
         a.push(...this.tableOption.import_columns);
@@ -591,11 +601,39 @@ export default {
       }
 
       return height;
+    },
+    columns () {
+      let cols = this.tableOption.columns; 
+      if(cols) {
+        const c = this.control[1];
+        const o = {};
+        let s = '';
+        let a = '';
+        cols.forEach(_=>{
+          if(_.prop) {
+            o[_.prop] = _;
+          }
+          if(_.type == 'selection') {s = _};
+          if(_.type == 'action') {a = _};
+        });
+        const arr = [];
+        c.forEach(_=>{
+          const item = o[_.key];
+          if(item) {
+            arr.push(item);
+          }
+        })
+        if(a) {arr.push(a)};
+        if(s) {arr.unshift(s)};
+        return arr;
+      }else {
+        return [];
+      }
     }
   },
   watch: {
     'requesOption': {
-      handler: function () {  },
+      handler: function () {},
       deep: true,
     },
     screen_obj (val) {
@@ -607,10 +645,27 @@ export default {
 
     const d = this;
     const cols = d.tableOption.columns;
+    const control = [[],[]];
+    
+
+    for(let c of cols) {
+      let show = c.show == undefined ? true : c.show;
+      let show_option = c.show_option !== undefined ? c.show_option : true;
+      if(show_option && (c.type == 'text' || c.type == 'array') ) {
+        const item = { key: c.prop, value: c.prop, label: c.label };
+        if(show) {
+          control[1].push(item);
+        }else {
+          control[0].push(item);
+        }
+      }
+    }
+    const transferValue = control;
+
     
     //获得有配置数据得到的控制器
     let tableControl = [];
-    for (let c of d.tableOption.columns) {
+    for (let c of cols) {
       let show = c.show == undefined ? true : c.show;
       let type = c.type;
       let label = c.label;
@@ -622,7 +677,7 @@ export default {
     const cookieControl = JSON.parse(this.$tool.getLocal(this.tableOption.name));
     
     //当存在本地缓存时
-    //对两个控制器进行比对(主要针对代码修改阶段,字段不稳定)
+    //对两个控制器进行比对
     if(cookieControl) {
       const r = (_=>{
         let i = tableControl.length;
@@ -636,7 +691,6 @@ export default {
         return true;
       })();
       //比对结果成功时使用缓存值,否则清空已有的无效缓存
-      console.log(r);
       if(r) {
         tableControl = cookieControl;
       }else {
@@ -665,6 +719,10 @@ export default {
       dialogImportVisible: false,
       filterVisible: false,
       exportLoading: false,
+      dialogControl: false,
+      control,
+      transferValue,
+      refreshRender: true,
     };
 
     return Object.assign({}, tableConst.data, data);
@@ -692,6 +750,7 @@ export default {
     AppImport,
     FileUpload,
     SearchInput,
+    AppTransfer,
   },
   mounted () {},
 }
