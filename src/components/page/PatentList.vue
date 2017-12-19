@@ -85,15 +85,16 @@ export default {
           // { type: 'text', label: '专利状态', prop: 'status', render: (h,item)=>h('span', item ? '正常' : '暂停处理') },
           { type: 'text', label: '案号', prop: 'serial', sortable: true, width: '200' },
           { type: 'text', label: '事务所案号', prop: 'agency_serial', sortable: true,width: '200' },
+          { type: 'array',label: '申请人',prop: 'applicants', width: '300',is_import: true, render: _=>{return _.map(_=>_.name);}},
+          { type: 'text', label: '申请号', prop: 'apn', sortable: true, is_import: true, width: '263'},
+          { type: 'text', label: '申请日', prop: 'apd', sortable: true, is_import: true, width: '175'},
+          { type: 'text', label: '专利标题', prop: 'title', sortable: true, is_import: true, width: '160' },
+          { type: 'text', label: '地区', prop: 'area', render_simple: 'name', sortable: true, is_import: true, width: '100' },
+          { type: 'text', label: '当前状态', prop: 'progress', render_simple: 'name',  sortable: true, width: '180' },
+          { type: 'text', label: 'IPR', prop: 'ipr', render_simple: 'name', sortable: true, is_import: true, width: '175' },
           { type: 'text', label: '提案号', prop: 'proposal_serial', sortable: true,width: '200' },
           { type: 'text', label: '专利类型', prop: 'type', render_simple: 'name', sortable: true, is_import: true, width: '142',  },
-          { type: 'text', label: '地区', prop: 'area', render_simple: 'name', sortable: true, is_import: true, width: '100' },
-          { type: 'text', label: 'IPR', prop: 'ipr', render_simple: 'name', sortable: true, is_import: true, width: '175' },
-          { type: 'text', label: '专利标题', prop: 'title', sortable: true, is_import: true, width: '160' },
-          { type: 'text', label: '当前状态', prop: 'progress', render_simple: 'name',  sortable: true, width: '180' },
           { type: 'text', label: '专利摘要', prop: 'abstract', sortable: true, width: '280'},
-          { type: 'text', label: '申请日', prop: 'apd', sortable: true, is_import: true, width: '175'},
-          { type: 'text', label: '申请号', prop: 'apn', sortable: true, is_import: true, width: '263'},
           { type: 'text', label: '公开日', prop: 'public_date', sortable: true, is_import: true, width: '175'},
           { type: 'text', label: '公开号', prop: 'public_number', sortable: true, is_import: true, width: '263'},
           { type: 'text', label: '初审合格日', prop: 'pre_exam_ok_date', sortable: true, width: '175'},
@@ -134,16 +135,6 @@ export default {
             sortable: true,
             width: '160',
             render_simple: 'name'
-          },
-          {
-            type: 'array',
-            label: '申请人',
-            prop: 'applicants',
-            width: '300',
-            is_import: true,
-            render: _=>{
-              return _.map(_=>_.name);
-            }
           },
           {
             type: 'array',
@@ -200,7 +191,7 @@ export default {
             is_import: true,
             width: '175',         
             render: (h,item)=>{
-              let t = item;
+            let t = item;
               if(t) {
                  t = this.$tool.getDate(new Date(t));
               }
