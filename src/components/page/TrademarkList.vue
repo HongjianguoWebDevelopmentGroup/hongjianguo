@@ -64,14 +64,7 @@ export default {
 					'type': 'text',
 					'label': '案号',
 					'prop': 'serial',
-					'width': '198',
-				},
-				{
-					type: 'text',
-					label: '事务所案号',
-					prop: 'agency_serial',
-					width: '198',
-					show: true 
+					'width': '168',
 				},
 			    {
 					'show': true,
@@ -79,7 +72,7 @@ export default {
 					'label': '申请人',
 					'prop': 'applicants',
 					'is_import': true,
-					'width': '260',
+					'width': '220',
 					render:_=>_.map(_=>_.name),
 					'is_import': true,
 			    },
@@ -88,7 +81,7 @@ export default {
 					'type': 'text',
 					'label': '申请号',
 					'prop': 'apn',
-					'width': '240',
+					'width': '198',
 					'is_import': true,
 			    },
 			    {
@@ -96,7 +89,7 @@ export default {
 					'type': 'text',
 					'label': '申请日',
 					'prop': 'apd',
-					'width': '168',
+					'width': '145',
 					'is_import': true,
 			    },
 				{
@@ -104,7 +97,7 @@ export default {
 					'type': 'text',
 					'label': '商标名称',
 					'prop': 'title',
-					'width': '168',
+					'width': '145',
 					'is_import': true,
 				},
 			  	{
@@ -117,6 +110,13 @@ export default {
 					'width': '145',
 					'is_import': true,
 			    },
+				{
+					type: 'text',
+					label: '事务所案号',
+					prop: 'agency_serial',
+					width: '198',
+					show: true 
+				},
 				{
 					'show': true,
 					'type': 'text',
@@ -170,7 +170,7 @@ export default {
 					'type': 'text',
 					'label': '初审公告日',
 					'prop': 'public_date',
-					'width': '168',
+					'width': '145',
 					'is_import': true,
 			  },
 			  {
@@ -178,7 +178,7 @@ export default {
 					'type': 'text',
 					'label': '初审公告期数',
 					'prop': 'public_number',
-					'width': '168',
+					'width': '145',
 					'is_import': true,
 			  },
 			  {
@@ -186,7 +186,7 @@ export default {
 					'type': 'text',
 					'label': '核准注册日',
 					'prop': 'issue_date',
-					'width': '168',
+					'width': '145',
 					'is_import': true,
 			  },
 			  {
@@ -194,7 +194,7 @@ export default {
 					'type': 'text',
 					'label': '核准公告期数',
 					'prop' : 'issue_number',
-					'width': '168',
+					'width': '145',
 					'is_import': true,
 			  },  
 			  {
