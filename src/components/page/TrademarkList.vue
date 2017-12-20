@@ -9,6 +9,7 @@
       :id="currentRow.id"
       @editSuccess="refresh">
     </common-detail>
+    <!-- <el-button @click="customFields()">按钮</el-button> -->
   </div>
 </template>
 
@@ -236,6 +237,22 @@ export default {
   			success,
   		})
   	},
+  	customFields(name) {
+	  	let newObj = new Object ();
+	  	const newArr = [];
+	  	Object.assign(newArr,this.tableOption.columns);
+	  	newObj.width = '200';
+	  	newObj.show = true;
+	  	newObj.label = '自定义';
+	  	newObj.prop = 'zidingyi';
+	  	newObj.type = 'text';
+	  	// console.log(newObj);
+	  	// console.log(this.tableOption.columns instanceof  Array);
+	  	newArr.push(newObj);
+	  	console.log(newArr);
+	  	this.tableOption.columns = newArr;
+	  	return this.tableOption.columns;
+  	},
   	refresh () {
   		this.$refs.table.refresh();
   	},
@@ -254,6 +271,9 @@ export default {
   	AppDatePicker,
   	CommonDetail,
   	Strainer,
+  },
+  watch: {
+
   }
 }
 </script>
