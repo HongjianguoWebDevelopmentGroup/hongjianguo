@@ -2,7 +2,7 @@
   <div class="main" id="task_common">
     <strainer @query="strainerQuery" @clear="strainerClear"></strainer>
     <table-component :tableOption="tableOption" :data="tableData" @refreshTableData="refreshTableData" :refresh-proxy="refreshProxy" ref="table">
-      <el-select v-if="menusMap && !menusMap.get('/tasks/all')" slot="toggle" v-model="task_toggle" style="width: 110px; margin-left: 5px;">
+      <el-select v-if="menusMap && !menusMap.get('/tasks/all')" slot="toggle" class="expand" v-model="task_toggle" style="width: 110px; margin-left: 5px;">
         <el-option key="mine" label="我的任务" value="personal"></el-option>
         <el-option key="all" label="所有任务" value="all"></el-option>
       </el-select>
@@ -640,6 +640,12 @@ export default {
       left: 0px;
       bottom: 4px;
   }
+  @media screen and (max-width: 1024px) {
+  .expand {
+    width: 90px !important;
+    font-size: 12px;
+  }
+}
 </style>
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped lang="scss">

@@ -247,6 +247,9 @@ export default {
 }
 </script>
 <style lang="scss">
+@media only screen and (max-width: 1024px){
+  @import './style/common';
+}
 $nav_bgColor: #383838;
 $nav_height: 50px;
 
