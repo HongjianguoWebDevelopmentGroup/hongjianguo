@@ -14,12 +14,12 @@ export default {
 		  option: {
 		  	'is_search': false,
 		  	'columns': [
-		  		{ type: 'text', label: '文件名称', prop: 'name' },
-		  		{ type: 'text', label: '文件类型', prop: 'type' },
-		  		{ type: 'text', label: '文件格式', prop: 'ext' },
-		  		{ type: 'text', label: '文件大小', prop: 'size' },
-		  		{ type: 'text', label: '上传人', prop: 'uploader' },
-		  		{ type: 'text', label: '上传时间', prop: 'create_time' },
+		  		{ type: 'text', label: '文件名称', prop: 'name',min_width: '260' },
+		  		{ type: 'text', label: '文件类型', prop: 'type',width:'100' },
+		  		{ type: 'text', label: '文件格式', prop: 'ext' ,width:'160'},
+		  		{ type: 'text', label: '文件大小', prop: 'size' ,width:'100'},
+		  		{ type: 'text', label: '上传人', prop: 'uploader',width:'140' },
+		  		{ type: 'text', label: '上传时间', prop: 'create_time' ,width:'145'},
 		  		{ type: 'action',
 		  			width: '134',
 		  			btns: [
