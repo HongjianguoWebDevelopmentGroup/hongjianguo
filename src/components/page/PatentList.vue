@@ -84,7 +84,7 @@ export default {
           { type: 'selection' },
           // { type: 'text', label: '专利状态', prop: 'status', render: (h,item)=>h('span', item ? '正常' : '暂停处理') },
           { type: 'text', label: '案号', prop: 'serial', is_agency: true, sortable: true, width: '200' },
-          { type: 'text', label: '事务所案号', prop: 'agency_serial', sortable: true, width: '200' },
+          { type: 'text', label: '事务所案号', prop: 'agency_serial', is_agency: true, sortable: true, width: '200' },
           { type: 'text', label: '提案号', prop: 'proposal_serial', sortable: true, width: '200' },
           { type: 'text', label: '专利类型', prop: 'type', render_simple: 'name', is_agency: true, sortable: true, is_import: true, width: '142',  },
           { type: 'text', label: '地区', prop: 'area', render_simple: 'name', sortable: true, is_import: true, width: '100', is_agency: true },
