@@ -44,7 +44,7 @@
       <span class="nav-left-btn" @click="navToggle"><span class="nav-left-btn-arrow el-icon-arrow-left"></span></span>
       <div class="nav-left" :style="`height: ${innerHeight}px`">
         
-        <el-menu v-if="menusMap != null" theme="dark" router unique-opened :default-active="select.path">
+        <el-menu v-if="menusMap != null" theme="dark" router unique-opened :default-active="select.path" :collapse="isCollapse">
           <app-menu-item v-for="item in menu_data" :dd="item" :key="item.path"></app-menu-item>
         </el-menu>
 
@@ -87,7 +87,6 @@ import AgencyLoad from '@/components/form/AgencyLoad'
 import menu from '@/const/menuConst'
 import AppMenuItem from '@/components/common/AppMenuItem'
 import { mapGetters } from 'vuex'
-
 export default {
   name: 'app',
   mixins: [ AxiosMixins ],
@@ -145,6 +144,8 @@ export default {
       sysPopVisible: false,
       windowLock: false,
       userinfoLoading: true,
+      isCollapse: false,
+      screenWidth: document.documentElement.clientWidth,
     };
   },
   methods: {
@@ -191,6 +192,13 @@ export default {
       }     
     }
   },
+  // mounted () {
+  //   window.onresize = _=> { 
+  //     if (this.screenWidth <= 1024) {
+  //       this.isCollapse = true;
+  //     }
+  //   }
+  // },
   created () {
   
     const success = _=>{
@@ -243,6 +251,11 @@ export default {
   components: { 
     AppMenuItem,
     AgencyLoad, 
+  },
+  watch: {
+    screenWidth (val) {
+      this.screenWidth = val;
+    }
   }
 }
 </script>
