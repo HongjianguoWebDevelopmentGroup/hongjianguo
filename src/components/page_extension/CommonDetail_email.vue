@@ -20,7 +20,7 @@ export default {
 		  		{ type: 'array', label: '收件人邮箱', prop: 'to', render: arr=>arr.map(_=>_.value ? _.value : _), sortable: true },
 		  		{ type: 'text', label: '邮件标题', prop: 'subject', overflow: true },
 		  		{ type: 'text', label: '发送时间', prop: 'mail_date', sortable: true },
-		  		{ type: 'text', label: '是否有附件', prop: 'attach', render: (h,item)=>h('span', item ? '是' : '否') },
+		  		// { type: 'text', label: '是否有附件', prop: 'attach', render: (h,item)=>h('span', item ? '是' : '否') },//先暂时隐藏
 		  		// {
 		  		// 	type: 'action',
 		  		// 	width: '100',
