@@ -6,16 +6,14 @@
       <el-button v-if="!!(menusMap && !menusMap.get('/patent/download') )" slot="download" :loading="downloadLoading" icon="share" @click="downloadPop" type="primary" style="margin-left: 5px;">批量下载</el-button>
     </table-component>
     
-    
-      <common-detail
-        :title="currentRow.title"
-        :visible.sync="shrinkVisible" 
-        type="patent" 
-        :id="currentRow.id" 
-        ref="detail"
-        @editSuccess="refresh">
-      </common-detail>
-    
+    <common-detail
+      :title="currentRow.title"
+      :visible.sync="shrinkVisible" 
+      type="patent" 
+      :id="currentRow.id" 
+      ref="detail"
+      @editSuccess="refresh">
+    </common-detail>    
 
     <el-dialog title="批量下载" :visible.sync="downloadVisible">
       <el-form>
@@ -68,16 +66,19 @@ export default {
         'highlightCurrentRow': true,
         'rowClick': this.handleRowClick,
         'is_filter': true,
-        'import_type': 'patent',
-        'upload_type': 'patent',
+
         'header_btn': [
           { type: 'add', click: this.add, map_if: '/patent/add', },
           { type: 'delete', map_if: '/patent/delete' }, 
           { type: 'export', map_if: '/patent/export' },
           { type: 'import', map_if: '/patent/import' },
           { type: 'batch_upload', map_if: '/patent/upload' },
+          { type: 'batch_update' },
           { type: 'control', label: '字段' },
         ],
+        'import_type': 'patent',
+        'upload_type': 'patent',
+        'update_type': 'patent',
         'header_slot': ['download'],
         'columns': [
 
@@ -110,6 +111,27 @@ export default {
           { type: 'text', label: '国际公开号', prop: 'pct_public_no', sortable: true, width: '263'},
           { type: 'text', label: '复审委内编号', prop: 'board_number', sortable: true, width: '263'},
           { type: 'text', label: '说明书字数', prop: 'words', sortable: true, width: '145'},
+          { 
+            type: 'text', 
+            label: '费用', 
+            prop: 'amount', 
+            sortable: true, 
+            width: '150',
+            render_text (item) {
+              
+              if(!(item instanceof Array)) {
+                return 0;
+              }
+
+              let amount = 0;
+              
+              item.forEach(_=>{
+                amount += Number.parseFloat(_.amount);
+              })
+              
+              return amount;
+            } ,
+          },
           { 
             type: 'text', 
             label: '提案人',
@@ -293,20 +315,6 @@ export default {
             width: '175'
           },
           { type: 'text', label: '备注', prop: 'remark', sortable: true, width: '280'},
-          
-          
-          
-          
-          
-          
-          // {
-          //   type: 'action',
-          //   width: '145',
-          //   btns: [
-          //     // { type: 'detail', click: this.detail },
-          //     { type: 'delete', click: this.deletePatent },
-          //   ], 
-          // },
         ] 
       },
       tableData: [],

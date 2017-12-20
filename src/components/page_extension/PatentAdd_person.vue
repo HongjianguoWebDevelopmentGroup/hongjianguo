@@ -82,6 +82,16 @@
             <el-input v-model="form.board_number" placeholder="请填写复审委内编号"></el-input>
           </el-form-item>
         </template>
+
+        <el-form-item label="群组号">
+          <el-input v-model="form.group_number" placeholder="请填写群组号"></el-input>
+        </el-form-item>
+        <el-form-item label="专利族号">
+          <el-input v-model="form.family_number" placeholder="请填写专利族号"></el-input>
+        </el-form-item>
+        <el-form-item label="已申请资助">
+          <app-switch type="is" v-model="form.is_support"></app-switch>
+        </el-form-item>
       </el-form>
     </app-collapse>
 </template>
@@ -91,6 +101,7 @@ import AppCollapse from '@/components/common/AppCollapse'
 import Branch from '@/components/form/Branch'
 import StaticSelect from '@/components/form/StaticSelect'
 import RemoteSelect from '@/components/form/RemoteSelect'
+import AppSwitch from '@/components/form/AppSwitch'
 
 import { checkInventors } from '@/const/validator.js'
 
@@ -122,6 +133,9 @@ export default {
         pct_public_language: '',
         pct_public_no: '',
         board_number: '',
+        group_number: '',
+        family_number: '',
+        is_support: 0,
 			},
       ipr_name: '',
       branchName: '',
@@ -184,7 +198,8 @@ export default {
     AppCollapse, 
     Branch, 
     StaticSelect, 
-    RemoteSelect 
+    RemoteSelect,
+    AppSwitch,
   }
 }
 </script>

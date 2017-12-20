@@ -17,6 +17,7 @@
 
       <template v-for="btn in tableOption.header_btn">
         <template v-if="headerBtnIf(btn)">
+
         <template v-if="btn.type == 'custom'">
           <el-button class="table-header-btn" type="primary" :icon="btn.icon ? btn.icon : ''" @click="handleCommand(btn.click, $event)">{{ btn.label }}</el-button>
         </template>
@@ -80,6 +81,10 @@
           <el-button class="table-header-btn" type="primary" icon="upload" @click="handleBatchUpload(btn.click, $event)">文件上传</el-button>
         </template>
 
+        <template v-else-if="btn.type == 'batch_update'">
+          <el-button class="table-header-btn" type="primary" icon="edit" @click="handleBatchUpdate(btn.click, $event)">批量更新</el-button>
+        </template>
+
         </template>
       </template>
         
@@ -97,115 +102,22 @@
 	    ></search-input>
     </div>
     
-  	<el-table 
-      :data="tableData"
+    <app-table
       v-if="refreshRender"
-      stripe
-      :border="tableOption.is_border != undefined ? tableOption.is_border : true" 
-      @selection-change="handleselectionChange" 
-      :row-key="getRowKeys" 
-      :default-sort="tableOption.default_sort ? tableOption.default_sort : {}"
-      @sort-change="handleSortChange"
-      :expand-row-keys="expands"
-      @expand="handleExpand"
-      :style="tableStyle"
-      :row-class-name="handleRowClassName"
-      @row-click="handleRowClick"
-      :highlight-current-row="tableOption.highlightCurrentRow !== undefined ? tableOption.highlightCurrentRow : false"
-      :height="tableHeight"
       :class="tableOption.empty_text_position == 'topLeft' ? 'empty-top-left' : ''"
+      :style="tableStyle"
+      :data="tableData"
+      :border="tableOption.is_border != undefined ? tableOption.is_border : true"
+      :default-sort="tableOption.default_sort ? tableOption.default_sort : {}"
+      :height="tableOption.height"
+      :highlight-current-row="tableOption.highlightCurrentRow !== undefined ? tableOption.highlightCurrentRow : false"
+      :columns="tableOption.columns"
+      @sort-change="handleSortChange"
+      @row-click="handleRowClick"
       ref="table"
     >
-      <template v-for="(col, index) in columns">
-        
-        <template v-if="col.type == 'selection'">
-          <el-table-column type="selection" :fixed="col.fixed === false ? false : 'left'"></el-table-column>
-        </template>
-
-<!--         <template v-else-if="col.type == 'expand'">
-          <el-table-column type="expand">
-            <template scope="scope">
-              <slot name="expand" :row="scope.row">
-              </slot>
-            </template>
-          </el-table-column>
-        </template> -->
-
-        <template v-else-if="col.type == 'text'" >
-          
-          <template v-if="col.render ? true : false">
-            <el-table-column :label="col.label" :prop="col.prop" :width="col.width ? col.width : ''" :min-width="col.min_width ? col.min_width : ''" :sortable="col.sortable ? 'custom' : false" :show-overflow-tooltip="col.overflow !== undefined ? col.overflow : true" :align="col.align !== undefined ? col.align :'left'" :header-align="col.header_align !== undefined ? col.header_align :'left'">
-              <template slot-scope="scope">
-                <table-render :render="col.render" :scope="scope" :prop="col.prop"></table-render>
-              </template>
-            </el-table-column>
-          </template>
-
-          <template v-else-if="col.render_simple ? true : false ">
-            <el-table-column :label="col.label" :prop="col.prop" :width="col.width ? col.width : ''" :min-width="col.min_width ? col.min_width : ''" :sortable="col.sortable ? 'custom' : false" :show-overflow-tooltip="col.overflow !== undefined ? col.overflow : true">
-              <template slot-scope="scope">
-                <span class="table-column-render">{{ scope.row[col.prop][col.render_simple] }}</span>
-              </template>
-            </el-table-column>
-          </template>
-
-          <template v-else>
-            <el-table-column :label="col.label" :prop="col.prop" :width="col.width ? col.width : ''" :min-width="col.min_width ? col.min_width : ''" :sortable="col.sortable ? 'custom' : false" :show-overflow-tooltip="col.overflow !== undefined ? col.overflow : true">
-              <!-- <template v-if="col.default !== undefined" scope="scope">{{ scope.row[col.prop] ? scope.row[col.prop] : col.default }}</template> -->
-            </el-table-column>
-          </template>
-
-        </template>
-
-        <template v-else-if="col.type == 'array'">
-          <el-table-column :label="col.label" :prop="col.render ? `${col.prop}__render` : col.prop" :width="col.width ? col.width : ''" :min-width="col.min_width ? col.min_width : ''" :sortable="col.sortable ? 'custom' : false" :show-overflow-tooltip="col.overflow !== undefined ? col.overflow : true">
-            <template slot-scope="scope">
-
-              <el-tag v-for="(item, i) in scope.row[scope.column.property]" style="margin-left: 5px;" close-transition :key="i">{{ item }}</el-tag>
-
-            </template>
-          </el-table-column>
-        </template>
-
-        <template v-else-if="col.type == 'action'">
-          <el-table-column :label="col.label ? col.label : '操作'" :align="col.align ? col.align : 'left'" :width="col.width ? col.width : ''" :min-width="col.min_width ? col.min_width : ''" header-align="center" :fixed="col.fixed === false ? false : 'right'">
-            <template slot-scope="scope">
-              <template v-if="col.btns_render ? true : false">
-                <slot :name="col.btns_render" :row="scope.row">
-                </slot>
-              </template>
-              <template v-else v-for="(btn, index) in col.btns" v-if="btn.btn_if ? btn.btn_if(scope.row) : true">
-
-                <el-dropdown v-if="btn.type == 'dropdown'" :key="index" trigger="click" menu-align="start">
-                  <el-button class="table-header-btn" :type="btn.btn_type ? btn.btn_type : ''" :size="btn.size ? btn.size : 'mini'" :icon="btn.icon ? btn.icon : ''">
-                    {{ btn.label }}<i class="el-icon-caret-bottom el-icon--right"></i>            
-                  </el-button>
-                  <el-dropdown-menu v-if="btn.items">
-                    <el-dropdown-item v-for="(item,index2) in btn.items" :key="index2" :divided="item.divided"><div @click="handleCommand(item.click, $event)" style="margin: 0 -10px; padding: 0 10px;">{{ item.text }}</div></el-dropdown-item>
-                  </el-dropdown-menu>
-                </el-dropdown>
-
-                <el-button v-else-if="btn.type == 'confirm'" :type="btn.btn_type ? btn.btn_type : 'text'" :key="index" :size="btn.size ? btn.size : 'mini'" icon="edit" @click="handleActionCommand(btn.click, scope, $event)">确认</el-button>
-
-                <el-button v-else-if="btn.type == 'edit'" :type="btn.btn_type ? btn.btn_type : 'text'" :key="index" :size="btn.size ? btn.size : 'mini'" icon="edit" @click="handleActionCommand(btn.click, scope, $event)">编辑</el-button>
-
-                <el-button v-else-if="btn.type == 'detail'" :type="btn.btn_type ? btn.btn_type : 'text'" :key="index" :size="btn.size ? btn.size : 'mini'" icon="information" @click="handleActionCommand(btn.click, scope, $event)" >详情</el-button>
-
-                <el-button v-else-if="btn.type == 'delete'" :type="btn.btn_type ? btn.btn_type : 'text'" :key="index" :size="btn.size ? btn.size : 'mini'" icon="delete" @click="handleActionCommand(btn.click, scope, $event)" >删除</el-button>
-
-                <el-button v-else-if="btn.type == 'download'" :type="btn.btn_type ? btn.btn_type : 'text'" :key="index" :size="btn.size ? btn.size : 'mini'" icon="share" @click="handleActionCommand(btn.click, scope, $event)" >下载</el-button>
-
-                <el-button v-else-if="btn.type == 'view' && scope.row.isView" :type="btn.btn_type ? btn.btn_type : 'text'" :key="index" :size="btn.size ? btn.size : 'mini'" icon="view" @click="handleActionCommand(btn.click, scope, $event)" >查看</el-button>
-
-                <el-button v-else-if="btn.type == undefined || btn.type == 'custom'" :type="btn.btn_type ? btn.btn_type : ''" :key="index" :size="btn.size ? btn.size : 'mini'" :icon="btn.icon" @click="handleActionCommand(btn.click, scope, $event)">{{ btn.label }}</el-button>
-
-              </template>
-            </template>
-          </el-table-column>
-        </template>
-
-      </template>
-  	</el-table>
+    </app-table>
+  	
     <!--v-if="totalNumber > pageSize"-->
   	<el-pagination
       v-if="tableOption.is_pagination == undefined ? true : tableOption.is_pagination"
@@ -221,6 +133,12 @@
   
     
     <app-import v-if="tableOption.import_type !== undefined" :visible.sync="dialogImportVisible" :columns="import_columns" :type="tableOption.import_type" @import-success="handleImportSuccess"></app-import>
+
+    <el-dialog v-if="tableOption.update_type !== undefined" :visible.sync="dialogUpdateVisible" title="批量更新">
+      <batch-update :type="tableOption.update_type" @success="handleUpdateSuccess"></batch-update>
+    </el-dialog>
+      
+    </el-dialog>
     
     <file-upload v-if="tableOption.upload_type !== undefined" :type="tableOption.upload_type" @upload-success="refresh" ref="file_upload"></file-upload>
   
@@ -243,6 +161,8 @@ import AppImport from '@/components/common/AppImport'
 import FileUpload from '@/components/common/FileUpload'
 import SearchInput from '@/components/common/SearchInput'
 import AppTransfer from '@/components/common/AppTransfer'
+import BatchUpdate from '@/components/common/BatchUpdate'
+import AppTable from '@/components/common/AppTable'
 import { mapGetters } from 'vuex'
 const methods = Object.assign({}, tableConst.methods, {
   getPageData (c) {
@@ -328,6 +248,16 @@ const methods = Object.assign({}, tableConst.methods, {
       this.$refs.file_upload.show();
     }
   },
+  handleBatchUpdate(func, e) {
+    if(func) {
+      func(e)
+    }else {
+      this.dialogUpdateVisible = true;
+    }
+  },
+  handleUpdateSuccess () {
+    this.dialogUpdateVisible = false;
+  },
   handleExpand (a, b) {
     const fun = this.tableOption.expandFun;
     if( fun ){
@@ -338,7 +268,7 @@ const methods = Object.assign({}, tableConst.methods, {
     if(func) {
       func(e)
     }else {
-      const s = this.tableSelect;
+      const s = this.getSelect(true);
       if(s.length == 0) {
         this.$message({message: '请选择需要删除的列表项', type: 'warning'});
       }else {
@@ -431,16 +361,7 @@ const methods = Object.assign({}, tableConst.methods, {
     return copy;
   },
   getSelect (flag=false) {
-    const s = this.tableSelect;
-    
-    if(!flag) {
-      if(s.length == 0) {
-        this.$message({ message: '请至少选择一项！', type: 'warning' });
-        return false;
-      }  
-    }
-
-    return s;
+    return this.$refs.table.getSelected(flag);
   },
   update () {
     this.$emit('refreshTableData', Object.assign({}, this.getRequestOption(), this.screen_obj) );
@@ -583,30 +504,7 @@ export default {
 
       return a;
     },
-    tableHeight () {
-      let height = '';
-      const hk = this.tableOption.height;
-
-      if(hk !== undefined) {
-        if(hk == 'default') {
-          height = this.innerHeight - 200;
-          height = height < 300 ? 300 : height;
-        }else if(hk == 'default2') {
-          height = this.innerHeight - 150;
-          height = height < 300 ? 300 : height;
-        }else if(hk === 'default3') {
-          height = this.innerHeight - 100;
-          height = height < 300 ? 300 : height;
-        }else if(hk === 'default4') {
-          height = this.innerHeight - 55;
-          height = height < 300 ? 300 : height;
-        }else {
-          height = hk;
-        }
-      }
-
-      return height;
-    },
+    
     columns () {
       let cols = this.tableOption.columns; 
       if(cols) {
@@ -759,15 +657,13 @@ export default {
       //tableSelect 当前列表如果有checkbox,已选择的行数据
       tableSelect: [],
       expands: [],
-      getRowKeys (row) {
-        return row.id;
-      },
       searchClass: 'table-search',
       date: [],
       search_value: '',
       page: 1,
       sort: {field: null, order: null},
       dialogImportVisible: false,
+      dialogUpdateVisible: false,
       filterVisible: false,
       exportLoading: false,
       dialogControl: false,
@@ -802,6 +698,8 @@ export default {
     FileUpload,
     SearchInput,
     AppTransfer,
+    BatchUpdate,
+    AppTable,
   },
   mounted () {},
 }
