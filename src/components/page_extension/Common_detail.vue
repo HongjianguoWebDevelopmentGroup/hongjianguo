@@ -25,6 +25,12 @@
         <el-tab-pane label="文档" name="documents">
     			<detail-documents></detail-documents>
         </el-tab-pane>
+        <el-tab-pane label="群组/专利族" name="group_family" v-if="type == 'patent'">
+          <group-family></group-family>
+        </el-tab-pane>
+        <el-tab-pane label="引用关系" name="quote" v-if="type == 'patent'">
+          bbbb
+        </el-tab-pane>
       </el-tabs>
     </div>
   </app-shrink>
@@ -40,6 +46,7 @@ import DetailNotice from '@/components/page_extension/CommonDetail_notice'
 import DetailFee from '@/components/page_extension/CommonDetail_fee'
 import DetailEmail from '@/components/page_extension/CommonDetail_email'
 import DetailDocuments from '@/components/page_extension/CommonDetail_documents'
+import GroupFamily from '@/components/page_extension/CommonDetail_groupfamily'
 import { mapGetters } from 'vuex'
 import { mapActions } from 'vuex'
 const config = [
@@ -161,6 +168,7 @@ export default {
     DetailFee,
     DetailEmail,
     DetailDocuments,
+    GroupFamily,
   }
 }
 </script>

@@ -9,8 +9,8 @@
   :highlight-current-row="highlightCurrentRow"
   :height="tableHeight"
   @selection-change="handleSelectionChange" 
-  @sort-change="$emit('sortChange')"
-  @row-click="$emit('rowClick')"
+  @sort-change="_=>{$emit('sort-change', _)}"
+  @row-click="handleRowClick"
 >
   <template v-for="(col, index) in columns">
     
@@ -33,6 +33,14 @@
         <el-table-column :label="col.label" :prop="col.prop" :width="col.width ? col.width : ''" :min-width="col.min_width ? col.min_width : ''" :sortable="col.sortable ? 'custom' : false" :show-overflow-tooltip="col.overflow !== undefined ? col.overflow : true" :align="col.align !== undefined ? col.align :'left'" :header-align="col.header_align !== undefined ? col.header_align :'left'">
           <template slot-scope="scope">
             <table-render :render="col.render" :scope="scope" :prop="col.prop"></table-render>
+          </template>
+        </el-table-column>
+      </template>
+
+      <template v-else-if="col.render_text ? true : false ">
+        <el-table-column :label="col.label" :prop="col.prop" :width="col.width ? col.width : ''" :min-width="col.min_width ? col.min_width : ''" :sortable="col.sortable ? 'custom' : false" :show-overflow-tooltip="col.overflow !== undefined ? col.overflow : true">
+          <template slot-scope="scope">
+            <span class="table-column-render">{{ col.render_text(scope.row[col.prop]) }}</span>
           </template>
         </el-table-column>
       </template>
@@ -104,6 +112,7 @@
 </el-table>
 </template>
 <script>
+import {mapGetters} from 'vuex'
 export default {
   name: 'appTable',
   props: {
@@ -144,6 +153,13 @@ export default {
     };
   },
   methods: {
+    handleRowClick (row, event, column) {
+      event.stopPropagation();
+
+      if(column.type == 'selection') return false;
+          
+      this.$emit('row-click', row, event, column);
+    },
     handleSelectionChange(selection) {  
       this.slected = selection;
     },
@@ -159,6 +175,9 @@ export default {
     }
   },
   computed: {
+    ...mapGetters([
+      'innerHeight',
+    ]),
     tableHeight () {
       let height = '';
       const hk = this.height;

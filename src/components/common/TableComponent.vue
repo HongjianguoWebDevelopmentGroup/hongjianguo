@@ -111,7 +111,7 @@
       :default-sort="tableOption.default_sort ? tableOption.default_sort : {}"
       :height="tableOption.height"
       :highlight-current-row="tableOption.highlightCurrentRow !== undefined ? tableOption.highlightCurrentRow : false"
-      :columns="tableOption.columns"
+      :columns="columns"
       @sort-change="handleSortChange"
       @row-click="handleRowClick"
       ref="table"
@@ -153,7 +153,7 @@
 </template>
 
 <script>
-import tableConst from '@/const/tableConst'
+
 import AppDatePicker from '@/components/common/AppDatePicker'
 import AxiosMixins from '@/mixins/axios-mixins'
 import AppFilter from '@/components/common/AppFilter'
@@ -164,260 +164,104 @@ import AppTransfer from '@/components/common/AppTransfer'
 import BatchUpdate from '@/components/common/BatchUpdate'
 import AppTable from '@/components/common/AppTable'
 import { mapGetters } from 'vuex'
-const methods = Object.assign({}, tableConst.methods, {
-  getPageData (c) {
-    const d = this,
-        start = (c - 1) * d.pageSize,
-        end = c * d.pageSize;
-  
-    return d.tableData.slice(start, end);
-  },
-  getSelection () {
-    return this.tableSelect;
-  },
-  handleCurrentChange(c) {
-    const d = this;
 
-    d.currentPage = c;
-    d.pageData = d.getPageData(c);
-  },
-  handleselectionChange(selection) {
-    const d = this;
-    d.tableSelect = selection;
-  },
-  headerBtnIf (_) {
-    if( _.map_if ) {
-      if(this.menusMap && !this.menusMap.get(_.map_if)) {
-        return true;
-      }else {
-        return false;
-      }
-    }else {
-      return true;
-    }
-  },
-  handleRowClick (a,b,c) {
-    // if(c.fixed) return false;
-    b.stopPropagation();
-
-    if(c.type == 'selection') return false;
-    
-    const func = this.tableOption.rowClick;
-    if(func) func(a,b,c);
-  },
-  handelExport(func, e) {
-    const fields = this.tableControl.filter(_=>{
-      if(_.show && _.prop) {
-        return true;  
-      }
-    }).map(_=>_.prop);
-
-    if(func) {
-      func(e)
-    }else {
-      //合并获得导出请求的请求参数
-      this.$emit('refreshTableData', Object.assign({}, this.getRequestOption(), {format: 'excel'}, {'fields': JSON.stringify(fields) } ) );
-      //Vue Api.
-      this.$nextTick(_=>{
-        if(this.refreshProxy) {
-          this.exportLoading = true;
-          this.refreshProxy.then(
-            _=>{
-              window.setTimeout(_=>{this.exportLoading = false;}, 500);
-            }
-          );  
-        }
-      })
-      
-      
-      // if(a) { a.then(_=>{console.log('exportExcess')}) };
-    }
-  },
-  handleImport(func, e) {
-    if(func) {
-      func(e)
-    }else {
-      // this.$message({message: '导入接口开发中', type: 'warning'})
-      this.dialogImportVisible = true;
-    }
-  },
-  handleBatchUpload(func, e) {
-    if(func) {
-      func(e)
-    }else {
-      this.$refs.file_upload.show();
-    }
-  },
-  handleBatchUpdate(func, e) {
-    if(func) {
-      func(e)
-    }else {
-      this.dialogUpdateVisible = true;
-    }
-  },
-  handleUpdateSuccess () {
-    this.dialogUpdateVisible = false;
-  },
-  handleExpand (a, b) {
-    const fun = this.tableOption.expandFun;
-    if( fun ){
-      fun(a, b);
-    }
-  },
-  handleDelete (func, e, callback) {
-    if(func) {
-      func(e)
-    }else {
-      const s = this.getSelect(true);
-      if(s.length == 0) {
-        this.$message({message: '请选择需要删除的列表项', type: 'warning'});
-      }else {
-        this.$confirm('删除后不可恢复，确认删除？', '删除确认', {type: 'warning'})
-          .then(_=>{
-            const url = this.url;
-            const data = { id: this.$tool.splitObj(s, 'id') }; // 见/const/tool.js splitObj函数的注释
-            const success = _=>{ 
-              this.$message({type: 'success', message: '删除成功'});
-              this.update();
-
-              if(callback) {
-                callback(_);
-              }
-            };
-            this.axiosDelete({ url, data, success });
-          })
-          .catch(_=>{console.log(_)});
-      }     
-    }
-  },
-  handleCommand (func, event) {
-    if(func) {
-      func(event);
-    }
-  },
-  handleActionCommand (func, scope, event) {
-    event.stopPropagation();
-    if(func) {
-      func(scope.row, event);
-    }
-  },
-  arrayRender (row, col) {
-    const arr = row[col.prop];
-    return col.render ? col.render(arr) : arr;
-  },  
-  handleCurrentChange (currentPage) {
-    const func = this.tableOption.currentChange;
-    if(func) {
-      func(currentPage);
-    }
-
-    this.update();
-  },
-  handleSizeChange (size) {
-    this.$store.commit('setPageSize', size);
-    const func = this.tableOption.sizeChange;
-    if(func) {
-      func(size);
-    }
-
-    this.reset();
-  },
-  handleSortChange ({column, prop, order}) {
-    this.sort.field = prop;
-    this.sort.order = order;
-    const func = this.tableOption.sortChange;
-    if(func) {
-      func(column, prop, order);
-    }
-
-    this.reset();
-  },
-  handleSearch () {
-    const func = this.tableOption.handleSearch;
-    if(func && this.search_value) {
-      func(this.search_value);
-    }
-
-    this.reset();
-  },
-  timeSearch ({search}) {
-    if(search) {
-      search();
-    }
-
-    this.reset()
-  },
-  timeClear ({clear}) {
-    if(clear) {
-      clear();
-    }
-
-    this.date = [];
-    this.reset();
-  },
-  //获取列表参数,包括page,listRows,查询关键字,排序参数
-  getRequestOption () {
-    const copy = this.$tool.deepCopy(this.requesOption);
-    return copy;
-  },
-  getSelect (flag=false) {
-    return this.$refs.table.getSelected(flag);
-  },
-  update () {
-    this.$emit('refreshTableData', Object.assign({}, this.getRequestOption(), this.screen_obj) );
-  },
-  reset () {
-    this.page = 1;
-    this.update();
-  },
-  refresh () {
-    this.page = 1;
-    this.search_value = "";
-    this.update();
-  },
-  handleControlChange () {
-    const name = this.tableOption.name;
-    const value = JSON.stringify(this.tableControl);
-    this.$tool.setLocal(name, value);//设置LocalStorage
-  },
-  handleRowClassName (row, index) {
-
-    const func = this.tableOption.row_class;
-    if(func) {
-      return func(row, index);
-    }else {
-      return '';
-    }
-  },
-  handleImportSuccess () {
-    this.$message({message: '导入成功', type: 'success'});
-    this.dialogImportVisible = false;
-    this.refresh();
-  },
-  setCurrentRow (row) {
-    this.$refs.table.setCurrentRow(row);
-  },
-  controlSave () {
-    this.refreshRender = false;
-    this.control = this.transferValue;
-    this.dialogControl = false;
-
-    //存入cookie
-    this.$tool.setLocal(this.tableOption.name, JSON.stringify(this.control));
-
-    //element-ui的table插件因为一些缓存的设计在这里会发生错误,使用vue的v-if特性强制重新渲染table 
-    this.$nextTick(_=>{this.refreshRender = true});
-  }
-});
 export default {
   name: 'tableComponent',
-  methods,
   mixins: [ AxiosMixins ],
   props: ['tableOption', 'data', 'tableStyle', 'refreshProxy'],
+  data () {
+    const d = this;
+    const cols = d.tableOption.columns;
+    let tableCookie = JSON.parse(this.$tool.getLocal(this.tableOption.name));
+    
+    //获取控制器
+    let control = [[],[]];
+    for(let c of cols) {
+      let show = c.show == undefined ? true : c.show;
+      let show_option = c.show_option !== undefined ? c.show_option : true;
+      if(show_option && (c.type == 'text' || c.type == 'array') ) {
+        const item = { key: c.prop, value: c.prop, label: c.label };
+        if(show) {
+          control[1].push(item);
+        }else {
+          control[0].push(item);
+        }
+      }
+    }
+    
+    //检测缓存中是否存在控制器
+    if(tableCookie) {
+      
+      //一些本地缓存的异常检测
+      const error = (_=>{
+        //老版本缓存
+        if(!(tableCookie[0] instanceof Array)) {
+          return true
+        }
+
+        //字段统一性验证
+        const cookieO = {};
+        const localO = {};
+        tableCookie.forEach(_=>{
+          _.forEach(d=>{
+            cookieO[d.key] = true;
+          })
+        })
+        control.forEach(_=>{
+          _.forEach(d=>{
+            localO[d.key] = false;
+          })
+        })
+        const l = this.$tool.getObjLength(localO);
+        Object.assign(localO, cookieO);
+        if(this.$tool.getObjLength(localO) != l) {
+          return true;
+        }
+        for(let key in localO) {
+          if(!localO[key]) {
+            return true;
+          }
+        }
+      })();
+
+      //若存在错误,则将本地缓存清空,无错误则替换原有控制器
+      if(error) {
+        this.$tool.deleteLocal(this.tableOption.name);
+      }else {
+        control = tableCookie;  
+      }
+    }
+    
+    const transferValue = control;
+
+    const data = {
+      pageData: [],
+      pageSize: 5,
+      pagesizes: [10, 20, 40, 100, 10000],
+      currentPage: 1,
+      //tableSelect 当前列表如果有checkbox,已选择的行数据
+      tableSelect: [],
+      expands: [],
+      searchClass: 'table-search',
+      date: [],
+      search_value: '',
+      page: 1,
+      sort: {field: null, order: null},
+      dialogImportVisible: false,
+      dialogUpdateVisible: false,
+      filterVisible: false,
+      exportLoading: false,
+      dialogControl: false,
+      control,
+      transferValue,
+      refreshRender: true,
+    };
+
+    return data;
+  },
   computed: {
     ...mapGetters([
       'screen_obj',
-      'innerHeight',
       'pagesize',
       'menusMap',
     ]),
@@ -503,8 +347,7 @@ export default {
       }
 
       return a;
-    },
-    
+    },   
     columns () {
       let cols = this.tableOption.columns; 
       if(cols) {
@@ -537,6 +380,222 @@ export default {
       }
     }
   },
+  methods: {
+    getPageData (c) {
+      const d = this,
+          start = (c - 1) * d.pageSize,
+          end = c * d.pageSize;
+    
+      return d.tableData.slice(start, end);
+    },
+    getSelection () {
+      return this.$refs.table.selected;
+    },
+    headerBtnIf (_) {
+      if( _.map_if ) {
+        if(this.menusMap && !this.menusMap.get(_.map_if)) {
+          return true;
+        }else {
+          return false;
+        }
+      }else {
+        return true;
+      }
+    },
+    handleRowClick (row, event, column) {
+      // if(c.fixed) return false;
+      const func = this.tableOption.rowClick;
+      if(func) func(row, event, column);
+    },
+    handelExport(func, e) {
+      const fields = this.tableControl.filter(_=>{
+        if(_.show && _.prop) {
+          return true;  
+        }
+      }).map(_=>_.prop);
+
+      if(func) {
+        func(e)
+      }else {
+        //合并获得导出请求的请求参数
+        this.$emit('refreshTableData', Object.assign({}, this.getRequestOption(), {format: 'excel'}, {'fields': JSON.stringify(fields) } ) );
+        //Vue Api.
+        this.$nextTick(_=>{
+          if(this.refreshProxy) {
+            this.exportLoading = true;
+            this.refreshProxy.then(
+              _=>{
+                window.setTimeout(_=>{this.exportLoading = false;}, 500);
+              }
+            );  
+          }
+        })
+        
+        
+        // if(a) { a.then(_=>{console.log('exportExcess')}) };
+      }
+    },
+    handleImport(func, e) {
+      if(func) {
+        func(e)
+      }else {
+        // this.$message({message: '导入接口开发中', type: 'warning'})
+        this.dialogImportVisible = true;
+      }
+    },
+    handleBatchUpload(func, e) {
+      if(func) {
+        func(e)
+      }else {
+        this.$refs.file_upload.show();
+      }
+    },
+    handleBatchUpdate(func, e) {
+      if(func) {
+        func(e)
+      }else {
+        this.dialogUpdateVisible = true;
+      }
+    },
+    handleUpdateSuccess () {
+      this.dialogUpdateVisible = false;
+    },
+    handleDelete (func, e, callback) {
+      if(func) {
+        func(e)
+      }else {
+        const s = this.getSelect(true);
+        if(s.length == 0) {
+          this.$message({message: '请选择需要删除的列表项', type: 'warning'});
+        }else {
+          this.$confirm('删除后不可恢复，确认删除？', '删除确认', {type: 'warning'})
+            .then(_=>{
+              const url = this.url;
+              const data = { id: this.$tool.splitObj(s, 'id') }; // 见/const/tool.js splitObj函数的注释
+              const success = _=>{ 
+                this.$message({type: 'success', message: '删除成功'});
+                this.update();
+
+                if(callback) {
+                  callback(_);
+                }
+              };
+              this.axiosDelete({ url, data, success });
+            })
+            .catch(_=>{console.log(_)});
+        }     
+      }
+    },
+    handleCommand (func, event) {
+      if(func) {
+        func(event);
+      }
+    },
+    handleActionCommand (func, scope, event) {
+      event.stopPropagation();
+      if(func) {
+        func(scope.row, event);
+      }
+    },
+    arrayRender (row, col) {
+      const arr = row[col.prop];
+      return col.render ? col.render(arr) : arr;
+    },  
+    handleCurrentChange (currentPage) {
+      const func = this.tableOption.currentChange;
+      if(func) {
+        func(currentPage);
+      }
+
+      this.update();
+    },
+    handleSizeChange (size) {
+      this.$store.commit('setPageSize', size);
+      const func = this.tableOption.sizeChange;
+      if(func) {
+        func(size);
+      }
+
+      this.reset();
+    },
+    handleSortChange ({column, prop, order}) {
+      this.sort.field = prop;
+      this.sort.order = order;
+      const func = this.tableOption.sortChange;
+      if(func) {
+        func(column, prop, order);
+      }
+
+      this.reset();
+    },
+    handleSearch () {
+      const func = this.tableOption.handleSearch;
+      if(func && this.search_value) {
+        func(this.search_value);
+      }
+
+      this.reset();
+    },
+    timeSearch ({search}) {
+      if(search) {
+        search();
+      }
+
+      this.reset()
+    },
+    timeClear ({clear}) {
+      if(clear) {
+        clear();
+      }
+
+      this.date = [];
+      this.reset();
+    },
+    //获取列表参数,包括page,listRows,查询关键字,排序参数
+    getRequestOption () {
+      const copy = this.$tool.deepCopy(this.requesOption);
+      return copy;
+    },
+    getSelect (flag=false) {
+      return this.$refs.table.getSelected(flag);
+    },
+    update () {
+      this.$emit('refreshTableData', Object.assign({}, this.getRequestOption(), this.screen_obj) );
+    },
+    reset () {
+      this.page = 1;
+      this.update();
+    },
+    refresh () {
+      this.page = 1;
+      this.search_value = "";
+      this.update();
+    },
+    handleControlChange () {
+      const name = this.tableOption.name;
+      const value = JSON.stringify(this.tableControl);
+      this.$tool.setLocal(name, value);//设置LocalStorage
+    },
+    handleImportSuccess () {
+      this.$message({message: '导入成功', type: 'success'});
+      this.dialogImportVisible = false;
+      this.refresh();
+    },
+    setCurrentRow (row) {
+      this.$refs.table.setCurrentRow(row);
+    },
+    controlSave () {
+      this.refreshRender = false;
+      this.control = this.transferValue;
+      this.dialogControl = false;
+
+      //存入cookie
+      this.$tool.setLocal(this.tableOption.name, JSON.stringify(this.control));
+
+      //element-ui的table插件因为一些缓存的设计在这里会发生错误,使用vue的v-if特性强制重新渲染table 
+      this.$nextTick(_=>{this.refreshRender = true});
+    }
+  },
   watch: {
     'requesOption': {
       handler: function () {},
@@ -546,133 +605,6 @@ export default {
       this.filterVisible = false;
       this.refresh();    
     }
-  },
-  data () {
-
-    const d = this;
-    const cols = d.tableOption.columns;
-    let tableCookie = JSON.parse(this.$tool.getLocal(this.tableOption.name));
-    
-    //获取控制器
-    let control = [[],[]];
-    for(let c of cols) {
-      let show = c.show == undefined ? true : c.show;
-      let show_option = c.show_option !== undefined ? c.show_option : true;
-      if(show_option && (c.type == 'text' || c.type == 'array') ) {
-        const item = { key: c.prop, value: c.prop, label: c.label };
-        if(show) {
-          control[1].push(item);
-        }else {
-          control[0].push(item);
-        }
-      }
-    }
-    
-    //检测缓存中是否存在控制器
-    if(tableCookie) {
-      
-      //一些本地缓存的异常检测
-      const error = (_=>{
-        //老版本缓存
-        if(!(tableCookie[0] instanceof Array)) {
-          return true
-        }
-
-        //字段统一性验证
-        const cookieO = {};
-        const localO = {};
-        tableCookie.forEach(_=>{
-          _.forEach(d=>{
-            cookieO[d.key] = true;
-          })
-        })
-        control.forEach(_=>{
-          _.forEach(d=>{
-            localO[d.key] = false;
-          })
-        })
-        const l = this.$tool.getObjLength(localO);
-        Object.assign(localO, cookieO);
-        if(this.$tool.getObjLength(localO) != l) {
-          return true;
-        }
-        for(let key in localO) {
-          if(!localO[key]) {
-            return true;
-          }
-        }
-      })();
-
-      //若存在错误,则将本地缓存清空,无错误则替换原有控制器
-      if(error) {
-        this.$tool.deleteLocal(this.tableOption.name);
-      }else {
-        control = tableCookie;  
-      }
-    }
-    
-    const transferValue = control;
-
-    
-    //获得有配置数据得到的控制器
-    // let tableControl = [];
-    // for (let c of cols) {
-    //   let show = c.show == undefined ? true : c.show;
-    //   let type = c.type;
-    //   let label = c.label;
-    //   let show_option = c.show_option !== undefined ? c.show_option : true;
-    //   let prop = c.prop !== undefined ? c.prop : '';
-    //   tableControl.push({show, type, label, show_option, prop});        
-    // }
-    //或得本地缓存的控制器
-    
-    //当存在本地缓存时
-    //对两个控制器进行比对
-    // if(cookieControl) {
-    //   const r = (_=>{
-    //     let i = tableControl.length;
-        
-    //     while(i--) {
-    //       if( !cookieControl[i] || tableControl[i]['prop'] != cookieControl[i]['prop'] ) {
-    //         return false;
-    //       }
-    //     }
-
-    //     return true;
-    //   })();
-      //比对结果成功时使用缓存值,否则清空已有的无效缓存
-    //   if(r) {
-    //     tableControl = cookieControl;
-    //   }else {
-    //     this.$tool.deleteLocal(this.tableOption.name);
-    //   }
-    // }
-
-
-    const data = {
-      pageData: [],
-      pageSize: 5,
-      pagesizes: [10, 20, 40, 100, 10000],
-      currentPage: 1,
-      //tableSelect 当前列表如果有checkbox,已选择的行数据
-      tableSelect: [],
-      expands: [],
-      searchClass: 'table-search',
-      date: [],
-      search_value: '',
-      page: 1,
-      sort: {field: null, order: null},
-      dialogImportVisible: false,
-      dialogUpdateVisible: false,
-      filterVisible: false,
-      exportLoading: false,
-      dialogControl: false,
-      control,
-      transferValue,
-      refreshRender: true,
-    };
-
-    return Object.assign({}, tableConst.data, data);
   },
   components: {
     'TableRender': {
