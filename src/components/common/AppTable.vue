@@ -172,7 +172,10 @@ export default {
         }
       }
       return s;
-    }
+    },
+    setCurrentRow (row) {
+      this.$refs.table.setCurrentRow(row);
+    },
   },
   computed: {
     ...mapGetters([

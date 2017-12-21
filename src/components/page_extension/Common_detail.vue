@@ -35,7 +35,7 @@
           cccc
         </el-tab-pane>
         <el-tab-pane label="审查记录">
-          dddd
+          <defence></defence>
         </el-tab-pane>
       </el-tabs>
     </div>
@@ -53,6 +53,7 @@ import DetailFee from '@/components/page_extension/CommonDetail_fee'
 import DetailEmail from '@/components/page_extension/CommonDetail_email'
 import DetailDocuments from '@/components/page_extension/CommonDetail_documents'
 import GroupFamily from '@/components/page_extension/CommonDetail_groupfamily'
+import Defence from '@/components/page_extension/CommonDetail_defence'
 import { mapGetters } from 'vuex'
 import { mapActions } from 'vuex'
 const config = [
@@ -175,6 +176,7 @@ export default {
     DetailEmail,
     DetailDocuments,
     GroupFamily,
+    Defence,
   }
 }
 </script>

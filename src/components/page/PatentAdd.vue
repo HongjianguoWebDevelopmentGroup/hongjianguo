@@ -30,7 +30,7 @@ const setKeys = ['base', 'person', 'classification', 'agent', 'case', 'other'];
 
 const URL = '/api/patents';
 
-import AxiosMixins from '@/mixins/axios-mixins'
+
 import AppCollapse from '@/components/common/AppCollapse'
 import PaBase from '@/components/page_extension/PatentAdd_base'
 import Person from '@/components/page_extension/PatentAdd_person'
@@ -50,7 +50,6 @@ export default {
     }
   },
   props: ['pageType'],
-  mixins: [ AxiosMixins ],
   methods: {
     ...mapActions([
       'refreshUser',
@@ -70,14 +69,18 @@ export default {
         }
 
         this.btn_disabled = true;
-        this.axiosPost({url, data, success, complete});  
+        this.$axiosPost({url, data, success, complete});  
       })
       
     },
     edit () {
       this.formCheck(_=>{
         const url = `${URL}/${this.id}`;
-        const data = Object.assign( ...getKeys.map(d=>this.$refs[d].submitForm()) );
+        const data = Object.assign( ...getKeys.map(d=>{
+          const a = this.$refs[d].submitForm();
+          // console.log(d, a);
+          return a;
+        }) );
         const success = _=>{ 
           this.$message({message: '编辑专利成功', type: 'success'});
           this.$emit('editSuccess');
@@ -88,7 +91,7 @@ export default {
         }
 
         this.btn_disabled = true;
-        this.axiosPut({url, data, success, complete});  
+        this.$axiosPut({url, data, success, complete});  
       })
     },
     formCheck (callback) {
