@@ -34,6 +34,9 @@
           >{{ item.text }}</el-checkbox>
         </el-checkbox-group>
         <span v-else>暂无可选项</span>
+      </el-form-item>
+      <el-form-item label="权利人地址">
+        <el-input v-model="form.address" placeholder="请填写权利人地址"></el-input>
       </el-form-item>     
 	  </el-form>
   </app-collapse>
@@ -76,7 +79,8 @@ export default {
         applicants: [],
         inventors: [],
         priorities: [],
-        extension: [],       
+        extension: [], 
+        address: '',      
       },
       
       rules: {

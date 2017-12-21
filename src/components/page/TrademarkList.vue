@@ -146,7 +146,14 @@ export default {
 					'is_import': true,
 					'render_simple': 'name',
 					'width': '145',
-					'is_import': true,
+					sortable : true,
+			    },
+				{
+					'show': true,
+					'type': 'text',
+					'label': '权利人地址',
+					'prop': 'address',
+					'width': '240',
 					sortable : true,
 			    },
 				{

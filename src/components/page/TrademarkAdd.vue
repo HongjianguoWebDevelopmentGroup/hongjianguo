@@ -67,6 +67,9 @@
 			<el-form-item label="地区" prop="area" :rules="{ type: pageType=='add' ? 'array' : 'string',required: true, message: '地区不能为空', trigger: 'change'}">
 				<static-select type="area" v-model="form.area" :multiple="pageType == 'add'"></static-select>
 			</el-form-item>
+			  <el-form-item label="权利人地址">
+        		<el-input v-model="form.address" placeholder="请填写权利人地址"></el-input>
+      		  </el-form-item>
 			</el-form-item>
 			<el-form-item label="商标图形" prop="figure">
 				<!-- <upload v-model="form.figure" :file-list="figure" :multiple="false"></upload> -->
@@ -150,6 +153,7 @@ export default {
 		  		type: '',
 			  	applicants: [],
 			  	area: this.pageType == 'add' ? [] : '',
+			  	address: '',
 			  	categories: [],
 			  	detail: '',
 			  	figure: '',

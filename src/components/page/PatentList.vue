@@ -114,6 +114,7 @@ export default {
             sortable: true,
             render: _=>_.map(_=>_.name),
           },
+          { type: 'text', label: '权利人地址', prop: 'address', sortable: true,width: '240'},
           { type: 'text', label: '提案号', prop: 'proposal_serial', sortable: true,width: '200' },
           { type: 'text', label: '专利摘要', prop: 'abstract', sortable: true, width: '280'},
           { type: 'text', label: '公开日', prop: 'public_date', sortable: true, is_import: true, width: '145'},
