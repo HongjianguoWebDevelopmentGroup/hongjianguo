@@ -448,7 +448,7 @@ nav {
   font-size: 18px;
   height: 28px;
   line-height: 28px;
-  // font-weight: bold;
+  /*font-weight: bold;*/
   display: inline-block;
 }
 /*这里放入重写element-ui样式的内容*/
