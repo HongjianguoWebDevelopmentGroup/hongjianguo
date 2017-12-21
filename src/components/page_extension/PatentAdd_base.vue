@@ -80,7 +80,7 @@ export default {
       },
       
       rules: {
-        'title': { required: true, message: '标题不能为空', trigger: 'blur' },        
+        'title': [{ required: true, message: '标题不能为空', trigger: 'blur' },{max:25, message: '标题长度不超过25字', trigger: 'blur'}],
         'type': { type: 'number', required: true, message: '专利类型不能为空', trigger: 'change' },
         'inventors': {
           type: 'array',

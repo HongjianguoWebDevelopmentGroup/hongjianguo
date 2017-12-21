@@ -109,7 +109,7 @@ export default {
 		  	]
 		  },
 		  rules: {
-		  	title: { required: true, message: '版权名称不能为空', trigger: 'blur' },
+		  	title: [{ required: true, message: '版权名称不能为空', trigger: 'blur' }, { max: 25, message: '版权名称不超过25个字符', trigger: 'blur'}],
 		  	type: { type: 'number', required: true, message: '著作权不能为空', trigger: 'change' },
 		  },
 		  attachments: [],

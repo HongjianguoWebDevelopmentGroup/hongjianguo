@@ -1,7 +1,7 @@
 <template>
   <app-shrink :title="title" :visible=visibleAuth @update:visible="handleVisible">
     <span slot="header" style="float: right">
-      <el-button size="small" type="primary" @click="edit">保存</el-button>
+      <el-button size="small" type="primary" class="table-header-btn" @click="edit">保存</el-button>
     </span>
     <div  v-loading="detailLoading && visibleAuth" :element-loading-text="config.loadingText" :style="divStyle">
       <el-tabs v-model="activeName">
