@@ -260,7 +260,7 @@ export default {
 }
 </script>
 <style lang="scss">
-@media only screen and (max-width: 1024px){
+@media only screen and (min-width: 1024px) and (max-width: 1338px){
   @import './style/common';
 }
 $nav_bgColor: #383838;
@@ -592,7 +592,7 @@ nav {
 }
 .left-tree-header {
   font-size: 14px;
-  height: 40px;
+  height: auto;
   line-height: 40px;
   background-color: #eef1f6;
   border: 1px solid #dfe6ec;

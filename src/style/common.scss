@@ -15,7 +15,7 @@ $font-size: 12px;
 	padding: 6px 8px;
 }
 .table-search {
-	max-width: 150px !important;
+	max-width: 130px;
 }
 .search-content {
 	font-size: 12px !important;
@@ -45,8 +45,12 @@ $font-size: 12px;
     padding-right: 0px; 
     font-size: 12px;
   }
-  .el-input__icon{
+  .el-input__icon {
     width: 24px;
+  }
+  .el-button--mini {
+  margin-left: 0px !important;  
+    padding: 4px 4px;
   }
   .el-popover {
     width: 400px !important;
@@ -71,5 +75,23 @@ $font-size: 12px;
   }
   .app-shrink {
   	width: 834px !important;
+  }
+  .left {
+    width: 180px !important;
+  }
+  .right {
+    margin-left:200px; 
+  }
+  .left-tree-header {
+    padding: 0 6px !important;
+  }
+  .expiring-left,.expiring-right {
+    width: auto !important;
+  }
+  .personal-sp1 {
+    font-size: 12px !important;
+  }
+  .personal-sp2 {
+    font-size: 16px !important;
   }
   }

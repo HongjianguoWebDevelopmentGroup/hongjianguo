@@ -94,7 +94,6 @@
 	  	<search-input
         v-model="search_value"
         :placeholder="tableOption.search_placeholder == undefined ? '搜索...' : tableOption.search_placeholder"
-        style="width: 250px;"
         class="table-search"
         @click="handleSearch"
         @enter="handleSearch"
@@ -658,7 +657,9 @@ export default {
 }*/
 </style>
 <style scoped lang="scss">
-
+.table-search {
+  width: 250px;
+}
 .el-button+.el-dropdown {
   margin-left: 10px;
 }

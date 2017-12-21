@@ -3,7 +3,7 @@
 	<div class="left">
 		<div style="padding-left: 2px;" class="left-tree-header">
 			<!-- <span>期限管控</span> -->
-			<el-select v-model="date" placeholder="请选择期限类型" size="mini" style="width: 70px;">
+			<el-select v-model="date" placeholder="请选择期限类型" class="expiring-left" size="mini" style="width: 70px;">
 				<el-option
 			      v-for="item in dates"
 			      :key="item.value"
@@ -11,7 +11,7 @@
 			      :value="item.value">
 			  </el-option>
 			</el-select>
-			<el-select v-model="day" placeholder="请选择期限" size="mini" style="width: 120px">
+			<el-select v-model="day" placeholder="请选择期限" class="expiring-right" size="mini" style="width: 120px">
 			    <el-option
 			      v-for="item in days"
 			      :key="item.value"

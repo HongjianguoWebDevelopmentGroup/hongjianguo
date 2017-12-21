@@ -6,10 +6,10 @@
         <span v-if="pendingTask.length != 0"  v-for="m in pendingTask" :key="m.label"
           title="点击跳转"
           style="margin: 5px 10px 5px 0; border: 1px solid #ccc; border-radius: 5px; padding: 6px; cursor: pointer;display: table;float: left;" @click="toPending(m.value)">
-          <span style="font-size: 14px;">{{ m.label }}</span>
+          <span style="font-size: 14px;" class="personal-sp1">{{ m.label }}</span>
           <template v-if="m.count">
             <span>：</span>
-            <span style="font-size: 18px; font-weight: bold; color: #c23531;">{{ m.count }}</span>
+            <span style="font-size: 18px; font-weight: bold; color: #c23531;" class="personal-sp2">{{ m.count }}</span>
           </template>
         </span>
         
