@@ -42,6 +42,11 @@
             <el-date-picker type="daterange" v-model="form.expiring_date" placeholder="请选择专用权期数"></el-date-picker>
           </el-form-item>
         </el-col>
+        <el-col :span="12">
+          <el-form-item label="代理机构" prop="agency">
+            <remote-select type="agency" v-model="form.agency" multiple></remote-select>
+          </el-form-item>
+        </el-col>
       </el-row>
       <el-row style="text-align: center;">
         <el-button type="primary" size="small" @click="search(form)">查询</el-button>
@@ -71,7 +76,8 @@ export default {
         apd: '',
         public_date: '',
         issue_date: '',
-        expiring_date: ''
+        expiring_date: '',
+        agency: []
       }
 		}
   },

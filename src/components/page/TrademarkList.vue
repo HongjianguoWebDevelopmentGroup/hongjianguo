@@ -156,6 +156,14 @@ export default {
 					'width': '240',
 					sortable : true,
 			    },
+			    {
+					'show': true,
+					'type': 'text',
+					'label': '代理机构',
+					'prop': 'agency',
+					'width': '168',
+					sortable : true,
+			    },
 				{
 					'show': true,
 					'type': 'text',
