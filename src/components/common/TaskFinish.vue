@@ -87,6 +87,14 @@
     <el-form-item v-if="next == '20'" prop="pconfirm" label="确认" :rules="confirmValidator">
       <el-checkbox v-model="form.pconfirm">已确认送件信息完整</el-checkbox><el-button type="text" size="mini" style="margin-left: 10px;" @click="$emit('more', 'patent')">查看</el-button>
     </el-form-item>
+    <template v-if="fields.defence">
+      <el-form-item prop="points" label="审查要点" :rules="{required: true, message: '审查要点不能为空'}">
+        <el-input type="textarea" placeholder="请填写审查要点" v-model="form.points"></el-input>
+      </el-form-item>
+      <el-form-item prop="defence" label="修改/答辩" :rules="{required: true, message: '修改/答辩不能为空'}">
+        <el-input type="textarea" placeholder="请填写修改/答辩信息" v-model="form.defence"></el-input>
+      </el-form-item>
+    </template>
     <el-form-item prop="is_supplement" label="补充" v-if="fields.is_supplement" >
       <app-switch type="is" v-model="form.is_supplement"></app-switch>
     </el-form-item>
@@ -134,6 +142,8 @@ export default {
         type: '',
         pconfirm: false,
         is_supplement: 0,
+        points: '',
+        defence: '',
 			},
 			'defaultVal': '',
       'agencyMap': [],
