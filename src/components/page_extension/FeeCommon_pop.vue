@@ -7,7 +7,13 @@
 			<el-form-item label="费用对象" prop="target">
 				<remote-select type="member" v-model="form.target"></remote-select>
 			</el-form-item>
-			
+			<el-row>
+				<el-col :span="24">
+					<el-form-item label="费用代码" prop="code">
+						<static-select  type="fee_code" v-model="form.code" ref="fee_code"></static-select>
+					</el-form-item>
+				</el-col>
+			</el-row>			
 			<el-form-item label="费用状态" prop="status" v-if="popType == 'add'">
 				<fee-status v-model="form.status" :feeAnnual="feeAnnual"></fee-status>
 			</el-form-item>
@@ -35,20 +41,6 @@
 
 				</el-row>
 			</el-form-item>
-			
-			<el-row>
-				<el-col :span="12">
-					<el-form-item label="费用代码" prop="code">
-						<static-select style="width: 193px;" type="fee_code" v-model="form.code" ref="fee_code"></static-select>
-					</el-form-item>
-					
-				</el-col>
-				<el-col :span="12">
-					<el-form-item label="官方绝限" prop="dealine">
-						<el-date-picker v-model="form.deadline" type="date" placeholder="请选择官方期限"></el-date-picker>
-					</el-form-item>	
-				</el-col>
-			</el-row>
 
 			<el-row>
 				<el-col :span="12">
@@ -57,11 +49,15 @@
 					</el-form-item>
 				</el-col>
 				<el-col :span="12">
-					<el-form-item label="支付时间" prop="pay_time">
-						<el-date-picker v-model="form.pay_time" type="date" placeholder="请选择支付时间"></el-date-picker>
-					</el-form-item>
+					<el-form-item label="官方绝限" prop="dealine">
+						<el-date-picker v-model="form.deadline" type="date" placeholder="请选择官方期限"></el-date-picker>
+					</el-form-item>	
 				</el-col>
 			</el-row>
+			
+			<el-form-item label="支付时间" prop="pay_time">
+						<el-date-picker v-model="form.pay_time" type="date" placeholder="请选择支付时间"></el-date-picker>
+			</el-form-item>
 			
 			
 

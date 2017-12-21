@@ -6,15 +6,15 @@
         <static-select type="group" v-model="form.group_id"></static-select>
 			</el-form-item>
 
-      <el-form-item label="用户名" prop="username" v-if="popType == 'add'" :rules="[
+      <el-form-item label="登陆名" prop="username"  :rules="[
           { required: true, message: '用户名不能为空', trigger: 'blur'},
           { pattern: /^[^~!@#$%^&*]+$/, message: '用户名不能包含非法字符', trigger: 'blur' }
         ]">
         <el-input v-model="form.username" ></el-input>
       </el-form-item>
-      <el-form-item label="用户名" v-if="popType == 'edit'">
+      <!-- <el-form-item label="登陆名" v-if="popType == 'edit'">
         <span class="form-item-text">{{ form.username }}</span>
-      </el-form-item>
+      </el-form-item> -->
 
       <template v-if="popType == 'add'">
         <el-form-item label="密码" prop="password" :rules="{ required: true, message: '密码不能为空', trigger: 'blur' }">
@@ -35,7 +35,7 @@
         <remote-select type="agency" v-model="form.parent"></remote-select>
       </el-form-item>
 
-	    <el-form-item label="昵称" prop="name">
+	    <el-form-item label="姓名" prop="name">
 	    	<el-input v-model="form.name"></el-input>	
 	    </el-form-item>
 	    <el-form-item label="邮箱" prop="email">

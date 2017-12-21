@@ -64,10 +64,30 @@ export default {
 		  		{ type: 'text', label: '费用对象', prop: 'target', render_simple: 'name', width: '190' },
 		  		{ type: 'text', label: '费用名称', prop: 'code', render_simple: 'name', width: '190' },
 		  		//{ type: 'text', label: '费用类型', prop: 'type_name', width: '190' },
-		  		{ type: 'text', label: '金额', prop: 'fee', width: '80' },
-		  		{ type: 'text', label: '汇率', prop: 'roe', is_import: true, width: '80' },
-		  		{ type: 'text', label: '币种', prop: 'currency', is_import: true, width: '80' },
-		  		{ type: 'text', label: '人民币', prop: 'amount', is_import: true, width: '100' },
+		  		{ type: 'text', label: '外币金额', prop: 'fee', width: '100',render:(h,item)=>{
+            return h('div',{
+              style: {
+                textAlign: 'right',
+              }
+            },item)
+          } 
+        },
+		  		{ type: 'text', label: '汇率', prop: 'roe', is_import: true, width: '80',render:(h,item)=>{
+            if( item ==1 ){
+              return h('span','N/A')
+            }else{
+              return h('span',item)
+            }
+           } 
+          },
+		  		// { type: 'text', label: '币种', prop: 'currency', is_import: true, width: '80' },
+		  		{ type: 'text', label: '人民币金额', prop: 'rmb', is_import: true, width: '120' ,render:(h,item)=>{
+            return h('div',{
+              style: {
+                textAlign: 'right',
+              }
+            },`${item}CNY`)}
+          },
 		  		{ type: 'text', label: '状态', prop: 'status', render_simple: 'name', width: '180'},
           { type: 'text', label: '案件类型', prop: 'category', width: '145' },
           { type: 'text', label: '专利类型', prop: 'patent_type', width: '145' },
@@ -147,6 +167,14 @@ export default {
       const invoice = this.fee_invoice_if && this.fee_invoice != '' ? {fee_invoice: this.fee_invoice} : {};
   		const data = Object.assign({}, option, { debit, status }, this.filter, invoice);
   		const success = d=>{ 
+        const totalData = d.fees.data;
+        for (var i = 0; i < totalData.length; i++) {
+            if(totalData[i].roe==1) {
+              totalData[i].fee = 'N/A';
+            }else{
+               totalData[i].fee = `${totalData[i].fee+totalData[i].currency}`;
+            }
+        }
         if(data['format'] == 'excel') {
           if(d.fees.downloadUrl) {
             window.location.href = d.fees.downloadUrl;  
@@ -158,6 +186,9 @@ export default {
 
   		this.axiosGet({url, data, success});
   	},
+    feeTransform () {
+
+    },
   	addPop () {
   		this.popType = 'add';
   		this.$nextTick(()=>{
