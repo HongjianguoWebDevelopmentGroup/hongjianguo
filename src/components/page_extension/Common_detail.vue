@@ -29,7 +29,7 @@
           <group-family></group-family>
         </el-tab-pane>
         <el-tab-pane label="引用关系" name="quote" v-if="type == 'patent'">
-          bbbb
+          <quote></quote>
         </el-tab-pane>
         <el-tab-pane label="评审记录" name="review" v-if="type == 'patent'">
           cccc
@@ -54,6 +54,7 @@ import DetailEmail from '@/components/page_extension/CommonDetail_email'
 import DetailDocuments from '@/components/page_extension/CommonDetail_documents'
 import GroupFamily from '@/components/page_extension/CommonDetail_groupfamily'
 import Defence from '@/components/page_extension/CommonDetail_defence'
+import Quote from '@/components/page_extension/CommonDetail_quote'
 import { mapGetters } from 'vuex'
 import { mapActions } from 'vuex'
 const config = [
@@ -177,6 +178,7 @@ export default {
     DetailDocuments,
     GroupFamily,
     Defence,
+    Quote,
   }
 }
 </script>

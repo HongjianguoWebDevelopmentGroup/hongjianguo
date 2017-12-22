@@ -44,6 +44,7 @@ const getters = {
   detailGroup: state=>state.data && state.data.group ? state.data.group : [],
   detailFamily: state=>state.data && state.data.family ? state.data.family : [],
   detailDefence: state=>state.data && state.data.defence ? state.data.defence : [],
+  detailQuote: state=>state.data && state.data.quote ? state.data.quote : null,
   detailLoading: state=>state.loading,
 }
 
