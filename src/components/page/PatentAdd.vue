@@ -7,7 +7,7 @@
     <agent ref="agent" v-if="type == 'edit'"></agent>
     <case ref="case"></case>
     <other ref="other" :type="type"></other>
-    
+    <custom ref="custom" :type="type"></custom>
     <div style="margin-bottom: 20px;">
       <el-button @click="add" type="primary" v-if="type == 'add'" :disabled="btn_disabled">添加</el-button>
       <!-- <el-button @click="edit" type="primary" v-if="type == 'edit'" :disabled="btn_disabled">编辑</el-button> -->
@@ -38,6 +38,7 @@ import Classification from '@/components/page_extension/PatentAdd_classification
 import Agent from '@/components/page_extension/PatentAdd_agent'
 import Case from '@/components/page_extension/PatentAdd_case'
 import Other from '@/components/page_extension/PatentAdd_other'
+import Custom from '@/components/page_extension/PatentAdd_custom'
 import {mapActions} from 'vuex'
 export default {
   name: 'patentAdd',
@@ -151,7 +152,7 @@ export default {
   mounted () {
     this.refreshForm(this.detail);
   },
-  components: { PaBase, Person, Classification, Agent, Case, Other, AppCollapse }
+  components: { PaBase, Person, Classification, Agent, Case, Other, AppCollapse ,Custom}
 }
 </script>
 
