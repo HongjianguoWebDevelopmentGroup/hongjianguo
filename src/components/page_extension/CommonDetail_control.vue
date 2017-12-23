@@ -19,7 +19,7 @@ export default {
   name: 'hello',
   mixins: [ AxiosMixins ],
   data () {
-		return {
+	return {
 		  option: {
 		  	'is_search': false,
 		  	'is_pagination': false,
@@ -94,6 +94,8 @@ export default {
   },
   methods: {
   	toggle ({id}) {
+  		// console.log(this.tableData[0].id)
+  		// console.log(id);
   		if(this.show == null || this.show != id) {
   			const url = `/api/tasks/${id}`;
   			const success = _=>{
@@ -103,9 +105,8 @@ export default {
 
   			this.axiosGet({url, success});	
   		}
-
   		this.show = this.show == id ? null : id;
-  	}
+  	},
   },
   computed: {
   	tableData () {
@@ -113,9 +114,12 @@ export default {
   	}
   },
   watch: {
-  	tableData () {
-  		this.show = null;
-  	}
+  	tableData (val) {
+  		if(val.length != 0) {
+  			this.toggle(val[0]);	
+  		}
+  		
+  	},
   },
   components: { TableComponent },
 }

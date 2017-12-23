@@ -1,5 +1,5 @@
 <template>
-  <app-collapse col-title="版权筛选" default-close>
+  <app-collapse col-title="版权筛选" :default-close="isClose">
     <el-form :model="form" ref="form" label-width="120px">
       <el-row>
         <el-col :span="12">
@@ -37,7 +37,8 @@ export default {
   name: 'NoticeCommonStrainer',
   mixins: [ Strainer ],
   data () {
-		return {      
+		return {  
+      isClose: true,    
 		  form: {
       	apd: [],
         issue_date: [],

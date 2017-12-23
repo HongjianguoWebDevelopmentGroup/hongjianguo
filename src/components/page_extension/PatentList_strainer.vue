@@ -1,5 +1,5 @@
 <template>
-  <app-collapse col-title="专利筛选" default-close>
+  <app-collapse col-title="专利筛选" :default-close="isClose">
   	<el-form :model="form" label-width="80px" ref="form">
   		<el-row>
 				<el-col :span="12">
@@ -84,6 +84,7 @@ export default {
   props: ['value'],
   data () {
 		return {
+			isClose: true,
 			form: {
 				type: '',
 				area: '',
@@ -131,6 +132,7 @@ export default {
   		}
   		this.$emit('input', filter);
   		this.$emit('refresh');
+  		this.isClose = !this.isClose;
   	},
   	clear (form) {
   		form.resetFields();

@@ -1,6 +1,6 @@
 <template>
 	<div class="main">
-    <app-collapse col-title="提案筛选" default-close>   
+    <app-collapse col-title="提案筛选" :default-close="isClose">   
       <el-form label-width="80px">
         <el-row>
           <el-col :span="12">
@@ -15,6 +15,9 @@
             </el-form-item>
             <el-form-item label="部门">
               <branch v-model="branch" multiple></branch>
+            </el-form-item>
+            <el-form-item label="IPR">
+              <static-select type="ipr" v-model="ipr" multiple></static-select>
             </el-form-item>
           </el-col>
           <el-col :span="12">
@@ -82,7 +85,7 @@ const URL = '/api/proposals';
 const url = 'http://www.zhiq.wang/proposal/lists';
 const delete_url = 'http://www.zhiq.wang/proposal/lists';
 const tag_url = 'http://www.zhiq.wang/tag/lists';
-const strainerArr = ['classification', 'product', 'proposer', 'tags', 'inventors', 'branch', 'create_time'];
+const strainerArr = ['classification', 'product', 'proposer', 'tags', 'inventors', 'branch', 'create_time','ipr'];
 const map = new Map([['flownodes', 'progress'],['time', 'create_time']]);
 export default {
   name: 'proposalList',
@@ -150,6 +153,7 @@ export default {
       });
 
       this.filter = obj;
+      this.isClose = !this.isClose;
       this.$refs.table.refresh();
     },
     clear () {
@@ -211,6 +215,7 @@ export default {
   data () {
     return {
       refreshProxy: '',
+      isClose: true,
       tableOption: {
         'name': 'proposalList',
         'url': URL,
@@ -261,6 +266,7 @@ export default {
       create_time: [],
       proposer: [],
       tags: [],
+      ipr:[],
       inventors: [],
       filters: {},
       currentRow: '',

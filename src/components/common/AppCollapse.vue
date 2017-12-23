@@ -92,6 +92,9 @@ export default {
       if(val && !this.rendered) {
         this.rendered = true;
       }
+    },
+    defaultClose (val,oldVal) {
+        this.show = false;
     }
   }
 

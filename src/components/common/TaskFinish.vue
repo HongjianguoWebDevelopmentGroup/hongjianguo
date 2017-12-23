@@ -76,6 +76,7 @@
         <el-radio-button label="A"></el-radio-button>
         <el-radio-button label="B"></el-radio-button>
         <el-radio-button label="C"></el-radio-button>
+        <el-radio-button label="D"></el-radio-button>
       </el-radio-group>
     </el-form-item>
     <el-form-item prop="rank" label="评分" v-if="fields.rank">

@@ -1,5 +1,5 @@
 <template>
-  <app-collapse col-title="费用筛选" default-close>
+  <app-collapse col-title="费用筛选" :default-close="isClose">
     <el-form :model="form" label-width="100px" ref="form">
     	
       <el-row :gutter="20">
@@ -53,7 +53,8 @@ export default {
   mixins: [ Strainer ],
   props: ['feeType'],
   data () {
-		return {      
+		return {    
+      isClose: true,  
 		  form: {
         target: [],
         code: [],
