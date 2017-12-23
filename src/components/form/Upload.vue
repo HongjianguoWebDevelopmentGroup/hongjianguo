@@ -3,7 +3,7 @@
       :on-success="handleUploadSuccess"
       :on-remove="handleUploadRemove"
       :on-change="handleChange"
-      action="/api/files"
+      :action=action
       :on-preview="onPreview"
       :file-list="fileList"
       :multiple="multiple"
@@ -29,6 +29,10 @@
         'multiple': {
           type: Boolean,
           default: true,  
+        },
+        'action': {
+          type: String,
+          default: '/api/files',
         }
       },
       data () {
@@ -55,6 +59,7 @@
             
             f.id = id;
             f.downloadUrl = p.data.file.downloadUrl;
+            this.$emit('uploadSuccess', p, f, list);
             this.$emit('input', copy);
 
           }else {
