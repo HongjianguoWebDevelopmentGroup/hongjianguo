@@ -17,6 +17,7 @@ import flows from '@/store/modules/flows.js'
 import taskDef from '@/store/modules/task-def.js'
 import currentUser from '@/store/modules/current-user.js'
 import sysmesg from '@/store/modules/sysmesg.js'
+import configs from '@/store/modules/configs.js'
 import tool from '@/const/tool.js'
 Vue.use(Vuex);
 
@@ -54,6 +55,7 @@ const store = new Vuex.Store({
     taskDef,
     currentUser,
     sysmesg,
+    configs,
   },
   getters: {
     getDragId: state=>state.dragId,

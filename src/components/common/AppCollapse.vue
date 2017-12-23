@@ -65,6 +65,13 @@ export default {
     toggle () {
       this.show = !this.show;
       this.toggleClass = this.toggleClass == 'el-icon-plus' ? 'el-icon-minus' : 'el-icon-plus';
+    },
+    render () {
+      this.$emit('beforeRender');
+      this.rendered = true;
+      this.$nextTick(_=>{
+        this.$emit('afterRender');
+      })
     }
   },
   data () {
@@ -84,13 +91,13 @@ export default {
   },
   created () {
     if(this.show) {
-      this.rendered = true;
+      this.render();
     }
   },
   watch: {
     show (val) {
       if(val && !this.rendered) {
-        this.rendered = true;
+        this.render();
       }
     }
   }

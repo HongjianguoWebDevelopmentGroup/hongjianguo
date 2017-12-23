@@ -25,8 +25,8 @@ const map = new Map([
   ['other', '请正确填写其他信息及附件'],
 ]);
 
-const getKeys = ['base', 'person', 'classification', 'case', 'other'];
-const setKeys = ['base', 'person', 'classification', 'agent', 'case', 'other'];
+const getKeys = ['base', 'person', 'classification', 'case', 'other', 'custom'];
+const setKeys = ['base', 'person', 'classification', 'agent', 'case', 'other', 'custom'];
 
 const URL = '/api/patents';
 

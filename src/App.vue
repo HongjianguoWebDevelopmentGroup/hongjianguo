@@ -87,6 +87,7 @@ import AgencyLoad from '@/components/form/AgencyLoad'
 import menu from '@/const/menuConst'
 import AppMenuItem from '@/components/common/AppMenuItem'
 import { mapGetters } from 'vuex'
+import { mapActions } from 'vuex'
 export default {
   name: 'app',
   mixins: [ AxiosMixins ],
@@ -149,6 +150,14 @@ export default {
     };
   },
   methods: {
+    ...mapActions([
+      'refreshConfigs',
+      'refreshProduct',
+      'refreshClassification',
+      'refreshBranch',
+      'refreshArea',
+      'refreshCity',
+    ]),
     handleClose (index) {
       this.$store.commit('removeScreen', index);
     },
@@ -203,22 +212,26 @@ export default {
   
     const success = _=>{
       this.userinfoLoading = false;
+      
+      //设置个人信息
       this.$store.commit('setUser', window.appCache.userinfo);
-
+      
+      //获取系统配置数据
+      this.refreshConfigs(false);
       // this.$store.dispatch('refreshTags');
       
       //避免每次F5都发送请求的方法：
       //  1.每次使用相关数据的位置添加一个尝试初始化的函数
       //  2.localStorage动态关联 
-      this.$store.dispatch('refreshProduct');
-      this.$store.dispatch('refreshClassification');
-      this.$store.dispatch('refreshBranch');
+      this.refreshProduct();
+      this.refreshBranch();
+      this.refreshClassification();
       
       // this.$store.dispatch('refreshIpr');
       
       //使用localStorage进行本地缓存
-      this.$store.dispatch('refreshArea');
-      this.$store.dispatch('refreshCity');
+      this.refreshArea();
+      this.refreshCity();
       
       // this.$store.dispatch('refreshFeeCode');
       // this.$store.dispatch('refreshEntity');

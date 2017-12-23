@@ -11,34 +11,44 @@
 
 <script>
 import AppCollapse from '@/components/common/AppCollapse'
-import AxiosMixins from '@/mixins/axios-mixins'
+import {mapActions} from 'vuex'
+import {mapGetters} from 'vuex'
 
 const URL = '/api/configs'
 
 export default {
   name: 'settingSystem',
-  mixins: [ AxiosMixins ],
   data () {
-  	return {
-  		configs: [],	
-  	}
+    return {
+      configs: [],
+    };
+  },
+  computed: {
+    ...mapGetters([
+      'configsData',
+    ])
   },
   methods: {
+    ...mapActions([
+      'refreshConfigs',
+    ]),
   	save () {
   		const url = URL;
   		const data = this.configs;
-  		const success = _=>{this.$message({message: '保存系统设置成功', type: 'success'})};
+  		const success = _=>{
+        this.$message({message: '保存系统设置成功', type: 'success'});
+        this.refreshConfigs();
+      };
 
-  		this.axiosPost({url, data, success});
+  		this.$axiosPost({url, data, success});
   	}
   },
   created () {
-  	const url = URL;
-  	const success = _=>{ this.configs = _.configs };
-
-  	this.axiosGet({url, success});
+    this.configs = this.$tool.deepCopy(this.configsData);
   },
-  components: { AppCollapse },
+  components: { 
+    AppCollapse 
+  },
 }
 </script>
 

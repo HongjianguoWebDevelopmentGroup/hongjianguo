@@ -1,5 +1,5 @@
 <template>
-  <app-collapse col-title="专利筛选" default-close>
+  <app-collapse col-title="专利筛选" default-close @afterRender="refreshForm">
   	<el-form :model="form" label-width="80px" ref="form">
   		<el-row>
 				<el-col :span="12">
@@ -33,7 +33,9 @@
 					<el-form-item label="发明人" prop="inventors">
 						<remote-select type="inventor" v-model="form.inventors" multiple></remote-select>
 					</el-form-item>
-									
+					<el-form-item label="专利族号" prop="family_number">
+						<el-input placeholder="请输入需要搜索的专利族号" v-model="form.family_number"></el-input>
+					</el-form-item>
 				</el-col>
 				<el-col :span="12">
 					<el-form-item label="技术分类" prop="classification">
@@ -60,7 +62,9 @@
 					<el-form-item label="公开日" prop="public_date">
 						<el-date-picker type="daterange" placeholder="请选择公开日" v-model="form.public_date"></el-date-picker>
 					</el-form-item>
-					
+					<el-form-item label="群组号" prop="group_number">
+						<el-input placeholder="请输入需要搜索的群组号" v-model="form.group_number"></el-input	>
+					</el-form-item>					
 				</el-col>
   		</el-row>
   		<el-row style="text-align: center;">
@@ -102,6 +106,8 @@ export default {
 				public_date: [],
 				applicants: [],
 				inventors: [],
+				group_number: '',
+				family_number: '',
 			},
 			options: {
 				type: [
@@ -136,6 +142,9 @@ export default {
   		form.resetFields();
   		this.$emit('input', {});
   		this.$emit('refresh');
+  	},
+  	refreshForm () {
+  		this.$tool.coverObj(this.form, this.value);
   	}
   },
   components: { 

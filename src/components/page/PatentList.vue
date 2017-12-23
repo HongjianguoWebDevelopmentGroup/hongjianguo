@@ -315,6 +315,8 @@ export default {
             width: '175'
           },
           { type: 'text', label: '备注', prop: 'remark', sortable: true, width: '280'},
+          { type: 'text', label: '群组号', prop: 'group_number', width: '200' },
+          { type: 'text', label: '专利族号', prop: 'family_number', width: '200' },
         ] 
       },
       tableData: [],
@@ -325,6 +327,10 @@ export default {
     ...mapGetters([
       'areaMap',
       'menusMap',
+      'configsExtends1',
+      'configsExtends2',
+      'configsExtends3',
+      'configsData',
     ])
   },
   methods: {
@@ -417,7 +423,33 @@ export default {
       })
     },
   },
+  created () {
+    
+    const getExtends = (label, prop)=>{
+      return {
+        type: 'text',
+        label: this[label],
+        prop,
+        width: '200',
+      }
+    }
+    
+    if(this.configsData.length != 0) {
+      const c = this.tableOption.columns;
+      c.push(getExtends('configsExtends1', 'extends1'));
+      c.push(getExtends('configsExtends2', 'extends2'));
+      c.push(getExtends('configsExtends3', 'extends3'));
+    }
+
+    this.filter = this.$route.query;
+  },
   mounted () {
+    
+    console.log();
+    if(this.$route.query) {
+      console.log(this.$route.query);
+    }
+    
     this.$refs.table.refresh();
   },
   components: {  

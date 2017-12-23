@@ -1,50 +1,59 @@
 <template>
   <app-collapse col-title="自定义字段">
-  	<!-- <el-form>
-		<el-row>
-			<el-col :span="24">
-				<el-button>单行文本</el-button>
-				<el-button>多行文本</el-button>
-				<el-button>日期控件</el-button>
-			</el-col>
-		</el-row>
-    </el-form> -->
-    <el-form>
-      <el-form-item >
-    	<el-row :gutter="10">
-    		<el-col :span="4"><el-input placeholder="请填写自定义字段名"></el-input></el-col>
-    		<el-col :span="20"><el-input placeholder="请填写相关内容"></el-input></el-col>
-    	</el-row>
+    <el-form :model="form" ref="form" label-width="120px">
+      
+      <el-form-item :label="configsExtends1" prop="extends1">
+       <el-input placeholder="请填写相关内容" type="textarea" v-model="form.extends1"></el-input>
       </el-form-item>
-      <el-form-item >
-    	<el-row :gutter="10">
-    		<el-col :span="4"><el-input placeholder="请填写自定义字段名"></el-input></el-col>
-    		<el-col :span="20"><el-input placeholder="请填写相关内容"></el-input></el-col>
-    	</el-row>
-      </el-form-item>	
-      <el-form-item >
-    	<el-row :gutter="10">
-    		<el-col :span="4"><el-input placeholder="请填写自定义字段名"></el-input></el-col>
-    		<el-col :span="20"><el-input placeholder="请填写相关内容"></el-input></el-col>
-    	</el-row>
-      </el-form-item>		
+      
+      <el-form-item :label="configsExtends2" prop="extends2">
+       <el-input placeholder="请填写相关内容" type="textarea" v-model="form.extends2"></el-input>
+      </el-form-item>
+
+      <el-form-item :label="configsExtends3" prop="extends3">
+    	 <el-input placeholder="请填写相关内容" type="textarea" v-model="form.extends3"></el-input>
+      </el-form-item>
+
     </el-form>
   </app-collapse>
 </template>
 <script>
 import AppCollapse from '@/components/common/AppCollapse'
+import {mapGetters} from 'vuex'
+
 export default {
   name: 'patentAddCustom',
   props:['type'],
   data() {
-	return {
-
+    return {
+      form: {
+        extends1: '',
+        extends2: '',
+        extends3: '',
+      }
     }
   },
-  methods: {
-
+  computed: {
+    ...mapGetters([
+      'configsExtends1',
+      'configsExtends2',
+      'configsExtends3',
+    ]),
   },
-  components:{AppCollapse}
+  methods: {
+    setForm (data) {
+      this.$tool.coverObj(this.form, data);
+    },
+    submitForm () {
+      return this.form;
+    },
+    checkForm (callback) {
+      callback(true);
+    },
+  },
+  components:{
+    AppCollapse
+  },
 }
 </script>
 <style scoped lang="scss">
