@@ -4,7 +4,7 @@
 }
 $font-size: 12px;
 .el-button {
-    padding: 6px 8px  !important;
+    padding: 7px 8px !important;
 }
 // .el-button--primary {
 //     color: #fff;
@@ -17,9 +17,7 @@ $font-size: 12px;
 .table-search {
 	max-width: 130px;
 }
-.search-content {
-	font-size: 12px !important;
-}
+
 .el-table th,.el-table td {
 	height: 36px;
 }
@@ -37,14 +35,24 @@ $font-size: 12px;
     height: auto !important;
     line-height: 1;
     outline: 0;
-    padding: 6px 8px;
+    padding: 7px 8px !important;
     transition: border-color .2s cubic-bezier(.645,.045,.355,1);
   }
+.search-content {
+  font-size: 12px !important;
+  padding-right: 35px !important;
+}
   .el-select .el-input__inner {
     cursor: pointer;
     padding-right: 0px; 
     font-size: 12px;
   }
+  .el-select .el-tag {
+    height: 20px !important;
+    line-height: 20px !important;
+    box-sizing: border-box;
+    margin: 3px 0 3px 6px;
+}
   .el-input__icon {
     width: 24px;
   }
@@ -72,9 +80,6 @@ $font-size: 12px;
   	}
   .dialog-medium .el-dialog {
     width: 700px !important;
-  }
-  .app-shrink {
-  	width: 834px !important;
   }
   .left {
     width: 180px !important;

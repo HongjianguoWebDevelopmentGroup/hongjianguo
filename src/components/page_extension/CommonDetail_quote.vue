@@ -8,6 +8,20 @@
     color: #303133;
     margin: 10px;"
      v-show="show">
+     	<div style="width: 100%;height: 60px;border-bottom:1px solid #edeef5; ">
+     		<ul style="float: left;list-style: none;"><span style="float: left;font-weight: bold;">注：</span>
+     			<li v-for="item  in lineArr" :style="{float:'left',marginLeft: '5px',fontSize:'14px'}"><i :style="{width: '30px',
+					height: '1px',
+					lineheight: '16px',
+					marginRight: '3px',
+					borderTopWidth:'3px',
+					borderTopStyle:'solid',
+					borderTopColor:`${item.color}`,
+					display: 'inline-block'}">
+					</i><span>{{ item.text }}</span>
+				</li>
+     		</ul>
+     	</div>
 		<div id="quote_chart" style="width: 900px; height: 600px;"></div>
 	</div>
 		<span v-show="!show" style="margin-left: 20px;">暂无引用关系...</span>
@@ -72,27 +86,27 @@ const option =
 }
 const lineMap = new Map([
 	[1,{
-		color: 'red',
+		color: '#099',
 		text: '要求优先权',
 	}],
 	[2,{
-		color: 'darkmagenta',
+		color: '#c33',
 		text: '分案申请',
 	}],
 	[3,{
-		color: 'green',
+		color: '#369',
 		text: '部分连续案',
 	}],
 	[4,{
-		color: 'blue',
+		color: '#fcc',
 		text: '同套发明与新型',
 	}],
 	[5,{
-		color: 'navy',
+		color: '#969',
 		text: '不同地区同族',
 	}],
 	[6,{
-		color: 'black',
+		color: '#f90',
 		text: '要求同日送件',
 	}],
 ]);
@@ -102,6 +116,7 @@ export default {
 		return {
 			chart: '',
 			show: true,
+			lineArr:[],
 		};
 	},
 	computed: {
@@ -133,11 +148,19 @@ export default {
 				this.chart.setOption(option);
 				this.show = false;
 			}
+		},
+		lineNum (){
+			lineMap.forEach(_=>{
+				console.log(_.color)
+				this.lineArr.push(_);
+			})	
+			console.log(this.lineArr)
 		}
 	},
 	mounted () {
 		this.chart = echarts.init(document.getElementById('quote_chart'));
 		this.refreshChart ();
+		this.lineNum();
 	},
 	watch: {
 		detailQuote () {
@@ -146,3 +169,5 @@ export default {
 	}
 }
 </script>
+<style scoped lang="scss">
+</style>
