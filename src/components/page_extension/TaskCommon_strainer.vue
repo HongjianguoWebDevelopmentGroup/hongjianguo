@@ -1,5 +1,5 @@
 <template>
-<app-collapse col-title="任务筛选" default-close>
+<app-collapse col-title="任务筛选" :default-close="isClose">
   <el-form label-width="100px" :model="form" ref="form">   
 
     <el-row>
@@ -74,6 +74,7 @@ export default {
   name: 'pendingTaskStrainer',
   data () {
 		return {
+      isClose: true,
 		  form: {
 		  	'category': '',
 		  	'ipr': [],
@@ -116,6 +117,7 @@ export default {
           }
         }
       }
+      this.isClose = !this.isClose;
   		this.$emit('query', copy);
   	},
   	clear () {
