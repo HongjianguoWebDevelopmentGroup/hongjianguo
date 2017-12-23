@@ -4,7 +4,7 @@
 }
 $font-size: 12px;
 .el-button {
-    padding: 6px 8px;
+    padding: 6px 8px  !important;
 }
 // .el-button--primary {
 //     color: #fff;
@@ -12,7 +12,7 @@ $font-size: 12px;
 //     border-color: #20a0ff;
 // }
 .table-header-btn {
-	padding: 6px 8px;
+	padding: 6px 8px !important;
 }
 .table-search {
 	max-width: 130px;
