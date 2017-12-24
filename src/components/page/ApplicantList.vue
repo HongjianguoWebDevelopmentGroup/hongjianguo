@@ -57,7 +57,7 @@ export default {
 		  		{ type: 'text', label: '英文地址', prop: 'eaddress', sortable: true, width: '260' },
 		  		{ 
 		  			type: 'action',
-            width: '150',
+            width: '160',
 		  			btns: [
 		  				{ type: 'edit', click: this.editPopUp },
 		  				{ type: 'delete', click: this.applicantDelete },

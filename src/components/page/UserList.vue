@@ -80,7 +80,7 @@ export default {
 		  		{ type: 'text', label: '微信号', prop: 'weixin', width: '200' },
 		  		{ type: 'text', label: 'QQ', prop: 'qq', width: '200' },
 		  		{ 
-		  			type: 'action', label: '操作', width: '150px',
+		  			type: 'action', label: '操作', width: '160',
 		  			btns: [
 		  				{ type: 'edit', click: this.editPop },
 		  				{ type: 'delete', click: this.deleteSingle }
