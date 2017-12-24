@@ -7,6 +7,9 @@ $font-size: 12px;
     padding: 7px 8px;
 
 }
+.el-button+.el-button {
+    margin-left: 8px !important;
+}
 // .el-button--primary {
 //     color: #fff;
 //     background-color: #20a0ff;
