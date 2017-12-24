@@ -8,9 +8,9 @@
     color: #303133;
     margin: 10px;"
      v-show="show">
-     	<div style="width: 100%;height: 60px;border-bottom:1px solid #edeef5; ">
-     		<ul style="float: left;list-style: none;"><span style="float: left;font-weight: bold;">注：</span>
-     			<li v-for="item  in lineArr" :style="{float:'left',marginLeft: '5px',fontSize:'14px'}"><i :style="{width: '30px',
+     	<div style="width: 100%;min-height: 30px;height:auto;border-bottom:1px solid #edeef5;">
+     		<ul style="list-style: none;height: auto;overflow: hidden;"><span style="float: left;font-weight: bold;">注：</span>
+     			<li v-for="item  in lineArr" :style="{float:'left',marginLeft: '5px',fontSize:'14px',paddingBottom: '6px',}"><i :style="{width: '30px',
 					height: '1px',
 					lineheight: '16px',
 					marginRight: '3px',
@@ -19,6 +19,7 @@
 					borderTopColor:`${item.color}`,
 					display: 'inline-block'}">
 					</i><span>{{ item.text }}</span>
+					<!-- <span style="clear: all;"></span> -->
 				</li>
      		</ul>
      	</div>
