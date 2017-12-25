@@ -75,13 +75,15 @@ const option =
       },
       force: {
         repulsion: 100,
+      },
+      lineStyle: {
+        normal: {
+            width: 3,
+            // shadowColor: 'rgba(0,0,0,0.3)',
+            // shadowBlur: 5,
+            // curveness: 0.1,
+        },
       }
-      // lineStyle: {
-      //   normal: {
-      //       color: 'source',
-      //       curveness: 0.3
-      //   }
-      // }
     }
   ]
 }
@@ -152,10 +154,10 @@ export default {
 		},
 		lineNum (){
 			lineMap.forEach(_=>{
-				console.log(_.color)
+				// console.log(_.color)
 				this.lineArr.push(_);
 			})	
-			console.log(this.lineArr)
+			// console.log(this.lineArr)
 		}
 	},
 	mounted () {
