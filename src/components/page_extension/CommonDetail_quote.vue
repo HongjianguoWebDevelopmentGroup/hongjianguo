@@ -1,15 +1,16 @@
 <template>
 	<div>
-	<div style="border-radius: 4px;
+	<!-- <div style="border-radius: 4px;
     border: 1px solid #ebeef5;
     background-color: #fff;
     overflow: hidden;
     box-shadow: 0 2px 12px 0 rgba(0,0,0,.1);
     color: #303133;
     margin: 10px;"
-     v-show="show">
-     	<div style="width: 100%;min-height: 30px;height:auto;border-bottom:1px solid #edeef5;">
-     		<ul style="list-style: none;height: auto;overflow: hidden;"><span style="float: left;font-weight: bold;">注：</span>
+     v-show="show"> -->
+    <el-card style="margin: 10px;">
+     	<!-- <div slot="header" style="width: 100%;min-height: 30px;height:auto;border-bottom:1px solid #edeef5;"> -->
+     		<ul slot="header" style="margin: 0;list-style: none;height: auto;overflow: hidden;"><span style="float: left;font-weight: bold;">注：</span>
      			<li v-for="item  in lineArr" :style="{float:'left',marginLeft: '5px',fontSize:'14px',paddingBottom: '6px',}"><i :style="{width: '30px',
 					height: '1px',
 					lineheight: '16px',
@@ -22,9 +23,9 @@
 					<!-- <span style="clear: all;"></span> -->
 				</li>
      		</ul>
-     	</div>
-		<div id="quote_chart" style="width: 900px; height: 600px;"></div>
-	</div>
+     	<!-- </div> -->
+		<div id="quote_chart" style="width: 880px; height: 600px;"></div>
+	</el-card>
 		<span v-show="!show" style="margin-left: 20px;">暂无引用关系...</span>
 	</div>
 </template>
@@ -35,9 +36,7 @@ const option =
 {
 	title: {
     text: '引用关系图',
-    // subtext: 'Default layout',
-    top: 'bottom',
-    left: 'right'
+    subtext: '使用鼠标滚轮放大或缩小,可拖动',
   },
   // animation: false,
   tooltip: {},
@@ -62,6 +61,7 @@ const option =
 		  // circular: {
 		  //   rotateLabel: true
 		  // },
+		  // focusNodeAdjacency: true,
 		  roam: true,
 		  draggable: true,
       nodes: [],
@@ -70,18 +70,18 @@ const option =
         normal: {
           show: true,
           position: 'right',
-          formatter: function (a,b,c) {return a.data.title ? a.data.title : ''},
+          formatter: function (a,b,c) {return a.data.title ? `[${a.data.serial}]${a.data.title}` : ''},
         }
       },
       force: {
         repulsion: 100,
+      },
+      lineStyle: {
+        normal: {
+          width: 2,
+          opdacity: 1,
+        }
       }
-      // lineStyle: {
-      //   normal: {
-      //       color: 'source',
-      //       curveness: 0.3
-      //   }
-      // }
     }
   ]
 }
@@ -131,7 +131,13 @@ export default {
 				const copy = this.$tool.deepCopy(option);
 				const nodes = this.$tool.deepCopy(this.detailQuote['nodes']);
 				const links = this.$tool.deepCopy(this.detailQuote['links']);
-				nodes.forEach(_=>{_.name = _.name + "";});
+				nodes.forEach(_=>{
+					_.name = _.name + "";
+					
+					if(_.is_self) {
+						_.symbolSize = 20;
+					}
+				});
 				links.forEach(_=>{
 					_.source = _.source + ""; 
 					_.target =_.target + "";
@@ -152,10 +158,8 @@ export default {
 		},
 		lineNum (){
 			lineMap.forEach(_=>{
-				console.log(_.color)
 				this.lineArr.push(_);
-			})	
-			console.log(this.lineArr)
+			})
 		}
 	},
 	mounted () {

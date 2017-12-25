@@ -1,8 +1,6 @@
 <template>
 	<el-form label-position="top" :rules="rules" :model="form" ref="form">
-		<el-form-item label="文件类型" prop="documents">
-			<static-select type="file_type" v-model="form.documents"></static-select>
-		</el-form-item>
+		
 		<el-form-item label="导出字段" prop="fields">
 			<el-checkbox-group 
     		v-model="form.fields"
@@ -10,6 +8,9 @@
    		>
     		<el-checkbox v-for="(item, index) in fields" :label="item.value" :key="item.value" :style="index == 0 ? 'margin-left: 15px' : ''">{{item.label}}</el-checkbox>
   		</el-checkbox-group>
+		</el-form-item>
+		<el-form-item label="文件类型" prop="documents">
+			<static-select type="file_type" v-model="form.documents"></static-select>
 		</el-form-item>
 		<el-form-item style="margin-bottom: 0px;">
 			<el-button type="primary" @click="exportClick" :loading="loading">{{loading ? '导出中' : '确认导出' }}</el-button>
@@ -30,17 +31,23 @@ export default {
 			}
 		},
 		'responseKey': String,
+		'default': {
+			type: Array,
+			default () {
+				return [];
+			},
+
+		}
 	},
 	data () {
+		const fields = this.default;
 		return {
 			form: {
 				documents: '',
-				fields: [],
-
+				fields,
 			},
 			loading: false,
 			rules: {
-				documents: { required: true, message: '文件类型不能为空', trigger: 'change'},
 				fields: {type: 'array', required: true, message: '导出字段不能为空', trigger: 'change'},
 			}
 		};

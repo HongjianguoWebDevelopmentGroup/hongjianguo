@@ -157,7 +157,7 @@
     </el-dialog>
 
     <el-dialog v-if="exportType" :title="exportType.title" :visible.sync="dialogExport" class="dialog-small">
-      <app-export :url="tableOption.url" :fields="fields" :response-key="exportType.key" @success="dialogExport = false"></app-export>
+      <app-export :url="tableOption.url" :fields="fields" :default="default_choose" :response-key="exportType.key" @success="dialogExport = false"></app-export>
     </el-dialog>
   </div>
 </template>
@@ -251,7 +251,7 @@ export default {
     }
     
     const transferValue = control;
-
+    const default_choose = control[1].map(_=>_.key);
     const data = {
       pageData: [],
       pageSize: 5,
@@ -275,6 +275,7 @@ export default {
       refreshRender: true,
       dialogExport: false,
       fields,
+      default_choose,
     };
 
     return data;
