@@ -26,7 +26,7 @@ const errorFunc = function (d, t) {
 
 const catchFunct = function (err, t) {
   console.log(err); 
-  this.$message({message: '网络错误！', type: 'error'});
+  t.$message({message: '网络错误！', type: 'error'});
 }
 
 const completeFunc = function (d, t) {}
@@ -45,7 +45,7 @@ function axiosGet ({url=URLDEFAULT, data=dd, success=_=>{successFunc(_, this)}, 
         // console.log(url);
       }
       d.status > 0 ? success(d) : error(d);
-  
+      
       complete(d);
 
     })

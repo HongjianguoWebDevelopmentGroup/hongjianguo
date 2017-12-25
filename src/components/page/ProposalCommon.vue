@@ -16,7 +16,7 @@
             </el-form-item>
             
             <el-form-item label="发明人" prop="inventors" class="is-required">
-              <inventors v-model="formData.inventors"></inventors>
+              <inventors v-model="formData.inventors" ref="inventors"></inventors>
             </el-form-item>
 
             <el-form-item label="证件号码(第一发明人)" prop="identity" class="is-required">
@@ -102,8 +102,16 @@ export default {
       'refreshUser',
     ]),
     handleUploadSuccess (d) {
-      if( d.data && d.data.result ) {
-        this.$tool.coverObj(this.formData, d.data.result);
+      if( d.data && d.data.list ) {
+        const l = d.data.list;
+        
+        //处理发明人的贡献率
+        if(l.inventors && l.inventors.length != 0) {
+          //复用组件内置的方法...
+          this.$refs.inventors.handleShare(l.inventors);
+        }
+
+        this.$tool.coverObj(this.formData, l);
       }
     },
     handleSubmitSuccess () {

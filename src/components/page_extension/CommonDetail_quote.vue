@@ -24,7 +24,7 @@ const option =
     top: 'bottom',
     left: 'right'
   },
-  animation: false,
+  // animation: false,
   tooltip: {},
   tooltip: {
 		show: true,

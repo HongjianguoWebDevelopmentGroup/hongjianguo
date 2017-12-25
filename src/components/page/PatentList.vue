@@ -70,12 +70,13 @@ export default {
         'header_btn': [
           { type: 'add', click: this.add, map_if: '/patent/add', },
           { type: 'delete', map_if: '/patent/delete' }, 
-          { type: 'export', map_if: '/patent/export' },
+          { type: 'export2', map_if: '/patent/export' },
           { type: 'import', map_if: '/patent/import' },
           { type: 'batch_upload', map_if: '/patent/upload' },
           { type: 'batch_update' },
           { type: 'control', label: '字段' },
         ],
+        'export_type': 'patent',
         'import_type': 'patent',
         'upload_type': 'patent',
         'update_type': 'patent',
@@ -114,7 +115,7 @@ export default {
           { 
             type: 'text', 
             label: '费用', 
-            prop: 'amount', 
+            prop: 'fees', 
             sortable: true, 
             width: '150',
             render_text (item) {
@@ -123,14 +124,14 @@ export default {
                 return 0;
               }
 
-              let amount = 0;
+              let rmb = 0;
               
               item.forEach(_=>{
-                amount += Number.parseFloat(_.amount);
+                rmb += Number.parseFloat(_.rmb);
               })
               
-              return amount;
-            } ,
+              return rmb;
+            },
           },
           { 
             type: 'text', 

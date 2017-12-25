@@ -43,6 +43,7 @@ export default {
   			{value: 10, label: '年费监控中'},
   			{value: 11, label: '年费评估单'},
   			{value: 12, label: '年费不再缴纳'},
+        {value: 13, label: '年费评估通过待缴纳'},
   		];
       if(this.feeType == 1) {
         arr.push(arrType[0]);

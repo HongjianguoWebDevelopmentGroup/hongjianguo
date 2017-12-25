@@ -1,7 +1,7 @@
 <template>
   <div class="main">
   	<table-component :tableOption="option" :data="tableData">
-		<template slot="action" slot-scope="scope">
+		<template slot="row_action" slot-scope="scope">
 			<el-button type="text" size='mini' @click='toggle(scope.row)'>{{ show == scope.row.id ? '隐藏任务详情' : '显示任务详情'}}</el-button>
 		</template>
   	</table-component>
@@ -34,7 +34,7 @@ export default {
 		  		{ 
 		  			type: 'action', 
 		  			label: '操作',
-		  			btns_render: 'action'
+		  			btns_render: true,
 		  		},
 		  	]
 		  },

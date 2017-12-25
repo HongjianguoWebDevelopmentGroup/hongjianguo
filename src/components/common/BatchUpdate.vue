@@ -1,44 +1,63 @@
 <template>
 <div>
-	<el-select v-model="select" placeholder="请选择需要更新的字段">
-		<el-option
-			v-for="item in config.selection"
-			:key="item.value"
-			:value="item.value"
-			:label="item.label"
-		></el-option>
-	</el-select>
-	<el-table
-    :data="tableData"
-    stripe
-    style="width: 100%">
-    <el-table-column v-for="item in columns" :key="item.prop" :prop="item.prop" :label="item.label"></el-table-column>
-  </el-table> 
-	<upload></upload>
-	<el-button type="primary" >确认更新</el-button>
+	<div>
+		<a v-for="(item, index) in config.templates" :href="item.href" :key="index" style="margin: 10px; margin-top: 0;">{{ item.text }}</a>
+	</div>
+	<div>
+		<el-upload
+	  	v-for="item in config.btns"
+	  	style="display: inline-block;margin: 10px;"
+	  	:key="item.action"
+	  	:action="`/api/files?action=${item.action}`"
+	  	:show-file-list="false"
+	  	:on-success="(response, file, fileList)=>{ handleUploadSuccess(item.action, {response, file, fileList}) }"
+	  	:multiple="false"
+	  >
+	  	<el-button type="primary">{{ item.label }}</el-button>
+		</el-upload>
+	</div>
+	
+	<template v-if="uploadType ? true : false">
+		<el-table
+	    :data="tableData"
+	    height="300px"
+	    row-key="index"
+	    stripe
+	    style="width: 100%">
+	    <el-table-column v-for="item in columns" :key="item.prop" :prop="item.prop" :label="item.label" :width="item.width"></el-table-column>
+	  </el-table> 
+		<el-button type="primary" @click="submitUpdate">确认更新</el-button>
+	</template>
 </div>
 </template>
 <script>
 
-import Upload from '@/components/form/Upload'
+const URL = '/api/patentUpdate'
 
 const arr = [
 	['patent', {
-		default: 'result',
-		selection: [
-			{label: '评审结果', value: 'result'},
-			{label: '年费评审', value: 'fee'},
+		templates: [
+		  { href: '/static/templates/annual_fields.xlsx', text: '年费评估模板' },
+		  { href: '/static/templates/review_fields.xlsx', text: '专利评审模板' },
+		],
+		btns: [
+			{label: '年费评估', action: 'getAnnual'},
+			{label: '诉讼专利评审', action: 'getReview'},
 		],
 		columns: {
-			'result': [
-				{ label: '案件号', prop: 'serial'},
-				{ label: '评审结果一', prop: 'result1'},
-				{ label: '评审结果二', prop: 'result2'},
-				{ label: '评审结果三', prop: 'result3'},
+			'getAnnual': [
+				{ label: '案件号', prop: 'serial', width: '200'},
+				{ label: '标题', prop: 'title', width: '200'},
+				{ label: '是否续费', prop: 'is_continue', width: '200'},
+				{ label: '备注', prop: 'remark', width: '200'},
 			],
-			'fee': [
-				{ label: '案件号', prop: 'serial'},
-				{ label: '年费评审', prop: 'fee'},
+			'getReview': [
+				{ label: '案件号', prop: 'serial', width: '200'},
+				{ label: '标题', prop: 'title', width: '200'},
+				{ label: '权利要求范围', prop: 'claim_scope', width: '200'},
+				{ label: '权利要求/稳定性', prop: 'claim_stability', width: '200'},
+				{ label: '举证难易程度', prop: 'evidence_difficulty', width: '200'},
+				{ label: '备注', prop: 'remark', width: '200'},
 			]
 		}
 	}]
@@ -53,7 +72,8 @@ export default {
 			columns: [],
 			tableData: [],
 			refreshRender: false,
-			select: '',	
+			select: '',
+			uploadType: '',
 		}
 	},
 	computed: {
@@ -63,24 +83,44 @@ export default {
 				config = map.get(this.type);
 			}
 			return config;
-		}
+		},
 	},
-	created () {
-		this.select = this.config.default;
-	},
-	watch: {
-		select (val) {
-			this.refreshRender = false;
-			this.tableData = [];
-			this.columns = this.config.columns[val];
-
-			this.$nextTick(_=>{
-				this.refreshRender = true;
+	methods: {
+		handleUploadSuccess (str, {response}) {
+			const r = response;
+			const d = r.data;
+			if(r.status) {
+				if(d.list && d.list.length != 0) {
+					this.$message({type: 'success', message: response.info});
+					this.uploadType = '';
+					this.tableData = d.list;
+					this.columns = this.config.columns[str];
+					this.$nextTick(_=>{
+						this.uploadType = str;
+					})
+				}else {
+					this.$message({type: 'warning', message: '上传列表不存在或上传列表为空'});	
+				}
+				
+			}else {
+				this.$message({type: 'warning', message: response.info});
+			}
+		},
+		submitUpdate () {
+			const o = {
+				'getAnnual': 'annual',
+				'getReview': 'review',
+			};
+			this.$axiosPost({
+				url: `${URL}/${o[this.uploadType]}`,
+				data: {
+					list: this.tableData,
+				},
+				success (_) {
+					this.$message({type: 'success', message: _.info});
+				}
 			})
 		}
 	},
-	components: {
-		Upload,
-	}
 }
 </script>

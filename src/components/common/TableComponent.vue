@@ -73,6 +73,10 @@
           <el-button class="table-header-btn" type="primary" icon="upload2" :loading="exportLoading" @click="handelExport(btn.click, $event)">{{ exportLoading ? '导出中...' : '导出' }}</el-button>
         </template>
 
+        <template v-else-if="btn.type == 'export2'">
+          <el-button class="table-header-btn" type="primary" icon="upload2" @click="dialogExport = true">导出</el-button>
+        </template>
+
         <template v-else-if="btn.type == 'import'">
           <el-button class="table-header-btn" type="primary" icon="document"  @click="handleImport(btn.click, $event)">导入</el-button>
         </template>
@@ -115,6 +119,9 @@
       @row-click="handleRowClick"
       ref="table"
     >
+      <template slot="row_action" slot-scope="scope">
+        <slot name="row_action" :row="scope.row"></slot>
+      </template>
     </app-table>
   	
     <!--v-if="totalNumber > pageSize"-->
@@ -133,7 +140,7 @@
     
     <app-import v-if="tableOption.import_type !== undefined" :visible.sync="dialogImportVisible" :columns="import_columns" :type="tableOption.import_type" @import-success="handleImportSuccess"></app-import>
 
-    <el-dialog v-if="tableOption.update_type !== undefined" :visible.sync="dialogUpdateVisible" title="批量更新">
+    <el-dialog class="dialog-small" v-if="tableOption.update_type !== undefined" :visible.sync="dialogUpdateVisible" title="批量更新">
       <batch-update :type="tableOption.update_type" @success="handleUpdateSuccess"></batch-update>
     </el-dialog>
       
@@ -141,12 +148,16 @@
     
     <file-upload v-if="tableOption.upload_type !== undefined" :type="tableOption.upload_type" @upload-success="refresh" ref="file_upload"></file-upload>
   
-    <el-dialog :visible.sync="dialogControl" title="字段控制" class="dialog-small" @close="transferValue = control; $refs.transfer.clear();">
+    <el-dialog class="dialog-small" :visible.sync="dialogControl" title="字段控制" @close="transferValue = control; $refs.transfer.clear();">
         <app-transfer ref="transfer" title1="未显示" title2="已显示" placeholder="查询字段..." v-model="transferValue" style="text-align: center;"></app-transfer>
         <div style="margin-top: 20px;margin-left: 45px;">
           <el-button type="primary" @click="controlSave">保存</el-button>
           <el-button type="danger" @click="dialogControl = false">取消</el-button>
         </div>
+    </el-dialog>
+
+    <el-dialog v-if="exportType" :title="exportType.title" :visible.sync="dialogExport" class="dialog-small">
+      <app-export :url="tableOption.url" :fields="fields" :response-key="exportType.key" @success="dialogExport = false"></app-export>
     </el-dialog>
   </div>
 </template>
@@ -162,6 +173,7 @@ import SearchInput from '@/components/common/SearchInput'
 import AppTransfer from '@/components/common/AppTransfer'
 import BatchUpdate from '@/components/common/BatchUpdate'
 import AppTable from '@/components/common/AppTable'
+import AppExport from '@/components/common/AppExport'
 import { mapGetters } from 'vuex'
 
 export default {
@@ -175,6 +187,7 @@ export default {
     
     //获取控制器
     let control = [[],[]];
+
     for(let c of cols) {
       let show = c.show == undefined ? true : c.show;
       let show_option = c.show_option !== undefined ? c.show_option : true;
@@ -187,37 +200,38 @@ export default {
         }
       }
     }
+
+    //控制器合并获得fields集合
+    let fields = [...control[0], ...control[1]];
     
     //检测缓存中是否存在控制器
     if(tableCookie) {
+      const cookieO = {};
+      const localO = {};  
       
       //一些本地缓存的异常检测
       const error = (_=>{
         //老版本缓存
         if(!(tableCookie[0] instanceof Array)) {
-          return true
+          return true;
         }
 
         //字段统一性验证
-        const cookieO = {};
-        const localO = {};
+        
         tableCookie.forEach(_=>{
           _.forEach(d=>{
-            cookieO[d.key] = true;
+            cookieO[d.key] = false;
           })
         })
-        control.forEach(_=>{
-          _.forEach(d=>{
-            localO[d.key] = false;
-          })
+
+        fields.forEach(d=>{
+          localO[d.key] = d;
         })
-        const l = this.$tool.getObjLength(localO);
-        Object.assign(localO, cookieO);
-        if(this.$tool.getObjLength(localO) != l) {
-          return true;
-        }
-        for(let key in localO) {
-          if(!localO[key]) {
+        
+        const cache = Object.assign({}, localO, cookieO);
+        
+        for(let key in cache) {
+          if(cache[key]) {
             return true;
           }
         }
@@ -227,7 +241,12 @@ export default {
       if(error) {
         this.$tool.deleteLocal(this.tableOption.name);
       }else {
-        control = tableCookie;  
+        tableCookie.forEach(_=>{
+          _.forEach(d=>{
+            d.label = localO[d.key]['label'];
+          })
+        });
+        control = tableCookie;
       }
     }
     
@@ -254,6 +273,8 @@ export default {
       control,
       transferValue,
       refreshRender: true,
+      dialogExport: false,
+      fields,
     };
 
     return data;
@@ -289,6 +310,21 @@ export default {
       })
       
       return r;
+    },
+    exportType () {
+      const e = this.tableOption.import_type;
+      if(!e) return '';
+
+      const map = new Map([
+        ['patent', {
+          key: 'patentList',
+          title: '导出专利',
+        }]
+      ])
+
+      const o = map.get(e);
+      return o ? o : e;
+      
     },
     totalNumber () {
       const d = this.data;
@@ -464,6 +500,7 @@ export default {
         func(e)
       }else {
         const s = this.getSelect(true);
+    
         if(s.length == 0) {
           this.$message({message: '请选择需要删除的列表项', type: 'warning'});
         }else {
@@ -490,12 +527,7 @@ export default {
         func(event);
       }
     },
-    handleActionCommand (func, scope, event) {
-      event.stopPropagation();
-      if(func) {
-        func(scope.row, event);
-      }
-    },
+    
     arrayRender (row, col) {
       const arr = row[col.prop];
       return col.render ? col.render(arr) : arr;
@@ -631,6 +663,7 @@ export default {
     AppTransfer,
     BatchUpdate,
     AppTable,
+    AppExport,
   },
   mounted () {},
 }

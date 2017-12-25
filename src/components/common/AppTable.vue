@@ -75,7 +75,7 @@
       <el-table-column :label="col.label ? col.label : '操作'" :align="col.align ? col.align : 'left'" :width="col.width ? col.width : ''" :min-width="col.min_width ? col.min_width : ''" header-align="center" :fixed="col.fixed === false ? false : 'right'">
         <template slot-scope="scope">
           <template v-if="col.btns_render ? true : false">
-            <slot :name="col.btns_render" :row="scope.row">
+            <slot name="row_action" :row="scope.row">
             </slot>
           </template>
           <template v-else v-for="(btn, index) in col.btns" v-if="btn.btn_if ? btn.btn_if(scope.row) : true">
@@ -160,10 +160,11 @@ export default {
           
       this.$emit('row-click', row, event, column);
     },
-    handleSelectionChange(selection) {  
-      this.slected = selection;
+    handleSelectionChange(selection) { 
+      this.selected = selection;
     },
     getSelected (flag = false) {
+
       const s = this.selected;
       if(!flag) {
         if(s.length == 0) {
@@ -171,10 +172,17 @@ export default {
           return false;
         }
       }
+
       return s;
     },
     setCurrentRow (row) {
       this.$refs.table.setCurrentRow(row);
+    },
+    handleActionCommand (func, scope, event) {
+      event.stopPropagation();
+      if(func) {
+        func(scope.row, event);
+      }
     },
   },
   computed: {
