@@ -39,7 +39,7 @@ export default {
 		  		{ type: 'text', label: '英文姓名', prop: 'name_en', render: (h,item, row)=>h('span', `${row.given_name}${row.family_name}`), width: '200' },
 		  		{ 
 		  			type: 'action',
-            width: '200',
+            width: '160',
 		  			btns: [
 		  				{ type: 'edit', click: this.editPop },
 		  				{ type: 'delete', click: this.deleteSingle },

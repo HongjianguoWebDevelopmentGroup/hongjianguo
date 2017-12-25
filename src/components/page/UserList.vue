@@ -14,7 +14,7 @@
 					</ul>
 				</app-collapse>
 				<table-component @refreshTableData="refreshTableData" :tableOption="tableOption" :data="tableData" ref="table">
-					<el-tag v-if="lastUpdate !== ''" slot="last_update" style="margin-left: 15px;">最后更新时间：{{ lastUpdate }}</el-tag>
+					<el-tag v-if="lastUpdate !== ''" slot="last_update" style="margin-left: 6px;">最后更新时间：{{ lastUpdate }}</el-tag>
 					<!-- <user-role v-model="user_role" slot="userRole" default style="width: 200px; margin-left: 5px;"></user-role> -->
 				</table-component>
   		</div>
@@ -80,7 +80,7 @@ export default {
 		  		{ type: 'text', label: '微信号', prop: 'weixin', width: '200' },
 		  		{ type: 'text', label: 'QQ', prop: 'qq', width: '200' },
 		  		{ 
-		  			type: 'action', label: '操作', width: '150px',
+		  			type: 'action', label: '操作', width: '160',
 		  			btns: [
 		  				{ type: 'edit', click: this.editPop },
 		  				{ type: 'delete', click: this.deleteSingle }

@@ -56,7 +56,7 @@ export default {
 					},
 					{
 						type: 'action',
-						width: '200',
+						width: '220',
 						btns: [
 							{ type: 'edit', click: this.edit },
 							{ type: 'detail', click: this.detail },
