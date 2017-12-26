@@ -68,7 +68,7 @@ import AxiosMixins from '@/mixins/axios-mixins'
 import EditPassword from '@/components/form/EditPassword'
 import RemoteSelect from '@/components/form/RemoteSelect'
 import StaticSelect from '@/components/form/StaticSelect'
-import Branch from '@/components/form/branch'
+import Branch from '@/components/form/Branch'
 
 const URL = 'api/members'
 
