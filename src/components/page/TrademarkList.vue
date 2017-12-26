@@ -67,7 +67,14 @@ export default {
 					'width': '140',
 					sortable : true,
 				},
-			    {
+				{
+					'type': 'text',
+					'label': '当前状态',
+					'prop': 'progress',
+					'render_simple': 'name',
+					'width': '200',
+				},
+			  {
 					'show': true,
 					'type': 'array',
 					'label': '申请人',
