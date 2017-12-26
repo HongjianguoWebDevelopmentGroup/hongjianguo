@@ -22,6 +22,9 @@
 			<el-form-item label="邮箱密码" prop="email_password">
 				<edit-password v-model="form.email_password" ref="psd"></edit-password>
 			</el-form-item>
+			<el-form-item label="个人密码" prop="password">
+ 				<edit-password v-model="form.password" ref="psd"></edit-password>
+ 			</el-form-item>
 <!-- 			<el-form-item label="邮箱密码" prop="email_password">
 				<el-input v-model="form.email_password" type="password"></el-input>
 			</el-form-item> -->
@@ -71,6 +74,7 @@ export default {
 		    "message_subscribe_system": 0,
 		    "email": "",
 		    "email_password": "",
+		    "password": '',
 		    "pop_server": "",
 		    "pop_port": "",
 		    "smtp_server": "",
