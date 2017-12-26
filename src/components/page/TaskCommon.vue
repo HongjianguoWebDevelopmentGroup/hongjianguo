@@ -482,8 +482,8 @@ export default {
         'columns': [
           // { type: 'expand' },
           { type: 'selection' },
-          { type: 'text', label: '案号', prop: 'serial', sortable: true, width: '210', show_option: false, render: this.titleRender },
-          { type: 'text', label: '事务所案号', prop: 'agency_serial', sortable: true, width: '200', show_option: false},
+          { type: 'text', label: '案号', prop: 'serial', sortable: true, width: '210', show_option: true, render: this.titleRender },
+          { type: 'text', label: '事务所案号', prop: 'agency_serial', sortable: true, width: '200', show_option: true},
           { type: 'text', label: '案件类型', prop: 'category', sortable: true, width: '145', show_option: true,render:this.categoryRender},
           { type: 'text', label: '案件名称', prop: 'title', sortable: true, width: '200', overflow: true },
           { type: 'text', label: '管制事项', prop: 'name', sortable: true, width: '134' },
