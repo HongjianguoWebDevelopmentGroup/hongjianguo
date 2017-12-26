@@ -29,6 +29,7 @@ const MailList                 = () => import('@/components/page/MailList')
 const SystemMessage            = () => import('@/components/page/SystemMessage')
 const SystemMessageDetail      = () => import('@/components/page/SystemMessageDetail')
 const MailAdd                  = () => import('@/components/page/MailAdd')
+const InteractEmail            = () => import('@/components/page/InteractEmail')
 //###################
 const CommonDetail             = () => import('@/components/page/CommonDetail')
 const Babel                    = () => import('@/components/page_extension/CommonDetail_base')
@@ -77,6 +78,7 @@ const router = new Router({
     { path: '/dispatch', redirect: '/dispatch/administration' },
     { path: '/fee', redirect: '/fee/income'},
     { path: '/setting', redirect: '/setting/individual'},
+    { path: '/interact', redirect: '/interact/email'},
     //###重定向###
     {
       path: '/statistics',
@@ -321,6 +323,7 @@ const router = new Router({
     { path: '/setting/template', name: 'SettingTemplate', component: SettingTemplate },
     { path: '/setting/template/edit', name: 'SettingTemplateEdit', component: SettingTemplateEdit },
     { path: '/setting/user', name: 'SettingUser', component: SettingUser },
+    { path: '/interact/email', name: 'InteractEmail', component: InteractEmail},
   ]
 });
 router.beforeEach((to, from, next)=>{

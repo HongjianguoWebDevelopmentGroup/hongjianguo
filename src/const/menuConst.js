@@ -201,6 +201,18 @@ menu.data = [
 		}]
 	},
 	{
+		text: '交互',
+		path: '/interact',
+		icon: '',
+		type: 'submenu',
+		children: [{
+			text: '邮件交互',
+			path: '/interact/email',
+			icon: '',
+			type: 'item',
+		}]
+	},
+	{
 		text: '设置',
 		path: '/setting',
 		icon: 'iconfont icon-setting',
