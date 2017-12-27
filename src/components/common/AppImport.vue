@@ -13,7 +13,7 @@
       </el-table-column>
 			<el-table-column fixed="left" label="内部案号" width="150" prop="serial" v-if="config.is_serial"></el-table-column>
 			
-			<template v-for="(col, index) in columns">
+			<template v-for="(col, index) in columns_in">
 
 				<template v-if="col.type == 'text'">
 	        <template v-if="col.render ? true : false">
@@ -66,13 +66,13 @@
 
 		<el-button style="margin-top: 10px;" type="primary" @click="importData" :disabled="importLoading">导入</el-button>
 		
-		<el-dialog title="指定案件" :visible.sync="dialogVisible" :modal-append-to-body="false" :modal="false">
+		<el-dialog title="指定案件" :visible.sync="dialogVisible" :modal-append-to-body="true" :modal="false" class="dialog-mini">
 			<el-form label-width="100px" label-position="top">
 				<el-form-item label="案件">
-					<remote-select type="project" v-model="serial" ref="project"></remote-select>
+					<remote-select :type="projectType" v-model="serial" ref="project"></remote-select>
 				</el-form-item>
-				<el-form-item>
-					<el-button @click="design" type="primary">确定</el-button>
+				<el-form-item style="margin-bottom: 0px;">
+					<el-button @click="design" type="primary" >确定</el-button>
 				</el-form-item>
 			</el-form>
 		</el-dialog>
@@ -116,6 +116,16 @@ const config = [
     title: '导入专利通知书',
 		url: '/notices/import',
 		category: 1,
+    columns: [
+      {type: 'text', label: '事务所案号', prop: 'agency_serial', width: '200'},
+      {type: 'text', label: '案件名称', prop: 'project', render_simple: 'name', width: '200'},
+      {type: 'text', label: '申请号', prop: 'apn', width: '200'},
+      {type: 'text', label: '通知书名称', prop: 'code', render_simple: 'name', width: '200',},
+      {type: 'text', label: '发文日', prop: 'mail_date', width: '200'},
+      {type: 'text', label: '发文序列号', prop: 'notice_serial', width: '200'},
+      {type: 'text', label: '申请日', prop: 'apd', width: '200'},
+      { type: 'array', label: '费用', prop: 'fees', render: _=>(_=>_.name), width: '200' },
+    ],
 	}],
 	['copyright_notice', {
 		action: 'getCopyrightNotices',
@@ -146,7 +156,14 @@ const config = [
     url: '/invoices/import',
     category: '',
     model: '/static/templates/fee_template.xlsx',
-    model_name: '账单模板'
+    model_name: '账单模板',
+    columns: [
+      { type: 'text', label: '费用期限', prop: 'due_time', width: '200' },
+      { type: 'text', label: '汇率', prop: 'roe', width: '80' },
+      { type: 'text', label: '货币', prop: 'currency', width: '80' },
+      { type: 'text', label: '人民币', prop: 'amount', width: '100' },
+      { type: 'text', label: '备注', prop: 'remark', width: '160' },
+    ],
   }]
 ]
 const map = new Map(config);
@@ -166,7 +183,8 @@ export default {
 		  fileList: [],
 		  tableData: [],
 		  serial: '',
-		  dialogVisible: false,
+		  columns_in: '',
+      dialogVisible: false,
 		  $index: null,
 		}
   },
@@ -179,6 +197,13 @@ export default {
       if(config.is_serial == undefined) {config.is_serial = true};
   		return config ? config : this.type;
   	},
+    projectType () {
+      if(this.config.category) {
+        return {1: 'patent', 2: 'trademark', 3: 'copyright'}[this.config.category];
+      }else {
+        return 'project';
+      }
+    },
   	upload_url () {
   		const action = this.config.action;
   		let url = '/api/files';
@@ -250,6 +275,13 @@ export default {
     	const arr = row[col.prop];
     	return col.render ? col.render(arr) : arr;
   	},
+  },
+  created () {
+    if(this.columns.length == 0 && this.config.columns) {
+      this.columns_in = this.config.columns;
+    }else {
+      this.columns_in = this.columns;
+    }
   },
   components: { 
 		'TableRender': {

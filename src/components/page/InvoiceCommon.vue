@@ -76,13 +76,6 @@ export default {
 		  		// 	], 
 		  		// },
 		  	],
-		  	'import_columns': [
-		  		{ type: 'text', label: '费用期限', prop: 'due_time', width: '200' },
-		  		{ type: 'text', label: '汇率', prop: 'roe', width: '80' },
-		  		{ type: 'text', label: '货币', prop: 'currency', width: '80' },
-		  		{ type: 'text', label: '人民币', prop: 'amount', width: '100' },
-		  		{ type: 'text', label: '备注', prop: 'remark', width: '160' },
-		  	]
 		  },
 		  feeData: [],
 		  feeLoading: false,

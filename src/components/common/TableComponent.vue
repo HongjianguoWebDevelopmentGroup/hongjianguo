@@ -591,6 +591,9 @@ export default {
     getSelect (flag=false) {
       return this.$refs.table.getSelected(flag);
     },
+    getSelected (flag=false) {
+      return this.$refs.table.getSelected(flag);
+    },
     update () {
       this.$emit('refreshTableData', Object.assign({}, this.getRequestOption(), this.screen_obj) );
     },

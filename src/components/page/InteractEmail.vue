@@ -1,6 +1,6 @@
 <template>
 	<div class="main">
-	<div class="left">
+	<div class="left"  v-loading="treeLoading">
 		<el-tree
 			:data="treeData"
 			:render-content="renderContent"
@@ -9,7 +9,8 @@
 		  @current-change="handleCurrentChange"
 		  :default-expanded-keys="['全部邮件']"
 		  :expand-on-click-node="false"
-			:style="`font-size: 12px; height:${innerHeight - 98}px; overflow-y: auto; overflow-x: hidden;`"
+			:style="`font-size: 12px; height:${innerHeight - 65}px; overflow-y: auto; overflow-x: hidden;`"
+			:current-node-key="currentNodeKey"
 		>
 		</el-tree>
 	</div>
@@ -24,15 +25,24 @@
 				></el-option>
 			</el-select>
 			<template slot="row_action" slot-scope="scope">
-        <el-button type="text" icon="el-icon-upload2" size="mini" @click="importEmail(scope.row)" :disabled="scope.row.import ? true : false" >导入</el-button>
+        <el-button type="text" icon="upload2" size="mini" @click="importEmail(scope.row)" :disabled="scope.row.import ? true : false">导入</el-button>
       </template>
 		</table-component>
 	</div>
+	<Detail ref="mail_detail"></Detail>
+	<app-import type="invoicePayable" :visible.sync="dialogFee" ref="fee" @import-success="importSuccess"></app-import>
+	<app-import type="patent_notice" :visible.sync="dialogNotice" ref="notice" @import-success="importSuccess"></app-import>
+	<el-dialog title="邮件导入" :visible.sync="dialogCustom" class="dialog-small">
+		<import @success="importSuccess" ref="custom"></import>
+	</el-dialog>
 </div>
 </template>
 
 <script>
 import TableComponent from '@/components/common/TableComponent'
+import Detail from '@/components/page_extension/Email_detail'
+import Import from '@/components/page_extension/Email_import'
+import AppImport from '@/components/common/AppImport'
 import {mapGetters} from 'vuex'
 
 export default {
@@ -49,9 +59,21 @@ export default {
 				'columns': [
 				  {type: 'selection'},
 					{type: 'text', label: '发送时间', prop: 'mail_date' ,width: '200'},
-					{type: 'text', label: '发件人', prop: 'from', width: '200'},
+					{
+						type: 'text', 
+						label: '发件人', 
+						prop: 'from', 
+						width: '200',
+						render_simple: 'value',
+					},
 					{type: 'text', label: '标题', prop: 'subject', min_width: '200'},
-					{type: 'text', label: '是否处理', prop: 'imported', width: '100'},
+					{
+						type: 'text', 
+						label: '是否处理', 
+						prop: 'imported', 
+						width: '100',
+						render_text: _=>_ ? '是' : '否',
+					},
 					{
 						type: 'action',
 						width: '100',
@@ -60,7 +82,6 @@ export default {
 				],
 				'highlightCurrentRow': true, 
         'rowClick': this.handleRowClick,
-
 			},
 			tableData: [],
 			treeData: [],
@@ -72,7 +93,14 @@ export default {
 				{label: '未导入', value: 0}
 			],
 			date: '',
-			time: '',
+			time: null,
+			importId: '',
+			treeLoading: false,
+			currentNodeKey: '',
+			dialogNotice: false,
+			dialogFee: false,
+			dialogCustom: false,
+			currentId: '',
 		}
 	},
 	computed: {
@@ -90,9 +118,46 @@ export default {
         </span>       
       );
   	},
+  	importEmail({id}) {
+  		const url = `/api/mailanalysis/${id}`;
+  		const success = _=>{
+  			if(_.type == 'custom') {
+  				this.dialogCustom = true;
+  				this.$nextTick(v=>{
+  					this.$refs.custom.setForm({
+  						attachments: _.data,
+  					})
+  				})
+  			}else if(_.type == 'invoicePayable') {
+  				this.dialogFee = true;
+  				this.$nextTick(v=>{
+  					this.$refs.fee.tableData = _.data;	
+  				});
+  			}else if(_.type == 'patent_notice') {
+  				this.dialogNotice = true;
+  				this.$nextTick(v=>{
+  					this.$refs.notice.tableData = _.data;	
+  				});
+  			}
+  		}
+  		this.$axiosGet({url, success});
+  	},
+  	importSuccess () {
+  		//隐藏弹出框
+  		this.dialogCustom = this.dialogNotice = this.dialogFee = false;
+  		//将导入成功邮件标记为已导入
+  		this.$axiosGet({
+  			url: `/api/mailimported${this.currentId}`,
+  			success: _=>{
+  				this.update();//刷新当前页面
+  			}
+  		})
+  	},
   	refreshTableData (options) {
+  		if(this.time == null) return;
   		const url = '/api/mails';
-  		const data = 	Object.assign({}, options, this.time, {'mailbox': 1});
+  		const imported = this.imported ? {imported: this.imported} : '';
+  		const data = 	Object.assign({}, options, this.time, {'mailbox': 1}, imported);
   		const success = _=>{ this.tableData = _.mails };
 
   		this.$axiosGet({url, data, success});
@@ -108,22 +173,27 @@ export default {
   			this.refresh();
   		}
   	},
-  	handleRowClick (row) { 
-    	this.currentRow = row;
-    	if( !this.dialogShrinkVisible ) this.dialogShrinkVisible = true;
-  	},
+  	handleRowClick ({id}) {
+      this.$refs.mail_detail.show(id);
+    },
   	refresh () {
   		this.$refs.table.refresh();
+  	},
+  	update () {
+  		this.$refs.table.update();
   	},
   	refreshTreeData () {
   		const url = '/api/mailtree';
 
 			const success = _=>{
 				this.treeData = _.tree;
+				this.currentNodeKey = '全部邮件';
+				this.time = '';
+				this.refresh();
 			};
 			const complete = _=>{
 				this.treeLoading = false;
-			}
+			};
 			this.treeLoading = true;
 			this.$axiosGet({url, success, complete});
   	},
@@ -138,8 +208,16 @@ export default {
 	created () {
 		this.refreshTreeData();
 	},
+	watch: {
+		imported () {
+			this.refresh();
+		}
+	},
 	components: {
 		TableComponent,
+		Detail,
+		Import,
+		AppImport,
 	}
 
 }

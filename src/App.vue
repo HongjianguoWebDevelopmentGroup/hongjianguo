@@ -491,13 +491,13 @@ nav {
     border-color: transparent;
     cursor: default;
   }
-  .dialog-mini .el-dialog {
+  .dialog-mini>.el-dialog {
     width: 300px;
   }
-  .dialog-small .el-dialog {
+  .dialog-small>.el-dialog {
     width: 600px;
   }
-  .dialog-medium .el-dialog {
+  .dialog-medium>.el-dialog {
     width: 900px;
   }
   .el-dropdown-menu__item {
@@ -577,25 +577,27 @@ nav {
     display: table;
     content: "";
   }
-  .el-upload-list {
-    padding: 0;
-    list-style: none;
-    display: block;
-    margin-bottom: 40px;
-  }
-  .el-upload {
-    display: inline-block;
-    text-align: center;
-    cursor: pointer;
-    position: absolute;
-    bottom: 4px;
-    left: 0px;
+  .app-upload {
+    .el-upload-list {
+      padding: 0;
+      list-style: none;
+      display: block;
+      margin-bottom: 40px;
+    }
+    .el-upload {
+      display: inline-block;
+      text-align: center;
+      cursor: pointer;
+      position: absolute;
+      bottom: 4px;
+      left: 0px;
+    }
   }
  .el-dialog--small  .el-upload--text {
       display: inline-block;
       text-align: center;
       cursor: pointer;
-      position: static; 
+      /*position: static;*/
     }
  
 

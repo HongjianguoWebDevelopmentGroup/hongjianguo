@@ -27,7 +27,7 @@
 
 			
         <template v-if="form.attachments.length != 0">
-          <a v-for="item in form.attachments" :href="item.downloadUrl">{{ item.name }}</a>
+          <a v-for="item in form.attachments" :href="item.downloadUrl" style="margin-left: 5px;">{{ item.name }}</a>
         </template>
         <span v-else class="form-item-text">无附件</span>
         

@@ -1,7 +1,7 @@
 <template>
   <div class="main">
 		<table-component :tableOption="option" :data="tableData" ref="table" @refreshTableData="refreshTableData">
-      <template slot="action" slot-scope="scope">
+      <template slot="row_action" slot-scope="scope">
                 <el-button type="text" icon="edit" size="mini" @click="editPop(scope.row)" :disabled="scope.row.receipt_date ? true : false" >确认</el-button>
         <el-button type="text" icon="delete" size="mini" @click="deleteSingle(scope.row)" >删除</el-button>
       </template>  
@@ -45,13 +45,13 @@ export default {
           { type: 'text', label: '发文描述', prop: 'description', min_width:'210' },
           { 
 		  			type: 'action',
-            width: '200',
+            width: '150',
             label: '操作', 
 		  			// btns: [
 		  			// 	{ type: 'confirm', click: this.editPop ,btn_if: this.btnDisabled},
 		  			// 	{ type: 'delete', click: this.deleteSingle },
 		  			// ] 
-            btns_render: 'action',
+            btns_render: true,
 		  		},
 		  	] 
 		  },

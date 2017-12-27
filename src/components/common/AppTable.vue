@@ -72,7 +72,7 @@
     </template>
 
     <template v-else-if="col.type == 'action'">
-      <el-table-column :label="col.label ? col.label : '操作'" :align="col.align ? col.align : 'left'" :width="col.width ? col.width : ''" :min-width="col.min_width ? col.min_width : ''" header-align="center" :fixed="col.fixed === false ? false : 'right'">
+      <el-table-column type="action" :label="col.label ? col.label : '操作'" :align="col.align ? col.align : 'left'" :width="col.width ? col.width : ''" :min-width="col.min_width ? col.min_width : ''" header-align="center" :fixed="col.fixed === false ? false : 'right'">
         <template slot-scope="scope">
           <template v-if="col.btns_render ? true : false">
             <slot name="row_action" :row="scope.row">
@@ -155,8 +155,8 @@ export default {
   methods: {
     handleRowClick (row, event, column) {
       event.stopPropagation();
-
-      if(column.type == 'selection') return false;
+      console.log(column.type)
+      if(column.type == 'selection' || column.type == 'action') return false;
           
       this.$emit('row-click', row, event, column);
     },
@@ -164,7 +164,6 @@ export default {
       this.selected = selection;
     },
     getSelected (flag = false) {
-
       const s = this.selected;
       if(!flag) {
         if(s.length == 0) {

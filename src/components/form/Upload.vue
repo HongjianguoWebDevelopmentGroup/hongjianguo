@@ -3,6 +3,7 @@
       :on-success="handleUploadSuccess"
       :on-remove="handleUploadRemove"
       :on-change="handleChange"
+      class="app-upload"
       :action=action
       :on-preview="onPreview"
       :file-list="fileList"

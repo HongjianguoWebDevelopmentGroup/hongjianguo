@@ -43,13 +43,13 @@ export default {
 					{ type: 'selection' },
 					// { type: 'text', label: '通知书案件名称', prop: 'title', width: '200', is_import: true },
 					{ type: 'text', label: '内部案号', prop: 'serial', width: '200' },
-					{ type: 'text', label: '事务所案号', prop: 'agency_serial', width: '200', is_import: true},
-					{ type: 'text', label: '案件名称', prop: 'project', render_simple: 'name', width: '200', is_import: true },
-					{ type: 'text', label: '申请号', prop: 'apn', width: '200', is_import: true },
-					{ type: 'text', label: '通知书名称', prop: 'code', render_simple: 'name', width: '200', is_import: true },
-					{ type: 'text', label: '发文日', prop: 'mail_date', width: '200', is_import: true },
-					{ type: 'text', label: '发文序列号', prop: 'notice_serial', width: '200', is_import: true },
-					{ type: 'text', label: '申请日', prop: 'apd', width: '200', is_import: true },
+					{ type: 'text', label: '事务所案号', prop: 'agency_serial', width: '200'},
+					{ type: 'text', label: '案件名称', prop: 'project', render_simple: 'name', width: '200'},
+					{ type: 'text', label: '申请号', prop: 'apn', width: '200'},
+					{ type: 'text', label: '通知书名称', prop: 'code', render_simple: 'name', width: '200'},
+					{ type: 'text', label: '发文日', prop: 'mail_date', width: '200'},
+					{ type: 'text', label: '发文序列号', prop: 'notice_serial', width: '200'},
+					{ type: 'text', label: '申请日', prop: 'apd', width: '200'},
 					{ type: 'text', label: '上传日', prop: 'create_time', width: '200' },
 					{ type: 'text', label: '上传用户', prop: 'uploader', render_simple: 'name', width: '200' },
 					{ type: 'text', label: '审查员', prop: 'examiner', width: '200' },
@@ -66,9 +66,6 @@ export default {
 						],
 					}
 				],
-				'import_columns': [
-					{ type: 'array', label: '费用', prop: 'fees', render: _=>(_=>_.name), width: '200' }
-				]
 			},
 			tableData: [],
 			filter: {},
