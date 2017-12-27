@@ -79,7 +79,7 @@ const option =
       lineStyle: {
         normal: {
           width: 2,
-          opdacity: 1,
+          opacity: 1,
         }
       }
     }
