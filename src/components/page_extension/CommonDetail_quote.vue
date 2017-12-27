@@ -24,9 +24,9 @@
 				</li>
      		</ul>
      	<!-- </div> -->
-		<div id="quote_chart" style="width: 880px; height: 600px;"></div>
+		<div id="quote_chart" style="width: 880px; height: 600px;" v-show="show"></div>
+		<p v-show="!show" style="text-align: center;margin: 0">暂无引用关系...</p>
 	</el-card>
-		<span v-show="!show" style="margin-left: 20px;">暂无引用关系...</span>
 	</div>
 </template>
 <script>
@@ -79,7 +79,7 @@ const option =
       lineStyle: {
         normal: {
           width: 2,
-          opdacity: 1,
+          opacity: 1,
         }
       }
     }

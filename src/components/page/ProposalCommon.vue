@@ -14,7 +14,9 @@
               
               <el-input type="textarea" v-model="formData.abstract" placeholder="请输入案件摘要"></el-input>
             </el-form-item>
-            
+            <el-form-item label="增加发明人">
+              <el-button type="primary" @click="addPop">添加</el-button>
+            </el-form-item>
             <el-form-item label="发明人" prop="inventors" class="is-required">
               <inventors v-model="formData.inventors" ref="inventors"></inventors>
             </el-form-item>
@@ -70,6 +72,7 @@
         >
         </task-finish>
       </el-dialog>
+      <pop-panel ref="pop"></pop-panel>
   	</div>
 </template>
 
@@ -85,6 +88,7 @@ import Member from '@/components/form/Member'
 import Upload from '@/components/form/Upload'
 import TaskFinish from '@/components/common/TaskFinish'
 import StaticSelect from '@/components/form/StaticSelect'
+import PopPanel from '@/components/page_extension/InventorList_pop'
 import { checkInventors } from '@/const/validator.js'
 import { mapGetters } from 'vuex'
 import { mapActions } from 'vuex'
@@ -121,6 +125,9 @@ export default {
       this.pageType = 'edit';
       this.id = data.proposal_id;
       this.refreshUser();
+    },
+    addPop () {
+      this.$refs.pop.show();
     },
     save ( callback=_=>{this.$message({message: '保存成功', type: 'success'});}, required=false, showWarning=true ) {
       
@@ -391,7 +398,8 @@ export default {
     Classification, 
     Product, 
     TaskFinish, 
-    StaticSelect 
+    StaticSelect,
+    PopPanel
   },
 
 }

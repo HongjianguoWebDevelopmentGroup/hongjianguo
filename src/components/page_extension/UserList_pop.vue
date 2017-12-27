@@ -34,7 +34,9 @@
       <el-form-item label="代理所" v-if="group.id == 6">
         <remote-select type="agency" v-model="form.parent"></remote-select>
       </el-form-item>
-
+       <el-form-item label="部门">
+        <branch v-model="form.branch"></branch>
+       </el-form-item>
 	    <el-form-item label="昵称" prop="name">
 	    	<el-input v-model="form.name"></el-input>	
 	    </el-form-item>
@@ -66,6 +68,7 @@ import AxiosMixins from '@/mixins/axios-mixins'
 import EditPassword from '@/components/form/EditPassword'
 import RemoteSelect from '@/components/form/RemoteSelect'
 import StaticSelect from '@/components/form/StaticSelect'
+import Branch from '@/components/form/Branch'
 
 const URL = 'api/members'
 
@@ -88,6 +91,7 @@ export default {
 		  	username: '',
 		  	password: '',
 		  	password_again: '',
+        branch: '',
 		  	name: '',
 		  	email: '',
 		  	mobile: '',
@@ -202,6 +206,7 @@ export default {
   	EditPassword,
     RemoteSelect,
     StaticSelect,
+    Branch,
   }
 }
 </script>
