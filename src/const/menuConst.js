@@ -246,7 +246,14 @@ menu.data = [
 			path: '/branch',
 			icon: '',
 			type: 'item',
-		},{
+		},		
+		{
+			text: '合同管理',
+			path: '/contractList',
+			icon: '',
+			type: 'item',
+		},
+		{
 			text: '代理机构管理',
 			path: '/setting/agency',
 			icon: '',

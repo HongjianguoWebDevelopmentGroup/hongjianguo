@@ -3,6 +3,7 @@ import Router from 'vue-router'
 const Home                     = () => import('@/components/page/Home')
 const Proposal                 = () => import('@/components/page/Proposal')
 const InventorList             = () => import('@/components/page/InventorList')
+const ContractList             = () => import('@/components/page/ContractList')
 const ApplicantList            = () => import('@/components/page/ApplicantList')
 const ProposalCommon           = () => import('@/components/page/ProposalCommon')
 const CheckProposal            = () => import('@/components/page/CheckProposal')
@@ -87,6 +88,11 @@ const router = new Router({
       path: '/inventorList',
       name: 'InventorList',
       component: InventorList
+    },    
+    {
+      path: '/contractList',
+      name: 'ContractList',
+      component: ContractList
     },
     {
       path: '/applicantList',
