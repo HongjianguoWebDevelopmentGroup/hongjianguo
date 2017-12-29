@@ -7,6 +7,15 @@ $font-size: 12px;
     padding: 6px 8px;
 
 }
+.search {
+  width: 130px !important;
+  position: absolute;
+  right: 40px !important;
+  top: 15px;
+}
+ #trademarkAdd .el-dialog__title {
+  font-size: 13px !important;
+}
 .el-button+.el-button {
     margin-left: 8px !important;
 }
@@ -64,7 +73,7 @@ $font-size: 12px;
     padding: 4px 4px !important;
   }
   .el-popover {
-    width: 400px !important;
+    width: 700px !important;
     max-height:300px;
     overflow:auto; 
   }

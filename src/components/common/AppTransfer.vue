@@ -112,11 +112,11 @@ export default {
 	  padding: 0 10px;
 	  
 	  .el-button:first-child {
-	    margin-bottom: 6px;
+	    margin-bottom: 6px !important;
 		}
 		.el-button {
 	    display: block;
-	    margin: 0 auto;
+	    margin: 0 !important;
 	    padding: 8px 12px;
 		}
 	}
