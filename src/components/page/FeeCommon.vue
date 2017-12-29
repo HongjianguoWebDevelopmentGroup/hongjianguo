@@ -3,7 +3,7 @@
   	<strainer v-model="filter" @refresh="refresh"></strainer>
 		<table-component @refreshTableData="refreshTableData" :tableOption="option" :data="tableData" ref="table">
 			<fee-status slot="status" v-model="fee_status" style="width: 150px; margin-left: 5px;" :feeType="feeType" feeAnnual></fee-status>
-			<remote-select v-if="fee_invoice_if" slot='invoice' v-model="fee_invoice" style="width: 280px; margin-left: 10px;" :type="feeType ? 'bill' : 'pay'"></remote-select>
+			<remote-select v-if="fee_invoice_if" slot='invoice' v-model="fee_invoice" style="width: 280px; margin-left: 10px; display: inline-block;" :type="feeType ? 'bill' : 'pay'"></remote-select>
 		</table-component>
 		<pop ref="pop" :feeType="feeType" :popType="popType" @refresh="refresh"></pop>
     <el-dialog :title="dialogTitle" :visible.sync="dialogVisible" class="dialog-small">

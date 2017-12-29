@@ -31,60 +31,8 @@
 </template>
 <script>
 
-import {mapGetters} from 'vuex' 
-const option = 
-{
-	title: {
-    text: '引用关系图',
-    subtext: '使用鼠标滚轮放大或缩小,可拖动',
-  },
-  // animation: false,
-  tooltip: {},
-  tooltip: {
-		show: true,
-		type: 'item',
-		transitionDuration: 0,
-		formatter (a) {
-			const d = a.data;
-			if(d.type) {
-				return lineMap.get(d.type)['text'];
-			}else {
-				return `案号：${d.serial}<br/>标题：${d.title}<br/>地区：${d.area}<br/>申请号：${d.apn}`;
-			}
-		}
-	},
-  series : [
-    {
-      name: 'Les Miserables',
-      type: 'graph',
-		  layout: 'force',
-		  // circular: {
-		  //   rotateLabel: true
-		  // },
-		  // focusNodeAdjacency: true,
-		  roam: true,
-		  draggable: true,
-      nodes: [],
-      links: [],
-			label: {
-        normal: {
-          show: true,
-          position: 'right',
-          formatter: function (a,b,c) {return a.data.title ? `[${a.data.serial}]${a.data.title}` : ''},
-        }
-      },
-      force: {
-        repulsion: 100,
-      },
-      lineStyle: {
-        normal: {
-          width: 2,
-          opacity: 1,
-        }
-      }
-    }
-  ]
-}
+import {mapGetters} from 'vuex'  
+
 const lineMap = new Map([
 	[1,{
 		color: '#099',
@@ -118,17 +66,74 @@ export default {
 			chart: '',
 			show: true,
 			lineArr:[],
+			option: {
+				title: {
+			    text: '引用关系图',
+			    subtext: '使用鼠标滚轮放大或缩小,可拖动',
+			  },
+			  tooltip: {
+					show: true,
+					type: 'item',
+					transitionDuration: 0,
+					formatter: a=>{
+						const d = a.data;
+						if(d.type) {
+							const str = `${this.nodeMap.get(d.source)['serial']} > ${this.nodeMap.get(d.target)['serial']}`;
+							const type = lineMap.get(d.type)['text']; 
+							return `${type}<br/>${str}`;
+						}else {
+							return `案号：${d.serial}<br/>标题：${d.title}<br/>地区：${d.area}<br/>申请号：${d.apn}`;
+						}
+					}
+				},
+			  series : [
+			    {
+			      name: 'Les Miserables',
+			      type: 'graph',
+					  layout: 'force',
+					  roam: true,
+					  draggable: true,
+			      nodes: [],
+			      links: [],
+						label: {
+			        normal: {
+			          show: true,
+			          position: 'right',
+			          formatter: function (a,b,c) {
+			          	return a.data.title ? `[${a.data.serial}]${a.data.title}` : ''
+			          },
+			        }
+			      },
+			      force: {
+			        repulsion: 500,
+			      },
+			      lineStyle: {
+			        normal: {
+			          width: 2,
+			          opacity: 1,
+			        }
+			      }
+			    }
+			  ]
+			}
 		};
 	},
 	computed: {
 		...mapGetters([
 			'detailQuote',
-		])
+		]),
+		nodeMap() {
+			const map = new Map();
+			if(this.detailQuote) {
+				this.detailQuote['nodes'].forEach(_=>{map.set(_.name + "", _)});
+			}
+			return map;
+		}
 	},
 	methods: {
 		refreshChart () {
 			if (this.detailQuote) {
-				const copy = this.$tool.deepCopy(option);
+				const copy = this.$tool.deepCopy(this.option);
 				const nodes = this.$tool.deepCopy(this.detailQuote['nodes']);
 				const links = this.$tool.deepCopy(this.detailQuote['links']);
 				nodes.forEach(_=>{
@@ -152,7 +157,7 @@ export default {
 				this.chart.setOption(copy);
 				this.show = true;
 			}else {
-				this.chart.setOption(option);
+				this.chart.setOption(this.option);
 				this.show = false;
 			}
 		},
