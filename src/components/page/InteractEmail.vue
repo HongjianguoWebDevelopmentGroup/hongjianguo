@@ -121,6 +121,7 @@ export default {
   	importEmail({id}) {
   		const url = `/api/mailanalysis/${id}`;
   		const success = _=>{
+  			this.currentId = id;//记录当前ID；
   			if(_.type == 'custom') {
   				this.dialogCustom = true;
   				this.$nextTick(v=>{
@@ -147,7 +148,7 @@ export default {
   		this.dialogCustom = this.dialogNotice = this.dialogFee = false;
   		//将导入成功邮件标记为已导入
   		this.$axiosGet({
-  			url: `/api/mailimported${this.currentId}`,
+  			url: `/api/mailimported/${this.currentId}`,
   			success: _=>{
   				this.update();//刷新当前页面
   			}

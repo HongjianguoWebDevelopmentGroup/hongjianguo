@@ -152,11 +152,11 @@ menu.data = [
 			{
 				text: '新建商标',
 				path: '/trademark/add',
-				icon: '',
+				icon: 'iconfont icon-proposal-add',
 				type: 'item'
 			},{
 				text: '商标管理',
-				icon: '',
+				icon: 'iconfont icon-trademark',
 				path: '/trademark/list',
 				type: 'item',
 			}]
@@ -169,22 +169,22 @@ menu.data = [
 		children: [{
 			text: '应收明细',
 			path: '/fee/income',
-			icon: '',
+			icon: 'iconfont icon-deal',
 			type: 'item',
 		},{
 			text: '应付明细',
 			path: '/fee/pay',
-			icon: '',
+			icon: 'iconfont icon-receipt',
 			type: 'item',
 		},{
 			text: '请款单',
 			path: '/fee/bill',
-			icon: '',
+			icon: 'iconfont icon-deal',
 			type: 'item',
 		},{
 			text: '付款单', 
 			path: '/fee/payment',
-			icon: '',
+			icon: 'iconfont icon-pay',
 			type: 'item',
 		}]
 	},
@@ -196,19 +196,19 @@ menu.data = [
 		children: [{
 			text: '发文管理',
 			path: '/dispatch/administration',
-			icon: '',
+			icon: 'iconfont icon-dispatch',
 			type: 'item'
 		}]
 	},
 	{
 		text: '交互',
 		path: '/interact',
-		icon: '',
+		icon: 'iconfont icon-interact',
 		type: 'submenu',
 		children: [{
 			text: '邮件交互',
 			path: '/interact/email',
-			icon: '',
+			icon: 'iconfont icon-email',
 			type: 'item',
 		}]
 	},
@@ -220,48 +220,48 @@ menu.data = [
 		children: [{
 			text: '我的个人设置',
 			path: '/setting/individual',
-			icon: '',
+			icon: 'iconfont icon-set-copy',
 			type: 'item'
 		},
 		{
 			text: '用户管理',
 			path: '/userList',
-			icon: '',
+			icon: 'iconfont icon-users',
 			type: 'item',
 		},
 		{
 			text: '申请人管理',
 			path: '/applicantList',
-			icon: '',
+			icon: 'iconfont icon-proposer',
 			type: 'item',
 		},
 		{ 
 			text: '发明人管理',
 			path: '/inventorList',
-			icon: '',
+			icon: 'iconfont icon-proposer',
 			type: 'item',
 		},
 		{
 			text: '技术分类管理',
 			path: '/classification',
-			icon: '',
+			icon: 'iconfont icon-techonology',
 			type: 'item',
 		},
 		{
 			text: '产品分类管理',
 			path: '/product',
-			icon: '',
+			icon: 'iconfont icon-products',
 			type: 'item',
 		},
 		{
 			text: '部门管理',
 			path: '/branch',
-			icon: '',
+			icon: 'iconfont icon-department',
 			type: 'item',
 		},{
 			text: '代理机构管理',
 			path: '/setting/agency',
-			icon: '',
+			icon: 'iconfont icon-organization',
 			type: 'item'
 		},
 		// {
@@ -273,7 +273,7 @@ menu.data = [
 		{
 			text: '系统设置',
 			path: '/setting/system',
-			icon: '',
+			icon: 'iconfont icon-system',
 			type: 'item'
 		},
 		// {

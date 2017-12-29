@@ -10,7 +10,7 @@
   		</el-checkbox-group>
 		</el-form-item>
 		<el-form-item label="文件类型" prop="documents">
-			<static-select type="file_type" v-model="form.documents"></static-select>
+			<static-select type="file_type" v-model="form.documents" multiple></static-select>
 		</el-form-item>
 		<el-form-item style="margin-bottom: 0px;">
 			<el-button type="primary" @click="exportClick" :loading="loading">{{loading ? '导出中' : '确认导出' }}</el-button>
@@ -19,6 +19,7 @@
 </template>
 <script>
 import StaticSelect from '@/components/form/StaticSelect'
+import {mapGetters} from 'vuex'
 
 export default {
 	name: 'appExport',
@@ -36,14 +37,25 @@ export default {
 			default () {
 				return [];
 			},
-
+		},
+		'filter': {
+			type: null,
+			default () {
+				return {};
+			}
+		},
+		'selected': {
+			type: Array,
+			default () {
+				return [];
+			}
 		}
 	},
 	data () {
 		const fields = this.default;
 		return {
 			form: {
-				documents: '',
+				documents: [],
 				fields,
 			},
 			loading: false,
@@ -51,6 +63,11 @@ export default {
 				fields: {type: 'array', required: true, message: '导出字段不能为空', trigger: 'change'},
 			}
 		};
+	},
+	computed: {
+		...mapGetters([
+			'screen_obj',
+		])
 	},
 	methods: {
 		exportClick () {
@@ -60,9 +77,12 @@ export default {
 					this.$axiosGet({
 						url: this.url,
 						data: {
+							...this.filter,
+							...this.screen_obj,
 							format: 'excel',
 							documents: this.form.documents,
 							fields: JSON.stringify(this.form.fields),
+							ids: this.selected.map(_=>_.id),
 						},
 						success: d=>{	
 							window.location.href = d[this.responseKey]['downloadUrl'];
@@ -74,6 +94,11 @@ export default {
 					})		
 				}
 			})
+		}
+	},
+	watch: {
+		default (val) {
+			this.form.fields = val;
 		}
 	},
 	components: {

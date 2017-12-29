@@ -145,6 +145,12 @@ export default {
     data: {
       type: Array,
       required: true,
+    },
+    tableSelected: {
+      type: Array,
+      default () {
+        return [];
+      },
     }
   },
   data () {
@@ -160,8 +166,9 @@ export default {
           
       this.$emit('row-click', row, event, column);
     },
-    handleSelectionChange(selection) { 
-      this.selected = selection;
+    handleSelectionChange(s) { 
+      this.selected = s;
+      this.$emit('update:tableSelected', s);
     },
     getSelected (flag = false) {
       const s = this.selected;

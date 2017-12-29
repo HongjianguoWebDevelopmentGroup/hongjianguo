@@ -2,7 +2,7 @@
   <div class="main">
     <strainer v-model="filter" @refresh="refresh"></strainer>
     
-    <table-component :tableOption="tableOption" :data="tableData" @refreshTableData="refreshTableData" ref="table" :refresh-proxy="refreshProxy">
+    <table-component :tableOption="tableOption" :data="tableData" @refreshTableData="refreshTableData" ref="table" :refresh-proxy="refreshProxy" :filter="filter">
       <el-button v-if="!!(menusMap && !menusMap.get('/patent/download') )" slot="download" :loading="downloadLoading" icon="share" @click="downloadPop" type="primary" style="margin-left: 5px; ">批量下载</el-button>
     </table-component>
     
@@ -446,7 +446,6 @@ export default {
   },
   mounted () {
     
-    console.log();
     if(this.$route.query) {
       console.log(this.$route.query);
     }

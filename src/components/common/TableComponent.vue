@@ -115,6 +115,7 @@
       :height="tableOption.height"
       :highlight-current-row="tableOption.highlightCurrentRow !== undefined ? tableOption.highlightCurrentRow : false"
       :columns="columns"
+      :table-selected.sync="selected"
       @sort-change="handleSortChange"
       @row-click="handleRowClick"
       ref="table"
@@ -157,7 +158,7 @@
     </el-dialog>
 
     <el-dialog v-if="exportType" :title="exportType.title" :visible.sync="dialogExport" class="dialog-small">
-      <app-export :url="tableOption.url" :fields="fields" :default="default_choose" :response-key="exportType.key" @success="dialogExport = false"></app-export>
+      <app-export :url="tableOption.url" :fields="fields" :default="default_choose" :response-key="exportType.key" @success="dialogExport = false" :filter="filter" :selected="selected"></app-export>
     </el-dialog>
   </div>
 </template>
@@ -179,7 +180,7 @@ import { mapGetters } from 'vuex'
 export default {
   name: 'tableComponent',
   mixins: [ AxiosMixins ],
-  props: ['tableOption', 'data', 'tableStyle', 'refreshProxy'],
+  props: ['tableOption', 'data', 'tableStyle', 'refreshProxy', 'filter'],
   data () {
     const d = this;
     const cols = d.tableOption.columns;
@@ -251,7 +252,7 @@ export default {
     }
     
     const transferValue = control;
-    const default_choose = control[1].map(_=>_.key);
+    
     const data = {
       pageData: [],
       pageSize: 5,
@@ -275,7 +276,7 @@ export default {
       refreshRender: true,
       dialogExport: false,
       fields,
-      default_choose,
+      selected: [],
     };
 
     return data;
@@ -286,6 +287,9 @@ export default {
       'pagesize',
       'menusMap',
     ]),
+    default_choose () {
+      return this.control[1].map(_=>_.key);
+    },
     tableData () {
       const d = this.data;
       let r;
@@ -318,7 +322,7 @@ export default {
 
       const map = new Map([
         ['patent', {
-          key: 'patentList',
+          key: 'patents',
           title: '导出专利',
         }]
       ])
