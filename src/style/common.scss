@@ -4,7 +4,7 @@
 }
 $font-size: 12px;
 .el-button {
-    padding: 6px 8px;
+    padding: 10px 8px !important;
 
 }
 .search {
@@ -13,19 +13,18 @@ $font-size: 12px;
   right: 40px !important;
   top: 15px;
 }
+.pay_search {
+  width: 102px !important;
+  /*overflow-y: auto;*/
+}
  #trademarkAdd .el-dialog__title {
   font-size: 13px !important;
 }
 .el-button+.el-button {
     margin-left: 8px !important;
 }
-// .el-button--primary {
-//     color: #fff;
-//     background-color: #20a0ff;
-//     border-color: #20a0ff;
-// }
 .table-header-btn {
-	padding: 6px 8px !important;
+	padding: 10px 8px !important;
 }
 .table-search {
 	max-width: 130px;
@@ -45,10 +44,10 @@ $font-size: 12px;
     box-sizing: border-box;
     color: #1f2d3d;
     font-size: inherit;
-    height: auto !important;
+    height: 36px;
     line-height: 1;
     outline: 0;
-    padding: 6px 8px !important;
+    padding: 3px 8px !important; 
     transition: border-color .2s cubic-bezier(.645,.045,.355,1);
   }
 .search-content {
