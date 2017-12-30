@@ -134,6 +134,7 @@ const config = [
     placeholder: '请选择费用代码',
     url: '/api/feeCodes',
     handle (data) {
+      console.log(data.codes);
       return data.codes;
     }
   }],
@@ -244,6 +245,7 @@ export default {
       let cv = this.multiple ? this.value : [ this.value ];
       
       cv.forEach(_=>{
+        console.log(_);
         const val = this.map.get(_);
         if(val) {
           arr.push(val);
@@ -251,7 +253,7 @@ export default {
           arr.push({id: _, name: _});
         }
       })
-
+      console.log(arr);
       return arr;
     },
     setOptions () {

@@ -44,7 +44,7 @@
 					
 				</el-col>
 				<el-col :span="12">
-					<el-form-item label="官方绝限" prop="dealine">
+					<el-form-item label="官方绝限" prop="deadine">
 						<el-date-picker v-model="form.deadline" type="date" placeholder="请选择官方期限"></el-date-picker>
 					</el-form-item>	
 				</el-col>
@@ -166,11 +166,11 @@ export default {
   		},
   		set (val) {
   			const arr = ['amount', 'currency', 'roe'] 
-
+  			console.log(val);
   			this.id = val.id;
   			this.$tool.coverObj(this.form, val);
   			if(this.form.code) {
-  				this.form.code = this.form.code.id;
+  				this.form.code = this.form.code.name;
   			}
   			this.form.status = this.form.status.id;
   			arr.forEach( d=>{this.form.money[d] = val[d] });
@@ -183,7 +183,11 @@ export default {
   		this.dialogVisible = true;
   		this.$nextTick(()=>{
   			if( this.popType == 'add' ) {  		
-  				this.$refs.form.resetFields(); 			
+  				this.$refs.form.resetFields();
+  				this.form.deadline = ""; 
+  				this.form.money.roe = "";
+  				this.form.money.amount = "";
+  				this.form.money.currency = "";			
 	  		}else {
 	  			this.submitForm = row;
 	  		}
@@ -223,7 +227,7 @@ export default {
   watch: {
 		'form.code': {
 			handler () {
-				console.log('aaaaa');
+				// console.log('aaaaa');
 				this.$nextTick(_=>{
 					const val = this.$refs.fee_code.getSelected()[0];
 					if(val) {
