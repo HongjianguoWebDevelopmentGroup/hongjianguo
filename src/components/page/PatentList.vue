@@ -415,7 +415,7 @@ export default {
       // );
       return h('el-rate', {
         attrs: {
-          value: item,
+          value: item/20,
           disabled: true,
           showText: true,
           textColor: '#f90',
