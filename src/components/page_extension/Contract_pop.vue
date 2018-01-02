@@ -14,7 +14,7 @@
       </el-form-item>
 
       <el-form-item label="代理机构" prop="">
-        <remote-select type="agent"></remote-select>
+        <remote-select type="agency"></remote-select>
       </el-form-item>
 
       <el-form-item label="备注" prop="">

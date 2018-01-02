@@ -32,12 +32,12 @@ export default {
 		  	'columns': [
           { type: 'selection' },
 		  		{ type: 'text', label: '合同编号', prop: 'serial', sortable: true, width: '210' },
-		  		{ type: 'text', label: '分所', prop: 'branch', sortable: true, width: '260' },
-		  		{ type: 'text', label: '上传用户', prop: 'uid', sortable: true, width: '150' },
-		  		{ type: 'text', label: '签订日期', prop: '', sortable: true, width: '160' },
-		  		{ type: 'text', label: '上传日期', prop: 'email', sortable: true, width: '160' },
-		  		{ type: 'text', label: '状态', prop: '', sortable: true, width: '135' },
+		  		{ type: 'text', label: '合作方', prop: 'branch', sortable: true, width: '260' },
 		  		{ type: 'text', label: '扫描件', prop: 'name_en', width: '200' },
+          { type: 'text', label: '上传日期', prop: 'email', sortable: true, width: '160' },
+          { type: 'text', label: '上传用户', prop: 'uid', sortable: true, width: '150' },
+          { type: 'text', label: '签订日期', prop: '', sortable: true, width: '160' },
+          { type: 'text', label: '状态', prop: '', sortable: true, width: '135' },
           { type: 'text', label: '备注', prop: 'remark', width: '260',},
 		  		{ 
 		  			type: 'action',
