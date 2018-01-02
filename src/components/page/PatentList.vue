@@ -82,7 +82,6 @@ export default {
         'update_type': 'patent',
         'header_slot': ['download'],
         'columns': [
-
           { type: 'selection' },
           // { type: 'text', label: '专利状态', prop: 'status', render: (h,item)=>h('span', item ? '正常' : '暂停处理') },
           { type: 'text', label: '案号', prop: 'serial', sortable: true, width: '200' },
@@ -415,11 +414,11 @@ export default {
       // );
       return h('el-rate', {
         attrs: {
-          value: item,
+          value: item/20,
           disabled: true,
           showText: true,
           textColor: '#f90',
-          textTemplate: '{value}',
+          textTemplate: item + '',
         }
       })
     },

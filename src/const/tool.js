@@ -46,19 +46,22 @@ export default {
 		}
 		
 	},
-	coverObj (a1, a2, { obj } = {}) {
+	coverObj (a1, a2, { obj, skip } = {}) {
 		
 		const map = new Map();
-		
+		const skipMap = new Map();
 		if(obj) {
 			obj.forEach(_=>{ map.set(_, true) });
+		}
+		if(skip) {
+			skip.forEach(_=>{ skipMap.set(_, true) });	
 		}
 
 		for (let key in a1) {
 			const v = a2[key];
 
-			if(v === undefined) continue;
-			
+			if(v === undefined || skipMap.get(key)) continue;
+
 			if( obj && typeof v == 'object' && map.get(key) ) {
 				if( Array.isArray(v) ) {
 					a1[key] = v.map(_=>_.id);

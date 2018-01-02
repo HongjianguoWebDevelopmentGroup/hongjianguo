@@ -5,7 +5,7 @@
 			<fee-status slot="status" v-model="fee_status" style="width: 150px; margin-left: 5px;" :feeType="feeType" feeAnnual></fee-status>
 			<remote-select v-if="fee_invoice_if" slot='invoice' v-model="fee_invoice" style="width: 220px; margin-left: 10px; display: inline-block;" class="pay_search" :type="feeType ? 'bill' : 'pay'"></remote-select>
 		</table-component>
-		<pop ref="pop" :feeType="feeType" :popType="popType" @refresh="refresh"></pop>
+		<pop ref="pop" :feeType="feeType" @refresh="refresh"></pop>
     <el-dialog :title="dialogTitle" :visible.sync="dialogVisible" class="dialog-small">
       <div style="margin-bottom: 10px; color: #8492A6; font-size: 14px;">
         <span v-if="invoicePopType == 'add'">从选取的费用创建一个新的{{ feeTypeName }}，用于批量追踪请款费用，如果需要跨页选取费用，请在窗口左下角将分页数量调整为一个较大的值。</span>
@@ -64,10 +64,10 @@ export default {
 		  		{ type: 'text', label: '费用对象', prop: 'target', render_simple: 'name', width: '190' },
 		  		{ type: 'text', label: '费用名称', prop: 'code', render_simple: 'name', width: '190' },
 		  		//{ type: 'text', label: '费用类型', prop: 'type_name', width: '190' },
-		  		{ type: 'text', label: '金额', prop: 'fee', width: '80' },
-		  		{ type: 'text', label: '汇率', prop: 'roe', is_import: true, width: '80' },
 		  		{ type: 'text', label: '币种', prop: 'currency', is_import: true, width: '80' },
-		  		{ type: 'text', label: '人民币', prop: 'amount', is_import: true, width: '100' },
+          { type: 'text', label: '金额', prop: 'amount', width: '80' },
+          { type: 'text', label: '汇率', prop: 'roe', is_import: true, width: '80' },
+		  		{ type: 'text', label: '人民币', prop: 'rmb', is_import: true, width: '100' },
 		  		{ type: 'text', label: '状态', prop: 'status', render_simple: 'name', width: '180'},
           { type: 'text', label: '案件类型', prop: 'category', width: '145' },
           { type: 'text', label: '专利类型', prop: 'patent_type', width: '145' },
@@ -159,15 +159,10 @@ export default {
   		this.axiosGet({url, data, success});
   	},
   	addPop () {
-  		this.popType = 'add';
-  		this.$nextTick(()=>{
-  			this.$refs.pop.show();	
-  		})
-  		
+  		this.$refs.pop.show();	
   	},
   	editPop (row) {
-  		this.popType = 'edit';
-  		this.$refs.pop.show(row);
+  		this.$refs.pop.show('edit', row);
   	},
   	feeDelete ({id, name}) {
   		this.$confirm(`删除后不可恢复，确认删除‘${name}’吗？`, { type: 'warning' })
