@@ -52,6 +52,7 @@ export default {
           { type: 'text', label: '案号', prop: 'serial', width: '200' },
           { type: 'text', label: '事务所案号', prop: 'agenxy_serial', width: '200' },
           { type: 'text', label: '版权类型', prop: 'type', is_import: true, render_simple: 'name', width: '160' },
+          { type: 'text', label: '案件状态', prop: 'progress', render_simple: 'name', width: '200' },
           { type: 'text', label: '标题', prop: 'title', is_import: true, width: '160'},
           { type: 'text', label: '摘要', prop: 'abstract', width: '280' },
           { type: 'text', label: '完成时间', prop: 'create_time', width: '173' },

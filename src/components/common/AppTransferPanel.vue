@@ -81,6 +81,8 @@ export default {
 	},
 	methods: {
 		drag (e) {
+      var img = new Image();
+      e.dataTransfer.setDragImage(img,0,0);
 			this.indexCache = e.target.dataset.index;
 		},
 		drop (e) {

@@ -3,6 +3,7 @@
   	:value="value" 
   	@input="handleInput" 
   	placeholder="请选择费用状态"
+    :disabled="disabled"
   >
   	<el-option
 			v-for="item in options"
@@ -27,7 +28,11 @@ export default {
   	'feeAnnual': {
   		type: Boolean,
   		defult: true,
-  	}
+  	},
+    'disabled': {
+      tye: Boolean,
+      defult: false,
+    }
   },
   computed: {
   	options () {

@@ -1,11 +1,12 @@
 <template>
   <div class="main">
-    <strainer v-model="filter" @refresh="refresh"></strainer>
-    <table-component @refreshTableData="refreshTableData" :tableOption="option" :data="tableData" ref="table">
-      <fee-status slot="status" v-model="fee_status" style="width: 150px; margin-left: 5px;" :feeType="feeType" feeAnnual></fee-status>
-      <remote-select v-if="fee_invoice_if" slot='invoice' v-model="fee_invoice" style="width: 280px; margin-left: 10px;" :type="feeType ? 'bill' : 'pay'"></remote-select>
-    </table-component>
-    <pop ref="pop" :feeType="feeType" :popType="popType" @refresh="refresh"></pop>
+  	<strainer v-model="filter" @refresh="refresh"></strainer>
+		<table-component @refreshTableData="refreshTableData" :tableOption="option" :data="tableData" ref="table">
+			<fee-status slot="status" v-model="fee_status" style="width: 150px; margin-left: 5px;" :feeType="feeType" feeAnnual></fee-status>
+			<remote-select v-if="fee_invoice_if" slot='invoice' v-model="fee_invoice" style="width: 220px; margin-left: 10px; display: inline-block;" class="pay_search" :type="feeType ? 'bill' : 'pay'"></remote-select>
+		</table-component>
+		<pop ref="pop" :feeType="feeType" @refresh="refresh"></pop>
+
     <el-dialog :title="dialogTitle" :visible.sync="dialogVisible" class="dialog-small">
       <div style="margin-bottom: 10px; color: #8492A6; font-size: 14px;">
         <span v-if="invoicePopType == 'add'">从选取的费用创建一个新的{{ feeTypeName }}，用于批量追踪请款费用，如果需要跨页选取费用，请在窗口左下角将分页数量调整为一个较大的值。</span>
@@ -25,7 +26,6 @@ import TableComponent from '@/components/common/TableComponent'
 import Strainer from '@/components/page_extension/FeeCommon_strainer'
 import Pop from '@/components/page_extension/feeCommon_pop'
 import FeeStatus from '@/components/form/FeeStatus'
-import AxiosMixins from '@/mixins/axios-mixins'
 import RemoteSelect from '@/components/form/RemoteSelect'
 
 const URL = '/api/fees';
@@ -33,7 +33,6 @@ const URL_INVOICE = '/api/invoices';
 
 export default {
   name: 'feeCommon',
-  mixins: [ AxiosMixins ],
   data () {
     return {
       popType: '',
@@ -183,32 +182,23 @@ export default {
           this.tableData = d.fees;  
         } 
       };
-
-      this.axiosGet({url, data, success});
-    },
-    feeTransform () {
-
-    },
-    addPop () {
-      this.popType = 'add';
-      this.$nextTick(()=>{
-        this.$refs.pop.show();  
-      })
-      
-    },
-    editPop (row) {
-      this.popType = 'edit';
-      this.$refs.pop.show(row);
-    },
-    feeDelete ({id, name}) {
-      this.$confirm(`删除后不可恢复，确认删除‘${name}’吗？`, { type: 'warning' })
-        .then(()=>{
-          const url = `${URL}/${id}`;
-          const success = ()=>{ 
+  		this.$axiosGet({url, data, success});
+  	},
+  	addPop () {
+  		this.$refs.pop.show();	
+  	},
+  	editPop (row) {
+  		this.$refs.pop.show('edit', row);
+  	},
+  	feeDelete ({id, name}) {
+  		this.$confirm(`删除后不可恢复，确认删除‘${name}’吗？`, { type: 'warning' })
+  			.then(()=>{
+  				const url = `${URL}/${id}`;
+		  		const success = ()=>{ 
             this.$message({message: '删除费用成功', type: 'success'});
             this.$refs.table.update() 
           };
-          this.axiosDelete({url, success});   
+          this.$axiosDelete({url, success});   
         })
         .catch(()=>{});     
     },

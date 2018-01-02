@@ -1,15 +1,16 @@
 <template>
-  <el-dialog :title=title :visible.sync="dialogVisible" class="dialog-small">
+  <el-dialog :title=title :visible.sync="dialogVisible" class="dialog-small" @close="clear">
 		<el-form :model="form" ref="form" label-width="80px">
+
 			<el-form-item label="相关案件" prop="project">
 				<remote-select type="patent" v-model="form.project"></remote-select>
 			</el-form-item>
-			<el-form-item label="费用对象" prop="target">
-				<remote-select type="member" v-model="form.target"></remote-select>
-			</el-form-item>
 			
-			<el-form-item label="费用状态" prop="status" v-if="popType == 'add'">
-				<fee-status v-model="form.status" :feeAnnual="feeAnnual"></fee-status>
+			<el-form-item label="费用代码" prop="code">
+				<static-select  type="fee_code" v-model="form.code" ref="fee_code" :disabled="popType == 'edit'"></static-select>
+			</el-form-item>
+			<el-form-item label="费用状态" prop="status" v-show="popType == 'edit'">
+					<fee-status v-model="form.status" :feeAnnual="feeAnnual" :disabled="popType == 'edit'"></fee-status>
 			</el-form-item>
 			<el-form-item label="费用金额" prop="money">
 				<el-row>
@@ -38,13 +39,13 @@
 			
 			<el-row>
 				<el-col :span="12">
-					<el-form-item label="费用代码" prop="code">
-						<static-select style="width: 193px;" type="fee_code" v-model="form.code" ref="fee_code"></static-select>
-					</el-form-item>
 					
+					<el-form-item label="费用对象" prop="target" >
+						<remote-select type="member" v-model="form.target" style="width: 193px;"></remote-select>
+					</el-form-item>
 				</el-col>
 				<el-col :span="12">
-					<el-form-item label="官方绝限" prop="deadine">
+					<el-form-item label="官方绝限" prop="deadline">
 						<el-date-picker v-model="form.deadline" type="date" placeholder="请选择官方期限"></el-date-picker>
 					</el-form-item>	
 				</el-col>
@@ -81,7 +82,7 @@
 </template>
 
 <script>
-import AxiosMixins from '@/mixins/axios-mixins'
+
 
 import Patent from '@/components/form/Patent'
 import Member from '@/components/form/Member'
@@ -93,14 +94,13 @@ const URL = '/api/fees'
 
 export default {
   name: 'FeeCommonPop',
-  mixins: [ AxiosMixins ],
   props: {
   	feeType: Number,
-  	popType: String,
   },
   data () {
 		return {
 		  id: '',
+		  popType: '',
 		  dialogVisible: false,
 		  feeAnnual: false,
 		  form: {
@@ -165,41 +165,37 @@ export default {
   			return o;
   		},
   		set (val) {
-  			const arr = ['amount', 'currency', 'roe'] 
-  			console.log(val);
+  			const arr = ['amount', 'currency', 'roe'];
   			this.id = val.id;
-  			this.$tool.coverObj(this.form, val);
-  			if(this.form.code) {
-  				this.form.code = this.form.code.name;
-  			}
-  			this.form.status = this.form.status.id;
-  			arr.forEach( d=>{this.form.money[d] = val[d] });
+  			this.$tool.coverObj(this.form, val, {obj: ['code', 'status']});
+
+  			this.$nextTick(_=>{
+	  			arr.map(_=>{
+	  				this.form.money[_] = val[_];
+	  			})
+  			})
   		}
   	}
   },
   methods: {
-  	show (row) {
-  		
+  	show (type='add', row) {
+  		this.popType = type;		
   		this.dialogVisible = true;
-  		this.$nextTick(()=>{
-  			if( this.popType == 'add' ) {  		
-  				this.$refs.form.resetFields();
-  				this.form.deadline = ""; 
-  				this.form.money.roe = "";
-  				this.form.money.amount = "";
-  				this.form.money.currency = "";			
-	  		}else {
+  		if(type == 'edit') {
+  			this.$nextTick( _=>{
 	  			this.submitForm = row;
-	  		}
-  		});
-  		
+  			});	
+  		}
   	},
   	add () {
   		const url = URL;
   		const data = this.submitForm;
-  		const success = ()=>{ this.dialogVisible = false; this.$emit('refresh') };
+  		const success = _=>{ 
+  			this.$message({type: 'success', message: _.info});
+  			this.dialogVisible = false; 
+  			this.$emit('refresh') };
 
-  		this.axiosPost({url, data, success});
+  		this.$axiosPost({url, data, success});
   	},
   	edit () {
   		const url = `${URL}/${this.id}`;
@@ -210,15 +206,24 @@ export default {
   			this.$emit('refresh') 
   		};
 
-  		this.axiosPut({url, data, success});
+  		this.$axiosPut({url, data, success});
   	},
   	cancel () {
   		this.dialogVisible = false;
   	},
+  	clear () {
+  		this.$refs.form.resetFields();
+			this.form.money.roe = "";
+			this.form.money.amount = "";
+			this.form.money.currency = "";
+  	},
   	codeChange ({amount, name}) {
-  		this.form.money.amount = amount;
-  		this.form.money.currency = 'CNY';
-  		this.form.money.roe = "1";
+  		if(amount) {
+
+	  		this.form.money.amount = amount;
+	  		this.form.money.currency = 'CNY';
+	  		this.form.money.roe = "1";
+  		}
 
   		const reg = /年费/;
   		this.feeAnnual = reg.test(name); 
@@ -226,19 +231,23 @@ export default {
   },
   watch: {
 		'form.code': {
-			handler () {
-				// console.log('aaaaa');
-				this.$nextTick(_=>{
-					const val = this.$refs.fee_code.getSelected()[0];
-					if(val) {
-						this.codeChange(val);
-					}	
-				})
+			handler (v) {
+				const val = this.$refs.fee_code.getSelected(v)[0];
+				if(val) {
+					this.codeChange(val);
+				}	
+			
 				
 			}
 		}
 	},
-  components: { Patent, Member, FeeStatus, RemoteSelect, StaticSelect },
+  components: { 
+  	Patent, 
+  	Member, 
+  	FeeStatus, 
+  	RemoteSelect, 
+  	StaticSelect, 
+  },
 }
 </script>
 
