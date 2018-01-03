@@ -95,9 +95,12 @@ export default {
     formCheck (callback) {
       let key = "";
       let flag = false;
-      const keys = this.pageType == 'add' ? getKeys : setKeys;
+
+      const keys = this.type == 'add' ? getKeys : setKeys;
+
       const check = (index)=>{
         const key = keys[index];
+        
         if(key) {
           this.$refs[key].checkForm(_=>{
             if(_) {

@@ -1,32 +1,38 @@
 <template>
-  <app-shrink :title="title" :visible=visibleAuth @update:visible="handleVisible">
-    <span slot="header" style="float: right">
-      <el-button size="small" type="primary" @click="edit">保存</el-button>
-    </span>
-    <div  v-loading="detailLoading && visibleAuth" :element-loading-text="config.loadingText" :style="divStyle">
-      <el-tabs v-model="activeName">
-        <el-tab-pane label="基本信息" name="base">
-    			<detail-patent page-type="edit" v-if="type == 'patent'" @editSuccess="editSuccess" ref="patent"></detail-patent>
-          <detail-copyright page-type="edit" v-if="type == 'copyright'" @editSuccess="editSuccess" ref="copyright"></detail-copyright>
-        </el-tab-pane>
-        <el-tab-pane label="流程管理" name="control">
-    			<detail-control></detail-control>
-        </el-tab-pane>
-        <el-tab-pane label="官方来文" name="notice">
-    			<detail-notice></detail-notice>
-        </el-tab-pane>
-        <el-tab-pane label="所有费用" name="fourth">
-    			<detail-fee></detail-fee>
-        </el-tab-pane>
-        <el-tab-pane label="往來邮件" name="fee">
-    			<detail-email></detail-email>
-        </el-tab-pane>
-        <el-tab-pane label="文档" name="documents">
-    			<detail-documents></detail-documents>
-        </el-tab-pane>
-      </el-tabs>
-    </div>
-  </app-shrink>
+  <div>
+    <app-shrink :title="title" :visible=visibleAuth @update:visible="handleVisible">
+      <span slot="header" style="float: right">
+        <el-button size="small" type="primary" @click="edit">保存</el-button>
+        <el-button style="margin-left: 5px;" size="small" type="danger" @click="dialogClosed=true" v-if="type == 'patent'">结案</el-button>
+      </span>
+      <div  v-loading="detailLoading && visibleAuth" :element-loading-text="config.loadingText" :style="divStyle">
+        <el-tabs v-model="activeName">
+          <el-tab-pane label="基本信息" name="base">
+      			<detail-patent page-type="edit" v-if="type == 'patent'" @editSuccess="editSuccess" ref="patent"></detail-patent>
+            <detail-copyright page-type="edit" v-if="type == 'copyright'" @editSuccess="editSuccess" ref="copyright"></detail-copyright>
+          </el-tab-pane>
+          <el-tab-pane label="流程管理" name="control">
+      			<detail-control></detail-control>
+          </el-tab-pane>
+          <el-tab-pane label="官方来文" name="notice">
+      			<detail-notice></detail-notice>
+          </el-tab-pane>
+          <el-tab-pane label="所有费用" name="fourth">
+      			<detail-fee></detail-fee>
+          </el-tab-pane>
+          <el-tab-pane label="往來邮件" name="fee">
+      			<detail-email></detail-email>
+          </el-tab-pane>
+          <el-tab-pane label="文档" name="documents">
+      			<detail-documents></detail-documents>
+          </el-tab-pane>
+        </el-tabs>
+      </div>
+    </app-shrink>
+    <el-dialog title="提交结案请求" :visible.sync="dialogClosed" @close="$refs.closeForm.clear();">
+      <close-form :id="id" @success="dialogClosed=false" ref="closeForm"></close-form>
+    </el-dialog>
+  </div>
 </template>
 
 <script>
@@ -38,8 +44,11 @@ import DetailNotice from '@/components/page_extension/CommonDetail_notice'
 import DetailFee from '@/components/page_extension/CommonDetail_fee'
 import DetailEmail from '@/components/page_extension/CommonDetail_email'
 import DetailDocuments from '@/components/page_extension/CommonDetail_documents'
+import CloseForm from '@/components/page_extension/CommonDetail_closed'
+
 import { mapGetters } from 'vuex'
 import { mapActions } from 'vuex'
+
 const config = [
 	['patent', {
 		loadingText: '加载专利信息中...',
@@ -56,7 +65,7 @@ export default {
   name: 'commonDetailShrink',
   props: {
     'type': String,
-    'id': Number,
+    'id': [Number, String],
     'visible': {
       type: Boolean,
       default: false,
@@ -67,6 +76,7 @@ export default {
 		return {
 		  activeName: 'base',
       rendered: false,
+      dialogClosed: false,
 		}
   },
   computed: {
@@ -126,6 +136,9 @@ export default {
     },
     handleVisible (val) {
       this.$emit('update:visible', val);
+    },
+    closeProjectSubmit () {
+
     }
   },
   watch: {
@@ -146,6 +159,7 @@ export default {
   	DetailFee,
   	DetailEmail,
   	DetailDocuments,
+    CloseForm,
   }
 }
 </script>

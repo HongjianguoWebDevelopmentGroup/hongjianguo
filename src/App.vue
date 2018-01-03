@@ -21,7 +21,7 @@
 
     <nav>
         <img src="/static/static_img/cvte_log.png" style="vertical-align: middle; height: 28px;">
-        <!-- <span class="logo_name">知识产权管理系统</span> -->
+        <!-- <span class="logo_name">知识产权管理系统aaaaa</span> -->
         <el-dropdown  trigger="click" style="float: right; margin-right: 40px;" @command="handleCommond">
           <span class="el-dropdown-link" style="color: #20a0ff; cursor: pointer;">
             {{ username }}<i class="el-icon-caret-bottom el-icon--right"></i>
@@ -574,13 +574,13 @@ nav {
     display: table;
     content: "";
   }
-  .el-upload-list {
+  .app-upload .el-upload-list {
     padding: 0;
     list-style: none;
     display: block;
     margin-bottom: 40px;
   }
-  .el-upload {
+  .app-upload .el-upload {
     display: inline-block;
     text-align: center;
     cursor: pointer;
@@ -588,12 +588,12 @@ nav {
     bottom: 4px;
     left: 0px;
   }
- .el-dialog--small  .el-upload--text {
+/* .el-dialog--small  .el-upload--text {
       display: inline-block;
       text-align: center;
       cursor: pointer;
       position: static; 
-    }
+    }*/
  
 
 }

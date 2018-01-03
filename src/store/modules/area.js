@@ -1,4 +1,4 @@
-let url = '/api/static/js/area.json';
+let url = '/static/js/area.json';
 const state = {
 	data: [],
 }

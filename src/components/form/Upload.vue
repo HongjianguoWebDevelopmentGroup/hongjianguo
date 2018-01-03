@@ -7,6 +7,7 @@
       :file-list="fileList"
       multiple
       ref="upload"
+      class="app-upload"
     >           <!-- <i class="el-icon-upload"></i> -->
         <el-button size="small" type="primary">点击上传</el-button>
         <div class="el-upload__tip" slot="tip"><slot></slot></div>
