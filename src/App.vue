@@ -162,13 +162,13 @@ export default {
     },
     handleCommond (commond) {
       if(commond == 'login_out') {
-        const url = '/api/logout';
-        const success = _=>{
-          this.$message({message: '登出成功', type: 'success'} );
+        // const url = '/api/logout';
+        // const success = _=>{
+          // this.$message({message: '登出成功', type: 'success'} );
           window.location.href = '/login';
-        }
+        // }
 
-        this.axiosGet({url, success});
+        // this.axiosGet({url, success});
       }
     },
     navToggle () {
