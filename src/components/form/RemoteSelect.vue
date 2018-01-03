@@ -200,6 +200,7 @@ export default {
         _[key] = _[key].map(_=>{
           if(!_.name) _.name = _.label;
           if(!_.id) _.id = _.value;
+          _.id = Number.parseInt(_.id);
           return _;
         });
         this.options = _[key];
