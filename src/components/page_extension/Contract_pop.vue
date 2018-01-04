@@ -1,5 +1,5 @@
 <template>
-  <el-dialog :key="popType" :title="popType == 'add' ? '新增合同' : '编辑合同'" :visible.sync="dialogVisible" @close="close">
+  <el-dialog :key="popType" :title="popType == 'add' ? '新增合同' : '编辑合同'" :visible.sync="dialogVisible">
 		<el-form :model="form" label-width="100px" ref="form" :rules="rules">
 			<el-form-item label="合同编号" prop="">
         <el-input placeholder="请输入合同编号"></el-input>
@@ -69,14 +69,10 @@ export default {
   		this.dialogVisible = true;
   	},
   	add () {
-  		let flag = false;
-  		this.$refs.form.validate(_=>{ flag = !_ });
-  		if( flag || this.psdCheck() ) return;
-
   		const url = URL;
   		const data = this.form;
   		const success = _=>{
-  			this.$message({message: '添加用户成功', type: 'success'});
+  			this.$message({message: '新增合同成功', type: 'success'});
   			this.dialogVisible = false;
   			this.$emit('refresh');
   		}
@@ -84,25 +80,17 @@ export default {
   		this.axiosPost({url, data, success});
   	},
   	edit () {
-  		let flag = false;
-  		this.$refs.form.validate(_=>{ flag = !_ })
-  		if( flag || this.$refs.psd.check() ) return;
-
+  		// this.$refs.form.validate(_=>{ flag = !_ })
   		const url = `${URL}/${this.id}`;
-  		const data = this.$tool.shallowCopy(this.form, {skip: ['group_id']});
+  		const data = this.form;
   		const success = _=>{
-  			this.$message({message: '编辑用户成功', type: 'success'});
+  			this.$message({message: '编辑合同成功', type: 'success'});
   			this.dialogVisible = false;
   			this.$emit('refresh');
   		}
 
   		this.axiosPut({url, data, success});
   	},
-  	close () {
-  		if(this.$refs.psd) {
-  			this.$refs.psd.clearEditPsd();
-  		}
-  	}
   },
   components: { 
     RemoteSelect,

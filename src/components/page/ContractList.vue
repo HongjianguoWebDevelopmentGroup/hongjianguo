@@ -34,7 +34,7 @@ export default {
 		  		{ type: 'text', label: '合同编号', prop: 'serial', sortable: true, width: '210' },
 		  		{ type: 'text', label: '合作方', prop: 'branch', sortable: true, width: '260' },
 		  		{ type: 'text', label: '扫描件', prop: 'name_en', width: '200' },
-          { type: 'text', label: '上传日期', prop: 'email', sortable: true, width: '160' },
+          { type: 'text', label: '上传日期', prop: '', sortable: true, width: '160' },
           { type: 'text', label: '上传用户', prop: 'uid', sortable: true, width: '150' },
           { type: 'text', label: '签订日期', prop: '', sortable: true, width: '160' },
           { type: 'text', label: '状态', prop: '', sortable: true, width: '135' },
@@ -63,11 +63,11 @@ export default {
   		this.$refs.pop.show('edit', col);
   	},
   	deleteSingle ({id, name}) {
-  		this.$confirm(`删除后不可恢复，确认删除发明人‘${name}’？`)
+  		this.$confirm(`删除后不可恢复，确认删除合同‘${name}’？`)
         .then(_=>{
           const url = `${URL}/${id}`;
           const success = _=>{
-            this.$message({message: '删除发明人成功', type: 'success'});
+            this.$message({message: '删除合同成功', type: 'success'});
             this.update();
           };
 
