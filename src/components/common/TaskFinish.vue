@@ -258,7 +258,7 @@ export default {
 
               //附件同步
               const atta = d.attachments; 
-              if(this.attachments && atta && atta.length != 0 ) {
+              if(this.attachments && atta ) {
                 this.form.attachments = atta.map(_=>_.id);
                 this.attachments = atta;
               }
