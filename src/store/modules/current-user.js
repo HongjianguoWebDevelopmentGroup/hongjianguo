@@ -2,8 +2,7 @@ let url = '/api/userinfo'
 
 const state = {
 	data: null,
-	loading: true,
-	next: '',
+	loading: false,
 }
 
 const getters = {
@@ -19,7 +18,6 @@ const getters = {
 		return map;
 	},
 	currentUser: state=>state.data,
-	nextUser: state=>state.next,
 	username: state=>{
 	  const user = state.data;
        
@@ -73,9 +71,6 @@ const mutations = {
 	setUserLoading (state, boolean) {
 		state.loading = boolean;
 	},
-	setNext(state, next) {
-		state.next = next;
-	}
 }
 
 const actions = {
@@ -84,7 +79,7 @@ const actions = {
 		const params = {};
 		commit('setUserLoading', true);
 		const next = rootState.axios.get(url, { params });
-		commit('setNext', next);
+
 		next
 			.then(response=>{
 				const d = response.data;

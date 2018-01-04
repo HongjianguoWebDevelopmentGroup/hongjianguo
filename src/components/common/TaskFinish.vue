@@ -44,7 +44,7 @@
     <el-form-item prop="agency_serial" label="事务所案号" v-if="fields.agency_serial" :rules="{required: true, message: '事务所案号不能为空'}">
       <el-input placeholder="请填写事务所案号" v-model="form.agency_serial"></el-input>
     </el-form-item>
-    <el-form-item prop="agent" label="代理人" v-if="fields.agent" v-show="form.agency !== ''" :rules=" next == 102 ? { required: true, type: 'number', message: '代理人不能为空',trigger: 'change'} : ''">
+    <el-form-item prop="agent" label="代理人" v-if="fields.agent" v-show="form.agency !== ''" :rules=" next == 102 ? { required: true, type: 'number', message: '代理人不能为空',trigger: 'change'} : []">
       <remote-select type="agent" v-model="form.agent" :static-map="this.agentMap" :para="{'agency': form.agency}" ref="agent"></remote-select>
     </el-form-item>
     <el-form-item prop="agency_type" label="代理类型" v-if="fields.agency_type"
@@ -63,6 +63,9 @@
     </el-form-item>
     <el-form-item prop="type" label="专利类型" v-if="fields.type" :rules="{type: 'number', required: true, message: '专利类型不能为空', trigger: 'blur'}">
       <static-select type="patent_type" v-model="form.type" key="patent_type"></static-select>
+    </el-form-item>
+    <el-form-item prop="title" label="专利标题" v-if="fields.title" :rules="{required: true, message: '专利标题不能为空'}">
+      <el-input v-model="form.title"></el-input>
     </el-form-item>
     <el-form-item prop="attachments" label="附件" v-if="fields.attachments && !hide_r_a">
       <upload v-model="form.attachments" :file-list="attachments"> 
@@ -89,12 +92,12 @@
       ></el-rate>
     </el-form-item>
     <el-form-item v-if="next == '20'" prop="pconfirm" label="确认" :rules="confirmValidator">
+      <el-checkbox v-model="form.pconfirm">已确认送件信息完整</el-checkbox><el-button type="text" size="mini" style="margin-left: 10px;" @click="$emit('more', 'patent')">查看</el-button>
+    </el-form-item>
     <ul v-if="data.description && data.description.length != 0" style="margin-left:115px;padding: 0;margin-top:-10px; font-size:14px;color:#bbb;">
       <li v-for="(item, index) in data.description" :key="index">{{ item }}</li>
     </ul>
-      <el-checkbox v-model="form.pconfirm">已确认送件信息完整</el-checkbox><el-button type="text" size="mini" style="margin-left: 10px;" @click="$emit('more', 'patent')">查看</el-button>
-    </el-form-item>
-  	<el-form-item style="margin-bottom: 0px;">
+    <el-form-item style="margin-bottom: 0px;">
   		<el-button type="primary" @click="submitFunc" :disabled="btn_disabled">提交</el-button>
   	</el-form-item>
   </el-form>
@@ -138,6 +141,7 @@ export default {
         type: '',
         pconfirm: false,
         level: '',
+        title: '',
 			},
 			'defaultVal': '',
       'agencyMap': [],
@@ -228,6 +232,7 @@ export default {
 		},
 		'next': {
 			handler: function (val) {
+        console.log('aaaaaa');
         if(val == "") return;
         for (let d of this.data.next) {
           if(d.id == val) {
@@ -243,12 +248,14 @@ export default {
                 this.agencyMap = [ this.data.agency ];
                 this.form.agency = this.data.agency.id;
               }
+              if(this.fields.title) this.form.title = this.data.title;
               if(this.fields.type) this.form.type = 1;
               if(this.defaultVal == 'ipr') {
                 this.form.person_in_charge = person_in_charge['id'];
               }else {
                 this.form.person_in_charge = person_in_charge;
               }
+
               //附件同步
               const atta = d.attachments; 
               if(this.attachments && atta && atta.length != 0 ) {
