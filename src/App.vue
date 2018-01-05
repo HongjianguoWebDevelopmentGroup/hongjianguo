@@ -22,12 +22,12 @@
     <nav>
         <img src="/static/static_img/cvte_log.png" style="vertical-align: middle; height: 28px;">
         <!-- <span class="logo_name">知识产权管理系统aaaaa</span> -->
-        <el-dropdown  trigger="click" style="float: right; margin-right: 40px;" @command="handleCommond">
+        <el-dropdown  trigger="click" style="float: right; margin-right: 40px;">
           <span class="el-dropdown-link" style="color: #20a0ff; cursor: pointer;">
             {{ username }}<i class="el-icon-caret-bottom el-icon--right"></i>
           </span>
           <el-dropdown-menu slot="dropdown" >
-            <el-dropdown-item command="login_out">登出</el-dropdown-item>
+            <el-dropdown-item command="login_out" style="text-align: center;"><a href="/logout" style="text-decoration: none;color: #000;">登出</a></el-dropdown-item>
           </el-dropdown-menu>
         </el-dropdown>
         
@@ -165,7 +165,7 @@ export default {
         // const url = '/api/logout';
         // const success = _=>{
           // this.$message({message: '登出成功', type: 'success'} );
-          window.location.href = '/login';
+          window.location.href = '/logout';
         // }
 
         // this.axiosGet({url, success});
