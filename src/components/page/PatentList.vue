@@ -89,8 +89,15 @@ export default {
           { type: 'text', label: '专利类型', prop: 'type', render_simple: 'name', is_agency: true, sortable: true, is_import: true, width: '142',  },
           { type: 'text', label: '地区', prop: 'area', render_simple: 'name', sortable: true, is_import: true, width: '100', is_agency: true },
           { type: 'text', label: 'IPR', prop: 'ipr', render_simple: 'name', sortable: true, is_import: true, width: '175', is_agency: true },
-          { type: 'text', label: '专利标题', prop: 'title', sortable: true, is_import: true, width: '160', is_agency: true },
-          { type: 'text', label: '当前状态', prop: 'progress', sortable: true, width: '180' },
+          { type: 'text', label: '专利标题', prop: 'title', sortable: true, is_import: true, width: '200', is_agency: true },
+          {
+            type: 'array', 
+            label: '提案标题', 
+            prop: 'proposals',
+            width: '200',
+            render: _=>_.map(_=>_.title),
+          },
+          { type: 'text', label: '当前状态', prop: 'progress', sortable: true, width: '180', is_agency: true },
           { type: 'text', label: '专利摘要', prop: 'abstract', sortable: true, width: '280'},
           { type: 'text', label: '申请日', prop: 'apd', sortable: true, is_import: true, width: '175', is_agency: true},
           { type: 'text', label: '申请号', prop: 'apn', sortable: true, is_import: true, width: '263', is_agency: true},
@@ -343,7 +350,7 @@ export default {
     },
     ifAgency () {
       const r = this.userrole;
-      if(r && r == 5) {
+      if(r == 5 || r == 6) {
         
         const arr = this.tableOption.columns;
         let i = arr.length;

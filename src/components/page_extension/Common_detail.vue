@@ -112,11 +112,11 @@ export default {
     ]),
     refreshDetail () {
       if(!this.type) return;
+      if(this.menusMap.get(this.config.auth)) return;
 
       const type = this.type;
       const id = this.id;
       this.$store.commit('setDetailType', type);
-
       this.refreshDetailData({ id });
     },
     edit () {

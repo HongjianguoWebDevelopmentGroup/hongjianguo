@@ -188,7 +188,7 @@
                   </el-dropdown-menu>
                 </el-dropdown>
 
-                 <el-button v-else-if="btn.type == 'confirm'" :type="btn.btn_type ? btn.btn_type : 'text'" :key="index" :size="btn.size ? btn.size : 'mini'" icon="edit" @click="handleActionCommand(btn.click, scope, $event)">确认</el-button>
+                <el-button v-else-if="btn.type == 'confirm'" :type="btn.btn_type ? btn.btn_type : 'text'" :key="index" :size="btn.size ? btn.size : 'mini'" icon="edit" @click="handleActionCommand(btn.click, scope, $event)">确认</el-button>
 
                 <el-button v-else-if="btn.type == 'edit'" :type="btn.btn_type ? btn.btn_type : 'text'" :key="index" :size="btn.size ? btn.size : 'mini'" icon="edit" @click="handleActionCommand(btn.click, scope, $event)">编辑</el-button>
 
