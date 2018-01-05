@@ -2,19 +2,29 @@
 	<el-dialog title="文件上传" :visible.sync="dialogVisible" class="dialog-medium">  
 		<el-table
 			height="250"
-			style="width: 100%"
+			style="width: 100%;margin-bottom: 10px;"
 			empty-text="暂无可上传数据"
 			:data="tableData"
 		>
-			<el-table-column label="关联案件" prop="project">
+			<el-table-column label="关联案件" prop="project" width="200">
         <template slot-scope="scope">
           <remote-select :type="config.type" v-model="scope.row.project" single></remote-select>
         </template>
       </el-table-column>
-      <el-table-column label="文件名称" prop="name"></el-table-column>
-			<el-table-column label="文件类型" prop="type">
+      <el-table-column label="文件名称" prop="name" width="150"></el-table-column>
+			<el-table-column label="文件类型" prop="type" width="200">
         <template slot-scope="scope">
           <static-select type="file_type" v-model="scope.row.type"></static-select>
+        </template>
+      </el-table-column>
+      <el-table-column label="发文日" prop="time" v-if="config.time" width="200">
+        <template slot-scope="scope">
+          <el-date-picker type="date" style="width: 100%;" v-model="scope.row.time"></el-date-picker>
+        </template>
+      </el-table-column>
+      <el-table-column label="法定期限" prop="legal_time" v-if="config.legal_time" width="200">
+        <template slot-scope="scope">
+          <el-date-picker type="date" style="width: 100%;" v-model="scope.row.legal_time"></el-date-picker>
         </template>
       </el-table-column>
       <el-table-column label="操作">
@@ -22,8 +32,7 @@
           <el-button icon="delete" size="mini" type="text" @click="handleDelete(scope.$index)">删除</el-button>
         </template>
       </el-table-column>
-				
-			
+							
 		</el-table>
   	<el-upload
 		  :action="upload_url"
@@ -42,11 +51,12 @@
       multiple
       style="line-height: 40px;"
       :show-file-list="false"
+      v-if="!config.no_zip"
     >
       <div class="el-upload__text"><em>压缩包上传</em></div>
     </el-upload>
 
-		<el-button style="margin-top: 20px;" type="primary" @click="importData">确认上传</el-button>
+		<el-button type="primary" @click="importData">确认上传</el-button>
 		
 <!-- 		<el-dialog title="指定案件号" :visible.sync="dialogVisibleIn" :modal-append-to-body="false" :modal="false">
 			<el-form label-width="100px">
@@ -76,7 +86,15 @@ const config = [
 		action: 'getCopyrightDocuments',
 		url: '/copyrights/documents',
 		type: 'copyright',
-	}]
+	}],
+  ['patent_notice', {
+    action: 'getPatentNoticesDocuments',
+    url: '/patents_notice/documents',
+    type: 'patent',
+    time: true,
+    legal_time: true,
+    no_zip: true,
+  }]
 ]
 const map = new Map(config);
 
@@ -132,7 +150,6 @@ export default {
   		this.tableData.splice(scope.$index, 1);
   	},
   	importData () {
-  		console.log(this.tableData);
       if(this.tableData.length == 0) {
   			this.$message({message: '上传数据不能为空', type: 'warning'});
   			return;
@@ -140,12 +157,21 @@ export default {
 
       for(let d of this.tableData) {
         if( !d.project || !d.type ) {
-          return this.$message({message: '关联案件与文件类型不能为空', type: 'warning'});
+          return this.$message({message: '关联案件或文件类型不能为空', type: 'warning'});
         }
       }
 
   		const url = this.config.url;
-  		const data = {file: this.file, list: this.tableData};
+      const list = this.$tool.deepCopy(this.tableData);
+      list.forEach(_=>{
+        if(_.time) {
+          _.time = _.time.split('T')[0];
+        }
+        if(_.legal_time) {
+          _.legal_time = _.legal_time.split('T')[0];
+        }
+      })
+  		const data = { file: this.file, list };
   		const success = _=>{
   			this.dialogVisible = false;
   			this.$message({message: '上传文件成功', type: 'success'});

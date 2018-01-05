@@ -112,7 +112,7 @@ export default {
     ]),
     refreshDetail () {
       if(!this.type) return;
-      if(this.menusMap.get(this.config.auth)) return;
+      // if(this.menusMap.get(this.config.auth)) return;
 
       const type = this.type;
       const id = this.id;

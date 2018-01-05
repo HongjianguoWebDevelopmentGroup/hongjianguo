@@ -9,15 +9,15 @@
       trigger="click"
       v-model="sysPopVisible"
     >
-    <div>
-      <template v-if="sysmesg.length != 0">
-      <ul style="list-style-type: decimal;" >
-        <li class="sysmesg-item"  v-for="item in sysmesg" @click="$router.push(`/news/systemMessage/detail?id=${item.id}`)">{{ item.subject }}</li>
-      </ul>
-      <a href="javascript::void(0)" @click="$router.push('/news/systemMessage');sysPopVisible = false">查看更多...</a>
-      </template>
-      <div v-else style="color: #ccc; margin-top: 10px; margin-left: 20px;">暂无系统消息...</div>      
-    </div>
+      <div>
+        <template v-if="sysmesg.length != 0">
+        <ul style="list-style-type: decimal;" >
+          <li class="sysmesg-item"  v-for="item in sysmesg" @click="$router.push(`/news/systemMessage/detail?id=${item.id}`)">{{ item.subject }}</li>
+        </ul>
+        <a href="javascript::void(0)" @click="$router.push('/news/systemMessage');sysPopVisible = false">查看更多...</a>
+        </template>
+        <div v-else style="color: #ccc; margin-top: 10px; margin-left: 20px;">暂无系统消息...</div>      
+      </div>
     </el-popover>
 
     <nav>

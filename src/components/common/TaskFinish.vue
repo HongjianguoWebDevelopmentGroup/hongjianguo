@@ -232,7 +232,6 @@ export default {
 		},
 		'next': {
 			handler: function (val) {
-        console.log('aaaaaa');
         if(val == "") return;
         for (let d of this.data.next) {
           if(d.id == val) {
