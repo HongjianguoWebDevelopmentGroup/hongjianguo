@@ -23,12 +23,12 @@
     <nav>
         <img src="/static/static_img/cvte_log.png" style="vertical-align: middle; height: 28px;">
         <!-- <span class="logo_name">知识产权管理系统aaaaa</span> -->
-        <el-dropdown  trigger="click" style="float: right; margin-right: 40px;" @command="handleCommond">
+        <el-dropdown  trigger="click" style="float: right; margin-right: 40px;">
           <span class="el-dropdown-link" style="color: #20a0ff; cursor: pointer;">
             {{ username }}<i class="el-icon-caret-bottom el-icon--right"></i>
           </span>
           <el-dropdown-menu slot="dropdown" >
-            <el-dropdown-item command="login_out">登出</el-dropdown-item>
+            <el-dropdown-item command="login_out" style="text-align: center;"><a href="/logout" style="text-decoration: none;color: #000;">登出</a></el-dropdown-item>
           </el-dropdown-menu>
         </el-dropdown>
         
@@ -171,7 +171,7 @@ export default {
         // const url = '/api/logout';
         // const success = _=>{
           // this.$message({message: '登出成功', type: 'success'} );
-          window.location.href = '/login';
+          window.location.href = '/logout';
         // }
 
         // this.axiosGet({url, success});
@@ -213,7 +213,7 @@ export default {
     //   type: 'POST',
     //   async: false,
     //   data: {
-    //     username: 'wuyunhe', 
+    //     username: 'admin', 
     //     password: 'Z9jgM6FhdKWEqbbpJePv/6qeTO/Yk2b6lx7zF4tiBncRubwf0fz93hkqGXCiWvqXCDIq7x+kAH3TK5zhjDZ53jgt1Gx1vvBPHn3ga7HTqPrnc+VhhuVGeTefHShJBx32rnbhL6LbEqCAMGqtQXaovCtuJGY6uWYAPfecAOGMuadnxTigTTBwKtW2oVP4J/EwAroYKuy4MK4Pd7YGtFoJAhlpKVOponsgsYQ8EKGOSVxcZgcgnOw8LhPy28N+xoFCh0OBkMyjM80Ybjq+H8BO6CacnDzQReZL5wQZqBdTtW7CUBi6S4+JWDPBahqNgz7jD73UhEIeG0ivFLEdCWtlVw==',
     //   }
     // });
