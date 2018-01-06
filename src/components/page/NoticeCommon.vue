@@ -48,7 +48,7 @@ export default {
 					// { type: 'text', label: '通知书案件名称', prop: 'title', width: '200', is_import: true },
 					{ type: 'text', label: '内部案号', prop: 'serial', width: '200' },
 					{ type: 'text', label: '事务所案号', prop: 'agency_serial', width: '200', is_import: true},
-					{ type: 'text', label: '案件名称', prop: 'project', render_simple: 'name', width: '200', is_import: true },
+					{ type: 'text', label: '案件名称', prop: 'title', width: '200', is_import: true },
 					{ type: 'text', label: '申请号', prop: 'apn', width: '200', is_import: true },
 					{ type: 'text', label: '通知书名称', prop: 'code', render_simple: 'name', width: '200', is_import: true },
 					{ type: 'text', label: '发文日', prop: 'mail_date', width: '200', is_import: true },

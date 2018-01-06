@@ -150,19 +150,33 @@ export default {
   		this.tableData.splice(scope.$index, 1);
   	},
   	importData () {
+      const c = this.config;
       if(this.tableData.length == 0) {
   			this.$message({message: '上传数据不能为空', type: 'warning'});
   			return;
   		}
 
       for(let d of this.tableData) {
-        if( !d.project || !d.type ) {
-          return this.$message({message: '关联案件或文件类型不能为空', type: 'warning'});
+        if( !d.project ) {
+          return this.$message({message: '关联案件不能为空', type: 'warning'});
+        }
+
+        if( !d.type ) {
+          return this.$message({message: '文件类型不能为空', type: 'warning'}); 
+        }
+
+        if( c.time && !d.time ) {
+          return this.$message({message: '发文日不能为空', type: 'warning'});
+        }
+
+        if( c.legal_time && !d.legal_time ) {
+          return this.$message({message: '法定期限不能为空', type: 'warning'});
         }
       }
 
   		const url = this.config.url;
       const list = this.$tool.deepCopy(this.tableData);
+
       list.forEach(_=>{
         if(_.time) {
           _.time = _.time.split('T')[0];

@@ -172,7 +172,7 @@ export default {
       }).then(_=>{
         const url = `/tasks/${this.currentRow.id}/reject`;
         const success = _=>{
-          this.$message('退回任务成功', {type: 'success'});
+          this.$message({message: '退回任务成功', type: 'success'});
           this.dialogShrinkVisible = false;
           this.update();
         };

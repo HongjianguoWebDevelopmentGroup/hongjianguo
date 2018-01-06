@@ -242,7 +242,7 @@ export default {
                         
             this.$nextTick(_=>{
               if(this.fields.agency_type) this.form.agency_type = 1;
-              if(this.fields.area) this.form.area.push('CN');
+              if(this.fields.area) this.form.area = ['CN'];
               if(this.fields.agency && this.data.agency) {
                 this.agencyMap = [ this.data.agency ];
                 this.form.agency = this.data.agency.id;
