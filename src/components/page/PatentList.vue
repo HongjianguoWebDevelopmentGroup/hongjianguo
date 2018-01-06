@@ -443,7 +443,7 @@ export default {
           disabled: true,
           showText: true,
           textColor: '#f90',
-          textTemplate: '{value}',
+          textTemplate: item +'',
         }
       })
     },
