@@ -263,7 +263,7 @@ export default {
       proposer_name: '',
       formRules: {
       	'title': [
-          {required: true, message: '案件名称不能为空'},
+          {required: true, message: '案件名称不能为空' ,trigger: 'blur'},
           {pattern: /^[^~!@#$%^&*]+$/, message: '案件名不能包含非法字符', trigger: 'blur'},
           {max: 150, message: '长度不能超过150个字符', trigger: 'blur' }
       	],
