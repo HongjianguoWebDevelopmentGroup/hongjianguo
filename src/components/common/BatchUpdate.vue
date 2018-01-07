@@ -116,7 +116,7 @@ export default {
 				data: {
 					list: this.tableData,
 				},
-				success (_) {
+				success: _=> {
 					this.$message({type: 'success', message: _.info});
 				}
 			})
