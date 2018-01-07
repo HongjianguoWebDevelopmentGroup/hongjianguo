@@ -11,7 +11,7 @@
           <el-input v-model="form.remark" type="textarea" placeholder="请填写备注信息"></el-input>
         </el-form-item>
         <el-form-item label="附件">
-          <upload v-model="form.attachments" :file-list="attachments"></upload>
+          <upload action="/api/files?action=parseDisclosure" @uploadSuccess="handleUploadSuccess" v-model="form.attachments" :file-list="attachments"></upload>
         </el-form-item>
       </el-form>
     </app-collapse>
@@ -39,6 +39,7 @@ export default {
   	setForm (data) {
       for(let k in this.form) {
         const d = data[k];
+        if(d == undefined) continue;
         if(k == 'attachments') {
           this.form[k] = d.map(_=>_.id);
           this.attachments = d;
@@ -54,8 +55,14 @@ export default {
     checkForm (callback) {
       callback(true);
     },
+    handleUploadSuccess (a, b, c) {
+      this.$emit('uploadSuccess', a, b, c);
+    }
   },
-  components: { AppCollapse, Upload }
+  components: { 
+    AppCollapse, 
+    Upload 
+  }
 }
 </script>
 

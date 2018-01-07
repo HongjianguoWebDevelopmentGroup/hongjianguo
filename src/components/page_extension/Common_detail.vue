@@ -1,7 +1,9 @@
 <template>
+<div>
   <app-shrink :title="title" :visible=visibleAuth @update:visible="handleVisible">
     <span slot="header" style="float: right">
       <el-button size="small" type="primary" class="table-header-btn" @click="edit">保存</el-button>
+      <el-button style="margin-left: 5px;" size="small" type="danger" @click="dialogClosed=true" v-if="type == 'patent'">结案</el-button>
     </span>
     <div  v-loading="detailLoading && visibleAuth" :element-loading-text="config.loadingText" :style="divStyle">
       <el-tabs v-model="activeName">
@@ -40,6 +42,10 @@
       </el-tabs>
     </div>
   </app-shrink>
+  <el-dialog title="提交结案请求" :visible.sync="dialogClosed" @close="$refs.closeForm.clear();">
+    <close-form :id="id" @success="dialogClosed=false" ref="closeForm"></close-form>
+  </el-dialog>
+</div>
 </template>
 
 <script>
@@ -56,8 +62,11 @@ import GroupFamily from '@/components/page_extension/CommonDetail_groupfamily'
 import Defence from '@/components/page_extension/CommonDetail_defence'
 import Quote from '@/components/page_extension/CommonDetail_quote'
 import Review from '@/components/page_extension/CommonDetail_review'
+import CloseForm from '@/components/page_extension/CommonDetail_closed'
+
 import { mapGetters } from 'vuex'
 import { mapActions } from 'vuex'
+
 const config = [
 	['patent', {
 		loadingText: '加载专利信息中...',
@@ -93,6 +102,7 @@ export default {
 		return {
 		  activeName: 'base',
       rendered: false,
+      dialogClosed: false,
 		}
   },
   computed: {
@@ -181,6 +191,7 @@ export default {
     Defence,
     Quote,
     Review,
+    CloseForm,
   }
 }
 </script>

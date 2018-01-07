@@ -20,7 +20,7 @@
         <remote-select type="applicant" v-model="form.applicants" multiple></remote-select>
       </el-form-item >
       <el-form-item label="发明人" prop="inventors">
-        <inventors v-model="form.inventors"></inventors>
+        <inventors v-model="form.inventors" ref="inventors"></inventors>
       </el-form-item>
       <el-form-item label="优先权">
         <priorities v-model="form.priorities"></priorities>
@@ -128,6 +128,15 @@ export default {
   	},
   	setForm (data) {
   		for (let k in this.form) {
+        
+        if(data[k] == undefined) continue;
+        if(this.type == 'add') {
+          if(data.inventors && data.inventors.length != 0) {
+            //复用组件内置的方法...
+            this.$refs.inventors.handleShare(data.inventors);
+          }
+        }
+
   			if( k == 'extension' ) {
   				const arr = [];
   				for(let d of data[k]) {

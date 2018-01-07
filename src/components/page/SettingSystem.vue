@@ -31,20 +31,27 @@ export default {
   methods: {
     ...mapActions([
       'refreshConfigs',
+      'refreshExtends',
     ]),
   	save () {
   		const url = URL;
   		const data = this.configs;
   		const success = _=>{
         this.$message({message: '保存系统设置成功', type: 'success'});
-        this.refreshConfigs();
+        this.refreshConfigs();//刷新系统设置
+        this.refreshExtends();//刷新自定义字段
       };
 
   		this.$axiosPost({url, data, success});
   	}
   },
   created () {
-    this.configs = this.$tool.deepCopy(this.configsData);
+    this.refreshConfigs();
+  },
+  watch: {
+    configsData (val) {
+      this.configs = this.$tool.deepCopy(val);
+    }
   },
   components: { 
     AppCollapse 

@@ -6,8 +6,9 @@
     <classification ref="classification"></classification>
     <agent ref="agent" v-if="type == 'edit'"></agent>
     <case ref="case"></case>
-    <other ref="other" :type="type"></other>
+    <other ref="other" :type="type"  @uploadSuccess="handleUploadSuccess"></other>
     <custom ref="custom" :type="type"></custom>
+    <review ref="review" :type="type"></review>
     <div style="margin-bottom: 20px;">
       <el-button @click="add" type="primary" v-if="type == 'add'" :disabled="btn_disabled">添加</el-button>
       <!-- <el-button @click="edit" type="primary" v-if="type == 'edit'" :disabled="btn_disabled">编辑</el-button> -->
@@ -23,10 +24,11 @@ const map = new Map([
   ['classification', '请正确填写分类信息'],
   ['case', '请正确填写相关案件信息'],
   ['other', '请正确填写其他信息及附件'],
+  ['review', '请正确填写评审结果信息'],
 ]);
 
-const getKeys = ['base', 'person', 'classification', 'case', 'other', 'custom'];
-const setKeys = ['base', 'person', 'classification', 'agent', 'case', 'other', 'custom'];
+const getKeys = ['base', 'person', 'classification', 'case', 'other', 'custom', 'review'];
+const setKeys = ['base', 'person', 'classification', 'agent', 'case', 'other', 'custom', 'review'];
 
 const URL = '/api/patents';
 
@@ -39,6 +41,8 @@ import Agent from '@/components/page_extension/PatentAdd_agent'
 import Case from '@/components/page_extension/PatentAdd_case'
 import Other from '@/components/page_extension/PatentAdd_other'
 import Custom from '@/components/page_extension/PatentAdd_custom'
+import Review from '@/components/page_extension/PatentAdd_review'
+
 import {mapActions} from 'vuex'
 export default {
   name: 'patentAdd',
@@ -126,6 +130,16 @@ export default {
         this.id = copy.id;
         setKeys.map(_=>this.$refs[_].setForm(copy));
       }
+    },
+    handleUploadSuccess (d) {
+      console.log(d);
+      if( !d.data || !d.data.list ) {
+        return this.$message({type: 'warning', message: '识别交底书失败'});
+      }
+
+      getKeys.forEach(_=>{
+        this.$refs[_].setForm(d.data.list)
+      });
     }
   },
   computed: {
@@ -152,7 +166,17 @@ export default {
   mounted () {
     this.refreshForm(this.detail);
   },
-  components: { PaBase, Person, Classification, Agent, Case, Other, AppCollapse ,Custom}
+  components: { 
+    PaBase, 
+    Person, 
+    Classification, 
+    Agent, 
+    Case, 
+    Other, 
+    AppCollapse,
+    Custom,
+    Review,
+  }
 }
 </script>
 

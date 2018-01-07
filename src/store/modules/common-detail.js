@@ -67,7 +67,7 @@ const mutations = {
 }
 
 const actions = {
-	refreshDetailData({ commit, state, rootState }, {id, func, type}={}) {
+	refreshDetailData({ commit, state, rootState }, {id, func, type, error}={}) {
 			if(type) {
 				commit('setDetailType', type);
 			}else {
@@ -87,18 +87,21 @@ const actions = {
           
           const d = response.data;
           if( d.status ) {
-              commit('setDetailData', JSON.parse(JSON.stringify(d[state.type])));
+            commit('setDetailData', JSON.parse(JSON.stringify(d[state.type])));
           }else {
-              // alert(d.info);
+          	commit('setDetailData', null);
+          	if(error) error(response);
+            // alert(d.info);
           }
           commit('setLoading', false);
           commit('refreshTrueType');
 	      })
 	      .catch(err=>{
-	          if(func) func();
-	          commit('setLoading', false);
-	          console.log(err);
-	          // alert('网络错误');
+	      	if(error) error(err);
+	        if(func) func();
+	        commit('setDetailData', null);
+	        commit('setLoading', false);
+	        console.log(err);
 	      })
 		
 	}

@@ -217,7 +217,7 @@ $width: 200px;
     padding-left: 28px;
   }
   .app-transfer-panel__drag2 {
-  	height: 10px;
+  	height: 15px;
   }
 }
 </style>

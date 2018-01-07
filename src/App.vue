@@ -151,7 +151,7 @@ export default {
   },
   methods: {
     ...mapActions([
-      'refreshConfigs',
+      'refreshExtends',
       'refreshProduct',
       'refreshClassification',
       'refreshBranch',
@@ -201,13 +201,6 @@ export default {
       }     
     }
   },
-  // mounted () {
-  //   window.onresize = _=> { 
-  //     if (this.screenWidth <= 1024) {
-  //       this.isCollapse = true;
-  //     }
-  //   }
-  // },
   created () {
   
     const success = _=>{
@@ -217,7 +210,7 @@ export default {
       this.$store.commit('setUser', window.appCache.userinfo);
       
       //获取系统配置数据
-      this.refreshConfigs(false);
+      this.refreshExtends(false);
       // this.$store.dispatch('refreshTags');
       
       //避免每次F5都发送请求的方法：
