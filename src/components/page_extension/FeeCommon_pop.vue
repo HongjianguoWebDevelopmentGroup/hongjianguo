@@ -9,7 +9,7 @@
 			<el-form-item label="费用代码" prop="code">
 				<static-select  type="fee_code" v-model="form.code" ref="fee_code" :disabled="popType == 'edit'"></static-select>
 			</el-form-item>
-			<el-form-item label="费用状态" prop="status" v-show="popType == 'edit'">
+			<el-form-item label="费用状态" prop="status">
 					<fee-status v-model="form.status" :feeAnnual="feeAnnual" :disabled="popType == 'edit'"></fee-status>
 			</el-form-item>
 			<el-form-item label="费用金额" prop="money">
