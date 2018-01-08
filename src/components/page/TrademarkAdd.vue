@@ -166,7 +166,7 @@ export default {
 			  	priorities: []
 			},
 		  rules: {
-		  	title: [{ required: true, message: '商标名称不能为空', trigger: 'blur' },{ max: 25, message: '商标名称不超过25字', trigger: 'blur'}],
+		  	title: { required: true, message: '商标名称不能为空', trigger: 'blur' },
 		  	type: { type: 'number', required: true, message: '商标类型不能为空', trigger: 'change' },
 		  	applicants: { type: 'array',  required: true, message: '申请人不能为空', trigger: 'blur' },
 		  	detail: {required: true, message: '商标小类不能为空', trigger: 'blur'},

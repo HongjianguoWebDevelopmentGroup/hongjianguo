@@ -278,7 +278,7 @@ export default {
       	'title': [
           {required: true, message: '案件名称不能为空'},
           {pattern: /^[^~!@#$%^&*]+$/, message: '案件名不能包含非法字符', trigger: 'blur'},
-          {max: 25, message: '长度不能超过25个字符', trigger: 'blur' }
+          {max: 150, message: '长度不能超过150个字符', trigger: 'blur' }
       	],
         'abstract': [
           {max: 1000, message: '长度不能超过1000个字符', trigger: 'blur' }  

@@ -3,7 +3,7 @@
 	<transition name="slide-fade">
 	<div class="app-shrink" v-show="visible">
 		<div class="app-shrink-head">
-			<span style="font-size: 18px; font-weight: bold;" class="fs">{{ title }}</span>
+			<span style="font-size: 18px; font-weight: bold;float: left;max-width: 430px;text-overflow: ellipsis;overflow: hidden;white-space: nowrap;" :title="title" class="fs">{{ title }}</span>
 			<el-button icon="close" style="float: right; border: 0; height: 40px;" @click="close" title="关闭"></el-button>
 			<slot name="header"></slot>
 		</div>
