@@ -175,14 +175,15 @@ export default {
       }
 
   		const url = this.config.url;
+      //deepCopy 会使时间对象变为字符串 之后做处理
       const list = this.$tool.deepCopy(this.tableData);
 
       list.forEach(_=>{
         if(_.time) {
-          _.time = _.time.split('T')[0];
+          _.time = this.$tool.getDate( new Date(_.time) );
         }
         if(_.legal_time) {
-          _.legal_time = _.legal_time.split('T')[0];
+          _.legal_time = this.$tool.getDate( new Date(_.legal_time) );
         }
       })
   		const data = { file: this.file, list };
