@@ -6,8 +6,8 @@
           <span v-else>{{ branchName ? branchName : '暂未归属某个部门' }}</span>
         </el-form-item>
       	<el-form-item label="IPR">
-          <span class="form-item-text" v-if="type == 'add'">{{ user ? user.name : '暂未取得当前用户信息' }}</span>
-          <static-select type="ipr" v-model="form.ipr" v-else></static-select>
+          <!-- <span class="form-item-text" v-if="type == 'add'">{{ user ? user.name : '暂未取得当前用户信息' }}</span> -->
+          <static-select type="ipr" v-model="form.ipr"></static-select>
       	</el-form-item>
         <el-form-item label="提案人">
           <remote-select type="member" v-model="form.proposer"></remote-select>
@@ -165,6 +165,7 @@ export default {
     },
   	setForm (data) {
       for(let k in this.form) {
+        if(data[k] == undefined) continue;
         if( k == 'branch' ) {
           if(data[k]) {
             this.form[k] = data[k]['id'];  
@@ -182,7 +183,7 @@ export default {
       }
   	},
     submitForm () {
-      if(this.type == 'add') this.form.ipr = this.user.id;
+      // if(this.type == 'add') this.form.ipr = this.user.id;
       return this.$tool.shallowCopy(this.form, { 'date': true });
     },
     checkForm (callback) {

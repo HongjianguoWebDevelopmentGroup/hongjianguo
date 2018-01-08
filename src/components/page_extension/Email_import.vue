@@ -42,8 +42,6 @@ import RemoteSelect from '@/components/form/RemoteSelect'
 import StaticSelect from '@/components/form/StaticSelect'
 import Upload from '@/components/form/Upload'
 
-const URL = '/api/importmail'
-
 export default {
 	name: 'EmailImport',
 	props: ['id'],
@@ -83,8 +81,13 @@ export default {
 	},
 	methods: {
 		setForm (form) {
-			this.$tool.coverObj(this.form, form, {obj: ['attachments']});
+			this.$tool.coverObj(this.form, form, {obj: ['attachments'], skip: ['project']});
 			this.attachments = form.attachments;
+			if(form.project) {
+				this.$nextTick(_=>{
+					this.form.project = form.project;
+				})
+			}
 		},
 		importMaile () {
 

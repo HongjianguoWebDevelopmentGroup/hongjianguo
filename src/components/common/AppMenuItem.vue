@@ -1,6 +1,6 @@
 <template>
 	      
-	<el-submenu v-if="dd.type == 'submenu' && !menusMap.get(dd.path) ? true : false" :index="dd.path">
+	<el-submenu v-if="dd.type == 'submenu' && menuIf(dd.path)" :index="dd.path">
 		<template slot="title"><i :class="dd.icon"></i>{{ dd.text }}</template>
 		<template v-if="forChildren(dd)">
 			<app-menu-item v-for="item in dd.children" :key="item.path" :dd="item"></app-menu-item>
@@ -28,7 +28,13 @@ export default {
     }
   },
   computed: {
-
+    ...mapGetters([
+      'menusMap',
+      'pendingTaskCount',
+      'pausedTaskCount',
+      'monitoredTaskCount',
+      'hideProposal',
+    ])
   },
   methods: {
     ...mapMutations([
@@ -48,16 +54,18 @@ export default {
   	},
     getCount (key) {
       return this[this.map[this.dd.path]];
+    },
+    menuIf (p) {
+      if(p == '/proposal' && this.hideProposal == "1" ) {
+        return false;
+      }
+
+      if(this.menusMap.get(p)) {
+        return false;
+      }
+
+      return true;
     }
   },
-  computed: {
-    ...mapGetters([
-      'menusMap',
-      'pendingTaskCount',
-      'pausedTaskCount',
-      'monitoredTaskCount',
-      // ...
-    ])
-  }
 }
 </script>

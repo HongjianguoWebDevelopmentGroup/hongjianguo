@@ -35,7 +35,7 @@
 							<static-select type='tag' v-model="formData.tags" multiple></static-select>
 						</el-form-item>
 						<el-form-item label="附件" prop="attachments" class="is-required">
-               <upload action="/api/files?action=parseDisclosure" @uploadSuccess="handleUploadSuccess" v-model="formData.attachments" :file-list="attachments" ref="upload"></upload>
+               <upload v-model="formData.attachments" :file-list="attachments" ref="upload"></upload>
 						</el-form-item>
             <el-form-item label="备注" prop="remark">
               <el-input type="textarea" v-model="formData.remark"></el-input>

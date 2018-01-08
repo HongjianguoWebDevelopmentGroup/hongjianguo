@@ -150,6 +150,9 @@
     <file-upload v-if="tableOption.upload_type !== undefined" :type="tableOption.upload_type" @upload-success="refresh" ref="file_upload"></file-upload>
   
     <el-dialog class="dialog-small" :visible.sync="dialogControl" title="字段控制" @close="transferValue = control; $refs.transfer.clear();">
+        <div style="margin-bottom: 10px;
+    padding-left: 50px;
+    color: rgb(132, 146, 166);">提示：可拖动字段调整顺序</div>
         <app-transfer ref="transfer" title1="未显示" title2="已显示" placeholder="查询字段..." v-model="transferValue" style="text-align: center;"></app-transfer>
         <div style="margin-top: 20px;margin-left: 45px;">
           <el-button type="primary" @click="controlSave">保存</el-button>
@@ -230,14 +233,13 @@ export default {
         })
         
         const cache = Object.assign({}, localO, cookieO);
-        
+        if(this.$tool.getObjLength(localO) != this.$tool.getObjLength(cache)) return true;
         for(let key in cache) {
           if(cache[key]) {
             return true;
           }
         }
       })();
-
       //若存在错误,则将本地缓存清空,无错误则替换原有控制器
       if(error) {
         this.$tool.deleteLocal(this.tableOption.name);

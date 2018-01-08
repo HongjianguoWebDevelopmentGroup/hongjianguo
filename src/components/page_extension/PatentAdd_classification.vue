@@ -10,6 +10,12 @@
 				<el-form-item label="标签">
           <static-select type="tag" v-model="form.tags" multiple></static-select>
 				</el-form-item>
+        <el-form-item label="项目名称" prop="project_name">
+          <el-input v-model="form.project_name" placeholder="请填写项目名称"></el-input>
+        </el-form-item>
+        <el-form-item label="项目代号" prop="project_serial">
+          <el-input v-model="form.project_serial" placeholder="请填写项目编号"></el-input>
+        </el-form-item>
 				<el-form-item label="主国际分类号">
 					<el-input v-model="form.main_ipc" placeholder="请填写主国际分类号"></el-input>
 				</el-form-item>
@@ -32,12 +38,15 @@ export default {
 				classification: '',
 				tags: [],
 				main_ipc: '',
+        project_name: '',
+        project_serial: '',
 			}
     }
   },
   methods: {
   	setForm (data) {
       for(let k in this.form) {
+        if(data[k] == undefined) continue;
         if(k == 'products') {
           this.form[k] = data[k].map(_=>_.id);
         }else if(k == 'classification') {

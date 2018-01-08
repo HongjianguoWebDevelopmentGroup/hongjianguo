@@ -50,7 +50,7 @@
 	  </el-collapse-item>
 	  <el-collapse-item  name="2" v-else-if="row.category == 1">
       <template slot="title">
-        专利详情<el-button size="mini" type="text" style="margin-left: 10px;" @click.stop="editPatent">更多...</el-button>
+        专利详情<el-button v-if="ifMore" size="mini" type="text" style="margin-left: 10px;" @click.stop="editPatent">更多...</el-button>
       </template>
 	    <el-form label-width="70px" label-position="left" class="form-information" v-loading="detailLoading" element-loading-text="加载专利信息中..." style="min-height: 300px;">
 	    	<template v-if="!!detailBasePatent">
@@ -82,11 +82,14 @@
   	    		</el-form-item>
   	    	</el-row>
         </template>
-	    </el-form>
+        <div v-else style="text-align: center;line-height: 300px;">
+          <span>暂无专利详情数据...</span>
+	      </div>
+      </el-form>
 	  </el-collapse-item>
 	  <el-collapse-item name="2" v-else-if="row.category == 3">
 	    <template slot="title">
-        版权详情<el-button size="mini" type="text" style="margin-left: 10px;" @click.stop="editCopyright">更多...</el-button>
+        版权详情<el-button v-if="ifMore" size="mini" type="text" style="margin-left: 10px;" @click.stop="editCopyright">更多...</el-button>
       </template>
       <el-form label-width="70px" label-position="left" class="form-information" v-loading="detailLoading" element-loading-text="加载版权信息中..." style="min-height: 300px;">
         <template v-if="!!detailBaseCopyright" >
@@ -119,11 +122,14 @@
             </el-form-item>
           </el-row>
         </template>
+        <div v-else style="text-align: center;line-height: 300px;">
+          <span>暂无版权详情数据...</span>
+        </div>
       </el-form>
 	  </el-collapse-item>
     <el-collapse-item name="2" v-else-if="row.category == 2">
       <template slot="title">
-        商标详情<el-button size="mini" type="text" style="margin-left: 10px;" @click.stop="editCopyright">更多...</el-button>
+        商标详情<el-button v-if="ifMore" size="mini" type="text" style="margin-left: 10px;" @click.stop="editCopyright">更多...</el-button>
       </template>
       <el-form label-width="100px" label-position="left" class="form-information" v-loading="detailLoading" element-loading-text="加载商标信息中..." style="min-height: 300px;">
         <template v-if="!!detailBaseTrademark" >
@@ -159,6 +165,9 @@
             </el-form-item>
           </el-row>
         </template>
+        <div v-else style="text-align: center;line-height: 300px;">
+          <span>暂无商标详情数据...</span>
+        </div>
       </el-form>
     </el-collapse-item>
     <el-collapse-item name="2" v-else-if="row.category == 5" title="账单详情">
@@ -179,6 +188,11 @@ const map = new Map([
   [1, 'patent'],
   [2, 'trademark'],
   [3, 'copyright'],
+])
+const errMsg = new Map([
+  [1, '获取专利详情失败'],
+  [2, '获取商标详情失败'],
+  [3, '获取版权详情失败'],
 ])
 
 export default {
@@ -256,7 +270,12 @@ export default {
       'detailBaseCopyright',
       'detailBaseTrademark',
       'detailLoading',
-    ])  
+      'menusMap',
+    ]),
+    ifMore () {
+      const c = this.row.category;
+      return !this.menusMap.get({1: '/patent/detail_panel', 2: '/copyright/detail_panel', 3: '/trademark/detail_panel'}[c]);
+    }
   },
   methods: {
     ...mapActions([
@@ -268,7 +287,13 @@ export default {
 	  	if( c == 0) {
 	  		this.refreshP();
 	  	}else if(map.get(c)) {
-        this.refreshDetailData({id: this.row.project_id, type: map.get(c)});
+        this.refreshDetailData({
+          id: this.row.project_id, 
+          type: map.get(c), 
+          error: _=>{
+            this.$message({ type: 'warning', message: errMsg.get(c) });
+          } 
+        });
       }
 
   	},
@@ -307,6 +332,9 @@ export default {
     },
     editCopyright () {
       this.$emit('more', 'copyright');
+    },
+    editTrademark () {
+      this.$emit('more', 'trademark');
     }
   },
   created () {

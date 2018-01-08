@@ -72,9 +72,6 @@
     <el-form-item prop="remark" label="任务备注" v-if="fields.remark && !hide_r_a">
       <el-input type="textarea" v-model="form.remark"></el-input>
     </el-form-item>
-    <ul v-if="data.description && data.description.length != 0" style="margin-left:115px;padding: 0;margin-top:-10px; font-size:14px;color:#bbb;">
-      <li v-for="(item, index) in data.description" :key="index">{{ item }}</li>
-    </ul>
     <el-form-item prop="rank" label="评分" v-if="fields.rank">
       <el-rate 
         v-model="form.rank" 
@@ -98,7 +95,10 @@
     <el-form-item prop="is_supplement" label="补充" v-if="fields.is_supplement" >
       <app-switch type="is" v-model="form.is_supplement"></app-switch>
     </el-form-item>
-  	<el-form-item style="margin-bottom: 0px;">
+    <ul v-if="data.description && data.description.length != 0" style="margin-left:115px;padding: 0;margin-top:-10px; font-size:14px;color:#bbb;">
+      <li v-for="(item, index) in data.description" :key="index">{{ item }}</li>
+    </ul>
+    <el-form-item style="margin-bottom: 0px;">
   		<el-button type="primary" @click="submitFunc" :disabled="btn_disabled">提交</el-button>
   	</el-form-item>
   </el-form>
@@ -225,6 +225,9 @@ export default {
       this.form.attachments = attachments.map(_=>_.id);
 
       this.hide_r_a = true;
+    },
+    refreshNext (val) {
+      
     }
 	},
 	watch: {
@@ -287,7 +290,6 @@ export default {
     },
     'form.agency': {
       handler (val) {
-
         if(val !== '' && !(val instanceof Object)) {
           if(this.$refs.agent) {
             this.agentMap = [];
@@ -296,7 +298,6 @@ export default {
         }else {
           this.form.agent = '';
         }
-
       }
     }
 	},

@@ -1,5 +1,5 @@
 <template>
-	<div class="main">
+	<div class="main" v-loading="analysisLoading" element-loading-text="邮件识别中...">
 	<div class="left"  v-loading="treeLoading">
 		<el-tree
 			:data="treeData"
@@ -29,11 +29,23 @@
       </template>
 		</table-component>
 	</div>
+	
 	<Detail ref="mail_detail"></Detail>
+	
 	<app-import type="invoicePayable" :visible.sync="dialogFee" ref="fee" @import-success="importSuccess"></app-import>
+	
 	<app-import type="patent_notice" :visible.sync="dialogNotice" ref="notice" @import-success="importSuccess"></app-import>
+	
 	<el-dialog title="邮件导入" :visible.sync="dialogCustom" class="dialog-small">
 		<import @success="importSuccess" ref="custom"></import>
+	</el-dialog>
+
+	<el-dialog title="邮件导入" :visible.sync="dialogSimple" class="dialog-small" @close="projectId = []">
+		<div style="margin-bottom: 10px; color: rgb(132, 146, 166); font-size: 14px;">
+			<span>当前邮件下没有附件,可将其挂载到某一案件下</span>
+		</div>
+		<remote-select type="project" v-model="projectId" style="margin-bottom: 10px;"></remote-select>
+		<el-button type="primary" @click="associateMail" :loading="loading" multiple>{{ loading ? '关联中...' : '确认关联' }}</el-button>
 	</el-dialog>
 </div>
 </template>
@@ -43,6 +55,8 @@ import TableComponent from '@/components/common/TableComponent'
 import Detail from '@/components/page_extension/Email_detail'
 import Import from '@/components/page_extension/Email_import'
 import AppImport from '@/components/common/AppImport'
+import RemoteSelect from '@/components/form/RemoteSelect'
+
 import {mapGetters} from 'vuex'
 
 export default {
@@ -96,11 +110,15 @@ export default {
 			time: null,
 			importId: '',
 			treeLoading: false,
+			loading: false,
 			currentNodeKey: '',
 			dialogNotice: false,
 			dialogFee: false,
 			dialogCustom: false,
+			dialogSimple: false,
 			currentId: '',
+			projectId: [],
+			analysisLoading: false,
 		}
 	},
 	computed: {
@@ -122,12 +140,27 @@ export default {
   		const url = `/api/mailanalysis/${id}`;
   		const success = _=>{
   			this.currentId = id;//记录当前ID；
+  			
+  			if(_.data.length == 0) {
+  				this.dialogSimple = true;
+  				if(_.project) {
+	  				this.$nextTick(v=>{
+	  					this.projectId = _.project;
+	  				})
+  				}
+  				
+  				return;
+  			}
+
   			if(_.type == 'custom') {
   				this.dialogCustom = true;
   				this.$nextTick(v=>{
-  					this.$refs.custom.setForm({
-  						attachments: _.data,
-  					})
+  					const d = {attachments: _.data};
+  					if(_.project) {
+  						d.project_type = _.project.category;
+  						d.project = _.project;
+  					}
+  					this.$refs.custom.setForm(d);
   				})
   			}else if(_.type == 'invoicePayable') {
   				this.dialogFee = true;
@@ -140,12 +173,16 @@ export default {
   					this.$refs.notice.tableData = _.data;	
   				});
   			}
-  		}
-  		this.$axiosGet({url, success});
+  		};
+
+  		const complete = _=>{ this.analysisLoading = false };
+  		
+  		this.analysisLoading = true;
+  		this.$axiosGet({ url, success, complete });
   	},
   	importSuccess () {
   		//隐藏弹出框
-  		this.dialogCustom = this.dialogNotice = this.dialogFee = false;
+  		this.dialogSimple = this.dialogCustom = this.dialogNotice = this.dialogFee = false;
   		//将导入成功邮件标记为已导入
   		this.$axiosGet({
   			url: `/api/mailimported/${this.currentId}`,
@@ -153,6 +190,26 @@ export default {
   				this.update();//刷新当前页面
   			}
   		})
+  	},
+  	associateMail () {
+  		this.loading = true;
+  		if(this.projectId.length == 0) {
+  			this.$message({type: 'warning', message: '请选择关联案件'});
+  			return;
+  		}
+  		this.$axiosPut({
+  			url: `api/mails/${this.currentId}/projects`,
+  			data: {
+  				ids: this.projectId, 
+  			},
+  			success: _=>{
+  				this.$message({type: 'success', message: _.info});
+  				this.importSuccess;
+  			},
+  			complete: _=>{
+  				this.loading = false;
+  			},
+  		});
   	},
   	refreshTableData (options) {
   		if(this.time == null) return;
@@ -219,6 +276,7 @@ export default {
 		Detail,
 		Import,
 		AppImport,
+		RemoteSelect,
 	}
 
 }

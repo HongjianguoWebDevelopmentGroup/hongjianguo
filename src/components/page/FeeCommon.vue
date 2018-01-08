@@ -241,11 +241,10 @@ export default {
       };
       const complete = _=>{ this.btn_disabled = false; }
       this.btn_disabled = true;
-      this.axiosPost({ url, data, success, complete });
+      this.$axiosPost({ url, data, success, complete });
 
     },
     invoicePut () {
-
       const scope = this.invoiceSwitchType;
       const s = this.invoiceSelected;
       let fees;
@@ -272,7 +271,7 @@ export default {
       };
       const complete = _=>{ this.btn_disabled = false; }
       this.btn_disabled = true;
-      this.axiosPut({url, data, success});
+      this.$axiosPut({url, data, success});
     }
   },
   watch: {

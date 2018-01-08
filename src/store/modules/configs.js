@@ -5,20 +5,6 @@ const state = {
 
 const getters = {
 	configsData: state=>state.data ? state.data : [],
-	configsMap: (state, getters)=>{
-		const d = getters.configsData;
-		const map = {};
-		d.forEach(_=>{
-			_.configs.forEach(item=>{
-				map[item.name] = item.config_value;
-			})
-		});
-
-		return map;
-	},
-	configsExtends1: (state, getters)=>state.data ? getters.configsMap['EXTEND_ONE'] : '',
-	configsExtends2: (state, getters)=>state.data ? getters.configsMap['EXTEND_TWO'] : '',
-	configsExtends3: (state, getters)=>state.data ? getters.configsMap['EXTEND_THREE'] : '',
 }
 
 const mutations = {
@@ -28,24 +14,21 @@ const mutations = {
 }
 
 const actions = {
-	refreshConfigs ({commit, rootState, state}, async=true) {
+	refreshConfigs ({commit,  rootState, state}) {
 		url = rootState.status ? url.replace(/\/api/, '') : url;
 
-		$.ajax({
-			type: 'GET',
-			url,
-			async,
-			success (d) {
+		rootState.axios.get(url)
+			.then(_=>{
+				const d = _.data;
 				if(d.status){
 					commit('setConfigs', d.configs);
 				}else {
 					alert('请求系统配置数据失败');
 				}
-			},
-			error (error) {
+			})
+			.catch(error=>{
 				console.log(error);
-			}
-		})
+			});
 
 		// rootState.axios
 		// 	.get(url)
