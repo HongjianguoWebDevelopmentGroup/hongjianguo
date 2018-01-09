@@ -27,7 +27,7 @@
 			</el-form-item>
 
       <el-form-item label="收文日期" prop="receipt_date" v-show="type != 'add'">
-        <el-date-picker v-model="form.receipt_date" type="date" placeholder="请选择收件日期"  @change="keepSameTime"></el-date-picker>
+        <el-date-picker v-model="form.receipt_date" type="date" format="yyyy-MM-dd" placeholder="请选择收件日期"  @change="keepSameTime"></el-date-picker>
       </el-form-item>
 
 			<el-form-item label="描述" prop="description" v-show="type !='confirm'">
