@@ -196,7 +196,7 @@ const config = [
   }],
   ['patent_avoidability', {
     options: [
-      { id: 1, name: '很苦难' },
+      { id: 1, name: '很困难' },
       { id: 2, name: '比较困难' },
       { id: 3, name: '容易' },
       { id: 4, name: '很容易' },
@@ -222,7 +222,7 @@ const config = [
   ['patent_selling', {
     options: [
       { id: 1, name: '相关' },
-      { id: 2, name: '不想关' },
+      { id: 2, name: '不相关' },
       { id: 3, name: '不确定' },
     ]
   }],

@@ -53,7 +53,7 @@ import Upload from '@/components/form/Upload'
 import StaticSelect from '@/components/form/StaticSelect'
 
 export default {
-  name: 'patentAddOther',
+  name: 'patentAddReview',
   props: ['type'],
   data () {
 		return {
