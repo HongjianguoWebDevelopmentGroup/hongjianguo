@@ -39,7 +39,7 @@ export default {
           { type: 'text', label: '发件人', render_simple: 'name', prop: 'from', width:'145'},
           { type: 'array', label: '文件信息', prop: 'projects', width:'263',
             render (array) {
-              return array.map(_=>`${_.name}: ${_.type.join(";")}`);
+               return array.map(_=>`${_.name}: ${_.type!=null?_.type.join(";"):';'}`);
             }
           },
           { type: 'text', label: '发文描述', prop: 'description', min_width:'210' },

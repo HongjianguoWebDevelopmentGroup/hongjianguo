@@ -47,8 +47,8 @@ export default {
   		if(!val) {
   			return [];	
   		}
-
-  		return val.split(',');  		
+      val = val.replace(/，/g,',');   
+      return val.split(","); 	
   	}
   },
   watch: {
