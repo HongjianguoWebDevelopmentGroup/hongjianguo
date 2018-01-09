@@ -47,8 +47,7 @@ export default {
   		if(!val) {
   			return [];	
   		}
-      val = val.replace(/，/g,',');
-      console.log(val.split(","));    
+      val = val.replace(/，/g,',');   
   		return val.split(",");  		
   	}
   },
