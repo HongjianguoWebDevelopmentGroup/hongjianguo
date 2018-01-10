@@ -89,13 +89,13 @@
       </span>
       <el-tabs v-model="activeName">        
         <el-tab-pane label="前往处理" name="finish" v-if="task_status == 0">
-          <task-finish :id="currentRow.id" @submitSuccess="finishSuccess" @more="handleMore"></task-finish>
+          <task-finish :id="currentRow.id" @submitSuccess="finishSuccess" @more="handleMore" :action="activeName"></task-finish>
         </el-tab-pane>
-        <el-tab-pane label="详细信息" name="edit">          
-          <information :row="currentRow" @more="handleMore"></information>          
+        <el-tab-pane label="详细信息" name="information">          
+          <information :row="currentRow" @more="handleMore" :action="activeName"></information>          
         </el-tab-pane>
-        <el-tab-pane label="相关任务" name="cccc">          
-          <detail :row="currentRow" style="margin: 10px 0;"></detail>          
+        <el-tab-pane label="相关任务" name="associate">          
+          <detail :id="currentRow.id" style="margin: 10px 0;" :action="activeName"></detail>  
         </el-tab-pane>
       </el-tabs>
     </app-shrink>

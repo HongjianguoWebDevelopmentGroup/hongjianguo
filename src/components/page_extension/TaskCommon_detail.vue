@@ -26,7 +26,13 @@ import AxiosMixins from '@/mixins/axios-mixins'
 export default {
   name: 'taskEdit',
   mixins: [ AxiosMixins ],
-  props: ['row'],
+  props: {
+    'id': [String, Number],
+    'action': {
+      type: String,
+      default: 'associate',
+    }
+  },
   data () {
   	return {
   	  tableOption: {
@@ -48,23 +54,17 @@ export default {
         ]
       },
       loading: false,
-      
+      requested: false,
       collapse: [],
   	}
   },
-  computed: {
-    id () {
-      return this.row.id;  
-    }
-  },
   methods: {
-    refreshData () {
+    refreshData: async function () {
+      if(this.action != 'associate') return;
       this.loading = true;
-      const url = `/api/tasks/${this.id}`;
-      const success = _=>{this.collapse = _.task.siblings; console.log(_.task.siblings);};
-      const complete = _=>{setTimeout(_=>this.loading = false, 500)};
-
-      this.axiosGet({url, success, complete});
+      await this.$axiosGet({url: `/api/tasks/${this.id}`, success: _=>{this.collapse = _.task.siblings;}});
+      this.loading = false;
+      this.requested = true;
     }
   },
   created () {
@@ -72,8 +72,13 @@ export default {
   },
   watch: {
     id () {
+      this.requested = false;
       this.refreshData();
-    }
+    },
+    action () {
+      if(this.requested) return;
+      this.refreshData();
+    },
   },
   components: { TableComponent },
 }

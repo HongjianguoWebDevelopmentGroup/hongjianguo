@@ -17,9 +17,14 @@
           <static-select :type="config.file_type" v-model="scope.row.type" ref="file_type"></static-select>
         </template>
       </el-table-column>
-      <el-table-column label="时间" prop="time" v-if="config.type == 'trademark'">
+      <el-table-column label="发文日" prop="time" v-if="config.time">
         <template slot-scope="scope">
-          <el-date-picker type="date" placeholder="请选择时间" v-model="scope.row.time" style="width: 125px;"></el-date-picker>
+          <el-date-picker type="date" style="width: 125px;" v-model="scope.row.time"></el-date-picker>
+        </template>
+      </el-table-column>
+      <el-table-column label="法定期限" prop="legal_time" v-if="config.legal_time">
+        <template slot-scope="scope">
+          <el-date-picker type="date" style="width: 125px;" v-model="scope.row.legal_time"></el-date-picker>
         </template>
       </el-table-column>
       <el-table-column label="操作">
@@ -47,6 +52,7 @@
       multiple
       style="line-height: 40px;"
       :show-file-list="false"
+      v-if="!config.no_zip"
     >
       <div class="el-upload__text"><em>压缩包上传</em></div>
     </el-upload>
@@ -89,7 +95,17 @@ const config = [
     url: '/trademarks/documents',
     type: 'trademark',
     file_type: 'file_type_trademark',
-  }]
+    time: true,
+  }],
+  ['patent_notice', {
+    action: 'getPatentNoticesDocuments',
+    url: '/patents_notice/documents',
+    type: 'patent',
+    file_type: 'file_type',
+    time: true,
+    legal_time: true,
+    no_zip: true,
+  }],
 ]
 const map = new Map(config);
 

@@ -177,7 +177,6 @@
 </template>
 
 <script>
-import AxiosMixins from '@/mixins/axios-mixins'
 import TableComponent from '@/components/common/TableComponent'
 import InvoiceDetail from '@/components/page_extension/InvoiceCommon_detail'
 import { mapGetters } from 'vuex'
@@ -197,12 +196,18 @@ const errMsg = new Map([
 
 export default {
   name: 'taskEdit',
-  mixins: [ AxiosMixins ],
-  props: [ 'row' ],
+  props: {
+    'row': Object,
+    'action': {
+      type: String,
+      default: 'information',
+    }
+  },
   data () {
   	return {
   		activeNames: ['1', '2'],
-  		loading: true,
+  		loading: false,
+      requested: false,
   		attachmentsOption: {
         'is_search': false,
         'is_pagination': false,
@@ -281,52 +286,34 @@ export default {
     ...mapActions([
       'refreshDetailData',
     ]),
-  	refresh () {
-	  	this.loading = true;
-      const c = this.row.category; 
-	  	if( c == 0) {
-	  		this.refreshP();
-	  	}else if(map.get(c)) {
-        this.refreshDetailData({
-          id: this.row.project_id, 
-          type: map.get(c), 
-          error: _=>{
-            this.$message({ type: 'warning', message: errMsg.get(c) });
-          } 
-        });
+    refresh: async function () {
+      if(this.action != 'information') return;
+      
+      const c = this.row.category;
+      //refreshDetailoData为全局的详情函数 请求专利、版权、商标详情
+      if( c == 0 ) {
+        this.loading = true;
+        await this.refreshProposal();
+        this.loading = false;
+      }else {
+        await (_=>{
+          let next = '';
+          this.refreshDetailData({ id: this.row.project_id, type: map.get(c), next: _=>{ next = _ } });
+          return next;
+        })();
       }
-
-  	},
-  	refreshP () {
+      this.requested = true;
+    },
+    //获取提案详情
+  	refreshProposal () {
   		const url = `/api/proposals/${this.row.project_id}`;
   		const success = _=>{
   			this.$tool.coverObj(this.row_p, _.proposal);
-  			this.loading = false;
   		};
 
-  		this.axiosGet({url, success});
+  		return this.$axiosGet({url, success});
   	},
-  	refreshPatent () {
-      //这里使用全局的专利详情信息
-
-  		// const url = `/api/patents/${this.row.project_id}`;
-  		// const success = _=>{
-  		// 	this.$tool.coverObj(this.row_patent, _.patent);
-  		// 	this.loading = false;
-  		// }
-
-  		// this.axiosGet({url, success});
-  	},
-    refreshCopyright () {
-      //这里使用全局的版权详情信息
-
-      // const url = `/api/copyrights/${this.row.project_id}`;
-      // const success = _=>{
-      //   this.$tool.coverObj(this.row_copyright, _.copyright);
-      //   this.loading = false;
-      // }
-      // this.axiosGet({url, success});
-    },
+    //<更多...> 按钮的点击回掉函数 因为需要弹出同级的面板 所以 需要提供外部接口
     editPatent () {
       this.$emit('more', 'patent');
     },
@@ -342,8 +329,13 @@ export default {
   },
   watch: {
   	row () {
+      this.requested = false;
   		this.refresh();
-  	}
+  	},
+    action () {
+      if(this.requested) return;
+      this.refresh();
+    }
   },
   components: {
   	TableComponent,

@@ -12,11 +12,9 @@ import AxiosMixins from '@/mixins/axios-mixins'
 const config = [
 	['patent', {
 		URL: '/api/patents/notices',
-
+		import_type: 'patent_notice',
+		upload_type: 'patent_notice',
 	}],
-	['copyright', {
-		URL: '/api/copyrights/notices'
-	}]
 ]
 const map = new Map(config);
 
@@ -32,13 +30,15 @@ export default {
 					{ type: 'delete', map_if: '/patent/notice/delete' },
 					{ type: 'export' },
 					{ type: 'import' },
+					{ type: 'batch_upload' },
 					{ type: 'control', label: '字段' },
 					// { type: 'custom', label: '上传', icon: '', click: ()=>{alert("上传")} },
 					// { type: 'custom', label: '批量上传', icon: '', click: ()=>{alert("批量上传")}},
 				],
 				'height': 'default2',
 				'url': '',
-				'import_type': '',				
+				'import_type': '',
+				'upload_type': '',			
 				'columns': [
 					{ type: 'selection' },
 					// { type: 'text', label: '通知书案件名称', prop: 'title', width: '200', is_import: true },
@@ -104,7 +104,8 @@ export default {
 	},
 	components: { TableComponent, Strainer },
 	created () {
-		this.tableOption.import_type = this.type == 'patent' ? 'patent_notice' : 'copyright_notice';		
+		this.tableOption.import_type = this.config.import_type;
+		this.tableOption.upload_type = this.config.upload_type;		
 		this.tableOption.url = this.config.URL;
 	},
 	mounted () {

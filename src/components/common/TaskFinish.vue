@@ -120,10 +120,17 @@ const URL = `/api/tasks`;
 
 export default {
   name: 'taskFinish',
-  props: ['id'],
+  props: {
+    'id': [String, Number],
+    'action': {
+      type: String,
+      default: 'finish',
+    }
+  },
   mixins: [axiosMixins],
   data () {
 		return {
+      'requested': false, //当前ID下,是否已经请求过数据
 			'data': {},
       'staticMap': [],
 			'next': '',
@@ -179,10 +186,14 @@ export default {
       'refreshUser',
     ]),
   	refreshData () {
+      
+      if(this.action != 'finish') return;
+       
       this.loading = true; 
       this.next = "";
   		const url = `${URL}/${this.id}/form`;
   		const success = d=>{
+        this.requested = true;
   			this.data = d.data;
         this.fields = d.data.fields;
         if(this.data.next.length != 0) {
@@ -232,9 +243,16 @@ export default {
 	},
 	watch: {
 		id () {
+      this.requested = false;
 			this.clear();
       this.refreshData();
 		},
+    action () {
+      // console.log(this.requested);
+      if(this.requested) return;
+      this.clear();
+      this.refreshData();
+    },
 		'next': {
 			handler: function (val) {
         if(val == "") return;

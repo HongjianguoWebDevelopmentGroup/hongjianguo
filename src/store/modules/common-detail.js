@@ -67,43 +67,47 @@ const mutations = {
 }
 
 const actions = {
-	refreshDetailData({ commit, state, rootState }, {id, func, type, error}={}) {
-			if(type) {
-				commit('setDetailType', type);
-			}else {
-				type = state.type;
-			}
-			if(id) {
-				commit('setId', id);
-			}else {
-				id = state.id;
-			}
-			let url = `/api/${state.type}s`;
-			url = rootState.status ? url.replace(/\/api/, '') : url;
-      commit('setLoading', true);
-      rootState.axios.get(`${url}/${id}`)
-	      .then(response=>{
-          if(func) func();    
-          
-          const d = response.data;
-          if( d.status ) {
-            commit('setDetailData', JSON.parse(JSON.stringify(d[state.type])));
-          }else {
-          	commit('setDetailData', null);
-          	if(error) error(response);
-            // alert(d.info);
-          }
-          commit('setLoading', false);
-          commit('refreshTrueType');
-	      })
-	      .catch(err=>{
-	      	if(error) error(err);
-	        if(func) func();
-	        commit('setDetailData', null);
-	        commit('setLoading', false);
-	        console.log(err);
-	      })
-		
+	refreshDetailData({ commit, state, rootState }, {id, func, type, error, next}={}) {
+		if(type) {
+			commit('setDetailType', type);
+		}else {
+			type = state.type;
+		}
+		if(id) {
+			commit('setId', id);
+		}else {
+			id = state.id;
+		}
+		let url = `/api/${state.type}s`;
+		url = rootState.status ? url.replace(/\/api/, '') : url;
+    commit('setLoading', true);
+    const n = rootState.axios.get(`${url}/${id}`)
+    n
+    .then(response=>{
+      if(func) func();    
+      
+      const d = response.data;
+      if( d.status ) {
+        commit('setDetailData', JSON.parse(JSON.stringify(d[state.type])));
+      }else {
+      	commit('setDetailData', null);
+      	if(error) error(response);
+        // alert(d.info);
+      }
+      commit('setLoading', false);
+      commit('refreshTrueType');
+    })
+    .catch(err=>{
+    	if(error) error(err);
+      if(func) func();
+      commit('setDetailData', null);
+      commit('setLoading', false);
+      console.log(err);
+    });
+
+    if(next) {
+    	next (n);
+    }
 	}
 }
 
