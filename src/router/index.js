@@ -66,6 +66,7 @@ const SS_Fee                   = () => import('@/components/page_extension/Setti
 
 Vue.use(Router);
 const router = new Router({
+  mode: 'history',
   routes: [
     //###重定向###
     { path: '/', redirect: '/statistics' },
