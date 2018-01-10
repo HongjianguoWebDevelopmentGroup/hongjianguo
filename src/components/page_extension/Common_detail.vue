@@ -8,9 +8,11 @@
     <div  v-loading="detailLoading && visibleAuth" :element-loading-text="config.loadingText" :style="divStyle">
       <el-tabs v-model="activeName">
         <el-tab-pane label="基本信息" name="base">
-    			<detail-patent page-type="edit" v-if="type == 'patent'" @editSuccess="editSuccess" ref="patent"></detail-patent>
-          <detail-copyright page-type="edit" v-if="type == 'copyright'" @editSuccess="editSuccess" ref="copyright"></detail-copyright>
-          <detail-trademark page-type="edit" v-if="type == 'trademark'" @editSuccess="editSuccess" ref="trademark"></detail-trademark>
+          <div :style="`height: ${innerHeight - 150}px; overflow: auto;`">
+    			  <detail-patent page-type="edit" v-if="type == 'patent'" @editSuccess="editSuccess" ref="patent"></detail-patent>
+            <detail-copyright page-type="edit" v-if="type == 'copyright'" @editSuccess="editSuccess" ref="copyright"></detail-copyright>
+            <detail-trademark page-type="edit" v-if="type == 'trademark'" @editSuccess="editSuccess" ref="trademark"></detail-trademark>
+          </div>
         </el-tab-pane>
         <el-tab-pane label="流程管理" name="control">
     			<detail-control></detail-control>
@@ -110,6 +112,7 @@ export default {
       'shrinkHeight',
       'detailLoading',
       'menusMap',
+      'innerHeight',
     ]),
   	config () {
   		const config = map.get(this.type);

@@ -295,7 +295,7 @@ export default {
         this.loading = true;
         await this.refreshProposal();
         this.loading = false;
-      }else {
+      }else if( c == 1 || c == 2 || c == 3){
         await (_=>{
           let next = '';
           this.refreshDetailData({ id: this.row.project_id, type: map.get(c), next: _=>{ next = _ } });
