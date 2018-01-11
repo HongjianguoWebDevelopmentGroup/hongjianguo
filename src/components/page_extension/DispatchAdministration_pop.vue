@@ -30,8 +30,8 @@
         <el-date-picker v-model="form.receipt_date" type="date" format="yyyy-MM-dd" placeholder="请选择收件日期"  @change="keepSameTime"></el-date-picker>
       </el-form-item>
 
-			<el-form-item label="描述" prop="description" v-show="type !='confirm'">
-        <el-input type="textarea" v-model="form.description" placeholder="请填写描述信息..."></el-input>
+			<el-form-item label="备注" prop="description" v-show="type !='confirm'">
+        <el-input type="textarea" v-model="form.description" placeholder="请填写备注"></el-input>
       </el-form-item>
       <el-form-item label="文件清单" prop="projects">
 				<express-list v-model="form.projects" :typeMessage="type"></express-list>
@@ -68,8 +68,11 @@ export default {
         description: '',
         projects: [],
       },
-      rules: {
-      
+      rules: {to: {type: 'number', required: true, message: '收件人必填', trigger: 'change'},
+              company: {required: true, message: '快递公司必填', trigger: 'change'},
+              number: [{ required: true,  message: '快递单号必填', trigger: 'blur' },
+              {pattern: /^[0-9a-zA-Z]*$/, message : '快递单号只能是字母与数字', trigger: 'blur' }],
+              mail_date: { type:'date',required: true, message: '发文日期必填', trigger: 'change'},
       },
       queryData: [
         { "value": '顺丰'},
