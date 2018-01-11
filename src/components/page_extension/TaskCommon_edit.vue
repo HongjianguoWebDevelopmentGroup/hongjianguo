@@ -42,11 +42,11 @@
           </el-form-item>
         </el-col>
       </el-row>
-  		<el-form-item label="备注" prop="remark">
-  			<el-input type="textarea" placeholder="请填写备注" v-model="form.remark" :rows="1"></el-input>
-  		</el-form-item>
       <el-form-item label="附件" prop="attachments">
         <upload v-model="form.attachments" :file-list="attachments"></upload>
+      </el-form-item>
+      <el-form-item label="备注" prop="remark">
+        <el-input type="textarea" placeholder="请填写备注" v-model="form.remark" :rows="1"></el-input>
       </el-form-item>
   		<el-form-item style="margin-bottom: 0;">
         <el-button type="primary" @click="add" v-if="type == 'add'" :disabled="btn_disabled">新增</el-button>

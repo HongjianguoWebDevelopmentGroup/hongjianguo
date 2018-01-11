@@ -1,6 +1,7 @@
 <template>
   <el-dialog :title="title" :visible.sync="dialogVisible" class="dialog-medium" :modal="false">
-  	<div style="height: 600px; overflow-y: auto" v-loading="loading" element-loading-text="加载详情中...">
+  	<div v-loading.lock="loading" element-loading-text="加载邮件中...">
+    <div style="height: 600px; overflow-y: auto">
 			<div style="font-size: 20px; margin-bottom: 20px; font-weight: bold;">{{ form.subject }}</div>
       
       <app-collapse col-title="详细信息" default-close>
@@ -37,6 +38,7 @@
         <div v-html="form.body" style="min-height: 430px; border: solid 1px #ccc; margin-top: 20px; padding: 10px;"></div>
       
   	</div>
+  </div>
   </el-dialog>
 </template>
 
@@ -71,10 +73,13 @@ export default {
       const success = _=>{
         // console.log(_);
         this.$tool.coverObj(this.form, _.mail);
-        this.loading = false;
+        
+      }
+      const complete = _=>{
+       this.loading = false;
       }
 
-      this.$axiosGet({url, success});
+      this.$axiosGet({url, success, complete});
     }
   },
   components: { AppCollapse },

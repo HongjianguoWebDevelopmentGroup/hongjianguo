@@ -42,10 +42,10 @@
 
 	<el-dialog title="邮件导入" :visible.sync="dialogSimple" class="dialog-small" @close="projectId = []">
 		<div style="margin-bottom: 10px; color: rgb(132, 146, 166); font-size: 14px;">
-			<span>当前邮件下没有附件,可将其挂载到某一案件下</span>
+			<span>当前邮件下没有附件,可将其挂载到案件下</span>
 		</div>
-		<remote-select type="project" v-model="projectId" style="margin-bottom: 10px;"></remote-select>
-		<el-button type="primary" @click="associateMail" :loading="loading" multiple>{{ loading ? '关联中...' : '确认关联' }}</el-button>
+		<remote-select type="project" v-model="projectId" style="margin-bottom: 10px;" multiple></remote-select>
+		<el-button type="primary" @click="associateMail" :loading="loading">{{ loading ? '关联中...' : '确认关联' }}</el-button>
 	</el-dialog>
 </div>
 </template>
@@ -145,7 +145,7 @@ export default {
   				this.dialogSimple = true;
   				if(_.project) {
 	  				this.$nextTick(v=>{
-	  					this.projectId = _.project;
+	  					this.projectId = [_.project];
 	  				})
   				}
   				
@@ -204,7 +204,7 @@ export default {
   			},
   			success: _=>{
   				this.$message({type: 'success', message: _.info});
-  				this.importSuccess;
+  				this.importSuccess();
   			},
   			complete: _=>{
   				this.loading = false;

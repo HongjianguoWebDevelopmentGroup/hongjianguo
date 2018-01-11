@@ -57,7 +57,7 @@
       <div class="el-upload__text"><em>压缩包上传</em></div>
     </el-upload>
 
-		<el-button style="margin-top: 20px;" type="primary" @click="importData">确认上传</el-button>
+		<el-button style="margin-top: 20px;" type="primary" @click="importData" :loading="loading">{{ loading ? '上传中...' : '确认上传' }}</el-button>
 		
 <!-- 		<el-dialog title="指定案件号" :visible.sync="dialogVisibleIn" :modal-append-to-body="false" :modal="false">
 			<el-form label-width="100px">
@@ -124,6 +124,7 @@ export default {
 		  dialogVisibleIn: false,
 		  project_id: '',
 		  $index: null,
+      loading: false,
 		}
   },
   computed: {
@@ -182,7 +183,10 @@ export default {
       const list = this.$tool.deepCopy(this.tableData);
       list.forEach(_=>{
         if(_.time) {
-          _.time = _.time.split('T')[0];
+          _.time = this.$tool.getDate( new Date(_.time) );
+        }
+        if(_.legal_time) {
+          _.legal_time = this.$tool.getDate( new Date(_.legal_time) );
         }
       })
   		const data = {file: this.file, list };

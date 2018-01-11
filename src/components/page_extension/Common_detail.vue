@@ -45,7 +45,7 @@
     </div>
   </app-shrink>
   <el-dialog title="提交结案请求" :visible.sync="dialogClosed" @close="$refs.closeForm.clear();">
-    <close-form :id="id" @success="dialogClosed=false" ref="closeForm"></close-form>
+    <close-form :id="id" @success="closeSuccess" ref="closeForm"></close-form>
   </el-dialog>
 </div>
 </template>
@@ -169,6 +169,10 @@ export default {
     },
     handleVisible (val) {
       this.$emit('update:visible', val);
+    },
+    closeSuccess () {
+      this.dialogClosed = false;
+      this.refreshDetailData();
     }
   },
   watch: {

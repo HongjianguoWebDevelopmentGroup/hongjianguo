@@ -147,7 +147,7 @@
       
     </el-dialog>
     
-    <file-upload v-if="tableOption.upload_type !== undefined" :type="tableOption.upload_type" @upload-success="refresh" ref="file_upload"></file-upload>
+    <file-upload v-if="tableOption.upload_type !== undefined" :type="tableOption.upload_type" @uploadSuccess="refresh" ref="file_upload"></file-upload>
   
     <el-dialog class="dialog-small" :visible.sync="dialogControl" title="字段控制" @close="transferValue = control; $refs.transfer.clear();">
         <div style="margin-bottom: 10px;
@@ -303,18 +303,6 @@ export default {
       }else {
         r = d.data ? d.data : [];
       }
-
-      //这里对得到的数据进行一些额外的处理,element-ui中难以操控:
-      
-      //  .暂时将array类型的render处理放到这里,因为如果放到v-for里面会被多次重复执行
-      this.tableOption.columns.forEach(_=>{
-        if(_.type == 'array' && _.render) {
-          r.forEach(d_c=>{
-            const p = _.prop;
-            d_c[`${p}__render`] = _.render(d_c[p]);
-          })
-        }
-      })
       
       return r;
     },
@@ -330,8 +318,7 @@ export default {
       ])
 
       const o = map.get(e);
-      return o ? o : e;
-      
+      return o ? o : e;      
     },
     totalNumber () {
       const d = this.data;

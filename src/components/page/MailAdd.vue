@@ -27,7 +27,7 @@
         >
   			</quill-editor>
   		</el-form-item>
-  		<el-form-item>
+  		<el-form-item style="margin-bottom: 0px;">
   			<el-button type="primary" icon="message" @click="send" :disabled="btn_disabled">发送</el-button>
   			<el-button type="primary" icon="document" @click="save" :disabled="btn_disabled">保存</el-button>
   			<el-button type="danger" @click="back" :disabled="btn_disabled">返回</el-button>

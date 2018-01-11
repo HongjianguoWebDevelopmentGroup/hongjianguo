@@ -77,7 +77,7 @@
       </el-form>
     </el-dialog>
 
-    <app-shrink :visible.sync="dialogShrinkVisible" :title="isCommon ? detailBase.title : shrinkTitle" @close="handleShrinkClose">
+    <app-shrink :visible.sync="dialogShrinkVisible" :title="currentRow.title" @close="handleShrinkClose">
       <span slot="header" style="margin-left: 10px;">
         <el-tag>{{ currentRow.flow_node }}</el-tag>
         <el-tag v-if="currentRow.serial">{{ currentRow.serial }}</el-tag>
@@ -85,7 +85,7 @@
       <span slot="header" style="float: right">
         <el-button size="small" type="primary" @click="dialogEditVisible = true" v-if="menusMap && !menusMap.get('/tasks/update')">编辑</el-button>
         <el-button size="small" style="margin-left: 0px;" v-if="menusMap && !menusMap.get('/tasks/transfer')" @click="dialogTranserVisible = true; transfer_person = {id: currentRow.person_in_charge, name: currentRow.person_in_charge_name }">移交</el-button>
-        <el-button size="small" @click="handleReject" style="margin-left: 0px;" v-if="menusMap && !menusMap.get('/tasks/reject')">退回</el-button>
+        <el-button size="small" @click="handleReject" style="margin-left: 0px;" type="danger" v-if="menusMap && !menusMap.get('/tasks/reject')">退回</el-button>
       </span>
       <el-tabs v-model="activeName">        
         <el-tab-pane label="前往处理" name="finish" v-if="task_status == 0">
@@ -172,7 +172,7 @@ export default {
       }).then(_=>{
         const url = `/tasks/${this.currentRow.id}/reject`;
         const success = _=>{
-          this.$message('退回任务成功', {type: 'success'});
+          this.$message({type: 'success', message: '退回任务成功'});
           this.dialogShrinkVisible = false;
           this.update();
         };
@@ -387,6 +387,8 @@ export default {
         str += '(移)';
       }else if(data.flag == 3) {
         str += '@';
+      }else if(data.flag == 4) {
+        str += '(退)';
       }
       str += item;
 
@@ -609,7 +611,7 @@ export default {
     }
 
     if(this.task_status == 1 || this.task_status == -1) {
-      this.activeName = 'edit';
+      this.activeName = 'information';
     }
 
     this.refreshOption();

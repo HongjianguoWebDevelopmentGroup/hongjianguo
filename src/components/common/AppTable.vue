@@ -2,7 +2,7 @@
 <el-table 
   ref="table"
   stripe
-  :data="data"
+  :data="tableData"
   :border="border" 
   :row-key="rowKey" 
   :default-sort="defaultSort"
@@ -158,10 +158,53 @@ export default {
       selected: [],
     };
   },
+  computed: {
+    ...mapGetters([
+      'innerHeight',
+    ]),
+    tableData () {
+      //这里对得到的数据进行一些额外的处理,element-ui中难以操控:
+      const r = this.data;
+      //  .暂时将array类型的render处理放到这里,因为如果放到v-for里面会被多次重复执行
+      this.columns.forEach(_=>{
+        if(_.type == 'array' && _.render) {
+          r.forEach(d_c=>{
+            const p = _.prop;
+            d_c[`${p}__render`] = _.render(d_c[p]);
+          })
+        }
+      })
+
+      return r;
+    },
+    tableHeight () {
+      let height = '';
+      const hk = this.height;
+
+      if(hk !== undefined) {
+        if(hk == 'default') {
+          height = this.innerHeight - 200;
+          height = height < 300 ? 300 : height;
+        }else if(hk == 'default2') {
+          height = this.innerHeight - 150;
+          height = height < 300 ? 300 : height;
+        }else if(hk === 'default3') {
+          height = this.innerHeight - 100;
+          height = height < 300 ? 300 : height;
+        }else if(hk === 'default4') {
+          height = this.innerHeight - 55;
+          height = height < 300 ? 300 : height;
+        }else {
+          height = hk;
+        }
+      }
+
+      return height;
+    },
+  },
   methods: {
     handleRowClick (row, event, column) {
       event.stopPropagation();
-      console.log(column.type)
       if(column.type == 'selection' || column.type == 'action') return false;
           
       this.$emit('row-click', row, event, column);
@@ -189,35 +232,6 @@ export default {
       if(func) {
         func(scope.row, event);
       }
-    },
-  },
-  computed: {
-    ...mapGetters([
-      'innerHeight',
-    ]),
-    tableHeight () {
-      let height = '';
-      const hk = this.height;
-
-      if(hk !== undefined) {
-        if(hk == 'default') {
-          height = this.innerHeight - 200;
-          height = height < 300 ? 300 : height;
-        }else if(hk == 'default2') {
-          height = this.innerHeight - 150;
-          height = height < 300 ? 300 : height;
-        }else if(hk === 'default3') {
-          height = this.innerHeight - 100;
-          height = height < 300 ? 300 : height;
-        }else if(hk === 'default4') {
-          height = this.innerHeight - 55;
-          height = height < 300 ? 300 : height;
-        }else {
-          height = hk;
-        }
-      }
-
-      return height;
     },
   },
   components: {
