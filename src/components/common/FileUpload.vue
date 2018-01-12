@@ -6,25 +6,35 @@
 			empty-text="暂无可上传数据"
 			:data="tableData"
 		>
-			<el-table-column label="关联案件" prop="project">
+			<el-table-column label="关联案件" prop="project" min-width="200">
         <template slot-scope="scope">
           <remote-select :type="config.type" v-model="scope.row.project" single></remote-select>
         </template>
       </el-table-column>
-      <el-table-column label="文件名称" prop="name"></el-table-column>
-			<el-table-column label="文件类型" prop="type">
+      <el-table-column label="文件名称" prop="name" width="200"></el-table-column>
+			<el-table-column label="文件类型" prop="type" width="200">
         <template slot-scope="scope">
-          <static-select :type="config.file_type" v-model="scope.row.type" ref="file_type"></static-select>
+          <static-select :type="config.file_type" v-model="scope.row.type" style="width: 100%;" ref="file_type"></static-select>
         </template>
       </el-table-column>
-      <el-table-column label="发文日" prop="time" v-if="config.time">
+      <el-table-column label="发文日" prop="time" v-if="config.time" width="200">
         <template slot-scope="scope">
-          <el-date-picker type="date" style="width: 125px;" v-model="scope.row.time"></el-date-picker>
+          <el-date-picker type="date" v-model="scope.row.time" style="width: 100%;"></el-date-picker>
         </template>
       </el-table-column>
-      <el-table-column label="法定期限" prop="legal_time" v-if="config.legal_time">
+      <el-table-column label="法定期限" prop="legal_time" v-if="config.legal_time" width="200">
         <template slot-scope="scope">
-          <el-date-picker type="date" style="width: 125px;" v-model="scope.row.legal_time"></el-date-picker>
+          <el-date-picker type="date" v-model="scope.row.legal_time" style="width: 100%;"></el-date-picker>
+        </template>
+      </el-table-column>
+      <el-table-column label="申请日" prop="apd" v-if="config.apd" width="200">
+        <template slot-scope="scope">
+          <el-date-picker type="date" v-model="scope.row.apd" style="width: 100%;"></el-date-picker>
+        </template>
+      </el-table-column>
+      <el-table-column label="申请号" prop="apn" v-if="config.apn" width="200">
+        <template slot-scope="scope">
+          <el-input v-model="scope.row.apn" style="width: 100%;"></el-input>
         </template>
       </el-table-column>
       <el-table-column label="操作">
@@ -103,6 +113,8 @@ const config = [
     file_type: 'file_type',
     time: true,
     legal_time: true,
+    apd: true,
+    apn: true,
     no_zip: true,
   }],
   ['trademark_notice', {
@@ -111,6 +123,7 @@ const config = [
     type: 'trademark',
     file_type: 'file_type_trademark',
     time: true,
+    no_zip: true,
   }],
 ]
 const map = new Map(config);
@@ -193,6 +206,9 @@ export default {
         }
         if(_.legal_time) {
           _.legal_time = this.$tool.getDate( new Date(_.legal_time) );
+        }
+        if(_.apd) {
+          _.apd = this.$tool.getDate( new Date(_.apd) );
         }
       })
   		const data = {file: this.file, list };
