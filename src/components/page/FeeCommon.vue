@@ -27,6 +27,7 @@ import Strainer from '@/components/page_extension/FeeCommon_strainer'
 import Pop from '@/components/page_extension/feeCommon_pop'
 import FeeStatus from '@/components/form/FeeStatus'
 import RemoteSelect from '@/components/form/RemoteSelect'
+import {mapActions} from 'vuex'
 
 const URL = '/api/fees';
 const URL_INVOICE = '/api/invoices';
@@ -157,6 +158,9 @@ export default {
     }
   },
   methods: {
+    ...mapActions([
+      'refreshFeeCodes',
+    ]),
     refreshTableData (option) {
       if(this.fee_invoice instanceof Object) return;
 
@@ -292,6 +296,7 @@ export default {
     }
   },
   mounted () {
+    this.refreshFeeCodes();
     if(this.$route.query.id) {
       this.fee_status = this.feeType ? 1 : 2;
       this.fee_invoice = {id: this.$route.query.id, name: this.$route.query.name};

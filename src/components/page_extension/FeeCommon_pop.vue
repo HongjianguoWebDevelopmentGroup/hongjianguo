@@ -10,7 +10,7 @@
 				<static-select  type="fee_code" v-model="form.code" ref="fee_code" :disabled="popType == 'edit'"></static-select>
 			</el-form-item>
 			<el-form-item label="费用状态" prop="status">
-					<fee-status v-model="form.status" :feeAnnual="feeAnnual" :disabled="popType == 'edit'"></fee-status>
+					<fee-status v-model="form.status" :key="feeAnnual" :feeAnnual="feeAnnual" :disabled="popType == 'edit'"></fee-status>
 			</el-form-item>
 			<el-form-item label="费用金额" prop="money">
 				<el-row>
@@ -167,12 +167,15 @@ export default {
   		set (val) {
   			const arr = ['amount', 'currency', 'roe'];
   			this.id = val.id;
-  			this.$tool.coverObj(this.form, val, {obj: ['code', 'status']});
+  			this.$tool.coverObj(this.form, val, {obj: ['code'], skip: ['status']} );
 
   			this.$nextTick(_=>{
 	  			arr.map(_=>{
 	  				this.form.money[_] = val[_];
 	  			})
+	  			console.log(this.feeAnnual);
+  				console.log('bbbbb');
+	  			this.form.status = val['status']['id'];
   			})
   		}
   	}

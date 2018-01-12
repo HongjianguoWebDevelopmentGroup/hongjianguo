@@ -132,10 +132,11 @@ const config = [
   }],
   ['fee_code', {
     placeholder: '请选择费用代码',
-    url: '/api/feeCodes',
-    handle (data) {
-      return data.codes.map(_=>({id: _.id - 0, name: _.name, amount: _.amount - 0}));
-    }
+    options: 'feeCodesOptions'
+    // url: '/api/feeCodes',
+    // handle (data) {
+    //   return data.codes.map(_=>({id: _.id - 0, name: _.name, amount: _.amount - 0}));
+    // }
   }],
   ['fee_target_income', {
     placeholder: '请选择收入对象',
@@ -243,7 +244,7 @@ const dataMap = new Map([
   ['fee_target_expenditure', {data: null}],
   ['file_type', {data: null}],
   ['file_type_trademark',{data: null}],
-  ['fee_code', {data: null}],
+  // ['fee_code', {data: null}],
   ['tag', {data: null}],
   ['flow_node', {data: null}],
   ['progress',{data: null}]

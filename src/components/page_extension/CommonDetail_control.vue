@@ -17,7 +17,7 @@ import TableComponent from '@/components/common/TableComponent'
 import AxiosMixins from '@/mixins/axios-mixins'
 
 export default {
-  name: 'hello',
+  name: 'commonDetailControl',
   mixins: [ AxiosMixins ],
   data () {
 		return {

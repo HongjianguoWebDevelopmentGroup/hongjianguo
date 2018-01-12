@@ -142,7 +142,7 @@
     <app-import v-if="tableOption.import_type !== undefined" :visible.sync="dialogImportVisible" :columns="import_columns" :type="tableOption.import_type" @import-success="handleImportSuccess"></app-import>
 
     <el-dialog class="dialog-small" v-if="tableOption.update_type !== undefined" :visible.sync="dialogUpdateVisible" title="批量更新">
-      <batch-update :type="tableOption.update_type" @success="handleUpdateSuccess"></batch-update>
+      <batch-update :type="tableOption.update_type" @success="handleBatchUpdateSuccess"></batch-update>
     </el-dialog>
       
     </el-dialog>
@@ -486,8 +486,9 @@ export default {
         this.dialogUpdateVisible = true;
       }
     },
-    handleUpdateSuccess () {
+    handleBatchUpdateSuccess () {
       this.dialogUpdateVisible = false;
+      this.update();
     },
     handleDelete (func, e, callback) {
       if(func) {
