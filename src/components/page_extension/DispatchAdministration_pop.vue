@@ -23,7 +23,7 @@
 			</el-form-item>
 
       <el-form-item label="收文日期" prop="receipt_date" v-show="type != 'add'" class="is-required">
-        <el-date-picker v-model="form.receipt_date" type="date" placeholder="请选择收件日期" @change="keepSameTime"></el-date-picker>
+        <el-date-picker v-model="form.receipt_date" type="date" placeholder="请选择收件日期"></el-date-picker>
       </el-form-item>
 
 			<el-form-item label="备注" prop="description">
@@ -31,7 +31,7 @@
         <el-input v-else type="textarea" v-model="form.description" placeholder="请填写备注"></el-input>
       </el-form-item>
 
-      <el-form-item label="发文日期" prop="mail_date" v-show="type !='confirm'">
+      <el-form-item label="发文日期" prop="mail_date" format="yyyy-MM-dd" v-show="type !='confirm'">
         <el-date-picker v-model="form.mail_date" type="date" placeholder="请选择发文日期"></el-date-picker>
       </el-form-item>
       <el-form-item label="文件清单" prop="projects">
@@ -53,7 +53,6 @@ import AxiosMixins from '@/mixins/axios-mixins'
 import PopMixins from '@/mixins/pop-mixins'
 import RemoteSelect from '@/components/form/RemoteSelect'
 import ExpressList from '@/components/form/ExpressList'
-
 export default {
   name: 'DisatchAdministrationPop',
   mixins: [ AxiosMixins, PopMixins ],
@@ -110,8 +109,9 @@ export default {
       };
     },
     keepSameTime (val) {
-      console.log(val);
+      // console.log(typeof(new Date(val)));
       this.form.receipt_date = val;
+      console.log(val)
     },
     confirmFunc () {
       if( !this.form.receipt_date ) { return this.$message({type: 'warning', message: '请选择收文日期'});  }

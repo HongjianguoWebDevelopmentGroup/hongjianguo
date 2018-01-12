@@ -40,7 +40,6 @@ export default {
   	add () {
       const url = this.$options.URL;
       const tex = this.$options.REMINDER_TEXT;
-      
       const data = this.addForm 
                     ? this.addForm() : this.submitForm 
                       ? this.submitForm() : this.form;
@@ -63,11 +62,9 @@ export default {
     edit () {
       const url = `${this.$options.URL}/${this.id}`;
       const tex = this.$options.REMINDER_TEXT;
-      
       const data = this.editForm 
                     ? this.editForm() : this.submitForm 
                       ? this.submitForm() : this.form;
-      
       const success = _=>{
         this.$message({message: `编辑${tex}成功`, type: 'success'});
         this.dialogVisible = false;

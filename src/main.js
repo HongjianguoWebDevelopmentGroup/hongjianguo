@@ -12,6 +12,7 @@ import './fonts/iconfont.css'
 import axios from 'axios'
 import tool from './const/tool'
 
+ 
 
 // import '../static/jquery-3.2.1.js'
 
@@ -23,11 +24,11 @@ import tool from './const/tool'
 Vue.prototype.$axios = axios;
 Vue.prototype.$tool = tool;
 
-
 Vue.config.productionTip = false;
 Vue.use(ElementUI);
 Vue.use(VueQuillEditor);
 Vue.use(MyAxios);
+
 
 /* eslint-disable no-new */
 new Vue({
