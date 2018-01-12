@@ -78,6 +78,7 @@ const actions = {
 		}else {
 			id = state.id;
 		}
+    if(!id || !type) return;
 		let url = `/api/${state.type}s`;
 		url = rootState.status ? url.replace(/\/api/, '') : url;
     commit('setLoading', true);

@@ -19,6 +19,7 @@ import currentUser from '@/store/modules/current-user.js'
 import sysmesg from '@/store/modules/sysmesg.js'
 import configs from '@/store/modules/configs.js'
 import extendFields from '@/store/modules/extend-fields.js'
+import cache from '@/store/modules/cache.js'
 import tool from '@/const/tool.js'
 Vue.use(Vuex);
 
@@ -58,6 +59,7 @@ const store = new Vuex.Store({
     sysmesg,
     configs,
     extendFields,
+    cache,
   },
   getters: {
     getDragId: state=>state.dragId,

@@ -26,7 +26,7 @@
 	    style="width: 100%">
 	    <el-table-column v-for="item in columns" :key="item.prop" :prop="item.prop" :label="item.label" :width="item.width"></el-table-column>
 	  </el-table> 
-		<el-button type="primary" @click="submitUpdate">确认更新</el-button>
+		<el-button type="primary" @click="submitUpdate" :loading="loading">{{ loading ? '更新中...' : '确认更新' }}</el-button>
 	</template>
 </div>
 </template>
@@ -74,6 +74,7 @@ export default {
 			refreshRender: false,
 			select: '',
 			uploadType: '',
+			loading: false,
 		}
 	},
 	computed: {
@@ -111,14 +112,17 @@ export default {
 				'getAnnual': 'annual',
 				'getReview': 'review',
 			};
+			this.loading = true;
 			this.$axiosPost({
 				url: `${URL}/${o[this.uploadType]}`,
 				data: {
 					list: this.tableData,
 				},
 				success: _=> {
-					this.$message({type: 'success', message: _.info});
-				}
+					this.$message({ type: 'success', message: _.info });
+					this.$emit('success', _);
+				},
+				complete: _=>{ this.loading = false; },
 			})
 		}
 	},

@@ -63,9 +63,7 @@ export default {
   		const url = URL;
   		const data = option;
   		const success = _=>{ 
-        console.log(_);
         this.tableData = _.list;
-        console.log(this.tableData);
       };
 
   		this.axiosGet({url, data, success});
@@ -105,7 +103,6 @@ export default {
   			.catch(_=>{})
   	},
   	handlePopRefresh (t) {
-      console.log(t);
   		t === 'add' ? this.refresh() : this.update();
   	}
   },
