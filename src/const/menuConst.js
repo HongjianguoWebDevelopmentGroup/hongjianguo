@@ -118,6 +118,31 @@ menu.data = [
 		]
 	},
 	{
+		text: '商标',
+		path: '/trademark',
+		icon: 'iconfont	 icon-task',
+		type: 'submenu',
+		children: [
+			{
+				text: '新建商标',
+				path: '/trademark/add',
+				icon: 'iconfont icon-proposal-add',
+				type: 'item'
+			},{
+				text: '商标管理',
+				icon: 'iconfont icon-trademark',
+				path: '/trademark/list',
+				type: 'item',
+			},
+			{
+				text: '通知书管理',
+				icon: 'iconfont icon-notice',
+				type: 'item',
+				path: '/trademark/notice',
+			}
+		]
+	},
+	{
 		text: '版权',
 		path: '/copyright',
 		icon: 'iconfont	 icon-copyright',
@@ -142,24 +167,6 @@ menu.data = [
 			// 	type: 'item',
 			// },
 		]
-	},
-	{
-		text: '商标',
-		path: '/trademark',
-		icon: 'iconfont	 icon-task',
-		type: 'submenu',
-		children: [
-			{
-				text: '新建商标',
-				path: '/trademark/add',
-				icon: 'iconfont icon-proposal-add',
-				type: 'item'
-			},{
-				text: '商标管理',
-				icon: 'iconfont icon-trademark',
-				path: '/trademark/list',
-				type: 'item',
-			}]
 	},
 	{
 		text: '费用',
