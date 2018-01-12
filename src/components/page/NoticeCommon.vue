@@ -7,7 +7,6 @@
 <script>
 import TableComponent from '@/components/common/TableComponent'
 import Strainer from '@/components/page_extension/NoticeCommon_strainer'
-import AxiosMixins from '@/mixins/axios-mixins'
 
 const config = [
 	['patent', {
@@ -15,25 +14,25 @@ const config = [
 		import_type: 'patent_notice',
 		upload_type: 'patent_notice',
 	}],
+	['trademark', {
+		URL: '/api/trademarks/notices',
+		import_type: false,
+		upload_type: 'trademark_notice',
+	}]
 ]
 const map = new Map(config);
 
 export default {
   name: 'noticeCommon',
-  mixins: [AxiosMixins],
   data () {
 	return {
 			tableOption: {
 				'header_btn': [
-					// { type: 'custom', label: '筛选', icon: '', click: ()=>{alert("筛选")} },
-					// { type: 'custom', label: '统计', icon: '', click: ()=>{alert("统计")} },
 					{ type: 'delete', map_if: '/patent/notice/delete' },
 					{ type: 'export' },
-					{ type: 'import' },
-					{ type: 'batch_upload' },
+					{ type: 'import', label: 'CPEC导入' },
+					{ type: 'batch_upload', label: '通知书上传' },
 					{ type: 'control', label: '字段' },
-					// { type: 'custom', label: '上传', icon: '', click: ()=>{alert("上传")} },
-					// { type: 'custom', label: '批量上传', icon: '', click: ()=>{alert("批量上传")}},
 				],
 				'height': 'default2',
 				'url': '',
@@ -54,8 +53,6 @@ export default {
 					{ type: 'text', label: '上传用户', prop: 'uploader', render_simple: 'name', width: '200' },
 					{ type: 'text', label: '审查员', prop: 'examiner', width: '200' },
 					{ type: 'text', label: '审查部门', prop: 'examiner_dept', width: '200' },
-					// { type: 'text', label: '处理状态', prop: 'status', width: '200' },
-					// { type: 'text', label: '备注', prop: 'remark', width: '200' },
 					{ 
 						type: 'action', 
 						label: '操作',
@@ -99,18 +96,25 @@ export default {
 				
 			};
 
-			this.axiosGet({url, data, success});
+			this.$axiosGet({url, data, success});
 		}
 	},
-	components: { TableComponent, Strainer },
 	created () {
-		this.tableOption.import_type = this.config.import_type;
+		if(this.config.import_type) {
+			this.tableOption.import_type = this.config.import_type;
+		}else {
+			this.tableOption.header_btn.splice(2,1);
+		}
 		this.tableOption.upload_type = this.config.upload_type;		
 		this.tableOption.url = this.config.URL;
 	},
 	mounted () {
 		this.refresh();
-	}
+	},
+	components: { 
+		TableComponent, 
+		Strainer 
+	},
 }
 </script>
 

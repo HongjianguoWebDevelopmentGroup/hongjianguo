@@ -129,7 +129,7 @@ export default {
 
 
       this.$refs.form.validate(_=>{
-         this.$axiosPost({url, data, success, complete})
+         this.$axiosPut({url, data, success, complete})
       })
     },
     setForm (data) {

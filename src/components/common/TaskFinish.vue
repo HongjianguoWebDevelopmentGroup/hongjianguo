@@ -66,8 +66,8 @@
       <static-select type="patent_type" v-model="form.type" key="patent_type"></static-select>
     </el-form-item>
     <el-form-item prop="attachments" label="附件" v-if="fields.attachments && !hide_r_a">
-      <upload v-model="form.attachments" :file-list="attachments"> 
-      </upload>
+      <upload v-if="next == '20'" v-model="form.attachments" :action="`/api/files?action=parseConfirmationList&id=${id}`" @uploadSuccess="handleUploadSuccess"></upload>
+      <upload v-else v-model="form.attachments" :file-list="attachments"></upload>
     </el-form-item>
     <el-form-item prop="remark" label="任务备注" v-if="fields.remark && !hide_r_a">
       <el-input type="textarea" v-model="form.remark"></el-input>
@@ -130,6 +130,7 @@ export default {
   mixins: [axiosMixins],
   data () {
 		return {
+      'no_finish': false,
       'requested': false, //当前ID下,是否已经请求过数据
 			'data': {},
       'staticMap': [],
@@ -208,6 +209,7 @@ export default {
   		this.axiosGet({url, success, complete});
   	},
   	submitFunc () {
+      if(this.no_finish) return this.$message({message: '不符合完成任务的条件', type: 'warning'}); 
       this.$refs.form.validate(_=>{
         if(_) {
           this.btn_disabled = true;
@@ -229,6 +231,7 @@ export default {
   		this.$emit('cancel');
   	},
   	clear () {
+      this.no_finish = false;
   		this.$refs.form.resetFields();
   	},
     proposalFinish ({remark, attachments}) {
@@ -239,6 +242,20 @@ export default {
     },
     refreshNext (val) {
       
+    },
+    handleUploadSuccess (d) {
+      const r = d.data.result;
+      if( !r ) {
+        return this.$message({message: '验证数据获取失败', type: 'warning'});
+      }
+      console.log(r);
+      if(r.status) {
+        this.$message({message: r.info, type: 'success'});
+        this.no_finish = false;
+      }else { 
+        this.$message({message: r.info, type: 'warning'});
+        this.no_finish = true;
+      }
     }
 	},
 	watch: {
@@ -255,6 +272,7 @@ export default {
     },
 		'next': {
 			handler: function (val) {
+        if(val == 20) { this.no_finish = true; }
         if(val == "") return;
         for (let d of this.data.next) {
           if(d.id == val) {
