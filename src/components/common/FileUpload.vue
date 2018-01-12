@@ -84,18 +84,17 @@ const config = [
 		type: 'patent',
     file_type: 'file_type',
 	}],
-	['copyright', {
-		action: 'getCopyrightDocuments',
-		url: '/copyrights/documents',
-		type: 'copyright',
-    file_type: 'file_type',
-	}],
   ['trademark', {
     action: 'getTrademarkDocuments',
     url: '/trademarks/documents',
     type: 'trademark',
     file_type: 'file_type_trademark',
-    time: true,
+  }],
+  ['copyright', {
+    action: 'getCopyrightDocuments',
+    url: '/copyrights/documents',
+    type: 'copyright',
+    file_type: 'file_type',
   }],
   ['patent_notice', {
     action: 'getPatentNoticesDocuments',
@@ -105,6 +104,13 @@ const config = [
     time: true,
     legal_time: true,
     no_zip: true,
+  }],
+  ['trademark_notice', {
+    action: 'getTrademarkNoticesDocuments',
+    url: '/trademarks_notice/documents',
+    type: 'trademark',
+    file_type: 'file_type_trademark',
+    time: true,
   }],
 ]
 const map = new Map(config);
@@ -168,7 +174,7 @@ export default {
   		}
 
       for(let d of this.tableData) {
-        if( this.config.type == 'trademark' && !d.time ) {
+        if( this.config.time && !d.time ) {
           return this.$message({message: '时间不能为空', type: 'warning'});
         }
         if( !d.project  ) {
@@ -196,8 +202,12 @@ export default {
         this.$message({message: '上传文件成功', type: 'success'});
   			this.$emit('uploadSuccess');
   		};
+      const complete = _=>{
+        this.loading = false;
+      }
 
-  		this.axiosPost({url, data, success});
+      this.loading = true;
+  		this.$axiosPost({url, data, success, complete});
   	},
   	handleSuccess (a,b,c) {
   		if(a.status) {

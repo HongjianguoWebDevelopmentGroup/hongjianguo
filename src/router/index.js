@@ -14,7 +14,7 @@ const PatentAdd                = () => import('@/components/page/PatentAdd')
 const NoticeCommon             = () => import('@/components/page/NoticeCommon')
 const TrademarkList            = () => import('@/components/page/TrademarkList')
 const TrademarkAdd             = () => import('@/components/page/TrademarkAdd')
-const TrademarkNotice          = () => import('@/components/page/TrademarkNotice')
+// const TrademarkNotice          = () => import('@/components/page/NoticeCommon')
 const TrademarkStatistics      = () => import('@/components/page/TrademarkStatistics')
 const CopyrightList            = () => import('@/components/page/CopyrightList')
 const CopyrightAdd             = () => import('@/components/page/CopyrightAdd')
@@ -167,7 +167,8 @@ const router = new Router({
     {
       path: '/trademark/notice',
       name: 'TrademarkNotice',
-      component: TrademarkNotice
+      meta: { type: 'trademark' },
+      component: NoticeCommon,
     },
     {
       path:'/trademark/statistics',

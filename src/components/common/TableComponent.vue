@@ -78,11 +78,11 @@
         </template>
 
         <template v-else-if="btn.type == 'import'">
-          <el-button class="table-header-btn" type="primary" icon="document"  @click="handleImport(btn.click, $event)">导入</el-button>
+          <el-button class="table-header-btn" type="primary" icon="document"  @click="handleImport(btn.click, $event)">{{ btn.label ? btn.label : '导入' }}</el-button>
         </template>
 
         <template v-else-if="btn.type == 'batch_upload'">
-          <el-button class="table-header-btn" type="primary" icon="upload" @click="handleBatchUpload(btn.click, $event)">文件上传</el-button>
+          <el-button class="table-header-btn" type="primary" icon="upload" @click="handleBatchUpload(btn.click, $event)">{{ btn.label ? btn.label : '文件上传' }}</el-button>
         </template>
 
         <template v-else-if="btn.type == 'batch_update'">
@@ -139,7 +139,7 @@
     </el-pagination>
   
     
-    <app-import v-if="tableOption.import_type !== undefined" :visible.sync="dialogImportVisible" :columns="import_columns" :type="tableOption.import_type" @import-success="handleImportSuccess"></app-import>
+    <app-import v-if="!!tableOption.import_type" :visible.sync="dialogImportVisible" :columns="import_columns" :type="tableOption.import_type" @import-success="handleImportSuccess"></app-import>
 
     <el-dialog class="dialog-small" v-if="tableOption.update_type !== undefined" :visible.sync="dialogUpdateVisible" title="批量更新">
       <batch-update :type="tableOption.update_type" @success="handleBatchUpdateSuccess"></batch-update>
