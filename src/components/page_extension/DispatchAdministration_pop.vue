@@ -22,15 +22,15 @@
 				<el-input v-model="form.number" placeholder="请填写快递单号"></el-input>
 			</el-form-item>
 
-      <el-form-item label="收文日期" prop="receipt_date" v-show="type != 'add'">
-        <el-date-picker v-model="form.receipt_date" type="date" format="yyyy-MM-dd" placeholder="请选择收件日期" @change="keepSameTime"></el-date-picker>
+      <el-form-item label="收文日期" prop="receipt_date" v-if="type != 'add'" >
+        <el-date-picker v-model="form.receipt_date" format="yyyy-MM-dd" type="date"  placeholder="请选择收件日期" ></el-date-picker>
       </el-form-item>
 
 			<el-form-item label="备注" prop="description" v-show="type !='confirm'">
         <el-input type="textarea" v-model="form.description" placeholder="请填写备注"></el-input>
       </el-form-item>
 
-      <el-form-item label="发文日期" prop="mail_date" v-show="type !='confirm'">
+      <el-form-item label="发文日期" prop="mail_date" format="yyyy-MM-dd" v-show="type !='confirm'">
         <el-date-picker v-model="form.mail_date" type="date" placeholder="请选择发文日期"></el-date-picker>
       </el-form-item>
       <el-form-item label="文件清单" prop="projects">
@@ -51,7 +51,6 @@ import AxiosMixins from '@/mixins/axios-mixins'
 import PopMixins from '@/mixins/pop-mixins'
 import RemoteSelect from '@/components/form/RemoteSelect'
 import ExpressList from '@/components/form/ExpressList'
-
 export default {
   name: 'inventorListPop',
   mixins: [ AxiosMixins, PopMixins ],
@@ -72,7 +71,7 @@ export default {
               company: {required: true, message: '快递公司必填', trigger: 'change'},
               number: [{ required: true,  message: '快递单号必填', trigger: 'blur' },
               {pattern: /^[0-9a-zA-Z]*$/, message : '快递单号只能是字母与数字', trigger: 'blur' }],
-              mail_date: { type:'date',required: true, message: '发文日期必填', trigger: 'change'},
+              mail_date: [{ type:'date',required: true, message: '发文日期必填', trigger: 'change,blur'}],
       },
       queryData: [
         { "value": '顺丰'},
@@ -105,8 +104,9 @@ export default {
       };
     },
     keepSameTime (val) {
-      console.log(val);
+      // console.log(typeof(new Date(val)));
       this.form.receipt_date = val;
+      console.log(val)
     },
   },
   components: {  ExpressList, RemoteSelect  },
