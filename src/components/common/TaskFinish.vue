@@ -95,7 +95,7 @@
     <el-form-item prop="is_supplement" label="补充" v-if="fields.is_supplement" >
       <app-switch type="is" v-model="form.is_supplement"></app-switch>
     </el-form-item>
-    <ul v-if="data.description && data.description.length != 0" style="margin-left:115px;padding: 0;margin-top:-10px; font-size:14px;color:#bbb;">
+    <ul v-if="data.description && data.description.length != 0" style="margin: 0; margin: 10px 0;margin-left:115px;padding: 0; font-size:14px;color:#bbb;">
       <li v-for="(item, index) in data.description" :key="index">{{ item }}</li>
     </ul>
     <el-form-item style="margin-bottom: 0px;">
@@ -209,7 +209,7 @@ export default {
   		this.axiosGet({url, success, complete});
   	},
   	submitFunc () {
-      if(this.no_finish) return this.$message({message: '不符合完成任务的条件', type: 'warning'}); 
+      if(this.no_finish) return this.$message({message: '请上传专利申请文件确认表', type: 'warning'}); 
       this.$refs.form.validate(_=>{
         if(_) {
           this.btn_disabled = true;

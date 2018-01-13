@@ -30,7 +30,7 @@ export default {
 				'header_btn': [
 					{ type: 'delete', map_if: '/patent/notice/delete' },
 					{ type: 'export' },
-					{ type: 'import', label: 'CPEC导入' },
+					{ type: 'import', label: 'CPC通知书导入' },
 					{ type: 'batch_upload', label: '通知书上传' },
 					{ type: 'control', label: '字段' },
 				],

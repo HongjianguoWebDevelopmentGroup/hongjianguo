@@ -11,6 +11,7 @@
     :default-first-option="config.defaultFirstOption !== undefined ? config.defaultFirstOption : false"
     ref="select"
     clearable
+    @change="handleChange"
   >
   	<el-option
   		v-for="item in options"
@@ -314,6 +315,9 @@ export default {
     handleInput (val) {
       this.$emit('input', val);
     },
+    handleChange (val) {
+      this.$emit('change', this.map.get(val));
+    },
     getSelected (value) {
       const arr = [];
       let v = value != undefined ? value : this.value;
@@ -341,6 +345,7 @@ export default {
 
       }else if(typeof op === 'string') {
         op = this.options_vuex;
+
         //存储在vuex中的数据,op代表getters的名字,
         //当数据不止在Select而是在全局中有多处被使用,或者数据在使用过程中需要保持动态更新,使用vuex存储
         if(op === undefined) {

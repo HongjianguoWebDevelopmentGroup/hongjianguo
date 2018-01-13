@@ -437,17 +437,17 @@ export default {
       if(func) func(row, event, column);
     },
     handelExport(func, e) {
-      const fields = this.tableControl.filter(_=>{
-        if(_.show && _.prop) {
-          return true;  
-        }
-      }).map(_=>_.prop);
+      // const fields = this.tableControl.filter(_=>{
+      //   if(_.show && _.prop) {
+      //     return true;  
+      //   }
+      // }).map(_=>_.prop);
 
       if(func) {
         func(e)
       }else {
         //合并获得导出请求的请求参数
-        this.$emit('refreshTableData', Object.assign({}, this.getRequestOption(), {format: 'excel'}, {'fields': JSON.stringify(fields) } ) );
+        this.$emit('refreshTableData', Object.assign({}, this.getRequestOption(), {format: 'excel'} ) );
         //Vue Api.
         this.$nextTick(_=>{
           if(this.refreshProxy) {

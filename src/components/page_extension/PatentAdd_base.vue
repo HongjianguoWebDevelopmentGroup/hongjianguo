@@ -128,7 +128,7 @@ export default {
   	},
   	setForm (data) {
   		for (let k in this.form) {
-        
+        console.log(k);
         if(data[k] == undefined) continue;
         if(this.type == 'add') {
           if(data.inventors && data.inventors.length != 0) {
@@ -145,7 +145,11 @@ export default {
 
   				this.form[k] = arr;
   			}else if(k == 'area' || k == 'type') {
-          this.form[k] = data[k]['id'];
+          if(this.type == 'add' && k == 'area') {
+            this.form[k] = data[k].map(_=>_.id);
+          }else {
+            this.form[k] = data[k]['id'];
+          }
         }else {
   				this.form[k] = data[k];
   			}

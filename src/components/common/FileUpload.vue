@@ -14,27 +14,27 @@
       <el-table-column label="文件名称" prop="name" width="200"></el-table-column>
 			<el-table-column label="文件类型" prop="type" width="200">
         <template slot-scope="scope">
-          <static-select :type="config.file_type" v-model="scope.row.type" style="width: 100%;" ref="file_type"></static-select>
+          <static-select :type="config.file_type" v-model="scope.row.type" style="width: 100%;" @change="val=>{handleTypeChange(val, scope.$index)}"></static-select>
         </template>
       </el-table-column>
       <el-table-column label="发文日" prop="time" v-if="config.time" width="200">
         <template slot-scope="scope">
-          <el-date-picker type="date" v-model="scope.row.time" style="width: 100%;"></el-date-picker>
+          <el-date-picker type="date" v-model="scope.row.time" style="width: 100%;" v-show="!!tableData[scope.$index]['show_mail_date']"></el-date-picker>
         </template>
       </el-table-column>
       <el-table-column label="法定期限" prop="legal_time" v-if="config.legal_time" width="200">
         <template slot-scope="scope">
-          <el-date-picker type="date" v-model="scope.row.legal_time" style="width: 100%;"></el-date-picker>
+          <el-date-picker type="date" v-model="scope.row.legal_time" style="width: 100%;" v-show="!!tableData[scope.$index]['show_deadline']"></el-date-picker>
         </template>
       </el-table-column>
       <el-table-column label="申请日" prop="apd" v-if="config.apd" width="200">
         <template slot-scope="scope">
-          <el-date-picker type="date" v-model="scope.row.apd" style="width: 100%;"></el-date-picker>
+          <el-date-picker type="date" v-model="scope.row.apd" style="width: 100%;" v-show="!!tableData[scope.$index]['show_apd']"></el-date-picker>
         </template>
       </el-table-column>
       <el-table-column label="申请号" prop="apn" v-if="config.apn" width="200">
         <template slot-scope="scope">
-          <el-input v-model="scope.row.apn" style="width: 100%;"></el-input>
+          <el-input v-model="scope.row.apn" style="width: 100%;" v-show="!!tableData[scope.$index]['show_apn']"></el-input>
         </template>
       </el-table-column>
       <el-table-column label="操作">
@@ -123,6 +123,9 @@ const config = [
     type: 'trademark',
     file_type: 'file_type_trademark',
     time: true,
+    legal_time: true,
+    apd: true,
+    apn: true,
     no_zip: true,
   }],
 ]
@@ -173,6 +176,23 @@ export default {
   		this.tableData.splice(this.$index, 1, o);
   		this.dialogVisible = false;
   	},
+    handleTypeChange (selected, index) {
+      // console.log(selected, index);
+      const f = selected.fields;
+      if (!f) return;
+      const copy = this.$tool.deepCopy(this.tableData[index]);
+      copy['show_mail_date'] = f.mail_date == 1 ? true :false;
+      copy['show_deadline'] = f.deadline == 1 ? true :false;
+      copy['show_apd'] = f.apd == 1 ? true :false;
+      copy['show_apn'] = f.apn == 1 ? true :false;
+
+      this.tableData.splice(index, 1, copy);
+
+      //这里使用强制刷新 无法触发更新（why？可能是数据 不在当前组件强制刷新的作用范围内）
+      //只有使用数组截取的方法 让它自动检测刷新了 麻烦一些 比起直接在row上进行修改
+      // this.$forceUpdate();
+    
+    },
   	designPop (scope) {
   		this.$index = scope.$index;
   		this.dialogVisibleIn = true;
@@ -187,9 +207,9 @@ export default {
   		}
 
       for(let d of this.tableData) {
-        if( this.config.time && !d.time ) {
-          return this.$message({message: '时间不能为空', type: 'warning'});
-        }
+        // if( this.config.time && !d.time ) {
+        //   return this.$message({message: '发文日不能为空', type: 'warning'});
+        // }
         if( !d.project  ) {
           return this.$message({message: '关联案件不能为空', type: 'warning'});
         }
@@ -227,6 +247,7 @@ export default {
   	},
   	handleSuccess (a,b,c) {
   		if(a.status) {
+        a.data.list.forEach(_=>{ _.type = _.type ? _.type.id :_.type });
   			this.tableData.push(...a.data.list);
         this.file.push(a.data.file);
   		}else {
@@ -244,6 +265,9 @@ export default {
       this.file = [];
       this.tableData = [];
     }
+  },
+  watch: {
+    
   },
   components: { 
     RemoteSelect,
