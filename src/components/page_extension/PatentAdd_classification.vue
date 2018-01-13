@@ -1,5 +1,5 @@
 <template>
-  <app-collapse col-title="分类信息">
+  <app-collapse col-title="提案信息">
       <el-form label-width="120px">
 				<el-form-item label="产品分类">
 					<product v-model="form.products" multiple></product>

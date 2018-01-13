@@ -35,22 +35,12 @@ export default {
 						this.$router.push('/trademark/add');
 					}
 				},
-				{
-					'type': 'delete',
-				},
-				{
-					'type': 'import',
-				},
-				{
-					'type': 'export',
-				},
-				{
-					'type': 'batch_upload',
-				},
-				{
-					'type': 'control',
-					'label': '字段'
-				}],
+				{ type: 'delete',},
+				{ type: 'import',},
+				{ type: 'export',},
+				{ type: 'batch_upload',},
+				{ type: 'control', label: '字段'}
+				],
 				'import_type': 'trademark',
 				'upload_type': 'trademark',
 				'highlightCurrentRow': true, 
@@ -60,161 +50,36 @@ export default {
 					'show': true,
 					'type': 'selection'
 				},
-				{
-					'show': true,//默认为true
-					'type': 'text',
-					'label': '案号',
-					'prop': 'serial',
-					'width': '198',
+				{ type: 'text', label: '案号', prop: 'serial', width: '198'},
+				{ type: 'text', label: '事务所案号', prop: 'agency_serial', width: '198',},
+				{ type: 'text', label: '商标名称', prop: 'title', width: '168', is_import: true,},
+				{ type: 'text', label: '商标类型', prop: 'type', render_simple:'name', width: '145', is_import: true,},
+				{ type: 'text', label: '商标图形', prop: 'figure', align: 'center', header_align: 'left', width: '200',
+				  render:(h,item)=>{
+					return h('img',{
+					  attrs:{
+					    src:item.viewUrl,
+					    width: '150px',		
+					  },
+					  style:{
+						marginTop:'5px',
+					  }
+					})
+				  },
 				},
-				{
-					type: 'text',
-					label: '事务所案号',
-					prop: 'agency_serial',
-					width: '198',
-					show: true 
-				},
-				{
-					'show': true,
-					'type': 'text',
-					'label': '商标名称',
-					'prop': 'title',
-					'width': '168',
-					'is_import': true,
-				},
-				{
-					'show': true,
-					'type': 'text',
-					'label': '商标类型',
-					'prop': 'type',
-					'render_simple':'name',
-					'width': '145',
-					'is_import': true,
-				},
-				{
-					'show': true,
-					'type': 'text',
-					'label': '商标图形',
-					'prop': 'figure',
-					'align': 'center',
-					'header_align': 'left',
-					render:(h,item)=>{
-						return h('img',{
-							attrs:{
-								src:item.viewUrl,
-								width: '150px',		
-							},
-							style:{
-								marginTop:'5px',
-							}
-						})
-					},
-					'width': '200',
-				},
-			  	{
-					'show': true,
-					'type': 'text',
-					'label': '地区',
-					'prop': 'area',
-					'is_import': true,
-					'render_simple': 'name',
-					'width': '145',
-					'is_import': true,
-			  },
-			  {
-					'show': true,
-					'type': 'text',
-					'label': '详细类别',
-					'prop': 'detail',
-					'is_import': true,
-					'width': '260',
-					'is_import': true,
-			  },
-			   {
-					'show': true,
-					'type': 'array',
-					'label': '商标类别',
-					'prop': 'categories',
-					render:_=>_.map(_=>_.name),
-					'is_import': true,
-					'width': '260',
-					'is_import': true,
-			  },
-			  {
-					'show': true,
-					'type': 'array',
-					'label': '申请人',
-					'prop': 'applicants',
-					'is_import': true,
-					'width': '260',
-					render:_=>_.map(_=>_.name),
-					'is_import': true,
-			  },
-			  {
-					'show': true,
-					'type': 'text',
-					'label': '申请号',
-					'prop': 'apn',
-					'width': '240',
-					'is_import': true,
-			  },
-			  {
-					'show': true,
-					'type': 'text',
-					'label': '申请日',
-					'prop': 'apd',
-					'width': '168',
-					'is_import': true,
-			  },
-			  {
-					'show': true,
-					'type': 'text',
-					'label': '初审公告日',
-					'prop': 'public_date',
-					'width': '168',
-					'is_import': true,
-			  },
-			  {
-					'show': true,
-					'type': 'text',
-					'label': '初审公告期数',
-					'prop': 'public_number',
-					'width': '168',
-					'is_import': true,
-			  },
-			  {
-					'show': true,
-					'type': 'text',
-					'label': '核准注册日',
-					'prop': 'issue_date',
-					'width': '168',
-					'is_import': true,
-			  },
-			  {
-					'show': true,
-					'type': 'text',
-					'label': '核准公告期数',
-					'prop' : 'issue_number',
-					'width': '168',
-					'is_import': true,
-			  },  
-			  {
-					'show': true,
-					'type': 'text',
-					'label': '专用权期限',
-					'prop': 'expiring_date',
-					 'width' : '145',
-					 'is_import': true,
-			  },
-			  {
-					'show': true,
-					'type': 'text',
-					'label': '备注',
-					'prop': 'remark',
-					'width': '280',
-					'is_import': true,
-			  },] 
-			},
+			  	{ type: 'text', label: '地区', prop: 'area', is_import: true, render_simple: 'name', width: '145',},
+			    { type: 'text', label: '详细类别', prop: 'detail', width: '260', is_import: true,},
+			    { type: 'array', label: '商标类别', prop: 'categories', render:_=>_.map(_=>_.name), is_import: true, width: '260',},
+			    { type: 'array', label: '申请人', prop: 'applicants', is_import: true, width: '260', render:_=>_.map(_=>_.name),},
+			    { type: 'text', label: '申请号', prop: 'apn', width: '240', is_import: true,},
+			    { type: 'text', label: '申请日', prop: 'apd', width: '168', is_import: true,},
+			    { type: 'text', label: '初审公告日', prop: 'public_date', width: '168', is_import: true,},
+			    { type: 'text', label: '初审公告期数', prop: 'public_number', width: '168', is_import: true,},
+			    { type: 'text', label: '核准注册日', prop: 'issue_date', width: '168', is_import: true,},
+			    { type: 'text', label: '核准公告期数', prop : 'issue_number', width: '168', is_import: true,},  
+			    { type: 'text', label: '专用权期限', prop: 'expiring_date', width : '145', is_import: true,},
+			    { type: 'text', label: '备注', prop: 'remark', width: '280', is_import: true,},
+			]},
 			tableData: '',
 			currentRow: '',
 			shrinkVisible: false,
