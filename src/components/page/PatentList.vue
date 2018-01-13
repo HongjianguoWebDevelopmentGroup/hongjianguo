@@ -73,13 +73,13 @@ export default {
           { type: 'export2', map_if: '/patent/export' },
           { type: 'import', map_if: '/patent/import' },
           { type: 'batch_upload', map_if: '/patent/upload' },
-          { type: 'batch_update' },
+          // { type: 'batch_update' },
           { type: 'control', label: '字段' },
         ],
         'export_type': 'patent',
         'import_type': 'patent',
         'upload_type': 'patent',
-        'update_type': 'patent',
+        // 'update_type': 'patent',
         'header_slot': ['download'],
         'columns': [
           { type: 'selection' },
@@ -345,17 +345,17 @@ export default {
           { type: 'text', render_simple: 'name', label: '市场推广或宣传上的价值', prop: 'marketing_value', width: '200', show: false },
           { type: 'text', label: '项目名称', prop: 'project_name', width: '200', show: false },
           { type: 'text', label: '项目代号', prop: 'project_serial', width: '200', show: false },
-          { type: 'text', label: '是否申请资助', prop: 'is_support', width: '200', show: false},
-          { type: 'text', label: '是否生物相关', prop: 'is_biological', width: '200', show: false},
-          { type: 'text', label: '是否分案申请', prop: 'is_division', width: '200', show: false},
-          { type: 'text', label: '是否提出实审请求', prop: 'is_exam_request', width: '200', show: false},
-          { type: 'text', label: '是否遗传资源相关', prop: 'is_genetic', width: '200', show: false},
-          { type: 'text', label: '是否有泄漏', prop: 'is_leakage', width: '200', show: false},
-          { type: 'text', label: '是否提前公开', prop: 'is_pre_public', width: '200', show: false},
-          { type: 'text', label: '是否要求优先权', prop: 'is_proirity', width: '200', show: false},
-          { type: 'text', label: '是否保密审查', prop: 'is_secure_check', width: '200', show: false},
-          { type: 'text', label: '是否有序列表', prop: 'is_sequence', width: '200', show: false},
-          { type: 'text', label: '是否发明/新型同日申请', prop: 'is_utility', width: '200', show: false},
+          { type: 'text', label: '是否申请资助', prop: 'is_support', width: '200', is_import:true, render: this.renderBoolean},
+          { type: 'text', label: '是否生物相关', prop: 'is_biological', width: '200', is_import:true, render: this.renderBoolean},
+          { type: 'text', label: '是否分案申请', prop: 'is_division', width: '200', is_import:true, render: this.renderBoolean},
+          { type: 'text', label: '是否提出实审请求', prop: 'is_exam_request', width: '200', is_import:true, render: this.renderBoolean},
+          { type: 'text', label: '是否遗传资源相关', prop: 'is_genetic', width: '200', is_import:true, render: this.renderBoolean},
+          { type: 'text', label: '是否有泄漏', prop: 'is_leakage', width: '200', is_import:true, render: this.renderBoolean},
+          { type: 'text', label: '是否提前公开', prop: 'is_pre_public', width: '200', is_import:true, render: this.renderBoolean},
+          { type: 'text', label: '是否要求优先权', prop: 'is_proirity', width: '200', is_import:true, render: this.renderBoolean},
+          { type: 'text', label: '是否保密审查', prop: 'is_secure_check', width: '200', is_import:true, render: this.renderBoolean},
+          { type: 'text', label: '是否有序列表', prop: 'is_sequence', width: '200', is_import:true, render: this.renderBoolean},
+          { type: 'text', label: '是否发明/新型同日申请', prop: 'is_utility', width: '200', is_import:true, render: this.renderBoolean},
         ] 
       },
       tableData: [],
@@ -391,6 +391,10 @@ export default {
     },
     refresh () {
       this.$refs.table.refresh();
+    },
+    renderBoolean (h,item) {
+      item?item = "是" : item = "否";
+      return h('span',item)
     },
     deletePatent ({ title, id }) {
       this.$confirm(`删除后不可恢复，确认删除‘${title}’吗？`)

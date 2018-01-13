@@ -10,15 +10,6 @@
         <el-form-item label="实审时机" prop="subexam_timing">
           <static-select type="timing" v-model="form.subexam_timing"></static-select>
         </el-form-item>
-        <el-form-item label="创新点描述" prop="innovation_introduction">
-          <el-input type="textarea" v-model="form.innovation_introduction"></el-input>
-        </el-form-item>
-        <el-form-item label="新申请的申请策略" prop="core_concepts">
-          <el-input type="textarea" v-model="form.core_concepts"></el-input>
-        </el-form-item>
-        <el-form-item label="决定要申请专利的原因" prop="decision_reason">
-          <el-input type="textarea" v-model="form.decision_reason"></el-input>
-        </el-form-item>
         <el-form-item label="技术重要性" prop="importance">
           <static-select type="patent_importance" v-model="form.importance"></static-select>
         </el-form-item>
@@ -34,14 +25,23 @@
         <el-form-item label="卖点相关性" prop="selling_point">
           <static-select type="patent_selling" v-model="form.selling_point"></static-select>
         </el-form-item>
+        <el-form-item label="市场推广或宣传上的价值" prop="marketing_value">
+          <static-select type="patent_marketing" v-model="form.marketing_value"></static-select>
+        </el-form-item>        
+        <el-form-item label="创新点描述" prop="innovation_introduction">
+          <el-input type="textarea" v-model="form.innovation_introduction"></el-input>
+        </el-form-item>        
+        <el-form-item label="关键保护点" prop="core_concepts">
+          <el-input type="textarea" v-model="form.core_concepts"></el-input>
+        </el-form-item>
+        <el-form-item label="决定要申请专利的原因" prop="decision_reason">
+          <el-input type="textarea" v-model="form.decision_reason"></el-input>
+        </el-form-item>
         <el-form-item label="卖点相关的技术" prop="selling_point_technique">
           <el-input type="textarea" v-model="form.selling_point_technique"></el-input>
         </el-form-item>
         <el-form-item label="对手使用情况" prop="competitor_usage">
           <el-input type="textarea" v-model="form.competitor_usage"></el-input>
-        </el-form-item>
-        <el-form-item label="市场推广或宣传上的价值" prop="marketing_value">
-          <static-select type="patent_marketing" v-model="form.marketing_value"></static-select>
         </el-form-item>
       </el-form>
     </app-collapse>
