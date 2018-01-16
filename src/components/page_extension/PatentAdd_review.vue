@@ -81,7 +81,15 @@ export default {
   },
   methods: {
   	setForm (data) {
-      this.$tool.coverObj(this.form, data, { obj: ['application_strategy', 'subexam_timing'] });
+      // this.$tool.coverObj(this.form, data, { obj: ['application_strategy', 'subexam_timing'] });
+      for (let k in this.form) {
+        if(data[k] == undefined) continue;
+        if(data[k] instanceof Object){
+          this.form[k] = data[k]['id'] - 0;
+        }else{
+          this.form[k] = data[k];
+        }
+      }
   	},
     submitForm () {
       if(this.type == 'add') {
