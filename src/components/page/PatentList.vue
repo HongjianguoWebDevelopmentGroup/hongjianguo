@@ -180,7 +180,7 @@ export default {
           { type: 'text', label: '是否遗传资源相关', prop: 'is_genetic', width: '178', is_import:true, render: this.renderBoolean},
           { type: 'text', label: '是否有泄漏', prop: 'is_leakage', width: '158', is_import:true, render: this.renderBoolean},
           { type: 'text', label: '是否提前公开', prop: 'is_pre_public', width: '158', is_import:true, render: this.renderBoolean},
-          { type: 'text', label: '是否要求优先权', prop: 'is_proirity', width: '178', is_import:true, render: this.renderBoolean},
+          { type: 'text', label: '是否要求优先权', prop: 'is_priority', width: '178', is_import:true, render: this.renderBoolean},
           { type: 'text', label: '是否保密审查', prop: 'is_secure_check', width: '158', is_import:true, render: this.renderBoolean},
           { type: 'text', label: '是否有序列表', prop: 'is_sequence', width: '158', is_import:true, render: this.renderBoolean},
           { type: 'text', label: '是否发明/新型同日申请', prop: 'is_utility', width: '198', is_import:true, render: this.renderBoolean},
