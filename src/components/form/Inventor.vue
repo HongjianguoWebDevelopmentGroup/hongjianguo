@@ -1,7 +1,7 @@
 <template>
-	<el-row>
+  <el-row>
     <el-col :span="16" style="padding-right:5px">
-      <remote-select type="member" :value="id" ref="member" :static-map="inventorInstall" @input="handleInventor" :disabled="disabled"></remote-select>
+      <remote-select  no-data-text="无数据, 请增加发明人" type="member" :value="id" ref="member" :static-map="inventorInstall" @input="handleInventor" :disabled="disabled"></remote-select>
     </el-col>
     <el-col :span="6" style="padding:0 5px">
       <el-autocomplete placeholder="贡献率" :fetch-suggestions="handleFetch"  style="width: 100%" readonly :value="share + ''" @input="handlePercent" :disabled="disabled">
@@ -22,35 +22,35 @@ export default {
   name: 'inventor',
   mixins: [ AxiosMixins ], 
   props: {
-  	'value': Object,
-  	'isDelete': {
-  		type: Boolean,
-  		default: false,
-  	},
+    'value': Object,
+    'isDelete': {
+      type: Boolean,
+      default: false,
+    },
     'disabled': {
       type: Boolean,
       default: false,
     }
   },
   data () {
-		return {
-		  option: {
-		  	inventors: []
-		  },
+    return {
+      option: {
+        inventors: []
+      },
       loading: false,
       inventorInstall: [],
-		}
+    }
   },
   computed: {
-  	id () {
+    id () {
       return this.value.id;
-  	},
-  	share () {
-  		return this.value.share;
-  	}
+    },
+    share () {
+      return this.value.share;
+    }
   },
   methods: {
-  	handleFetch (val, cb) {
+    handleFetch (val, cb) {
       cb([
         {value: 100},
         {value: 90},
@@ -65,22 +65,22 @@ export default {
       ])
     },
     deleteInventor () {
-    	this.$emit('deleteInventor');
+      this.$emit('deleteInventor');
     },
     handleInventor (val) {
-    	const selected = this.$refs.member.map.get(val);
+      const selected = this.$refs.member.map.get(val);
       console.log(selected);
       const id = selected && selected.id ? selected.id : '';
       const identity = selected && selected.identity ? selected.identity : '';
-    	const share = this.share;
+      const share = this.share;
         
-    	this.$emit('input', { id, share, identity });
+      this.$emit('input', { id, share, identity });
     },
     handlePercent (val) {
-    	const id = this.id;
-    	const identity = this.identity;
+      const id = this.id;
+      const identity = this.identity;
       const share = val;
-    	this.$emit('input', { id, share, identity });
+      this.$emit('input', { id, share, identity });
     },
   },
   created () {

@@ -1,8 +1,8 @@
  <template>
-  	<div class="main">
-  		<el-row>
-	  		<el-col :span="18">
-		  		<el-form label-width="92px" :rules="formRules" :model="formData" ref="form">
+    <div class="main">
+      <el-row>
+        <el-col :span="18">
+          <el-form label-width="92px" :rules="formRules" :model="formData" ref="form">
             
             <el-form-item label="提案人">{{ proposer_name }}</el-form-item>
             
@@ -14,11 +14,11 @@
               
               <el-input type="textarea" v-model="formData.abstract" placeholder="请输入案件摘要"></el-input>
             </el-form-item>
-            <el-form-item label="增加发明人">
-               <el-button type="primary" @click="addPop">添加</el-button>
-            </el-form-item>
+
             <el-form-item label="发明人" prop="inventors" class="is-required">
-              <inventors v-model="formData.inventors"></inventors>
+              <inventors v-model="formData.inventors" ref="inventors">
+                <el-button type="text" slot="addInventor" @click="addPop">添加发明人</el-button>
+              </inventors>
             </el-form-item>
 
             <el-form-item label="证件号码(第一发明人)" prop="identity" class="is-required">
@@ -31,25 +31,25 @@
             <el-form-item label="产品名称" prop="products">
               <product v-model="formData.products" multiple></product>
             </el-form-item>
-						<el-form-item label="标签" prop="tags">
-							<static-select type='tag' v-model="formData.tags" multiple></static-select>
-						</el-form-item>
-						<el-form-item label="附件" prop="attachments" class="is-required">
+            <el-form-item label="标签" prop="tags">
+              <static-select type='tag' v-model="formData.tags" multiple></static-select>
+            </el-form-item>
+            <el-form-item label="附件" prop="attachments" class="is-required">
                <upload v-model="formData.attachments" :file-list="attachments" ref="upload"></upload>
-						</el-form-item>
+            </el-form-item>
             <el-form-item label="备注" prop="remark">
               <el-input type="textarea" v-model="formData.remark"></el-input>
             </el-form-item>
 
-						<el-form-item>
-						   <el-button @click="submit" type="primary" :disabled="btn_disabled">提交</el-button>
+            <el-form-item>
+               <el-button @click="submit" type="primary" :disabled="btn_disabled">提交</el-button>
                <el-button @click="save()" :disabled="btn_disabled">暂存</el-button>
-						   <el-button @click="cancel" :disabled="btn_disabled">取消</el-button>
-						</el-form-item>
+               <el-button @click="cancel" :disabled="btn_disabled">取消</el-button>
+            </el-form-item>
 
-			  	</el-form>
-		  	</el-col>
-		  	<el-col :span="6" style="padding-left: 40px;">
+          </el-form>
+        </el-col>
+        <el-col :span="6" style="padding-left: 40px;">
 
             <h3 style="margin-top: 40px;">提案模板</h3>
             <ul class="proposal-model">
@@ -60,8 +60,8 @@
               <li><i class="iconfont icon-ppt"></i><a href="javascript:void(0)">15分钟如何写一个专利底稿.pptx</a></li> -->
             </ul>
 
-		  	</el-col>
-	  	</el-row>
+        </el-col>
+      </el-row>
       <el-dialog title="提交任务" :visible.sync="dialogVisible">
         <task-finish 
            
@@ -72,8 +72,8 @@
         >
         </task-finish>
       </el-dialog>
-      <pop-panel ref="pop"></pop-panel>
-  	</div>
+      <pop-panel ref="pop" @refresh="tansmitData"></pop-panel>
+    </div>
 </template>
 
 <script>
@@ -105,6 +105,19 @@ export default {
     ...mapActions([
       'refreshUser',
     ]),
+    handleUploadSuccess (d) {
+      if( d.data && d.data.list ) {
+        const l = d.data.list;
+        
+        //处理发明人的贡献率
+        if(l.inventors && l.inventors.length != 0) {
+          //复用组件内置的方法...
+          this.$refs.inventors.handleShare(l.inventors);
+        }
+
+        this.$tool.coverObj(this.formData, l);
+      }
+    },
     handleSubmitSuccess () {
       this.$router.push('/proposal/list');
     },
@@ -112,6 +125,16 @@ export default {
       this.pageType = 'edit';
       this.id = data.proposal_id;
       this.refreshUser();
+    },
+    tansmitData(data){
+      // console.log(data);
+      if(data[1] !== undefined) {
+        this.formData.inventors.push(data[1]);
+        if(this.formData.inventors && this.formData.inventors.length != 0) {
+            //复用组件内置的方法...
+          this.$refs.inventors.handleShare(this.formData.inventors);
+        }
+      }
     },
     addPop () {
       this.$refs.pop.show();
@@ -262,11 +285,11 @@ export default {
       update_time: '',
       proposer_name: '',
       formRules: {
-      	'title': [
-          {required: true, message: '案件名称不能为空' ,trigger: 'blur'},
+        'title': [
+          {required: true, message: '案件名称不能为空'},
           {pattern: /^[^~!@#$%^&*]+$/, message: '案件名不能包含非法字符', trigger: 'blur'},
           {max: 150, message: '长度不能超过150个字符', trigger: 'blur' }
-      	],
+        ],
         'abstract': [
           {max: 1000, message: '长度不能超过1000个字符', trigger: 'blur' }  
         ],
@@ -283,7 +306,7 @@ export default {
 
           },
         },
-        'identity': {pattern:  /(^\d{15}$)|(^\d{18}$)|(^\d{17}(\d|X|x)$)/, message: '证件号码格式错误'},   	
+        'identity': {pattern:  /(^\d{15}$)|(^\d{18}$)|(^\d{17}(\d|X|x)$)/, message: '证件号码格式错误'},    
       },
       tableOption: {
         'is_search': false,
@@ -386,7 +409,7 @@ export default {
     Product, 
     TaskFinish, 
     StaticSelect,
-    PopPanel 
+    PopPanel
   },
 
 }

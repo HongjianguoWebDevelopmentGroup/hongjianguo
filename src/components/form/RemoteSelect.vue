@@ -1,28 +1,29 @@
 <template>
-  <div id="select_list">
-  	<el-select
-  	  :value="value2"
-  	  @input="handleInput"
-  	  filterable
-  	  remote
-  	  :placeholder="PLACEHOLDER"
-  	  :disabled="disabled"
-  	  :remote-method="remoteMethod"
-  	  :loading="loading"
+  <div>
+    <el-select
+      :value="value2"
+      @input="handleInput"
+      filterable
+      remote
+      :placeholder="PLACEHOLDER"
+      :disabled="disabled"
+      :remote-method="remoteMethod"
+      :loading="loading"
       :allow-create="allowCreate"
       :default-first-option="choose.defaultFirstOption !== undefined ? choose.defaultFirstOption : false"
-  	  :multiple="!single"
-  	  ref="select"
-  	  @visible-change.once="initialization"
-  	>
-  		<el-option
-  			v-for="item in option_in"
-  			:key="item.id"
-  			:label="item.name"
-  			:value="item.id"
-  		>
-  		</el-option>
-  	</el-select>
+      :multiple="!single"
+      ref="select"
+      :no-data-text="noDataText" 
+      @visible-change.once="initialization"
+    >
+      <el-option
+        v-for="item in option_in"
+        :key="item.id"
+        :label="item.name"
+        :value="item.id"
+      >
+      </el-option>
+    </el-select>
   </div>
 </template>
 
@@ -30,59 +31,59 @@
 import AxiosMixins from '@/mixins/axios-mixins'
 
 const map = new Map([
-	['member', {
-		URL: '/api/members',
-		DATA_KEY: 'members',
-		PLACEHOLDER: '请输入用户关键词',
-	}],
-	['applicant', {
-		URL: '/api/applicants',
-		DATA_KEY: 'applicants',
-		PLACEHOLDER: '请输入申请人关键词',
-	}],
-	['inventor', {
-		URL: '/api/inventors',
-		DATA_KEY: 'data',
-		PLACEHOLDER: '请输入发明人关键词',
-	}],
-	['agent', {
-		URL: '/api/agents',
-		DATA_KEY: 'members',
-		PLACEHOLDER: '请输入代理人关键词',
-	}],
-	['agency', {
-		URL: '/api/agencies',
-		DATA_KEY: 'agencies',
-		PLACEHOLDER: '请输入代理机构关键词',
-	}],
-	['project', {
-		URL: '/api/projects',
-		DATA_KEY: 'projects',
-		PLACEHOLDER: '请输入案件关键词',
-	}],
-	['proposal', {
-		URL: '/api/proposals',
-		DATA_KEY: 'proposals',
-		PLACEHOLDER: '请输入提案关键词',
-	}],
-	['patent', {
-		URL: '/api/projects',
-		DATA_KEY: 'projects',
-		PLACEHOLDER: '请输入专利关键词',
-		PARAMS: { category: 1 },
-	}],
+  ['member', {
+    URL: '/api/members',
+    DATA_KEY: 'members',
+    PLACEHOLDER: '请输入用户关键词',
+  }],
+  ['applicant', {
+    URL: '/api/applicants',
+    DATA_KEY: 'applicants',
+    PLACEHOLDER: '请输入申请人关键词',
+  }],
+  ['inventor', {
+    URL: '/api/inventors',
+    DATA_KEY: 'data',
+    PLACEHOLDER: '请输入发明人关键词',
+  }],
+  ['agent', {
+    URL: '/api/agents',
+    DATA_KEY: 'members',
+    PLACEHOLDER: '请输入代理人关键词',
+  }],
+  ['agency', {
+    URL: '/api/agencies',
+    DATA_KEY: 'agencies',
+    PLACEHOLDER: '请输入代理机构关键词',
+  }],
+  ['project', {
+    URL: '/api/projects',
+    DATA_KEY: 'projects',
+    PLACEHOLDER: '请输入案件关键词',
+  }],
+  ['proposal', {
+    URL: '/api/proposals',
+    DATA_KEY: 'proposals',
+    PLACEHOLDER: '请输入提案关键词',
+  }],
+  ['patent', {
+    URL: '/api/projects',
+    DATA_KEY: 'projects',
+    PLACEHOLDER: '请输入专利关键词',
+    PARAMS: { category: 1 },
+  }],
   ['trademark', {
     URL: '/api/projects',
     DATA_KEY: 'projects',
     PLACEHOLDER: '请输入商标关键词',
     PARAMS: { category: 2 },
   }],
-	['copyright', {
-		URL: '/api/projects',
-		DATA_KEY: 'projects',
-		PLACEHOLDER: '请输入版权关键词',
-		PARAMS: { category: 3 },
-	}],
+  ['copyright', {
+    URL: '/api/projects',
+    DATA_KEY: 'projects',
+    PLACEHOLDER: '请输入版权关键词',
+    PARAMS: { category: 3 },
+  }],
   ['bill', {
     URL: '/api/invoices',
     DATA_KEY: 'invoices',
@@ -117,7 +118,7 @@ export default {
       type: Boolean,
       default: false,
     },
-  	'type': [String, Object],
+    'type': [String, Object],
     'para': {
       type: Object,
       default () {return {}},
@@ -129,15 +130,19 @@ export default {
     'staticMap': {
       type: Array,
       default () { return [] },
+    },
+    'noDataText':{
+      type: String,
+      default: '无数据',
     }
   },
   data () {
-  	return {
+    return {
       options: [],
       loading: false, 
-  		selected: [],
-  		static_map: [],
-  	};
+      selected: [],
+      static_map: [],
+    };
   },
   methods: {
     handleInput (val) {
@@ -154,12 +159,12 @@ export default {
         this.$emit('input', val);
       }
     },
-  	initialization () {
+    initialization () {
       this.remoteMethod('');       
-  	},	
-  	getSelected () {
-  		return this.selected;
-  	},
+    },  
+    getSelected () {
+      return this.selected;
+    },
     refreshSelected (val) {
       val = this.single ? [val] : val;
 
@@ -225,13 +230,13 @@ export default {
     }
   },
   computed: {
-  	choose () {
-  		if(typeof this.type == 'string') {
-  			return map.get(this.type);	
-  		}else {
-  			return this.type;
-  		}		
-  	},
+    choose () {
+      if(typeof this.type == 'string') {
+        return map.get(this.type);  
+      }else {
+        return this.type;
+      }   
+    },
     allowCreate () {
 
 
@@ -246,16 +251,16 @@ export default {
 
       return false;
     },  
-  	URL () {
-  		return this.choose.URL;
-  	},
-  	DATA_KEY () {
-  		return this.choose.DATA_KEY;
-  	},
-  	PLACEHOLDER () {
-  		return this.choose.PLACEHOLDER;
-  	},
-  	PARAMS () {
+    URL () {
+      return this.choose.URL;
+    },
+    DATA_KEY () {
+      return this.choose.DATA_KEY;
+    },
+    PLACEHOLDER () {
+      return this.choose.PLACEHOLDER;
+    },
+    PARAMS () {
       let obj = {};
 
       if(this.para) {
@@ -265,23 +270,23 @@ export default {
         Object.assign(obj, this.choose.PARAMS);
       }
 
-  		return obj;
-  	},
-  	option_in () {
-  		//由于一部分的val可能是通过object传入,单纯的options只含有动态部分
-  		//所以取select_map和options的并集,取得selected的静态部分选项
-  		const arr = [ ...this.static_map, ...this.options ];
+      return obj;
+    },
+    option_in () {
+      //由于一部分的val可能是通过object传入,单纯的options只含有动态部分
+      //所以取select_map和options的并集,取得selected的静态部分选项
+      const arr = [ ...this.static_map, ...this.options ];
       // console.log(this.selected, this.options, arr);
-  		// console.log(arr);
-  		return this.$tool.singleObject(arr,'id');
-  	},
-  	map () {
-  		//map分为静态和动态俩部分，静态部分由value类型为Object时提供，之后将value转换为数值类型
-  		const map = new Map();
-  		this.static_map.forEach(_=>map.set(_.id, _));
-  		this.options.forEach(_=>map.set(_.id, _));
-  		return map;
-  	},
+      // console.log(arr);
+      return this.$tool.singleObject(arr,'id');
+    },
+    map () {
+      //map分为静态和动态俩部分，静态部分由value类型为Object时提供，之后将value转换为数值类型
+      const map = new Map();
+      this.static_map.forEach(_=>map.set(_.id, _));
+      this.options.forEach(_=>map.set(_.id, _));
+      return map;
+    },
     value2 () {
       // console.log(this.value);
       if(!this.multiple && !this.single) {
@@ -293,7 +298,7 @@ export default {
     }
   },
   watch: {
-  	value2 (val) {
+    value2 (val) {
       // console.log('-------------val');
       // console.log(val);
       // console.log('-------------val');
@@ -304,7 +309,7 @@ export default {
       }
       
       this.refreshSelected(val);   
-  	}
+    }
   },
   created () {
     this.refreshSelected(this.value2);
