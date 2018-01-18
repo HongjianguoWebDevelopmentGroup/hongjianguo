@@ -227,7 +227,7 @@ export default {
   		const data = this.$tool.shallowCopy(this.form, {'date': true});
 
   		const success = _=>{ 
-  			this.$message({message: _.info, type: 'success'});
+  			this.$message({message: '新建商标成功', type: 'success'});
   			this.$router.push('/trademark/list') 
   		};
   		const complete = _=>{ this.btn_disabled = false };
