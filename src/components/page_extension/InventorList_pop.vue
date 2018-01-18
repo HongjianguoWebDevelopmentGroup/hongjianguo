@@ -51,6 +51,7 @@ export default {
   mixins: [ AxiosMixins, PopMixins ],
   data () {
 		return {
+      inventor: '',
       form: {
         name: '',
         identity: '',
@@ -65,6 +66,29 @@ export default {
         name: { required: true, message: '发明人姓名不能为空', trigger: 'blur' }
       }
 		}
+  },
+  methods:{
+    add () {
+      const url = this.$options.URL;
+      const tex = this.$options.REMINDER_TEXT;
+      const data = this.form;
+      
+      const success = _=>{
+        this.$message({message: `添加${tex}成功`, type: 'success'});
+        this.inventor= _.inventor;
+        this.dialogVisible = false;
+        this.$emit('refresh', ['add',this.inventor]);
+      }
+      const complete = _=>{
+        this.btn_disabled = false;
+      }
+      this.$refs.form.validate(_=>{
+        if(_) {
+          this.btn_disabled = true;
+          this.$axiosPost({url, data, success, complete});
+        }
+      })      
+    },   
   },
   components: { Region },
   URL: '/api/inventors',

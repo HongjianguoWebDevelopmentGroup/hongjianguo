@@ -14,11 +14,11 @@
               
               <el-input type="textarea" v-model="formData.abstract" placeholder="请输入案件摘要"></el-input>
             </el-form-item>
-            <el-form-item label="增加发明人">
-              <el-button type="primary" @click="addPop">添加</el-button>
-            </el-form-item>
+
             <el-form-item label="发明人" prop="inventors" class="is-required">
-              <inventors v-model="formData.inventors" ref="inventors"></inventors>
+              <inventors v-model="formData.inventors" ref="inventors">
+                <el-button type="text" slot="addInventor" @click="addPop">添加发明人</el-button>
+              </inventors>
             </el-form-item>
 
             <el-form-item label="证件号码(第一发明人)" prop="identity" class="is-required">
@@ -72,7 +72,7 @@
         >
         </task-finish>
       </el-dialog>
-      <pop-panel ref="pop"></pop-panel>
+      <pop-panel ref="pop" @refresh="tansmitData"></pop-panel>
   	</div>
 </template>
 
@@ -125,6 +125,16 @@ export default {
       this.pageType = 'edit';
       this.id = data.proposal_id;
       this.refreshUser();
+    },
+    tansmitData(data){
+      // console.log(data);
+      if(data[1] !== undefined) {
+        this.formData.inventors.push(data[1]);
+        if(this.formData.inventors && this.formData.inventors.length != 0) {
+            //复用组件内置的方法...
+          this.$refs.inventors.handleShare(this.formData.inventors);
+        }
+      }
     },
     addPop () {
       this.$refs.pop.show();

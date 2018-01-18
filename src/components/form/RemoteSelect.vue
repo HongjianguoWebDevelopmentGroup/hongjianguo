@@ -13,6 +13,7 @@
       :default-first-option="choose.defaultFirstOption !== undefined ? choose.defaultFirstOption : false"
   	  :multiple="!single"
   	  ref="select"
+      :no-data-text="noDataText" 
   	  @visible-change.once="initialization"
   	>
   		<el-option
@@ -129,6 +130,10 @@ export default {
     'staticMap': {
       type: Array,
       default () { return [] },
+    },
+    'noDataText':{
+      type: String,
+      default: '无数据',
     }
   },
   data () {
