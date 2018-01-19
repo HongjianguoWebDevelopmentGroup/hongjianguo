@@ -1,5 +1,5 @@
 <template>
-  <el-dialog :key="popType" :title="popType == 'add' ? '添加用户' : '编辑用户'" :visible.sync="dialogVisible" @close="close">
+  <el-dialog :key="popType" :title="dialogTitle" :visible.sync="dialogVisible" @close="close" :modal="false">
 		<el-form :model="form" label-width="100px" ref="form" :rules="rules">
 			
       <el-form-item label="用户组" prop="group_id" v-if="popType == 'add'" :rules="{ type: 'number', required: true, message: '用户组选择不能为空', trigger: 'change'}">
@@ -116,12 +116,7 @@ export default {
   methods: {
   	show (row) {
   		this.dialogVisible = true;
-  		
-  		// console.log("----------------------------------")
-  		// console.log(this.$refs.form.fields);
-  		this.$nextTick(()=>{
-  		// console.log(this.$refs.form.fields);
-  		// console.log("------------------------------------")
+  		this.$nextTick(_=>{
   			if(this.$refs.form) {
           this.$refs.form.resetFields();
           this.form.username = "";
@@ -196,6 +191,7 @@ export default {
 
   	},
   	close () {
+      this.$emit('refresh',this.dialogVisible);
   		if(this.$refs.psd) {
   			this.$refs.psd.clearEditPsd();
   		}

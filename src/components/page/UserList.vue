@@ -20,7 +20,7 @@
   		</div>
 	
   	<pop :popType="popType" :group="current_group" @refresh="refresh" ref="pop"></pop>
-  	
+  	<div class="customModal" v-if="isVisible" style="width: 100%;height:100%;position: absolute;left: 0;top: 0;background:rgba(0,0,0,0.5);z-index: 10;"></div>
   	<el-dialog title="将所选用户添加至用户组" :visible.sync="dialogVisible" :close-on-click-modal="false">
 			<el-form label-width="100px">
 				<el-form-item label="用户组">
@@ -54,7 +54,8 @@ export default {
   mixins: [ AxiosMixins ],
   data () { 
 		return {
-			lastUpdate: '',
+          isVisible: false,
+		  lastUpdate: '',
 		  formLabelWidth: '100px',
 		  popType: '',
 		  tableOption: {
@@ -148,10 +149,12 @@ export default {
     },
 		addPop () {
 			this.popType = 'add';
+			this.isVisible = true;
 			this.$refs.pop.show();
 		},
 		editPop (row) {
 			this.popType = 'edit';
+			this.isVisible = true;
 			this.$refs.pop.show(row);
 		},
 		toGroupPop () {
@@ -226,10 +229,12 @@ export default {
 			this.axiosGet({url, data, success})
 		},
 		refresh (str) {
+			// console.log(str);
  			this.$refs.table.refresh();
 			if(str != 'noGroup') {
 				this.refreshGroup();
 			}
+			if(!str) return this.isVisible = false;
 		},
 		refreshGroup () {
 			this.$store.dispatch('refreshGroup');

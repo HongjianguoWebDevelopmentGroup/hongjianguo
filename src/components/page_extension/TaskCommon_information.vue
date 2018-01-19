@@ -171,7 +171,9 @@
       </el-form>
     </el-collapse-item>
     <el-collapse-item name="2" v-else-if="row.category == 10" title="账单详情">
+
       <invoice-detail :id="row.invoice_id"></invoice-detail>
+
     </el-collapse-item>
 	</el-collapse>
 </template>
