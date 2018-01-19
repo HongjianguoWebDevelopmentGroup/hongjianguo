@@ -2,7 +2,7 @@
   <div class="main">
   	<strainer v-model="filter" @refresh="refresh"></strainer>
 		<table-component @refreshTableData="refreshTableData" :tableOption="option" :data="tableData" ref="table">
-			<fee-status slot="status" v-model="fee_status" style="width: 150px; margin-left: 5px;" :feeType="feeType" feeAnnual></fee-status>
+			<fee-status slot="status" v-model="fee_status" style="width: 150px; margin-left: 5px;" :feeType="feeType"></fee-status>
 			<remote-select v-if="fee_invoice_if" slot='invoice' v-model="fee_invoice" style="width: 220px; margin-left: 10px; display: inline-block;" class="pay_search" :type="feeType ? 'bill' : 'pay'"></remote-select>
 		</table-component>
 		<pop ref="pop" :feeType="feeType" @refresh="refresh"></pop>
@@ -64,31 +64,45 @@ export default {
           { type: 'text', label: '费用对象', prop: 'target', render_simple: 'name', width: '190' },
           { type: 'text', label: '费用名称', prop: 'code', render_simple: 'name', width: '190' },
           //{ type: 'text', label: '费用类型', prop: 'type_name', width: '190' },
-          { type: 'text', label: '外币金额', prop: 'fee', width: '100',render:(h,item)=>{
-            return h('div',{
-              style: {
-                textAlign: 'right',
+          { 
+            type: 'text', 
+            label: '外币金额', 
+            prop: 'amount', 
+            width: '100',
+            align: 'right',
+            render:(h,item,row)=>{
+              if( row.roe == 1 ){
+                return h('span','N/A');
+              }else{
+                return h('span',`${item}${row.currency}`);
               }
-            },item)
-          } 
-        },
-          { type: 'text', label: '汇率', prop: 'roe', is_import: true, width: '80',render:(h,item)=>{
-            if( item ==1 ){
-              return h('span','N/A')
-            }else{
-              return h('span',item)
+            } 
+          },
+          { 
+            type: 'text', 
+            label: '汇率', 
+            prop: 'roe', 
+            width: '80',
+            align: 'right',
+            render:(h,item)=>{
+              if( item == 1 ){
+                return h('span','N/A');
+              }else{
+                return h('span',item);
+              } 
             }
-           } 
           },
-          // { type: 'text', label: '币种', prop: 'currency', is_import: true, width: '80' },
-          { type: 'text', label: '人民币金额', prop: 'rmb', is_import: true, width: '120' ,render:(h,item)=>{
-            return h('div',{
-              style: {
-                textAlign: 'right',
-              }
-            },`${item}CNY`)}
+          { 
+            type: 'text', 
+            label: '人民币金额', 
+            prop: 'rmb', 
+            width: '120',
+            align: 'right',
+            render:(h,item)=>{
+              return h('span',`${item}CNY`)
+            }
           },
-          { type: 'text', label: '状态', prop: 'status', render_simple: 'name', width: '180'},
+          { type: 'text', label: '费用状态', prop: 'status', render_simple: 'name', width: '180'},
           { type: 'text', label: '案件类型', prop: 'category', width: '145' },
           { type: 'text', label: '专利类型', prop: 'patent_type', width: '145' },
           { type: 'text', label: '案件名称', prop: 'title', width: '189' },
@@ -101,23 +115,19 @@ export default {
           { type: 'text', label: '官方绝限', prop: 'deadline', width: '175' },
           { type: 'text', label: '付款时间', prop: 'pay_time', width: '175' },
           { type: 'text', label: '请款单', prop: 'invoice_id', width: '150' },
-          //{ type: 'text', label: '请款单备注', prop: 'invoidce_remark', width: '150' },
-          //{ type: 'text', label: '发票抬头', prop: 'invoice_title', width: '330' },
-          //{ type: 'text', label: '纳税人识别号', prop: 'tax_payer_identifier', width: '160' },
           { type: 'text', label: '备注', prop: 'remark', is_import: true, width: '160' },
           { 
             type: 'action',
             width: '80',
             btns: [
-              { type: 'edit', click:  this.editPop},
-              // { type: 'delete', click: this.feeDelete },
+              { type: 'edit', click:  this.editPop, btn_disabled: row=>row.status.id != 0 },
             ]
           }
         ],
       },
       tableData: [],
       filter: {},
-      fee_status: 0,
+      fee_status: '',
       fee_invoice: '',
       fee_invoice_if: false,
       fee_invoice_scope: '',
@@ -166,18 +176,11 @@ export default {
 
       const url = URL;
       const debit = this.feeType;
-      const status = this.fee_status;
+      const status = this.fee_status === '' ? {} : {status: this.fee_status};
       const invoice = this.fee_invoice_if && this.fee_invoice != '' ? {fee_invoice: this.fee_invoice} : {};
-      const data = Object.assign({}, option, { debit, status }, this.filter, invoice);
+      const data = Object.assign({}, option, { debit }, this.filter, invoice, status);
       const success = d=>{ 
         const totalData = d.fees.data;
-        for (var i = 0; i < totalData.length; i++) {
-            if(totalData[i].roe==1) {
-              totalData[i].fee = 'N/A';
-            }else{
-               totalData[i].fee = `${totalData[i].fee+totalData[i].currency}`;
-            }
-        }
         if(data['format'] == 'excel') {
           if(d.fees.downloadUrl) {
             window.location.href = d.fees.downloadUrl;  
@@ -211,15 +214,26 @@ export default {
     },
     invoicePop (type) {
       
+      //若未选择弹出警告并结束当前函数
       const s = this.$refs.table.getSelect();
-      if(s) {
-        this.invoicePopType = type;
-        this.invoiceSelected = s;
-        this.invoiceSwitchType = 'selected';
-        this.fee_invoice_pop = '';
+      if(!s) return;
 
-        this.dialogVisible = true;  
+      //选择项若不符合条件 弹出警告并结束当前函数
+      const o = {};
+      for(let i = 0; i < s.length; i++) {
+        const row = s[i];
+        if(row.status.id != 0) return this.$message({type: 'warning', message: '请不要选择未付款状态以外的费用'});
+        o[row.target.id] = true;
       }
+      if(this.$tool.getObjLength(o) != 1) {
+        return this.$message({type: 'warning', message: '请选择具有相同费用对象的费用'});
+      }
+      
+      this.invoicePopType = type;
+      this.invoiceSelected = s;
+      this.invoiceSwitchType = 'selected';
+      this.fee_invoice_pop = '';
+      this.dialogVisible = true;  
        
     },
     invoiceAdd () {

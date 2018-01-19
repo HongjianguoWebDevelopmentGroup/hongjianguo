@@ -46,7 +46,7 @@
       <el-input placeholder="请填写事务所案号" v-model="form.agency_serial"></el-input>
     </el-form-item>
     <el-form-item prop="agent" label="代理人" v-if="fields.agent" v-show="form.agency !== ''">
-      <remote-select type="agent" v-model="form.agent" :static-map="this.agentMap" :para="{'agency': form.agency}" ref="agent"></remote-select>
+      <remote-select type="agent" v-model="form.agent" :static-map="this.agentSelelcted" :para="{'agency': form.agency}" ref="agent"></remote-select>
     </el-form-item>
     <el-form-item prop="agency_type" label="代理类型" v-if="fields.agency_type"
       :rules="{ required: true, message: '代理类型不能为空'}"
@@ -56,6 +56,9 @@
   	<el-form-item prop="due_time" label="承办期限" v-if="fields.due_time">
 			<el-date-picker v-model="form.due_time" type="date" placeholder="选择承办期限"></el-date-picker>
   	</el-form-item>
+    <el-form-item prop="pay_time" label="支付时间" v-if="fields.pay_time">
+      <el-date-picker v-model="form.pay_time" type="date" placeholder="选择支付时间"></el-date-picker>
+    </el-form-item>
   	<el-form-item prop="dealine" label="法限" v-if="fields.deadline">
 			<el-date-picker v-model="form.dealine" type="date" placeholder="选择法限"></el-date-picker>
   	</el-form-item>
@@ -64,6 +67,13 @@
     </el-form-item>
     <el-form-item prop="type" label="专利类型" v-if="fields.type" :rules="{type: 'number', required: true, message: '专利类型不能为空', trigger: 'blur'}">
       <static-select type="patent_type" v-model="form.type" key="patent_type"></static-select>
+    </el-form-item>
+    
+    <el-form-item prop="estimate" label="年费评估" v-if="fields.estimate" style="margin-bottom: 0px;">
+      <app-table :columns="estimateColumns" :data="data.estimate" :maxHeight="300" ref="estimate"></app-table>
+      <span style="color: rgb(132, 146, 166);">请选择评估通过的年费</span>
+    </el-form-item>
+
     </el-form-item>
     <el-form-item prop="attachments" label="附件" v-if="fields.attachments && !hide_r_a">
       <upload v-if="next == '20'" v-model="form.attachments" :action="`/api/files?action=parseConfirmationList&id=${id}`" @uploadSuccess="handleUploadSuccess"></upload>
@@ -99,8 +109,8 @@
       <li v-for="(item, index) in data.description" :key="index">{{ item }}</li>
     </ul>
     <el-form-item style="margin-bottom: 0px;">
-  		<el-button type="primary" @click="submitFunc" :disabled="btn_disabled">提交</el-button>
-  	</el-form-item>
+      <el-button type="primary" @click="submitFunc" :disabled="btn_disabled">提交</el-button>
+    </el-form-item>
   </el-form>
 </div>
 </template>
@@ -112,6 +122,7 @@ import Upload from '@/components/form/Upload'
 import RemoteSelect from '@/components/form/RemoteSelect'
 import StaticSelect from '@/components/form/StaticSelect'
 import AppSwitch from '@/components/form/AppSwitch'
+import AppTable from '@/components/common/AppTable'
 
 import {mapMutations} from 'vuex'
 import {mapActions} from 'vuex'
@@ -135,16 +146,28 @@ export default {
 			'data': {},
       'staticMap': [],
 			'next': '',
+      'estimateColumns': [
+        { type: 'selection' },
+        { type: 'text', label: '案号', prop: 'serial', render_key: 'project', render_simple: 'serial'},
+        { type: 'text', label: '案件名称', prop: 'title',  render_key: 'project', render_simple: 'title'},
+        { type: 'text', label: '年费类型', prop: 'code', render_simple: 'name'},
+        { 
+          type: 'text', 
+          label: '人民币金额', 
+          prop: 'rmb', 
+          render:(h,item)=>{
+            return h('span',`${item}CNY`)
+          }
+        },
+      ],
 			'form': {
         agency_serial: '',
 				person_in_charge: '',
 				agency: '',
 				agent: '',
         agency_type: '',
-				due_time: '',
-				deadline: '',
-				remark: '',
-				attachments: [],
+        remark: '',
+        attachments: [],
         rank: 5,
         area: [],
         type: '',
@@ -152,10 +175,13 @@ export default {
         is_supplement: 0,
         points: '',
         defence: '',
+        due_time: '',
+        deadline: '',
+        pay_time: '',
 			},
 			'defaultVal': '',
       'agencyMap': [],
-      'agentMap': [],
+      'agentSelelcted': [],
 			'fields': {},
       'loading': false,
       'btn_disabled': false,
@@ -214,14 +240,40 @@ export default {
         if(_) {
           this.btn_disabled = true;
           const url = `${URL}/${this.id}/nexttask`;
-          const data = Object.assign({}, {'flow_node_id': this.next}, this.form);
-          if(data.rank) {data.rank *= 20};
+          const data = this.$tool.shallowCopy(
+            Object.assign({}, {'flow_node_id': this.next}, this.form), 
+            {'date': true},//时间处理
+          );
+
+          //评分处理
+          if(data.rank) {
+            data.rank *= 20
+          };
+
+          //评估单处理
+          if(this.fields.estimate) {
+            data.estimate = [[], []];
+            if(this.data.estimate.length != 0) {
+              //已选项
+              data.estimate[0] = this.$refs.estimate.getSelected(true).map(_=>_.id); 
+              //未选项
+              data.estimate[1] = this.data.estimate.filter(_=>{
+                if(data.estimate[0].indexOf(_.id) < 0) {
+                  return true;
+                }else {
+                  return false;
+                }
+              }).map(_=>_.id);
+            } 
+          }
+          
           const success = ()=>{ 
             this.$emit('submitSuccess') 
             this.refreshUser();
           };
           const complete = _=>{ this.btn_disabled=false }; 
-          this.axiosPost({url, data, success, complete}); 
+          this.$axiosPost({url, data, success, complete});
+          
         }else {
           this.$message({message: '请正确填写任务完成字段', type: 'warning'})
         }
@@ -306,7 +358,7 @@ export default {
                 //这里agent需要在agency的监听事件完成后再进行填充
                 if(this.fields.agent && this.data.agent) {
                   this.form.agent = this.data.agent.id;
-                  this.agentMap = [this.data.agent];
+                  this.agentSelelcted = [this.data.agent];
                 }
               })
             })
@@ -328,7 +380,7 @@ export default {
       handler (val) {
         if(val !== '' && !(val instanceof Object)) {
           if(this.$refs.agent) {
-            this.agentMap = [];
+            this.agentSelelcted = [];
             this.$refs.agent.clear(false);
           }      
         }else {
@@ -346,7 +398,8 @@ export default {
     Upload,
     RemoteSelect, 
     StaticSelect,
-    AppSwitch, 
+    AppSwitch,
+    AppTable,
   }
 }
 </script>

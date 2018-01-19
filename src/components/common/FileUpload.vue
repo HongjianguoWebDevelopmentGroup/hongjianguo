@@ -181,10 +181,10 @@ export default {
       const f = selected.fields;
       if (!f) return;
       const copy = this.$tool.deepCopy(this.tableData[index]);
-      copy['show_mail_date'] = f.mail_date == 1 ? true :false;
-      copy['show_deadline'] = f.deadline == 1 ? true :false;
-      copy['show_apd'] = f.apd == 1 ? true :false;
-      copy['show_apn'] = f.apn == 1 ? true :false;
+      copy['show_mail_date'] = f.mail_date == 1 ? true : false;
+      copy['show_deadline'] = f.deadline == 1 ? true : false;
+      copy['show_apd'] = f.apd == 1 ? true : false;
+      copy['show_apn'] = f.apn == 1 ? true : false;
 
       this.tableData.splice(index, 1, copy);
 

@@ -43,8 +43,7 @@ export default {
 			return `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}`;
 		}else {
 			return date;
-		}
-		
+		}		
 	},
 	coverObj (a1, a2, { obj, skip } = {}) {
 		

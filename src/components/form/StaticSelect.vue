@@ -133,11 +133,18 @@ const config = [
   }],
   ['fee_code', {
     placeholder: '请选择费用代码',
-    options: 'feeCodesOptions'
-    // url: '/api/feeCodes',
-    // handle (data) {
-    //   return data.codes.map(_=>({id: _.id - 0, name: _.name, amount: _.amount - 0}));
-    // }
+    // options: 'feeCodesOptions'
+    url: '/api/feeCodes',
+    handle (data) {
+      return data.codes.map(_=>({id: _.id - 0, name: _.name, amount: _.amount - 0}));
+    }
+  }],
+  ['fee_code_renewal', {
+    placeholder: '请选择年费类型',
+    url: '/api/feeCodes?type=renewal',
+    handle (data) {
+      return data.codes.map(_=>({id: _.id - 0, name: _.name, amount: _.amount - 0}));
+    }
   }],
   ['fee_target_income', {
     placeholder: '请选择收入对象',
@@ -236,6 +243,24 @@ const config = [
       { id: 4, name: '其他用途' },
     ]
   }],
+  ['currency', {
+    placeholder: '请选择费用类型',
+    options: [
+      { name: "人民币[CNY]", id: "CNY" },
+      { name: "美元[USD]", id: "USD" },
+      { name: "欧元[EUR]", id: "EUR" },
+      { name: "日元[JPY]", id: "JPY" },
+      { name: "韩元[KRW]", id: "KRW" },
+      { name: "港币[HKD]", id: "HKD" },
+      { name: "新台币[NTD]", id: "NTD" },
+      { name: "英磅[GBP]", id: "GBP" },
+      { name: "德国马克[DEM]", id: "DEM" },
+      { name: "瑞士法郎[CNY]", id: "CHF" },
+      { name: "加拿大元[CAD]", id: "CAD" },
+      { name: "澳大利亚元[AUD]", id: "AUD" },
+      { name: "新西兰元[NZD]", id: "NZD" },
+    ]
+  }]
 ];
 
 const map = new Map(config);
@@ -245,8 +270,9 @@ const dataMap = new Map([
   ['fee_target_expenditure', {data: null}],
   ['file_type', {data: null}],
   ['file_type_trademark',{data: null}],
-  // ['fee_code', {data: null}],
   ['tag', {data: null}],
+  ['fee_code', {data: null}],
+  ['fee_code_renewal', {data: null}],
   ['flow_node', {data: null}],
   ['progress',{data: null}]
 ]);

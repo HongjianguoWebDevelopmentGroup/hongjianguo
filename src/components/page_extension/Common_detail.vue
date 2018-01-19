@@ -35,9 +35,9 @@
         <el-tab-pane label="引用关系" name="quote" v-if="type == 'patent'">
           <quote></quote>
         </el-tab-pane>
-        <el-tab-pane label="评审记录" name="review" v-if="type == 'patent'">
+<!--         <el-tab-pane label="评审记录" name="review" v-if="type == 'patent'">
           <review></review>
-        </el-tab-pane>
+        </el-tab-pane> -->
         <el-tab-pane label="审查记录">
           <defence></defence>
         </el-tab-pane>

@@ -37,6 +37,7 @@ export default {
   computed: {
   	options () {
   		const arr = [
+        {value: '', label: '全部'},
   			{value: 0, label: '未付款'},
   			{value: 100, label: '已付款'},
   		];

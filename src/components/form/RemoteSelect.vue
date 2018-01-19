@@ -106,7 +106,6 @@ const map = new Map([
 
 export default {
   name: 'remoteSelect',
-  mixins: [ AxiosMixins ],
   props: {
     'value': [Number, String, Array, Object],
     'disabled': {
@@ -129,14 +128,13 @@ export default {
     'staticMap': {
       type: Array,
       default () { return [] },
-    }
+    },
   },
   data () {
   	return {
       options: [],
       loading: false, 
   		selected: [],
-  		static_map: [],
   	};
   },
   methods: {
@@ -162,14 +160,14 @@ export default {
   	},
     refreshSelected (val) {
       val = this.single ? [val] : val;
-
+      //通过staticMap传入静态对象
       if(this.staticMap.length > 0) {
-        this.static_map = this.staticMap;
+        this.selected = this.staticMap;
       }
-
+      //直接传入对象 之后自动处理
       if( val[0] && val[0] instanceof Object ) {
         
-        this.static_map = val;
+        this.selected = val;
         const arr = val.map(_=>_.id);
         if(this.multiple) {
           this.$emit('input', arr);
@@ -212,11 +210,10 @@ export default {
       }
 
       this.loading = true;
-      this.axiosGet({url, data, success});
+      this.$axiosGet({url, data, success});
     },
     clear (flag = true) {
       this.selected = [];
-      this.static_map = [];
       this.multiple ? this.$emit('input', []) : this.$emit('input', '');
       if(flag) {
         this.remoteMethod(''); 
@@ -268,18 +265,15 @@ export default {
   		return obj;
   	},
   	option_in () {
-  		//由于一部分的val可能是通过object传入,单纯的options只含有动态部分
-  		//所以取select_map和options的并集,取得selected的静态部分选项
-  		const arr = [ ...this.static_map, ...this.options ];
-      // console.log(this.selected, this.options, arr);
-  		// console.log(arr);
+      //将已经选择的OPTION合并到查询OPTION中
+  		const arr = [ ...this.selected, ...this.options ];
+      //对象去重(ID)
   		return this.$tool.singleObject(arr,'id');
   	},
   	map () {
-  		//map分为静态和动态俩部分，静态部分由value类型为Object时提供，之后将value转换为数值类型
+  		//有选项获取映射关系 为了方便在更新selected的时候 快速查询
   		const map = new Map();
-  		this.static_map.forEach(_=>map.set(_.id, _));
-  		this.options.forEach(_=>map.set(_.id, _));
+      this.option_in.forEach(_=>map.set(_.id, _));
   		return map;
   	},
     value2 () {

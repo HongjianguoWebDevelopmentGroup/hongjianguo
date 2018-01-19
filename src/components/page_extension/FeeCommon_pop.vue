@@ -6,12 +6,17 @@
 				<remote-select type="patent" v-model="form.project"></remote-select>
 			</el-form-item>
 			
+			<el-form-item label="费用对象" prop="target" >
+				<remote-select type="member" v-model="form.target" ></remote-select>
+			</el-form-item>
 			<el-form-item label="费用代码" prop="code">
 				<static-select  type="fee_code" v-model="form.code" ref="fee_code" :disabled="popType == 'edit'"></static-select>
 			</el-form-item>
-			<el-form-item label="费用状态" prop="status">
-					<fee-status v-model="form.status" :key="feeAnnual" :feeAnnual="feeAnnual" :disabled="popType == 'edit'"></fee-status>
-			</el-form-item>
+			<!-- <el-form-item label="费用状态" prop="status">
+				<el-select type="fee_status" v-model="form.status" :disabled="popType == 'edit'">
+					<el-optio>
+				</el-select>
+			</el-form-item> -->
 			<el-form-item label="费用金额" prop="money">
 				<el-row>
 					
@@ -40,8 +45,9 @@
 			<el-row>
 				<el-col :span="12">
 					
-					<el-form-item label="费用对象" prop="target" >
-						<remote-select type="member" v-model="form.target" style="width: 193px;"></remote-select>
+					
+					<el-form-item label="费用期限" prop="due_time">
+						<el-date-picker v-model="form.due_time" type="date" placeholder="请选择费用期限"></el-date-picker>
 					</el-form-item>
 				</el-col>
 				<el-col :span="12">
@@ -53,14 +59,12 @@
 
 			<el-row>
 				<el-col :span="12">
-					<el-form-item label="费用期限" prop="due_time">
-						<el-date-picker v-model="form.due_time" type="date" placeholder="请选择费用期限"></el-date-picker>
-					</el-form-item>
+					
 				</el-col>
 				<el-col :span="12">
-					<el-form-item label="支付时间" prop="pay_time">
+<!-- 					<el-form-item label="支付时间" prop="pay_time">
 						<el-date-picker v-model="form.pay_time" type="date" placeholder="请选择支付时间"></el-date-picker>
-					</el-form-item>
+					</el-form-item> -->
 				</el-col>
 			</el-row>
 			
@@ -116,7 +120,7 @@ export default {
 		  	},
 		  	due_time: '',
 		  	deadline: '',
-		  	pay_time: '',
+		  	// pay_time: '',
 		  	invoice_entity_id: '',
 		  	remark: '',
 		  },
@@ -173,8 +177,6 @@ export default {
 	  			arr.map(_=>{
 	  				this.form.money[_] = val[_];
 	  			})
-	  			console.log(this.feeAnnual);
-  				console.log('bbbbb');
 	  			this.form.status = val['status']['id'];
   			})
   		}
@@ -238,9 +240,7 @@ export default {
 				const val = this.$refs.fee_code.getSelected(v)[0];
 				if(val) {
 					this.codeChange(val);
-				}	
-			
-				
+				}				
 			}
 		}
 	},

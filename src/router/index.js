@@ -30,6 +30,8 @@ const SystemMessage            = () => import('@/components/page/SystemMessage')
 const SystemMessageDetail      = () => import('@/components/page/SystemMessageDetail')
 const MailAdd                  = () => import('@/components/page/MailAdd')
 const InteractEmail            = () => import('@/components/page/InteractEmail')
+const RenewalFee               = () => import('@/components/page/RenewalFee')
+const RenewalEstimate               = () => import('@/components/page/RenewalEstimate')
 //###################
 const CommonDetail             = () => import('@/components/page/CommonDetail')
 const Babel                    = () => import('@/components/page_extension/CommonDetail_base')
@@ -80,6 +82,7 @@ const router = new Router({
     { path: '/fee', redirect: '/fee/income'},
     { path: '/setting', redirect: '/setting/individual'},
     { path: '/interact', redirect: '/interact/email'},
+    { path: '/renewal', redirect: '/renawal/fee' },
     //###重定向###
     {
       path: '/statistics',
@@ -280,6 +283,16 @@ const router = new Router({
       path: '/fee/payment',
       name: 'FeePayment',
       component: InvoiceCommon
+    },
+    {
+      path: '/renewal/fee',
+      name: 'RenewalFee',
+      component: RenewalFee,
+    },
+    {
+      path: '/renewal/estimate',
+      name: 'RenewalEstimate',
+      component: RenewalEstimate,
     },
     {
       path: '/patent/list/detail/:id',

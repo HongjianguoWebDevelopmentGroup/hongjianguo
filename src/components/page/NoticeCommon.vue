@@ -47,6 +47,7 @@ export default {
 					{ type: 'text', label: '申请号', prop: 'apn', width: '200'},
 					{ type: 'text', label: '通知书名称', prop: 'code', render_simple: 'name', width: '200'},
 					{ type: 'text', label: '发文日', prop: 'mail_date', width: '200'},
+					{ type: 'text', label: '法定期限', prop: 'deadline', width: '200'},
 					{ type: 'text', label: '发文序列号', prop: 'notice_serial', width: '200'},
 					{ type: 'text', label: '申请日', prop: 'apd', width: '200'},
 					{ type: 'text', label: '上传日', prop: 'create_time', width: '200' },
@@ -58,13 +59,20 @@ export default {
 						label: '操作',
 						width: '150',
 						btns: [
-							{ type: 'view', btn_type: 'text', click: ({viewUrl})=>{window.open(viewUrl)} },
+							{ 
+								type: 'view', 
+								btn_type: 'text', 
+								btn_if({viewUrl}) {
+									return viewUrl ? true : false; 
+								},
+								click: ({viewUrl})=>{window.open(viewUrl)},
+							},
 							{ type: 'download', btn_type: 'text', click: ({downloadUrl})=>{window.open(downloadUrl)} },
 						],
 					}
 				],
 			},
-			tableData: [],
+			tableData: '',
 			filter: {},
 	  }
 	},

@@ -129,7 +129,7 @@ export default {
 	      }
   		};
 
-  		this.axiosGet({url, data, success});
+  		this.$axiosGet({url, data, success});
   	},
   	refresh () {
   		this.$refs.table.refresh();

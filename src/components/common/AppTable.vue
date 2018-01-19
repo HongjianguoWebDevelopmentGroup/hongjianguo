@@ -8,6 +8,8 @@
   :default-sort="defaultSort"
   :highlight-current-row="highlightCurrentRow"
   :height="tableHeight"
+  :max-height="maxHeight"
+
   @selection-change="handleSelectionChange" 
   @sort-change="_=>{$emit('sort-change', _)}"
   @row-click="handleRowClick"
@@ -48,7 +50,7 @@
       <template v-else-if="col.render_simple ? true : false ">
         <el-table-column :label="col.label" :prop="col.prop" :width="col.width ? col.width : ''" :min-width="col.min_width ? col.min_width : ''" :sortable="col.sortable ? 'custom' : false" :show-overflow-tooltip="col.overflow !== undefined ? col.overflow : true">
           <template slot-scope="scope">
-            <span class="table-column-render">{{ scope.row[col.prop][col.render_simple] }}</span>
+            <span class="table-column-render">{{ handleSimple(scope.row, col) }}</span>
           </template>
         </el-table-column>
       </template>
@@ -91,13 +93,13 @@
 
             <el-button v-else-if="btn.type == 'confirm'" :type="btn.btn_type ? btn.btn_type : 'text'" :key="index" :size="btn.size ? btn.size : 'mini'" icon="edit" @click="handleActionCommand(btn.click, scope, $event)">确认</el-button>
 
-            <el-button v-else-if="btn.type == 'edit'" :type="btn.btn_type ? btn.btn_type : 'text'" :key="index" :size="btn.size ? btn.size : 'mini'" icon="edit" @click="handleActionCommand(btn.click, scope, $event)">编辑</el-button>
+            <el-button v-else-if="btn.type == 'edit'" :disabled="handleBtnBoolean(btn, scope.row, 'btn_disabled')" :type="btn.btn_type ? btn.btn_type : 'text'" :key="index" :size="btn.size ? btn.size : 'mini'" icon="edit" @click="handleActionCommand(btn.click, scope, $event)">编辑</el-button>
 
             <el-button v-else-if="btn.type == 'detail'" :type="btn.btn_type ? btn.btn_type : 'text'" :key="index" :size="btn.size ? btn.size : 'mini'" icon="information" @click="handleActionCommand(btn.click, scope, $event)" >详情</el-button>
 
             <el-button v-else-if="btn.type == 'delete'" :type="btn.btn_type ? btn.btn_type : 'text'" :key="index" :size="btn.size ? btn.size : 'mini'" icon="delete" @click="handleActionCommand(btn.click, scope, $event)" >删除</el-button>
 
-            <el-button v-else-if="btn.type == 'download'" :type="btn.btn_type ? btn.btn_type : 'text'" :key="index" :size="btn.size ? btn.size : 'mini'" icon="share" @click="handleActionCommand(btn.click, scope, $event)" >下载</el-button>
+            <el-button v-else-if="btn.type == 'download'" :type="btn.btn_type ? btn.btn_type : 'text'" :key="index" :size="btn.size ? btn.size : 'mini'" icon="my-download" @click="handleActionCommand(btn.click, scope, $event)" >下载</el-button>
 
             <el-button v-else-if="btn.type == 'view' && scope.row.isView" :type="btn.btn_type ? btn.btn_type : 'text'" :key="index" :size="btn.size ? btn.size : 'mini'" icon="view" @click="handleActionCommand(btn.click, scope, $event)" >查看</el-button>
 
@@ -151,6 +153,10 @@ export default {
       default () {
         return [];
       },
+    },
+    maxHeight: {
+      type: [String, Number],
+      default: '',
     }
   },
   data () {
@@ -233,6 +239,16 @@ export default {
         func(scope.row, event);
       }
     },
+    handleSimple (row, col) {
+      const key = col.render_key ? col.render_key : col.prop;
+      const obj = row[key];
+
+      return row[key] ? row[key][col.render_simple] : '';
+
+    },
+    handleBtnBoolean (btn, row, key) {
+      return btn[key] ? btn[key](row) : false; 
+    }
   },
   components: {
     'TableRender': {

@@ -52,7 +52,6 @@ export default {
 		  		{ type: 'text', label: '案号', prop: 'serial', width: '192' },
 		  		{ type: 'text', label: '费用对象', prop: 'target', render_simple: 'name', width: '190' },
 		  		{ type: 'text', label: '费用名称', prop: 'code', render_simple: 'name', width: '190' },
-		  		//{ type: 'text', label: '费用类型', prop: 'type_name', width: '190' },
 		  		{ type: 'text', label: '金额', prop: 'fee', width: '80' },
 		  		{ type: 'text', label: '汇率', prop: 'roe', is_import: true, width: '80' },
 		  		{ type: 'text', label: '币种', prop: 'currency', is_import: true, width: '80' },
@@ -70,9 +69,6 @@ export default {
           { type: 'text', label: '官方绝限', prop: 'deadline', width: '200' },
           { type: 'text', label: '付款时间', prop: 'pay_time', width: '200' },
 		  		{ type: 'text', label: '账单号', prop: 'invoice_id', width: '150' },
-		  		//{ type: 'text', label: '请款单备注', prop: 'invoidce_remark', width: '150' },
-		  		//{ type: 'text', label: '发票抬头', prop: 'invoice_title', width: '330' },
-		  		//{ type: 'text', label: '纳税人识别号', prop: 'tax_payer_identifier', width: '160' },
 		  		{ type: 'text', label: '备注', prop: 'remark', is_import: true, width: '160' },
 		  	]
 		  },
@@ -100,6 +96,7 @@ export default {
   	},
   	refresh (id) {
   		const id_c = id ? id : this.id;
+			if(!id) return;
 			this.feeLoading = true;
 			this.$axios.all([this.invoiceAxios(id_c), this.feeAxios(id_c)])
 				.then(this.$axios.spread((acct, perms)=>{

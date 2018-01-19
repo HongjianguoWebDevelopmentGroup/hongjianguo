@@ -611,5 +611,14 @@ nav {
   line-height: 1.4;
   word-wrap:break-word;
 }
+
+/*icon库扩展*/
+[class^="el-icon-my"], [class*=" el-icon-my"] {
+  font-family:"iconfont" !important;
+  font-size:16px;
+  font-style:normal;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
   
 </style>
