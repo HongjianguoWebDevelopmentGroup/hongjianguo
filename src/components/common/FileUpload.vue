@@ -197,7 +197,13 @@ export default {
   	},
   	handleSuccess (a,b,c) {
   		if(a.status) {
-  			this.tableData.push(...a.data.list);
+        const dataList = a.data.list;
+        dataList.forEach(_=>{
+          if(_.type){
+            _.type = _.type.id;
+          }
+        });
+  			this.tableData.push(...dataList);
         this.file.push(a.data.file);
   		}else {
   			this.$message({message: a.info, type: 'warning'});

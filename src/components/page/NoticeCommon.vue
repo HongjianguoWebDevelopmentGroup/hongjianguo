@@ -33,8 +33,8 @@ export default {
 					// { type: 'custom', label: '统计', icon: '', click: ()=>{alert("统计")} },
 					{ type: 'delete', map_if: '/patent/notice/delete' },
 					{ type: 'export' },
-					{ type: 'import' },
-					{ type: 'batch_upload' },
+					{ type: 'import', label: 'CPC通知书导入' },
+					{ type: 'batch_upload', label: '通知书上传' },
 					{ type: 'control', label: '字段' },
 					// { type: 'custom', label: '上传', icon: '', click: ()=>{alert("上传")} },
 					// { type: 'custom', label: '批量上传', icon: '', click: ()=>{alert("批量上传")}},
@@ -71,7 +71,7 @@ export default {
 					}
 				],
 				'import_columns': [
-					{ type: 'array', label: '费用', prop: 'fees', render: _=>(_=>_.name), width: '200' }
+					{ type: 'array', label: '费用', prop: 'fees', render: _=>(_=>_.fee), width: '200' }
 				]
 			},
 			tableData: [],
