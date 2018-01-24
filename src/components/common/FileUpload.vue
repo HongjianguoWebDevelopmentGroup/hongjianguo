@@ -215,14 +215,14 @@ export default {
   	},
   	handleSuccess (a,b,c) {
   		if(a.status) {
-        let list = this.$tool.deepCopy(a.data.list);
-        list = list.map(_=>{
-          if(_.type) {
+
+        const dataList = a.data.list;
+        dataList.forEach(_=>{
+          if(_.type){
             _.type = _.type.id;
           }
-          return _;
-        })
-  			this.tableData.push(...a.data.list);
+        });
+  			this.tableData.push(...dataList);
         this.file.push(a.data.file);
   		}else {
   			this.$message({message: a.info, type: 'warning'});
