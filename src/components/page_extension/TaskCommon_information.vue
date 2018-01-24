@@ -132,6 +132,7 @@ import AxiosMixins from '@/mixins/axios-mixins'
 import TableComponent from '@/components/common/TableComponent'
 import InvoiceDetail from '@/components/page_extension/InvoiceCommon_detail'
 import { mapGetters } from 'vuex'
+import { mapActions } from 'vuex'
 
 const URL = '/api/tasks';
 
@@ -212,15 +213,22 @@ export default {
     ])  
   },
   methods: {
+    ...mapActions([
+      'refreshDetailData',
+    ]),
   	refresh () {
 	  	this.loading = true;
 	  	if(this.row.category == 0) {
 	  		this.refreshP();
-	  	}else if(this.row.category == 1) {
-	  		this.refreshPatent();
-	  	}else if(this.row.category == 3) {
-        this.refreshCopyright();
-      }
+	  	}else if(this.row.category == 1 || this.row.category == 3) {
+	  		this.refreshDetailData({
+          id: this.row.project_id,
+          type: {1: 'patent', 3: 'category'}[this.row.category],
+          func: _=>{
+            this.loading = false;
+          }
+        })
+	  	}
   	},
   	refreshP () {
   		const url = `/api/proposals/${this.row.project_id}`;

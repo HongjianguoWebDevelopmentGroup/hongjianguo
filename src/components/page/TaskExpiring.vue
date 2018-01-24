@@ -47,14 +47,30 @@
           <task-finish :id="currentRow.id"></task-finish>
         </el-tab-pane>
         <el-tab-pane label="详细信息" name="edit">          
-          <information :row="currentRow"></information>          
+          <information :row="currentRow" @more="moreVisible = true"></information>          
         </el-tab-pane>
         <el-tab-pane label="相关任务" name="cccc">          
           <detail :row="currentRow" style="margin: 10px 0;"></detail>          
         </el-tab-pane>
+        <el-tab-pane label="任务提醒" name="remind">
+        	<remind :id="currentRow.id" ref="remind"></remind>
+        </el-tab-pane>
       </el-tabs>
 
     </app-shrink>
+    <el-dialog title="提醒备注" :visible.sync="reminderVisible" @close="reminderRemark = ''">
+    	<el-input type="textarea" placeholder="请填写任务提醒的备注..." v-model="reminderRemark" style="margin-bottom: 10px;"></el-input>
+    	<el-button type="primary" @click="sendEmail" :loading="reminderLoading">{{ reminderLoading ? '发送中...' : '发送提醒' }}</el-button>
+    </el-dialog>
+    <common-detail 
+      :type="currentRowCategory" 
+      :id="currentRow.project_id" 
+      :visible.sync="moreVisible" 
+      :title="currentRow.title"
+      @editSuccess="editProjectSuccess"
+      :refresh-switch="false"
+      ref="detail">
+    </common-detail> 
 </div>
 </template>
 
@@ -67,20 +83,22 @@ import AppShrink from '@/components/common/AppShrink'
 import TaskFinish from '@/components/common/TaskFinish'
 import Information from '@/components/page_extension/TaskCommon_information'
 import Detail from '@/components/page_extension/TaskCommon_detail'
+import Remind from '@/components/page_extension/TaskCommon_remind'
+import CommonDetail from '@/components/page_extension/Common_detail'
 
 export default {
 	name: 'taskExpiring',
 	mixins: [AxiosMixins],
 	data () {
 		return {
+			moreVisible: false,
 			option: {
 				'is_header': false,
 				'is_pagination': false,
 				'is_border': false,
 				'height': 'default4',
 				'empty_text_position': 'topLeft',
-				'columns': [
-				       
+				'columns': [				       
 					{type: 'text', label: '案号', prop: 'serial' ,width: '200'},
 					{type: 'text', label: '案件名称', prop: 'title',width: '200'},
 					{type: 'text', label: '管制事项', prop: 'name',width: '200'},
@@ -113,6 +131,10 @@ export default {
 			currentNode: '',
 			day: 2,
 			date: 'due_time',
+			reminderId: '',
+			reminderRemark: '',
+			reminderVisible: false,
+			reminderLoading: false,
 			days: [
 				{label: '已过期10天及以上', value: -10},
 				{label: '已过期6-10天', value: -6},
@@ -133,8 +155,12 @@ export default {
 	},
 	computed: {
 		...mapGetters([
-	      'innerHeight',
-	    ]),
+      'innerHeight',
+    ]),
+    currentRowCategory () {
+    	const r = {1: 'patent', 3: 'category'}[this.currentRow.category];
+    	return r ? r : '';
+    }
 	},
 	methods: {
 		renderContent(h, { node, data, store }) {
@@ -181,11 +207,31 @@ export default {
 			this.axiosGet({url, data, success});
   	},
   	handleEmail ({id}) {
-  		this.$message({message: '该功能暂未上线', type: 'warning'});
+  		this.reminderId = id;
+  		this.reminderVisible = true;
   		// const url = `tasks/${id}/remind`;
   		// const success = _=>{this.$message({message: '发送邮件提醒成功', type: 'success'})};
 
   		// this.axiosPost({url, success});
+  	},
+  	sendEmail () {
+  		const url = `tasks/${this.reminderId}/remind`;
+  		const data = {remark: this.reminderRemark};
+  		const success = _=>{
+  			this.$message({type: 'success', message: '发送邮件提醒成功'});
+  			this.reminderVisible = false;
+  			if(this.$refs.remind) {
+  				this.$refs.remind.refreshTable();
+  			}
+  		};
+  		const complete = _=>{
+  			this.reminderLoading = false;
+  		}
+  		this.reminderLoading = true;
+  		this.$axiosPost({url, data, success, complete});
+  	},
+  	editProjectSuccess () {
+  		this.refresh();
   	}
 	},
 	created () {
@@ -210,6 +256,8 @@ export default {
 		TaskFinish,
 		Information,
 		Detail,
+		Remind,
+		CommonDetail,
 	}
 
 }

@@ -271,7 +271,7 @@ const methods = Object.assign({}, tableConst.methods, {
       func(e)
     }else {
       
-      this.$emit('refreshTableData', Object.assign({}, this.getRequestOption(), {format: 'excel'}, {'fields': JSON.stringify(fields) } ) );
+      this.$emit('refreshTableData', Object.assign({}, this.getRequestOption(), this.screen_obj, {format: 'excel'}, {'fields': JSON.stringify(fields) } ) );
       
       this.$nextTick(_=>{
         if(this.refreshProxy) {

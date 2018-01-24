@@ -54,13 +54,18 @@ const mutations = {
 }
 
 const actions = {
-	refreshDetailData({ commit, state, rootState }, {id, func}={}) {
-			let url = `/api/${state.type}s`;
+	refreshDetailData({ commit, state, rootState }, {id, type, func}={}) {
 			if(id) {
 				commit('setId', id);
 			}else {
 				id = state.id;
 			}
+			if(type) {
+				commit('setDetailType', type);
+			}else {
+				type = state.type;
+			}
+			let url = `/api/${type}s`;
 			url = rootState.status ? url.replace(/\/api/, '') : url;
       commit('setLoading', true);
       rootState.axios.get(`${url}/${id}`)

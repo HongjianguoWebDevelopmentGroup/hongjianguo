@@ -64,7 +64,7 @@
     <el-form-item prop="type" label="专利类型" v-if="fields.type" :rules="{type: 'number', required: true, message: '专利类型不能为空', trigger: 'blur'}">
       <static-select type="patent_type" v-model="form.type" key="patent_type"></static-select>
     </el-form-item>
-    <el-form-item prop="title" label="专利标题" v-if="fields.title" :rules="{required: true, message: '专利标题不能为空'}">
+    <el-form-item prop="title" label="专利标题" v-if="ifTitle" :rules="{required: true, message: '专利标题不能为空'}">
       <el-input v-model="form.title"></el-input>
     </el-form-item>
     <el-form-item prop="attachments" label="附件" v-if="fields.attachments && !hide_r_a">
@@ -247,7 +247,7 @@ export default {
                 this.agencyMap = [ this.data.agency ];
                 this.form.agency = this.data.agency.id;
               }
-              if(this.fields.title) this.form.title = this.data.title;
+              if(this.ifTitle) this.form.title = this.data.title;
               if(this.fields.type) this.form.type = 1;
               if(this.defaultVal == 'ipr') {
                 this.form.person_in_charge = person_in_charge['id'];
@@ -302,6 +302,9 @@ export default {
 	computed: {
     ifNext () {
       return this.data.next && this.data.next.length != 0 ? true : false;
+    },
+    ifTitle () {
+      return this.data.flow_node_id == 20
     }
 	},
 	components: { Member, Agent, Agency, Upload, RemoteSelect, StaticSelect }

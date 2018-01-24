@@ -27,6 +27,16 @@
           <el-date-picker type="date" style="width: 100%;" v-model="scope.row.legal_time"></el-date-picker>
         </template>
       </el-table-column>
+      <el-table-column label="申请日" prop="apd" v-if="config.apd" width="200">
+        <template slot-scope="scope">
+          <el-date-picker type="date" style="width: 100%;" v-model="scope.row.apd"></el-date-picker>
+        </template>
+      </el-table-column>
+      <el-table-column label="申请号" prop="apn" v-if="config.apn" width="200">
+        <template slot-scope="scope">
+          <el-input v-model="scope.row.apn" style="width: 100%"></el-input>
+        </template>
+      </el-table-column>
       <el-table-column label="操作">
         <template slot-scope="scope">
           <el-button icon="delete" size="mini" type="text" @click="handleDelete(scope.$index)">删除</el-button>
@@ -56,7 +66,7 @@
       <div class="el-upload__text"><em>压缩包上传</em></div>
     </el-upload>
 
-		<el-button type="primary" @click="importData">确认上传</el-button>
+		<el-button type="primary" @click="importData" :loading="loading">{{ loading ? '上传中...' : '确认上传' }}</el-button>
 		
 <!-- 		<el-dialog title="指定案件号" :visible.sync="dialogVisibleIn" :modal-append-to-body="false" :modal="false">
 			<el-form label-width="100px">
@@ -94,6 +104,8 @@ const config = [
     time: true,
     legal_time: true,
     no_zip: true,
+    apd: true,
+    apn: true,
   }]
 ]
 const map = new Map(config);
@@ -113,6 +125,7 @@ export default {
 		  dialogVisibleIn: false,
 		  project_id: '',
 		  $index: null,
+      loading: false,
 		}
   },
   computed: {
@@ -169,9 +182,9 @@ export default {
           return this.$message({message: '发文日不能为空', type: 'warning'});
         }
 
-        if( c.legal_time && !d.legal_time ) {
-          return this.$message({message: '法定期限不能为空', type: 'warning'});
-        }
+        // if( c.legal_time && !d.legal_time ) {
+        //   return this.$message({message: '法定期限不能为空', type: 'warning'});
+        // }
       }
 
   		const url = this.config.url;
@@ -185,6 +198,9 @@ export default {
         if(_.legal_time) {
           _.legal_time = this.$tool.getDate( new Date(_.legal_time) );
         }
+        if(_.apd) {
+          _.apd = this.$tool.getDate( new Date(_.legal_time) ); 
+        }
       })
   		const data = { file: this.file, list };
   		const success = _=>{
@@ -192,11 +208,20 @@ export default {
   			this.$message({message: '上传文件成功', type: 'success'});
   			this.$emit('uploadSuccess'); 
   		};
+      const complete = _=>{ this.loading = false };
 
-  		this.axiosPost({url, data, success});
+  		this.loading = true;
+      this.axiosPost({url, data, success, complete});
   	},
   	handleSuccess (a,b,c) {
   		if(a.status) {
+        let list = this.$tool.deepCopy(a.data.list);
+        list = list.map(_=>{
+          if(_.type) {
+            _.type = _.type.id;
+          }
+          return _;
+        })
   			this.tableData.push(...a.data.list);
         this.file.push(a.data.file);
   		}else {
