@@ -49,7 +49,10 @@
 					</el-form-item>
 					<el-form-item label="标签" prop="tags">
 						<static-select type="tag" v-model="form.tags" multiple></static-select>
-					</el-form-item>	
+					</el-form-item>
+					<el-form-item label="群组号" prop="group_number">
+						<el-input placeholder="请输入需要搜索的群组号" v-model="form.group_number"></el-input	>
+					</el-form-item>								
 					<el-form-item label="申请日" prop="apd">
 						<el-date-picker type="daterange" placeholder="请选择申请日" v-model="form.apd"></el-date-picker>
 					</el-form-item>
@@ -61,10 +64,7 @@
 					</el-form-item>
 					<el-form-item label="公开日" prop="public_date">
 						<el-date-picker type="daterange" placeholder="请选择公开日" v-model="form.public_date"></el-date-picker>
-					</el-form-item>
-					<el-form-item label="群组号" prop="group_number">
-						<el-input placeholder="请输入需要搜索的群组号" v-model="form.group_number"></el-input	>
-					</el-form-item>					
+					</el-form-item>			
 				</el-col>
   		</el-row>
   		<el-row style="text-align: center;">

@@ -1,11 +1,11 @@
 <template>
   <div class="sad-statistics">
-  	<el-card>
+<!--   	<el-card>
 			<el-form>
 				<el-form-item></el-form-item>
 				<el-form-item></el-form-item>
 			</el-form>
-  	</el-card>
+  	</el-card> -->
   	<el-card style="margin-top: 20px;">
 			<div id="main" style="width: 100%; height: 300px;" ></div>
   	</el-card>

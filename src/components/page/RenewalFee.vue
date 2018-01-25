@@ -21,6 +21,7 @@
 <script>
 import TableComponent from '@/components/common/TableComponent'
 import Pop from '@/components/page_extension/RenewalFee_pop'
+import {mapActions} from 'vuex'
 const URL = '/api/renewalfee'
 const URL2 = '/api/renewalestimate'
 export default {
@@ -119,6 +120,9 @@ export default {
 		};
 	},
 	methods: {
+	    ...mapActions([
+	      'refreshUser',
+	    ]),		
 		addPop () {
 			this.$refs.pop.show();
 		},
@@ -159,6 +163,7 @@ export default {
 					this.$message({type: 'success', message: '新建年费评估单成功'});
 					this.dialogVisble = false;
 					this.refresh();
+					this.refreshUser();
 				},
 				complete: _=>{
 					this.loading = false;
