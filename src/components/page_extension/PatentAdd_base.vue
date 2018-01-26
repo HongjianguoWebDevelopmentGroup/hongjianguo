@@ -20,7 +20,7 @@
         <remote-select type="applicant" v-model="form.applicants" multiple></remote-select>
       </el-form-item >
       <el-form-item label="发明人" prop="inventors">
-        <inventors v-model="form.inventors" ref="inventors"></inventors>
+        <inventors v-model="form.inventors" ref="inventors" @addInventor="$refs.form.validateField('inventors')" @deleteInventor="$refs.form.validateField('inventors')"></inventors>
       </el-form-item>
       <el-form-item label="优先权">
         <priorities v-model="form.priorities"></priorities>

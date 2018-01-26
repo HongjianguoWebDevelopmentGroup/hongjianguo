@@ -49,12 +49,46 @@ export default {
 		  		{ type: 'text', label: '付款期限', prop: 'due_time', width: '175' },
 		  		// { type: 'text', label: '付款绝限', prop: 'deadline',width: '200' },
 		  		{ type: 'text', label: '付款时间', prop: 'pay_time',width: '175' },
-		  		{ type: 'text', label: '金额', prop: 'amount', width: '145' },
-		  		{ type: 'text', label: '币种', prop: 'currency', width: '145' },
-		  		{ type: 'text', label: '汇率', prop: 'roe', width: '145' },
-		  		{ type: 'text', label: '人民币', prop: 'rmb', width: '160' },
+          { 
+            type: 'text', 
+            label: '外币金额', 
+            prop: 'amount', 
+            width: '100',
+            align: 'right',
+            render:(h,item,row)=>{
+              if( row.roe == 1 ){
+                return h('span','N/A');
+              }else{
+                return h('span',`${item}${row.currency}`);
+              }
+            } 
+          },
+          { 
+            type: 'text', 
+            label: '汇率', 
+            prop: 'roe', 
+            width: '80',
+            align: 'right',
+            render:(h,item)=>{
+              if( item == 1 ){
+                return h('span','N/A');
+              }else{
+                return h('span',item);
+              } 
+            }
+          },
+          { 
+            type: 'text', 
+            label: '人民币金额', 
+            prop: 'rmb', 
+            width: '120',
+            align: 'right',
+            render:(h,item)=>{
+              return h('span',`${item}CNY`)
+            }
+          },
 		  		{ type: 'text', label: '状态', prop: 'status', render_simple: 'name', width: '200' },
-		  		{ type: 'text', label: '备注', prop: 'remark',width: '200' },
+		  		{ type: 'text', label: '备注', prop: 'remark',min_width: '200' },
 		  		// { type: 'text', label: '收入/支出类型', prop: 'debit',width: '200' },
 		  		// { type: 'text', label: '发票号码', prop: 'invoice_no',width: '200' },
 		  		// { type: 'text', label: '开票日期', prop: 'invoice_date',width: '200' },

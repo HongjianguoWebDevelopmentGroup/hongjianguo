@@ -170,6 +170,7 @@ export default {
   methods: {
     ...mapActions([
       'refreshFeeCodes',
+      'refreshUser'
     ]),
     refreshTableData (option) {
       if(this.fee_invoice instanceof Object) return;
@@ -255,6 +256,7 @@ export default {
       const success = ()=>{
         this.$message({message: `新建${this.feeTypeName}成功`, type: 'success'});
         this.dialogVisible = false;
+        this.refreshUser();
         this.refresh();
       };
       const complete = _=>{ this.btn_disabled = false; }
@@ -289,7 +291,7 @@ export default {
       };
       const complete = _=>{ this.btn_disabled = false; }
       this.btn_disabled = true;
-      this.$axiosPut({url, data, success});
+      this.$axiosPut({url, data, success,complete});
     }
   },
   watch: {
