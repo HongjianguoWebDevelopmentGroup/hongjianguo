@@ -96,7 +96,7 @@ export default {
   	},
   	refresh (id) {
   		const id_c = id ? id : this.id;
-			if(!id) return;
+			if(!id_c) return;
 			this.feeLoading = true;
 			this.$axios.all([this.invoiceAxios(id_c), this.feeAxios(id_c)])
 				.then(this.$axios.spread((acct, perms)=>{

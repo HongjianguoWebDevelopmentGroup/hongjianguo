@@ -16,6 +16,11 @@
 			<remote-select type="estimate" v-model="estimate"></remote-select>
 			<el-button :loading="loading" type="primary" @click="submitEstimate('append')" style="margin-top: 10px;">{{ loading ? '添加中...' : '确认添加' }}</el-button>
 		</el-dialog>
+		<el-dialog title="设置年费监控偏好" :visible.sync="dialogVisble3">
+			<div class="form-description">默认显示几个月内即将过期的年费</div>
+			<el-input-number v-model="month" :min="1"></el-input-number>
+			<el-button type="primary" @click="saveMonth" :loading="loading">{{loading ? '保存中...' : '保存'}}</el-button>
+		</el-dialog>
 	</div>
 </template>
 <script>
@@ -28,12 +33,17 @@ export default {
 	data () {
 		const statusArr = [ [0, '年费监控中'], [1, '年费评估中'], [2, '年费评估缴纳'], [3, '年费评估放弃'] ];
 		const statusMap = new Map(statusArr);
+		let month = this.$tool.getLocal('renewalFeeMonth');
+		this.month = month ? month : 3;
+		
 		return {
+			month,
 			status: '',
 			statusArr,
 			statusMap,
 			dialogVisble: false,
 			dialogVisble2: false,
+			dialogVisble3: false,
 			due_time: '',
 			remark: '',
 			estimate: '',
@@ -55,6 +65,16 @@ export default {
           },
 					{ type: 'delete' },
 					{ type: 'control' },
+					{ 
+						type: 'custom', 
+						icon: 'setting', 
+						label: '设定', 
+						click: _=>{
+							let month = this.$tool.getLocal('renewalFeeMonth');
+							this.month = month ? month : 3;
+							this.dialogVisble3 = true;
+						} 
+					},
 				],
 				header_slot: [ 'status' ],
 				columns: [
@@ -108,6 +128,7 @@ export default {
 						render_text: _=>this.statusMap.get(_),
 						width: '200'
 					},
+					{ type: 'text', label: '年费对象', prop: 'target', render_simple: 'name', width: '200'},
 					{ type: 'text', label: '年费类型', prop: 'code', render_simple: 'name', width: '200'},
 					{ type: 'text', label: '费用期限', prop: 'due_time', width: '200'},
 					{ type: 'text', label: '官方绝限', prop: 'deadline', width: '200'},
@@ -128,7 +149,7 @@ export default {
 		refreshTableData (option) {
 			this.$axiosGet({
 				url: URL,
-				data: Object.assign({}, option, {status: this.status}),
+				data: Object.assign({}, option, {status: this.status}, {month: this.month}),
 				success: _=>{this.tableData = _.data},
 			})
 		},
@@ -164,6 +185,11 @@ export default {
 					this.loading = false;
 				}
 			})
+		},
+		saveMonth () {
+			this.$tool.setLocal('renewalFeeMonth', this.month);
+			this.dialogVisble3 = false;
+			this.refresh();
 		}
 	},
 	mounted () {

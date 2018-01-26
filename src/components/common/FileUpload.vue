@@ -2,16 +2,16 @@
 	<el-dialog title="文件上传" :visible.sync="dialogVisible" class="dialog-medium">  
 		<el-table
 			height="250"
-			style="width: 100%"
+			style="width: 100%; margin-bottom: 10px;"
 			empty-text="暂无可上传数据"
 			:data="tableData"
 		>
-			<el-table-column label="关联案件" prop="project" min-width="200">
+      <el-table-column label="文件名称" prop="name" width="200"></el-table-column>
+      <el-table-column label="关联案件" prop="project" min-width="200">
         <template slot-scope="scope">
           <remote-select :type="config.type" v-model="scope.row.project" single></remote-select>
         </template>
       </el-table-column>
-      <el-table-column label="文件名称" prop="name" width="200"></el-table-column>
 			<el-table-column label="文件类型" prop="type" width="200">
         <template slot-scope="scope">
           <static-select :type="config.file_type" v-model="scope.row.type" style="width: 100%;" @change="val=>{handleTypeChange(val, scope.$index)}"></static-select>
@@ -67,7 +67,7 @@
       <div class="el-upload__text"><em>压缩包上传</em></div>
     </el-upload>
 
-		<el-button style="margin-top: 20px;" type="primary" @click="importData" :loading="loading">{{ loading ? '上传中...' : '确认上传' }}</el-button>
+		<el-button type="primary" @click="importData" :loading="loading">{{ loading ? '上传中...' : '确认上传' }}</el-button>
 		
 <!-- 		<el-dialog title="指定案件号" :visible.sync="dialogVisibleIn" :modal-append-to-body="false" :modal="false">
 			<el-form label-width="100px">
@@ -92,7 +92,7 @@ const config = [
 		action: 'getPatentDocuments',
 		url: '/patents/documents',
 		type: 'patent',
-    file_type: 'file_type',
+    file_type: 'file_type_patent',
 	}],
   ['trademark', {
     action: 'getTrademarkDocuments',
@@ -104,13 +104,13 @@ const config = [
     action: 'getCopyrightDocuments',
     url: '/copyrights/documents',
     type: 'copyright',
-    file_type: 'file_type',
+    file_type: 'file_type_copyright',
   }],
   ['patent_notice', {
     action: 'getPatentNoticesDocuments',
     url: '/patents_notice/documents',
     type: 'patent',
-    file_type: 'file_type',
+    file_type: 'file_type_patent',
     time: true,
     legal_time: true,
     apd: true,
@@ -178,13 +178,18 @@ export default {
   	},
     handleTypeChange (selected, index) {
       // console.log(selected, index);
-      const f = selected.fields;
+      let f;
+      if(!selected) {
+        f = {};
+      }else {
+        f = selected.fields;
+      }
       if (!f) return;
       const copy = this.$tool.deepCopy(this.tableData[index]);
-      copy['show_mail_date'] = f.mail_date == 1 ? true : false;
-      copy['show_deadline'] = f.deadline == 1 ? true : false;
-      copy['show_apd'] = f.apd == 1 ? true : false;
-      copy['show_apn'] = f.apn == 1 ? true : false;
+      copy['show_mail_date'] = f.mail_date == 1 && this.config.time ? true : false;
+      copy['show_deadline'] = f.deadline == 1 && this.config.deadline ? true : false;
+      copy['show_apd'] = f.apd == 1 && this.config.apd ? true : false;
+      copy['show_apn'] = f.apn == 1 && this.config.apn ? true : false;
 
       this.tableData.splice(index, 1, copy);
 
@@ -220,18 +225,45 @@ export default {
 
   		const url = this.config.url;
       const list = this.$tool.deepCopy(this.tableData);
-      list.forEach(_=>{
-        if(_.time) {
-          _.time = this.$tool.getDate( new Date(_.time) );
+      const list2 = [];
+      for(let i = 0; i < list.length; i++ ) {
+        const _ = list[i];
+        const o = {};
+        o.project = _.project;
+        o.name = _.name;
+        o.type = _.type;
+        if(_.show_mail_date) {
+          if(_.time) {
+            o.time = this.$tool.getDate( new Date(_.time) );
+          }else {
+            return this.$message({type: 'warning', message: '请填写发文日'});
+          }
         }
-        if(_.legal_time) {
-          _.legal_time = this.$tool.getDate( new Date(_.legal_time) );
+        if(_.show_deadline) {
+          if(_.legal_time) {
+            o.legal_time = this.$tool.getDate( new Date(_.legal_time) );
+          }else {
+            return this.$message({type: 'warning', message: '请填写法定期限'}); 
+          }
         }
-        if(_.apd) {
-          _.apd = this.$tool.getDate( new Date(_.apd) );
+        if(_.show_apd) {
+          if(_.apd) {
+            o.apd = this.$tool.getDate( new Date(_.apd) );
+          }else {
+            return this.$message({type: 'warning', message: '请填写申请日'}); 
+          }
         }
-      })
-  		const data = {file: this.file, list };
+        if(_.show_apn) {
+          if(_.apn) {
+            o.apn = _.apn;
+          }else {
+            return this.$message({type: 'warning', message: '请填写申请号'}); 
+          }
+        }
+        list2.push(o);
+      }
+
+  		const data = {file: this.file, list: list2 };
   		const success = _=>{
         this.clear();
         this.dialogVisible = false;
@@ -247,7 +279,13 @@ export default {
   	},
   	handleSuccess (a,b,c) {
   		if(a.status) {
-        a.data.list.forEach(_=>{ _.type = _.type ? _.type.id :_.type });
+        a.data.list.forEach(_=>{ 
+          _.type = _.type ? _.type.id :_.type
+          _.time = '';
+          _.legal_time = '';
+          _.apd = '';
+          _.apn = ''; 
+        });
   			this.tableData.push(...a.data.list);
         this.file.push(a.data.file);
   		}else {

@@ -183,13 +183,14 @@ export default {
       }else {
         //selected通过map映射
         const arr = [];
+        console.log(val);
         val.forEach(_=>{
           //在map中搜索, 若不存在，则自定义
           const v = this.map.get(_);
           
           if(v) {
             arr.push(v);
-          }else {
+          }else if(_ != ''){
             arr.push({id: _, name: _}); 
           }
         });
@@ -282,9 +283,9 @@ export default {
   		return map;
   	},
     value2 () {
-      // console.log(this.value);
+
       if(!this.multiple && !this.single) {
-        // console.log(this.value == "" || (this.value instanceof Object && this.$tool.getObjLength(this.value) == 0 ) ? [] : [ this.value ]);
+        
         return this.value == "" || (this.value instanceof Object && this.$tool.getObjLength(this.value) == 0 ) ? [] : [ this.value ];
       }else {
         return this.value;
@@ -301,8 +302,9 @@ export default {
       // if( !this.multiple && !this.single && this.$refs.select) {
         this.$refs.select.visible = false;
       }
-      
+
       this.refreshSelected(val);   
+
   	}
   },
   created () {

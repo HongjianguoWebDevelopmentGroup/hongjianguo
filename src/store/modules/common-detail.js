@@ -13,6 +13,7 @@ const state = {
 }
 
 const getters = {
+  detailId: state=>state.id,
   detail_type: state=>state.type,
   detailBase: state=>state.data ? state.data : {},
   detailBasePatent: state=>{

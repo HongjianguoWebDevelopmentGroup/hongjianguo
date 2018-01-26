@@ -10,10 +10,10 @@ import TableComponent from '@/components/common/TableComponent'
 export default {
   name: 'feeHortation',
   data () {
-	return {
-	  option: {},
-	  tableData: [],
-	}
+  	return {
+  	  option: {},
+  	  tableData: [],
+  	}
   },
   components: { TableComponent }
 }

@@ -92,7 +92,7 @@
           <task-finish :id="currentRow.id" @submitSuccess="finishSuccess" @more="handleMore" :action="activeName"></task-finish>
         </el-tab-pane>
         <el-tab-pane label="详细信息" name="information">          
-          <information :row="currentRow" @more="handleMore" :action="activeName"></information>          
+          <information :row="currentRow" @more="handleMore" :action="activeName" ref="information"></information>          
         </el-tab-pane>
         <el-tab-pane label="相关任务" name="associate">          
           <detail :id="currentRow.id" style="margin: 10px 0;" :action="activeName"></detail>  
@@ -181,6 +181,11 @@ export default {
       }).catch(_=>{});
     },
     handleMore (type) {
+      //当详情未加载时 通过ID比对 强制加载
+      if(this.currentRow.project_id != this.detailId) {
+        this.$refs.information.refresh(true);
+      }
+      
       this.moreVisible = true;
     },
     handleShrinkClose () {
@@ -545,6 +550,7 @@ export default {
   computed: {
     ...mapGetters([
       'detailBase',
+      'detailId',
       'menusMap',
     ]),
     task_status () {

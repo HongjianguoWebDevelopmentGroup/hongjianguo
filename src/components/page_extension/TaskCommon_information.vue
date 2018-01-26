@@ -288,8 +288,8 @@ export default {
     ...mapActions([
       'refreshDetailData',
     ]),
-    refresh: async function () {
-      if(this.action != 'information') return;
+    refresh: async function (flag = false) {
+      if(this.action != 'information' && !flag) return;
       
       const c = this.row.category;
       //refreshDetailoData为全局的详情函数 请求专利、版权、商标详情

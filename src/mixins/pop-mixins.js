@@ -56,6 +56,8 @@ export default {
         if(_) {
           this.btn_disabled = true;
           this.$axiosPost({url, data, success, complete});
+        }else {
+          this.$message({type: 'warning', message: '请正确填写表单字段'});
         }
       })      
     },
