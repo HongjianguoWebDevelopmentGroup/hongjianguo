@@ -102,6 +102,14 @@ const map = new Map([
     PLACEHOLDER: '请输入邮箱',
     dynamicCreate: true,
     defaultFirstOption: true,
+  }],
+  ['estimate', {
+    URL: '/api/renewalestimate',
+    DATA_KEY: 'data.data',
+    PLACEHOLDER: '请选择年费评估单',
+    handleData: _=>{
+      return _.map(_=>({ id: _.id, name: _.number }));
+    }
   }]
 ]);
 
@@ -204,15 +212,19 @@ export default {
       const os = this.PARAMS;
       const key = this.DATA_KEY;
       const url = this.URL;
+      const h = this.choose.handleData;
       const data = os ? Object.assign({}, s, os) : s;
       const success = _=>{
         this.loading = false;
-        _[key] = _[key].map(_=>{
+        let op = this.$tool.safeGet(_, key);
+        if(!op) return this.options = [];
+
+        op = op.map(_=>{
           if(!_.name) _.name = _.label;
           if(!_.id) _.id = _.value;
           return _;
         });
-        this.options = _[key];
+        this.options = h ? h(op) : op;
       }
 
       this.loading = true;

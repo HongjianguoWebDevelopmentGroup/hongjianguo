@@ -13,8 +13,8 @@
 			<el-button :loading="loading" type="primary" @click="addEstimate" style="margin-top: 10px;">{{ loading ? '新建中...' : '确认新建' }}</el-button>
 		</el-dialog>
 		<el-dialog title="添加到先有评估单" :visible.sync="dialogVisble2" @close="estimate = '';" class="dialog-small">
-			<remote-select type="estimate" v-model="estimate"></remote-select>
-			<el-button :loading="loading" type="primary" @click="submitEstimate('append')" style="margin-top: 10px;">{{ loading ? '添加中...' : '确认添加' }}</el-button>
+			<remote-select type="estimate" :para="{status: 0}" v-model="estimate"></remote-select>
+			<el-button :loading="loading" type="primary" @click="putEstimate" style="margin-top: 10px;">{{ loading ? '添加中...' : '确认添加' }}</el-button>
 		</el-dialog>
 		<el-dialog title="设置年费监控偏好" :visible.sync="dialogVisble3">
 			<div class="form-description">默认显示几个月内即将过期的年费</div>
@@ -26,6 +26,8 @@
 <script>
 import TableComponent from '@/components/common/TableComponent'
 import Pop from '@/components/page_extension/RenewalFee_pop'
+import RemoteSelect from '@/components/form/RemoteSelect'
+import {mapActions} from 'vuex'
 const URL = '/api/renewalfee'
 const URL2 = '/api/renewalestimate'
 export default {
@@ -140,6 +142,9 @@ export default {
 		};
 	},
 	methods: {
+	    ...mapActions([
+	      'refreshUser',
+	    ]),		
 		addPop () {
 			this.$refs.pop.show();
 		},
@@ -180,6 +185,24 @@ export default {
 					this.$message({type: 'success', message: '新建年费评估单成功'});
 					this.dialogVisble = false;
 					this.refresh();
+					this.refreshUser();
+				},
+				complete: _=>{
+					this.loading = false;
+				}
+			})
+		},
+		putEstimate () {
+			if(!this.estimate) return this.$message({type: 'warning', message: '请选择年费评估单'});
+			const ids = this.$tool.splitObj(this.$refs.table.getSelected(true), 'id');
+			const data = { ids }; 
+			this.$axiosPut({		
+				url: `${URL2}/${this.estimate}`,
+				data,
+				success: _=>{
+					this.$message({type: 'success', message: '添加成功'});
+					this.dialogVisble2 = false;
+					this.refresh();
 				},
 				complete: _=>{
 					this.loading = false;
@@ -203,6 +226,7 @@ export default {
 	components: { 
     TableComponent, 
 		Pop,
+		RemoteSelect,
 	}
 } 
 </script>

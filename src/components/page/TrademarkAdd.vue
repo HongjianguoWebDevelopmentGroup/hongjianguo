@@ -192,6 +192,9 @@ export default {
 		])
 	},
 	methods:{
+		...mapActions([
+			'refreshUser',
+		]),
 		highLightColors(id,tagName,event) {				//点击标签颜色高亮
 			var pId = document.getElementById(id);
 			var aList = pId.getElementsByTagName(tagName);
@@ -228,6 +231,7 @@ export default {
 
   		const success = _=>{ 
   			this.$message({message: '新建商标成功', type: 'success'});
+  			this.refreshUser();
   			this.$router.push('/trademark/list') 
   		};
   		const complete = _=>{ this.btn_disabled = false };
