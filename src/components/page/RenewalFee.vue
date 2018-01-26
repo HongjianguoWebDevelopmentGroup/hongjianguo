@@ -12,7 +12,7 @@
 			<el-input type="textarea" v-model="remark" placeholder="请填写年费评估单备注" style="margin-top: 10px;"></el-input>
 			<el-button :loading="loading" type="primary" @click="addEstimate" style="margin-top: 10px;">{{ loading ? '新建中...' : '确认新建' }}</el-button>
 		</el-dialog>
-		<el-dialog title="添加到先有评估单" :visible.sync="dialogVisble2" @close="estimate = '';" class="dialog-small">
+		<el-dialog title="添加到已有评估单" :visible.sync="dialogVisble2" @close="estimate = '';" class="dialog-small">
 			<remote-select type="estimate" :para="{status: 0}" v-model="estimate"></remote-select>
 			<el-button :loading="loading" type="primary" @click="putEstimate" style="margin-top: 10px;">{{ loading ? '添加中...' : '确认添加' }}</el-button>
 		</el-dialog>

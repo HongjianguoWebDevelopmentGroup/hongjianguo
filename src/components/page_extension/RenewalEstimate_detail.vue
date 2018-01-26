@@ -31,6 +31,13 @@ export default {
 				{ type: 'text', label: '案号', prop: 'serial', render_key: 'project', render_simple: 'serial', width: '200'},
 				{ type: 'text', label: '案件名称', prop: 'title',  render_key: 'project', render_simple: 'title', width: '200'},
 				{ type: 'text', label: '年费类型', prop: 'code', render_simple: 'name', width: '200'},
+				{ 
+					type: 'text', 
+					label: '年费状态', 
+					prop: 'status', 
+					render_text: _=>{ return  ['年费监控中',  '年费评估中',  '年费评估缴纳',  '年费评估放弃'][_] },
+					width: '200'
+				},
 				{ type: 'text', label: '创建时间', prop: 'create_time', width: '200'},
 				{ type: 'text', label: '创建人', prop: 'member', render_simple: 'name', width: '200' },
         { 
