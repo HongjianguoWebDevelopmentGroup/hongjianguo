@@ -1,12 +1,15 @@
 <template>
   <el-dialog :title="title" :visible.sync="dialogVisible" class="dialog-small">
-  	<el-form label-width="100px" ref="form" :model="form" :rules="rules">
+  	<el-form label-width="80px" ref="form" :model="form" :rules="rules">
   		
   		<el-form-item label="相关案件" prop="project">
 				<remote-select type="project" v-model="form.project"></remote-select>
 			</el-form-item>
 			<el-form-item label="年费类型" prop="code">
 				<static-select  type="fee_code_renewal" v-model="form.code" ref="fee_code"></static-select>
+			</el-form-item>
+			<el-form-item label="年费对象" prop="target">
+				<remote-select type="member" v-model="form.target"></remote-select>
 			</el-form-item>
 			<el-form-item label="费用金额" prop="money">
 				<el-row>	
@@ -54,6 +57,7 @@
 import PopMixins from '@/mixins/pop-mixins'
 import RemoteSelect from '@/components/form/RemoteSelect'
 import StaticSelect from '@/components/form/StaticSelect'
+import { checkMoney } from '@/const/validator.js'
 
 export default {
   name: 'renewalFeePop',
@@ -71,15 +75,27 @@ export default {
       	due_time: '',
       	deadline: '',
       	remark: '',
+      	target: '',
       },
       rules: {
-      
+      	'project': { type: 'number', required: true, message: '请选择相关案件' },
+      	'code': { type: 'number', required: true, message: '请选择年费类型' },
+      	'target': { type: 'number', required: true, message: '请选择年费对象' },
+      	'money': { 
+          type: 'object',
+          required: true,
+          trigger: 'change', 
+          validator: (a,b,c)=>{
+            checkMoney(a, b, c);
+       		},
+       	},
+      	'deadline': { type: 'date', required: true, message: '请选择官方绝限' },
       }
 		}
   },
   methods: {
   	submitForm () {
-  		const s = this.$tool.shallowCopy(this.form, {date: ['due_time', 'deadline'], skip: ['money']});
+  		const s = this.$tool.shallowCopy(this.form, {date: true, skip: ['money']});
   		return Object.assign(s, this.form.money);  		
   	}
   },

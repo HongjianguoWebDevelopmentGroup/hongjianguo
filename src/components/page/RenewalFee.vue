@@ -12,15 +12,21 @@
 			<el-input type="textarea" v-model="remark" placeholder="请填写年费评估单备注" style="margin-top: 10px;"></el-input>
 			<el-button :loading="loading" type="primary" @click="addEstimate" style="margin-top: 10px;">{{ loading ? '新建中...' : '确认新建' }}</el-button>
 		</el-dialog>
-		<el-dialog title="添加到先有评估单" :visible.sync="dialogVisble2" @close="estimate = '';" class="dialog-small">
-			<remote-select type="estimate" v-model="estimate"></remote-select>
-			<el-button :loading="loading" type="primary" @click="submitEstimate('append')" style="margin-top: 10px;">{{ loading ? '添加中...' : '确认添加' }}</el-button>
+		<el-dialog title="添加到已有评估单" :visible.sync="dialogVisble2" @close="estimate = '';" class="dialog-small">
+			<remote-select type="estimate" :para="{status: 0}" v-model="estimate"></remote-select>
+			<el-button :loading="loading" type="primary" @click="putEstimate" style="margin-top: 10px;">{{ loading ? '添加中...' : '确认添加' }}</el-button>
+		</el-dialog>
+		<el-dialog title="设置年费监控偏好" :visible.sync="dialogVisble3">
+			<div class="form-description">默认显示几个月内即将过期的年费</div>
+			<el-input-number v-model="month" :min="1"></el-input-number>
+			<el-button type="primary" @click="saveMonth" :loading="loading">{{loading ? '保存中...' : '保存'}}</el-button>
 		</el-dialog>
 	</div>
 </template>
 <script>
 import TableComponent from '@/components/common/TableComponent'
 import Pop from '@/components/page_extension/RenewalFee_pop'
+import RemoteSelect from '@/components/form/RemoteSelect'
 import {mapActions} from 'vuex'
 const URL = '/api/renewalfee'
 const URL2 = '/api/renewalestimate'
@@ -29,12 +35,17 @@ export default {
 	data () {
 		const statusArr = [ [0, '年费监控中'], [1, '年费评估中'], [2, '年费评估缴纳'], [3, '年费评估放弃'] ];
 		const statusMap = new Map(statusArr);
+		let month = this.$tool.getLocal('renewalFeeMonth');
+		this.month = month ? month : 3;
+		
 		return {
+			month,
 			status: '',
 			statusArr,
 			statusMap,
 			dialogVisble: false,
 			dialogVisble2: false,
+			dialogVisble3: false,
 			due_time: '',
 			remark: '',
 			estimate: '',
@@ -56,6 +67,16 @@ export default {
           },
 					{ type: 'delete' },
 					{ type: 'control' },
+					{ 
+						type: 'custom', 
+						icon: 'setting', 
+						label: '设定', 
+						click: _=>{
+							let month = this.$tool.getLocal('renewalFeeMonth');
+							this.month = month ? month : 3;
+							this.dialogVisble3 = true;
+						} 
+					},
 				],
 				header_slot: [ 'status' ],
 				columns: [
@@ -110,8 +131,15 @@ export default {
 						render_text: _=>this.statusMap.get(_),
 						width: '200'
 					},
+<<<<<<< HEAD
 					{ type: 'text', label: '创建人', prop: 'member', render_simple: 'name', width: '200' },
 					{ type: 'text', label: '创建时间', prop: 'create_time', width: '200'},
+=======
+					{ type: 'text', label: '年费对象', prop: 'target', render_simple: 'name', width: '200'},
+					{ type: 'text', label: '年费类型', prop: 'code', render_simple: 'name', width: '200'},
+					{ type: 'text', label: '费用期限', prop: 'due_time', width: '200'},
+					{ type: 'text', label: '官方绝限', prop: 'deadline', width: '200'},
+>>>>>>> dca097afe5358a25f7499127f34cce199e4c09bc
 					{ type: 'text', label: '备注', prop: 'remark', width: '200'},
 					{ type: 'text', label: '评估单编号', prop: 'renewal_estimate', render_simple: 'number', width: '200'},
 				]
@@ -132,7 +160,7 @@ export default {
 		refreshTableData (option) {
 			this.$axiosGet({
 				url: URL,
-				data: Object.assign({}, option, {status: this.status}),
+				data: Object.assign({}, option, {status: this.status}, {month: this.month}),
 				success: _=>{this.tableData = _.data},
 			})
 		},
@@ -169,6 +197,28 @@ export default {
 					this.loading = false;
 				}
 			})
+		},
+		putEstimate () {
+			if(!this.estimate) return this.$message({type: 'warning', message: '请选择年费评估单'});
+			const ids = this.$tool.splitObj(this.$refs.table.getSelected(true), 'id');
+			const data = { ids }; 
+			this.$axiosPut({		
+				url: `${URL2}/${this.estimate}`,
+				data,
+				success: _=>{
+					this.$message({type: 'success', message: '添加成功'});
+					this.dialogVisble2 = false;
+					this.refresh();
+				},
+				complete: _=>{
+					this.loading = false;
+				}
+			})
+		},
+		saveMonth () {
+			this.$tool.setLocal('renewalFeeMonth', this.month);
+			this.dialogVisble3 = false;
+			this.refresh();
 		}
 	},
 	mounted () {
@@ -182,6 +232,7 @@ export default {
 	components: { 
     TableComponent, 
 		Pop,
+		RemoteSelect,
 	}
 } 
 </script>

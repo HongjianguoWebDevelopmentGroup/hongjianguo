@@ -102,6 +102,14 @@ const map = new Map([
     PLACEHOLDER: '请输入邮箱',
     dynamicCreate: true,
     defaultFirstOption: true,
+  }],
+  ['estimate', {
+    URL: '/api/renewalestimate',
+    DATA_KEY: 'data.data',
+    PLACEHOLDER: '请选择年费评估单',
+    handleData: _=>{
+      return _.map(_=>({ id: _.id, name: _.number }));
+    }
   }]
 ]);
 
@@ -183,13 +191,14 @@ export default {
       }else {
         //selected通过map映射
         const arr = [];
+        console.log(val);
         val.forEach(_=>{
           //在map中搜索, 若不存在，则自定义
           const v = this.map.get(_);
           
           if(v) {
             arr.push(v);
-          }else {
+          }else if(_ != ''){
             arr.push({id: _, name: _}); 
           }
         });
@@ -203,15 +212,19 @@ export default {
       const os = this.PARAMS;
       const key = this.DATA_KEY;
       const url = this.URL;
+      const h = this.choose.handleData;
       const data = os ? Object.assign({}, s, os) : s;
       const success = _=>{
         this.loading = false;
-        _[key] = _[key].map(_=>{
+        let op = this.$tool.safeGet(_, key);
+        if(!op) return this.options = [];
+
+        op = op.map(_=>{
           if(!_.name) _.name = _.label;
           if(!_.id) _.id = _.value;
           return _;
         });
-        this.options = _[key];
+        this.options = h ? h(op) : op;
       }
 
       this.loading = true;
@@ -282,9 +295,9 @@ export default {
   		return map;
   	},
     value2 () {
-      // console.log(this.value);
+
       if(!this.multiple && !this.single) {
-        // console.log(this.value == "" || (this.value instanceof Object && this.$tool.getObjLength(this.value) == 0 ) ? [] : [ this.value ]);
+        
         return this.value == "" || (this.value instanceof Object && this.$tool.getObjLength(this.value) == 0 ) ? [] : [ this.value ];
       }else {
         return this.value;
@@ -301,8 +314,9 @@ export default {
       // if( !this.multiple && !this.single && this.$refs.select) {
         this.$refs.select.visible = false;
       }
-      
+
       this.refreshSelected(val);   
+
   	}
   },
   created () {

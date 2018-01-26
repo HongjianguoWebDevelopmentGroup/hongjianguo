@@ -144,8 +144,6 @@
     <el-dialog class="dialog-small" v-if="tableOption.update_type !== undefined" :visible.sync="dialogUpdateVisible" title="批量更新">
       <batch-update :type="tableOption.update_type" @success="handleBatchUpdateSuccess"></batch-update>
     </el-dialog>
-      
-    </el-dialog>
     
     <file-upload v-if="tableOption.upload_type !== undefined" :type="tableOption.upload_type" @uploadSuccess="refresh" ref="file_upload"></file-upload>
   

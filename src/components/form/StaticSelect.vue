@@ -94,9 +94,17 @@ const config = [
     placeholder: '请选择文件类型',
     url: '/api/fileTypes',
   }],
+  ['file_type_patent', {
+    placeholder: '请选择专利文件类型',
+    url: '/api/fileTypes?category=1',
+  }],
   ['file_type_trademark', {
     placeholder: '请选择商标文件类型',
-    url: '/api/fileTypesTrademark'
+    url: '/api/fileTypes?category=2'
+  }],
+  ['file_type_copyright', {
+    placeholder: '请选择版权文件类型',
+    url: '/api/fileTypes?category=3',
   }],
   ['group', {
     placeholder: '请选择用户组',
@@ -269,6 +277,7 @@ const dataMap = new Map([
   ['fee_target_income', {data: null}],
   ['fee_target_expenditure', {data: null}],
   ['file_type', {data: null}],
+  ['file_type_patent', {data: null}],
   ['file_type_trademark',{data: null}],
   ['tag', {data: null}],
   ['fee_code', {data: null}],

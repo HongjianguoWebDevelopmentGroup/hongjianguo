@@ -216,11 +216,23 @@ export default {
 		}
 	},
 	funcAfter (fn, afterfn) {
-
 		return function() {
 			const result = fn.apply( this, arguments );
 			afterfn.apply( this, arguments );
 			return result;
 		}
-	}
+	},
+	safeGet (data, path) {
+	  if(typeof data != 'object') return false;
+	  if(typeof path != 'string') return false;
+	  const a = path.split('.');
+	  let v = data;
+	  a.every(_=>{
+	    if(!v) return false;
+	    v = v[_];
+	    return true;
+	  })
+	  
+	  return v;
+	}	
 }

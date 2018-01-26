@@ -587,17 +587,29 @@ nav {
     }
   }
  .el-dialog--small  .el-upload--text {
-      display: inline-block;
-      text-align: center;
-      cursor: pointer;
-      /*position: static;*/
-    }
- 
+    display: inline-block;
+    text-align: center;
+    cursor: pointer;
+    /*position: static;*/
+  }
+  .el-tooltip__popper {
+    max-width: 500px;
+  }
+  .el-message-box__message p{
+    margin: 0;
+    line-height: 1.4;
+    word-wrap:break-word;
+  }
+  /*icon库扩展*/
+  [class^="el-icon-my"], [class*=" el-icon-my"] {
+    font-family:"iconfont" !important;
+    font-size:16px;
+    font-style:normal;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+}
 
-}
-.el-tooltip__popper {
-  max-width: 500px;
-}
 .left-tree-header {
   font-size: 14px;
   height: auto;
@@ -606,19 +618,14 @@ nav {
   border: 1px solid #dfe6ec;
   border-bottom: none;
 }
-.el-message-box__message p{
-  margin: 0;
-  line-height: 1.4;
-  word-wrap:break-word;
+
+.form-description {
+  margin-bottom: 10px;
+  color: rgb(132, 146, 166);
+  font-size: 14px;
 }
 
-/*icon库扩展*/
-[class^="el-icon-my"], [class*=" el-icon-my"] {
-  font-family:"iconfont" !important;
-  font-size:16px;
-  font-style:normal;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-}
+
+
   
 </style>

@@ -145,8 +145,8 @@ export default {
 	},
 	computed: {
 		...mapGetters([
-	      'innerHeight',
-	    ]),
+      'innerHeight',
+    ]),
 	},
 	methods: {
 		renderContent(h, { node, data, store }) {
