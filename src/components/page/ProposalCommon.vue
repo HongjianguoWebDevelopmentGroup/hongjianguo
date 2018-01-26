@@ -16,7 +16,7 @@
             </el-form-item>
 
             <el-form-item label="发明人" prop="inventors" class="is-required">
-              <inventors v-model="formData.inventors" ref="inventors">
+              <inventors v-model="formData.inventors" ref="inventors" @addInventor="$refs.form.validateField('inventors')" @deleteInventor="$refs.form.validateField('inventors')">
                 <el-button type="text" slot="addInventor" @click="addPop">添加发明人</el-button>
               </inventors>
             </el-form-item>
