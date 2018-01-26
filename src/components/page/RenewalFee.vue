@@ -131,17 +131,11 @@ export default {
 						render_text: _=>this.statusMap.get(_),
 						width: '200'
 					},
-<<<<<<< HEAD
+					{ type: 'text', label: '年费对象', prop: 'target', render_simple: 'name', width: '200'},
+					{ type: 'text', label: '评估单编号', prop: 'renewal_estimate', render_simple: 'number', width: '200'},
 					{ type: 'text', label: '创建人', prop: 'member', render_simple: 'name', width: '200' },
 					{ type: 'text', label: '创建时间', prop: 'create_time', width: '200'},
-=======
-					{ type: 'text', label: '年费对象', prop: 'target', render_simple: 'name', width: '200'},
-					{ type: 'text', label: '年费类型', prop: 'code', render_simple: 'name', width: '200'},
-					{ type: 'text', label: '费用期限', prop: 'due_time', width: '200'},
-					{ type: 'text', label: '官方绝限', prop: 'deadline', width: '200'},
->>>>>>> dca097afe5358a25f7499127f34cce199e4c09bc
 					{ type: 'text', label: '备注', prop: 'remark', width: '200'},
-					{ type: 'text', label: '评估单编号', prop: 'renewal_estimate', render_simple: 'number', width: '200'},
 				]
 			},
 			tableData: '',
