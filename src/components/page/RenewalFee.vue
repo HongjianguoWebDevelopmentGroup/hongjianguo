@@ -94,6 +94,7 @@ export default {
 					{ type: 'selection' },
 					{ type: 'text', label: '案号', prop: 'serial', render_key: 'project', render_simple: 'serial', width: '200'},
 					{ type: 'text', label: '案件名称', prop: 'title',  render_key: 'project', render_simple: 'title', width: '200'},
+					{ type: 'text', label: '年费类型', prop: 'code', render_simple: 'name', width: '200'},
 					{ 
 						type: 'text', 
 						label: '外币金额', 
@@ -132,8 +133,8 @@ export default {
 	            return h('span',`${item}CNY`)
 	          }
 	        },
-					{ type: 'text', label: '创建时间', prop: 'create_time', width: '200'},
-					{ type: 'text', label: '创建人', prop: 'member', render_simple: 'name', width: '200' },
+					{ type: 'text', label: '费用期限', prop: 'due_time', width: '200'},
+					{ type: 'text', label: '官方绝限', prop: 'deadline', width: '200'},
 					{ 
 						type: 'text', 
 						label: '年费状态', 
@@ -142,11 +143,10 @@ export default {
 						width: '200'
 					},
 					{ type: 'text', label: '年费对象', prop: 'target', render_simple: 'name', width: '200'},
-					{ type: 'text', label: '年费类型', prop: 'code', render_simple: 'name', width: '200'},
-					{ type: 'text', label: '费用期限', prop: 'due_time', width: '200'},
-					{ type: 'text', label: '官方绝限', prop: 'deadline', width: '200'},
-					{ type: 'text', label: '备注', prop: 'remark', width: '200'},
 					{ type: 'text', label: '评估单编号', prop: 'renewal_estimate', render_simple: 'number', width: '200'},
+					{ type: 'text', label: '创建人', prop: 'member', render_simple: 'name', width: '200' },
+					{ type: 'text', label: '创建时间', prop: 'create_time', width: '200'},
+					{ type: 'text', label: '备注', prop: 'remark', width: '200'},
 				]
 			},
 			tableData: '',

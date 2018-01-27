@@ -2,11 +2,11 @@ export function checkInventors (a, b, c, required=false) {
 	let msg = '';
   let number = 0;
   const reg = /^[1-9][0-9]*$/;
-  
   if(b.length == 0) {
     msg = required ? '发明人字段不能为空' : 'success';
   }else {
     for(let d of b) {
+
     	if( !d.id ) {
 
     	}
