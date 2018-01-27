@@ -5,7 +5,6 @@
 			<el-form-item label="相关案件" prop="project">
 				<remote-select type="patent" v-model="form.project"></remote-select>
 			</el-form-item>
-			
 			<el-form-item label="费用对象" prop="target" >
 				<remote-select type="member" v-model="form.target" ></remote-select>
 			</el-form-item>
@@ -93,6 +92,7 @@ import Member from '@/components/form/Member'
 import FeeStatus from '@/components/form/FeeStatus'
 import RemoteSelect from '@/components/form/RemoteSelect'
 import StaticSelect from '@/components/form/StaticSelect'
+import {mapGetters} from 'vuex'
 
 const URL = '/api/fees'
 
@@ -144,6 +144,9 @@ export default {
 		}
   },
   computed: {
+  	...mapGetters([
+  		'roeData',
+  	]),
   	title () {
   		const key1 = this.popType == 'add' ? '新增' : '编辑';
   		const key2 = this.feeType == 1 ? '应收' : '应付';
@@ -169,15 +172,15 @@ export default {
   			return o;
   		},
   		set (val) {
-  			const arr = ['amount', 'currency', 'roe'];
   			this.id = val.id;
-  			this.$tool.coverObj(this.form, val, {obj: ['code'], skip: ['status']} );
+  			this.$tool.coverObj(this.form, val, { obj: ['code', 'status'] } );
 
+  			//code被监听 为了覆盖监听事件的currency,amount数据 延后执行
   			this.$nextTick(_=>{
-	  			arr.map(_=>{
-	  				this.form.money[_] = val[_];
-	  			})
-	  			this.form.status = val['status']['id'];
+	  			this.form.money['currency'] = val['currency'];
+	  			this.form.money['ammount'] = val['amount'];
+	  			//currency被监听 为了覆盖监听事件的roe数据 延后执行
+	  			this.$nextTick(_=>{ this.form.money['roe'] = val['roe'] });
   			})
   		}
   	}
@@ -191,7 +194,7 @@ export default {
 	  			this.submitForm = row;
   			});	
   		}
-  	},
+  	},	
   	add () {
   		const url = URL;
   		const data = this.submitForm;
@@ -222,25 +225,23 @@ export default {
 			this.form.money.amount = "";
 			this.form.money.currency = "";
   	},
-  	codeChange ({amount, name}) {
-  		if(amount) {
-
-	  		this.form.money.amount = amount;
-	  		this.form.money.currency = 'CNY';
-	  		this.form.money.roe = "1";
-  		}
-
-  		const reg = /年费/;
-  		this.feeAnnual = reg.test(name); 
-  	},
   },
   watch: {
 		'form.code': {
 			handler (v) {
 				const val = this.$refs.fee_code.getSelected(v)[0];
 				if(val) {
-					this.codeChange(val);
-				}				
+					this.form.money.currency = 'CNY';
+					this.$tool.coverObj(this.form.money, val);
+				}			
+			}
+		},
+		'form.money.currency': {
+			handler (v) {
+				const val = this.roeData[v];
+				if(val) {
+					this.form.money.roe = val;
+				}
 			}
 		}
 	},

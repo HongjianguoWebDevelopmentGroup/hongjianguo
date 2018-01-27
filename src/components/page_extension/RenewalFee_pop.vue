@@ -5,12 +5,15 @@
   		<el-form-item label="相关案件" prop="project">
 				<remote-select type="project" v-model="form.project"></remote-select>
 			</el-form-item>
-			<el-form-item label="年费类型" prop="code">
-				<static-select  type="fee_code_renewal" v-model="form.code" ref="fee_code"></static-select>
-			</el-form-item>
 			<el-form-item label="年费对象" prop="target">
 				<remote-select type="member" v-model="form.target"></remote-select>
 			</el-form-item>
+      <el-form-item label="年费地区" prop="area">
+        <static-select type="area" v-model="form.area"></static-select>
+      </el-form-item>
+      <el-form-item label="年费类型" prop="code">
+        <static-select  type="fee_code_renewal" v-model="form.code" ref="fee_code" :filter-options="areaFilter"></static-select>
+      </el-form-item>
 			<el-form-item label="费用金额" prop="money">
 				<el-row>	
 					<el-col :span="16" style="padding-right: 5px;">
@@ -58,6 +61,7 @@ import PopMixins from '@/mixins/pop-mixins'
 import RemoteSelect from '@/components/form/RemoteSelect'
 import StaticSelect from '@/components/form/StaticSelect'
 import { checkMoney } from '@/const/validator.js'
+import { mapGetters } from 'vuex'
 
 export default {
   name: 'renewalFeePop',
@@ -66,6 +70,7 @@ export default {
 		return {
       form: {
       	project: '',
+        area: '',
       	code: '',
       	money: {
       		amount: '',
@@ -78,7 +83,8 @@ export default {
       	target: '',
       },
       rules: {
-      	'project': { type: 'number', required: true, message: '请选择相关案件' },
+        'project': { type: 'number', required: true, message: '请选择相关案件' },
+      	'area': { required: true, message: '请选择年费地区' },
       	'code': { type: 'number', required: true, message: '请选择年费类型' },
       	'target': { type: 'number', required: true, message: '请选择年费对象' },
       	'money': { 
@@ -93,6 +99,19 @@ export default {
       }
 		}
   },
+  computed: {
+    ...mapGetters([
+      'roeData',
+    ]),
+    areaFilter () {
+      const value = this.form.area;
+      if(value) {
+        return [{key: 'area', value}];
+      }else {
+        return [{key: 'area', value: ''}];
+      }
+    }
+  },
   methods: {
   	submitForm () {
   		const s = this.$tool.shallowCopy(this.form, {date: true, skip: ['money']});
@@ -104,12 +123,19 @@ export default {
 			handler (v) {
 				const val = this.$refs.fee_code.getSelected(v)[0];
 				if(val) {
-					this.form.money.roe = 1;
 					this.form.money.currency = 'CNY';
 					this.$tool.coverObj(this.form.money, val);
 				}				
 			}
-		}
+		},
+    'form.money.currency': {
+      handler (v) {
+        const val = this.roeData[v];
+        if(val) {
+          this.form.money.roe = val;
+        }
+      }
+    }
 	},
 	URL: '/api/renewalfee',
   REMINDER_TEXT: '年费',

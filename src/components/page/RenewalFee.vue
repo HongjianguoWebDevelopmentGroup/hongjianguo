@@ -19,7 +19,12 @@
 		<el-dialog title="设置年费监控偏好" :visible.sync="dialogVisble3">
 			<div class="form-description">默认显示几个月内即将过期的年费</div>
 			<el-input-number v-model="month" :min="1"></el-input-number>
-			<el-button type="primary" @click="saveMonth" :loading="loading">{{loading ? '保存中...' : '保存'}}</el-button>
+			<el-button type="primary" @click="saveMonth" :loading="loading">{{ loading ? '保存中...' : '保存' }}</el-button>
+		</el-dialog>
+		<el-dialog title="批量添加年费" :visible.sync="dialogVisble4" @close="patent = ''" class="dialog-small">
+			<div class="form-description">请选择需要批量添加年费的专利</div>
+			<remote-select type="patent" v-model="patent" ref="patent"></remote-select>
+			<el-button type="primary" @click="batchAdd" :loading="loading" style="margin-top: 10px;">{{ loading ? '添加中...' : '确认添加' }}</el-button>
 		</el-dialog>
 	</div>
 </template>
@@ -28,6 +33,7 @@ import TableComponent from '@/components/common/TableComponent'
 import Pop from '@/components/page_extension/RenewalFee_pop'
 import RemoteSelect from '@/components/form/RemoteSelect'
 import {mapActions} from 'vuex'
+
 const URL = '/api/renewalfee'
 const URL2 = '/api/renewalestimate'
 export default {
@@ -46,10 +52,14 @@ export default {
 			dialogVisble: false,
 			dialogVisble2: false,
 			dialogVisble3: false,
+			dialogVisble4: false,
+			loading: false,
+			loading4: false,
+			patent: '',
 			due_time: '',
 			remark: '',
 			estimate: '',
-			loading: false,
+
 			option: {
 				name: 'renewalFeeList',
 				url: URL,
@@ -57,6 +67,7 @@ export default {
 				search_placeholder: '案号、案件名称、创建人',
 				header_btn: [
 					{ type: 'add', click: this.addPop },
+					{ type: 'add', label: '批量添加', click: _=>{ this.dialogVisble4 = true; } },
 					{ 
             type: 'dropdown',
             label:  '年费评估单',
@@ -142,14 +153,34 @@ export default {
 		};
 	},
 	methods: {
-	    ...mapActions([
-	      'refreshUser',
-	    ]),		
+    ...mapActions([
+      'refreshUser',
+      'refreshRoeData',
+    ]),
+    batchAdd () {
+    	if( !this.patent ) return this.$message({type: 'warning', message: '专利不能为空'});
+    	const serial = this.$refs.patent.getSelected()[0]['name'].split('-')[0].match(/^\[(.*)\]$/)[1];
+    	this.loading4 = true;
+    	this.$axiosPost({
+    		url: '/api/renewalFeeBatch',
+    		data: { project_id: this.patent },
+    		success: _=>{ 
+    			this.$message({type: 'success', message: '批量添加成功'}) 
+    			this.dialogVisble4 = false;
+    			this.search(serial);
+    		},
+    		complete: _=>{ this.loading4 = false },
+    		
+    	}) 
+    },	
 		addPop () {
 			this.$refs.pop.show();
 		},
 		refresh () {
 			this.$refs.table.refresh();
+		},
+		search (val) {
+			this.$refs.table.search(val);
 		},
 		refreshTableData (option) {
 			this.$axiosGet({
@@ -213,10 +244,11 @@ export default {
 			this.$tool.setLocal('renewalFeeMonth', this.month);
 			this.dialogVisble3 = false;
 			this.refresh();
-		}
+		},
 	},
 	mounted () {
 		this.refresh();
+		this.refreshRoeData();
 	},
 	watch: {
 		status () {

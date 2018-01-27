@@ -554,11 +554,13 @@ export default {
     },
     handleSearch () {
       const func = this.tableOption.handleSearch;
+      
       if(func && this.search_value) {
         func(this.search_value);
+      }else {
+        this.reset();
       }
 
-      this.reset();
     },
     timeSearch ({search}) {
       if(search) {
@@ -588,6 +590,11 @@ export default {
     },
     update () {
       this.$emit('refreshTableData', Object.assign({}, this.getRequestOption(), this.screen_obj) );
+    },
+    search (val) {
+      this.page = 1;
+      this.search_value = val;
+      this.update();
     },
     reset () {
       this.page = 1;
