@@ -14,7 +14,7 @@
     @change="handleChange"
   >
   	<el-option
-  		v-for="item in options"
+  		v-for="item in optionsIn"
   		:key="item.id"
   		:label="item.name"
   		:value="item.id"
@@ -144,14 +144,22 @@ const config = [
     // options: 'feeCodesOptions'
     url: '/api/feeCodes',
     handle (data) {
-      return data.codes.map(_=>({id: _.id - 0, name: _.name, amount: _.amount - 0}));
+      return data.codes.map(_=>{
+        _.id = _.id - 0;
+        _.amount = _.amount - 0;
+        return _;
+      })
     }
   }],
   ['fee_code_renewal', {
     placeholder: '请选择年费类型',
     url: '/api/feeCodes?type=renewal',
     handle (data) {
-      return data.codes.map(_=>({id: _.id - 0, name: _.name, amount: _.amount - 0}));
+      return data.codes.map(_=>{
+        _.id = _.id - 0;
+        _.amount = _.amount - 0;
+        return _;
+      })
     }
   }],
   ['fee_target_income', {
@@ -307,6 +315,12 @@ export default {
       type: String,
     },
     'type': null,
+    'filterOptions': {
+      type: Array,
+      default () {
+        return [];
+      },
+    },
   },
   data () {
 
@@ -336,6 +350,23 @@ export default {
       }
 
       return op;
+    },
+    optionsIn () {
+      const f = this.filterOptions;
+      if(f.length != 0) {
+        return this.options.filter(_=>{
+          for(let i = 0; i < f.length; i++) {
+            const item = f[i];
+
+            if(_[item['key']] != item['value']) {
+              return false;
+            }
+          }
+          return true;
+        })
+      }else {
+        return this.options;
+      }
     }
   },
   watch: {
@@ -362,7 +393,7 @@ export default {
         const val = this.map.get(_);
         if(val) {
           arr.push(val);
-        }else {
+        }else if(_ != '') {
           arr.push({id: _, name: _});
         }
       })
@@ -418,6 +449,15 @@ export default {
   },
   created () {
     this.setOptions();
+  },
+  watch: {
+    filterOptions () {
+      if(this.multiple) {
+        this.$emit('input', []);
+      }else {
+        this.$emit('input', '');
+      }
+    }
   }
 }
 </script>

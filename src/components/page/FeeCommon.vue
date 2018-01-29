@@ -170,7 +170,8 @@ export default {
   methods: {
     ...mapActions([
       'refreshFeeCodes',
-      'refreshUser'
+      'refreshRoeData',
+      'refreshUser',
     ]),
     refreshTableData (option) {
       if(this.fee_invoice instanceof Object) return;
@@ -313,6 +314,7 @@ export default {
   },
   mounted () {
     this.refreshFeeCodes();
+    this.refreshRoeData();
     if(this.$route.query.id) {
       this.fee_status = this.feeType ? 1 : 2;
       this.fee_invoice = {id: this.$route.query.id, name: this.$route.query.name};
