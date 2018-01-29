@@ -1,9 +1,9 @@
 <template>
   <app-collapse col-title="基本信息">
 		<el-form label-width="120px" :model="form" :rules="rules" ref="form">
-      <el-form-item label="案号">
+<!--       <el-form-item label="案号">
         <el-input v-model="form.serial" placeholder="请填写案号"></el-input>
-      </el-form-item>
+      </el-form-item> -->
 			<el-form-item label="标题" prop="title">
 				<el-input v-model="form.title" placeholder="请填写案件标题" ></el-input>
 			</el-form-item>
