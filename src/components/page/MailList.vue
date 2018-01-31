@@ -111,10 +111,10 @@ export default {
       this.currentNodeKey = id;
       this.refresh(); 
     },
-  	mailDelete ({id}) {
+  	mailDelete ({id,subject}) {
   		const url = `${URL}/${id}`;
       this.$confirm(
-        '此操作将永久删除该邮件, 是否继续?', '删除确认', {
+        `删除后不可恢复，确认删除邮件‘${subject}?`, '删除确认', {
           confirmButtonText: '确定',
           cancelButtonText: '取消',
           type: 'warning'

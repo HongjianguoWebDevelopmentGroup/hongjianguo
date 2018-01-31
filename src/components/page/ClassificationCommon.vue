@@ -127,7 +127,7 @@ export default {
   	},
   	treeDelete (id) {
   		const d = this.optionMap.get(id);
-  		this.$confirm(`删除后不可恢复，确认删除${d.name}？`, {type: 'warning'})
+  		this.$confirm(`删除后不可恢复，确认删除${d.name}？`, '删除确认', {type: 'warning'})
   			.then(_=>{
   				const url = `${this.url}/${id}`;
 		  		const success = _=>{
