@@ -114,7 +114,7 @@ export default {
   	mailDelete ({id}) {
   		const url = `${URL}/${id}`;
       this.$confirm(
-        '此操作将永久删除该邮件, 是否继续?', '提示', {
+        '此操作将永久删除该邮件, 是否继续?', '删除确认', {
           confirmButtonText: '确定',
           cancelButtonText: '取消',
           type: 'warning'
@@ -126,10 +126,10 @@ export default {
 
         this.axiosDelete({url, success});
         }).catch(()=>{
-          this.$message({
-            type: 'info',
-            message: '已取消删除！'
-          })
+          // this.$message({
+          //   type: 'info',
+          //   message: '已取消删除！'
+          // })
         })
   	},
     handleRowClick ({id}) {

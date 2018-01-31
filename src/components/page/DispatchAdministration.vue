@@ -90,7 +90,7 @@ export default {
       }
     },
   	deleteSingle ({id}) {
-  		this.$confirm('删除后不可恢复，确认删除当前收发文记录？', '提示', {type: 'warning'})
+  		this.$confirm('删除后不可恢复，确认删除当前收发文记录？', '删除确认', {type: 'warning'})
   			.then(_=>{
   				const url = `${URL}/${id}`;
   				const success = _=>{

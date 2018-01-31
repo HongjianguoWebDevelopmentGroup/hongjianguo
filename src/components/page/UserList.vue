@@ -137,7 +137,7 @@ export default {
 	},
 	methods: {
 	//true代表选择全部用户,false代表选择某个用户组
-    refreshTableOption (flag) {
+	refreshTableOption (flag) {
     	const h = this.tableOption.header_btn;
     	const one = { type: 'add', label: '添加至用户组',  click: this.toGroupPop };
     	const two = { type: 'delete', label: '移出当前用户组', click: this.removeGroup };
@@ -210,7 +210,7 @@ export default {
 				this.refreshGroup();
 			};
 
-			this.$confirm(`删除后不可恢复，确认删除用户‘${username}’？`)
+			this.$confirm(`删除后不可恢复，确认删除用户‘${username}’？`,'删除确认',{type: 'warning'})
 				.then(_=>{
 					this.axiosDelete({url, success});
 				})

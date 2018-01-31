@@ -59,7 +59,7 @@ export default {
   		this.$refs.pop.show('edit', col);
   	},
   	deleteSingle ({id, name}) {
-  		this.$confirm(`删除后不可恢复，确认删除发明人‘${name}’？`)
+  		this.$confirm(`删除后不可恢复，确认删除发明人‘${name}’？`, '删除确认', {type: 'warning'})
         .then(_=>{
           const url = `${URL}/${id}`;
           const success = _=>{

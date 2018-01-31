@@ -232,7 +232,7 @@ export default {
   		}
 
       const name = this.groupMap.get(id).name;
-  		this.$confirm(`删除后不可恢复，确认删除用户组‘${name}’？`)
+  		this.$confirm(`删除后不可恢复，确认删除用户组‘${name}’？`,'删除确认',{type: 'warning'})
   			.then(_=>{
   				const url = `${URL}/${id}`;
 		  		const success = ()=>{
