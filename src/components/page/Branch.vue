@@ -185,7 +185,7 @@ export default {
         target: this.transfer,
       }
       const success = _=>{
-        this.$message({'message': '移交成功'});
+        this.$message({'message': '移交成功', type: 'success'});
         this.dialogVisible = false;
       }
 

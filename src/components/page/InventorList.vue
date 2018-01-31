@@ -67,7 +67,7 @@ export default {
             this.update();
           };
 
-          this.axiosDelete({url, success});
+          this.$axiosDelete({url, success});
         })
         .catch(_=>{});
   	},
@@ -76,7 +76,7 @@ export default {
       const data = Object.assign({}, option);
       const success = _=>{ this.tableData = _.data };
 
-      this.axiosGet({url, data, success});
+      this.$axiosGet({url, data, success});
   	},
     refresh () {
       this.$refs.table.refresh();

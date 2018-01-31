@@ -177,7 +177,7 @@ export default {
 				this.refresh();
 			}
 
-			this.axiosPut({url, success});
+			this.$axiosPut({url, success});
 
 		},
 		removeGroup () {
@@ -198,7 +198,7 @@ export default {
 						this.refresh();
 					}
 
-					this.axiosDelete({url, data, success}); 
+					this.$axiosDelete({url, data, success}); 
 				})
 				.catch(()=>{});
 		},
@@ -212,7 +212,7 @@ export default {
 
 			this.$confirm(`删除后不可恢复，确认删除用户‘${username}’？`,'删除确认',{type: 'warning'})
 				.then(_=>{
-					this.axiosDelete({url, success});
+					this.$axiosDelete({url, success});
 				})
 				.catch(_=>{});
 		},
@@ -226,7 +226,7 @@ export default {
 				this.lastUpdate = _.last_update ? _.last_update : ''; 
 			};
 			
-			this.axiosGet({url, data, success})
+			this.$axiosGet({url, data, success})
 		},
 		refresh (str) {
 			// console.log(str);

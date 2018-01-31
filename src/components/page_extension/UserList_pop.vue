@@ -152,7 +152,7 @@ export default {
   			this.$emit('refresh');
   		}
 
-  		this.axiosPost({url, data, success});
+  		this.$axiosPost({url, data, success});
   	},
   	edit () {
   		let flag = false;
@@ -167,7 +167,7 @@ export default {
   			this.$emit('refresh');
   		}
 
-  		this.axiosPut({url, data, success});
+  		this.$axiosPut({url, data, success});
   	},
   	psdCheck () {
   		const psd = this.form.password;
