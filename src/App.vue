@@ -49,7 +49,7 @@
         </el-menu>
 
       </div>
-    <div class="container" v-loading="loading" :element-loading-text="loadingText" :style="`min-height: ${innerHeight-10}px; padding: 10px 15px 0; background-color: #F9FAFC;`">
+    <div class="container" v-loading="loading" :element-loading-text="loadingText" :style="`min-height: ${innerHeight-10}px; padding: 10px 15px 0; background-color: #F9FAFC;overflow:hidden;`">
       <!-- <h1 class="container-menu"><i :class="select.icon"></i><span>{{ select.text }}</span></h1> -->
       <div class="container-nav">
         <el-breadcrumb separator=">">
