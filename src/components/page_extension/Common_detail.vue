@@ -71,6 +71,10 @@ export default {
       default: false,
     },
     'title': String,
+    'refreshSwitch': {
+      type: Boolean,
+      default: true,
+    }//是否自动刷新
   },
   data () {
 		return {
@@ -112,6 +116,7 @@ export default {
     ]),
     refreshDetail () {
       if(!this.type) return;
+      if(!this.refreshSwitch) return;
       // if(this.menusMap.get(this.config.auth)) return;
 
       const type = this.type;
