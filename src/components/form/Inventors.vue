@@ -62,6 +62,7 @@ export default {
           }
         }
       }
+      
       v.forEach((_,i)=>{
         _.share = arr[i];
       })
