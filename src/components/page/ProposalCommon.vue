@@ -123,9 +123,9 @@ export default {
     submitInventor (formName) {
       this.$refs[formName].validate((_)=>{
         if(_){
-          const id = this.$refs.member.getSelected()[0];
-          console.log(id);
-          this.formData.inventors.push({id,share:''});
+         const id = this.$refs.member.getSelected()[0];
+         const obj =  Object.assign(id,{share:''});
+           this.formData.inventors.splice(this.formData.inventors - 1,0,obj);
           if(this.formData.inventors && this.formData.inventors.length != 0) {
                 //复用组件内置的方法...
             this.$refs.inventors.handleShare(this.formData.inventors);

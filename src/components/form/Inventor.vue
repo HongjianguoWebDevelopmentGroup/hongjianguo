@@ -68,6 +68,7 @@ export default {
       this.$emit('deleteInventor');
     },
     handleInventor (val) {
+      console.log(val);
         const selected = this.$refs.member.map.get(val);
         console.log(selected);
         const id = selected && selected.id ? selected.id : '';
