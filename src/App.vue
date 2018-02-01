@@ -53,7 +53,7 @@
         </el-menu>
 
       </div>
-    <div class="container" v-loading="loading" :element-loading-text="loadingText" :style="`min-height: ${innerHeight-10}px; padding: 10px 15px 0; background-color: #F9FAFC;`">
+    <div class="container" v-loading="loading" :element-loading-text="loadingText" :style="`min-height: ${innerHeight-10}px; padding: 10px 15px 0; background-color: #F9FAFC;overflow:hidden;`">
       <!-- <h1 class="container-menu"><i :class="select.icon"></i><span>{{ select.text }}</span></h1> -->
       <div class="container-nav">
         <el-breadcrumb separator=">">
@@ -213,7 +213,7 @@ export default {
     //   type: 'POST',
     //   async: false,
     //   data: {
-    //     username: 'dls1', 
+    //     username: 'admin', 
     //     password: 'Z9jgM6FhdKWEqbbpJePv/6qeTO/Yk2b6lx7zF4tiBncRubwf0fz93hkqGXCiWvqXCDIq7x+kAH3TK5zhjDZ53jgt1Gx1vvBPHn3ga7HTqPrnc+VhhuVGeTefHShJBx32rnbhL6LbEqCAMGqtQXaovCtuJGY6uWYAPfecAOGMuadnxTigTTBwKtW2oVP4J/EwAroYKuy4MK4Pd7YGtFoJAhlpKVOponsgsYQ8EKGOSVxcZgcgnOw8LhPy28N+xoFCh0OBkMyjM80Ybjq+H8BO6CacnDzQReZL5wQZqBdTtW7CUBi6S4+JWDPBahqNgz7jD73UhEIeG0ivFLEdCWtlVw==',
     //   }
     // });

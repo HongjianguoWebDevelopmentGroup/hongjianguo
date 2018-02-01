@@ -7,12 +7,13 @@
 		</template>
 	</el-submenu>
 
-	<el-menu-item v-else-if="dd.type == 'item' && !menusMap.get(dd.path) ? true : false" :index="dd.path"><i :class="dd.icon"></i>{{ dd.text }}<span v-if="map[dd.path] != undefined">({{ getCount(dd.path) }})</span></el-menu-item>
+	<el-menu-item @click="handleClick" v-else-if="dd.type == 'item' && !menusMap.get(dd.path) ? true : false" :index="dd.path"><i :class="dd.icon"></i>{{ dd.text }}<span v-if="map[dd.path] != undefined">({{ getCount(dd.path) }})</span></el-menu-item>
 
 </template>
 
 <script>
 import { mapGetters } from 'vuex'
+import { mapMutations } from 'vuex'
 
 export default {
   name: 'appMenuItem',
@@ -30,6 +31,14 @@ export default {
 
   },
   methods: {
+    ...mapMutations([
+      'clearScreen',
+    ]),
+    handleClick (a) {
+      if(a.index == '/task/pending') {
+        this.clearScreen();
+      }
+    },
   	forChildren(item) {
   		if(item.children && item.children.length != 0) {
   			return true;
