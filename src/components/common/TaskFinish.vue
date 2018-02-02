@@ -40,7 +40,7 @@
         <remote-select type="agency" v-model="form.agency" :static-map="agencyMap"></remote-select>
         <el-button size="mini" type="text" @click="showAgencyLoad">负载</el-button>
       </div>
-      <span v-else class="form-item-text">{{ agencyMap[0].name }}</span>
+      <span v-else class="form-item-text">{{ agencyMap[0] ? agencyMap[0].name : '' }}</span>
     </el-form-item>
     <el-form-item prop="agency_serial" label="事务所案号" v-if="fields.agency_serial" :rules="{required: true, message: '事务所案号不能为空'}">
       <el-input placeholder="请填写事务所案号" v-model="form.agency_serial"></el-input>
