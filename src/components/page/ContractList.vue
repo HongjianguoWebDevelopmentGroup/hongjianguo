@@ -12,7 +12,7 @@ import TableComponent from '@/components/common/TableComponent'
 import Pop from '@/components/page_extension/Contract_pop'
 import AxiosMixins from '@/mixins/axios-mixins'
 
-const URL = '/api/inventors'
+const URL = '/api/contracts'
 
 export default {
   name: 'inventorList',
@@ -21,7 +21,7 @@ export default {
 		return {
       popType: '',
 		  option: {
-        'name': 'contractwList',
+        'name': 'contractList',
         'url': URL,
         'height': 'default2',
 		  	'header_btn': [
@@ -32,12 +32,19 @@ export default {
 		  	'columns': [
           { type: 'selection' },
 		  		{ type: 'text', label: '合同编号', prop: 'serial', sortable: true, width: '210' },
-		  		{ type: 'text', label: '合作方', prop: 'branch', sortable: true, width: '260' },
-		  		{ type: 'text', label: '扫描件', prop: 'name_en', width: '200' },
-          { type: 'text', label: '上传日期', prop: '', sortable: true, width: '160' },
-          { type: 'text', label: '上传用户', prop: 'uid', sortable: true, width: '150' },
-          { type: 'text', label: '签订日期', prop: '', sortable: true, width: '160' },
-          { type: 'text', label: '状态', prop: '', sortable: true, width: '135' },
+		  		{ type: 'text', label: '合作方', prop: 'party', render_simple: 'name', sortable: true, width: '260' },
+		  		{ type: 'array', label: '扫描件', prop: 'files', width: '200', render: (h,item)=>{
+            return h('a',{
+              attrs:{
+                href: item.map(_=>_.viewUrl), 
+              }
+            })
+          }},
+          { type: 'text', label: '上传日期', prop: 'upload_date', sortable: true, width: '160' },
+          { type: 'text', label: '上传用户', prop: 'uploader',render_simple: 'name', sortable: true, width: '150' },
+          { type: 'text', label: '签订日期', prop: 'signing_date', sortable: true, width: '160' },
+          { type: 'text', label: '失效时间', prop: 'expire_date',sortable: true, width: '160'},
+          { type: 'text', label: '状态', prop: 'status', sortable: true, width: '135' },
           { type: 'text', label: '备注', prop: 'remark', width: '260',},
 		  		{ 
 		  			type: 'action',
@@ -71,7 +78,7 @@ export default {
             this.update();
           };
 
-          this.axiosDelete({url, success});
+          this.$axiosDelete({url, success});
         })
         .catch(_=>{});
   	},
@@ -80,7 +87,7 @@ export default {
       const data = Object.assign({}, option);
       const success = _=>{ this.tableData = _.data };
 
-      this.axiosGet({url, data, success});
+      this.$axiosGet({url, data, success});
   	},
     refresh () {
       this.$refs.table.refresh();
