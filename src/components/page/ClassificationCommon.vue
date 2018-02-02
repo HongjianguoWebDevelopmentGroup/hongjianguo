@@ -112,7 +112,7 @@ export default {
   			this.refresh();
   		}
 
-  		this.axiosPost({url, data, success});
+  		this.$axiosPost({url, data, success});
   	},
   	edit () {
   		const url = `${this.url}/${this.currentNodeKey}`;
@@ -123,11 +123,11 @@ export default {
   			this.refresh();
   		}
 
-  		this.axiosPut({url, data, success});
+  		this.$axiosPut({url, data, success});
   	},
   	treeDelete (id) {
   		const d = this.optionMap.get(id);
-  		this.$confirm(`删除后不可恢复，确认删除${d.name}？`, {type: 'warning'})
+  		this.$confirm(`删除后不可恢复，确认删除${d.name}？`, '删除确认', {type: 'warning'})
   			.then(_=>{
   				const url = `${this.url}/${id}`;
 		  		const success = _=>{
@@ -136,7 +136,7 @@ export default {
 		  			this.setCurrentNode('');
 		  		}
 
-		  		this.axiosDelete({url, success});
+		  		this.$axiosDelete({url, success});
   			})
   			.catch(_=>{});
   		

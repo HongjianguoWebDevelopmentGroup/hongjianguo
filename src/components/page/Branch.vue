@@ -150,7 +150,7 @@ export default {
         return;
       }
 
-      this.$confirm(`删除后不可恢复，确认删除‘${c.name}’？`, '提示', {type: 'warning'})
+      this.$confirm(`删除后不可恢复，确认删除‘${c.name}’？`, '删除确认', {type: 'warning'})
         .then(_=>{
           const url = `${url}/${this.currentNode.id}`;
           const success = _=>{
@@ -185,7 +185,7 @@ export default {
         target: this.transfer,
       }
       const success = _=>{
-        this.$message({'message': '移交成功'});
+        this.$message({'message': '移交成功', type: 'success'});
         this.dialogVisible = false;
       }
 

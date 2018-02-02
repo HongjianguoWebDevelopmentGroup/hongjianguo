@@ -3,7 +3,7 @@
   	<inventor v-for="(item, index) in value" :key="index" style="margin-bottom: 5px" :value="value[index]" @input="(val)=>{handleInput({val, index})}" is-delete @deleteInventor="handleDelete(index)" :disabled="disabled"></inventor>
 
     <el-row>
-      <el-button type='primary' @click="handleAdd" v-if="!disabled" icon="plus" size="mini"></el-button>
+      <el-button type='text' @click="handleAdd" v-if="!disabled&&propType!='proposal'">添加发明人</el-button>
       <slot name="addInventor"></slot>
     </el-row>
   </div>
@@ -24,6 +24,7 @@ const shareMap = new Map([
 export default {
   name: 'inventors',
   mixins: [ Multiline ],
+  props: ['propType'],
   methods: {
   	handleAdd () {
       const v = this.$tool.deepCopy(this.value);
@@ -61,6 +62,7 @@ export default {
           }
         }
       }
+      
       v.forEach((_,i)=>{
         _.share = arr[i];
       })

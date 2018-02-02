@@ -68,13 +68,14 @@ export default {
     	this.$emit('deleteInventor');
     },
     handleInventor (val) {
-    	const selected = this.$refs.member.map.get(val);
-      console.log(selected);
-      const id = selected && selected.id ? selected.id : '';
-      const identity = selected && selected.identity ? selected.identity : '';
-    	const share = this.share;
-        
-    	this.$emit('input', { id, share, identity });
+        console.log(val);
+      	const selected = this.$refs.member.map.get(val);
+        // console.log(selected);
+        const id = selected && selected.id ? selected.id : '';
+        const identity = selected && selected.identity ? selected.identity : '';
+      	const share = this.share;
+          
+      	this.$emit('input', { id, share, identity });
     },
     handlePercent (val) {
     	const id = this.id;

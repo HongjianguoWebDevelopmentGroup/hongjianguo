@@ -89,7 +89,7 @@ export default {
   		this.$refs.pop.show('edit',row);
   	},
   	applicantDelete ({id, name} ) {
-  		this.$confirm(`删除后不可恢复，确认删除‘${name}’？`, {type: 'warning'})
+  		this.$confirm(`删除后不可恢复，确认删除‘${name}’？`, '删除确认', {type: 'warning'})
   			.then(_=>{
   				const url = `${URL}/${id}`;
   				const success = _=>{

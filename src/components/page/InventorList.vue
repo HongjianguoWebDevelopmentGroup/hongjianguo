@@ -59,7 +59,7 @@ export default {
   		this.$refs.pop.show('edit', col);
   	},
   	deleteSingle ({id, name}) {
-  		this.$confirm(`删除后不可恢复，确认删除发明人‘${name}’？`)
+  		this.$confirm(`删除后不可恢复，确认删除发明人‘${name}’？`, '删除确认', {type: 'warning'})
         .then(_=>{
           const url = `${URL}/${id}`;
           const success = _=>{
@@ -67,7 +67,7 @@ export default {
             this.update();
           };
 
-          this.axiosDelete({url, success});
+          this.$axiosDelete({url, success});
         })
         .catch(_=>{});
   	},
@@ -76,7 +76,7 @@ export default {
       const data = Object.assign({}, option);
       const success = _=>{ this.tableData = _.data };
 
-      this.axiosGet({url, data, success});
+      this.$axiosGet({url, data, success});
   	},
     refresh () {
       this.$refs.table.refresh();

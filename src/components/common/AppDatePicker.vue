@@ -16,7 +16,7 @@ export default {
 			const s = this.startTime ? this.startTime.getTime() : '';
 			const e = this.endTime ? this.endTime.getTime() : ''; 
 			const arr = [s, e];
-			console.log('startUpdate');
+			// console.log('startUpdate');
 			this.$emit("input", arr);
     },
     endUpdate (val) {
@@ -24,7 +24,7 @@ export default {
 			const s = this.startTime ? this.startTime.getTime() : '';
 			const e = this.endTime ? this.endTime.getTime() : '';
     	const arr = [s, e];
-    	console.log('endUpdate');
+    	// console.log('endUpdate');
     	this.$emit("input", arr);
     }
   },

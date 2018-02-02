@@ -126,7 +126,7 @@ export default {
         this.dialogPowerVisible = false;
       }
 
-      this.axiosPut({url, data, success});
+      this.$axiosPut({url, data, success});
     },
     powerPop(store, data) {
       this.dialogPowerVisible = true;
@@ -138,7 +138,7 @@ export default {
         this.group_rules = _.group.rules;
         this.powerLoading = false;
       };
-      this.axiosGet({url, success});
+      this.$axiosGet({url, success});
     },
     renderContent(h,{node, store, data}) {
 
@@ -210,7 +210,7 @@ export default {
   			this.refreshData();
   		};
 
-  		this.axiosPost({url, data, success});
+  		this.$axiosPost({url, data, success});
   	},
   	edit () {
   		
@@ -222,7 +222,7 @@ export default {
 		  	this.refreshData();
   		}
 
-  		this.axiosPut({url, data, success});
+  		this.$axiosPut({url, data, success});
   	},
   	groupDelete () {
   		const id = this.value.id;
@@ -232,7 +232,7 @@ export default {
   		}
 
       const name = this.groupMap.get(id).name;
-  		this.$confirm(`删除后不可恢复，确认删除用户组‘${name}’？`)
+  		this.$confirm(`删除后不可恢复，确认删除用户组‘${name}’？`,'删除确认',{type: 'warning'})
   			.then(_=>{
   				const url = `${URL}/${id}`;
 		  		const success = ()=>{
@@ -242,7 +242,7 @@ export default {
             
 		  		}
 
-		  		this.axiosDelete({url, success});
+		  		this.$axiosDelete({url, success});
 
   			})
   			.catch(_=>{})
