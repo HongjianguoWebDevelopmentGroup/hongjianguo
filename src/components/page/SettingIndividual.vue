@@ -46,7 +46,7 @@
 			<el-form-item label="邮件签名" prop="signature">
 				<el-input v-model="form.signature" type="textarea"></el-input>
 			</el-form-item>
-			<el-form-item style="margin-bottom: 0">
+			<el-form-item>
 				<el-button @click="save" type="primary" :disabled="btn_disabled">保存</el-button>
 			</el-form-item>
 		</el-form>

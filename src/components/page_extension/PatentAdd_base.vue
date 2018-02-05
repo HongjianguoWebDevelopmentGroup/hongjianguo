@@ -1,9 +1,9 @@
 <template>
   <app-collapse col-title="基本信息">
 		<el-form label-width="120px" :model="form" :rules="rules" ref="form">
-      <el-form-item label="案号">
+<!--       <el-form-item label="案号">
         <el-input v-model="form.serial" placeholder="请填写案号"></el-input>
-      </el-form-item>
+      </el-form-item> -->
 			<el-form-item label="标题" prop="title">
 				<el-input v-model="form.title" placeholder="请填写案件标题" ></el-input>
 			</el-form-item>
@@ -20,7 +20,7 @@
         <remote-select type="applicant" v-model="form.applicants" multiple></remote-select>
       </el-form-item >
       <el-form-item label="发明人" prop="inventors">
-        <inventors v-model="form.inventors"></inventors>
+        <inventors v-model="form.inventors" ref="inventors" @addInventor="$refs.form.validateField('inventors')" @deleteInventor="$refs.form.validateField('inventors')"></inventors>
       </el-form-item>
       <el-form-item label="优先权">
         <priorities v-model="form.priorities"></priorities>
