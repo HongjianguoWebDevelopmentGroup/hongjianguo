@@ -51,6 +51,14 @@ const config = [
       { name: '外观设计', id: 3 },
       { name: '发明+新型', id: 4 },
     ]
+  }], 
+  ['product_relevance', {
+    placeholder: '请选择产品相关',
+    options: [
+      { name: '是', id: 1 },
+      { name: '否', id: 0 },
+      { name: '预研阶段', id: 2 },
+    ]
   }],
   ['agency_type', {
     placeholder: '请选择代理类型',

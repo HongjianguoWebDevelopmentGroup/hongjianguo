@@ -8,6 +8,11 @@
   	<template v-if="show ? true : false">
   		<table-component :tableOption="option2" :data="tableData2"></table-component>
   	</template>
+  	<el-dialog title="附件下载" :visible.sync="dialogVisible" :modal="false">
+  		<template>
+  			<table-component :tableOption="option3" :data="tableData3.attachments"></table-component>
+  		</template>
+  	</el-dialog>
   </div>
 </template>
 
@@ -41,6 +46,7 @@ export default {
 		  option2: {
 		  	'is_search': false,
 		  	'is_pagination': false,
+		  	'rowClick': this.handleRowClick,
 		  	'columns': [
 		  	 	{ type: 'text', label: '子任务名称', prop: 'flow_node' },
 		  	 	{ type: 'text', label: '开始时间', prop: 'start_time' },
@@ -56,11 +62,11 @@ export default {
       							return h('a', 
       							{
       								style: {
-									    	marginRight: '2px',
-											},
-											attrs: {
-												href: g.downloadUrl,
-											},
+									    marginRight: '2px',
+									},
+									attrs: {
+										href: '#',
+									},
       							},g.name)
     						})
     					)
@@ -88,8 +94,29 @@ export default {
 		  	 	// },
 		  	]
 		  },
+		  option3: {
+		  	'is_search': false,
+		  	'is_pagination': false,
+		  	'columns':[
+		  	  { type: 'text', label: '文件名称', prop: 'name'},
+		  	  { type: 'text', label: '上传日期', prop: 'end_time'},
+		  	  { type: 'text', label: '上传人', prop: 'person_in_charge_name'},
+		  	  { type: 'text', label: '大小', prop: 'size'},
+		  	  { 
+		  	  	type: 'action',
+		  	  	label: '操作',
+		  	  	min_width: '120',
+		  	  	btns: [
+		  	  	  { type: 'view', click: ({viewUrl})=>{window.open(viewUrl)}},
+              	  { type: 'download', click: ({downloadUrl})=>{window.open(downloadUrl)}},	
+		  	  	]
+		  	  }
+		  	],
+		  },
 		  tableData2: [],
+		  tableData3: [],
 		  show: null,
+		  dialogVisible: false,
 		};
   },
   methods: {
@@ -106,6 +133,11 @@ export default {
   			this.axiosGet({url, success});	
   		}
   		this.show = this.show == id ? null : id;
+  	},
+  	handleRowClick (row) {
+  		console.log(row);
+  		this.tableData3 = row;
+  		this.dialogVisible = true;
   	},
   },
   computed: {

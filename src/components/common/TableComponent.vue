@@ -455,7 +455,7 @@ export default {
   name: 'tableComponent',
   methods,
   mixins: [ AxiosMixins ],
-  props: ['tableOption', 'data', 'tableStyle', 'refreshProxy'],
+  props: ['tableOption', 'data', 'tableStyle', 'refreshProxy','propCell'],
   computed: {
     ...mapGetters([
       'screen_obj',

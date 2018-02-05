@@ -2,7 +2,7 @@
   	<div class="main">
   		<el-row>
 	  		<el-col :span="18">
-		  		<el-form label-width="92px" :rules="formRules" :model="formData" ref="form">
+		  		<el-form label-width="110px" :rules="formRules" :model="formData" ref="form">
             
             <el-form-item label="提案人">{{ proposer_name }}</el-form-item>
             
@@ -22,12 +22,14 @@
             <el-form-item label="证件号码(第一发明人)" prop="identity" class="is-required">
               <el-input v-model="formData.identity" placeholder="请填写第一发明人证件号码"></el-input>
             </el-form-item>
-
-            <el-form-item label="技术分类" prop="classification">
-              <classification v-model="formData.classification"></classification>
+            <el-form-item label="是否产品相关" prop="product_relevance">
+              <static-select type='product_relevance' v-model="formData.product_relevance"></static-select>
             </el-form-item>
             <el-form-item label="产品名称" prop="products">
               <product v-model="formData.products" multiple></product>
+            </el-form-item>
+            <el-form-item label="技术分类" prop="classification">
+              <classification v-model="formData.classification"></classification>
             </el-form-item>
 						<el-form-item label="标签" prop="tags">
 							<static-select type='tag' v-model="formData.tags" multiple></static-select>
@@ -242,6 +244,7 @@ export default {
         abstract: '',
         proposer: '',
         remark: '',
+        product_relevance: '',
         inventors: [],
         tags: [],
         attachments: [],
@@ -263,6 +266,7 @@ export default {
         'abstract': [
           {max: 1000, message: '长度不能超过1000个字符', trigger: 'blur' }  
         ],
+        'product_relevance': [{type: 'number',required: true,message:'产品相关不能为空', trigger: 'change'}],
         'inventors': { 
           type: 'array',
           trigger: 'change', 
