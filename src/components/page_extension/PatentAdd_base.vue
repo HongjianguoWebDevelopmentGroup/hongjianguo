@@ -89,7 +89,7 @@ export default {
       
       rules: {
         'title': { required: true, message: '标题不能为空', trigger: 'blur' },  
-        'product_relevance': { type: 'number', required: true, message: '产品相关不能为空', trigger: 'change' },        
+        'product_relevance': { type:'number', required: true, message: '产品相关不能为空', trigger: 'change' },        
         'type': { type: 'number', required: true, message: '专利类型不能为空', trigger: 'change' },
         'inventors': {
           type: 'array',
@@ -144,7 +144,7 @@ export default {
   				}
 
   				this.form[k] = arr;
-  			}else if(k == 'area' || k == 'type') {
+  			}else if(k == 'area' || k == 'type' || k == 'product_relevance') {
           this.form[k] = data[k]['id'];
         }else {
   				this.form[k] = data[k];

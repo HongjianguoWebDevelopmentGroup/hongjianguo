@@ -200,7 +200,7 @@ export default {
         this.$axios.get(`${URL}/${id}`).then(response=>{
           this.$store.commit('cancelLoading');
           const data = response.data.proposal;
-          const { inventors, proposer, classification, products, attachments } = data;
+          const { inventors, proposer, classification, products, attachments ,product_relevance} = data;
            
           data.inventors = inventors.map((d)=>{return {id: d.id, share: d.share, name: d.name}});
           data.proposer = proposer.id;
@@ -216,7 +216,10 @@ export default {
             data.products = id;
             this.productText = name.join('；');
           }
-
+          if(product_relevance) {
+            data.product_relevance = product_relevance.id;
+            this.productRelevanceText = product_relevance.name;
+          }
           if( attachments.length != 0) {
             this.attachments = attachments;
             data.attachments = attachments.map(d=>d.id);
@@ -302,6 +305,7 @@ export default {
       },
       classificationText: '',
       productText: '',
+      productRelevanceText: '',
       props: {
         label: 'name',
         children: 'children',

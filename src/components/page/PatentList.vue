@@ -199,7 +199,7 @@ export default {
             sortable: true,
             render: _=>_.map(_=>_.name),
           },
-          { type: 'text', label: '是否产品相关', prop: 'product_relevance', width: '160', sortable: true},
+          { type: 'text', label: '是否产品相关', prop: 'product_relevance', render_simple:'name', width: '160', sortable: true},
           {
             type: 'array',
             label: '相关案件',

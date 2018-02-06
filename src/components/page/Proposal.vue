@@ -248,7 +248,7 @@ export default {
           { type: 'array', label: '发明人', prop: 'inventors', render: _=>_.map(_=>`${_.name}：${_.share}%；`), overflow: true, width: '200' },
           { type: 'array', label: '标签', prop: 'tags', width: '200' },
           { type: 'text', label: '案件等级', prop: 'level', width: '100' },
-          { type: 'text', label: '是否产品相关', prop: 'product_relevance', width:'160',sortable: true},
+          { type: 'text', label: '是否产品相关', prop: 'product_relevance',render_simple: 'name', width:'160',sortable: true},
           { type: 'text', label: '备注', prop: 'remark', width: '280' },
           {
             type: 'action',
