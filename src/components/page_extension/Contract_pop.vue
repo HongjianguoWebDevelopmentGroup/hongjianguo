@@ -1,39 +1,41 @@
 <template>
-  <el-dialog :title="popType == 'add' ? '新增合同' : '编辑合同'" :visible.sync="dialogVisible" class="dialog-small" @close="clear">
-		<el-form :model="form" label-width="80px" ref="form" :rules="rules">
-			<el-form-item label="合同编号" prop="serial">
-        <el-input v-model="form.serial"  placeholder="请输入合同编号"></el-input>
-      </el-form-item>
-        <el-row>
-            <el-col :span="12">
-              <el-form-item label="签订日期" prop="signing_date">
-                <el-date-picker type="date" v-model="form.signing_date" placeholder="请选择签订日期"></el-date-picker>
-              </el-form-item>
-            </el-col>
-           <el-col :span="12">
-              <el-form-item label="失效时间" prop="expire_date">
-                <el-date-picker type="date" v-model="form.expire_date" placeholder="请选择失效时间"></el-date-picker>
-              </el-form-item>
-           </el-col>
-        </el-row>
-      <el-form-item label="代理机构" prop="party">
-        <remote-select v-model="form.party" type="agency"></remote-select>
-      </el-form-item>
+  <div id="contractPop">
+    <el-dialog :title="popType == 'add' ? '新增合同' : '编辑合同'" :visible.sync="dialogVisible" class="dialog-small" @close="clear">
+  		<el-form :model="form" label-width="80px" ref="form" :rules="rules">
+  			<el-form-item label="合同编号" prop="serial">
+          <el-input v-model="form.serial"  placeholder="请输入合同编号"></el-input>
+        </el-form-item>
+          <el-row>
+              <el-col :span="12">
+                <el-form-item label="签订日期" prop="signing_date">
+                  <el-date-picker type="date" v-model="form.signing_date" placeholder="请选择签订日期"></el-date-picker>
+                </el-form-item>
+              </el-col>
+             <el-col :span="12">
+                <el-form-item label="失效时间" prop="expire_date">
+                  <el-date-picker type="date" v-model="form.expire_date" placeholder="请选择失效时间"></el-date-picker>
+                </el-form-item>
+             </el-col>
+          </el-row>
+        <el-form-item label="代理机构" prop="party">
+          <remote-select v-model="form.party" type="agency"></remote-select>
+        </el-form-item>
 
-      <el-form-item label="备注" prop="remark">
-        <el-input type="textarea" v-model="form.remark" placeholder="请填写备注"></el-input>
-      </el-form-item>
+        <el-form-item label="备注" prop="remark">
+          <el-input type="textarea" v-model="form.remark" placeholder="请填写备注"></el-input>
+        </el-form-item>
 
-      <el-form-item label="扫描件" prop="files">
-        <upload v-model="form.files" :file-list="fileList"></upload>
-      </el-form-item>
-	    <el-form-item style="margin-bottom: 0;">
-	    	<el-button type="primary" @click="add" v-if="popType == 'add'">确定</el-button>
-	    	<el-button type="primary" @click="edit" v-if="popType == 'edit'">编辑</el-button>
-	    	<el-button @click="dialogVisible = false">取消</el-button>
-	    </el-form-item>
-		</el-form>
-	</el-dialog>
+        <el-form-item label="扫描件" prop="files">
+          <upload v-model="form.files" :file-list="fileList"></upload>
+        </el-form-item>
+  	    <el-form-item style="margin-bottom: 0;">
+  	    	<el-button type="primary" @click="add" v-if="popType == 'add'">确定</el-button>
+  	    	<el-button type="primary" @click="edit" v-if="popType == 'edit'">编辑</el-button>
+  	    	<el-button @click="dialogVisible = false">取消</el-button>
+  	    </el-form-item>
+  		</el-form>
+  	</el-dialog>
+  </div>
 </template>
 
 <script>
@@ -129,6 +131,16 @@ export default {
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
+<style>
+  #contractPop .el-dialog--small  .el-upload--text {
+      display: inline-block;
+      text-align: center;
+      cursor: pointer;
+      position: absolute;
+      left: 0px;
+      bottom: 4px;
+  }
+</style>
 <style scoped lang="scss">
 </style>
 <!-- ###AppTag### -->

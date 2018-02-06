@@ -557,7 +557,7 @@ nav {
     display: inline-block;
     text-align: center;
     cursor: pointer;
-    position: absolute !important;
+    position: absolute;
     bottom: 4px;
     left: 0px;
   }
