@@ -99,8 +99,8 @@ export default {
         'is_pagination': false,
         'columns':[
           { type: 'text', label: '文件名称', prop: 'name'},
-          { type: 'text', label: '上传日期', prop: 'end_time'},
-          { type: 'text', label: '上传人', prop: 'person_in_charge_name'},
+          { type: 'text', label: '上传日期', prop: 'create_time'},
+          { type: 'text', label: '上传人', prop: 'uploader'},
           { type: 'text', label: '大小', prop: 'size'},
           { 
             type: 'action',
@@ -108,7 +108,7 @@ export default {
             min_width: '120',
             btns: [
               { type: 'view', click: ({viewUrl})=>{window.open(viewUrl)}},
-                  { type: 'download', click: ({downloadUrl})=>{window.open(downloadUrl)}},  
+              { type: 'download', click: ({downloadUrl})=>{window.open(downloadUrl)}},  
             ]
           }
         ],
