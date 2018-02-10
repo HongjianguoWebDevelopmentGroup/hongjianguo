@@ -3,7 +3,7 @@
   	<el-form :model="form" label-width="80px" ref="form">
   		<el-row>
 				<el-col :span="12">
-					<el-form-item label="当前进度" prop="type">
+					<el-form-item label="当前进度" prop="progress">
 						<static-select type="progress" v-model="form.progress" multiple></static-select>
 					</el-form-item>
 					<el-form-item label="专利类型" prop="type">
