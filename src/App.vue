@@ -420,6 +420,19 @@ nav {
 .el-select {
   width: 100%;
 }
+.el-tag {
+    min-height: 24px; 
+    white-space: pre-wrap;
+  }
+.el-select .el-tag{
+  height: auto;
+  min-height: 24px;
+  line-height: 24px;
+  box-sizing: border-box;
+  margin: 3px 0 3px 6px;
+  max-width: 100%;
+  word-wrap: break-word;
+}
 .el-input__inner {
   height: 37px;
 }

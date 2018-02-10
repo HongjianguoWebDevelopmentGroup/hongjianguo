@@ -1,8 +1,8 @@
 <template>
   <app-collapse col-title="基本信息">
 		<el-form label-width="120px" :model="form" :rules="rules" ref="form">
-      <el-form-item label="案号">
-        <el-input v-model="form.serial" placeholder="请填写案号"></el-input>
+      <el-form-item label="案号" v-if="type=='edit'">
+        {{ serial }}
       </el-form-item>
 			<el-form-item label="标题" prop="title">
 				<el-input v-model="form.title" placeholder="请填写案件标题" ></el-input>
@@ -15,10 +15,7 @@
 	    </el-form-item>
 	    <el-form-item label="专利类型" prop="type">
 	      <static-select type="patent_type" v-model="form.type"></static-select>
-	    </el-form-item>
-      <el-form-item label="是否产品相关" prop="product_relevance">
-        <static-select type="product_relevance" v-model="form.product_relevance"></static-select>
-      </el-form-item>      
+	    </el-form-item>     
       <el-form-item label="申请人">
         <remote-select type="applicant" v-model="form.applicants" multiple></remote-select>
       </el-form-item >
@@ -80,7 +77,6 @@ export default {
         area: this.type == 'add' ? [] : '',
         identity: '',
         type: '',
-        product_relevance: '',
         applicants: [],
         inventors: [],
         priorities: [],
@@ -88,8 +84,7 @@ export default {
       },
       
       rules: {
-        'title': { required: true, message: '标题不能为空', trigger: 'blur' },  
-        'product_relevance': { type:'number', required: true, message: '产品相关不能为空', trigger: 'change' },        
+        'title': { required: true, message: '标题不能为空', trigger: 'blur' },        
         'type': { type: 'number', required: true, message: '专利类型不能为空', trigger: 'change' },
         'inventors': {
           type: 'array',
@@ -126,6 +121,9 @@ export default {
   		})
   		return arr;
   	},
+    serial () {
+      return this.form.serial ? this.form.serial : '暂无案号信息';
+    },
   },
   methods: {
   	checkForm (callback) {
@@ -144,7 +142,7 @@ export default {
   				}
 
   				this.form[k] = arr;
-  			}else if(k == 'area' || k == 'type' || k == 'product_relevance') {
+  			}else if(k == 'area' || k == 'type') {
           this.form[k] = data[k]['id'];
         }else {
   				this.form[k] = data[k];

@@ -7,6 +7,9 @@
 				<el-form-item label="技术分类">
 					<classification v-model="form.classification"></classification>
 				</el-form-item>
+        <el-form-item label="是否产品相关" prop="product_relevance">
+          <static-select type="product_relevance" v-model="form.product_relevance"></static-select>
+        </el-form-item> 
 				<el-form-item label="标签">
           <static-select type="tag" v-model="form.tags" multiple></static-select>
 				</el-form-item>
@@ -30,6 +33,7 @@ export default {
 			form: {
 				products: [],
 				classification: '',
+        product_relevance: '',
 				tags: [],
 				main_ipc: '',
 			}
@@ -40,7 +44,7 @@ export default {
       for(let k in this.form) {
         if(k == 'products') {
           this.form[k] = data[k].map(_=>_.id);
-        }else if(k == 'classification') {
+        }else if(k == 'classification' || k == 'product_relevance') {
           this.form[k] = data[k].id;
         }else {
           this.form[k] = data[k];

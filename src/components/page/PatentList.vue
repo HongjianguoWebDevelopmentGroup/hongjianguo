@@ -97,6 +97,7 @@ export default {
             width: '200',
             render: _=>_.map(_=>_.title),
           },
+          { type: 'text', label: '是否产品相关', prop: 'product_relevance', render_simple:'name', width: '160', sortable: true},
           { type: 'text', label: '当前状态', prop: 'progress', sortable: true, width: '180', is_agency: true },
           { type: 'text', label: '专利摘要', prop: 'abstract', sortable: true, width: '280'},
           { type: 'text', label: '申请日', prop: 'apd', sortable: true, is_import: true, width: '175', is_agency: true},
@@ -199,7 +200,6 @@ export default {
             sortable: true,
             render: _=>_.map(_=>_.name),
           },
-          { type: 'text', label: '是否产品相关', prop: 'product_relevance', render_simple:'name', width: '160', sortable: true},
           {
             type: 'array',
             label: '相关案件',
