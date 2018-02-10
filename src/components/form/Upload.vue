@@ -6,6 +6,7 @@
       class="app-upload"
       :action=action
       :on-preview="onPreview"
+      :before-upload="handleUploadBefore"
       :file-list="fileList"
       :multiple="multiple"
       ref="upload"
@@ -45,6 +46,14 @@
         },
         clearFiles () {
           this.$refs.upload.clearFiles();
+        },
+        handleUploadBefore (f) {
+          if (f.size > 200*1024*1024) {
+            this.$message({type: 'warning',message:'上传文件大小不能超过200M！'});
+            return false;
+          }else {
+            return true;
+          }
         },
         handleUploadSuccess (p, f, list) {
           if(p.status) {
