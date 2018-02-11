@@ -199,7 +199,7 @@ export default {
           _.legal_time = this.$tool.getDate( new Date(_.legal_time) );
         }
         if(_.apd) {
-          _.apd = this.$tool.getDate( new Date(_.legal_time) ); 
+          _.apd = this.$tool.getDate( new Date(_.apd) ); 
         }
       })
   		const data = { file: this.file, list };
