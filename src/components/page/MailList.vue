@@ -35,6 +35,8 @@ export default {
 		  },
 		  currentNodeKey: 1,
 		  tableOption: {
+        'name': 'mailList',
+        'url': URL,
 		  	'header_btn': [
 		  		{ type: 'custom', label: '写邮件', icon: 'edit', click: this.add },
 		  		{ type: 'delete' },
