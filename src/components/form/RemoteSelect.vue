@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div id="select_list">
   	<el-select
   	  :value="value2"
   	  @input="handleInput"
