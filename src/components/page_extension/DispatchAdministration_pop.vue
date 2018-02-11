@@ -92,7 +92,7 @@ export default {
     }
   },
   computed: {
-     dateDisabled () {
+    dateDisabled () {
       return this.confirm === 'confirm' ? this.dateDisable = true :this.dateDisable = false;
     }
   },
@@ -116,8 +116,8 @@ export default {
     confirmFunc () {
       if( !this.form.receipt_date ) { return this.$message({type: 'warning', message: '请选择收文日期'});  }
 
-      const url = '/api/expresses';
-      const data = this.form;
+      const url = `/api/expresses/${this.id}`;
+      const data = {receipt_date: this.$tool.getDate(this.form.receipt_date)};
       const success = _=>{
         this.$message({message: '确认收文成功', type: 'success'});
         this.dialogVisible = false;
@@ -127,10 +127,9 @@ export default {
         this.btn_disabled = false;
       }
 
-
-      this.$refs.form.validate(_=>{
-         this.$axiosPost({url, data, success, complete})
-      })
+      this.btn_disabled = true;
+      this.$axiosPut({url, data, success, complete});
+      
     },
     setForm (data) {
       for(let key in this.form) {
@@ -142,6 +141,9 @@ export default {
           this.form[key] = d;
         }
       }
+    },
+    submitForm () {
+      return this.$tool.shallowCopy(this.form, {date: true});
     }
   },
   components: {  ExpressList, RemoteSelect  },
