@@ -1,9 +1,9 @@
 <template>
   <app-collapse col-title="专利筛选" :default-close="isClose">
-  	<el-form :model="form" label-width="80px" ref="form">
+  	<el-form :model="form" label-width="110px" ref="form">
   		<el-row>
 				<el-col :span="12">
-					<el-form-item label="当前进度" prop="type">
+					<el-form-item label="当前进度" prop="progress">
 						<static-select type="progress" v-model="form.progress" multiple></static-select>
 					</el-form-item>
 					<el-form-item label="专利类型" prop="type">
@@ -41,6 +41,9 @@
 					</el-form-item>
 					<el-form-item label="产品分类" prop="product">
 						<product v-model="form.product" multiple></product>
+					</el-form-item>
+					<el-form-item label="是否产品相关" prop="product_relevance">
+						<static-select type="product_relevance" v-model="form.product_relevance"></static-select>
 					</el-form-item>
 					<el-form-item label="部门" prop="branch">
 						<branch v-model="form.branch" multiple></branch>
@@ -95,6 +98,7 @@ export default {
 				agent: [],
 				proposer: [],
 				ipr: [],
+				product_relevance: '',
 				tags: [],
 				classification: [],
 				product: [],
@@ -127,9 +131,11 @@ export default {
   					}
   				}
   			}else {
-  				if(d != "") filter[k] = d;
+  				if(d !== "") filter[k] = d;
+
   			}
   		}
+  		console.log(filter);
   		this.$emit('input', filter);
   		this.$emit('refresh');
   		this.isClose = !this.isClose;

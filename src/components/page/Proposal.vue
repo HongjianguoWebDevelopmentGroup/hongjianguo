@@ -1,7 +1,7 @@
 <template>
 	<div class="main">
     <app-collapse col-title="提案筛选" :default-close="isClose">   
-      <el-form label-width="80px">
+      <el-form label-width="110px">
         <el-row>
           <el-col :span="12">
             <el-form-item label="提案标题">
@@ -13,14 +13,17 @@
             <el-form-item label="产品分类">
               <product v-model="product" multiple></product>
             </el-form-item>
+            <el-form-item label="是否产品相关">
+              <static-select type="product_relevance" v-model="product_relevance"></static-select>
+            </el-form-item>
             <el-form-item label="部门">
               <branch v-model="branch" multiple></branch>
             </el-form-item>
+          </el-col>
+          <el-col :span="12">
             <el-form-item label="IPR">
               <static-select type="ipr" v-model="ipr" multiple></static-select>
             </el-form-item>
-          </el-col>
-          <el-col :span="12">
             <el-form-item label="发明人">
               <remote-select type="inventor" v-model="inventors" multiple></remote-select>
             </el-form-item>
@@ -85,7 +88,7 @@ const URL = '/api/proposals';
 const url = 'http://www.zhiq.wang/proposal/lists';
 const delete_url = 'http://www.zhiq.wang/proposal/lists';
 const tag_url = 'http://www.zhiq.wang/tag/lists';
-const strainerArr = ['classification', 'product', 'proposer', 'tags', 'inventors', 'branch', 'create_time','ipr'];
+const strainerArr = ['classification', 'product', 'proposer', 'tags', 'inventors', 'branch', 'create_time','ipr',];
 const map = new Map([['flownodes', 'progress'],['time', 'create_time']]);
 export default {
   name: 'proposalList',
@@ -143,6 +146,7 @@ export default {
       const obj = {};
       
       obj.title = this.title;
+      obj.product_relevance = this.product_relevance;
       strainerArr.forEach(d=>{
         if(d == 'create_time') {
           obj[d] = this[d].map(_=>this.$tool.getDate(_)).join(',');
@@ -158,6 +162,7 @@ export default {
     },
     clear () {
       this.title = "";
+      this.product_relevance = "";
       strainerArr.forEach(d=>{this[d] = []});
 
       this.filter = {};
@@ -240,6 +245,7 @@ export default {
           // { type: 'text', label: '代理人', prop: 'agent', sortable: true, width: '160' },
           { type: 'text', label: 'IPR', prop: 'ipr', render_simple: 'name', sortable: true, width: '160' },
           { type: 'text', label: '当前节点', prop: 'flow_node', sortable: true, width: '240' },
+          { type: 'text', label: '是否产品相关', prop: 'product_relevance',render_simple: 'name', width:'160',sortable: true},
           { type: 'text', label: '提案简介', prop: 'abstract', sortable: true, width: '300' },
           { type: 'text', label: '创建时间', prop: 'create_time', sortable: true, width: '200' },
           { type: 'text', label: '部门', prop: 'branch', render_simple: 'name', sortable: true, width: '200' },
@@ -247,7 +253,7 @@ export default {
           { type: 'array', label: '产品分类', prop: 'products', render: _=>_.map(_=>_.name), width: '200' },
           { type: 'array', label: '发明人', prop: 'inventors', render: _=>_.map(_=>`${_.name}：${_.share}%；`), overflow: true, width: '200' },
           { type: 'array', label: '标签', prop: 'tags', width: '200' },
-          { type: 'text', label: '案件等级', porp: 'level', width: '100' },
+          { type: 'text', label: '案件等级', prop: 'level', width: '100' },
           { type: 'text', label: '备注', prop: 'remark', width: '280' },
           {
             type: 'action',
@@ -267,6 +273,7 @@ export default {
       proposer: [],
       tags: [],
       ipr:[],
+      product_relevance: '',
       inventors: [],
       filters: {},
       currentRow: '',
