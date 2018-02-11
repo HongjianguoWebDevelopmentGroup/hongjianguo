@@ -65,7 +65,7 @@
       <static-select type="patent_type" v-model="form.type" key="patent_type"></static-select>
     </el-form-item>
     <el-form-item prop="title" label="专利标题" v-if="ifTitle" :rules="{required: true, message: '专利标题不能为空'}">
-      <el-input v-model="form.title"></el-input>
+      <el-input v-model="form.title" placeholder="请填写正式递交的标题"></el-input>
     </el-form-item>
     <el-form-item prop="attachments" label="附件" v-if="fields.attachments && !hide_r_a">
       <upload v-model="form.attachments" :file-list="attachments"> 
@@ -247,7 +247,7 @@ export default {
                 this.agencyMap = [ this.data.agency ];
                 this.form.agency = this.data.agency.id;
               }
-              if(this.ifTitle) this.form.title = this.data.title;
+              // if(this.ifTitle) this.form.title = this.data.title;
               if(this.fields.type) this.form.type = 1;
               if(this.defaultVal == 'ipr') {
                 this.form.person_in_charge = person_in_charge['id'];
