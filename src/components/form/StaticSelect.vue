@@ -1,25 +1,27 @@
 <template>
-  <el-select
-    :value="value"
-    @input="handleInput"
-  	:multiple="multiple"
-  	:disabled="disabled"
-    :placeholder="config.placeholder"
-    filterable
-    :size="size"
-    :allow-create="config.allowCreate !== undefined ? config.allowCreate : false"
-    :default-first-option="config.defaultFirstOption !== undefined ? config.defaultFirstOption : false"
-    ref="select"
-    clearable
-  >
-  	<el-option
-  		v-for="item in options"
-  		:key="item.id"
-  		:label="item.name"
-  		:value="item.id"
-  	>
-  	</el-option>
-  </el-select>
+  <div id="static_select">
+    <el-select
+      :value="value"
+      @input="handleInput"
+    	:multiple="multiple"
+    	:disabled="disabled"
+      :placeholder="config.placeholder"
+      filterable
+      :size="size"
+      :allow-create="config.allowCreate !== undefined ? config.allowCreate : false"
+      :default-first-option="config.defaultFirstOption !== undefined ? config.defaultFirstOption : false"
+      ref="select"
+      clearable
+    >
+    	<el-option
+    		v-for="item in options"
+    		:key="item.id"
+    		:label="item.name"
+    		:value="item.id"
+    	>
+    	</el-option>
+    </el-select>
+  </div>
 </template>
 
 
@@ -308,4 +310,19 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped lang="scss">
+</style>
+<style>
+  #static_select .el-tag {
+    min-height: 24px; 
+    white-space: pre-wrap;
+  }
+#static_select  .el-tag{
+  height: auto;
+  min-height: 24px;
+  line-height: 24px;
+  box-sizing: border-box;
+  margin: 3px 0 3px 6px;
+  max-width: 100%;
+  word-wrap: break-word;
+}
 </style>
