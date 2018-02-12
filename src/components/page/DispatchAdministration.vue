@@ -1,12 +1,12 @@
 <template>
   <div class="main">
-		<table-component :tableOption="option" :data="tableData" ref="table" @refreshTableData="refreshTableData">
+    <table-component :tableOption="option" :data="tableData" ref="table" @refreshTableData="refreshTableData">
       <template slot="action" slot-scope="scope">
         <el-button type="text" icon="edit" size="mini" @click="editPop(scope.row)" :disabled="scope.row.receipt_date ? true : false" >确认</el-button>
-        <el-button type="text" icon="delete" size="mini" @click="deleteSingle(scope.row)">删除</el-button>
+        <el-button type="text" icon="delete" size="mini" @click="deleteSingle(scope.row)" >删除</el-button>
       </template>  
     </table-component>
-  	<pop @refresh="handlePopRefresh" ref="pop" :confirm="isConfirm"></pop>
+    <pop @refresh="handlePopRefresh" ref="pop" :confirm="isConfirm"></pop>
   </div>
 </template>
 
@@ -21,15 +21,16 @@ export default {
   name: 'dispatchAdministration',
   mixins: [ AxiosMixins ],
   data () {
-		return {
+    return {
       isConfirm: '',
-		  option: {
-		  	'header_btn': [
-		  		{ type: 'add', click: this.addPop },
-		  		{ type: 'control' },		  		
-		  	],
+      isReceive: false,
+      option: {
+        'header_btn': [
+          { type: 'add', click: this.addPop },
+          { type: 'control' },          
+        ],
         'height': 'default2',
-		  	'columns': [
+        'columns': [
           { type: 'text', label: '快递公司', prop: 'company', width:'160' },
           { type: 'text', label: '快递单号', prop: 'number' , width:'240'},
           { type: 'text', label: '发件日期', prop: 'mail_date', width:'178'},
@@ -44,67 +45,69 @@ export default {
           { type: 'text', label: '发文描述', prop: 'description', min_width:'210' },
           { 
             type: 'action',
-            width: '200', 
+            width: '150',
+            label: '操作', 
             // btns: [
-            //   { type: 'confirm', click: this.editPop },
-            //   { type: 'delete', click: this.deleteSingle },
+            //  { type: 'confirm', click: this.editPop ,btn_if: this.btnDisabled},
+            //  { type: 'delete', click: this.deleteSingle },
             // ] 
-            label: '操作',
-            btns_render: 'action'
+            btns_render: 'action',
           },
-        ]
-		  },
-		  tableData: [],
-		}
+        ] 
+      },
+      tableData: [],
+    }
   },
   methods: {
-  	refreshTableData (option) {
-  		const url = URL;
-  		const data = option;
-  		const success = _=>{ 
-        console.log(_);
+    refreshTableData (option) {
+      const url = URL;
+      const data = option;
+      const success = _=>{ 
         this.tableData = _.list;
-        console.log(this.tableData);
       };
 
-  		this.axiosGet({url, data, success});
-  	},
-  	edit ({id}) {
-  		this.$router.push({path: '/setting/template/edit', query: {id} });
-  	},
-  	refresh () {
-  		this.$refs.table.refresh();
-  	},
-  	update () {
-  		this.$refs.table.update();
-  	},
-  	addPop () {
+      this.axiosGet({url, data, success});
+    },
+    edit ({id}) {
+      this.$router.push({path: '/setting/template/edit', query: {id} });
+    },
+    refresh () {
+      this.$refs.table.refresh();
+    },
+    update () {
+      this.$refs.table.update();
+    },
+    addPop () {
       this.isConfirm = "";
-  		this.$refs.pop.show('add');
-  	},
-  	editPop (row) {
-  		this.$refs.pop.show('confirm', row);
-  	},
-  	deleteSingle ({id}) {
-  		this.$confirm('删除后不可恢复，确认删除当前收发文记录？', '提示', {type: 'warning'})
-  			.then(_=>{
-  				const url = `${URL}/${id}`;
-  				const success = _=>{
-  					this.$message({message: '删除成功', type: 'success' });
-  					this.update();
-  				}
+      this.$refs.pop.show('add');
+    },
+    editPop (row) {
+      this.$refs.pop.show('confirm', row);
+    },
+    btnDisabled (row) {
+      if(row.receipt_date == "") {
+        return this.isReceive = true;
+      }
+    },
+    deleteSingle ({id}) {
+      this.$confirm('删除后不可恢复，确认删除当前收发文记录？', '删除确认', {type: 'warning'})
+        .then(_=>{
+          const url = `${URL}/${id}`;
+          const success = _=>{
+            this.$message({message: '删除成功', type: 'success' });
+            this.update();
+          }
 
-  				this.axiosDelete({url, success});
-  			})
-  			.catch(_=>{})
-  	},
-  	handlePopRefresh (t) {
-      console.log(t);
-  		t === 'add' ? this.refresh() : this.update();
-  	}
+          this.axiosDelete({url, success});
+        })
+        .catch(_=>{})
+    },
+    handlePopRefresh (t) {
+      t === 'add' ? this.refresh() : this.update();
+    }
   },
   mounted () {
-  	this.refresh();
+    this.refresh();
   },
   components: { TableComponent, Pop }
 }

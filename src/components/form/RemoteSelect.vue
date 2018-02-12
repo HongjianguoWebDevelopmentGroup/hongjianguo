@@ -311,16 +311,18 @@ export default {
 <style scoped lang="scss">
 </style>
 <style>
-/*  #select_list  .el-tag {
+ 
+#select_list .el-tag {
     min-height: 24px; 
     white-space: pre-wrap;
   }
-  #select_list .el-select .el-tag {
-    min-height: 24px;
-    line-height: 24px;
-    box-sizing: border-box;
-    margin: 3px 0 3px 6px;
-    max-width: 300px;
-    word-wrap: break-word;
-}*/
+#select_list .el-select .el-tag{
+  height: auto;
+  min-height: 24px;
+  line-height: 24px;
+  box-sizing: border-box;
+  margin: 3px 0 3px 6px;
+  max-width: 100%;
+  word-wrap: break-word;
+}
 </style>
