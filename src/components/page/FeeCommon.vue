@@ -5,7 +5,7 @@
 			<fee-status slot="status" v-model="fee_status" style="width: 150px; margin-left: 5px;" :feeType="feeType" feeAnnual></fee-status>
 			<remote-select v-if="fee_invoice_if" slot='invoice' v-model="fee_invoice" style="width: 280px; margin-left: 10px;display: inline-block;" :type="feeType ? 'bill' : 'pay'"></remote-select>
 		</table-component>
-		<pop ref="pop" :feeType="feeType" :popType="popType" @refresh="refresh"></pop>
+		<pop ref="pop" :feeType="feeType" @refresh="refresh"></pop>
     <el-dialog :title="dialogTitle" :visible.sync="dialogVisible" class="dialog-small">
       <div style="margin-bottom: 10px; color: #8492A6; font-size: 14px;">
         <span v-if="invoicePopType == 'add'">从选取的费用创建一个新的{{ feeTypeName }}，用于批量追踪请款费用，如果需要跨页选取费用，请在窗口左下角将分页数量调整为一个较大的值。</span>
@@ -27,6 +27,7 @@ import Pop from '@/components/page_extension/feeCommon_pop'
 import FeeStatus from '@/components/form/FeeStatus'
 import AxiosMixins from '@/mixins/axios-mixins'
 import RemoteSelect from '@/components/form/RemoteSelect'
+import {mapActions} from 'vuex'
 
 const URL = '/api/fees';
 const URL_INVOICE = '/api/invoices';
@@ -36,7 +37,6 @@ export default {
   mixins: [ AxiosMixins ],
   data () {
 		return {
-			popType: '',
 		  	option: {
         'name': 'fees',
         'url': URL,
@@ -73,7 +73,13 @@ export default {
           { type: 'text', label: '专利类型', prop: 'patent_type', width: '145' },
           { type: 'text', label: '案件名称', prop: 'title', width: '189' },
           { type: 'text', label: '申请号', prop: 'apn', width: '200' },
-          { type: 'text', label: '申请日', prop: 'apd',  width: '175' },
+          { 
+            type: 'text', 
+            label: '申请日', 
+            prop: 'apd',  
+            width: '175',
+            render_text: item=>item ? this.$tool.getDate(new Date(item*1000)) : '',
+          },
           { type: 'text', label: '地区', prop: 'area', render_simple: 'name', width: '210' },
           { type: 'text', label: '发文日', prop: 'mail_date', width: '175' },
           { type: 'text', label: '创建日期', prop: 'create_time', width: '175' },
@@ -138,6 +144,9 @@ export default {
     }
   },
   methods: {
+    ...mapActions([
+      'refreshFeeCodes'
+    ]),
   	refreshTableData (option) {
       if(this.fee_invoice instanceof Object) return;
 
@@ -159,15 +168,13 @@ export default {
   		this.axiosGet({url, data, success});
   	},
   	addPop () {
-  		this.popType = 'add';
   		this.$nextTick(()=>{
   			this.$refs.pop.show();	
   		})
   		
   	},
   	editPop (row) {
-  		this.popType = 'edit';
-  		this.$refs.pop.show(row);
+  		this.$refs.pop.show(row, 'edit');
   	},
   	feeDelete ({id, name}) {
   		this.$confirm(`删除后不可恢复，确认删除‘${name}’吗？`, { type: 'warning' })
@@ -220,7 +227,7 @@ export default {
       };
       const complete = _=>{ this.btn_disabled = false; }
       this.btn_disabled = true;
-  		this.axiosPost({ url, data, success, complete });
+  		this.$axiosPost({ url, data, success, complete });
 
   	},
     invoicePut () {
@@ -251,7 +258,7 @@ export default {
       };
       const complete = _=>{ this.btn_disabled = false; }
       this.btn_disabled = true;
-      this.axiosPut({url, data, success});
+      this.$axiosPut({url, data, success, complete});
     }
   },
   watch: {
@@ -272,6 +279,7 @@ export default {
     }
   },
   mounted () {
+    this.refreshFeeCodes();
     if(this.$route.query.id) {
       this.fee_status = this.feeType ? 1 : 2;
       this.fee_invoice = {id: this.$route.query.id, name: this.$route.query.name};

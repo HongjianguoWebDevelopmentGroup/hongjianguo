@@ -44,6 +44,7 @@ export default {
 		  	'header_slot': ['cur_total', 'all_total'],
 		  	'columns': [
 		  		{ type: 'selection' },
+          { type: 'text', label: '帐单编号', prop: 'serial', width: '200' },
 		  		{ type: 'text', label: '账单对象', prop: 'target', render_simple: 'name', width: '200' },
 		  		{ type: 'text', label: '创建时间', prop: 'create_time',width: '175' },
 		  		{ type: 'text', label: '付款期限', prop: 'due_time', width: '175' },

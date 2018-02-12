@@ -139,6 +139,14 @@
             </el-table-column>
           </template>
 
+          <template v-else-if="col.render_text ? true : false ">
+            <el-table-column :label="col.label" :prop="col.prop" :width="col.width ? col.width : ''" :min-width="col.min_width ? col.min_width : ''" :sortable="col.sortable ? 'custom' : false" :show-overflow-tooltip="col.overflow !== undefined ? col.overflow : true">
+              <template slot-scope="scope">
+                <span class="table-column-render">{{ col.render_text(scope.row[col.prop]) }}</span>
+              </template>
+            </el-table-column>
+          </template>
+
           <template v-else-if="col.render_simple ? true : false ">
             <el-table-column :label="col.label" :prop="col.prop" :width="col.width ? col.width : ''" :min-width="col.min_width ? col.min_width : ''" :sortable="col.sortable ? 'custom' : false" :show-overflow-tooltip="col.overflow !== undefined ? col.overflow : true">
               <template slot-scope="scope">

@@ -7,10 +7,8 @@
 		<el-form-item label="案件摘要" prop="abstract">
 			<el-input type="textarea" v-model="form.abstract" placeholder="请填写案件摘要" ></el-input>
 		</el-form-item>
-		<el-form-item label="著作权类型" prop="type">
-			<el-select v-model="form.type" placeholder="请选择案件类型">
-				<el-option v-for="item in options.type" :key="item.value" :label="item.label" :value="item.value"></el-option>
-			</el-select>
+		<el-form-item label="版权类型" prop="type">
+			<static-select type="copyright_type" v-model="form.type"></static-select>
 		</el-form-item>
 		<el-form-item label="技术分类" prop="classification">
 			<classification v-model="form.classification"></classification>
@@ -99,14 +97,6 @@ export default {
 		  	apd: '',
 		  	issue_date: '',
 		  	issue_number: '',
-		  },
-		  options: {
-		  	type: [
-		  		{label: '计算机软件著作权', value: 1},
-		  		{label: '文字作品著作权', value: 2},
-		  		{label: '美术作品著作权', value: 3},
-		  		{label: '影视作品著作权', value: 4},
-		  	]
 		  },
 		  rules: {
 		  	title: { required: true, message: '版权名称不能为空', trigger: 'blur' },

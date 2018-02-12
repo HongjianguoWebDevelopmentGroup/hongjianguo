@@ -22,7 +22,7 @@ export default {
 			}
 			this.$emit('input', copy);
 			this.$emit('refresh');
-			 this.isClose = !this.isClose;
+			this.isClose = !this.isClose;
 		},
 		clear (form_ref) {
 			form_ref.resetFields();

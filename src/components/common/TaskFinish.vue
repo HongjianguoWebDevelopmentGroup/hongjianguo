@@ -29,8 +29,9 @@
   		</el-select>
   	</el-form-item>
   	<el-form-item prop="person_in_charge" label="承办人" v-if="fields.person_in_charge">
-  		<remote-select type="member" v-model="form.person_in_charge" v-if="defaultVal =='proposer' || defaultVal == 'reviewer' || defaultVal == 'previous' "></remote-select>
-  		<remote-select type="agent" v-model="form.person_in_charge" v-else-if="defaultVal == 'agent'"></remote-select>
+  		<remote-select type="member" v-model="form.person_in_charge" v-if="defaultVal =='proposer' || defaultVal == 'reviewer' || defaultVal == 'previous' || !defaultVal "></remote-select>
+  		<remote-select type="agency" v-model="form.person_in_charge" v-else-if="defaultVal == 'agency'"></remote-select>
+      <remote-select type="agent" v-model="form.person_in_charge" v-else-if="defaultVal == 'agent'"></remote-select>
   		<static-select type="ipr" v-model="form.person_in_charge" v-else-if="defaultVal == 'ipr'"></static-select>
   		<!-- <span v-else>{{ data[defaultVal]['name'] }}</span> -->
   	</el-form-item>

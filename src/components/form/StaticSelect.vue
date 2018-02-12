@@ -43,6 +43,15 @@ const config = [
     options: 'iprOptions',
     refresh: 'refreshIpr',
   }],
+  ['case_type', {
+    placeholder: '请选择案件类型',
+    options: [
+      { id: 0, name: '提案' },
+      { id: 1, name: '专利' },
+      { id: 2, name: '商标' },
+      { id: 3, name: '版权' },
+    ]
+  }],
   ['patent_type', {
     placeholder: '请选择专利类型',
     options: [
@@ -110,10 +119,7 @@ const config = [
   }],
   ['fee_code', {
     placeholder: '请选择费用代码',
-    url: '/api/feeCodes',
-    handle (data) {
-      return data.codes;
-    }
+    options: 'feeCodes'
   }],
   ['fee_target_income', {
     placeholder: '请选择收入对象',
@@ -136,6 +142,15 @@ const config = [
   ['branch', {
     placeholder: '请选择部门',
     options: 'branchOptions',
+  }],
+  ['copyright_type', {
+    placeholder: '请选择版权类型',
+    options: [
+      { name: '计算机软件著作权', id: 1 },
+      { name: '文字作品著作权', id: 2 },
+      { name: '美术作品著作权', id: 3 },
+      { name: '影视作品著作权', id: 4 },
+    ]
   }]
 ];
 
