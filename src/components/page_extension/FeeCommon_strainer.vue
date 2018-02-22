@@ -1,38 +1,83 @@
 <template>
   <app-collapse col-title="费用筛选" :default-close="isClose">
     <el-form :model="form" label-width="100px" ref="form">
-    	
-      <el-row :gutter="20">
+      
+      <el-form-item label="费用对象" prop="target">
+        <remote-select type="member" v-model="form.target" multiple></remote-select>
+      </el-form-item>
+      
+      <el-row>
         <el-col :span="12">
-          <el-form-item label="费用对象" prop="target">
-            <remote-select type="member" v-model="form.target" multiple></remote-select>
-          </el-form-item>
-          <el-form-item label="费用生成日期" prop="create_time">
-            <el-date-picker type="daterange" placeholder="请选择费用生成日期" v-model="form.create_time"></el-date-picker>
-          </el-form-item>
           
-          <el-form-item label="通知书发文日" prop="mail_date">
-            <el-date-picker type="daterange" placeholder="请选择通知书发文日" v-model="form.mail_date"></el-date-picker>
-          </el-form-item>
-          <el-form-item label="付款时间" prop="pay_time">
-            <el-date-picker type="daterange" placeholder="请选择付款时间" v-model="form.pay_time"></el-date-picker>
+          <el-form-item prop="area" label="地区">
+            <static-select type="area" v-model="form.area" multiple></static-select>
           </el-form-item>
         </el-col>
-
         <el-col :span="12">
-        <el-form-item label="费用代码" prop="code">
-          <static-select type="fee_code" v-model="form.code" multiple></static-select>
-        </el-form-item>
-          
-          <el-form-item label="费用期限" prop="due_time">
-            <el-date-picker type="daterange" placeholder="请选择费用期限" v-model="form.due_time"></el-date-picker>
-          </el-form-item>
-          <el-form-item label="官方绝限" prop="deadline">
-            <el-date-picker type="daterange" placeholder="请选择官方绝限" v-model="form.deadline"></el-date-picker>
+          <el-form-item label="费用代码" prop="code">
+            <static-select type="fee_code" v-model="form.code" multiple></static-select>
           </el-form-item>
           
         </el-col>
       </el-row>
+
+      <el-row>
+        <el-col :span="12">
+          <el-form-item prop="case_type" label="案件类型">
+            <static-select type="case_type" v-model="form.case_type" multiple></static-select>
+          </el-form-item>
+        </el-col>
+        <el-col :span="12">
+          <el-form-item prop="patent_type" label="专利类型">
+            <static-select type="patent_type" v-model="form.patent_type" multiple></static-select>
+          </el-form-item>
+        </el-col>
+      </el-row>
+
+      <el-row>
+        <el-col :span="12">
+          <el-form-item label="通知书发文日" prop="mail_date">
+            <el-date-picker type="daterange" placeholder="请选择通知书发文日" v-model="form.mail_date"></el-date-picker>
+          </el-form-item>
+        </el-col>
+        <el-col :span="12">
+          <el-form-item label="付款时间" prop="pay_time">
+            <el-date-picker type="daterange" placeholder="请选择付款时间" v-model="form.pay_time"></el-date-picker>
+          </el-form-item>
+        </el-col>
+      </el-row>
+
+      <el-row>
+        <el-col :span="12">
+          <el-form-item label="费用生成日期" prop="create_time">
+            <el-date-picker type="daterange" placeholder="请选择费用生成日期" v-model="form.create_time"></el-date-picker>
+          </el-form-item>
+        </el-col>
+        <el-col :span="12">
+          <el-form-item label="费用期限" prop="due_time">
+            <el-date-picker type="daterange" placeholder="请选择费用期限" v-model="form.due_time"></el-date-picker>
+          </el-form-item>
+        </el-col>
+      </el-row>
+
+      <el-row>
+        <el-col :span="12">
+          <el-form-item label="官方绝限" prop="deadline">
+            <el-date-picker type="daterange" placeholder="请选择官方绝限" v-model="form.deadline"></el-date-picker>
+          </el-form-item>
+        </el-col>
+        <el-col :span="12">
+          <el-form-item label="申请日" prop="apd">
+            <el-date-picker type="daterange" placeholder="请选择申请日" v-model="form.apd"></el-date-picker>
+          </el-form-item>
+        </el-col>
+      </el-row>
+
+
+
+
+          
+          
       <el-row style="text-align: center;">
         <el-button @click="search(form)" type="primary" size="small">查询</el-button>
         <el-button @click="clear($refs.form)" type="danger" size="small">清空</el-button>
@@ -63,6 +108,10 @@ export default {
         due_time: [],
         deadline: [],
         pay_time: [],
+        case_type: [],
+        patent_type: [],
+        apd: [],
+        area: [],
       }
 		}
   },

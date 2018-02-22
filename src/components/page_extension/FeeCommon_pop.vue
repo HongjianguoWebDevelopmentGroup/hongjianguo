@@ -1,19 +1,23 @@
 <template>
-  <el-dialog :title=title :visible.sync="dialogVisible" class="dialog-small">
-		<el-form :model="form" ref="form" label-width="80px">
-			<el-form-item label="相关案件" prop="project">
+  <el-dialog :title=title :visible.sync="dialogVisible" class="dialog-small" @close="$refs.form.resetFields();">
+		<el-form :model="form" ref="form" label-width="80px" >
+			<el-form-item label="相关案件" prop="project" class="is-required">
 				<remote-select type="patent" v-model="form.project"></remote-select>
 			</el-form-item>
-			<el-form-item label="费用对象" prop="target">
+			<el-form-item label="费用对象" prop="target" class="is-required">
 				<remote-select type="member" v-model="form.target"></remote-select>
 			</el-form-item>
 			
-			<el-form-item label="费用状态" prop="status" v-if="popType == 'add'">
+			<el-form-item label="费用状态" prop="status" v-if="type == 'add'" class="is-required">
 				<fee-status v-model="form.status" :feeAnnual="feeAnnual"></fee-status>
 			</el-form-item>
-			<el-form-item label="费用金额" prop="money">
-				<el-row>
-					
+
+			<el-form-item label="费用代码" prop="code" class="is-required">
+				<static-select type="fee_code" v-model="form.code" ref="fee_code"></static-select>
+			</el-form-item>
+
+			<el-form-item label="费用金额" prop="money" class="is-required">
+				<el-row>					
 					<el-col :span="16" style="padding-right: 5px;">
 						<el-input v-model="form.money.amount" placeholder="请输入费用金额">
 							<el-select 
@@ -38,30 +42,21 @@
 			
 			<el-row>
 				<el-col :span="12">
-					<el-form-item label="费用代码" prop="code">
-						<static-select style="width: 193px;" type="fee_code" v-model="form.code" ref="fee_code"></static-select>
-					</el-form-item>
-					
+					<el-form-item label="费用期限" prop="due_time" class="is-required">
+						<el-date-picker v-model="form.due_time" type="date" placeholder="请选择费用期限"></el-date-picker>
+					</el-form-item>					
 				</el-col>
 				<el-col :span="12">
-					<el-form-item label="官方绝限" prop="dealine">
+					<el-form-item label="官方绝限" prop="deadline">
 						<el-date-picker v-model="form.deadline" type="date" placeholder="请选择官方期限"></el-date-picker>
 					</el-form-item>	
 				</el-col>
 			</el-row>
 
-			<el-row>
-				<el-col :span="12">
-					<el-form-item label="费用期限" prop="due_time">
-						<el-date-picker v-model="form.due_time" type="date" placeholder="请选择费用期限"></el-date-picker>
-					</el-form-item>
-				</el-col>
-				<el-col :span="12">
-					<el-form-item label="支付时间" prop="pay_time">
-						<el-date-picker v-model="form.pay_time" type="date" placeholder="请选择支付时间"></el-date-picker>
-					</el-form-item>
-				</el-col>
-			</el-row>
+			<el-form-item label="支付时间" prop="pay_time">
+				<el-date-picker v-model="form.pay_time" type="date" style="width: 100%;" placeholder="请选择支付时间"></el-date-picker>
+			</el-form-item>
+
 			
 			
 
@@ -72,16 +67,15 @@
 				<el-input type="textarea" placeholder="请填写备注" v-model="form.remark"></el-input>
 			</el-form-item>
 			<el-form-item style="margin-bottom: 0px">
-				<el-button type="primary" @click="add" v-if="popType == 'add'">添加</el-button>
-				<el-button type="primary" @click="edit" v-else-if="popType == 'edit'">编辑</el-button>
-				<el-button @click="cancel">取消</el-button>
+				<el-button type="primary" @click="add" v-if="type == 'add'" :loading="loading">{{ loading ? '添加中...' : '添加' }}</el-button>
+				<el-button type="primary" @click="edit" v-else-if="type == 'edit'" :loading="loading">{{ loading ? '编辑中...' : '编辑' }}</el-button>
+				<el-button @click="this.dialogVisible = false;" :disabled="loading">取消</el-button>
 			</el-form-item>
 		</el-form>
 	</el-dialog>
 </template>
 
 <script>
-import AxiosMixins from '@/mixins/axios-mixins'
 
 import Patent from '@/components/form/Patent'
 import Member from '@/components/form/Member'
@@ -89,18 +83,18 @@ import FeeStatus from '@/components/form/FeeStatus'
 import RemoteSelect from '@/components/form/RemoteSelect'
 import StaticSelect from '@/components/form/StaticSelect'
 
+
 const URL = '/api/fees'
 
 export default {
   name: 'FeeCommonPop',
-  mixins: [ AxiosMixins ],
   props: {
   	feeType: Number,
-  	popType: String,
   },
   data () {
 		return {
 		  id: '',
+		  type: '',
 		  dialogVisible: false,
 		  feeAnnual: false,
 		  form: {
@@ -108,7 +102,6 @@ export default {
 		  	target: '',
 		  	code: '',
 		  	status: 0,
-		  	dealine: '',
 		  	money: {
 		  		amount: '',
 		  		currency: '',
@@ -119,7 +112,9 @@ export default {
 		  	pay_time: '',
 		  	invoice_entity_id: '',
 		  	remark: '',
+		  	
 		  },
+		  loading: false,
 		  options: {
 		  	currencyType: [
 		  		{label:"人民币[CNY]",value:"CNY"},
@@ -141,7 +136,7 @@ export default {
   },
   computed: {
   	title () {
-  		const key1 = this.popType == 'add' ? '新增' : '编辑';
+  		const key1 = this.type == 'add' ? '新增' : '编辑';
   		const key2 = this.feeType == 1 ? '应收' : '应付';
   		return `${key1}${key2}费用`;
   	},
@@ -178,38 +173,52 @@ export default {
   	}
   },
   methods: {
-  	show (row) {
-  		
+  	show (row, type='add') {
+  		this.type = type;
   		this.dialogVisible = true;
   		this.$nextTick(()=>{
-  			if( this.popType == 'add' ) {  		
-  				this.$refs.form.resetFields(); 			
-	  		}else {
+  			if(type == 'edit') {
 	  			this.submitForm = row;
-	  		}
+  			}
   		});
   		
   	},
   	add () {
+  		if(this.form.status != 100 && this.form.pay_time) {
+  			return this.$message({type: 'warning', message: '未付款的状态不能选择支付时间'});
+  		}
+  		if(this.form.status == 100 && !this.form.pay_time) {
+  			return this.$message({type: 'warning', message: '请选择支付时间'});
+  		}
   		const url = URL;
   		const data = this.submitForm;
-  		const success = ()=>{ this.dialogVisible = false; this.$emit('refresh') };
-
-  		this.axiosPost({url, data, success});
+  		const success = ()=>{ 
+  			this.$message({type: 'success', message: '添加费用成功'});
+  			this.dialogVisible = false; 
+  			this.$emit('refresh'); 
+  		};
+  		const complete = _=>{
+  			this.loading = false;
+  		}
+  		this.loading = true;
+  		this.$axiosPost({url, data, success, complete});
   	},
   	edit () {
+  		if(this.form.status == 100 && !this.form.pay_time) {
+  			return this.$message({type: 'warning', message: '请选择支付时间'});
+  		}
   		const url = `${URL}/${this.id}`;
   		const data = this.submitForm;
   		const success = ()=>{ 
-  			this.$message({message: '编辑成功', type: 'success'});
+  			this.$message({type: 'success', message: '编辑费用成功'});
   			this.dialogVisible = false;
   			this.$emit('refresh') 
   		};
-
-  		this.axiosPut({url, data, success});
-  	},
-  	cancel () {
-  		this.dialogVisible = false;
+  		const complete = _=>{
+  			this.loading = false;
+  		}
+  		this.loading = true;
+  		this.$axiosPut({url, data, success, complete});
   	},
   	codeChange ({amount, name}) {
   		this.form.money.amount = amount;
@@ -223,9 +232,9 @@ export default {
   watch: {
 		'form.code': {
 			handler () {
-				console.log('aaaaa');
 				this.$nextTick(_=>{
 					const val = this.$refs.fee_code.getSelected()[0];
+					console.log(val);
 					if(val) {
 						this.codeChange(val);
 					}	

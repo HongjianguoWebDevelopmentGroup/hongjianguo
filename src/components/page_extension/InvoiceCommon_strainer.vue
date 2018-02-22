@@ -23,7 +23,10 @@
 
         <el-col :span="12">
           <el-form-item label="账单状态" prop="status">
-            <fee-status :feeType="feeType" v-model="form.status"></fee-status>
+            <el-select v-model="form.status">
+              <el-option label="未付款" value="0"></el-option>
+              <el-option label="已付款" value="1"></el-option>
+            </el-select>
           </el-form-item>
           <el-form-item label="账单对象" prop="target">
             <remote-select type="member" multiple v-model="form.target"></remote-select>
