@@ -8,16 +8,16 @@
               <el-input v-model="title" placeholder="请输入需要搜索的提案标题"></el-input>
             </el-form-item>
             <el-form-item label="技术分类">
-              <classification v-model="classification" multiple></classification>
+              <classification v-model="classification" count-type="proposal" multiple></classification>
             </el-form-item>
             <el-form-item label="产品分类">
-              <product v-model="product" multiple></product>
+              <product v-model="product" count-type="proposal" multiple></product>
             </el-form-item>
             <el-form-item label="是否产品相关">
               <static-select type="product_relevance" v-model="product_relevance"></static-select>
             </el-form-item>
             <el-form-item label="部门">
-              <branch v-model="branch" multiple></branch>
+              <branch v-model="branch" count-type="proposal" multiple></branch>
             </el-form-item>
           </el-col>
           <el-col :span="12">

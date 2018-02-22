@@ -7,6 +7,7 @@
 	    :props="props"
 	    :value="value"
 	    :multiple="multiple"
+	    :count-type="countType"
 	    action
 	    url="/api/products"
 	    @refresh="refresh"

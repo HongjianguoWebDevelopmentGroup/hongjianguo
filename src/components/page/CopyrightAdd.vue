@@ -11,10 +11,10 @@
 			<static-select type="copyright_type" v-model="form.type"></static-select>
 		</el-form-item>
 		<el-form-item label="技术分类" prop="classification">
-			<classification v-model="form.classification"></classification>
+			<classification v-model="form.classification" count-type="copyright"></classification>
 		</el-form-item>
 		<el-form-item label="产品分类" prop="products">
-			<product v-model="form.products" multiple></product>
+			<product v-model="form.products" count-type="copyright" multiple></product>
 		</el-form-item>
 		<el-form-item label="标签" prop="tags">
 			<static-select type="tag" v-model="form.tags" multiple></static-select>
@@ -27,7 +27,7 @@
 			<remote-select type="member" v-model="form.proposer"></remote-select>
 		</el-form-item>
 		<el-form-item label="部门分类" prop="branch">
-			<branch v-model="form.branch"></branch>
+			<branch v-model="form.branch" count-type="copyright"></branch>
 		</el-form-item>
 		<el-form-item label="申请人" prop="applicants">
 			<remote-select type="applicant" v-model="form.applicants" multiple></remote-select>

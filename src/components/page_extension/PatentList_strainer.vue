@@ -37,16 +37,16 @@
 				</el-col>
 				<el-col :span="12">
 					<el-form-item label="技术分类" prop="classification">
-						<classification v-model="form.classification" multiple></classification>
+						<classification v-model="form.classification" count-type="patent" multiple></classification>
 					</el-form-item>
 					<el-form-item label="产品分类" prop="product">
-						<product v-model="form.product" multiple></product>
+						<product v-model="form.product" count-type="patent" multiple></product>
 					</el-form-item>
 					<el-form-item label="是否产品相关" prop="product_relevance">
 						<static-select type="product_relevance" v-model="form.product_relevance"></static-select>
 					</el-form-item>
 					<el-form-item label="部门" prop="branch">
-						<branch v-model="form.branch" multiple></branch>
+						<branch v-model="form.branch" count-type="patent" multiple></branch>
 					</el-form-item>
 					<el-form-item label="标签" prop="tags">
 						<static-select type="tag" v-model="form.tags" multiple></static-select>

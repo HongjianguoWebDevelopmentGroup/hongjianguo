@@ -7,6 +7,7 @@
 	    :props="props"
 	    :value="value"
 	    :multiple="multiple"
+	    :count-type="countType"
 	    @update:value="handleValue"
 	    action
 	    ref="tree"
