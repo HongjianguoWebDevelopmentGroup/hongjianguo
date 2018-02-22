@@ -8,7 +8,11 @@ export default {
   	'disabled': {
   		type: Boolean,
   		default: false,
-  	}
+  	},
+    'countType': {
+      type: String,
+      default: '',
+    }
 	},
 	data () {
 		return {

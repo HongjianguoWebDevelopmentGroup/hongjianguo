@@ -79,6 +79,10 @@ export default {
     'url': {
       type: String,
       default: '',
+    },
+    'countType': {
+      type: String,
+      default: '',
     }
   },
   data () {
@@ -97,6 +101,27 @@ export default {
   computed: {
     popTitle () {
       return this.popType == 'edit' ? '编辑' : '添加' ;
+    },
+    countParameter () {
+      const t = this.countType;
+      
+      if(t == 'proposal') {
+        return 'proposals_count';
+      }
+
+      if(t == 'patent') {
+        return 'patents_count';
+      }
+
+      if(t == 'copyright') {
+        return 'copyrights_count';
+      }
+
+      if(t == 'trademark') {
+        return 'trademarks_count';
+      }
+
+      return '';
     }
   },
   mounted () {
@@ -195,10 +220,12 @@ export default {
         .catch(_=>{});
     },
     renderContent(h, { node, data, store }) {
+        const p = this.countParameter;
+        // console.log(p);
         return (
           <span>
             <span>
-              <span>{node.label}</span><span style="color: rgb(32, 160, 255);"> ({data.projects_count})</span>
+              <span>{node.label}</span> {p ? <span style="color: rgb(32, 160, 255);"> ({data[p]})</span> : ''}
             </span>
                
                 <span style="float: right; margin-right: 20px" >
