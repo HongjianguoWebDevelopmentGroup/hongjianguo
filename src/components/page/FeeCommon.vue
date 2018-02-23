@@ -83,7 +83,7 @@ export default {
           { type: 'text', label: '地区', prop: 'area', render_simple: 'name', width: '210' },
           { type: 'text', label: '发文日', prop: 'mail_date', width: '175' },
           { type: 'text', label: '创建日期', prop: 'create_time', width: '175' },
-          { type: 'text', label: '费用期限', prop: 'due_time', is_import: true, width: '175' },
+          { type: 'text', label: '账单期限', prop: 'due_time', is_import: true, width: '175' },
           { type: 'text', label: '官方绝限', prop: 'deadline', width: '175' },
           { type: 'text', label: '付款时间', prop: 'pay_time', width: '175' },
 		  		{ type: 'text', label: '请款单', prop: 'invoice_id', width: '150' },

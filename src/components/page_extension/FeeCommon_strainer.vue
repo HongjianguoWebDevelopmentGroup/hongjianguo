@@ -54,8 +54,8 @@
           </el-form-item>
         </el-col>
         <el-col :span="12">
-          <el-form-item label="费用期限" prop="due_time">
-            <el-date-picker type="daterange" placeholder="请选择费用期限" v-model="form.due_time"></el-date-picker>
+          <el-form-item label="账单期限" prop="due_time">
+            <el-date-picker type="daterange" placeholder="请选择账单期限" v-model="form.due_time"></el-date-picker>
           </el-form-item>
         </el-col>
       </el-row>
