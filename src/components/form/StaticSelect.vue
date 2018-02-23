@@ -312,11 +312,11 @@ export default {
 <style scoped lang="scss">
 </style>
 <style>
-  #static_select .el-tag {
-    min-height: 24px; 
-    white-space: pre-wrap;
-    padding: 0 20px 0 5px;
-  }
+#static_select .el-tag {
+  min-height: 24px; 
+  white-space: pre-wrap;
+  padding: 0 20px 0 5px;
+}
 #static_select .el-select .el-tag{
   height: auto;
   min-height: 24px;
