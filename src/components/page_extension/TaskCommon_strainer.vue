@@ -125,7 +125,16 @@ export default {
   		this.$emit('clear');
   	}
   },
-  components: { Agency, Ipr, Agent, Member, DateArea, AppCollapse, RemoteSelect, StaticSelect }
+  components: { 
+    Agency, 
+    Ipr, 
+    Agent, 
+    Member, 
+    DateArea, 
+    AppCollapse, 
+    RemoteSelect, 
+    StaticSelect, 
+  }
 }
 </script>
 

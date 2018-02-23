@@ -300,6 +300,7 @@ menu.map = {
 	'/setting/agency/detail': {text: '代理机构详情', icon: '', path: '/setting/agency/detail'},
 	'/setting/template/edit': {text: '编辑模板', icon: 'el-icon-edit', path: '/setting/template/edit'},
 	'/news/systemMessage/detail': {text: '消息详情', icon: '', path: '/news/systemMessage/detail'},
+	'/loading': {text: '加载中', icon: '', path: '/loading'},
 };
 tailRecursion(menu.data);
 
