@@ -29,7 +29,7 @@
         </el-col>
         <el-col :span="12">
           <el-form-item prop="patent_type" label="专利类型">
-            <static-select type="patent_type" v-model="form.patent_type" multiple></static-select>
+            <static-select type="patent_type_strainer" v-model="form.patent_type" multiple></static-select>
           </el-form-item>
         </el-col>
       </el-row>

@@ -14,7 +14,7 @@
       <el-table-column label="文件名称" prop="name" width="150"></el-table-column>
 			<el-table-column label="文件类型" prop="type" width="200">
         <template slot-scope="scope">
-          <static-select type="file_type" v-model="scope.row.type"></static-select>
+          <static-select :type="config.file_type ? config.file_type : 'file_type'" v-model="scope.row.type"></static-select>
         </template>
       </el-table-column>
       <el-table-column label="发文日" prop="time" v-if="config.time" width="200">
@@ -91,16 +91,19 @@ const config = [
 		action: 'getPatentDocuments',
 		url: '/patents/documents',
 		type: 'patent',
+    file_type: 'file_type_patent',
 	}],
 	['copyright', {
 		action: 'getCopyrightDocuments',
 		url: '/copyrights/documents',
 		type: 'copyright',
+    file_type: 'file_type_copyright',
 	}],
   ['patent_notice', {
     action: 'getPatentNoticesDocuments',
     url: '/patents_notice/documents',
     type: 'patent',
+    file_type: 'file_type_patent',
     time: true,
     legal_time: true,
     no_zip: true,

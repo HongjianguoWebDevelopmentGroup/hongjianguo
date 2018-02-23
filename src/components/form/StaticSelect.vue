@@ -62,7 +62,15 @@ const config = [
       { name: '外观设计', id: 3 },
       { name: '发明+新型', id: 4 },
     ]
-  }], 
+  }],
+  ['patent_type_strainer', {
+    placeholder: '请选择专利类型',
+    options: [
+      { name: '发明专利', id: 1 },
+      { name: '实用新型', id: 2 },
+      { name: '外观设计', id: 3 },
+    ]
+  }],
   ['product_relevance', {
     placeholder: '请选择产品相关',
     options: [
@@ -85,6 +93,14 @@ const config = [
   ['file_type', {
     placeholder: '请选择文件类型',
     url: '/api/fileTypes',
+  }],
+  ['file_type_patent', {
+    placeholder: '请选择专利文件类型',
+    url: '/api/fileTypes?category=1',
+  }],
+  ['file_type_copyright', {
+    placeholder: '请选择版权文件类型',
+    url: '/api/fileTypes?category=3',
   }],
   ['group', {
     placeholder: '请选择用户组',
@@ -157,11 +173,15 @@ const config = [
 ];
 
 const map = new Map(config);
+
+//远程请求的静态代码需要在这里注册一个储存器
 const dataMap = new Map([
   ['mail', {data: null}],
   ['fee_target_income', {data: null}],
   ['fee_target_expenditure', {data: null}],
   ['file_type', {data: null}],
+  ['file_type_patent', {data: null}],
+  ['file_type_copyright', {data: null}],
   ['fee_code', {data: null}],
   ['tag', {data: null}],
   ['flow_node', {data: null}],

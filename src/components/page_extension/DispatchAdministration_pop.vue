@@ -35,8 +35,13 @@
         <el-date-picker v-model="form.mail_date" type="date" placeholder="请选择发文日期"></el-date-picker>
       </el-form-item>
       <el-form-item label="文件清单" prop="projects">
-        <span v-if="type != 'add' && form.projects.length == 0">暂无文件清单</span>
-        <express-list v-else v-model="form.projects" :typeMessage="type"></express-list>
+        <express-list v-if="type == 'add'" v-model="form.projects" :typeMessage="type"></express-list>
+        <template v-else-if="type == 'confirm'">
+          <span v-if="form.projects.length == 0">暂无文件清单</span>
+          <template v-else>
+            <div v-for="item in form.projects"><span>{{item.name}}：</span><span>{{item.type}}</span></div>
+          </template>
+        </template>
       </el-form-item>
 
       <el-form-item style="margin-bottom: 0px;">
