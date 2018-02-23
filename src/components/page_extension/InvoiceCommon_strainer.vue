@@ -6,8 +6,8 @@
           <el-form-item label="付款时间" prop="pay_time">
             <el-date-picker type="daterange" placeholder="请选择付款时间" v-model="form.pay_time"></el-date-picker>
           </el-form-item>
-          <el-form-item label="账单生成生成日期" prop="create_time">
-            <el-date-picker type="daterange" placeholder="请选择费用生成日期" v-model="form.create_time"></el-date-picker>
+          <el-form-item label="账单生成日期" prop="create_time">
+            <el-date-picker type="daterange" placeholder="请选择账单生成日期" v-model="form.create_time"></el-date-picker>
           </el-form-item>
           <el-form-item label="费用期限" prop="due_time">
             <el-date-picker type="daterange" placeholder="请选择费用期限" v-model="form.due_time"></el-date-picker>
