@@ -329,12 +329,11 @@ export default {
 <style scoped lang="scss">
 </style>
 <style>
- 
 #select_list .el-tag {
-    min-height: 24px; 
-    white-space: pre-wrap;
-    padding: 0 20px 0 5px;
-  }
+  min-height: 24px; 
+  white-space: pre-wrap;
+  padding: 0 20px 0 5px;
+}
 #select_list .el-select .el-tag{
   height: auto;
   min-height: 24px;
