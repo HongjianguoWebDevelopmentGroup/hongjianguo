@@ -48,7 +48,7 @@
       <span class="nav-left-btn" @click="navToggle"><span class="nav-left-btn-arrow el-icon-arrow-left"></span></span>
       <div class="nav-left" :style="`height: ${innerHeight}px`">
         
-        <el-menu v-if="menusMap != null" theme="dark" router unique-opened :default-active="select.path">
+        <el-menu @select="handleMenuSelect" v-if="menusMap != null" theme="dark" router unique-opened :default-active="select.path">
           <app-menu-item v-for="item in menu_data" :dd="item" :key="item.path"></app-menu-item>
         </el-menu>
 
@@ -163,6 +163,21 @@ export default {
     ...mapMutations([
       'setUser',
     ]),
+    handleMenuSelect (p) {
+      
+      if(p == '/task/pending' && this.$route.path == '/task/pending') {
+        //vue-router没有提供有效的同页面刷新手段 暂时使用跳出 跳入的方法代替
+        this.$nextTick(_=>{
+          this.$router.push('/loading');
+          this.$nextTick(_=>{
+            this.$router.push('/task/pending');
+          })
+        })
+        // window.setTimeout(function () {
+        //   this.$router.push('/task/pending');
+        // }, 5000);
+      }
+    },
     handleClose (index) {
       this.$store.commit('removeScreen', index);
     },

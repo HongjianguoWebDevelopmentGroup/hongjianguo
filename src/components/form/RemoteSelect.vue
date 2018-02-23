@@ -200,7 +200,7 @@ export default {
         _[key] = _[key].map(_=>{
           if(!_.name) _.name = _.label;
           if(!_.id) _.id = _.value;
-          _.id = Number.parseInt(_.id);
+          
           return _;
         });
         this.options = _[key];
@@ -229,11 +229,9 @@ export default {
   	},
     allowCreate () {
 
-
       if(this.choose.allowCreate) {
         return true;
       }
-
 
       if(this.choose.dynamicCreate && this.options.length == 0) {
         return true;
@@ -266,10 +264,10 @@ export default {
   		//由于一部分的val可能是通过object传入,单纯的options只含有动态部分
   		//所以取select_map和options的并集,取得selected的静态部分选项
   		const arr = [ ...this.static_map, ...this.options ];
-      // console.log(this.selected, this.options, arr);
-  		// console.log(arr);
-  		return this.$tool.singleObject(arr,'id');
-  	},
+      //以ID为唯一值 进行去重处理 ||邮箱的选项框因为多个人可以键入同一个邮箱 因此会有一定问题(暂未对这种情况进行处理)
+  		const single = this.$tool.singleObject(arr,'id');  	  
+      return single; 
+    },
   	map () {
   		//map分为静态和动态俩部分，静态部分由value类型为Object时提供，之后将value转换为数值类型
   		const map = new Map();

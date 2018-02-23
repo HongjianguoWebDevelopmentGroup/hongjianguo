@@ -63,6 +63,8 @@ import SS_Case from '@/components/page_extension/SettingSystem_case'
 import SS_Fee from '@/components/page_extension/SettingSystem_fee'
 //-------------------设置 end---------------------
 
+import Loading from '@/components/page/Loading'
+
 Vue.use(Router);
 const router = new Router({
   routes: [
@@ -267,6 +269,11 @@ const router = new Router({
       name: 'FeeBill',
       component: InvoiceCommon,
     },
+    { 
+      path: '/loading', 
+      name: 'Loading', 
+      component: Loading,
+    },
     {
       path: '/fee/payment',
       name: 'FeePayment',
@@ -316,6 +323,7 @@ const router = new Router({
     { path: '/setting/template', name: 'SettingTemplate', component: SettingTemplate },
     { path: '/setting/template/edit', name: 'SettingTemplateEdit', component: SettingTemplateEdit },
     { path: '/setting/user', name: 'SettingUser', component: SettingUser },
+    
   ]
 });
 router.beforeEach((to, from, next)=>{
