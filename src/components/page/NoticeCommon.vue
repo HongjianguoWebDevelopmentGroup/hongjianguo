@@ -76,7 +76,7 @@ export default {
 						type: 'array', 
 						label: '费用', 
 						prop: 'fees', 
-						width: '400'
+						width: '400',
 						render: _=>{
 							return _.map(_=>`${_.name}(${_.fee})`)
 						},
