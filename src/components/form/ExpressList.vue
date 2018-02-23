@@ -6,7 +6,7 @@
 			</el-col>
 			
 			<el-col :span="9" style="padding: 0 5px;">
-				<el-input :value="item.type.join(',')" :disabled="handleData" placeholder="使用逗号分隔" @input="val=>{ handleInput(val, 'type', index, handleType) }"></el-input>
+				<el-input :value="item.type.join(',')" :disabled="handleData" placeholder="请输入文件名称" @input="val=>{ handleInput(val, 'type', index, handleType) }"></el-input>
 			</el-col>
 
 			<el-col :span="2" style="padding-left: 5px; ">

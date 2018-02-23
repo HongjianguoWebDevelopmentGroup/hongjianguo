@@ -505,7 +505,7 @@ export default {
           { type: 'text', label: '完成时间', prop: 'end_time', sortable: true, width: '190'},
           { type: 'text', label: '指定期限', prop: 'due_time', show: false, sortable: true, width: '190'},
           { type: 'text', label: '定稿期限', prop: 'review_dealine', show: false, sortable: true, width: '190'},
-          { type: 'text', label: '管控期限', prop: 'inner_dealine', show: false, sortable: true, width: '190'},
+          { type: 'text', label: '管控期限', prop: 'inner_dealine', sortable: true, width: '190'},
           { type: 'text', label: '法定期限', prop: 'deadline', show: false, sortable: true, width: '190'},
           { type: 'text', label: '备注', prop: 'remark', sortable: true, width: '250',overflow: true},
           { 
