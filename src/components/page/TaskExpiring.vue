@@ -24,10 +24,11 @@
 			:data="treeData"
 			:render-content="renderContent"
 			node-key="value"
-			highlight-current
-		  	@current-change="handleCurrentChange"
+			show-checkbox
+			ref="tree"
+		  @check-change="handleCheckChange"
+		  @node-click="handleClick"
 			:style="`font-size: 12px; height:${innerHeight - 98}px; overflow-y: auto; overflow-x: hidden;`"
-
 		>
 		</el-tree>
 	</div>
@@ -93,11 +94,14 @@ export default {
 		return {
 			moreVisible: false,
 			option: {
-				'is_header': false,
+				'is_search': false,
 				'is_pagination': false,
 				'is_border': false,
-				'height': 'default4',
+				'height': 'default3',
 				'empty_text_position': 'topLeft',
+				'header_btn': [
+					{ type: 'export', click: _=>{this.refresh('export')} },
+				],
 				'columns': [				       
 					{type: 'text', label: '案号', prop: 'serial' ,width: '200'},
 					{type: 'text', label: '案件名称', prop: 'title',width: '200'},
@@ -128,7 +132,7 @@ export default {
 			tableData: [],
 			treeData: [],
 			currentRow: '',
-			currentNode: '',
+			treeSelected: [],
 			day: 2,
 			date: 'due_time',
 			reminderId: '',
@@ -173,24 +177,40 @@ export default {
         </span>       
       );
   	},
-  	handleCurrentChange (d) {
-  		this.currentNode = d;  		
+  	handleCheckChange () {
+  		this.treeSelected = this.$refs.tree.getCheckedKeys();		
   	},
+  	handleClick (a,b,c) {
+      this.$refs.tree.setChecked(a.value, !b.checked);
+    },
   	handleRowClick (row) { 
     	this.currentRow = row;
     	if( !this.dialogShrinkVisible ) this.dialogShrinkVisible = true;
   	},
-  	refresh () {
-  		if(!this.currentNode || !this.day || !this.date) return;
+  	refresh (key) {
+  		if(this.treeSelected.length == 0 || !this.day || !this.date) {
+  			this.tableData = [];
+  			return;
+  		}
 
   		const url = "/api/tasks/expiring";
+  		
   		const data = {
-  			type: this.currentNode.value,
+  			type: this.treeSelected.join(','),
   			days: this.day,
   			date: this.date,
   		};
-  		const success = _=>{
+  		if(key == 'export') {
+  			Object.assign(data, {format: 'excel'});
+  		}
+
+  		let success = _=>{
   			this.tableData = _.data;
+  		}
+  		if(key == 'export') {
+  			success = _=>{
+  				window.location.href = d.tasks.downloadUrl;
+  			}
   		}
 
   		this.axiosPost({url, data, success});
@@ -203,7 +223,10 @@ export default {
 				date: this.date,
 				days: this.day,
 			}
-			const success = _=>{this.treeData = _.data};
+			const success = _=>{
+				this.treeData = _.data
+			};
+			this.treeSelected = [];
 			this.axiosGet({url, data, success});
   	},
   	handleEmail ({id}) {
@@ -235,19 +258,18 @@ export default {
   	}
 	},
 	created () {
+		
 		this.refreshTreeData();
 	},
 	watch: {
-		currentNode (val) {
+		treeSelected (val) {
 			this.refresh();
 		},
 		day (val) {
 			this.refreshTreeData();
-			this.refresh();
 		},
 		date (val) {
 			this.refreshTreeData();
-			this.refresh();
 		}
 	},
 	components: {

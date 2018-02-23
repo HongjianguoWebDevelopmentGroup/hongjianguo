@@ -179,7 +179,7 @@
         </template>
 
         <template v-else-if="col.type == 'action'">
-          <el-table-column :label="col.label ? col.label : '操作'" :align="col.align ? col.align : 'left'" :width="col.width ? col.width : ''" :min-width="col.min_width ? col.min_width : ''" header-align="center" :fixed="col.fixed === false ? false : 'right'">
+          <el-table-column type="action" :label="col.label ? col.label : '操作'" :align="col.align ? col.align : 'left'" :width="col.width ? col.width : ''" :min-width="col.min_width ? col.min_width : ''" header-align="center" :fixed="col.fixed === false ? false : 'right'">
             <template slot-scope="scope">
               <template v-if="col.btns_render ? true : false">
                 <slot :name="col.btns_render" :row="scope.row">
@@ -263,7 +263,7 @@ const methods = Object.assign({}, tableConst.methods, {
     // if(c.fixed) return false;
     b.stopPropagation();
 
-    if(c.type == 'selection') return false;
+    if(c.type == 'selection' || c.type == 'action') return false;
     
     const func = this.tableOption.rowClick;
     if(func) func(a,b,c);

@@ -7,9 +7,9 @@
       </template>  
     </table-component>
     <pop @refresh="handlePopRefresh" ref="pop" :confirm="isConfirm"></pop>
-  <el-dialog title="发文详情" :visible.sync="dialogVisible">
-    <table-component :tableOption="option2" :data="tableData2.projects"></table-component>
-  </el-dialog>
+    <el-dialog title="发文详情" :visible.sync="dialogVisible">
+      <table-component :tableOption="option2" :data="tableData2.projects"></table-component>
+    </el-dialog>
   </div>
 </template>
 
@@ -42,11 +42,6 @@ export default {
           { type: 'text', label: '收件日期', default: '暂未收件', prop: 'receipt_date', width:'178'},
           { type: 'text', label: '收件人', render_simple: 'name', prop: 'to', width:'145' },
           { type: 'text', label: '发件人', render_simple: 'name', prop: 'from', width:'145'},
-          { type: 'array', label: '文件信息', prop: 'projects', width:'263',
-            render (array) {
-              return array.map(_=>`${_.name}: ${_.type!=null?_.type.join(";"):';'}`);
-            }
-          },
           { type: 'text', label: '发文描述', prop: 'description', min_width:'210' },
           { 
             type: 'action',
@@ -66,12 +61,7 @@ export default {
         'is_pagination': false,
         'columns': [
           { type: 'text', label: '案件名称', prop: 'name', width:'300' },
-          { type: 'text', label: '文件清单', prop: 'type', 
-          render_text (array) {
-            console.log(array)
-              return array?array.join(';'):'';
-            }
-          },
+          { type: 'text', label: '文件清单', prop: 'type' },
         ] 
       },
       tableData2: [],
