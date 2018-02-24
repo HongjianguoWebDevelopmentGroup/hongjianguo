@@ -79,7 +79,7 @@ export default {
         company: {required: true, message: '快递公司必填', trigger: 'change'},
         number: [
           { required: true,  message: '快递单号必填', trigger: 'blur' },
-          {pattern: /^[0-9a-zA-Z]*$/, message : '快递单号只能是字母与数字', trigger: 'blur' }
+          { pattern: /^[0-9a-zA-Z]*$/, message : '快递单号只能是字母与数字', trigger: 'blur' }
         ],
         mail_date: { type:'date',required: true, message: '发文日期必填', trigger: 'change'},
       },
@@ -114,7 +114,6 @@ export default {
       };
     },
     keepSameTime (val) {
-      // console.log(typeof(new Date(val)));
       this.form.receipt_date = val;
       console.log(val)
     },

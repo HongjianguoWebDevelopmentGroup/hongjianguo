@@ -14,7 +14,7 @@
 			</el-col>
   	</el-row>
   	<el-row>
-  		<el-button v-if="typeMessage=='add'" type="text" @click="add({ 'id': '', 'type': [] })">添加文件信息</el-button>
+  		<el-button v-if="typeMessage=='add'" type="text" @click="add({ 'id': '', 'type': '' })">添加文件信息</el-button>
   	</el-row>
   </div>
 </template>

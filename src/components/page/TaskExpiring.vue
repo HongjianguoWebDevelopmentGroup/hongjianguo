@@ -209,7 +209,7 @@ export default {
   		}
   		if(key == 'export') {
   			success = _=>{
-  				window.location.href = d.tasks.downloadUrl;
+  				window.location.href = _.tasks.downloadUrl;
   			}
   		}
 
