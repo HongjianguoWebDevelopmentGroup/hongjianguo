@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div id="select_list">
   	<el-select
   	  :value="value2"
   	  @input="handleInput"
@@ -329,11 +329,11 @@ export default {
 <style scoped lang="scss">
 </style>
 <style>
- 
 #select_list .el-tag {
-    min-height: 24px; 
-    white-space: pre-wrap;
-  }
+  min-height: 24px; 
+  white-space: pre-wrap;
+  padding: 0 20px 0 5px;
+}
 #select_list .el-select .el-tag{
   height: auto;
   min-height: 24px;
@@ -342,5 +342,36 @@ export default {
   margin: 3px 0 3px 6px;
   max-width: 100%;
   word-wrap: break-word;
+  word-break: break-all;
+  position: relative;
+}
+#select_list .el-tag .el-icon-close {
+    border-radius: 50%;
+    text-align: center;
+    position: absolute;
+    cursor: pointer;
+    font-size: 12px;
+    -ms-transform: scale(.75,.75);
+    transform: scale(.75,.75);
+    height: 18px;
+    width: 18px;
+    line-height: 18px;
+    vertical-align: middle;
+    top: 5px;
+    right: 0px;
+}
+#select_list .el-select__input {
+    border: none;
+    outline: 0;
+    padding: 0;
+    margin-left: 10px;
+    color: #666;
+    font-size: 14px;
+    vertical-align: baseline;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+     height: 16px; 
+    background-color: transparent;
 }
 </style>
