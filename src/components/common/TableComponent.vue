@@ -147,7 +147,7 @@
     
     <file-upload v-if="tableOption.upload_type !== undefined" :type="tableOption.upload_type" @uploadSuccess="refresh" ref="file_upload"></file-upload>
   
-    <el-dialog class="dialog-small" :visible.sync="dialogControl" title="字段控制" @close="transferValue = control; $refs.transfer.clear();">
+    <el-dialog class="dialog-control" :visible.sync="dialogControl" title="字段控制" @close="transferValue = control; $refs.transfer.clear();">
         <div style="margin-bottom: 10px;
     padding-left: 50px;
     color: rgb(132, 146, 166);">提示：可拖动字段调整顺序</div>
@@ -677,6 +677,13 @@ export default {
 .table-header i.el-icon-menu {
   font-size: 13px;
 }
+#app .dialog-control > .el-dialog {
+  width: 600px;
+  position: static;
+  transform: initial;
+  margin: 0 auto;
+  margin-top: 80px;
+}
 /*.el-table__expand-column {
   display: none;
 }*/
@@ -705,4 +712,5 @@ export default {
 .el-dropdown+.el-dropdown {
   margin-left: 10px;
 }
+
 </style>

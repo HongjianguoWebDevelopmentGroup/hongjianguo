@@ -278,6 +278,15 @@ const config = [
       { name: "澳大利亚元[AUD]", id: "AUD" },
       { name: "新西兰元[NZD]", id: "NZD" },
     ]
+  }],
+  ['copyright_type', {
+    placeholder: '请选择版权类型',
+    options: [
+      { name: '计算机软件著作权', id: 1 },
+      { name: '文字作品著作权', id: 2 },
+      { name: '美术作品著作权', id: 3 },
+      { name: '影视作品著作权', id: 4 },
+    ]
   }]
 ];
 
