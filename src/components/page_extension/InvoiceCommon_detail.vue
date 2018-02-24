@@ -53,22 +53,56 @@ export default {
 		  		{ type: 'text', label: '费用对象', prop: 'target', render_simple: 'name', width: '190' },
 		  		{ type: 'text', label: '费用名称', prop: 'code', render_simple: 'name', width: '190' },
 		  		//{ type: 'text', label: '费用类型', prop: 'type_name', width: '190' },
-		  		{ type: 'text', label: '金额', prop: 'fee', width: '80' },
-		  		{ type: 'text', label: '汇率', prop: 'roe', is_import: true, width: '80' },
-		  		{ type: 'text', label: '币种', prop: 'currency', is_import: true, width: '80' },
-		  		{ type: 'text', label: '人民币', prop: 'amount', is_import: true, width: '100' },
+		  		{ 
+		            type: 'text', 
+		            label: '外币金额', 
+		            prop: 'amount', 
+		            width: '100',
+		            align: 'right',
+		            render:(h,item,row)=>{
+		              if( row.roe == 1 ){
+		                return h('span','N/A');
+		              }else{
+		                return h('span',`${item}${row.currency}`);
+		              }
+		            } 
+		          },
+		          { 
+		            type: 'text', 
+		            label: '汇率', 
+		            prop: 'roe', 
+		            width: '80',
+		            align: 'right',
+		            render:(h,item)=>{
+		              if( item == 1 ){
+		                return h('span','N/A');
+		              }else{
+		                return h('span',item);
+		              } 
+		            }
+		          },
+		          { 
+		            type: 'text', 
+		            label: '人民币金额', 
+		            prop: 'rmb', 
+		            width: '120',
+		            align: 'right',
+		            render:(h,item)=>{
+		              return h('span',`${item}CNY`)
+		            }
+          		},
 		  		{ type: 'text', label: '状态', prop: 'status', render_simple: 'name', width: '180'},
-          { type: 'text', label: '案件类型', prop: 'category', width: '116' },
-          { type: 'text', label: '专利类型', prop: 'patent_type', width: '133' },
-          { type: 'text', label: '案件名称', prop: 'title', width: '189' },
-          { type: 'text', label: '申请号', prop: 'apn', width: '210' },
-          { type: 'text', label: '申请日', prop: 'apd',  width: '200' },
-          { type: 'text', label: '地区', prop: 'area', render_simple: 'name', width: '210' },
-          { type: 'text', label: '发文日', prop: 'mail_date', width: '250' },
-          { type: 'text', label: '创建日期', prop: 'create_time', width: '200' },
-          { type: 'text', label: '费用期限', prop: 'due_time', is_import: true, width: '200' },
-          { type: 'text', label: '官方绝限', prop: 'deadline', width: '200' },
-          { type: 'text', label: '付款时间', prop: 'pay_time', width: '200' },
+		        { type: 'text', label: '案件类型', prop: 'category', width: '116' },
+		        { type: 'text', label: '专利类型', prop: 'patent_type', width: '133' },
+		        { type: 'text', label: '案件名称', prop: 'title', width: '189' },
+		        { type: 'text', label: '申请号', prop: 'apn', width: '210' },
+		        { type: 'text', label: '申请日', prop: 'apd',  width: '200' },
+		        { type: 'text', label: '地区', prop: 'area', render_simple: 'name', width: '210' },
+		        { type: 'text', label: '发文日', prop: 'mail_date', width: '250' },
+		        { type: 'text', label: '创建日期', prop: 'create_time', width: '200' },
+		        { type: 'text', label: '费用期限', prop: 'due_time', is_import: true, width: '200' },
+		        { type: 'text', label: '官方绝限', prop: 'deadline', width: '200' },
+		        { type: 'text', label: '付款时间', prop: 'pay_time', width: '200' },
 		  		{ type: 'text', label: '请款单', prop: 'invoice_id', width: '150' },
 		  		//{ type: 'text', label: '请款单备注', prop: 'invoidce_remark', width: '150' },
 		  		//{ type: 'text', label: '发票抬头', prop: 'invoice_title', width: '330' },

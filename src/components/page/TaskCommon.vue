@@ -500,7 +500,7 @@ export default {
           { type: 'text', label: '代理机构', prop: 'agency', show: false, sortable: true, width: '130'},
           { type: 'text', label: '代理人', prop: 'agent', sortable: true, width: '118'},
           { type: 'text', label: '申请日', prop: 'apd', sortable: true, width: '190'},
-          { type: 'text', label: '申请号', prop: 'apn', sortable: true, width: '130'},
+          { type: 'text', label: '申请号', prop: 'apn', sortable: true, width: '220'},
           { type: 'text', label: '开始时间', prop: 'start_time', show: false, sortable: true, width: '190'},
           { type: 'text', label: '完成时间', prop: 'end_time', sortable: true, width: '190'},
           { type: 'text', label: '指定期限', prop: 'due_time', show: false, sortable: true, width: '190'},
