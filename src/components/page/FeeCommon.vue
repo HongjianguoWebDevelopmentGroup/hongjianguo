@@ -64,10 +64,44 @@ export default {
 		  		{ type: 'text', label: '费用对象', prop: 'target', render_simple: 'name', width: '190' },
 		  		{ type: 'text', label: '费用名称', prop: 'code', render_simple: 'name', width: '190' },
 		  		//{ type: 'text', label: '费用类型', prop: 'type_name', width: '190' },
-		  		{ type: 'text', label: '金额', prop: 'fee', width: '80' },
-		  		{ type: 'text', label: '汇率', prop: 'roe', is_import: true, width: '80' },
-		  		{ type: 'text', label: '币种', prop: 'currency', is_import: true, width: '80' },
-		  		{ type: 'text', label: '人民币', prop: 'amount', is_import: true, width: '100' },
+		  		          { 
+            type: 'text', 
+            label: '外币金额', 
+            prop: 'amount', 
+            width: '100',
+            align: 'right',
+            render:(h,item,row)=>{
+              if( row.roe == 1 ){
+                return h('span','N/A');
+              }else{
+                return h('span',`${item}${row.currency}`);
+              }
+            } 
+          },
+          { 
+            type: 'text', 
+            label: '汇率', 
+            prop: 'roe', 
+            width: '80',
+            align: 'right',
+            render:(h,item)=>{
+              if( item == 1 ){
+                return h('span','N/A');
+              }else{
+                return h('span',item);
+              } 
+            }
+          },
+          { 
+            type: 'text', 
+            label: '人民币金额', 
+            prop: 'rmb', 
+            width: '120',
+            align: 'right',
+            render:(h,item)=>{
+              return h('span',`${item}CNY`)
+            }
+          },
 		  		{ type: 'text', label: '状态', prop: 'status', render_simple: 'name', width: '180'},
           { type: 'text', label: '案件类型', prop: 'category', width: '145' },
           { type: 'text', label: '专利类型', prop: 'patent_type', width: '145' },
