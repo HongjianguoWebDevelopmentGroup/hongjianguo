@@ -49,29 +49,34 @@
         </el-menu>
 
       </div>
-    <div class="container" v-loading="loading" :element-loading-text="loadingText" :style="`min-height: ${innerHeight-10}px; padding: 10px 15px 0; background-color: #F9FAFC;overflow:hidden;`">
-      <!-- <h1 class="container-menu"><i :class="select.icon"></i><span>{{ select.text }}</span></h1> -->
-      <div class="container-nav">
-        <el-breadcrumb separator=">">
-          <el-breadcrumb-item v-for="item in select_arr" :to="item.path" :key="item.path">
-            <i :class="item.icon"></i>{{ item.text }}
-          </el-breadcrumb-item>
-          <el-breadcrumb-item v-if="screen_label.length != 0" class="container-nav-screen">
-            <el-tag 
-              v-for="(tag, index) in screen_label"
-              :closable="true"
-              :key="tag" 
-              type="primary"
-              :close-transition="false"
-              @close="handleClose(index)"
-            >
-              {{ tag }}
-            </el-tag>
-          </el-breadcrumb-item>
-        </el-breadcrumb>
-      </div>
+    <div v-loading="loading" :element-loading-text="loadingText" >
+      <div :style="`height: ${innerHeight-10}px; padding: 10px 15px 0; background-color: #F9FAFC;overflow:auto;`">
+        <div class="container">
+          <!-- <h1 class="container-menu"><i :class="select.icon"></i><span>{{ select.text }}</span></h1> -->
+          <div class="container-nav">
+            <el-breadcrumb separator=">">
+              <el-breadcrumb-item v-for="item in select_arr" :to="item.path" :key="item.path">
+                <i :class="item.icon"></i>{{ item.text }}
+              </el-breadcrumb-item>
+              <el-breadcrumb-item v-if="screen_label.length != 0" class="container-nav-screen">
+                <el-tag 
+                  v-for="(tag, index) in screen_label"
+                  :closable="true"
+                  :key="tag" 
+                  type="primary"
+                  :close-transition="false"
+                  @close="handleClose(index)"
+                >
+                  {{ tag }}
+                </el-tag>
+              </el-breadcrumb-item>
+            </el-breadcrumb>
+          </div>
+
+          <router-view :key="$route.path.split('__')[0]" ></router-view>
+        </div>
       
-      <router-view :key="$route.path.split('__')[0]" ></router-view>
+      </div>
     </div>
 
     <agency-load :visible="agencyLoadVisible"></agency-load>
@@ -131,6 +136,8 @@ export default {
       'innerHeight',
       'loading',
       'loadingText',
+      'viewLoading',
+      'viewLoadingText',
       'username',
       'leftVisible',
       'agencyLoadVisible',

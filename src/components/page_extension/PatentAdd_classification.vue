@@ -2,10 +2,10 @@
   <app-collapse col-title="提案信息">
       <el-form label-width="120px">
 				<el-form-item label="产品分类">
-					<product v-model="form.products" multiple></product>
+					<product v-model="form.products" count-type="patent" multiple></product>
 				</el-form-item>
 				<el-form-item label="技术分类">
-					<classification v-model="form.classification"></classification>
+					<classification v-model="form.classification" count-type="patent"></classification>
 				</el-form-item>
 				<el-form-item label="标签">
           <static-select type="tag" v-model="form.tags" multiple></static-select>

@@ -8,6 +8,7 @@
 	    :value="value"
 	    :multiple="multiple"
 	    action
+	    :count-type="countType"
 	    url="/api/products"
 	    @refresh="refresh"
 	    @update:value="handleValue" 

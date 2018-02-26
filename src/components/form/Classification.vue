@@ -9,6 +9,7 @@
 	    :multiple="multiple"
 	    @update:value="handleValue"
 	    action
+	    :count-type="countType"
 	    ref="tree"
       url="/api/classifications"
       @refresh="refresh"

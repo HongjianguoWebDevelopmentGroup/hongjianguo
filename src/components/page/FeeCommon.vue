@@ -14,8 +14,8 @@
       </div>
       <remote-select v-if="invoicePopType=='put'" v-model="fee_invoice_pop" style="margin-bottom: 10px;" :type="feeType ? 'bill' : 'pay'"></remote-select>
       <div>
-      <el-button v-if="invoicePopType=='add'" type="primary" @click="invoiceAdd" :disabled="btn_disabled">确认新建</el-button>
-      <el-button v-if="invoicePopType=='put'" type="primary" @click="invoicePut" :disabled="btn_disabled">确认添加</el-button>
+      <el-button v-if="invoicePopType=='add'" type="primary" @click="invoiceAdd" :loading="btn_disabled">{{btn_disabled ? '新建中...' : '确认新建'}}</el-button>
+      <el-button v-if="invoicePopType=='put'" type="primary" @click="invoicePut" :loading="btn_disabled">{{btn_disabled ? '添加中...' : '确认添加'}}</el-button>
       </div>
     </el-dialog>
   </div>
@@ -28,6 +28,7 @@ import Pop from '@/components/page_extension/feeCommon_pop'
 import FeeStatus from '@/components/form/FeeStatus'
 import RemoteSelect from '@/components/form/RemoteSelect'
 import {mapActions} from 'vuex'
+import {mapGetters} from 'vuex'
 
 const URL = '/api/fees';
 const URL_INVOICE = '/api/invoices';
@@ -107,8 +108,22 @@ export default {
           { type: 'text', label: '专利类型', prop: 'patent_type', width: '145' },
           { type: 'text', label: '案件名称', prop: 'title', width: '189' },
           { type: 'text', label: '申请号', prop: 'apn', width: '200' },
-          { type: 'text', label: '申请日', prop: 'apd',  width: '175' },
-          { type: 'text', label: '地区', prop: 'area', render_simple: 'name', width: '210' },
+          { 
+            type: 'text', 
+            label: '申请日', 
+            prop: 'apd',  
+            width: '175',
+            render_text: item=>item ? this.$tool.getDate(new Date(item*1000)) : '',
+          },
+          { 
+            type: 'text', 
+            label: '地区', 
+            prop: 'area', 
+            render_text: item=>{
+              return item.id ? this.areaMap.get(item.id) : '';
+            }, 
+            width: '210' 
+          },
           { type: 'text', label: '发文日', prop: 'mail_date', width: '175' },
           { type: 'text', label: '创建日期', prop: 'create_time', width: '175' },
           { type: 'text', label: '费用期限', prop: 'due_time', is_import: true, width: '175' },
@@ -143,8 +158,10 @@ export default {
     }
   },
   computed: {
-    feeType () {
-      
+    ...mapGetters([
+      'areaMap',
+    ]),
+    feeType () {      
       const path = this.$route.path;
       const type = /income/.test(path) ? 1 : 0;
 
@@ -169,9 +186,9 @@ export default {
   },
   methods: {
     ...mapActions([
-      'refreshFeeCodes',
-      'refreshRoeData',
-      'refreshUser',
+      'refreshRoeData',//cache.js
+      'refreshUser',//current-user.js
+      'initializeSelectorCache',//selector-cache.js
     ]),
     refreshTableData (option) {
       if(this.fee_invoice instanceof Object) return;
@@ -313,7 +330,7 @@ export default {
     }
   },
   mounted () {
-    this.refreshFeeCodes();
+    this.initializeSelectorCache({type: 'fee_code'});
     this.refreshRoeData();
     if(this.$route.query.id) {
       this.fee_status = this.feeType ? 1 : 2;

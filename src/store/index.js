@@ -20,6 +20,7 @@ import sysmesg from '@/store/modules/sysmesg.js'
 import configs from '@/store/modules/configs.js'
 import extendFields from '@/store/modules/extend-fields.js'
 import cache from '@/store/modules/cache.js'
+import selectorCache from '@/store/modules/selector-cache.js'
 import tool from '@/const/tool.js'
 Vue.use(Vuex);
 
@@ -32,6 +33,8 @@ const store = new Vuex.Store({
     status: 0, //这里进行地址代理控制, 为1时去掉/api, 为0时保留
     loading: false,
     loadingText: '',
+    view_loading: false,
+    view_loading_text: '',
     shrinkLoading: false,
     shrinkLoadingText: '',
     inner_height: 0,
@@ -60,11 +63,14 @@ const store = new Vuex.Store({
     configs,
     extendFields,
     cache,
+    selectorCache,
   },
   getters: {
     getDragId: state=>state.dragId,
     loading: state=>state.loading,
     loadingText: state=>state.loadingText,
+    viewLoading: state=>state.view_loading,
+    viewLoadingText: state=>state.view_loading_text,
     shrinkLoading: state=>state.shrinkLoading,
     shrinkLoadingText: state=>state.shrinkLoadingText,
     innerHeight: state=>state.inner_height,
@@ -84,6 +90,10 @@ const store = new Vuex.Store({
     },
     AXIOS_FAILURE () {
       alert('网络错误');
+    },
+    setViewLoading(state, {loading=false, text="加载中..."}) {
+      state.loading = loading;
+      state.loadingText = text;
     },
     onLoading (state, text="加载中...") {
       state.loadingText = text;
@@ -112,7 +122,7 @@ const store = new Vuex.Store({
     },
     setImportLoading(state, boolean) {
       state.importLoading = boolean;
-    }
+    },
   },
   actions: {
     onShrinkLoading({state, commit},text="加载中...") {

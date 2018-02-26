@@ -34,7 +34,7 @@
       <el-row>
         <el-col :span="12">
           <el-form-item label="产品分类" prop="product">
-            <product v-model="form.product" multiple></product>
+            <product v-model="form.product" count-type="copyright" multiple></product>
           </el-form-item>
         </el-col>
         <el-col :span="12">
@@ -76,10 +76,15 @@ export default {
   data () {
 		return {      
 		  form: {
-      	apd: [],
+      	type: [],
+        proposer: [],
+        applicant: [],
+        apd: [],
         issue_date: [],
         product: [],
+        agent: [],
         agency: [],
+        tag: [],
       }
 		}
   },
