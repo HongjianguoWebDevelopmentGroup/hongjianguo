@@ -23,156 +23,8 @@
     </el-select>
   </div>
 </template>
-
-
 <script>
 
-
-
-const config = [
-  ['agency_scope', {
-    placeholder: '请选择代理机构业务范围',
-    options: [
-      { name: '国内新申请', id: '国内新申请'},
-      { name: '国外新申请', id: '国外新申请'},
-      { name: '国内无效诉讼', id: '国内无效诉讼'},
-      { name: '国外无效诉讼', id: '国外无效诉讼'},
-      { name: '分析', id: '分析'},
-    ]
-  }],
-  ['ipr', {
-    placeholder: '请选择IPR',
-    options: 'iprOptions',
-    refresh: 'refreshIpr',
-  }],
-  ['case_type', {
-    placeholder: '请选择案件类型',
-    options: [
-      { id: 0, name: '提案' },
-      { id: 1, name: '专利' },
-      { id: 2, name: '商标' },
-      { id: 3, name: '版权' },
-    ]
-  }],
-  ['patent_type', {
-    placeholder: '请选择专利类型',
-    options: [
-      { name: '发明专利', id: 1 },
-      { name: '实用新型', id: 2 },
-      { name: '外观设计', id: 3 },
-      { name: '发明+新型', id: 4 },
-    ]
-  }],
-  ['patent_type_strainer', {
-    placeholder: '请选择专利类型',
-    options: [
-      { name: '发明专利', id: 1 },
-      { name: '实用新型', id: 2 },
-      { name: '外观设计', id: 3 },
-    ]
-  }],
-  ['product_relevance', {
-    placeholder: '请选择产品相关',
-    options: [
-      { name: '是', id: 1 },
-      { name: '否', id: 0 },
-      { name: '预研阶段', id: 2 },
-    ]
-  }],
-  ['agency_type', {
-    placeholder: '请选择代理类型',
-    options: [
-      {id:1, name:"申请及OA阶段"},
-      {id:2, name:"OA阶段"},
-      {id:3, name:"复审阶段"},
-      {id:4, name:"无效阶段"},
-      {id:5, name:"被无效答复"},
-      {id:6,name:"分析"}
-    ]
-  }],
-  ['file_type', {
-    placeholder: '请选择文件类型',
-    url: '/api/fileTypes',
-  }],
-  ['file_type_patent', {
-    placeholder: '请选择专利文件类型',
-    url: '/api/fileTypes?category=1',
-  }],
-  ['file_type_copyright', {
-    placeholder: '请选择版权文件类型',
-    url: '/api/fileTypes?category=3',
-  }],
-  ['group', {
-    placeholder: '请选择用户组',
-    options: 'groupOptions',
-  }],
-  ['mail', {
-    placeholder: '请输入邮箱地址',
-    url: '/api/mailAddress',
-    handle (data) {
-      return data.list.map(_=>{return {id: _.value, name: _.label}});
-    },
-    allowCreate: true,
-    defaultFirstOption: true,
-  }],
-  ['tag', {
-    placeholder: '请输入或选择标签',
-    url: '/api/tags',
-    handle (data) {
-      return data.tags.map(_=>{return {id: _.tag, name: _.tag}});
-    },
-    allowCreate: true,
-    defaultFirstOption: true,
-  }],
-  ['area', {
-    placeholder: '请选择地区',
-    options: 'areaData',
-  }],
-  ['flow_node', {
-    placeholder: '请选择流程节点',
-    url: '/api/flownodes',
-    handle: _=>_.flownodes,
-    // set: 'setFlowNodes',
-    // refresh: 'refreshFlowNodes',
-  }],
-  ['fee_code', {
-    placeholder: '请选择费用代码',
-    options: 'feeCodes'
-  }],
-  ['fee_target_income', {
-    placeholder: '请选择收入对象',
-    url: '/api/feeTargets',
-    params: {
-      debit: 1,
-    },
-  }],
-  ['fee_target_expenditure', {
-    placeholder: '请选择支出对象',
-    url: '/api/feeTargets',
-    params: {
-      debit: 0,
-    }
-  }],
-  ['progress', {
-    placeholder: '请选择当前进度',
-    url: '/api/progress',
-  }],
-  ['branch', {
-    placeholder: '请选择部门',
-    options: 'branchOptions',
-  }],
-  ['copyright_type', {
-    placeholder: '请选择版权类型',
-    options: [
-      { name: '计算机软件著作权', id: 1 },
-      { name: '文字作品著作权', id: 2 },
-      { name: '美术作品著作权', id: 3 },
-      { name: '影视作品著作权', id: 4 },
-    ]
-  }]
-];
-
-const map = new Map(config);
 
 //远程请求的静态代码需要在这里注册一个储存器
 const dataMap = new Map([
@@ -191,6 +43,8 @@ const dataMap = new Map([
 //-----------------------------配置数据分界线-----------------------------------------------
 
 import AxiosMixins from '@/mixins/axios-mixins'
+import {mapGetters} from 'vuex'
+import {mapActions} from 'vuex'
 
 export default {
   name: 'staticSelect',
@@ -210,19 +64,17 @@ export default {
     },
     'type': null,
   },
-  data () {
-
-    let o = dataMap.get(this.type);
-    o = o ? o : null;
-    
+  data () {    
     return {
-      cacheData: o,
       options: [],
     }
   },
   computed: {
+    ...mapGetters ([
+      'staticSelectorMap',//位于selector-cache.js
+    ]),
   	config () {
-  		const config = map.get(this.type);
+  		const config = this.staticSelectorMap.get(this.type);
   		return config ? config : this.type;
   	},
     map () {
@@ -249,6 +101,9 @@ export default {
     }
   },
   methods: {
+    ...mapActions([
+      'initializeSelectorCache'
+    ]),
     handleInput (val) {
       this.$emit('input', val);
     },
@@ -289,27 +144,9 @@ export default {
           this.options = op;
         }
 
-      }else if(op === undefined && this.cacheData) {
-        
-        //初始化缓存数据,这里利用了对象的索引特性,所以在回掉函数改变cacheData之后,同类型组件的options都会改变
-        //但是这会导致同一类型的组件的options实际上共用一个数组
-        //如果需要每个组件的options数组私有,可使用拷贝函数与watch
-        if(this.cacheData.data == null) {
-          this.cacheData.data = [];
-          if(this.config.url) {
-            const url = this.config.url;
-            const data = this.config.params ? this.config.params : {};
-            const success = _=>{
-              const handle = this.config.handle;
-              const r = handle ? handle(_) : _.list;
-
-              this.cacheData.data.push(...r);
-            }
-
-            this.axiosGet({url, data, success});
-          }
-        }
-        this.options = this.cacheData.data;
+      }else if(op === undefined && this.config.url !== undefined) {
+        //初始化静态数据 并放入存储器
+        this.initializeSelectorCache({ type: this.type, func: _=>{this.options = _} });
       }
 
     }

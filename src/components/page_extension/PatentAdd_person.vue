@@ -15,9 +15,16 @@
         <el-form-item label="摘要">
           <el-input type="textarea" v-model="form.abstract" placeholder="请填写专利摘要" :rows="6" class="custom-textarea"></el-input>
         </el-form-item>
-        <el-form-item label="案件等级" v-if="type == 'edit'">
-          <span>{{ form.level ? form.level : '暂未设置案件等级' }}</span>
+        
+        <el-form-item prop="level" label="案件等级">
+          <el-radio-group v-model="form.level">
+            <el-radio-button label="A"></el-radio-button>
+            <el-radio-button label="B"></el-radio-button>
+            <el-radio-button label="C"></el-radio-button>
+            <el-radio-button label="D"></el-radio-button>
+          </el-radio-group>
         </el-form-item>
+
         <el-form-item label="公告日">
           <el-date-picker v-model="form.issue_date" type="date" placeholder="请选择公告日"></el-date-picker>
         </el-form-item>

@@ -250,6 +250,7 @@ export default {
               }
               // if(this.ifTitle) this.form.title = this.data.title;
               if(this.fields.type) this.form.type = 1;
+              if(this.fields.level) this.form.level = this.data.level ? this.data.level : '';
               if(this.defaultVal == 'ipr') {
                 this.form.person_in_charge = person_in_charge['id'];
               }else {

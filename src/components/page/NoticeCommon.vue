@@ -122,7 +122,6 @@ export default {
 			this.axiosGet({url, data, success});
 		}
 	},
-	components: { TableComponent, Strainer },
 	created () {
 		this.tableOption.import_type = this.config.import_type;
 		this.tableOption.upload_type = this.config.upload_type;		
@@ -130,7 +129,11 @@ export default {
 	},
 	mounted () {
 		this.refresh();
-	}
+	},
+	components: { 
+		TableComponent, 
+		Strainer, 
+	},
 }
 </script>
 

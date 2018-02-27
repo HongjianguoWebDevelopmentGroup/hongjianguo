@@ -23,8 +23,8 @@
 
       <el-row>
         <el-col :span="12">
-          <el-form-item prop="case_type" label="案件类型">
-            <static-select type="case_type" v-model="form.case_type" multiple></static-select>
+          <el-form-item prop="category" label="案件类型">
+            <static-select type="case_type" v-model="form.category" multiple></static-select>
           </el-form-item>
         </el-col>
         <el-col :span="12">
@@ -108,7 +108,7 @@ export default {
         due_time: [],
         deadline: [],
         pay_time: [],
-        case_type: [],
+        category: [],
         patent_type: [],
         apd: [],
         area: [],

@@ -131,6 +131,7 @@ export default {
       loading: false, 
   		selected: [],
   		static_map: [],
+      numberHandle: ['member', 'applicant', 'inventor', 'agent', 'agency', 'project', 'proposal', 'patent', 'copyright', 'bill', 'pay'],//需要做number类型处理的数据集合
   	};
   },
   methods: {
@@ -195,19 +196,31 @@ export default {
       const key = this.DATA_KEY;
       const url = this.URL;
       const data = os ? Object.assign({}, s, os) : s;
-      const success = _=>{
+      const success = d=>{
+        const list = d[key];
+        if(!list) return this.options = [];
+        if(list[0] && list[0]['label'] && list[0]['value'] ) {
+          list.forEach(_=>{
+            _.name = _.label;
+            _.id = _.value;
+          });  
+        }
+        
+
+        if( this.digitalHandle  ) {
+          list.forEach(_=>{
+            _.id = _.id - 0;
+          })
+        } 
+        
+        this.options = list;
+      }
+      const complete = _=>{
         this.loading = false;
-        _[key] = _[key].map(_=>{
-          if(!_.name) _.name = _.label;
-          if(!_.id) _.id = _.value;
-          
-          return _;
-        });
-        this.options = _[key];
       }
 
       this.loading = true;
-      this.axiosGet({url, data, success});
+      this.$axiosGet({url, data, success, complete});
     },
     clear (flag = true) {
       this.selected = [];
@@ -220,6 +233,11 @@ export default {
     }
   },
   computed: {
+    //是否数字化处理
+    digitalHandle () {
+      if(!this.type) return false;
+      return this.numberHandle.indexOf(this.type) >= 0;
+    },
   	choose () {
   		if(typeof this.type == 'string') {
   			return map.get(this.type);	
@@ -276,20 +294,33 @@ export default {
   		return map;
   	},
     value2 () {
-      // console.log(this.value);
+      let val;
+      
+      //将单项统一处理为数组 single时保留原状
       if(!this.multiple && !this.single) {
         // console.log(this.value == "" || (this.value instanceof Object && this.$tool.getObjLength(this.value) == 0 ) ? [] : [ this.value ]);
-        return this.value == "" || (this.value instanceof Object && this.$tool.getObjLength(this.value) == 0 ) ? [] : [ this.value ];
+        val = this.value == "" || (this.value instanceof Object && this.$tool.getObjLength(this.value) == 0 ) ? [] : [ this.value ]; //空字符串 空对象处理
       }else {
-        return this.value;
+        val = this.value;
       }
+
+      //数字化处理
+      if(this.digitalHandle) {
+        if(val instanceof Array && typeof val[0] == 'string') {
+          val = val.map(_=>{
+            return typeof _ == 'string' && _ ? val - 0 : val;
+          })
+        }else if(typeof val == 'string' && val){
+          val = val - 0;
+        }
+      }
+
+      return val;
+      
     }
   },
   watch: {
   	value2 (val) {
-      // console.log('-------------val');
-      // console.log(val);
-      // console.log('-------------val');
       //value类型为对象时，添加静态映射，并将其值转为id
       if( !this.single ) {
       // if( !this.multiple && !this.single && this.$refs.select) {

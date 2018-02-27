@@ -41,7 +41,7 @@
 
         
           <el-badge :value="pendingTaskCount" class="task-pending-top">
-            <el-button size="mini" icon="warning" type="primary" @click="$router.push('/task/pending')" title="待办任务"></el-button>
+            <el-button size="mini" icon="warning" type="primary" @click="warningClick" title="待办任务"></el-button>
           </el-badge>
           
     </nav>
@@ -177,6 +177,12 @@ export default {
         //   this.$router.push('/task/pending');
         // }, 5000);
       }
+    },
+    warningClick () {
+      this.$router.push('/loading');
+      this.$nextTick(_=>{
+        this.$router.push('/task/pending');
+      })
     },
     handleClose (index) {
       this.$store.commit('removeScreen', index);
