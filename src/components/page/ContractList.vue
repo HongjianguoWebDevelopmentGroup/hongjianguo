@@ -33,13 +33,22 @@ export default {
           { type: 'selection' },
 		  		{ type: 'text', label: '合同编号', prop: 'serial', sortable: true, width: '210' },
 		  		{ type: 'text', label: '合作方', prop: 'party', render_simple: 'name', sortable: true, width: '260' },
-		  		{ type: 'array', label: '扫描件', prop: 'files', width: '200', render: (h,item)=>{
-            return h('a',{
-              attrs:{
-                href: item.map(_=>_.viewUrl), 
-              }
-            })
-          }},
+		  		{ type: 'text', label: '扫描件', prop: 'files', width: '200', render: (h,item)=>{
+           return h(
+                'span', 
+                item.map(function (g) {
+                    return h('a', 
+                    {
+                      style: {
+                      marginRight: '2px',
+                  },
+                      attrs: {
+                    href: g.downloadUrl,
+                  },
+                  },g.name)
+                })
+              )
+            }},
           { type: 'text', label: '上传日期', prop: 'upload_date', sortable: true, width: '160' },
           { type: 'text', label: '上传用户', prop: 'uploader',render_simple: 'name', sortable: true, width: '150' },
           { type: 'text', label: '签订日期', prop: 'signing_date', sortable: true, width: '160' },
@@ -65,12 +74,12 @@ export default {
       this.popType = 'add';
   		this.$refs.pop.show();
   	},
-  	editPop (col) {
+  	editPop (row) {
       this.popType = 'edit';
-  		this.$refs.pop.show('edit', col);
+  		this.$refs.pop.show(row);
   	},
   	deleteSingle ({id, name}) {
-  		this.$confirm(`删除后不可恢复，确认删除合同‘${name}’？`)
+  		this.$confirm(`删除后不可恢复，确认删除合同‘${name}’？`,'删除确认',{type : 'warning'})
         .then(_=>{
           const url = `${URL}/${id}`;
           const success = _=>{
@@ -85,7 +94,10 @@ export default {
   	refreshTableData (option) {
       const url = URL;
       const data = Object.assign({}, option);
-      const success = _=>{ this.tableData = _.data };
+      const success = _=>{ 
+        console.log(_.list);
+        this.tableData = _.list 
+      };
 
       this.$axiosGet({url, data, success});
   	},
