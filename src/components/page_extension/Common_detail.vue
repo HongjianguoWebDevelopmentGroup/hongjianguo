@@ -2,8 +2,9 @@
   <div>
     <app-shrink :title="title" :visible=visibleAuth @update:visible="handleVisible">
       <span slot="header" style="float: right">
-        <el-button size="small" type="primary" @click="edit">保存</el-button>
-        <el-button style="margin-left: 5px;" size="small" type="danger" @click="dialogClosed=true" v-if="type == 'patent'">结案</el-button>
+        <el-button size="small" type="primary" @click="edit" :disabled="btnDisabled">保存</el-button>
+        <el-button style="margin-left: 5px;" size="small" type="danger" @click="dialogClosed = true" v-if="type == 'patent'" :disabled="btnDisabled">结案</el-button>
+        <el-button style="margin-left: 5px;" size="small" @click="handleCancle" v-if="type == 'patent'" :disabled="btnDisabled">撤回委托</el-button>
       </span>
       <div  v-loading="detailLoading && visibleAuth" :element-loading-text="config.loadingText" :style="divStyle">
         <el-tabs v-model="activeName">
@@ -81,6 +82,7 @@ export default {
 		  activeName: 'base',
       rendered: false,
       dialogClosed: false,
+      btnDisabled: false,
 		}
   },
   computed: {
@@ -144,6 +146,23 @@ export default {
     },
     closeProjectSubmit () {
 
+    },
+    handleCancle () {
+      this.$confirm('此操作将对当前专利进行撤回委托的操作, 是否继续?', '提示', {type: 'warning'})
+        .then(_=>{
+          this.btnDisabled = true;
+          this.$axiosPut({
+            url: `/api/projects/${this.id}/withdraw`,
+            success: _=>{
+              this.$message({type: 'success', message: '撤回委托成功'});
+              this.refreshDetail();
+            },
+            complete: _=>{
+              this.btnDisabled = false;
+            }
+          })
+        }).catch(_=>{});
+      
     }
   },
   watch: {

@@ -18,6 +18,7 @@ import taskDef from '@/store/modules/task-def.js'
 import currentUser from '@/store/modules/current-user.js'
 import sysmesg from '@/store/modules/sysmesg.js'
 import cache from '@/store/modules/cache.js'
+import selectorCache from '@/store/modules/selector-cache.js'
 import tool from '@/const/tool.js'
 Vue.use(Vuex);
 
@@ -56,6 +57,7 @@ const store = new Vuex.Store({
     currentUser,
     sysmesg,
     cache,
+    selectorCache
   },
   getters: {
     getDragId: state=>state.dragId,

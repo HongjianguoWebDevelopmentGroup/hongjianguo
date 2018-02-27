@@ -21,16 +21,16 @@
         </template>
 
         <template v-else-if="btn.type == 'control'">
-          <el-dropdown trigger="click" :hide-on-click="false" menu-align="start" >
-            <el-button class="table-header-btn" type="primary" :icon="btn.icon ? btn.icon : 'menu'">
-              {{ btn.label ? btn.label : '字段'}}<i class="el-icon-caret-bottom el-icon--right"></i>
+          <!-- <el-dropdown trigger="click" :hide-on-click="false" menu-align="start" > -->
+            <el-button class="table-header-btn" type="primary" :icon="btn.icon ? btn.icon : 'menu'" @click="dialogControl = true">
+              {{ btn.label ? btn.label : '字段'}}
             </el-button>
-            <el-dropdown-menu slot="dropdown" style="max-height: 500px; overflow-y: auto; overflow-x:  hidden;">
+<!--             <el-dropdown-menu slot="dropdown" style="max-height: 500px; overflow-y: auto; overflow-x:  hidden;">
               <el-dropdown-item style="padding: 0 20px; line-height: 25px;" v-for="(col, index) in tableControl" :key="index" v-if="col.type != 'selection' && col.type != 'action' && col.type != 'expand' && col.show_option">
                 <el-checkbox :label="col.label" v-model="col.show" @change="handleControlChange"></el-checkbox>
               </el-dropdown-item>
             </el-dropdown-menu>
-          </el-dropdown>
+          </el-dropdown> -->
         </template>
 
         <template v-else-if="btn.type == 'dropdown'">
@@ -96,7 +96,8 @@
 	    ></search-input>
     </div>
     
-  	<el-table 
+  	<el-table
+      v-if="refreshRender"
       :data="tableData"
       stripe
       :border="tableOption.is_border != undefined ? tableOption.is_border : true" 
@@ -114,7 +115,7 @@
       :class="tableOption.empty_text_position == 'topLeft' ? 'empty-top-left' : ''"
       ref="table"
     >
-      <template v-for="(col, index) in tableOption.columns">
+      <template v-for="(col, index) in columns">
         
         <template v-if="col.type == 'selection'">
           <el-table-column type="selection" :fixed="col.fixed === false ? false : 'left'"></el-table-column>
@@ -129,7 +130,7 @@
           </el-table-column>
         </template> -->
 
-        <template v-else-if="col.type == 'text' && tableControl[index]['show']" >
+        <template v-else-if="col.type == 'text'" >
           
           <template v-if="col.render ? true : false">
             <el-table-column :label="col.label" :prop="col.prop" :width="col.width ? col.width : ''" :min-width="col.min_width ? col.min_width : ''" :sortable="col.sortable ? 'custom' : false" :show-overflow-tooltip="col.overflow !== undefined ? col.overflow : true">
@@ -164,12 +165,12 @@
         </template>
 
         <template v-else-if="col.type == 'date'">
-          <el-table-column :label="col.label" :prop="col.prop" v-if="tableControl[index]['show']">
+          <el-table-column :label="col.label" :prop="col.prop">
           </el-table-column>
         </template>
 
         <template v-else-if="col.type == 'array'">
-          <el-table-column :label="col.label" :prop="col.render ? `${col.prop}__render` : col.prop" :width="col.width ? col.width : ''" :min-width="col.min_width ? col.min_width : ''" v-if="tableControl[index]['show']" :sortable="col.sortable ? 'custom' : false" :show-overflow-tooltip="col.overflow !== undefined ? col.overflow : true">
+          <el-table-column :label="col.label" :prop="col.render ? `${col.prop}__render` : col.prop" :width="col.width ? col.width : ''" :min-width="col.min_width ? col.min_width : ''" :sortable="col.sortable ? 'custom' : false" :show-overflow-tooltip="col.overflow !== undefined ? col.overflow : true">
             <template slot-scope="scope">
 
               <el-tag v-for="(item, i) in scope.row[scope.column.property]" style="margin-left: 5px;" close-transition :key="i">{{ item }}</el-tag>
@@ -232,9 +233,22 @@
   
     
       <app-import v-if="tableOption.import_type !== undefined" :visible.sync="dialogImportVisible" :columns="import_columns" :type="tableOption.import_type" @import-success="handleImportSuccess"></app-import>
+
+
     
 
     <file-upload v-if="tableOption.upload_type !== undefined" :type="tableOption.upload_type" @uploadSuccess="refresh" ref="file_upload"></file-upload>
+
+    <el-dialog class="dialog-control" :visible.sync="dialogControl" title="字段控制" @close="transferValue = control; $refs.transfer.clear();">
+        <div style="margin-bottom: 10px;
+    padding-left: 50px;
+    color: rgb(132, 146, 166);">提示：可拖动字段调整顺序</div>
+        <app-transfer ref="transfer" title1="未显示" title2="已显示" placeholder="查询字段..." v-model="transferValue" style="text-align: center;"></app-transfer>
+        <div style="margin-top: 20px;margin-left: 45px;">
+          <el-button type="primary" @click="controlSave">保存</el-button>
+          <el-button type="danger" @click="dialogControl = false">取消</el-button>
+        </div>
+    </el-dialog>
   </div>
 </template>
 
@@ -246,6 +260,8 @@ import AppFilter from '@/components/common/AppFilter'
 import AppImport from '@/components/common/AppImport'
 import FileUpload from '@/components/common/FileUpload'
 import SearchInput from '@/components/common/SearchInput'
+import AppTransfer from '@/components/common/AppTransfer'
+
 import { mapGetters } from 'vuex'
 const methods = Object.assign({}, tableConst.methods, {
   headerBtnIf (_) {
@@ -269,11 +285,8 @@ const methods = Object.assign({}, tableConst.methods, {
     if(func) func(a,b,c);
   },
   handelExport(func, e) {
-    const fields = this.tableControl.filter(_=>{
-      if(_.show && _.prop) {
-        return true;  
-      }
-    }).map(_=>_.prop);
+    
+    const fields = this.control[1].map(_=>_.value);
 
     if(func) {
       func(e)
@@ -436,11 +449,6 @@ const methods = Object.assign({}, tableConst.methods, {
     this.search_value = "";
     this.update();
   },
-  handleControlChange () {
-    const name = this.tableOption.name;
-    const value = JSON.stringify(this.tableControl);
-    this.$tool.setLocal(name, value);
-  },
   handleRowClassName (row, index) {
 
     const func = this.tableOption.row_class;
@@ -457,6 +465,17 @@ const methods = Object.assign({}, tableConst.methods, {
   },
   setCurrentRow (row) {
     this.$refs.table.setCurrentRow(row);
+  },
+  controlSave () {
+    this.refreshRender = false;
+    this.control = this.transferValue;
+    this.dialogControl = false;
+
+    //存入cookie
+    this.$tool.setLocal(this.tableOption.name, JSON.stringify(this.control));
+
+    //element-ui的table插件因为一些缓存的设计在这里会发生错误,使用vue的v-if特性强制重新渲染table 
+    this.$nextTick(_=>{this.refreshRender = true});
   }
 });
 export default {
@@ -573,6 +592,44 @@ export default {
       }
 
       return height;
+    },
+    columns () {
+      let cols = this.tableOption.columns; 
+      if(cols && cols instanceof Array) {
+        const c = this.control[1];//字段控制器
+        const o = {};//hash映射
+        let s = '';//暂存selection项
+        let a = '';//暂存action项
+        const static_arr = [];//暂存不可调控的字段项
+        
+        //分离特殊项
+        cols.forEach(_=>{
+          if(_.prop) {
+            o[_.prop] = _;
+          }
+          if(_.show_option == false) {static_arr.push(_)};
+          if(_.type == 'selection') {s = _};
+          if(_.type == 'action') {a = _};
+        });
+
+        //按顺序调整字段
+        let arr = [];
+        c.forEach(_=>{
+          const item = o[_.key];
+          if(item) {
+            arr.push(item);
+          }
+        })
+
+        //无论论如何调整 selection总在最前 action总在最后 
+        //static_arr代表配置限制不可调整顺序的字段(通过show_option控制)
+        if(a) {arr.push(a)};
+        if(static_arr.length != 0) {arr = [...static_arr, ...arr]};
+        if(s) {arr.unshift(s)};
+        return arr;
+      }else {
+        return [];//columns值的错误处理
+      }
     }
   },
   watch: {
@@ -589,46 +646,78 @@ export default {
 
     const d = this;
     const cols = d.tableOption.columns;
+    let tableCookie = JSON.parse(this.$tool.getLocal(this.tableOption.name));
     
-    //获得有配置数据得到的控制器
-    let tableControl = [];
-    for (let c of d.tableOption.columns) {
-      let show = c.show == undefined ? true : c.show;
-      let type = c.type;
-      let label = c.label;
-      let show_option = c.show_option !== undefined ? c.show_option : true;
-      let prop = c.prop !== undefined ? c.prop : '';
-      tableControl.push({show, type, label, show_option, prop});        
-    }
-    //或得本地缓存的控制器
-    const cookieControl = JSON.parse(this.$tool.getLocal(this.tableOption.name));
-    
-    //当存在本地缓存时
-    //对两个控制器进行比对(主要针对代码修改阶段,字段不稳定)
-    if(cookieControl) {
-      const r = (_=>{
-        let i = tableControl.length;
-        
-        while(i--) {
-          if( !cookieControl[i] || tableControl[i]['prop'] != cookieControl[i]['prop'] ) {
-            return false;
-          }
-        }
+    //获取控制器
+    let control = [[],[]];
 
-        return true;
-      })();
-      //比对结果成功时使用缓存值,否则清空已有的无效缓存
-      console.log(r);
-      if(r) {
-        tableControl = cookieControl;
-      }else {
-        this.$tool.deleteLocal(this.tableOption.name);
+    for(let c of cols) {
+      let show = c.show == undefined ? true : c.show;
+      let show_option = c.show_option !== undefined ? c.show_option : true;
+      if(show_option && (c.type == 'text' || c.type == 'array') ) {
+        const item = { key: c.prop, value: c.prop, label: c.label };
+        if(show) {
+          control[1].push(item);
+        }else {
+          control[0].push(item);
+        }
       }
     }
 
+    //控制器合并获得fields集合
+    let fields = [...control[0], ...control[1]];
+    
+    //检测缓存中是否存在控制器
+    if(tableCookie) {
+      const cookieO = {};
+      const localO = {};  
+      
+      //一些本地缓存的异常检测
+      const error = (_=>{
+        //老版本缓存
+        if(!(tableCookie[0] instanceof Array)) {
+          return true;
+        }
+
+        //字段统一性验证  
+        tableCookie.forEach(_=>{
+          _.forEach(d=>{
+            cookieO[d.key] = false;
+          })
+        })
+
+        fields.forEach(d=>{
+          localO[d.key] = d;
+        })
+        
+        const cache = Object.assign({}, localO, cookieO);
+        if(this.$tool.getObjLength(localO) != this.$tool.getObjLength(cache)) return true;
+        for(let key in cache) {
+          if(cache[key]) {
+            return true;
+          }
+        }
+      })();
+
+      //若存在错误,则将本地缓存清空,无错误则替换原有控制器
+      if(error) {
+        this.$tool.deleteLocal(this.tableOption.name);
+      }else {
+        tableCookie.forEach(_=>{
+          _.forEach(d=>{
+            d.label = localO[d.key]['label'];
+          })
+        });
+        control = tableCookie;
+      }
+    }
+    
+    const transferValue = control;
+
 
     const data = {
-      tableControl,
+      control,
+      transferValue,
       expands: [],
       getRowKeys (row) {
         return row.id;
@@ -641,6 +730,8 @@ export default {
       dialogImportVisible: false,
       filterVisible: false,
       exportLoading: false,
+      dialogControl: false,
+      refreshRender: true,
     };
 
     return Object.assign({}, tableConst.data, data);
@@ -668,6 +759,7 @@ export default {
     AppImport,
     FileUpload,
     SearchInput,
+    AppTransfer,
   },
   mounted () {},
 }
@@ -677,6 +769,13 @@ export default {
 <style lang="scss">
 .table-header i.el-icon-menu {
   font-size: 13px;
+}
+#app .dialog-control>.el-dialog {
+  width: 600px;
+  position: static;
+  transform: initial;
+  margin: 0 auto;
+  margin-top: 80px;
 }
 /*.el-table__expand-column {
   display: none;

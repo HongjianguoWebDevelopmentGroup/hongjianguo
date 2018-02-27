@@ -112,6 +112,8 @@ const config = [
   }]
 ]
 const map = new Map(config);
+import {mapActions} from 'vuex'
+import {mapGetters} from 'vuex'
 
 export default {
   name: 'fileUpload',
@@ -147,6 +149,9 @@ export default {
   	}
   },
   methods: {
+    ...mapActions([
+      'initializeSelectorCache',
+    ]),
   	show () {
   		this.project_id = "";
   		this.dialogVisible = true;
@@ -222,7 +227,11 @@ export default {
         const dataList = a.data.list;
         dataList.forEach(_=>{
           if(_.type){
-            _.type = _.type.id;
+            if(_.type.id) {
+              _.type = _.type.id;
+            }else {
+              _.type = '';
+            }
           }
         });
   			this.tableData.push(...dataList);
@@ -238,6 +247,9 @@ export default {
     handleDelete (index) {
       this.tableData.splice(index, 1);
     }
+  },
+  created () {
+    this.initializeSelectorCache({type: this.config.file_type});
   },
   components: { 
     RemoteSelect,
