@@ -6,7 +6,7 @@ export default {
 			for (let k in form) {
 				const d = form[k];
 				if(d instanceof Array) {
-					if(d[0]) {
+					if(d[0] != undefined) {
 						if(d[0] instanceof Date) {
   							copy[k] = d.map(_=>this.$tool.getDate(_)).join(",")
 	  					}else {

@@ -10,6 +10,7 @@
 	    action
 	    url="/api/products"
 	    @refresh="refresh"
+	    :count-type="countType"
 	    @update:value="handleValue" 
 	    ref="tree"
 	  >
