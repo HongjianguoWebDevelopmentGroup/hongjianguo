@@ -14,13 +14,13 @@
 					</ul>
 				</app-collapse>
 				<table-component @refreshTableData="refreshTableData" :tableOption="tableOption" :data="tableData" ref="table">
-					<el-tag v-if="lastUpdate !== ''" slot="last_update" style="margin-left: 15px;">最后更新时间：{{ lastUpdate }}</el-tag>
+					<el-tag v-if="lastUpdate !== ''" slot="last_update" style="margin-left: 6px;">最后更新时间：{{ lastUpdate }}</el-tag>
 					<!-- <user-role v-model="user_role" slot="userRole" default style="width: 200px; margin-left: 5px;"></user-role> -->
 				</table-component>
   		</div>
 	
   	<pop :popType="popType" :group="current_group" @refresh="refresh" ref="pop"></pop>
-  	
+  	<div class="customModal" v-if="isVisible" style="width: 100%;height:100%;position: absolute;left: 0;top: 0;background:rgba(0,0,0,0.5);z-index: 10;"></div>
   	<el-dialog title="将所选用户添加至用户组" :visible.sync="dialogVisible" :close-on-click-modal="false">
 			<el-form label-width="100px">
 				<el-form-item label="用户组">
@@ -54,7 +54,8 @@ export default {
   mixins: [ AxiosMixins ],
   data () { 
 		return {
-			lastUpdate: '',
+          isVisible: false,
+		  lastUpdate: '',
 		  formLabelWidth: '100px',
 		  popType: '',
 		  tableOption: {
@@ -80,7 +81,7 @@ export default {
 		  		{ type: 'text', label: '微信号', prop: 'weixin', width: '200' },
 		  		{ type: 'text', label: 'QQ', prop: 'qq', width: '200' },
 		  		{ 
-		  			type: 'action', label: '操作', width: '150px',
+		  			type: 'action', label: '操作', width: '160',
 		  			btns: [
 		  				{ type: 'edit', click: this.editPop },
 		  				{ type: 'delete', click: this.deleteSingle }
@@ -136,7 +137,7 @@ export default {
 	},
 	methods: {
 	//true代表选择全部用户,false代表选择某个用户组
-    refreshTableOption (flag) {
+	refreshTableOption (flag) {
     	const h = this.tableOption.header_btn;
     	const one = { type: 'add', label: '添加至用户组',  click: this.toGroupPop };
     	const two = { type: 'delete', label: '移出当前用户组', click: this.removeGroup };
@@ -148,14 +149,16 @@ export default {
     },
 		addPop () {
 			this.popType = 'add';
+			this.isVisible = true;
 			this.$refs.pop.show();
 		},
 		editPop (row) {
 			this.popType = 'edit';
+			this.isVisible = true;
 			this.$refs.pop.show(row);
 		},
 		toGroupPop () {
-			const s = this.$refs.table.tableSelect;
+			const s = this.$refs.table.getSelected(true);
 			if( s.length == 0 ) {
 				this.$message({ message: '请选择需要添加的用户', type: 'warning' });
 				return false;
@@ -174,11 +177,11 @@ export default {
 				this.refresh();
 			}
 
-			this.axiosPut({url, success});
+			this.$axiosPut({url, success});
 
 		},
 		removeGroup () {
-			const s = this.$refs.table.tableSelect;
+			const s = this.$refs.table.getSelected(true);
 			if( s.length == 0 ) {
 				this.$message({ message: '请选择需要移除的用户', type: 'warning' });
 				return false;
@@ -195,7 +198,7 @@ export default {
 						this.refresh();
 					}
 
-					this.axiosDelete({url, data, success}); 
+					this.$axiosDelete({url, data, success}); 
 				})
 				.catch(()=>{});
 		},
@@ -207,9 +210,9 @@ export default {
 				this.refreshGroup();
 			};
 
-			this.$confirm(`删除后不可恢复，确认删除用户‘${username}’？`)
+			this.$confirm(`删除后不可恢复，确认删除用户‘${username}’？`,'删除确认',{type: 'warning'})
 				.then(_=>{
-					this.axiosDelete({url, success});
+					this.$axiosDelete({url, success});
 				})
 				.catch(_=>{});
 		},
@@ -223,13 +226,15 @@ export default {
 				this.lastUpdate = _.last_update ? _.last_update : ''; 
 			};
 			
-			this.axiosGet({url, data, success})
+			this.$axiosGet({url, data, success})
 		},
 		refresh (str) {
+			// console.log(str);
  			this.$refs.table.refresh();
 			if(str != 'noGroup') {
 				this.refreshGroup();
 			}
+			if(!str) return this.isVisible = false;
 		},
 		refreshGroup () {
 			this.$store.dispatch('refreshGroup');

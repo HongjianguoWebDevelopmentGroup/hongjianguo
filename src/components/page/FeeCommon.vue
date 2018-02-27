@@ -64,7 +64,7 @@ export default {
 		  		{ type: 'text', label: '费用对象', prop: 'target', render_simple: 'name', width: '190' },
 		  		{ type: 'text', label: '费用名称', prop: 'code', render_simple: 'name', width: '190' },
 		  		//{ type: 'text', label: '费用类型', prop: 'type_name', width: '190' },
-		  		          { 
+		  		{ 
             type: 'text', 
             label: '外币金额', 
             prop: 'amount', 
