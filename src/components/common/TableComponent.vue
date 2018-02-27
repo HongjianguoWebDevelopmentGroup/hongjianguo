@@ -474,7 +474,6 @@ export default {
     tableData () {
       const d = this.data;
       let r;
-      
       if(d instanceof Array) {
         r = d;
       }else {
@@ -492,7 +491,6 @@ export default {
           })
         }
       })
-      
       return r;
     },
     totalNumber () {
