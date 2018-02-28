@@ -11,15 +11,14 @@
         >
         </el-input>
         <el-checkbox-group :value="value" @input="handleInput" class="el-transfer-panel__list">
-        	<div class="app-transfer-panel__drag2" :data-index="0" @drop="drop" @dragover="allowDrop"></div>
         	<template v-for="(item, index) in dataShow">
-	        	<div class="app-transfer-panel__drag1" :data-index="index" :key="item.key" draggable="true" @dragstart="drag" @dragend="indexCache = ''">
+	        	<div class="app-transfer-panel__drag1" :data-index="index" :key="item.key" draggable="true" @dragstart="drag" @drop="drop" @dragover="allowDrop" @dragend="indexCache = ''">
 		          <el-checkbox 
 		          	class="app-transfer-panel__item" 
 		          	:label="item.value"
 		          >{{ item.label }}</el-checkbox>
 		        </div>
-		        <div class="app-transfer-panel__drag2" :data-index="index + 1" @drop="drop" @dragover="allowDrop"></div>
+		        <!-- <div class="app-transfer-panel__drag2" :data-index="index + 1"  @dragover="allowDrop"></div> -->
 	      	</template>
         </el-checkbox-group>
       </div>
@@ -81,33 +80,32 @@ export default {
 	},
 	methods: {
 		drag (e) {
-      var img = new Image();
-      e.dataTransfer.setDragImage(img,0,0);
+      // var img = new Image();
+      // e.dataTransfer.setDragImage(img,0,0);
 			this.indexCache = e.target.dataset.index;
 		},
 		drop (e) {
 			if(this.search) return;
-
-			const start = this.indexCache - 0;
-			const end = e.target.dataset.index - 0;
+      const target = $(e.target).parents('div.app-transfer-panel__drag1')[0];
+			
+      const start = this.indexCache - 0;
+			const end = target.dataset.index - 0;
 			const d = this.$tool.deepCopy(this.data);
 
 			const item = d.splice(start, 1)[0];
-			if(end > start) {
-				d.splice(end - 1, 0, item)
-			}else {
-				d.splice(end, 0, item);
-			}
+			
+			d.splice(end, 0, item)
 
 			this.$emit('update:data', d);
 		},
 		allowDrop (e) {
 			if(this.search) return;
+      const target = $(e.target).parents('div.app-transfer-panel__drag1')[0];
 
-			const i = e.target.dataset.index; 
+			const i = target.dataset.index; 
 			const i2 = this.indexCache;
-
-			if(i2 && i != i2 && i - 1 != i2 ) {
+      
+			if(i2 && i != i2 ) {
 				e.preventDefault();
 			}
 		},

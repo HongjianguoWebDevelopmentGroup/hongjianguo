@@ -9,6 +9,8 @@
 	    :multiple="multiple"
 	    @update:value="handleValue" 
 	    ref="tree"
+	    action
+	    :count-type="countType"
 	    :disabled="isDisabled"
 	  >
 	  </pop-tree>

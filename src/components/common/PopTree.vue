@@ -1,6 +1,6 @@
 <template>
   <div>
-	<el-dialog :title="title" :visible.sync="dialogVisible" v-show="false" ref="dialog" :modal="false">
+  <el-dialog :title="title" :visible.sync="dialogVisible" v-show="false" ref="dialog" :modal="false">
         <el-input
           placeholder="输入关键字进行过滤"
           v-model="filterText">
@@ -48,30 +48,30 @@ export default {
   name: 'popTree',
   mixins: [ AxiosMinxins ],
   props: {
-  	'title': {
-  		type: String,
-  		default: '请选择树节点',
-  	},
-  	'data': {
-  		type: Array,
-  		default () {
-  			return [];
-  		},
-  	},
-  	'props': {
-  		type: Object,
-  		default () {
-  			return {
-  				label: 'label',
-  				children: 'children',
-  			}
-  		}
-  	}, 
-  	'value': [String, Number, Array],
-  	'multiple': {
-  		type: Boolean,
-  		default: false,
-  	},
+    'title': {
+      type: String,
+      default: '请选择树节点',
+    },
+    'data': {
+      type: Array,
+      default () {
+        return [];
+      },
+    },
+    'props': {
+      type: Object,
+      default () {
+        return {
+          label: 'label',
+          children: 'children',
+        }
+      }
+    }, 
+    'value': [String, Number, Array],
+    'multiple': {
+      type: Boolean,
+      default: false,
+    },
     'action': {
       type: Boolean,
       default: false,
@@ -79,12 +79,16 @@ export default {
     'url': {
       type: String,
       default: '',
+    },
+    'countType': {
+      type: String,
+      default: '',
     }
   },
   data () {
-		return {
+    return {
       id: '',
-		  dialogVisible: false,
+      dialogVisible: false,
       dialogPopVisible: false,
       filterText: '',
       popType: '',
@@ -92,53 +96,74 @@ export default {
         name: '',
         description: '',
       }
-		}
+    }
   },
   computed: {
     popTitle () {
       return this.popType == 'edit' ? '编辑' : '添加' ;
+    },
+    countParameter () {
+      const t = this.countType;
+      
+      if(t == 'proposal') {
+        return 'proposals_count';
+      }
+
+      if(t == 'patent') {
+        return 'patents_count';
+      }
+
+      if(t == 'copyright') {
+        return 'copyrights_count';
+      }
+
+      if(t == 'trademark') {
+        return 'trademarks_count';
+      }
+
+      return '';
     }
   },
   mounted () {
-  	// this.$refs.dialog.rendered = true;
+    // this.$refs.dialog.rendered = true;
   },
   methods: {
     handleClick (a,b,c) {
       this.$refs.tree.setChecked(a.id, !b.checked);
     },
-  	show () {
-  		this.dialogVisible = true;
-  		this.$nextTick(()=>{
-  			const value = this.multiple ? this.value : [this.value]; 
-    		this.$refs.tree.setCheckedKeys(value);
-    	});
-  	},
-  	treeChange (a, b) {
-  		const m = this.multiple;
-  		if(!m && b) {
-    		this.$refs.tree.setCheckedKeys([a.id]);
-  		}
-  	},
-  	treeSave () {
+    show () {
+      this.dialogVisible = true;
+      this.$nextTick(()=>{
+        const value = this.multiple ? this.value : [this.value]; 
+        this.$refs.tree.setCheckedKeys(value);
+      });
+    },
+    treeChange (a, b) {
+      const m = this.multiple;
+      if(!m && b) {
+        this.$refs.tree.setCheckedKeys([a.id]);
+      }
+    },
+    treeSave () {
       const arr = this.$refs.tree.getCheckedNodes();
 
       const ids = [];
       const labels = [];
       for(let d of arr) {
-      	ids.push(d['id']);
+        ids.push(d['id']);
       }
 
       if( this.multiple ) {
-      	this.$emit('update:value', ids);
-      }else {	
-      	this.$emit('update:value', ids[0]);
+        this.$emit('update:value', ids);
+      }else { 
+        this.$emit('update:value', ids[0]);
       }
 
       this.dialogVisible = false;
-  	},
-  	treeCancel () {
-  		this.dialogVisible = false;
-  	},
+    },
+    treeCancel () {
+      this.dialogVisible = false;
+    },
     filterNode(value, data) {      
       if (!value) return true;
       return data.name.indexOf(value) !== -1;
@@ -195,10 +220,12 @@ export default {
         .catch(_=>{});
     },
     renderContent(h, { node, data, store }) {
+        const p = this.countParameter;
+        // console.log(p);
         return (
           <span>
             <span>
-              <span>{node.label}</span><span style="color: rgb(32, 160, 255);"> ({data.projects_count})</span>
+              <span>{node.label}</span> {p ? <span style="color: rgb(32, 160, 255);"> ({data[p]})</span> : ''}
             </span>
                
                 <span style="float: right; margin-right: 20px" >
