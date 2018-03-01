@@ -1,6 +1,6 @@
 <template>
-  <el-dialog :key="popType" :title="dialogTitle" :visible.sync="dialogVisible" @close="close" :modal="false">
-    <el-form :model="form" label-width="100px" ref="form" :rules="rules">
+  <el-dialog :title="dialogTitle" class="dialog-size" :visible.sync="dialogVisible" @close="close">
+    <el-form :key="popType" :model="form" label-width="100px" ref="form" :rules="rules">
       
       <el-form-item label="用户组" prop="group_id" v-if="popType == 'add'" :rules="{ type: 'number', required: true, message: '用户组选择不能为空', trigger: 'change'}">
         <static-select type="group" v-model="form.group_id"></static-select>
@@ -34,9 +34,9 @@
       <el-form-item label="代理所" v-if="group.id == 6">
         <remote-select type="agency" v-model="form.parent"></remote-select>
       </el-form-item>
-       <el-form-item label="部门">
+<!--        <el-form-item label="部门">
         <branch v-model="form.branch"></branch>
-       </el-form-item>
+       </el-form-item> -->
       <el-form-item label="昵称" prop="name">
         <el-input v-model="form.name"></el-input> 
       </el-form-item>
@@ -68,7 +68,6 @@ import AxiosMixins from '@/mixins/axios-mixins'
 import EditPassword from '@/components/form/EditPassword'
 import RemoteSelect from '@/components/form/RemoteSelect'
 import StaticSelect from '@/components/form/StaticSelect'
-import Branch from '@/components/form/Branch'
 
 const URL = 'api/members'
 
@@ -91,7 +90,7 @@ export default {
         username: '',
         password: '',
         password_again: '',
-        branch: '',
+        // branch: '',
         name: '',
         email: '',
         mobile: '',
@@ -133,7 +132,7 @@ export default {
         }
 
         if(this.popType == 'edit') {
-          this.$tool.coverObj(this.form, row); 
+          this.$tool.coverObj(this.form, row);
           this.id = row.id;
         }
           
@@ -164,7 +163,7 @@ export default {
       const success = _=>{
         this.$message({message: '编辑用户成功', type: 'success'});
         this.dialogVisible = false;
-        this.$emit('refresh');
+        // this.$emit('refresh');
       }
 
       this.$axiosPut({url, data, success});
@@ -191,7 +190,6 @@ export default {
 
     },
     close () {
-      this.$emit('refresh',this.dialogVisible);
       if(this.$refs.psd) {
         this.$refs.psd.clearEditPsd();
       }
@@ -202,7 +200,6 @@ export default {
     EditPassword,
     RemoteSelect,
     StaticSelect,
-    Branch,
   }
 }
 </script>

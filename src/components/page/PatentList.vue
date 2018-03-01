@@ -198,7 +198,7 @@ export default {
         }
       };
 
-      this.refreshProxy = this.axiosGet({url, data, success});
+      this.refreshProxy = this.$axiosGet({url, data, success});
     },
     refresh () {
       this.$refs.table.refresh();

@@ -328,7 +328,10 @@ export default {
       }
       
       this.refreshSelected(val);   
-  	}
+  	},
+    para () {
+      this.remoteMethod('');
+    }
   },
   created () {
     this.refreshSelected(this.value2);

@@ -1,6 +1,6 @@
 <template>
   <el-form :model="form" ref="form" label-width="80px">
-    <el-form-item label="审核人" prop="person_in_charge">
+    <el-form-item label="审核人" class="is-required" prop="person_in_charge">
       <remote-select type="member" v-model="form.person_in_charge"></remote-select>
     </el-form-item>
     <el-form-item label="附件" prop="attachments">

@@ -1,16 +1,16 @@
 <template>
   <div class="main">
   	
-  		 <el-row>
-				<el-col :span="8">
+  		 <div style="overflow: hidden;">
+				<div style="width: 400px; float: left;">
 
           <div class="left-tree-header" style="padding: 0 20px; ">
             <span style="font-size: 15px; font-weight: bold;">部门</span>
             <el-tag v-if="!!branchUpdate" style="margin-left: 15px;">最后更新时间：{{ branchUpdate }}</el-tag>
             <div style="float: right;">
-              <el-button icon="plus" size="mini" title="添加部门" @click="addPop"></el-button>
+              <!-- <el-button icon="plus" size="mini" title="添加部门" @click="addPop"></el-button> -->
               <el-button icon="edit" size="mini" title="编辑部门" style="margin-left: 0;" @click="editPop"></el-button>
-              <el-button icon="delete" size="mini" title="删除部门" style="margin-left: 0;" @click="branchDelete"></el-button>
+              <!-- <el-button icon="delete" size="mini" title="删除部门" style="margin-left: 0;" @click="branchDelete"></el-button> -->
             </div>
           </div>
           <el-input
@@ -28,12 +28,14 @@
 						@node-click="nodeClick"
             :style="`height: ${innerHeight - 137}px; overflow: auto;border-top: 0;`"
             :filter-node-method="filterNode"
+            node-key="id"
+            :current-node-key="nodeKey"
             ref="tree"
 					>
 					</el-tree>
-				</el-col>
-  		 	<el-col :span="16" style="padding-left: 20px;">
-		  		<el-form label-width="120px">
+				</div>
+  
+		  		<el-form label-width="120px" style="float: left;">
 		  			
             <el-form-item label="部门名称">
 		  			  {{ currentNode ? currentNode.name : '' }}
@@ -69,8 +71,7 @@
               <el-button type="primary" @click="transferPop">移交部门专利</el-button>
             </el-form-item>
           </el-form>	  		
-	  		</el-col>
-  		</el-row>
+  		</div>
 
       <el-dialog title="移交部门专利" :visible.sync="dialogVisible">
         <div style="margin-bottom: 5px;">将<span style="color: red; font-size: 14px; font-weight: bold; padding: 0 5px;">{{ currentNode.name }}</span>的专利移交至</div>
@@ -78,7 +79,7 @@
         <el-button @click="transferAxios" type="primary">确认移交</el-button>
       </el-dialog>
 
-      <pop ref="pop" @refresh="refresh" :current-id="currentNode.id"></pop> 	
+      <pop ref="pop" @refresh="handlePopRefresh" :current-id="currentNode.id"></pop> 	
   </div>
 </template>
 
@@ -102,6 +103,7 @@ export default {
       dialogVisible: false,
       transfer: '',
       filterText: '',
+      nodeKey: '',
 		}
   },
   computed: {
@@ -109,6 +111,7 @@ export default {
       'innerHeight',
       'branchData',
       'branchUpdate',
+      'branchMap'
     ]),
   },
   methods: {
@@ -162,6 +165,22 @@ export default {
         })
         .catch(_=>{});      
     },
+    handlePopRefresh (str) {
+      if(str == 'edit') {
+        this.refreshBranch({
+          success: _=>{
+            this.filterText = '';
+            this.$nextTick(_=>{
+
+              const key = this.currentNode.id;
+              this.currentNode = this.branchMap.get(key);
+              this.filterText = this.currentNode.name;
+              this.nodeKey = key;
+            })
+          }
+        })
+      }
+    },
     refresh () {
       this.refreshBranch();
       this.currentNode = '';
@@ -192,7 +211,7 @@ export default {
     },
     filterNode(value, data) {
       if (!value) return true;
-      return data.name.indexOf(value) !== -1;
+      return data.name == value;
     }
   },
   watch: {

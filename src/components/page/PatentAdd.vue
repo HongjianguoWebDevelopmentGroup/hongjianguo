@@ -75,7 +75,7 @@ export default {
       })
       
     },
-    edit () {
+    edit ({complete}={}) {
       this.formCheck(_=>{
         const url = `${URL}/${this.id}`;
         const data = Object.assign( ...setKeys.map(d=>this.$refs[d].submitForm()) );
@@ -84,12 +84,15 @@ export default {
           this.$emit('editSuccess');
           // this.$router.push('/patent/list');
         };
-        const complete = _=>{
+        const completeFunc = _=>{
           this.btn_disabled = false;
+          if(complete) {
+            complete(_);
+          }
         }
 
         this.btn_disabled = true;
-        this.axiosPut({url, data, success, complete});  
+        this.axiosPut({url, data, success, complete: completeFunc});  
       })
     },
     formCheck (callback) {

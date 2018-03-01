@@ -1,8 +1,8 @@
 <template>
 	<el-dialog :visible.sync="dialogVisible" :title="title" class="dialog-small">
 		<el-form ref="form" :model="form">	
-			<el-form-item label="部门名称" prop="name" :rules="{required: true, message: '部门名称不能为空'}">
-				<el-input v-model="form.name" placeholder="请填写部门名称"></el-input>
+			<el-form-item label="部门名称" prop="name">
+				<div>{{ form.name }}</div>
 			</el-form-item>
 			<el-form-item label="部门描述" prop="description">
 				<el-input v-model="form.description" type="textarea" placeholder="请填写部门描述"></el-input>

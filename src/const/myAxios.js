@@ -8,7 +8,7 @@ export default {
 }
 const status = false;
 
-function axiosGet ({url='', data={}, success=()=>{}, error=(d)=>{this.$alert(d.info)}, catchFunc=(err)=>{console.log(err); this.$message({message: '网络错误', type: 'error'})}, complete=_=>{} }) {
+function axiosGet ({url='', data={}, success=()=>{}, error=(d)=>{this.$message(d.info)}, catchFunc=(err)=>{console.log(err); this.$message({message: '网络错误', type: 'error'})}, complete=_=>{} }) {
   url = status ? url.replace(/\/api/, '') : url;
   
   const res = this.$axios.get(url, { params: data });
@@ -29,7 +29,7 @@ function axiosGet ({url='', data={}, success=()=>{}, error=(d)=>{this.$alert(d.i
 
   return res;
 }
-function axiosDelete({ url='', data={}, success=()=>{}, error=d=>{this.$alert(d.info)}, catchFunc=err=>{console.log(err); this.$alert('网络错误');} }) {
+function axiosDelete({ url='', data={}, success=()=>{}, error=d=>{this.$message(d.info)}, catchFunc=err=>{console.log(err); this.$message('网络错误');} }) {
   url = status ? url.replace(/\/api/, '') : url;
   this.$axios
     .delete(url, { params: data })
