@@ -14,7 +14,6 @@ export default {
 		  option: {
 		  	'is_search': false,
 				'columns': [
-					{ type: 'text', label: '费用金额', prop: 'amount',width: '120',},
 					{ type: 'text', label: '费用名称', prop: 'fee_name',width: '240',},
 			  		{ 
 		            type: 'text', 
