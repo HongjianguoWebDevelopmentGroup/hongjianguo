@@ -7,7 +7,7 @@
       </template>  
     </table-component>
     <pop @refresh="handlePopRefresh" ref="pop" :confirm="isConfirm"></pop>
-    <el-dialog title="发文详情" :visible.sync="dialogVisible">
+    <el-dialog title="发文详情" :visible.sync="dialogVisible1">
       <table-component :tableOption="option2" :data="tableData2.projects"></table-component>
     </el-dialog>
   </div>
@@ -26,7 +26,7 @@ export default {
   data () {
     return {
       isConfirm: '',
-      dialogVisible: false,
+      dialogVisible1: false,
       isReceive: false,
       option: {
         'header_btn': [
@@ -61,7 +61,7 @@ export default {
         'is_pagination': false,
         'columns': [
           { type: 'text', label: '案件名称', prop: 'name', width:'300' },
-          { type: 'text', label: '文件清单', prop: 'type' },
+          { type: 'text', label: '文件清单', prop: 'type', min_width: '160' },
         ] 
       },
       tableData2: [],
@@ -79,7 +79,7 @@ export default {
     },
     handleRowClick (row) {
       this.tableData2 = row;
-      this.dialogVisible = true;
+      this.dialogVisible1 = true;
     },
     edit ({id}) {
       this.$router.push({path: '/setting/template/edit', query: {id} });
