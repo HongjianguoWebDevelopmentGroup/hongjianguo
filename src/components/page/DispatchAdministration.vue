@@ -61,7 +61,7 @@ export default {
         'is_pagination': false,
         'columns': [
           { type: 'text', label: '案件名称', prop: 'name', width:'300' },
-          { type: 'text', label: '文件清单', prop: 'type' },
+          { type: 'text', label: '文件清单', prop: 'type', min_width: '160'  },
         ] 
       },
       tableData2: [],
