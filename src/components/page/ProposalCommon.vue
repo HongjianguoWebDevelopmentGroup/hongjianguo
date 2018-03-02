@@ -27,10 +27,10 @@
             </el-form-item>
 
             <el-form-item label="技术分类" prop="classification">
-              <classification v-model="formData.classification"></classification>
+              <classification v-model="formData.classification" count-type="proposal"></classification>
             </el-form-item>
             <el-form-item label="产品名称" prop="products">
-              <product v-model="formData.products" multiple></product>
+              <product v-model="formData.products" count-type="proposal" multiple></product>
             </el-form-item>
             <el-form-item label="标签" prop="tags">
               <static-select type='tag' v-model="formData.tags" multiple></static-select>

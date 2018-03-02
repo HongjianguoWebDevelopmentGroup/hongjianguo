@@ -1,22 +1,26 @@
 export default {
-	props: {
-  	'value': [Number, String, Array],
-  	'multiple': {
-  		type: Boolean,
-  		default: false,
-  	},
-  	'disabled': {
-  		type: Boolean,
-  		default: false,
-  	}
-	},
-	data () {
-		return {
-		  'props': {
-		  	label: 'name',
-		  	children: 'children',
-		  },
-		}
+  props: {
+    'value': [Number, String, Array],
+    'multiple': {
+      type: Boolean,
+      default: false,
+    },
+    'disabled': {
+      type: Boolean,
+      default: false,
+    },
+    'countType': {
+      type: String,
+      default: '',
+    }
+  },
+  data () {
+    return {
+      'props': {
+        label: 'name',
+        children: 'children',
+      },
+    }
   },
   computed: {
     data () {
@@ -51,15 +55,15 @@ export default {
     }
   },
   methods: {
-  	handleValue (val) {
-  		const v = this.multiple ? [...val] : val;
-  		this.$emit('input', v);
-  	},
+    handleValue (val) {
+      const v = this.multiple ? [...val] : val;
+      this.$emit('input', v);
+    },
     refresh (type) {
       this.$store.dispatch(this.$options.REFRESH_KEY);
       if(type == 'remove') {
         
       }
     }
-  }		
+  }   
 }

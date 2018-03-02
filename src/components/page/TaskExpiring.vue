@@ -52,9 +52,16 @@
         <el-tab-pane label="相关任务" name="cccc">          
           <detail :row="currentRow" style="margin: 10px 0;"></detail>          
         </el-tab-pane>
+        <el-tab-pane label="任务提醒" name="remind">
+        	<remind :id="currentRow.id" ref="remind" :action="activeName"></remind>
+        </el-tab-pane>
       </el-tabs>
 
     </app-shrink>
+    <el-dialog title="提醒备注" :visible.sync="reminderVisible" @close="reminderRemark = ''">
+    	<el-input type="textarea" placeholder="请填写任务提醒的备注..." v-model="reminderRemark" style="margin-bottom: 10px;"></el-input>
+    	<el-button type="primary" @click="sendEmail" :loading="reminderLoading">{{ reminderLoading ? '发送中...' : '发送提醒' }}</el-button>
+    </el-dialog>
 </div>
 </template>
 
@@ -67,6 +74,7 @@ import AppShrink from '@/components/common/AppShrink'
 import TaskFinish from '@/components/common/TaskFinish'
 import Information from '@/components/page_extension/TaskCommon_information'
 import Detail from '@/components/page_extension/TaskCommon_detail'
+import Remind from '@/components/page_extension/TaskCommon_remind'
 
 export default {
 	name: 'taskExpiring',
@@ -107,6 +115,10 @@ export default {
         'rowClick': this.handleRowClick,
 
 			},
+			reminderId: '',
+			reminderRemark: '',
+			reminderVisible: false,
+			reminderLoading: false,
 			tableData: [],
 			treeData: [],
 			currentRow: '',
@@ -181,11 +193,25 @@ export default {
 			this.axiosGet({url, data, success});
   	},
   	handleEmail ({id}) {
-  		this.$message({message: '该功能暂未上线', type: 'warning'});
-  		// const url = `tasks/${id}/remind`;
-  		// const success = _=>{this.$message({message: '发送邮件提醒成功', type: 'success'})};
-
-  		// this.axiosPost({url, success});
+  		this.reminderId = id;
+  		this.reminderVisible = true;
+  	},
+  	sendEmail () {
+  		const url = `tasks/${this.reminderId}/remind`;
+  		const data = {remark: this.reminderRemark};
+  		const success = _=>{
+  			this.$message({type: 'success', message: '发送邮件提醒成功'});
+  			this.reminderVisible = false;
+  			//刷新缓存数据
+  			if(this.$refs.remind && this.currentRow.id == this.reminderId) {
+  				this.$refs.remind.refreshTable();
+  			}
+  		};
+  		const complete = _=>{
+  			this.reminderLoading = false;
+  		}
+  		this.reminderLoading = true;
+  		this.$axiosPost({url, data, success, complete});
   	}
 	},
 	created () {
@@ -210,6 +236,7 @@ export default {
 		TaskFinish,
 		Information,
 		Detail,
+		Remind,
 	}
 
 }
