@@ -486,12 +486,19 @@ nav {
   // font-weight: bold;
   display: inline-block;
 }
+.app-dropdown-menu>.el-dropdown-menu__item {
+  font-size: 14px;
+  line-height: 24px;
+  padding: 0 15px;
+}
 /*这里放入重写element-ui样式的内容*/
 #app {
+
   .el-tree-node__expand-icon.expanded {
     -ms-transform: rotate(90deg);
     transform: rotate(90deg);
   }
+
   .el-tree-node__expand-icon {
     cursor: pointer;
     height: 0;
@@ -513,16 +520,16 @@ nav {
     border-color: transparent;
     cursor: default;
   }
-  .dialog-mini .el-dialog {
+  .dialog-mini>.el-dialog {
     width: 300px;
   }
-  .dialog-small .el-dialog {
+  .dialog-small>.el-dialog {
     width: 600px;
   }
-  .dialog-size .el-dialog {
+  .dialog-size>.el-dialog {
     width: 800px;
   }
-  .dialog-medium .el-dialog {
+  .dialog-medium>.el-dialog {
     width: 900px;
   }
   .el-dropdown-menu__item {

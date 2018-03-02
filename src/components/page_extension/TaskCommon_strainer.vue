@@ -93,6 +93,8 @@ export default {
 		  		{label: '提案', value: 0},
           {label: '专利', value: 1},
 		  		{label: '版权', value: 3},
+          {label: '发文', value: 6},
+          {label: '账单', value: 5},
 		  		// {label: '项目', value: 4},
 		  	]
 		  }

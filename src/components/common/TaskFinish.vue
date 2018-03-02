@@ -29,13 +29,13 @@
   		</el-select>
   	</el-form-item>
   	<el-form-item prop="person_in_charge" label="承办人" v-if="fields.person_in_charge">
-  		<remote-select type="member" v-model="form.person_in_charge" v-if="defaultVal =='proposer' || defaultVal == 'reviewer' || defaultVal == 'previous' || !defaultVal "></remote-select>
+  		<remote-select type="member" v-model="form.person_in_charge" v-if="defaultVal == 'sender' || defaultVal =='proposer' || defaultVal == 'reviewer' || defaultVal == 'previous' || !defaultVal "></remote-select>
   		<remote-select type="agency" v-model="form.person_in_charge" v-else-if="defaultVal == 'agency'"></remote-select>
       <remote-select type="agent" v-model="form.person_in_charge" v-else-if="defaultVal == 'agent'"></remote-select>
   		<static-select type="ipr" v-model="form.person_in_charge" v-else-if="defaultVal == 'ipr'"></static-select>
   		<!-- <span v-else>{{ data[defaultVal]['name'] }}</span> -->
   	</el-form-item>
-    <el-form-item prop="agency" label="代理机构" v-if="fields.agency"   :rules="{ required: true, type: 'number', message: '代理机构不能为空', trigger: 'change'}">
+    <el-form-item prop="agency" label="代理机构" v-if="fields.agency" :rules="{ required: true, type: 'number', message: '代理机构不能为空', trigger: 'change'}">
       <div v-if="fields.agency == 1">
         <remote-select type="agency" v-model="form.agency" :static-map="agencyMap"></remote-select>
         <el-button size="mini" type="text" @click="showAgencyLoad">负载</el-button>
@@ -56,6 +56,9 @@
   	<el-form-item prop="due_time" label="承办期限" v-if="fields.due_time">
 			<el-date-picker v-model="form.due_time" type="date" placeholder="选择承办期限"></el-date-picker>
   	</el-form-item>
+    <el-form-item prop="pay_time" label="支付时间" v-if="fields.pay_time">
+      <el-date-picker v-model="form.pay_time" type="date" placeholder="选择支付时间"></el-date-picker>
+    </el-form-item>
   	<el-form-item prop="dealine" label="法限" v-if="fields.deadline">
 			<el-date-picker v-model="form.dealine" type="date" placeholder="选择法限"></el-date-picker>
   	</el-form-item>
@@ -143,6 +146,7 @@ export default {
         pconfirm: false,
         level: '',
         title: '',
+        pay_time: '',
 			},
 			'defaultVal': '',
       'agencyMap': [],
@@ -207,7 +211,7 @@ export default {
             this.refreshUser();
           };
           const complete = _=>{ this.btn_disabled=false }; 
-          this.axiosPost({url, data, success, complete}); 
+          this.$axiosPost({url, data, success, complete}); 
         }else {
           this.$message({message: '请正确填写任务完成字段', type: 'warning'})
         }

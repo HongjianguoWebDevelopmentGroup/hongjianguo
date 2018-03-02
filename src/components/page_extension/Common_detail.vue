@@ -4,7 +4,15 @@
       <span slot="header" style="float: right">
         <el-button size="small" type="primary" @click="edit" :disabled="btnDisabled">保存</el-button>
         <el-button style="margin-left: 5px;" size="small" type="danger" @click="dialogClosed = true" v-if="type == 'patent'" :disabled="btnDisabled">结案</el-button>
-        <el-button style="margin-left: 5px;" size="small" @click="handleCancle" v-if="type == 'patent'" :disabled="btnDisabled">撤回委托</el-button>
+        <el-dropdown @command="handleCommand" trigger="click" style="margin-left: 5px;" size="small" v-if="type == 'patent'">
+          <el-button size="small">
+            委案<i class="el-icon-caret-bottom el-icon--right"></i>
+          </el-button>
+          <el-dropdown-menu slot="dropdown" class="app-dropdown-menu">
+            <el-dropdown-item command="cancel" :disabled="btnDisabled">撤回</el-dropdown-item>
+            <el-dropdown-item command="change" :disabled="btnDisabled">变更</el-dropdown-item>
+          </el-dropdown-menu>
+        </el-dropdown>
       </span>
       <div  v-loading="detailLoading && visibleAuth" :element-loading-text="config.loadingText" :style="divStyle">
         <el-tabs v-model="activeName">
@@ -33,6 +41,9 @@
     <el-dialog title="提交结案请求" :visible.sync="dialogClosed" @close="$refs.closeForm.clear();">
       <close-form :id="id" @success="dialogClosed=false" ref="closeForm"></close-form>
     </el-dialog>
+    <el-dialog title="委案变更" :visible.sync="dialogChange" @close="$refs.changeForm.clear();">
+      <change-form :id="id" @success="dialogChange=false;refreshDetailData();" ref="changeForm"></change-form>
+    </el-dialog>
   </div>
 </template>
 
@@ -46,6 +57,7 @@ import DetailFee from '@/components/page_extension/CommonDetail_fee'
 import DetailEmail from '@/components/page_extension/CommonDetail_email'
 import DetailDocuments from '@/components/page_extension/CommonDetail_documents'
 import CloseForm from '@/components/page_extension/CommonDetail_closed'
+import ChangeForm from '@/components/page_extension/CommonDetail_commision_change'
 
 import { mapGetters } from 'vuex'
 import { mapActions } from 'vuex'
@@ -82,6 +94,7 @@ export default {
 		  activeName: 'base',
       rendered: false,
       dialogClosed: false,
+      dialogChange: false,
       btnDisabled: false,
 		}
   },
@@ -90,6 +103,7 @@ export default {
       'shrinkHeight',
       'detailLoading',
       'menusMap',
+      'detailBase',
     ]),
   	config () {
   		const config = map.get(this.type);
@@ -123,17 +137,23 @@ export default {
 
       const type = this.type;
       const id = this.id;
-      this.$store.commit('setDetailType', type);
-      this.refreshDetailData({ id });
+      // this.$store.commit('setDetailType', type);
+      this.refreshDetailData({id, type});
     },
     edit () {
       
       if(this.$refs.patent) {
-        this.$refs.patent.edit();
+        this.btnDisabled = true;
+        this.$refs.patent.edit({
+          complete: _=>{ this.btnDisabled = false; }
+        });
       }
 
       if(this.$refs.copyright) {
-        this.$refs.copyright.edit();
+        this.btnDisabled = true;
+        this.$refs.copyright.edit({
+          complete: _=>{ this.btnDisabled = false; }
+        });
       }
     },
     editSuccess () {
@@ -147,7 +167,24 @@ export default {
     closeProjectSubmit () {
 
     },
-    handleCancle () {
+    handleCommand(command) {
+      if(command == 'cancel') {
+        this.commisionCancle(); //委案撤回
+      }
+      if(command == 'change') {
+        const d = this.detailBase;
+        //委案变更检测
+        if(d.agency && d.agency.name) {
+          this.dialogChange = true;
+          this.$nextTick(_=>{
+            this.$refs.changeForm.fill({agency: d.agency, agent: d.agent});
+          })
+        }else {
+          return this.$message({message: '当前案件没有委案，不可变更', type: 'warning'});
+        }
+      }
+    },
+    commisionCancle () {
       this.$confirm('此操作将对当前专利进行撤回委托的操作, 是否继续?', '提示', {type: 'warning'})
         .then(_=>{
           this.btnDisabled = true;
@@ -163,6 +200,9 @@ export default {
           })
         }).catch(_=>{});
       
+    },
+    commisionChange () {
+
     }
   },
   watch: {
@@ -184,6 +224,7 @@ export default {
   	DetailEmail,
   	DetailDocuments,
     CloseForm,
+    ChangeForm,
   }
 }
 </script>

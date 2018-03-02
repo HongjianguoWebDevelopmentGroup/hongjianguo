@@ -190,6 +190,9 @@ export default {
   	refresh (key) {
   		if(this.treeSelected.length == 0 || !this.day || !this.date) {
   			this.tableData = [];
+  			if(key == 'export') {
+  				this.$message({type: 'warning', message: '请指定要导出的内容'});
+  			}
   			return;
   		}
 

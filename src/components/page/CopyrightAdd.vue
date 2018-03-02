@@ -137,7 +137,7 @@ export default {
 
   		this.axiosPost({url, data, success, complete});
   	},
-  	edit () {
+  	edit ({complete}={}) {
   		if(this.checkForm()) return;
 
   		this.btn_disabled = true;
@@ -147,9 +147,14 @@ export default {
   			this.$message({message: '编辑成功', type: 'success'});
   			this.$emit('editSuccess'); 
   		};
-  		const complete = _=>{ this.btn_disabled = false };
+  		const completeFunc = _=>{ 
+        this.btn_disabled = false 
+        if(complete) {
+          complete(_);
+        }
+      };
 
-  		this.axiosPut({url, data, success, complete})
+  		this.axiosPut({url, data, success, complete: completeFunc})
   	},
   	checkForm () {
   		let flag = false;

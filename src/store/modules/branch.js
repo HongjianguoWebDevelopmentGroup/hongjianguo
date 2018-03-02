@@ -40,7 +40,7 @@ const mutations = {
 }
 
 const actions = {
-	refreshBranch ({commit, rootState, state}) {
+	refreshBranch ({commit, rootState, state},{success}={}) {
 		url = rootState.status ? url.replace(/\/api/, '') : url;
 		rootState.axios
 			.get(url)
@@ -49,6 +49,7 @@ const actions = {
 				const d = response.data;
 				if(d.status){
 					commit('setBranch', d);
+					if(success) { success(d) };
 				}else {
 					// alert('请求部门数据失败');
 				}
