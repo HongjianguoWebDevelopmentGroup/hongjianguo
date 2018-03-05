@@ -69,7 +69,7 @@
 			<el-form-item style="margin-bottom: 0px">
 				<el-button type="primary" @click="add" v-if="type == 'add'" :loading="loading">{{ loading ? '添加中...' : '添加' }}</el-button>
 				<el-button type="primary" @click="edit" v-else-if="type == 'edit'" :loading="loading">{{ loading ? '编辑中...' : '编辑' }}</el-button>
-				<el-button @click="this.dialogVisible = false;" :disabled="loading">取消</el-button>
+				<el-button @click="cancel" :disabled="loading">取消</el-button>
 			</el-form-item>
 		</el-form>
 	</el-dialog>
@@ -182,6 +182,9 @@ export default {
   			}
   		});
   		
+  	},
+  	cancel() {
+  		this.dialogVisible = false;
   	},
   	add () {
   		if(this.form.status != 100 && this.form.pay_time) {
