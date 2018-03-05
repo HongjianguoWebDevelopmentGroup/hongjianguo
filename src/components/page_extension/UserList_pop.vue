@@ -1,6 +1,6 @@
 <template>
-  <el-dialog :key="popType" :title="popType == 'add' ? '添加用户' : '编辑用户'" :visible.sync="dialogVisible" @close="close">
-		<el-form :model="form" label-width="100px" ref="form" :rules="rules">
+  <el-dialog  :title="popType == 'add' ? '添加用户' : '编辑用户'" :visible.sync="dialogVisible" @close="close">
+		<el-form :model="form" :key="popType" label-width="100px" ref="form" :rules="rules">
 			
       <el-form-item label="用户组" prop="group_id" v-if="popType == 'add'" :rules="{ type: 'number', required: true, message: '用户组选择不能为空', trigger: 'change'}">
         <static-select type="group" v-model="form.group_id"></static-select>
