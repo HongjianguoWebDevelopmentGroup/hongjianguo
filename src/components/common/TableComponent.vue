@@ -264,6 +264,10 @@ import AppTransfer from '@/components/common/AppTransfer'
 
 import { mapGetters } from 'vuex'
 const methods = Object.assign({}, tableConst.methods, {
+  handleselectionChange(selection) {
+    const d = this;
+    d.tableSelect = selection;
+  },
   headerBtnIf (_) {
     if( _.map_if ) {
       if(this.menusMap && !this.menusMap.get(_.map_if)) {
@@ -718,6 +722,7 @@ export default {
     const data = {
       control,
       transferValue,
+      tableSelect: [],
       expands: [],
       getRowKeys (row) {
         return row.id;
