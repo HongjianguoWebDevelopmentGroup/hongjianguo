@@ -223,8 +223,8 @@ export default {
           { type: 'add', click: this.add },
           { type: 'delete' },
           { type: 'export' },
-          
           { type: 'control' },
+          { type: 'serial_search'},
         ],
         'header_slot': ['transfer'],
         'columns': [

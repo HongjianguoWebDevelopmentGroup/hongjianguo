@@ -47,6 +47,16 @@ const config = [
       { name: '气味', id: 6},
     ]
   }],
+  ['stage',{
+    placeholder: '请选择任务阶段',
+    options: [
+      { id: 1, name: '新申请'},
+      { id: 2, name: 'OA'},
+      { id: 3, name: '复审'},
+      { id: 4, name: '无效'},
+      { id: 5, name: '其他'},
+    ]
+  }],
   ['agency_scope', {
     placeholder: '请选择代理机构业务范围',
     options: [

@@ -41,7 +41,10 @@
         </el-form-item>
         <el-form-item label="法定期限" prop="deadline">
           <el-date-picker type="daterange" placeholder="请选择法定期限" v-model="form.deadline"></el-date-picker>
-        </el-form-item>       
+        </el-form-item> 
+        <el-form-item label="任务阶段" prop="stage">
+          <static-select type="stage" v-model="form.stage" multiple></static-select>
+        </el-form-item>      
       </el-col>
     </el-row>
   	<el-row style="text-align: center">
@@ -70,6 +73,7 @@ export default {
 		  	'category': '',
 		  	'ipr': [],
     		'agency': [],
+        'stage': [],
 				'agent': [],
 				'flow_node_id': [],
 				'person_in_charge': [],

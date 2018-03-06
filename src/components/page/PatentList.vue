@@ -77,6 +77,7 @@ export default {
           { type: 'import', map_if: '/patent/import' },
           { type: 'batch_upload', map_if: '/patent/upload' },
           { type: 'control', label: '字段' },
+          { type: 'serial_search'},
         ],
         'header_slot': ['download'],
         'columns': [

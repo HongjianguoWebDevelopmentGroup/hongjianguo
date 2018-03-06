@@ -80,6 +80,9 @@
           <el-button class="table-header-btn" type="primary" icon="upload" @click="handleBatchUpload(btn.click, $event)">文件上传</el-button>
         </template>
 
+        <template v-else -if="btn.type == 'serial_search'">
+          <el-button class="table-header-btn" type="primary" icon="search" @click="handleSerialSearch(btn.click, $event)">编号搜索</el-button>
+        </template>
         </template>
       </template>
         
@@ -248,6 +251,17 @@
           <el-button type="danger" @click="dialogControl = false">取消</el-button>
         </div>
     </el-dialog>
+    <el-dialog title="编号检索" :visible.sync="dialogSerialSearch" size="tiny" @close="clear">
+      <el-form :model="serialForm" ref="serialForm">
+        <el-form-item prop="numbers">
+          <el-input type="textarea" v-model="serialForm.numbers" placeholder="请填写编号"></el-input>
+        </el-form-item>
+        <el-form-item>
+          <el-button type="primary" @click="submitSearch">确认</el-button>
+          <el-button @click="close">取消</el-button>
+        </el-form-item>
+      </el-form>
+    </el-dialog>
   </div>
 </template>
 
@@ -342,6 +356,13 @@ const methods = Object.assign({}, tableConst.methods, {
       this.$refs.file_upload.show();
     }
   },
+  handleSerialSearch(func, e) {
+    if(func) {
+      func(e)
+    }else {
+      this.dialogSerialSearch = true;
+    }
+  },
   handleExpand (a, b) {
     const fun = this.tableOption.expandFun;
     if( fun ){
@@ -424,6 +445,14 @@ const methods = Object.assign({}, tableConst.methods, {
 
     this.reset();
   },
+  submitSearch () {
+    if(this.serialForm.numbers){
+      const searchVaule = this.serialForm.numbers.split('\n');
+      console.log(searchVaule);
+      this.$emit('refreshTableData', Object.assign({}, this.getRequestOption(), this.screen_obj,{numbers: searchVaule}));
+      this.dialogSerialSearch = false;
+    }
+  },
   timeSearch ({search}) {
     if(search) {
       search();
@@ -484,6 +513,12 @@ const methods = Object.assign({}, tableConst.methods, {
   },
   setCurrentRow (row) {
     this.$refs.table.setCurrentRow(row);
+  },
+  clear () {
+    this.$refs.serialForm.resetFields();
+  },
+  close () {
+    this.dialogSerialSearch = false;
   },
   controlSave () {
     this.refreshRender = false;
@@ -757,10 +792,14 @@ export default {
       page: 1,
       sort: {field: null, order: null},
       dialogImportVisible: false,
+      dialogSerialSearch: false,
       filterVisible: false,
       exportLoading: false,
       dialogControl: false,
       refreshRender: true,
+      serialForm:{
+        numbers: '',
+      },
     };
 
     return Object.assign({}, tableConst.data, data);
