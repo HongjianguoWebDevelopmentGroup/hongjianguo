@@ -76,7 +76,8 @@ const actions = {
           if( d.status ) {
               commit('setDetailData', JSON.parse(JSON.stringify(d[state.type])));
           }else {
-              alert(d.info);
+          	commit('setDetailData', null);
+            alert(d.info);
           }
           commit('setLoading', false);
           commit('refreshTrueType');
@@ -85,6 +86,7 @@ const actions = {
 	          if(func) func();
 	          commit('setLoading', false);
 	          console.log(err);
+	          commit('setDetailData', null);
 	          // alert('网络错误');
 	      })
 		

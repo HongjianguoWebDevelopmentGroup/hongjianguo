@@ -165,8 +165,8 @@ export default {
     ...mapGetters([
       'areaMap',
       'menusMap',
-      'userrole',
       'nextUser',
+      'userrole',
     ])
   },
   methods: {
@@ -175,7 +175,7 @@ export default {
     },
     ifAgency () {
       const r = this.userrole;
-      if(r == 5 || r == 6) {
+      if( r == 5 || r == 6 ) {
         
         const arr = this.tableOption.columns;
         let i = arr.length;
@@ -217,8 +217,10 @@ export default {
       this.$router.push( path );
     },
     handleRowClick (row) {
-      this.currentRow = row;
-      if(!this.shrinkVisible) this.shrinkVisible = true;
+      if( this.menusMap && !this.menusMap.get('/patent/detail_panel') ) {
+        this.currentRow = row;
+        if(!this.shrinkVisible) this.shrinkVisible = true;
+      }
     },
     close () {
       this.$refs.table.setCurrentRow();

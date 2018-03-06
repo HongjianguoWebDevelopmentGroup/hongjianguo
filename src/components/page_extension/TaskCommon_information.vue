@@ -50,10 +50,11 @@
 	  </el-collapse-item>
 	  <el-collapse-item  name="2" v-else-if="row.category == 1">
       <template slot="title">
-        专利详情<el-button size="mini" type="text" style="margin-left: 10px;" @click.stop="editPatent">更多...</el-button>
+        专利详情<el-button size="mini" type="text" style="margin-left: 10px;" v-if="ifMorePatent" @click.stop="editPatent">更多...</el-button>
       </template>
 	    <el-form label-width="70px" label-position="left" class="form-information" v-loading="detailLoading" element-loading-text="加载专利信息中..." style="min-height: 300px;">
-	    	<template v-if="!!detailBasePatent">
+	    	<span v-if="!detailBasePatent" style="margin-left: 20px;line-height: 50px;font-size: 14px;">暂无专利详情...</span>
+        <template v-else>
           <el-row :gutter="20">
   	    		<el-col :span="12">	    			
   	    			<el-form-item label="发明人"><span class="form-item-text">{{  detailBasePatent.inventors.length ? detailBasePatent.inventors.map(_=>_.name).join(';') : ''}}</span></el-form-item>
@@ -86,10 +87,11 @@
 	  </el-collapse-item>
 	  <el-collapse-item name="2" v-else-if="row.category == 3">
 	    <template slot="title">
-        版权详情<el-button size="mini" type="text" style="margin-left: 10px;" @click.stop="editCopyright">更多...</el-button>
+        版权详情<el-button size="mini" type="text" style="margin-left: 10px;" v-if="ifMoreCopyright" @click.stop="editCopyright">更多...</el-button>
       </template>
       <el-form label-width="70px" label-position="left" class="form-information" v-loading="detailLoading" element-loading-text="加载版权信息中..." style="min-height: 300px;">
-        <template v-if="!!detailBaseCopyright" >
+        <span v-if="!detailBaseCopyright" style="margin-left: 20px;line-height: 50px;font-size: 14px;">暂无版权详情...</span>
+        <template v-else>
           <el-row :gutter="20">
             <el-col :span="12">
               
@@ -210,7 +212,14 @@ export default {
       'detailBasePatent',
       'detailBaseCopyright',
       'detailLoading',
-    ])  
+      'menusMap',
+    ]),
+    ifMorePatent () {
+      return (this.menusMap && !this.menusMap.get('/patent/detail_panel'));
+    },
+    ifMoreCopyright () {
+      return (this.menusMap && !this.menusMap.get('/copyright/detail_panel'));
+    }
   },
   methods: {
     ...mapActions([
@@ -223,7 +232,7 @@ export default {
 	  	}else if(this.row.category == 1 || this.row.category == 3) {
 	  		this.refreshDetailData({
           id: this.row.project_id,
-          type: {1: 'patent', 3: 'category'}[this.row.category],
+          type: {1: 'patent', 3: 'copyright'}[this.row.category],
           func: _=>{
             this.loading = false;
           }

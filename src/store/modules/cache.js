@@ -21,6 +21,7 @@ const actions = {
 				.axios
 				.get(url)
 				.then(response=>{
+					response.data.codes.forEach(_=>{_.id = _.id - 0})
 					commit('setFeeCodes', response.data.codes);
 				});
 		}

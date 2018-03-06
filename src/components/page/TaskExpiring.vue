@@ -144,9 +144,12 @@ export default {
 				{label: '已过期6-10天', value: -6},
 				{label: '已过期3-5天', value: -3},
 				{label: '已过期1-2天', value: -1},
+				{label: '所有已过期',  value: -100},
 				{label: '2天内到期', value: 2},
 				{label: '5天内到期', value: 5},
 				{label: '10天内到期', value: 10},
+				{label: '所有即将到期', value: 100},
+				{label: '所有', value: 1},
 			],
 			dates: [
 				{label: '指定期限', value: 'due_time'},

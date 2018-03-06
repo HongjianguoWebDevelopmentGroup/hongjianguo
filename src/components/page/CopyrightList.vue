@@ -20,6 +20,7 @@ import TableComponent from '@/components/common/TableComponent'
 import Strainer from '@/components/page_extension/CopyrightList_strainer'
 import AppShrink from '@/components/common/AppShrink'
 import CommonDetail from '@/components/page_extension/Common_detail'
+import {mapGetters} from 'vuex'
 
 const URL = '/api/copyrights';
 
@@ -82,6 +83,11 @@ export default {
       filter: {},
     };
   },
+  computed: {
+    ...mapGetters([
+      'menusMap',
+    ])
+  },
   methods: {
     add () {
       this.$router.push('/copyright/add');
@@ -115,8 +121,10 @@ export default {
       this.$router.push( path );
     },
     handleRowClick (row) {
-      this.currentRow = row;
-      if(!this.shrinkVisible) this.shrinkVisible = true;
+      if( this.menusMap && !this.menusMap.get('/copyright/detail_panel') ) {
+        this.currentRow = row;
+        if(!this.shrinkVisible) this.shrinkVisible = true;
+      }
     },
     close () {
       this.$refs.table.setCurrentRow();

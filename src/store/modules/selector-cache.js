@@ -105,7 +105,7 @@ const state = {
 	  }],
 	  ['fee_code', {
 	    placeholder: '请选择费用代码',
-	    options: 'feeCodes'
+	    options: 'feeCodes',
 	  }],
 	  ['fee_target_income', {
 	    placeholder: '请选择收入对象',

@@ -5,7 +5,7 @@
     <el-step v-for="(item, index) in data.tips" :key="index" :title="item.name" :status="item.current ? 'finish' : 'wait'"></el-step>
   </el-steps>
   
-  <el-form :model="form" label-width="100px" ref="form" style="min-height: 150px;" :key="next"><!--这里需要给form加key 保证每个form的验证规则互不影响-->
+  <el-form :model="form" label-width="100px" ref="form" style="min-height: 150px;" :key="${id}-${next}"><!--这里需要给form加key 保证每个form的验证规则互不影响-->
   	<el-form-item :label="data.procedure.label" v-if="data.fields && data.fields.procedure">
       <el-select v-model="next">
         <el-option
@@ -40,7 +40,7 @@
         <remote-select type="agency" v-model="form.agency" :static-map="agencyMap"></remote-select>
         <el-button size="mini" type="text" @click="showAgencyLoad">负载</el-button>
       </div>
-      <span v-else class="form-item-text">{{ agencyMap[0].name }}</span>
+      <span v-else class="form-item-text">{{ agencyMap[0] ? agencyMap[0].name : '' }}</span>
     </el-form-item>
     <el-form-item prop="agency_serial" label="事务所案号" v-if="fields.agency_serial" :rules="{required: true, message: '事务所案号不能为空'}">
       <el-input placeholder="请填写事务所案号" v-model="form.agency_serial"></el-input>
@@ -102,7 +102,7 @@
       <li v-for="(item, index) in data.description" :key="index">{{ item }}</li>
     </ul>
     <el-form-item style="margin-bottom: 0px;">
-  		<el-button type="primary" @click="submitFunc" :disabled="btn_disabled">提交</el-button>
+  		<el-button type="primary" @click="submitFunc" :loading="btn_disabled">{{ btn_disabled ? '提交中...' : '提交' }}</el-button>
   	</el-form-item>
   </el-form>
 </div>

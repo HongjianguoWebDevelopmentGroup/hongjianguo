@@ -33,6 +33,9 @@
 					<el-form-item label="发明人" prop="inventors">
 						<remote-select type="inventor" v-model="form.inventors" multiple></remote-select>
 					</el-form-item>
+					<el-form-item label="委案日" prop="entrusting_time">
+						<el-date-picker type="daterange" placeholder="请选择委案日范围" v-model="form.entrusting_time"></el-date-picker>
+					</el-form-item>
 									
 				</el-col>
 				<el-col :span="12">
@@ -52,16 +55,16 @@
 						<static-select type="tag" v-model="form.tags" multiple></static-select>
 					</el-form-item>	
 					<el-form-item label="申请日" prop="apd">
-						<el-date-picker type="daterange" placeholder="请选择申请日" v-model="form.apd"></el-date-picker>
+						<el-date-picker type="daterange" placeholder="请选择申请日范围" v-model="form.apd"></el-date-picker>
 					</el-form-item>
 					<el-form-item label="立案日" prop="create_time">
-						<el-date-picker type="daterange" placeholder="请选择立案时间" v-model="form.create_time"></el-date-picker>
+						<el-date-picker type="daterange" placeholder="请选择立案日范围" v-model="form.create_time"></el-date-picker>
 					</el-form-item>
 					<el-form-item label="授权日" prop="issue_date">
-						<el-date-picker type="daterange" placeholder="请选择授权日" v-model="form.issue_date"></el-date-picker>
+						<el-date-picker type="daterange" placeholder="请选择授权日范围" v-model="form.issue_date"></el-date-picker>
 					</el-form-item>
 					<el-form-item label="公开日" prop="public_date">
-						<el-date-picker type="daterange" placeholder="请选择公开日" v-model="form.public_date"></el-date-picker>
+						<el-date-picker type="daterange" placeholder="请选择公开日范围" v-model="form.public_date"></el-date-picker>
 					</el-form-item>
 					
 				</el-col>
@@ -107,6 +110,7 @@ export default {
 				public_date: [],
 				applicants: [],
 				inventors: [],
+				entrusting_time: [],
 			},
 			options: {
 				type: [
