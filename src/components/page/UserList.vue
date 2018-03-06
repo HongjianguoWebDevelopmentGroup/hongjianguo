@@ -157,7 +157,7 @@ export default {
 			this.$refs.pop.show(row);
 		},
 		toGroupPop () {
-			const s = this.$refs.table.getSelected(true);
+			const s = this.$refs.table.tableSelect;
 			if( s.length == 0 ) {
 				this.$message({ message: '请选择需要添加的用户', type: 'warning' });
 				return false;
@@ -180,7 +180,7 @@ export default {
 
 		},
 		removeGroup () {
-			const s = this.$refs.table.getSelected(true);
+			const s = this.$refs.table.tableSelect;
 			if( s.length == 0 ) {
 				this.$message({ message: '请选择需要移除的用户', type: 'warning' });
 				return false;

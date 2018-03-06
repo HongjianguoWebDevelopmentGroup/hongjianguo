@@ -98,10 +98,10 @@ export default {
 		  	'is_search': false,
 		  	'is_pagination': false,
 		  	'columns':[
-		  	  { type: 'text', label: '文件名称', prop: 'name'},
-		  	  { type: 'text', label: '上传日期', prop: 'create_time'},
-		  	  { type: 'text', label: '上传人', prop: 'uploader'},
-		  	  { type: 'text', label: '大小', prop: 'size'},
+		  	  { type: 'text', label: '文件名称', prop: 'name', min_width: '120'},
+		  	  { type: 'text', label: '上传日期', prop: 'create_time', min_width: '120'},
+		  	  { type: 'text', label: '上传人', prop: 'uploader', min_width: '100'},
+		  	  { type: 'text', label: '大小', prop: 'size', min_width : '80'},
 		  	  { 
 		  	  	type: 'action',
 		  	  	label: '操作',

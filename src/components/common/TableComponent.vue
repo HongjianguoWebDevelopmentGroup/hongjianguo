@@ -133,7 +133,7 @@
         <template v-else-if="col.type == 'text'" >
           
           <template v-if="col.render ? true : false">
-            <el-table-column :label="col.label" :prop="col.prop" :width="col.width ? col.width : ''" :min-width="col.min_width ? col.min_width : ''" :sortable="col.sortable ? 'custom' : false" :show-overflow-tooltip="col.overflow !== undefined ? col.overflow : true">
+            <el-table-column :label="col.label" :prop="col.prop" :width="col.width ? col.width : ''" :min-width="col.min_width ? col.min_width : ''" :sortable="col.sortable ? 'custom' : false" :show-overflow-tooltip="col.overflow !== undefined ? col.overflow : true" :align="col.align !== undefined ? col.align :'left'">
               <template slot-scope="scope">
                 <table-render :render="col.render" :scope="scope" :prop="col.prop"></table-render>
               </template>
@@ -264,6 +264,10 @@ import AppTransfer from '@/components/common/AppTransfer'
 
 import { mapGetters } from 'vuex'
 const methods = Object.assign({}, tableConst.methods, {
+  handleselectionChange(selection) {
+    const d = this;
+    d.tableSelect = selection;
+  },
   headerBtnIf (_) {
     if( _.map_if ) {
       if(this.menusMap && !this.menusMap.get(_.map_if)) {
@@ -718,6 +722,7 @@ export default {
     const data = {
       control,
       transferValue,
+      tableSelect: [],
       expands: [],
       getRowKeys (row) {
         return row.id;

@@ -56,7 +56,7 @@ export default {
               }
             },  
           },
-		  		{ type: 'text', label: '邮件标题', prop: 'subject', overflow: true },
+		  		{ type: 'text', label: '邮件标题', prop: 'subject', overflow: true, min_width: '160'},
 		  		{ type: 'text', label: '发送时间', prop: 'mail_date', sortable: true, width: '200' },
 		  		{ 
 		  			type: 'action',
