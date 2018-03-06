@@ -240,7 +240,6 @@ export default {
     // });
     //同步请求用户信息 
     //这里使用同步请求,异步需要监测数据的变动,过于麻烦
->>>>>>> 32fd567c75a80ac021b010e74c65acc92e594a28
     const error = _=>{ window.location.href = '/login'; };
     const success = _=>{
       if(_.status){
