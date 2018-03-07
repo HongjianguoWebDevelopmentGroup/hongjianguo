@@ -12,6 +12,7 @@ import AxiosMixins from '@/mixins/axios-mixins'
 const config = [
 	['patent', {
 		URL: '/api/patents/notices',
+		upload_type: 'patent_notice',
 
 	}],
 	['copyright', {
@@ -31,14 +32,16 @@ export default {
 					// { type: 'custom', label: '统计', icon: '', click: ()=>{alert("统计")} },
 					{ type: 'delete', map_if: '/patent/notice/delete' },
 					{ type: 'export' },
-					{ type: 'import' },
+					{ type: 'import' ,label: 'CPC通知书导入'},
+					{ type: 'batch_upload', label: '通知书上传'},
 					{ type: 'control', label: '字段' },
 					// { type: 'custom', label: '上传', icon: '', click: ()=>{alert("上传")} },
 					// { type: 'custom', label: '批量上传', icon: '', click: ()=>{alert("批量上传")}},
 				],
 				'height': 'default2',
 				'url': '',
-				'import_type': '',				
+				'import_type': '',
+				'upload_type': '',				
 				'columns': [
 					{ type: 'selection' },
 					// { type: 'text', label: '通知书案件名称', prop: 'title', width: '200', is_import: true },
@@ -67,7 +70,7 @@ export default {
 					}
 				],
 				'import_columns': [
-					{ type: 'array', label: '费用', prop: 'fees', render: _=>(_=>_.name), width: '200' }
+					{ type: 'array', label: '费用', prop: 'fees', render: _=>{return _.map(_=>`${_.name}：${_.fee}`)}, width: '200' }
 				]
 			},
 			tableData: [],
@@ -107,7 +110,8 @@ export default {
 	},
 	components: { TableComponent, Strainer },
 	created () {
-		this.tableOption.import_type = this.type == 'patent' ? 'patent_notice' : 'copyright_notice';		
+		this.tableOption.import_type = this.type == 'patent' ? 'patent_notice' : 'copyright_notice';
+		this.tableOption.upload_type = this.config.upload_type;		
 		this.tableOption.url = this.config.URL;
 	},
 	mounted () {

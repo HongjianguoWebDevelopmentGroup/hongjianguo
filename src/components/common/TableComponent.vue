@@ -73,14 +73,14 @@
         </template>
 
         <template v-else-if="btn.type == 'import'">
-          <el-button class="table-header-btn" type="primary" icon="document"  @click="handleImport(btn.click, $event)">导入</el-button>
+          <el-button class="table-header-btn" type="primary" icon="document"  @click="handleImport(btn.click, $event)">{{ btn.label ? btn.label : '导入' }}</el-button>
         </template>
 
         <template v-else-if="btn.type == 'batch_upload'">
-          <el-button class="table-header-btn" type="primary" icon="upload" @click="handleBatchUpload(btn.click, $event)">文件上传</el-button>
+          <el-button class="table-header-btn" type="primary" icon="upload" @click="handleBatchUpload(btn.click, $event)">{{ btn.label ? btn.label : '文件上传' }}</el-button>
         </template>
 
-        <template v-else -if="btn.type == 'serial_search'">
+        <template v-else-if="btn.type == 'serial_search'">
           <el-button class="table-header-btn" type="primary" icon="search" @click="handleSerialSearch(btn.click, $event)">编号搜索</el-button>
         </template>
         </template>

@@ -49,6 +49,9 @@ export default {
 				{
 					'type': 'control',
 					'label': '字段'
+				},
+				{
+					'type': 'serial_search',
 				}],
 				'import_type': 'trademark',
 				'upload_type': 'trademark',

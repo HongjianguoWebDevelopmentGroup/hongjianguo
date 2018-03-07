@@ -31,7 +31,8 @@ export default {
       option: {
         'header_btn': [
           { type: 'add', click: this.addPop },
-          { type: 'control' },          
+          { type: 'control' },
+          { type: 'serial_search'},          
         ],
         'height': 'default2',
         'rowClick':this.handleRowClick,

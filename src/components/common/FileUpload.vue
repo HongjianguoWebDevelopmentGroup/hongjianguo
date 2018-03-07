@@ -76,7 +76,7 @@ const config = [
 		action: 'getPatentDocuments',
 		url: '/patents/documents',
 		type: 'patent',
-    file_type: 'file_type',
+    file_type: 'file_type_patent',
 	}],
 	['copyright', {
 		action: 'getCopyrightDocuments',
@@ -84,6 +84,17 @@ const config = [
 		type: 'copyright',
     file_type: 'file_type',
 	}],
+    ['patent_notice', {
+    action: 'getPatentNoticesDocuments',
+    url: '/patents_notice/documents',
+    type: 'patent',
+    file_type: 'file_type_patent',
+    time: true,
+    legal_time: true,
+    apd: true,
+    apn: true,
+    no_zip: true,
+  }],
   ['trademark', {
     action: 'getTrademarkDocuments',
     url: '/trademarks/documents',
@@ -181,8 +192,12 @@ export default {
   	},
   	handleSuccess (a,b,c) {
   		if(a.status) {
-  			this.tableData.push(...a.data.list);
-        this.file.push(a.data.file);
+        console.log(a.data.list);
+        a.data.list.forEach(_=>{
+          _.type = _.type ? _.type.id : 830;
+        });
+    			this.tableData.push(...a.data.list);
+          this.file.push(a.data.file);
   		}else {
   			this.$message({message: a.info, type: 'warning'});
   		}

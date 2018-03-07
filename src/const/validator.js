@@ -1,7 +1,7 @@
 export function checkInventors (a, b, c, required=false) {
 	let msg = '';
   let number = 0;
-  const reg = /^[1-9][0-9]*$/;
+  const reg =  /^(0|[1-9]\d*)$/;
   
   if(b.length == 0) {
     msg = required ? '发明人字段不能为空' : 'success';
@@ -27,9 +27,9 @@ export function checkInventors (a, b, c, required=false) {
   if( !msg ) {
     for(let d of b) {
       let n;
-      let flag = !!( reg.test(d.share) && (n = Number.parseInt(d.share)) && n >= 10 && n <= 100 && (number += n) );
-      if( !flag ) { 
-        msg = '贡献率应为10-100的数字';
+      let flag = !!((n = Number.parseInt(d.share)) && n <= 100 && (number += n) || n>=0);
+      if( !flag ) {
+        msg = '贡献率应为0-100的数字';
         break;
       }
     }

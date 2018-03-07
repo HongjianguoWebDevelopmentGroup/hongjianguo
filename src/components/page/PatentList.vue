@@ -54,7 +54,7 @@ export default {
       refreshProxy: '',
       currentRow: '',
       shrinkVisible: false,
-      
+      patentSelected: '',
       downloadVisible: false,
       downloadIds: [],
       downloadFileType: [],
@@ -171,7 +171,13 @@ export default {
   },
   methods: {
     add () {
-      this.$router.push('/patent/add');
+      const s = this.$refs.table.getSelection();
+      if (s.length != 0) {
+          console.log(s);
+          this.$router.push({ path: '/patent/add', query: {s:s}});
+      }else {
+        this.$router.push('/patent/add');
+      }
     },
     refreshTableData (option) {
       const url = URL;

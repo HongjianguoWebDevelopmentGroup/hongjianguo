@@ -46,6 +46,7 @@ export default {
           { type: 'import' },
           { type: 'batch_upload' },
           { type: 'control', label: '字段' },
+          { type: 'serial_search'},
         ],
         'columns': [
           { type: 'selection' },

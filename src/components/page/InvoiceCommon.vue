@@ -38,8 +38,8 @@ export default {
 		  	'header_btn': [
 		  		{ type: 'export' },
 		  		{ type: 'delete' },
-		  		{},
 		  		{ type: 'control' },
+          { type: 'serial_search'},
 		  	],
 		  	'header_slot': ['cur_total', 'all_total'],
 		  	'columns': [

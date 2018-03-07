@@ -7,7 +7,6 @@
     <agent ref="agent" v-if="type == 'edit'"></agent>
     <case ref="case"></case>
     <other ref="other" :type="type"></other>
-    
     <div style="margin-bottom: 20px;">
       <el-button @click="add" type="primary" v-if="type == 'add'" :disabled="btn_disabled">添加</el-button>
       <!-- <el-button @click="edit" type="primary" v-if="type == 'edit'" :disabled="btn_disabled">编辑</el-button> -->
@@ -122,7 +121,21 @@ export default {
         this.id = copy.id;
         setKeys.map(_=>this.$refs[_].setForm(copy));
       }
-    }
+    },
+    fillForm (val) {
+      // console.log('aaaaa');
+      if(val instanceof Array){
+        const copy = this.$tool.deepCopy(val);
+        // console.log(copy);
+        this.id = copy[0].id;
+        setKeys.map(_=>{
+          if(this.$refs[_]) {
+
+            this.$refs[_].setForm(copy[0]);
+          }
+        })
+      }
+    },
   },
   computed: {
     detail () {
@@ -136,17 +149,30 @@ export default {
         this.shrink = false;
         return this.$route.meta.type;
       }
-    }
+    },
+    getParams () {
+      const s = this.$route.query.s;
+      console.log(s);
+      return s;
+    },
   },
   watch: {
     'detail': {
       handler: function(val) {
         this.refreshForm(val);
       }
-    } 
+    },
+    'getParams': {
+      handler: function(val) {
+        this.fillForm(val);
+      }
+    }, 
   },
   mounted () {
     this.refreshForm(this.detail);
+    if(this.getParams){
+      this.fillForm(this.getParams);
+    }
   },
   components: { PaBase, Person, Classification, Agent, Case, Other, AppCollapse }
 }

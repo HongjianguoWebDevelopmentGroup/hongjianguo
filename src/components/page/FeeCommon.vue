@@ -55,6 +55,7 @@ export default {
           { type: 'export' },
           { type: 'import' },
 		  		{ type: 'control' },
+          { type: 'serial_search'},
 		  	],
         'import_type': '',
 		  	'header_slot': [ 'status', 'invoice' ],

@@ -4,6 +4,8 @@
     <a v-if="config.model ? true : false" :href="config.model">{{ config.model_name }}</a>
 		<el-table
 			height="250"
+      border
+      tooltip-effect="dark"
 			style="width: 100%; margin: 10px 0;"
 			empty-text="暂无可导入数据"
 			:data="tableData"
@@ -17,26 +19,26 @@
 
 				<template v-if="col.type == 'text'">
 	        <template v-if="col.render ? true : false">
-	          <el-table-column :label="col.label" :prop="col.prop" :width="col.width ? col.width : ''">
+	          <el-table-column :label="col.label" :prop="col.prop" :width="col.width ? col.width : ''" :show-overflow-tooltip="col.overflow !== undefined ? col.overflow : true">
 	            <template slot-scope="scope">
 	              <table-render :render="col.render" :scope="scope" :prop="col.prop"></table-render>
 	            </template>
 	          </el-table-column>
 	        </template>
 	        <template v-else-if="col.render_simple ? true : false">
-	          <el-table-column :label="col.label" :prop="col.prop" :width="col.width ? col.width : ''">
+	          <el-table-column :label="col.label" :prop="col.prop" :width="col.width ? col.width : ''" :show-overflow-tooltip="col.overflow !== undefined ? col.overflow : true">
 	            <template slot-scope="scope">
 	              <span class="table-column-render">{{ scope.row[col.prop][col.render_simple] }}</span>
 	            </template>
 	          </el-table-column>
 	        </template>
 	        <template v-else>
-	          <el-table-column :label="col.label" :prop="col.prop" :width="col.width ? col.width : ''"></el-table-column>
+	          <el-table-column :label="col.label" :prop="col.prop" :width="col.width ? col.width : ''" :show-overflow-tooltip="col.overflow !== undefined ? col.overflow : true"></el-table-column>
 	        </template>
 	      </template>
 
 	      <template v-else-if="col.type == 'array'">
-	        <el-table-column :label="col.label" :prop="col.prop" :width="col.width ? col.width : ''">
+	        <el-table-column :label="col.label" :prop="col.prop" :width="col.width ? col.width : ''" :show-overflow-tooltip="col.overflow !== undefined ? col.overflow : true">
 	          <template slot-scope="scope">
 	            <el-tag v-for="(item, i) in arrayRender(scope['row'],col)" style="margin-left: 5px;" close-transition :key="i">{{ item }}</el-tag>
 	          </template>
@@ -241,6 +243,7 @@ export default {
   	},
   	handleSuccess (a,b,c) {
   		if(a.status) {
+        console.log(a.data.list);
   			this.tableData.push(...a.data.list);
   		}else {
   			this.$message({message: a.info, type: 'warning'});

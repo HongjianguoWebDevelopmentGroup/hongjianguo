@@ -464,6 +464,7 @@ export default {
           { type: 'export' },
           // { type: 'custom', label: '转出', icon: '', click: ()=>{ this.dialogTurnoutVisible = true; } },
           { type: 'control', label: '字段'},
+          { type: 'serial_search'},
           // { type: 'custom', label: '设定', icon: '', click: ()=>{ this.dialogSettingVisible = true; } }
         ],
         'header_slot': [ 'toggle' ],
