@@ -37,7 +37,7 @@
        <el-form-item label="部门">
         <branch v-model="form.branch"></branch>
        </el-form-item>
-	    <el-form-item label="昵称" prop="name">
+	    <el-form-item label="姓名" prop="name">
 	    	<el-input v-model="form.name"></el-input>	
 	    </el-form-item>
 	    <el-form-item label="邮箱" prop="email">

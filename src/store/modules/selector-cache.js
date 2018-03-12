@@ -77,15 +77,27 @@ const state = {
 	  }],
 	  ['file_type_patent', {
 	    placeholder: '请选择专利文件类型',
-	    url: '/api/fileTypes?category=1',
+	    url: '/api/fileTypes?category=1&type=2',
+	  }],
+	  ['file_type_patent_notice', {
+	    placeholder: '请选择专利通知书文件类型',
+	    url: '/api/fileTypes?category=1&type=1',
 	  }],
 	  ['file_type_trademark', {
 	    placeholder: '请选择商标文件类型',
-	    url: '/api/fileTypes?category=2'
+	    url: '/api/fileTypes?category=2&type=2'
+	  }],
+	  ['file_type_trademark_notice', {
+	    placeholder: '请选择商标通知书文件类型',
+	    url: '/api/fileTypes?category=2&type=1'
 	  }],
 	  ['file_type_copyright', {
 	    placeholder: '请选择版权文件类型',
-	    url: '/api/fileTypes?category=3',
+	    url: '/api/fileTypes?category=3&type=2',
+	  }],
+	  ['file_type_copyright_notice', {
+	    placeholder: '请选择版权通知书文件类型',
+	    url: '/api/fileTypes?category=3&type=1',
 	  }],
 	  ['group', {
 	    placeholder: '请选择用户组',

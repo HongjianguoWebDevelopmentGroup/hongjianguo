@@ -374,7 +374,8 @@ export default {
       }
 
       return a;
-    },   
+    },
+    //计算列表项 
     columns () {
       let cols = this.tableOption.columns; 
       if(cols) {
