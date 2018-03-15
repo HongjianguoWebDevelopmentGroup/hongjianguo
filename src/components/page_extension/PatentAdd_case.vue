@@ -28,6 +28,10 @@ export default {
       }
     }
   },
+  mounted () {
+   //  this.handleId();
+   // console.log(this.form.relative_projects)
+  },
   methods: {  
     setForm (data) {
       this.$tool.coverObj(this.form, data);
@@ -44,7 +48,7 @@ export default {
     RelativeProjects, 
     Proposal, 
     RemoteSelect 
-  }
+  },
 }
 </script>
 

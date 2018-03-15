@@ -159,6 +159,11 @@ menu.data = [
 				icon: '',
 				path: '/trademark/list',
 				type: 'item',
+			},{
+				text: '通知书管理',
+				icon: '',
+				path: '/trademark/notice',
+				type: 'item'				
 			}]
 	},
 	{

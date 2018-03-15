@@ -16,8 +16,8 @@
             </el-form-item>
 
             <el-form-item label="发明人" prop="inventors" class="is-required">
-              <inventors v-model="formData.inventors" ref="inventors" @addInventor="$refs.form.validateField('inventors')" @deleteInventor="$refs.form.validateField('inventors')" :propType="propType">
-              <el-button type='text' @click="handleAdd"  slot="addInventor">添加发明人</el-button> 
+              <inventors v-model="formData.inventors" ref="inventors" @addInventor="$refs.form.validateField('inventors')" @deleteInventor="$refs.form.validateField('inventors')" :propType="propType" @inventors="changeInventors">
+              <!-- <el-button type='text' @click="handleAdd"  slot="addInventor">添加发明人</el-button>  -->
               </inventors>   
              
             </el-form-item>
@@ -73,17 +73,9 @@
         >
         </task-finish>
       </el-dialog>     
-       <el-dialog title="添加发明人" :visible.sync="dialogVisible2">
-        <el-form :model="inventorForm" ref="inventorForm">
-         <el-form-item label="请选择发明人" prop="newValue" :rules="{type: 'number',required:true,message:'发明人不能为空',trigger: 'change'}">
-            <remote-select  no-data-text="无数据, 请增加发明人" type="member" v-model="inventorForm.newValue" ref="member"></remote-select>
-         </el-form-item>
-          <p>如果系统中不存在该发明人，请<a href="#" @click="addPop">新增</a></p> 
-          <el-button type="primary" @click="submitInventor('inventorForm')">确认</el-button>
-       </el-form>
-      </el-dialog>
 
-      <pop-panel ref="pop" @refresh="tansmitData"></pop-panel>
+
+
     </div>
 </template>
 
@@ -99,8 +91,7 @@ import Member from '@/components/form/Member'
 import Upload from '@/components/form/Upload'
 import TaskFinish from '@/components/common/TaskFinish'
 import StaticSelect from '@/components/form/StaticSelect'
-import RemoteSelect from '@/components/form/RemoteSelect'
-import PopPanel from '@/components/page_extension/InventorList_pop'
+
 import { checkInventors } from '@/const/validator.js'
 import { mapGetters } from 'vuex'
 import { mapActions } from 'vuex'
@@ -117,24 +108,12 @@ export default {
     ...mapActions([
       'refreshUser',
     ]),
-    handleAdd () {
-      this.dialogVisible2 = true;
-    },
-    submitInventor (formName) {
-      this.$refs[formName].validate((_)=>{
-        if(_){
-         const id = this.$refs.member.getSelected()[0];
-         const obj =  Object.assign(id,{share:''});
-           this.formData.inventors.splice(this.formData.inventors - 1,0,obj);
-          if(this.formData.inventors && this.formData.inventors.length != 0) {
-                //复用组件内置的方法...
-            this.$refs.inventors.handleShare(this.formData.inventors);
-          }
-          this.dialogVisible2 = false;
-        }else{
-           return false; 
-        }
-      })
+    // handleAdd () {
+    //   this.dialogVisible2 = true;
+    // },
+    changeInventors (val) {
+      console.log(val);
+      this.formData.inventors.push(val);
     },
     handleUploadSuccess (d) {
       if( d.data && d.data.list ) {
@@ -156,19 +135,6 @@ export default {
       this.pageType = 'edit';
       this.id = data.proposal_id;
       this.refreshUser();
-    },
-    tansmitData(data){
-      // console.log(data);
-      if(data[1] !== undefined) {
-        this.formData.inventors.push(data[1]);
-        if(this.formData.inventors && this.formData.inventors.length != 0) {
-            //复用组件内置的方法...
-          this.$refs.inventors.handleShare(this.formData.inventors);
-        }
-      }
-    },
-    addPop () {
-      this.$refs.pop.show();
     },
     save ( callback=_=>{this.$message({message: '保存成功', type: 'success'});}, required=false, showWarning=true ) {
       
@@ -297,9 +263,6 @@ export default {
       status: 0,
       pageType: '',
       propType: 'proposal',
-      inventorForm:{
-        newValue: '',
-      },
       tasks: [],
       patent: [],
       formData:  { 
@@ -445,8 +408,7 @@ export default {
     Product, 
     TaskFinish, 
     StaticSelect,
-    RemoteSelect,
-    PopPanel
+  
   },
 
 }

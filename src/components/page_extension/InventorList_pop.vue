@@ -1,5 +1,5 @@
 <template>
-  <el-dialog :title="title" :visible.sync="dialogVisible" >
+  <el-dialog :title="title" :visible.sync="dialogVisible" :modal="false">
     <el-form label-width="100px" ref="form" :model="form" :rules="rules">
       
       <el-form-item label="发明人姓名" prop="name">

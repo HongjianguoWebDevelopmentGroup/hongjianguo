@@ -61,6 +61,9 @@
   	</el-form-item>
     <el-form-item prop="area" label="申请地区" v-if="fields.area" :rules="{type: 'array', required: true, message: '申请地区不能为空'}">
       <static-select type="area" v-model="form.area"  multiple></static-select>
+    </el-form-item>   
+    <el-form-item prop="applicants" label="申请人" v-if="fields.applicants" :rules="{type: 'array', required: true, message: '申请人不能为空'}">
+      <remote-select type="applicant" v-model="form.applicants"  multiple></remote-select>
     </el-form-item>
     <el-form-item prop="type" label="专利类型" v-if="fields.type" :rules="{type: 'number', required: true, message: '专利类型不能为空', trigger: 'blur'}">
       <static-select type="patent_type" v-model="form.type" key="patent_type"></static-select>
@@ -128,6 +131,7 @@ export default {
 				due_time: '',
 				deadline: '',
 				remark: '',
+        applicants: [],
 				attachments: [],
         rank: 5,
         area: [],

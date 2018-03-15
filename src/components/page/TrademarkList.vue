@@ -7,7 +7,7 @@
       :visible.sync="shrinkVisible" 
       type="trademark" 
       :id="currentRow.id"
-      @editSuccess="refresh">
+      @editSuccess="update">
     </common-detail>
   </div>
 </template>
@@ -148,6 +148,7 @@ export default {
 					'is_import': true,
 					sortable : true,
 			    },
+				{ type: 'text', label: '驳回日期', prop: 'reject_date', width: '120', show: true, is_import: true, sortable: true},
 			  	{
 					'show': true,
 					'type': 'text',
@@ -281,6 +282,9 @@ export default {
   	},
   	refresh () {
   		this.$refs.table.refresh();
+  	},  	
+  	update () {
+  		this.$refs.table.update();
   	},
   	handleRowClick (row) {
   		this.currentRow = row;

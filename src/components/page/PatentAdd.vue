@@ -123,15 +123,19 @@ export default {
       }
     },
     fillForm (val) {
-      // console.log('aaaaa');
-      if(val instanceof Array){
+      if(val instanceof Array && val.length != 0){
         const copy = this.$tool.deepCopy(val);
-        // console.log(copy);
-        this.id = copy[0].id;
+        // this.id = copy[0].id;
+        const relative_projects = [];
+        val.map(_=>{
+          relative_projects.push({id: _.id, name: _.title, type: 1});
+        })
+        const form = {};  
+        Object.assign(form, copy[0], {relative_projects} );
         setKeys.map(_=>{
           if(this.$refs[_]) {
 
-            this.$refs[_].setForm(copy[0]);
+            this.$refs[_].setForm(form);
           }
         })
       }
@@ -151,8 +155,7 @@ export default {
       }
     },
     getParams () {
-      const s = this.$route.query.s;
-      console.log(s);
+      const s = this.$route.query.s; 
       return s;
     },
   },
@@ -170,9 +173,11 @@ export default {
   },
   mounted () {
     this.refreshForm(this.detail);
-    if(this.getParams){
-      this.fillForm(this.getParams);
-    }
+    this.$nextTick(_=>{
+      // if(this.getParams){
+        this.fillForm(this.getParams);
+      // }   
+    })
   },
   components: { PaBase, Person, Classification, Agent, Case, Other, AppCollapse }
 }

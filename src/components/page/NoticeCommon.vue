@@ -12,12 +12,16 @@ import AxiosMixins from '@/mixins/axios-mixins'
 const config = [
 	['patent', {
 		URL: '/api/patents/notices',
+		import_type: 'patent_notice',
 		upload_type: 'patent_notice',
 
 	}],
-	['copyright', {
-		URL: '/api/copyrights/notices'
+	['trademark', {
+		URL: '/api/trademarks/notices',
+		import_type: false,
+		upload_type: 'trademark_notice',
 	}]
+
 ]
 const map = new Map(config);
 
@@ -35,6 +39,7 @@ export default {
 					{ type: 'import' ,label: 'CPC通知书导入'},
 					{ type: 'batch_upload', label: '通知书上传'},
 					{ type: 'control', label: '字段' },
+					{ type: 'serial_search'},
 					// { type: 'custom', label: '上传', icon: '', click: ()=>{alert("上传")} },
 					// { type: 'custom', label: '批量上传', icon: '', click: ()=>{alert("批量上传")}},
 				],
@@ -105,18 +110,25 @@ export default {
 				
 			};
 
-			this.axiosGet({url, data, success});
+			this.$axiosGet({url, data, success});
 		}
 	},
-	components: { TableComponent, Strainer },
 	created () {
-		this.tableOption.import_type = this.type == 'patent' ? 'patent_notice' : 'copyright_notice';
+		if(this.config.import_type) {
+			this.tableOption.import_type = this.config.import_type;
+		}else {
+			this.tableOption.header_btn.splice(2,1);
+		}
 		this.tableOption.upload_type = this.config.upload_type;		
 		this.tableOption.url = this.config.URL;
 	},
 	mounted () {
 		this.refresh();
-	}
+	},
+	components: { 
+		TableComponent, 
+		Strainer 
+	},
 }
 </script>
 

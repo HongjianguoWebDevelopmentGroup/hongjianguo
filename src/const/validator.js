@@ -10,12 +10,12 @@ export function checkInventors (a, b, c, required=false) {
     	if( !d.id ) {
 
     	}
-      if( !d.id || !d.share ) {
-      	if(!d.id && !d.share) {
+      if( !d.id || d.share === "" ) {
+      	if(!d.id && d.share=== "") {
       		msg = '请选择发明人并填写贡献率';	
       	}else if(!d.id) {
       		msg = '请选择发明人';
-      	}else if(!d.share) {
+      	}else if(d.share === "") {
       		msg = '请填写贡献率';
       	}
         

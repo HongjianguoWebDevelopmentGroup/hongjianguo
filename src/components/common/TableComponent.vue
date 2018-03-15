@@ -14,7 +14,15 @@
         <app-filter :data="filters" v-if="tableOption.is_filter === undefined ? true : tableOption.is_filter"></app-filter>
         <el-button slot="reference" type="primary" style="margin-right: 5px;">快速筛选</el-button>
       </el-popover>
-
+      <search-input
+        v-model="search_value"
+        :placeholder="tableOption.search_placeholder == undefined ? '搜索...' : tableOption.search_placeholder"
+        style="width: 250px;"
+        class="table-search"
+        @click="handleSearch"
+        @enter="handleSearch"
+        v-if="tableOption.is_search == undefined ? true : tableOption.is_search"
+      ></search-input>
       <template v-for="btn in tableOption.header_btn">
         <template v-if="headerBtnIf(btn)">
         <template v-if="btn.type == 'custom'">
@@ -81,7 +89,7 @@
         </template>
 
         <template v-else-if="btn.type == 'serial_search'">
-          <el-button class="table-header-btn" type="primary" icon="search" @click="handleSerialSearch(btn.click, $event)">编号搜索</el-button>
+          <el-button class="table-header-btn" style="float: right;margin-right: 10px;" type="primary"   @click="handleSerialSearch(btn.click, $event)" >编号检索</el-button>
         </template>
         </template>
       </template>
@@ -89,15 +97,7 @@
       <template v-if="tableOption.header_slot ? true : false">
         <slot v-for="item in tableOption.header_slot" :name="item"></slot>
       </template>
-	  	<search-input
-        v-model="search_value"
-        :placeholder="tableOption.search_placeholder == undefined ? '搜索...' : tableOption.search_placeholder"
-        style="width: 250px;"
-        class="table-search"
-        @click="handleSearch"
-        @enter="handleSearch"
-        v-if="tableOption.is_search == undefined ? true : tableOption.is_search"
-	    ></search-input>
+	  	
     </div>
     
   	<el-table
@@ -119,7 +119,7 @@
       :class="tableOption.empty_text_position == 'topLeft' ? 'empty-top-left' : ''"
       ref="table"
     >
-      <template v-for="(col, index) in tableOption.columns">
+      <template v-for="(col, index) in columns">
         
         <template v-if="col.type == 'selection'">
           <el-table-column type="selection" :fixed="col.fixed === false ? false : 'left'"></el-table-column>
@@ -236,7 +236,7 @@
     </el-pagination>
   
     
-      <app-import v-if="tableOption.import_type !== undefined" :visible.sync="dialogImportVisible" :columns="import_columns" :type="tableOption.import_type" @import-success="handleImportSuccess"></app-import>
+      <app-import v-if="tableOption.import_type" :visible.sync="dialogImportVisible" :columns="import_columns" :type="tableOption.import_type" @import-success="handleImportSuccess"></app-import>
     
 
     <file-upload v-if="tableOption.upload_type !== undefined" :type="tableOption.upload_type" @upload-success="refresh" ref="file_upload"></file-upload>
@@ -254,7 +254,7 @@
     <el-dialog title="编号检索" :visible.sync="dialogSerialSearch" size="tiny" @close="clear">
       <el-form :model="serialForm" ref="serialForm">
         <el-form-item prop="numbers">
-          <el-input type="textarea" v-model="serialForm.numbers" placeholder="请填写编号"></el-input>
+          <el-input type="textarea" v-model="serialForm.numbers" placeholder="请填写编号,多个编号请回车换行"></el-input>
         </el-form-item>
         <el-form-item>
           <el-button type="primary" @click="submitSearch">确认</el-button>
@@ -681,7 +681,7 @@ export default {
 
         //无论论如何调整 selection总在最前 action总在最后 
         //static_arr代表配置限制不可调整顺序的字段(通过show_option控制)
-        if(a) {arr.push(a)};
+        if(a) { arr.push(a) };
         if(static_arr.length != 0) {arr = [...static_arr, ...arr]};
         if(s) {arr.unshift(s)};
         return arr;

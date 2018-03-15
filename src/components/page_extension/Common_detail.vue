@@ -23,7 +23,13 @@
     			<detail-email></detail-email>
         </el-tab-pane>
         <el-tab-pane label="文档" name="documents">
-    			<detail-documents></detail-documents>
+          <detail-documents></detail-documents>
+        </el-tab-pane>        
+        <el-tab-pane label="资助/奖金" name="fundings">
+          <detail-fundings></detail-fundings>
+        </el-tab-pane>
+        <el-tab-pane label="著录变更" name="amendments">
+    			<detail-amendments></detail-amendments>
         </el-tab-pane>
       </el-tabs>
     </div>
@@ -40,6 +46,8 @@ import DetailNotice from '@/components/page_extension/CommonDetail_notice'
 import DetailFee from '@/components/page_extension/CommonDetail_fee'
 import DetailEmail from '@/components/page_extension/CommonDetail_email'
 import DetailDocuments from '@/components/page_extension/CommonDetail_documents'
+import DetailFundings from '@/components/page_extension/CommonDetail_fundings'
+import DetailAmendments from '@/components/page_extension/CommonDetail_amendments'
 import { mapGetters } from 'vuex'
 import { mapActions } from 'vuex'
 const config = [
@@ -161,6 +169,8 @@ export default {
     DetailFee,
     DetailEmail,
     DetailDocuments,
+    DetailFundings,
+    DetailAmendments,
   }
 }
 </script>

@@ -8,7 +8,7 @@
         :visible.sync="shrinkVisible" 
         type="copyright" 
         :id="currentRow.id"
-        @editSuccess="refresh">
+        @editSuccess="update">
       </common-detail>
 
   </div>
@@ -104,6 +104,9 @@ export default {
     },
     refresh () {
       this.$refs.table.refresh();
+    },    
+    update () {
+      this.$refs.table.update();
     },
     deleteSingle ({ title, id }) {
       this.$confirm(`删除后不可恢复，确认删除‘${title}’吗？`)

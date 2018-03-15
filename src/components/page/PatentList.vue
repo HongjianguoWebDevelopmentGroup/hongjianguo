@@ -13,7 +13,7 @@
         type="patent" 
         :id="currentRow.id" 
         ref="detail"
-        @editSuccess="refresh">
+        @editSuccess="update">
       </common-detail>
     
 
@@ -194,6 +194,9 @@ export default {
     },
     refresh () {
       this.$refs.table.refresh();
+    },  
+    update () {
+      this.$refs.table.update();
     },
     deletePatent ({ title, id }) {
       this.$confirm(`删除后不可恢复，确认删除‘${title}’吗？`)

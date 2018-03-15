@@ -41,6 +41,8 @@ const getters = {
   detailFees: state=>state.data ? state.data.fees : [],
   detailMails: state=>state.data ? state.data.mails : [],
   detailDocuments: state=>state.data ? state.data.documents : [],
+  detailFundings: state=>state.data && state.data.fundings ? state.data.fundings : [],
+  detailAmendments: state=>state.data && state.data.amendments ? state.data.amendments : [],
   detailLoading: state=>state.loading,
 }
 

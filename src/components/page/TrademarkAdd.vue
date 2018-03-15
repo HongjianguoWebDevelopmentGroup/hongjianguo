@@ -107,6 +107,9 @@
 			<el-form-item label="专用权期限" prop="expiring_date">
 				<el-date-picker type="date" v-model="form.expiring_date" placeholder="请选择专用权期限"></el-date-picker>
 			</el-form-item>
+			<el-form-item label="驳回日期" prop="reject_date">
+				<el-date-picker type="date" v-model="form.reject_date" placeholder="请选择驳回日期"></el-date-picker>
+			</el-form-item>
 			<el-form-item label="附件" prop="attachments">
 				<upload v-model="form.attachments" :file-list="attachments"></upload>
 			</el-form-item>
@@ -159,6 +162,7 @@ export default {
 			  	figure: '',
 			  	description: '',
 			  	public_date: '',
+			  	reject_date: '',
 			  	public_number: '',
 			  	expiring_date: '',
 			  	attachments: [],

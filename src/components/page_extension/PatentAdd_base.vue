@@ -20,7 +20,7 @@
         <remote-select type="applicant" v-model="form.applicants" multiple></remote-select>
       </el-form-item >
       <el-form-item label="发明人" prop="inventors">
-        <inventors v-model="form.inventors" ref="inventors" @addInventor="$refs.form.validateField('inventors')" @deleteInventor="$refs.form.validateField('inventors')"></inventors>
+        <inventors v-model="form.inventors" ref="inventors" @addInventor="$refs.form.validateField('inventors')" @deleteInventor="$refs.form.validateField('inventors')" @inventors="changeInventor"></inventors>
       </el-form-item>
       <el-form-item label="优先权">
         <priorities v-model="form.priorities"></priorities>
@@ -74,7 +74,7 @@ export default {
 		  form: {
         serial: '',
         title: '',
-        area: this.type == 'add' ? [] : '',
+        area: '',
         type: '',
         applicants: [],
         inventors: [],
@@ -100,8 +100,10 @@ export default {
   },
   computed: {
   	extensionSet () {
-  		const area = this.type == 'add' ? this.form.area.join(',') : this.form.area;
-  		const type = this.form.type;
+      let area = this.form.area;
+      const type = this.form.type;
+      if(!area || !type) return [];
+      area = typeof area == 'string' ? area : area.join(',');
   		const arr = [];
   		extensionHash.forEach(d=>{
   			const areaReg = new RegExp(d.area);
@@ -134,6 +136,7 @@ export default {
       });
   	},
   	setForm (data) {
+      const t = this.type;
   		for (let k in this.form) {
   			if( k == 'extension' ) {
   				const arr = [];
@@ -142,8 +145,16 @@ export default {
   				}
 
   				this.form[k] = arr;
-  			}else if(k == 'area' || k == 'type') {
+  			}else if( k == 'type') {
+          
           this.form[k] = data[k]['id'];
+        }else if( k == 'area' ) {
+          if(t == 'edit') {
+            this.form[k] = data[k]['id'];
+          }
+          if(t == 'add') {
+            this.form[k] = data[k]['id'] ? [data[k]['id']] : [];
+          }
         }else {
   				this.form[k] = data[k];
   			}
@@ -158,6 +169,15 @@ export default {
   	handleUploadRemove () {
 
   	},
+    changeInventor (val) {
+      console.log(val);
+      this.form.inventors.push(val);
+    },
+  },
+  created  () {
+    if(this.type == 'add') {
+      this.form.area = [];
+    }
   },
   components: { 
     AppCollapse, 

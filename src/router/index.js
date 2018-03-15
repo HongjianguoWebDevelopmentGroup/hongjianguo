@@ -170,7 +170,8 @@ const router = new Router({
     {
       path: '/trademark/notice',
       name: 'TrademarkNotice',
-      component: TrademarkNotice
+      meta: { type: 'trademark'},
+      component: NoticeCommon,
     },
     {
       path:'/trademark/statistics',

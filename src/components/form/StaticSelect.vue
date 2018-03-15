@@ -12,6 +12,7 @@
       :default-first-option="config.defaultFirstOption !== undefined ? config.defaultFirstOption : false"
       ref="select"
       clearable
+      @change="handleChange"
     >
     	<el-option
     		v-for="item in options"
@@ -101,14 +102,34 @@ const config = [
       { id: 3, name: '版权' },
     ]
   }],
-  ['file_type', {
-    placeholder: '请选择文件类型',
-    url: '/api/fileTypes',
-  }],
-  ['file_type_trademark', {
-    placeholder: '请选择商标文件类型',
-    url: '/api/fileTypesTrademark'
-  }],
+    ['file_type', {
+      placeholder: '请选择文件类型',
+      url: '/api/fileTypes',
+    }],
+    ['file_type_patent', {
+      placeholder: '请选择专利文件类型',
+      url: '/api/fileTypes?category=1&type=2',
+    }],
+    ['file_type_patent_notice', {
+      placeholder: '请选择专利通知书文件类型',
+      url: '/api/fileTypes?category=1&type=1',
+    }],
+    ['file_type_trademark', {
+      placeholder: '请选择商标文件类型',
+      url: '/api/fileTypes?category=2&type=2'
+    }],
+    ['file_type_trademark_notice', {
+      placeholder: '请选择商标通知书文件类型',
+      url: '/api/fileTypes?category=2&type=1'
+    }],
+    ['file_type_copyright', {
+      placeholder: '请选择版权文件类型',
+      url: '/api/fileTypes?category=3&type=2',
+    }],
+    ['file_type_copyright_notice', {
+      placeholder: '请选择版权通知书文件类型',
+      url: '/api/fileTypes?category=3&type=1',
+    }],
   ['group', {
     placeholder: '请选择用户组',
     options: 'groupOptions',
@@ -188,7 +209,12 @@ const dataMap = new Map([
   ['fee_target_income', {data: null}],
   ['fee_target_expenditure', {data: null}],
   ['file_type', {data: null}],
+  ['file_type_patent', {data: null}],
+  ['file_type_patent_notice', {data: null}],
+  ['file_type_copyright', {data: null}],
+  ['file_type_copyright_notice', {data: null}],
   ['file_type_trademark',{data: null}],
+  ['file_type_trademark_notice',{data: null}],
   ['fee_code', {data: null}],
   ['tag', {data: null}],
   ['flow_node', {data: null}],
@@ -258,6 +284,9 @@ export default {
   methods: {
     handleInput (val) {
       this.$emit('input', val);
+    },
+    handleChange (val) {
+       this.$emit('change', this.map.get(val));
     },
     getSelected () {
       const arr = [];

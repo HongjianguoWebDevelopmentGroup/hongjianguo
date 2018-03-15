@@ -440,6 +440,9 @@ nav {
     -ms-transform: rotate(90deg);
     transform: rotate(90deg);
   }
+  .el-form-item {
+    margin-bottom: 22px;
+  }
   .el-tree-node__expand-icon {
     cursor: pointer;
     height: 0;

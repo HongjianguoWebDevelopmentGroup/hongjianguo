@@ -62,6 +62,7 @@ export default {
         {value: 30},
         {value: 20},
         {value: 10},
+        {value: 0},
       ])
     },
     deleteInventor () {
