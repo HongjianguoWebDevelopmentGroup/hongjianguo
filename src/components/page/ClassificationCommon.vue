@@ -72,7 +72,7 @@ export default {
   },
   methods: {
   	renderContent (h, {node, data}) {
-      console.log(data);
+      // console.log(data);
   		return (
           <span>
             <span>

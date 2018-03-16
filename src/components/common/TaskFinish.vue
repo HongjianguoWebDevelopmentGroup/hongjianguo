@@ -5,7 +5,7 @@
     <el-step v-for="(item, index) in data.tips" :key="index" :title="item.name" :status="item.current ? 'finish' : 'wait'"></el-step>
   </el-steps>
   
-  <el-form :model="form" label-width="100px" ref="form" style="min-height: 150px;" :key="${id}-${next}"><!--这里需要给form加key 保证每个form的验证规则互不影响-->
+  <el-form :model="form" label-width="100px" ref="form" style="min-height: 150px;" :key="`${id}-${next}`"><!--这里需要给form加key 保证每个form的验证规则互不影响-->
   	<el-form-item :label="data.procedure.label" v-if="data.fields && data.fields.procedure">
       <el-select v-model="next">
         <el-option
@@ -95,7 +95,7 @@
         :texts="['20','40','60','80','100']"
       ></el-rate>
     </el-form-item>
-    <el-form-item v-if="next == '20'" prop="pconfirm" label="确认" :rules="confirmValidator">
+    <el-form-item v-if="(next == '20' && level != 'A')  || next == '114'" prop="pconfirm" label="确认" :rules="confirmValidator">
       <el-checkbox v-model="form.pconfirm">已确认送件信息完整</el-checkbox><el-button type="text" size="mini" style="margin-left: 10px;" @click="$emit('more', 'patent')">查看</el-button>
     </el-form-item>
     <ul v-if="data.description && data.description.length != 0" style="margin-left:115px;padding: 0;margin-top:-10px; font-size:14px;color:#bbb;">
@@ -130,6 +130,7 @@ export default {
 		return {
 			'data': {},
 			'next': '',
+      'level': '',
 			'form': {
         agency_serial: '',
 				person_in_charge: '',
@@ -188,6 +189,9 @@ export default {
   		const success = d=>{
   			this.data = d.data;
         this.fields = d.data.fields;
+        if(d.data.level){
+          this.level= d.data.level;
+        }
         if(this.data.next.length != 0) {
           this.next = d.data.next[0].id;
         }else {

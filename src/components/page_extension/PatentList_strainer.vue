@@ -1,6 +1,6 @@
 <template>
   <app-collapse col-title="专利筛选" :default-close="isClose">
-  	<el-form :model="form" label-width="110px" ref="form">
+  	<el-form :model="form" label-width="140px" ref="form">
   		<el-row>
 				<el-col :span="12">
 					<el-form-item label="当前进度" prop="progress">
@@ -45,7 +45,7 @@
 					<el-form-item label="产品分类" prop="product">
 						<product v-model="form.product" count-type="patent" multiple></product>
 					</el-form-item>
-					<el-form-item label="是否产品相关" prop="product_relevance">
+					<el-form-item label="是否已用在产品上" prop="product_relevance">
 						<static-select type="product_relevance" v-model="form.product_relevance"></static-select>
 					</el-form-item>
 					<el-form-item label="部门" prop="branch">

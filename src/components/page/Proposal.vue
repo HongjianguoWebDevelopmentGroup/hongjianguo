@@ -1,7 +1,7 @@
 <template>
 	<div class="main">
     <app-collapse col-title="提案筛选" :default-close="isClose">   
-      <el-form label-width="110px">
+      <el-form label-width="140px">
         <el-row>
           <el-col :span="12">
             <el-form-item label="提案标题">
@@ -13,7 +13,7 @@
             <el-form-item label="产品分类">
               <product v-model="product" count-type="proposal" multiple></product>
             </el-form-item>
-            <el-form-item label="是否产品相关">
+            <el-form-item label="是否已用在产品上">
               <static-select type="product_relevance" v-model="product_relevance"></static-select>
             </el-form-item>
             <el-form-item label="部门">
@@ -245,7 +245,7 @@ export default {
           // { type: 'text', label: '代理人', prop: 'agent', sortable: true, width: '160' },
           { type: 'text', label: 'IPR', prop: 'ipr', render_simple: 'name', sortable: true, width: '160' },
           { type: 'text', label: '当前节点', prop: 'flow_node', sortable: true, width: '240' },
-          { type: 'text', label: '是否产品相关', prop: 'product_relevance',render_simple: 'name', width:'160',sortable: true},
+          { type: 'text', label: '是否已用在产品上', prop: 'product_relevance',render_simple: 'name', width:'200',sortable: true},
           { type: 'text', label: '提案简介', prop: 'abstract', sortable: true, width: '300' },
           { type: 'text', label: '创建时间', prop: 'create_time', sortable: true, width: '200' },
           { type: 'text', label: '部门', prop: 'branch', render_simple: 'name', sortable: true, width: '200' },

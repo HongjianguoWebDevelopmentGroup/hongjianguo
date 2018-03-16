@@ -1,6 +1,6 @@
 <template>
   <app-collapse col-title="委案信息" >
-      <el-form label-width="120px" :model="form" ref="form">
+      <el-form label-width="150px" :model="form" ref="form">
 				<el-form-item label="代理机构名称">
 					{{ agency }}
 				</el-form-item>

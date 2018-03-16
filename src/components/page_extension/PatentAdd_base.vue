@@ -1,6 +1,6 @@
 <template>
   <app-collapse col-title="基本信息">
-		<el-form label-width="120px" :model="form" :rules="rules" ref="form">
+		<el-form label-width="150px" :model="form" :rules="rules" ref="form">
       <el-form-item label="案号" v-if="type=='edit'">
         {{ serial }}
       </el-form-item>

@@ -1,6 +1,6 @@
 <template>
   <app-collapse col-title="扩展信息">
-      <el-form label-width="120px" :model="form" ref="form">
+      <el-form label-width="150px" :model="form" ref="form">
         <el-form-item label="部门">
           <branch v-model="form.branch" v-if="type == 'add'" count-type="patent"></branch>
           <span v-else>{{ branchName ? branchName : '暂未归属某个部门' }}</span>

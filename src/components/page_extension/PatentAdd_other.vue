@@ -1,6 +1,6 @@
 <template>
   <app-collapse col-title="其他信息及附件">
-      <el-form label-width="120px">
+      <el-form label-width="150px">
         <el-form-item label="状态" v-if="type == 'edit'">
           {{ form.progress }}
         </el-form-item>

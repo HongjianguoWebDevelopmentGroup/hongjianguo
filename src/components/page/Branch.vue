@@ -211,7 +211,7 @@ export default {
     },
     filterNode(value, data) {
       if (!value) return true;
-      return data.name == value;
+      return data.name.indexOf(value) !== -1;
     }
   },
   watch: {

@@ -1,13 +1,13 @@
 <template>
   <app-collapse col-title="分类信息">
-      <el-form label-width="120px">
+      <el-form label-width="150px">
 				<el-form-item label="产品分类">
 					<product v-model="form.products" count-type="patent" multiple></product>
 				</el-form-item>
 				<el-form-item label="技术分类">
 					<classification v-model="form.classification" count-type="patent"></classification>
 				</el-form-item>
-        <el-form-item label="是否产品相关" prop="product_relevance">
+        <el-form-item label="是否已用在产品上" prop="product_relevance">
           <static-select type="product_relevance" v-model="form.product_relevance"></static-select>
         </el-form-item> 
 				<el-form-item label="标签">
