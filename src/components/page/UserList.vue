@@ -20,7 +20,6 @@
   		</div>
 	
   	<pop :popType="popType" :group="current_group" @refresh="refresh" ref="pop"></pop>
-  	<div class="customModal" v-if="isVisible" style="width: 100%;height:100%;position: absolute;left: 0;top: 0;background:rgba(0,0,0,0.5);z-index: 10;"></div>
   	<el-dialog title="将所选用户添加至用户组" :visible.sync="dialogVisible" :close-on-click-modal="false">
 			<el-form label-width="100px">
 				<el-form-item label="用户组">
@@ -54,7 +53,6 @@ export default {
   mixins: [ AxiosMixins ],
   data () { 
 		return {
-          isVisible: false,
 		  lastUpdate: '',
 		  formLabelWidth: '100px',
 		  popType: '',
@@ -74,7 +72,7 @@ export default {
 		  		{ type: 'text', label: '手机号', prop: 'mobile', width: '200' },
 		  		{ type: 'array', label: '所属用户组', prop: 'groups', width: '200', render: _=>_.map(_=>_.name) },
 		  		// { type: 'text', label: '用户角色', prop: 'role_name', width: '200' },
-		  		{ type: 'text', label: '部门', prop: 'orgname', width: '148'},
+		  		{ type: 'text', label: '部门', prop: 'branch', render_simple: 'name', width: '148'},
 		  		{ type: 'text', label: '入职日期', prop: 'begindate', width: '178'},
 		  		{ type: 'text', label: '离职日期', prop: 'leavedate', width: '178'},
 		  		{ type: 'text', label: '邮箱', prop: 'email', width: '240' },
@@ -149,12 +147,10 @@ export default {
     },
 		addPop () {
 			this.popType = 'add';
-			this.isVisible = true;
 			this.$refs.pop.show();
 		},
 		editPop (row) {
 			this.popType = 'edit';
-			this.isVisible = true;
 			this.$refs.pop.show(row);
 		},
 		toGroupPop () {
@@ -234,7 +230,6 @@ export default {
 			if(str != 'noGroup') {
 				this.refreshGroup();
 			}
-			if(!str) return this.isVisible = false;
 		},
 		refreshGroup () {
 			this.$store.dispatch('refreshGroup');

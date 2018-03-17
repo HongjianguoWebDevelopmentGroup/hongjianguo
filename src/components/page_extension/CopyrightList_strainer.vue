@@ -1,5 +1,5 @@
 <template>
-  <app-collapse col-title="版权筛选" default-close>
+  <app-collapse col-title="版权筛选" default-close ref="strainer">
     <el-form :model="form" ref="form" label-width="120px">
       
 

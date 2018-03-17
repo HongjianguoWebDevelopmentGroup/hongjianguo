@@ -16,7 +16,7 @@
       </el-popover>
 
       <template v-for="btn in tableOption.header_btn">
-        <template v-if="headerBtnIf(btn)">
+      <template v-if="headerBtnIf(btn)">
 
         <template v-if="btn.type == 'custom'">
           <el-button class="table-header-btn" type="primary" :icon="btn.icon ? btn.icon : ''" @click="handleCommand(btn.click, $event)">{{ btn.label }}</el-button>
@@ -89,7 +89,11 @@
           <el-button class="table-header-btn" type="primary" icon="edit" @click="handleBatchUpdate(btn.click, $event)">批量更新</el-button>
         </template>
 
+        <template v-else-if="btn.type == 'report'">
+          <el-button class="table-header-btn" type="primary" icon="my-report" @click="handleBatchUpdate(btn.click, $event)">报表</el-button>
         </template>
+
+      </template>
       </template>
         
       <template v-if="tableOption.header_slot ? true : false">
@@ -177,6 +181,7 @@ import BatchUpdate from '@/components/common/BatchUpdate'
 import AppTable from '@/components/common/AppTable'
 import AppExport from '@/components/common/AppExport'
 import { mapGetters } from 'vuex'
+import { mapMutations } from 'vuex'
 
 export default {
   name: 'tableComponent',
@@ -416,6 +421,9 @@ export default {
     }
   },
   methods: {
+    ...mapMutations([
+      'setPageSize',
+    ]),
     getPageData (c) {
       const d = this,
           start = (c - 1) * d.pageSize,
@@ -542,7 +550,7 @@ export default {
       this.update();
     },
     handleSizeChange (size) {
-      this.$store.commit('setPageSize', size);
+      this.setPageSize(size);
       const func = this.tableOption.sizeChange;
       if(func) {
         func(size);
@@ -671,7 +679,8 @@ export default {
     AppTable,
     AppExport,
   },
-  mounted () {},
+  mounted () {
+  },
 }
 </script>
 
@@ -680,13 +689,7 @@ export default {
 .table-header i.el-icon-menu {
   font-size: 13px;
 }
-#app .dialog-control>.el-dialog {
-  width: 600px;
-  position: static;
-  transform: initial;
-  margin: 0 auto;
-  margin-top: 80px;
-}
+
 /*.el-table__expand-column {
   display: none;
 }*/

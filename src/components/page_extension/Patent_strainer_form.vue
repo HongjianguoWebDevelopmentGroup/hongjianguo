@@ -1,6 +1,5 @@
 <template>
-  <app-collapse col-title="专利筛选" default-close @afterRender="refreshForm" ref="collapse">
-  	<el-form :model="form" label-width="80px" ref="form">
+<el-form ref="form" :model="form" label-width="80px" label-position="right">
   		<el-row>
 				<el-col :span="12">
 					<el-form-item label="当前进度" prop="progress">
@@ -67,31 +66,21 @@
 					</el-form-item>			
 				</el-col>
   		</el-row>
-  		<el-row style="text-align: center;">
-				<el-button @click="search(form)" type="primary" size="small">查询</el-button>
-				<el-button @click="clear($refs.form)" type="danger" size="small">清空</el-button>
-  		</el-row>
   	</el-form>
-  </app-collapse>
 </template>
 
 <script>
-import AppCollapse from '@/components/common/AppCollapse'
 import Classification from '@/components/form/Classification'
 import Product from '@/components/form/Product'
 import Branch from '@/components/form/Branch'
-import strainer from '@/mixins/strainer.js'
-
 import RemoteSelect from '@/components/form/RemoteSelect'
 import StaticSelect from '@/components/form/StaticSelect'
 export default {
-  name: 'patentListStrainer',
-  props: ['value'],
-  mixins: [strainer],
-  data () {
-		return {
-			form: {
-				type: '',
+	name: 'PatentStrainerForm',
+	data () {
+    return {
+      form: {
+        type: '',
 				area: '',
 				apd: '',
 				progress: [],
@@ -110,32 +99,28 @@ export default {
 				inventors: [],
 				group_number: '',
 				family_number: '',
-			},
-			options: {
-				type: [
-					{label: '发明', value: 1},
-					{label: '实用新型', value: 2},
-					{label: '外观设计', value: 3},
-				]
-			}
-		}
-  },
+      }  
+    }		
+	},
   methods: {
-  	refreshForm () {
-  		this.$tool.coverObj(this.form, this.value);
-  	}
+    clear () {
+      this.$refs.form.resetFields();
+    }
   },
-  components: { 
-  	AppCollapse, 
-  	Classification, 
-  	Product, 
-  	Branch, 
-  	RemoteSelect, 
-  	StaticSelect,
+  watch: {
+    'form': {
+      handler (val) {
+        this.$emit('change', this.$tool.deepCopy(val));
+      },
+      deep: true,
+    }
   },
+	components: {
+		Classification,
+		Product,
+		Branch,
+		RemoteSelect,
+		StaticSelect,
+	}
 }
 </script>
-
-<!-- Add "scoped" attribute to limit CSS to this component only -->
-<style scoped lang="scss">
-</style>

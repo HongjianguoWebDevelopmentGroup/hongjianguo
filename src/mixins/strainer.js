@@ -27,6 +27,10 @@ export default {
 			this.$emit('input', copy);
 			// this.setViewLoading({loading: true, text: '查询中...'});
 			this.$emit('refresh');
+			
+			if(this.$refs.collapse) {
+				this.$refs.collapse.toggle();
+			}
 		},
 		clear (form_ref) {
 			form_ref.resetFields();

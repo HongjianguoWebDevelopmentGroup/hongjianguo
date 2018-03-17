@@ -31,7 +31,9 @@ const SystemMessageDetail      = () => import('@/components/page/SystemMessageDe
 const MailAdd                  = () => import('@/components/page/MailAdd')
 const InteractEmail            = () => import('@/components/page/InteractEmail')
 const RenewalFee               = () => import('@/components/page/RenewalFee')
-const RenewalEstimate               = () => import('@/components/page/RenewalEstimate')
+const RenewalEstimate          = () => import('@/components/page/RenewalEstimate')
+const Report                   = () => import('@/components/page/Report')
+const ReportAdd                = () => import('@/components/page/ReportAdd')
 //###################
 const CommonDetail             = () => import('@/components/page/CommonDetail')
 const Babel                    = () => import('@/components/page_extension/CommonDetail_base')
@@ -103,12 +105,38 @@ const router = new Router({
     	path: '/proposal/list',
     	name: 'Proposal',
     	component: Proposal
-    },{
+    },
+    {
       path: '/proposal/add',
       name: 'ProposalCommon',
       component: ProposalCommon,
       alias: ['/proposal/detail', '/task/pending/proposal_check', '/proposal/edit'],
-    },{
+    },
+    {
+      path: '/proposal/report',
+      name: 'ProposalReport',
+      component: Report,
+      meta: { 'type': 'proposal' },
+    },
+    {
+      path: '/proposal/report/add',
+      name: 'ProposalReportAdd',
+      component: ReportAdd,
+      meta: {'type': 'proposal'},
+    },
+    {
+      path: '/patent/report',
+      name: 'PatentReport',
+      component: Report,
+      meta: { 'type': 'patent' },
+    },
+    {
+      path: '/patent/report/add',
+      name: 'PatentReportAdd',
+      component: ReportAdd,
+      meta: {'type': 'patent'},
+    },
+    {
       path: '/task/pending/check',
       name: 'CheckProposal',
       component: CheckProposal

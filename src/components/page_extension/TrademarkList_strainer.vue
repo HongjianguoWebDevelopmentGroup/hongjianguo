@@ -1,5 +1,5 @@
 <template>
-  <app-collapse col-title="商标筛选" default-close>
+  <app-collapse col-title="商标筛选" default-close ref="strainer">
     <el-form :model="form" ref="form" label-width="120px">
       <el-row>
         <el-col :span="12">

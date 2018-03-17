@@ -1,7 +1,7 @@
 <template>
 	<el-row>
     <el-col :span="16" style="padding-right:5px">
-      <remote-select  no-data-text="无数据, 请增加发明人" type="member" :value="id" ref="member" :static-map="inventorInstall" @input="handleInventor" :disabled="disabled"></remote-select>
+      <remote-select  no-data-text="无数据, 请增加发明人" type="inventor" :value="id" ref="member" :static-map="inventorInstall" @input="handleInventor" :disabled="disabled"></remote-select>
     </el-col>
     <el-col :span="6" style="padding:0 5px">
       <el-autocomplete placeholder="贡献率" :fetch-suggestions="handleFetch"  style="width: 100%" readonly :value="share + ''" @input="handlePercent" :disabled="disabled">

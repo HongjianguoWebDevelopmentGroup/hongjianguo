@@ -45,7 +45,7 @@
     <el-form-item prop="agency_serial" label="事务所案号" v-if="fields.agency_serial" :rules="{required: true, message: '事务所案号不能为空'}">
       <el-input placeholder="请填写事务所案号" v-model="form.agency_serial"></el-input>
     </el-form-item>
-    <el-form-item prop="agent" label="代理人" v-if="fields.agent" v-show="form.agency !== ''">
+    <el-form-item prop="agent" label="代理人" v-if="fields.agent" v-show="form.agency !== ''" :rules=" next == 102 ? { required: true, type: 'number', message: '代理人不能为空',trigger: 'change'} : []">
       <remote-select type="agent" v-model="form.agent" :static-map="this.agentSelelcted" :para="{'agency': form.agency}" ref="agent"></remote-select>
     </el-form-item>
     <el-form-item prop="agency_type" label="代理类型" v-if="fields.agency_type"
@@ -109,7 +109,7 @@
       <li v-for="(item, index) in data.description" :key="index">{{ item }}</li>
     </ul>
     <el-form-item style="margin-bottom: 0px;">
-      <el-button type="primary" @click="submitFunc" :disabled="btn_disabled">提交</el-button>
+      <el-button type="primary" @click="submitFunc" :loading="btn_disabled">{{ btn_disabled ? '提交中...' : '提交'}}</el-button>
     </el-form-item>
   </el-form>
 </div>
@@ -235,7 +235,7 @@ export default {
   		this.axiosGet({url, success, complete});
   	},
   	submitFunc () {
-      if(this.no_finish) return this.$message({message: '请上传专利申请文件确认表', type: 'warning'}); 
+      // if(this.no_finish) return this.$message({message: '请上传专利申请文件确认表', type: 'warning'});
       this.$refs.form.validate(_=>{
         if(_) {
           this.btn_disabled = true;

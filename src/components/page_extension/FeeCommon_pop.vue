@@ -76,8 +76,7 @@
 				<el-input type="textarea" placeholder="请填写备注" v-model="form.remark"></el-input>
 			</el-form-item>
 			<el-form-item style="margin-bottom: 0px">
-				<el-button type="primary" @click="add" v-if="popType == 'add'">添加</el-button>
-				<el-button type="primary" @click="edit" v-else-if="popType == 'edit'">编辑</el-button>
+				<el-button type="primary" @click="save" :loading="loading">{{ loading ? '保存中...' : '保存' }}</el-button>
 				<el-button @click="cancel">取消</el-button>
 			</el-form-item>
 		</el-form>
@@ -107,6 +106,7 @@ export default {
 		  popType: '',
 		  dialogVisible: false,
 		  feeAnnual: false,
+		  loading: false,
 		  form: {
 		  	project: '',
 		  	target: '',
@@ -194,16 +194,27 @@ export default {
 	  			this.submitForm = row;
   			});	
   		}
-  	},	
+  	},
+  	save () {
+  		if(this.popType == 'add') {
+  			this.add();
+  		}
+  		if(this.popType == 'edit') {
+  			this.edit();
+  		}
+  	},
   	add () {
   		const url = URL;
   		const data = this.submitForm;
   		const success = _=>{ 
   			this.$message({type: 'success', message: _.info});
   			this.dialogVisible = false; 
-  			this.$emit('refresh') };
+  			this.$emit('refresh') 
+  		};
+  		const complete = _=>{ this.laoding = false };
 
-  		this.$axiosPost({url, data, success});
+  		this.loading = true;
+  		this.$axiosPost({url, data, success, complete});
   	},
   	edit () {
   		const url = `${URL}/${this.id}`;
@@ -213,8 +224,10 @@ export default {
   			this.dialogVisible = false;
   			this.$emit('refresh') 
   		};
+  		const complete = _=>{ this.laoding = false };
 
-  		this.$axiosPut({url, data, success});
+  		this.loading = true;
+  		this.$axiosPut({url, data, success, complete});
   	},
   	cancel () {
   		this.dialogVisible = false;

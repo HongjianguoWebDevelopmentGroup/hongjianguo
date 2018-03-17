@@ -49,7 +49,7 @@
     <el-dialog title="编辑任务" :visible.sync="dialogEditVisible" class="dialog-medium">
       <edit type="edit" :row="currentRow" @editSuccess="editSuccess"></edit>
     </el-dialog>
-    <el-dialog title="移交任务" :visible.sync="dialogTranserVisible" class="dialog-medium">
+    <el-dialog title="移交任务" :visible.sync="dialogTranserVisible" class="dialog-small">
       <el-form label-width="80px">
         <el-form-item label="承办人">
           <remote-select type="member" v-model="transfer_person"></remote-select>

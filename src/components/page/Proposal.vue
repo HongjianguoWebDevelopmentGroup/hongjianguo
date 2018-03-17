@@ -1,6 +1,6 @@
 <template>
 	<div class="main">
-    <app-collapse col-title="提案筛选" default-close>   
+    <app-collapse col-title="提案筛选" default-close ref="collapse">   
       <el-form label-width="80px">
         <el-row>
           <el-col :span="12">
@@ -154,6 +154,7 @@ export default {
 
       this.filter = obj;
       this.$refs.table.refresh();
+      this.$refs.collapse.toggle();
     },
     clear () {
       this.title = "";
@@ -226,8 +227,8 @@ export default {
           { type: 'add', click: this.add },
           { type: 'delete' },
           { type: 'export' },
-          
           { type: 'control' },
+          { type: 'report', click: _=>{this.$router.push('/proposal/report')} },
         ],
         'header_slot': ['transfer'],
         'columns': [
