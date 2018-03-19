@@ -1,8 +1,7 @@
 <template>
   <div class="main">
   	
-  		 <el-row>
-				<el-col :span="8">
+				<div class="float-block" style="float: left; width: 400px;">
 
           <div class="left-tree-header" style="padding: 0 20px; ">
             <span style="font-size: 15px; font-weight: bold;">部门</span>
@@ -31,46 +30,48 @@
             ref="tree"
 					>
 					</el-tree>
-				</el-col>
-  		 	<el-col :span="16" style="padding-left: 20px;">
-		  		<el-form label-width="120px">
-		  			
-            <el-form-item label="部门名称">
-		  			  {{ currentNode ? currentNode.name : '' }}
-		  			</el-form-item>
-		  			
-            <el-form-item label="部门描述">
-		  			  {{ currentNode ? currentNode.description ? currentNode.description : '暂无描述' : ''}}
-		  			</el-form-item>
-		  			
-            <el-form-item label="默认IPR">
-		  				<template v-if="currentNode">
-                <el-tooltip v-if="currentNode.ipr">
-                  <div slot="content">{{ currentNode.ipr.name }}<br/>{{ currentNode.ipr.mobile }}<br/>{{ currentNode.ipr.email }}</div>
-                  <el-tag>{{ currentNode.ipr.name }}</el-tag>
-                </el-tooltip>
-                <span v-else>暂未设置默认IPR</span>
-              </template>
-		  			</el-form-item>
+				</div>
+  		 	<div style="margin-left: 400px;" >
+  		  		<el-form label-width="120px">
+                <el-form-item label="部门名称" class="form-block">
+    		  			  {{ currentNode ? currentNode.name : '' }}
+    		  			</el-form-item>
+    		  			
+                <el-form-item label="部门描述" class="form-block">
+    		  			  {{ currentNode ? currentNode.description ? currentNode.description : '暂无描述' : ''}}
+    		  			</el-form-item>
+    		  			
+                <el-form-item label="默认IPR" class="form-block">
+    		  				<template v-if="currentNode">
+                    <el-tooltip v-if="currentNode.ipr">
+                      <div slot="content">{{ currentNode.ipr.name }}<br/>{{ currentNode.ipr.mobile }}<br/>{{ currentNode.ipr.email }}</div>
+                      <el-tag>{{ currentNode.ipr.name }}</el-tag>
+                    </el-tooltip>
+                    <span v-else>暂未设置默认IPR</span>
+                  </template>
+    		  			</el-form-item>
 
-		  			<el-form-item label="拥有查看权限">
-		  				<template v-if="currentNode">
-                <template v-if="currentNode.board">
-                  <el-tooltip v-for="item in currentNode.board" :key="item.id">
-                    <div slot="content">{{ item.name.split('-')[0] }}<br/>{{ item.name.split('-')[1] }}</div>
-                    <el-tag style="margin-right: 5px">{{ item.name.split('-')[0] }}</el-tag>
-                  </el-tooltip>
-                </template>
-                <span v-else>无人拥有查看权限</span>
-              </template>
-		  			</el-form-item>
-		  		  
-            <el-form-item v-if="!!currentNode" style="margin-bottom: 0px;">
-              <el-button type="primary" @click="transferPop">移交部门专利</el-button>
-            </el-form-item>
-          </el-form>	  		
-	  		</el-col>
-  		</el-row>
+    		  			<el-form-item label="拥有查看权限" class="form-block">
+    		  				<template v-if="currentNode">
+                    <template v-if="currentNode.board">
+                      <el-tooltip v-for="item in currentNode.board" :key="item.id">
+                        <div slot="content">{{ item.name.split('-')[0] }}<br/>{{ item.name.split('-')[1] }}</div>
+                        <el-tag style="margin-right: 5px">{{ item.name.split('-')[0] }}</el-tag>
+                      </el-tooltip>
+                    </template>
+                    <span v-else>无人拥有查看权限</span>
+                  </template>
+    		  			</el-form-item>
+    		  		  
+                <el-form-item v-if="!!currentNode" style="margin-bottom: 0px;">
+                  <el-button type="primary" @click="transferPop">移交部门专利</el-button>
+                </el-form-item>
+                
+              </el-form>
+              
+          	  		
+	  		</div>
+  		
 
       <el-dialog title="移交部门专利" :visible.sync="dialogVisible">
         <div style="margin-bottom: 5px;">将<span style="color: red; font-size: 14px; font-weight: bold; padding: 0 5px;">{{ currentNode.name }}</span>的专利移交至</div>
@@ -211,5 +212,8 @@ export default {
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
-<style scoped lang="scss">
+<style lang="scss">
+.form-block {
+  height: 36px;
+}
 </style>

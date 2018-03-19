@@ -333,6 +333,10 @@ menu.map = {
 	'/setting/agency/detail': {text: '代理机构详情', icon: '', path: '/setting/agency/detail'},
 	'/setting/template/edit': {text: '编辑模板', icon: 'el-icon-edit', path: '/setting/template/edit'},
 	'/news/systemMessage/detail': {text: '消息详情', icon: '', path: '/news/systemMessage/detail'},
+	'/proposal/report': {text: '报表', icon: 'el-icon-my-report', path: '/proposal/report'},
+	'/proposal/report/add': {text: '新建报表', icon: '', path: '/proposal/report/add'},	
+	'/patent/report': {text: '报表', icon: 'el-icon-my-report', path: '/proposal/report'},
+	'/patent/report/add': {text: '新建报表', icon: '', path: '/proposal/report/add'},
 };
 tailRecursion(menu.data);
 

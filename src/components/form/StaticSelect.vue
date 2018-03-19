@@ -4,6 +4,7 @@
       :value="value"
       @input="handleInput"
     	:multiple="multiple"
+      :multiple-limit="multipleLimit"
     	:disabled="disabled"
       :placeholder="config.placeholder"
       filterable
@@ -57,6 +58,10 @@ export default {
         return [];
       },
     },
+    'multipleLimit': {
+      type: Number,
+      default: 0,
+    }
   },
   data () {    
     return {
@@ -65,8 +70,8 @@ export default {
   },
   computed: {
     ...mapGetters([
-      'staticSelectorMap',
-      'staticSelectorCache',
+      'staticSelectorMap',//selector-cache
+      'staticSelectorCache',//selector-cache
     ]),
     cacheData () {
       return this.staticSelectorCache[this.type];

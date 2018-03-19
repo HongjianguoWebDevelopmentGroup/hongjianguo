@@ -1,5 +1,5 @@
 <template>
-  <app-collapse col-title="费用筛选" default-close>
+  <app-collapse col-title="费用筛选" default-close ref="collapse">
     <el-form :model="form" label-width="100px" ref="form">
     	
       <el-form-item label="费用对象" prop="target">

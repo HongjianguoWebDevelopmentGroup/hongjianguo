@@ -73,10 +73,10 @@
         >
         </task-finish>
       </el-dialog>     
-       <el-dialog title="添加发明人" :visible.sync="dialogVisible2">
+       <el-dialog title="添加发明人" :visible.sync="dialogVisible2" @close="$refs.inventorForm.resetFields()">
         <el-form :model="inventorForm" ref="inventorForm">
          <el-form-item label="请选择发明人" prop="newValue" :rules="{type: 'number',required:true,message:'发明人不能为空',trigger: 'change'}">
-            <remote-select  no-data-text="无数据, 请增加发明人" type="member" v-model="inventorForm.newValue" ref="member"></remote-select>
+            <remote-select  no-data-text="无数据, 请增加发明人" type="inventor" v-model="inventorForm.newValue" ref="member"></remote-select>
          </el-form-item>
           <p>如果系统中不存在该发明人，请<a href="#" @click="addPop">新增</a></p> 
           <el-button type="primary" @click="submitInventor('inventorForm')">确认</el-button>
@@ -286,7 +286,7 @@ export default {
         });
       }else {
         this.proposer_name = this.username;
-        if(this.userid && this.username) {
+        if(this.userid && this.username && this.userrole ==  4) {
           this.formData.inventors = [{ id: this.userid, name: this.username, share: '100', identity: this.useridentity }];  
         }        
       }
@@ -381,10 +381,10 @@ export default {
     this.refreshCommon();
 
     //这里开一个30秒的线程用于自动保存已有提案
-    const s = _=>{
+    // const s = _=>{
       
-      if( this.btn_disabled && this.formData.title == '') return;
-      this.save(_=>{}, false, false);
+    //   if( this.btn_disabled && this.formData.title == '') return;
+    //   this.save(_=>{}, false, false);
       //验证未通过,不发送
       // this.$refs.form.validate(valid=>{
       //   if(valid) {
@@ -396,18 +396,19 @@ export default {
       //     }
       //   }
       // })
-    }
-    this.timeInterval = window.setInterval(s, 30000);
+    // }
+    // this.timeInterval = window.setInterval(s, 30000);
 
   },
   destroyed () {
-    window.clearInterval(this.timeInterval);
+    // window.clearInterval(this.timeInterval);
   },
   computed: {
     ...mapGetters([
       'username',
       'userid',
       'useridentity',
+      'userrole',
     ]),
     tagOptions () {
       return this.$store.getters.tagOptions;

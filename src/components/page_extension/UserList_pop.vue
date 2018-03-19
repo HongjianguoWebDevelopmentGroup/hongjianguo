@@ -1,6 +1,6 @@
 <template>
-  <el-dialog :key="popType" :title="dialogTitle" :visible.sync="dialogVisible" @close="close" :modal="false">
-		<el-form :model="form" label-width="100px" ref="form" :rules="rules">
+  <el-dialog  :title="dialogTitle" class="dialog-size" :visible.sync="dialogVisible" @close="close" :modal="false">
+		<el-form :key="popType" :model="form" label-width="100px" ref="form" :rules="rules">
 			
       <el-form-item label="用户组" prop="group_id" v-if="popType == 'add'" :rules="{ type: 'number', required: true, message: '用户组选择不能为空', trigger: 'change'}">
         <static-select type="group" v-model="form.group_id"></static-select>
@@ -34,7 +34,7 @@
       <el-form-item label="代理所" v-if="group.id == 6">
         <remote-select type="agency" v-model="form.parent"></remote-select>
       </el-form-item>
-       <el-form-item label="部门">
+       <el-form-item label="部门" v-if="group.id != 5 && group.id != 6" prop="branch">
         <branch v-model="form.branch"></branch>
        </el-form-item>
 	    <el-form-item label="姓名" prop="name">
@@ -54,8 +54,7 @@
 	    </el-form-item>
 
 	    <el-form-item style="margin-bottom: 0;">
-	    	<el-button type="primary" @click="add" v-if="popType == 'add'">确定</el-button>
-	    	<el-button type="primary" @click="edit" v-if="popType == 'edit'">编辑</el-button>
+        <el-button type="primary" :loading="loading" @click="save">{{ loading ? '保存中...' : '保存' }}</el-button>
 	    	<el-button @click="dialogVisible = false">取消</el-button>
 	    </el-form-item>
 		</el-form>
@@ -84,8 +83,8 @@ export default {
   },
   data () {
 		return {
-			'id': '',
-		  'form': {
+			id: '',
+		  form: {
         group_id: '',//用于添加时使用
         groups: [],//用于编辑时保存数据
 		  	username: '',
@@ -99,7 +98,8 @@ export default {
 		  	qq: '',
         parent: '',
 		  },
-		  'rules': {
+      loading: false,
+		  rules: {
 		  	'email': { pattern: /^[a-z0-9]+([._\\-]*[a-z0-9])*@([a-z0-9]+[-a-z0-9]*[a-z0-9]+.){1,63}[a-z0-9]+$/, message: '邮箱格式错误', trigger: 'blur' },
 		  	'mobile': { pattern: /(^[0-9]{3,4}\-[0-9]{7,8})$|(^[0-9]{3,4}\-[0-9]{7,8})(-\d{1,6}?$)|^1[3|4|5|7|8][0-9]{9}$/, message: '手机号码或者座机号码格式错误', trigger: 'blur'},
 		  	'qq': { pattern: /^[1-9][0-9]{4,9}$/, message: 'qq号码格式错误', trigger: 'blur,change'},
@@ -133,12 +133,23 @@ export default {
         }
 
   			if(this.popType == 'edit') {
-  				this.$tool.coverObj(this.form, row); 
+  				this.$tool.coverObj(this.form, row);
+          if(this.form.branch && this.form.branch.id) {
+            this.form.branch = this.form.branch.id;
+          } 
   				this.id = row.id;
   			}
   				
   		});
   	},
+    save () {
+      if(this.popType == 'add') {
+        this.add();
+      }
+      if(this.popType == 'edit') {
+        this.edit();
+      }
+    },
   	add () {
   		let flag = false;
   		this.$refs.form.validate(_=>{ flag = !_ });
@@ -151,8 +162,10 @@ export default {
   			this.dialogVisible = false;
   			this.$emit('refresh');
   		}
+      const complete = _=>{this.loading = false;};
 
-  		this.$axiosPost({url, data, success});
+      this.loading = true;
+  		this.$axiosPost({url, data, success, complete});
   	},
   	edit () {
   		let flag = false;
@@ -160,14 +173,16 @@ export default {
   		if( flag || this.$refs.psd.check() ) return;
 
   		const url = `${URL}/${this.id}`;
-  		const data = this.$tool.shallowCopy(this.form, {skip: ['group_id']});
+  		const data = this.$tool.shallowCopy(this.form, {skip: ['group_id', 'groups', 'name', 'password_again']});
   		const success = _=>{
   			this.$message({message: '编辑用户成功', type: 'success'});
   			this.dialogVisible = false;
   			this.$emit('refresh');
   		}
+      const complete = _=>{this.loading= false;};
 
-  		this.$axiosPut({url, data, success});
+      this.loading = true;
+  		this.$axiosPut({url, data, success, complete});
   	},
   	psdCheck () {
   		const psd = this.form.password;
@@ -191,7 +206,6 @@ export default {
 
   	},
   	close () {
-      this.$emit('refresh',this.dialogVisible);
   		if(this.$refs.psd) {
   			this.$refs.psd.clearEditPsd();
   		}

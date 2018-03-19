@@ -75,6 +75,7 @@ export default {
           { type: 'batch_upload', map_if: '/patent/upload' },
           // { type: 'batch_update' },
           { type: 'control', label: '字段' },
+          { type: 'report', click: _=>{this.$router.push('/patent/report')} },
         ],
         'export_type': 'patent',
         'import_type': 'patent',

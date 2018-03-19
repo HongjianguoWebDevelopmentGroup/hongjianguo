@@ -1,5 +1,22 @@
 const state = {
 	config: [
+		['cycle', {
+			placeholder: '请选择数据周期',
+			options: [
+				{id: 'day', name: '每天'},
+				{id: 'week', name: '每周'},
+				{id: 'month', name: '每月'},
+			]
+		}],
+		['report_type', {
+			placeholder: '请选择报表类型',
+			options: [
+				{id:'pie',name: '饼图'},
+				{id:'bar', name: '柱状图'},
+				{id:'line', name: '折线图'},
+				{id:'view', name: '数据视图'},
+			]
+		}],
 	  ['categories',{
 	    placeholder: '请选择商标大类',
 	    options:[

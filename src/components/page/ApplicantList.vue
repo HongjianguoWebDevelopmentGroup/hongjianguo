@@ -117,7 +117,10 @@ export default {
   mounted () {
     this.refresh();
   },
-  components: { TableComponent, Pop }
+  components: { 
+    TableComponent, 
+    Pop 
+  },
 }
 </script>
 

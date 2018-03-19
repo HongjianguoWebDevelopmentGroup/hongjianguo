@@ -31,6 +31,11 @@ const getters = {
 		const id = user ? user.id : '';
 		return id; 
 	},
+	userrole: state=>{
+		const user = state.data;
+		const role = user ? user.role : '';
+		return role;
+	},
 	useridentity: state=>{
 		const user = state.data;
 		const i = user ? user.identity : '';

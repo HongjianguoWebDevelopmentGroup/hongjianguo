@@ -4,7 +4,7 @@ export default {
 		return JSON.parse(JSON.stringify(obj));
 	},
 	//浅拷贝
-	shallowCopy (obj, {date, array, skip}) {
+	shallowCopy (obj, {date, array, skip}={}) {
 		
 		const data = {};
 		if( date === undefined ) date = false;
@@ -24,7 +24,7 @@ export default {
       }
     }
 
-        return data;
+    return data;
 	},
 	//清空对象
 	clearObj (obj) {

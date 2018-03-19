@@ -1,5 +1,5 @@
 <template>
-  <app-collapse col-title="账单筛选" default-close>
+  <app-collapse col-title="账单筛选" default-close ref="collapse">
     <el-form :model="form" label-width="140px" ref="form">
     	<el-row :gutter="20">
         <el-col :span="12">

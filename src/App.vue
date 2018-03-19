@@ -191,8 +191,7 @@ export default {
       const btn = $('.nav-left-btn');
       animation();
       
-      function animation () {
-        
+      function animation () {        
         n += i;
         left.css('width', n);
         app.css('padding-left', n);
@@ -464,8 +463,24 @@ nav {
   /*font-weight: bold;*/
   display: inline-block;
 }
+.float-block:before {
+  display: table;
+  content: "";
+}
+.float-block:after {
+  display: table;
+  content: "";
+  clear: both;
+} 
 /*这里放入重写element-ui样式的内容*/
 #app {
+  .dialog-control>.el-dialog {
+    width: 600px;
+    position: static;
+    transform: initial;
+    margin: 0 auto;
+    margin-top: 80px;
+  }
   .el-tree-node__expand-icon.expanded {
     -ms-transform: rotate(90deg);
     transform: rotate(90deg);
@@ -496,6 +511,9 @@ nav {
   }
   .dialog-small>.el-dialog {
     width: 600px;
+  }
+  .dialog-size>.el-dialog {
+    width: 800px;
   }
   .dialog-medium>.el-dialog {
     width: 900px;
