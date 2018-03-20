@@ -1,10 +1,10 @@
 <template>
 <div class="main">
 	<table-component :tableOption="option" :data="tableData" @refreshTableData="refreshTableData" ref="table"></table-component>
-	<app-shrink :visible.sync="shrinkVisible" title="报表详情">
-    <el-button type="danger" slot="header" size="small" style="float: right; margin-top: 6px;" :disabled="disabled">删除</el-button>
+	<app-shrink :visible.sync="shrinkVisible" title="报表详情" ref="shrink">
+    <el-button type="danger" slot="header" size="small" style="float: right; margin-top: 6px;" :disabled="disabled" @click="reportDelete">删除</el-button>
     <el-button type="primary" slot="header" size="small" style="float: right; margin-top: 6px;" :disabled="disabled" :loading="loading" @click="reportExport">{{loading ? '导出中...' : '导出'}}</el-button>
-		<report-detail :current-row="currentRow" ref="detail"></report-detail>
+		<report-detail :current-row="currentRow" ref="detail" @success="update"></report-detail>
 	</app-shrink>
 </div>
 </template>
@@ -65,21 +65,44 @@ export default {
 		refresh () {
 			this.$refs.table.refresh();
 		},
+		update () {
+			this.$refs.table.update();
+		},
 		handleRowClick (row) {
 			// console.log(row);
 			this.currentRow = row;
 			this.shrinkVisible = true;
 		},
 		reportExport () {
+			if( !this.$refs.detail ) return;
+			this.loading = true;
+			this.disabled = true;
+			const para = this.$refs.detail.para; 
 			this.$axiosGet({
 				url: this.config.url,
-				data: Object.assign({}, JSON.parse(this.currentRow.filter), this.$tool.shallowCopy(this.currentRow, {skip: ['filter', 'title', 'creator_id', 'creator', 'create_time', 'id']}), {format: 'report'}),
+				data: Object.assign({}, para.filter, this.$tool.shallowCopy(para, {skip: ['filter']}), {format: 'report'}),
 				success: _=>{
 					window.location.href = _[this.config.data_key].downloadUrl;
-				}
-			})
-			
+				},
+				complete: _=>{ this.loading = false; this.disabled = false; },
+			})		
 		},
+		reportDelete () {
+			this.$confirm('此操作将永久删除该报表, 是否继续?', '提示', { type: 'warning' })
+				.then(_ => {
+      		this.disabled = true;
+					this.$axiosDelete({
+						url: `/api/reports/${this.currentRow.id}`,
+						success: _=>{
+							this.$message({type: 'success', message: '删除报表成功'});
+							this.refresh();
+							this.$refs.shrink.close();
+						},
+						complete: _=>{ this.disabled = false; },
+					})    
+      	})
+      	.catch(_ => {});
+		}
 	},
 	mounted () {
 		this.refresh();

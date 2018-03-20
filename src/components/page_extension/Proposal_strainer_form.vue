@@ -20,10 +20,10 @@
     </el-col>
     <el-col :span="12">
       <el-form-item label="发明人" prop="inventors">
-        <remote-select type="inventor" v-model="form.inventors" multiple></remote-select>
+        <remote-select type="inventor" v-model="form.inventors" ref="inventors" multiple></remote-select>
       </el-form-item>
       <el-form-item label="提案人" prop="proposer">
-        <remote-select type="member" v-model="form.proposer" multiple></remote-select>
+        <remote-select type="member" v-model="form.proposer" ref="proposer" multiple></remote-select>
       </el-form-item>
       <el-form-item label="标签" prop="tags">
         <static-select type="tag" v-model="form.tags" multiple></static-select>
@@ -62,6 +62,10 @@ export default {
   methods: {
     clear () {
       this.$refs.form.resetFields();
+    },
+    setForm (form) {
+      this.clear();
+      this.$tool.coverObj(this.form, form);
     }
   },
   watch: {

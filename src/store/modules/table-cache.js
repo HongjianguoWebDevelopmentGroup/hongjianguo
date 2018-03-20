@@ -100,6 +100,43 @@ const state = {
       { id: 'project_name',                  'name': '研发项目名称'},//研发项目名称
       { id: 'project_serial',                'name': '研发项目编号'},//研发项目编号
       { id: 'remark',                        'name': '备注'},
+    ],
+    'trademark': [
+      { id: 'serial',        'name': '案号' },
+      { id: 'type',          'name': '商标类型' },
+      { id: 'area',          'name': '地区' },
+      { id: 'title',         'name': '标题' },
+      { id: 'apd',           'name': '申请日', date: true },
+      { id: 'apn',           'name': '申请号' },
+      { id: 'issue_date',    'name': '公告日', date: true },
+      { id: 'issue_number',  'name': '公告号' },
+      { id: 'public_date',   'name': '初审公告日', date: true },
+      { id: 'public_number', 'name': '初审公告期数' },
+      { id: 'progress',      'name': '当前状态' },
+      { id: 'create_time',   'name': '创建时间', date: true },
+      { id: 'applicants',    'name': '申请人' },
+      { id: 'remark',        'name': '备注' },
+    ],
+    'copyright': [
+      { id: 'serial',         'name': '案号' },
+      { id: 'type',           'name': '版权类型' },
+      { id: 'title',          'name': '标题' },
+      { id: 'abstract',       'name': '摘要' },
+      { id: 'apd',            'name': '申请日', date: true },
+      { id: 'apn',            'name': '申请号' },
+      { id: 'issue_date',     'name': '公告日', date: true },
+      { id: 'issue_number',   'name': '公告号' },
+      { id: 'ipr',            'name': '负责IPR' },
+      { id: 'agency',         'name': '代理机构' },
+      { id: 'agency_serial',  'name': '代理机构案号' },
+      { id: 'progress',       'name': '当前状态' },
+      { id: 'create_time',    'name': '创建时间', date: true },
+      { id: 'applicants',     'name': '申请人' },
+      { id: 'tags',           'name': '标签' },
+      { id: 'branch',         'name': '部门' },
+      { id: 'classification', 'name': '技术分类' },
+      { id: 'products',       'name': '产品' },
+      { id: 'remark',         'name': '备注' },
     ]
 	},
 	//报表模块相关配置
@@ -117,7 +154,21 @@ const state = {
 			add_url: '/patent/report/add',
 			data_key: 'patents',
 			text: '专利数量统计',
-		}
+		},
+    'trademark': {
+      url: '/api/trademarks',
+      list_url: '/trademark/report',
+      add_url: '/trademark/report/add',
+      data_key: 'trademarks',
+      text: '商标数量统计',
+    },
+    'copyright': {
+      url: '/api/copyrights',
+      list_url: '/copyright/report',
+      add_url: '/copyright/report/add',
+      data_key: 'copyrights',
+      text: '版权数量统计',
+    }
 	},
 	pagesize: 20,
 }

@@ -1,7 +1,7 @@
 <template>
-	<div style="height: 100%;overflow: auto;" v-loading="loading" element-loading-text="生成报表中...">
-		<div v-if="!show">暂未查询到相关数据...</div>
-		<div v-else-if="show && para.report_type != 'view'" id="chart" style="width: 100%; height: 100%;"></div>
+	<div style="height: 100%; overflow: auto;" v-loading="loading" element-loading-text="生成报表中...">
+		<div key="nul" v-if="!show" style="font-size: 14px;text-align: center;padding-top: 50px;">暂未查询到相关数据...</div>
+		<div key="chart" v-else-if="show && para.report_type != 'view'" id="chart" style="width: 100%; height: 100%;"></div>
 		<data-view v-else-if = "show && para.report_type == 'view'" ref="dataView"></data-view>
 	</div>
 </template>
@@ -165,21 +165,35 @@ export default {
 			}
 		},
 		handleSuccess (data) {
-			if(this.para.report_type != 'view') {
-				this.initChart();
-			}else {
+			
+			if(this.chart) {
+				this.chart.clear();
 				this.chart = '';
 			}
 
-			if(this.para.report_type == 'pie') {
-				this.handlePie(data[this.config.data_key]);
-			}else if(this.para.report_type == 'bar') {
-				this.handleBarLine(data[this.config.data_key], 'bar');
-			}else if(this.para.report_type == 'line') {
-				this.handleBarLine(data[this.config.data_key], 'line');
-			}else if(this.para.report_type == 'view') {
-				this.handleView(data[this.config.data_key]);
+			data = data[this.config.data_key];
+			if(data instanceof Array && data.length == 0) {
+				return this.show = false;
+			}else {
+				this.show = true;
 			}
+			
+			this.$nextTick(_=>{
+				if(this.para.report_type != 'view') {
+					this.initChart();
+				}
+
+				if(this.para.report_type == 'pie') {
+					this.handlePie(data);
+				}else if(this.para.report_type == 'bar') {
+					this.handleBarLine(data, 'bar');
+				}else if(this.para.report_type == 'line') {
+					this.handleBarLine(data, 'line');
+				}else if(this.para.report_type == 'view') {
+					this.handleView(data);
+				}	
+			})
+			
 
 		},
 		handlePie (data) {
@@ -223,7 +237,7 @@ export default {
 			this.$refs.dataView.init(data);
 		},
 		resizeChart () {
-			if(this.para.report_type != 'view') {
+			if(this.para.report_type != 'view' && this.chart) {
 				this.chart.resize();
 			}
 		}

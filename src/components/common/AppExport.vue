@@ -81,7 +81,7 @@ export default {
 							...this.screen_obj,
 							format: 'excel',
 							documents: this.form.documents,
-							fields: JSON.stringify(this.form.fields),
+							fields: this.form.fields.join(','),
 							ids: this.selected.map(_=>_.id),
 						},
 						success: d=>{	

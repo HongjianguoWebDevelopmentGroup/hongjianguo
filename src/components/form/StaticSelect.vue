@@ -193,6 +193,11 @@ export default {
       }else {
         this.$emit('input', '');
       }
+    },
+    value () {
+      if(this.multiple) {
+        this.$refs.select.visible = false;
+      }
     }
   }
 }

@@ -138,6 +138,30 @@ const router = new Router({
       meta: {'type': 'patent'},
     },
     {
+      path: '/trademark/report',
+      name: 'TrademarkReport',
+      component: Report,
+      meta: { 'type': 'trademark' },
+    },
+    {
+      path: '/trademark/report/add',
+      name: 'TrademarkReportAdd',
+      component: ReportAdd,
+      meta: {'type': 'trademark'},
+    },
+    {
+      path: '/copyright/report',
+      name: 'CopyrightReport',
+      component: Report,
+      meta: { 'type': 'copyright' },
+    },
+    {
+      path: '/copyright/report/add',
+      name: 'CopyrightReportAdd',
+      component: ReportAdd,
+      meta: {'type': 'copyright'},
+    },
+    {
       path: '/task/pending/check',
       name: 'CheckProposal',
       component: CheckProposal
