@@ -110,7 +110,7 @@ const config = [
     action: 'getPatentNoticesDocuments',
     url: '/patents_notice/documents',
     type: 'patent',
-    file_type: 'file_type_patent',
+    file_type: 'file_type_patent_notice',
     time: true,
     legal_time: true,
     apd: true,
@@ -121,7 +121,7 @@ const config = [
     action: 'getTrademarkNoticesDocuments',
     url: '/trademarks_notice/documents',
     type: 'trademark',
-    file_type: 'file_type_trademark',
+    file_type: 'file_type_trademark_notice',
     time: true,
     legal_time: true,
     apd: true,
@@ -192,7 +192,6 @@ export default {
       copy['show_apn'] = f.apn == 1 && this.config.apn ? true : false;
 
       this.tableData.splice(index, 1, copy);
-
       //这里使用强制刷新 无法触发更新（why？可能是数据 不在当前组件强制刷新的作用范围内）
       //只有使用数组截取的方法 让它自动检测刷新了 麻烦一些 比起直接在row上进行修改
       // this.$forceUpdate();
@@ -280,7 +279,7 @@ export default {
   	handleSuccess (a,b,c) {
   		if(a.status) {
         a.data.list.forEach(_=>{ 
-          _.type = _.type ? _.type.id :_.type
+          _.type = _.type ? _.type.id :_.type;
           _.time = '';
           _.legal_time = '';
           _.apd = '';

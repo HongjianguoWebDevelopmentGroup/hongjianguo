@@ -85,7 +85,7 @@ const router = new Router({
     { path: '/fee', redirect: '/fee/income'},
     { path: '/setting', redirect: '/setting/individual'},
     { path: '/interact', redirect: '/interact/email'},
-    { path: '/renewal', redirect: '/renawal/fee' },
+    { path: '/renewal', redirect: '/renawel/fee' },
     //###重定向###
     {
       path: '/statistics',
