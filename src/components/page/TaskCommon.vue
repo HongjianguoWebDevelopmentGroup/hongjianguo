@@ -166,6 +166,12 @@ export default {
     ...mapActions([
       'refreshUser',
     ]),
+    handleReport () {
+      const url = {0: '/task/pending/report', '-1': '/task/pause/report', 1: '/task/finish/report'}[this.task_status];
+      if(url) {
+        this.$router.push(url);
+      }
+    },
     handleReject () {
       this.$confirm('此操作将退回当前任务，是否继续？', '提示', { 
         type: 'warning'
@@ -469,6 +475,7 @@ export default {
           {},
           {},
           { type: 'export' },
+          { type: 'report', click: this.handleReport },
           // { type: 'custom', label: '转出', icon: '', click: ()=>{ this.dialogTurnoutVisible = true; } },
           { type: 'control', label: '字段'},
           // { type: 'custom', label: '设定', icon: '', click: ()=>{ this.dialogSettingVisible = true; } }

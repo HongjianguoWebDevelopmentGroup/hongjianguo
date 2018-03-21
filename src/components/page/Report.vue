@@ -80,7 +80,7 @@ export default {
 			const para = this.$refs.detail.para; 
 			this.$axiosGet({
 				url: this.config.url,
-				data: Object.assign({}, para.filter, this.$tool.shallowCopy(para, {skip: ['filter']}), {format: 'report'}),
+				data: Object.assign({}, para.filter, this.$tool.shallowCopy(para, {skip: ['filter'], array: true}), {format: 'report'}),
 				success: _=>{
 					window.location.href = _[this.config.data_key].downloadUrl;
 				},

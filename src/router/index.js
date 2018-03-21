@@ -162,10 +162,95 @@ const router = new Router({
       meta: {'type': 'copyright'},
     },
     {
+      path: '/task/finish/report',
+      name: 'TaskFinishReport',
+      component: Report,
+      meta: { 'type': 'task_finish' },
+    },
+    {
+      path: '/task/finish/report/add',
+      name: 'TaskFinishReportAdd',
+      component: ReportAdd,
+      meta: {'type': 'task_finish'},
+    },
+    {
+      path: '/task/pending/report',
+      name: 'TaskPendingReport',
+      component: Report,
+      meta: { 'type': 'task_pending' },
+    },
+    {
+      path: '/task/pending/report/add',
+      name: 'TaskPendingReportAdd',
+      component: ReportAdd,
+      meta: {'type': 'task_pending'},
+    },
+    {
+      path: '/task/pause/report',
+      name: 'TaskPauseReport',
+      component: Report,
+      meta: { 'type': 'task_pause' },
+    },
+    {
+      path: '/task/pause/report/add',
+      name: 'TaskPauseReportAdd',
+      component: ReportAdd,
+      meta: {'type': 'task_pause'},
+    },
+    {
+      path: '/fee/income/report',
+      name: 'FeeIncomeReport',
+      component: Report,
+      meta: { 'type': 'fee_income' },
+    },
+    {
+      path: '/fee/income/report/add',
+      name: 'FeeIncomeReportAdd',
+      component: ReportAdd,
+      meta: {'type': 'fee_income'},
+    },
+    {
+      path: '/fee/pay/report',
+      name: 'FeePayReport',
+      component: Report,
+      meta: { 'type': 'fee_pay' },
+    },
+    {
+      path: '/fee/pay/report/add',
+      name: 'FeePayReportAdd',
+      component: ReportAdd,
+      meta: {'type': 'fee_pay'},
+    },
+    {
+      path: '/fee/bill/report',
+      name: 'FeeBillReport',
+      component: Report,
+      meta: { 'type': 'fee_bill' },
+    },
+    {
+      path: '/fee/bill/report/add',
+      name: 'FeeBillReporttAdd',
+      component: ReportAdd,
+      meta: {'type': 'fee_bill'},
+    },
+    {
+      path: '/fee/payment/report',
+      name: 'FeePaymentReport',
+      component: Report,
+      meta: { 'type': 'fee_payment' },
+    },
+    {
+      path: '/fee/payment/report/add',
+      name: 'FeePaymentReportAdd',
+      component: ReportAdd,
+      meta: {'type': 'fee_payment'},
+    },
+    {
       path: '/task/pending/check',
       name: 'CheckProposal',
       component: CheckProposal
-    },{
+    },
+    {
       path: '/task/pending',
       name: 'TaskPending',
       component: TaskCommon,

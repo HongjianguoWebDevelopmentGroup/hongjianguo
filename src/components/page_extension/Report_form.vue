@@ -6,11 +6,11 @@
 		</el-form-item>
 		<el-form-item label="行标签" prop="row">
 			
-			<static-select :type="reportType == 'line' ? selectTypeDate : selectType" v-model="form.row" :multiple="multiple" :multiple-limit="2"></static-select>
+			<static-select :key="`${reportType}-row`" :type="reportType == 'line' ? selectTypeDate : selectType" v-model="form.row" :multiple="multiple" :multiple-limit="2"></static-select>
 		
 		</el-form-item>
 		<el-form-item label="列标签" prop="column" v-if="reportType != 'pie'">
-			<static-select :type="selectType" v-model="form.column" :multiple="multiple" :multiple-limit="2"></static-select>
+			<static-select :key="`${reportType}-column`" :type="selectType" v-model="form.column" :multiple="multiple" :multiple-limit="2"></static-select>
 		</el-form-item>
 		<el-form-item label="日期类型" prop="date_type" v-show="ifDate">
 			<static-select type="cycle" v-model="form.date_type"></static-select>
@@ -91,16 +91,10 @@ export default {
 			};
 		},
 		allOps () {
-			const r = this.form.row;
-			const c = this.form.column;
-			if(this.multiple) {
-				return [...r, ...c];
-			}else {
-				const arr = [];
-				if(r != '') arr.push(r);
-				if(c != '') arr.push(c);
-				return arr;
-			}
+			const r = this.form.row instanceof Array ? this.form.row : this.form.row == '' ? [] : [this.form.row];
+			const c = this.form.column instanceof Array ? this.form.column : this.form.column == '' ? [] : [this.form.column];
+			
+			return [...r, ...c];
 		},
 		ifDate () {
 			const a = this.allOps;

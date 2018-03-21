@@ -149,15 +149,30 @@ export default {
 	methods: {
 		refreshView () {
 			if(!this.para) return;
-			const data = {};
-			Object.assign(data, this.para.filter, this.$tool.shallowCopy(this.para, {array: true, skip: ['fields', 'filter']}), {format: 'report_data'});
-			this.loading = true;
-			this.$axiosGet({
-				url: this.config.url,
-				data,
-				success: this.handleSuccess,
-				complete: _=>{ this.loading = false; this.$emit('complete', _); },
+
+			this.show = true;
+
+			this.$nextTick(_=>{
+
+				if(this.para.report_type != 'view') {
+					this.initChart();
+				}else if(this.chart) {
+					this.chart.clear();
+					this.chart = '';
+				}
+
+				const data = {};
+				Object.assign(data, this.para.filter, this.$tool.shallowCopy(this.para, {array: true, skip: ['fields', 'filter']}), {format: 'report_data'});
+				this.loading = true;
+				this.$axiosGet({
+					url: this.config.url,
+					data,
+					success: this.handleSuccess,
+					complete: _=>{ this.loading = false; this.$emit('complete', _); },
+				})
+
 			})
+			
 		},
 		initChart () {
 			if(!this.chart) {
@@ -165,34 +180,29 @@ export default {
 			}
 		},
 		handleSuccess (data) {
-			
-			if(this.chart) {
-				this.chart.clear();
-				this.chart = '';
-			}
 
 			data = data[this.config.data_key];
+			
+			//数据空处理
 			if(data instanceof Array && data.length == 0) {
-				return this.show = false;
-			}else {
-				this.show = true;
+				this.show = false;
+				if(this.chart) {
+					this.chart.clear();
+					this.chart = '';
+				}
+				return;
 			}
 			
-			this.$nextTick(_=>{
-				if(this.para.report_type != 'view') {
-					this.initChart();
-				}
+			if(this.para.report_type == 'pie') {
+				this.handlePie(data);
+			}else if(this.para.report_type == 'bar') {
+				this.handleBarLine(data, 'bar');
+			}else if(this.para.report_type == 'line') {
+				this.handleBarLine(data, 'line');
+			}else if(this.para.report_type == 'view') {
+				this.handleView(data);
+			}	
 
-				if(this.para.report_type == 'pie') {
-					this.handlePie(data);
-				}else if(this.para.report_type == 'bar') {
-					this.handleBarLine(data, 'bar');
-				}else if(this.para.report_type == 'line') {
-					this.handleBarLine(data, 'line');
-				}else if(this.para.report_type == 'view') {
-					this.handleView(data);
-				}	
-			})
 			
 
 		},

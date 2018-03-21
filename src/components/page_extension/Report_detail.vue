@@ -34,6 +34,8 @@ export default {
 			activeName: 'first',
 			loading: false,
 			cache: '',
+			cacheData: '',
+			inti: false,
 		};
 	},
 	computed: {
@@ -52,14 +54,24 @@ export default {
 		}
 	},
 	methods: {
+		getView () {
+			if(!this.inti && this.activeName == 'first') {
+				this.para = this.cacheData;
+				this.inti = true;
+			}
+		},
 		rollback () {
 			this.$refs.form.setForm(this.cache);
 		},
 		refresh () {
+			this.inti = false;
 			this.cache = this.$tool.deepCopy(this.currentRow);
-			this.$refs.form.setForm(this.currentRow);
 			this.$nextTick(_=>{
-				this.para = { ...this.$refs.form.getFormData(), table_type: this.tableType, report_type: this.reportType };
+				this.$refs.form.setForm(this.currentRow);
+				this.$nextTick(_=>{
+					this.cacheData = { ...this.$refs.form.getFormData(), table_type: this.tableType, report_type: this.reportType }; 
+					this.getView();
+				})
 			})
 		},
 		saveReport () {
@@ -74,6 +86,7 @@ export default {
 					this.$message({type: 'success', message: '保存报表成功'});
 					this.activeName = 'first';
 					this.para = { ...this.$refs.form.getFormData(), table_type: this.tableType, report_type: this.reportType };
+					this.inti = true;
 					this.$emit('success');
 				},
 				complete: _=>{
@@ -88,6 +101,9 @@ export default {
 	watch: {
 		currentRow () {
 			this.refresh();
+		},
+		activeName (val) {
+			this.getView();
 		}
 	},
 	components: {

@@ -345,6 +345,28 @@ menu.map = {
 	
 	'/copyright/report': {text: '报表', icon: 'el-icon-my-report', path: '/copyright/report'},
 	'/copyright/report/add': {text: '新建报表', icon: '', path: '/copyright/report/add'},
+
+	'/task/pending/report': {text: '报表', icon: 'el-icon-my-report', path: '/task/pending/report'},
+	'/task/pending/report/add': {text: '新建报表', icon: '', path: '/task/pending/report/add'},
+
+	'/task/finish/report': {text: '报表', icon: 'el-icon-my-report', path: '/task/finish/report'},
+	'/task/finish/report/add': {text: '新建报表', icon: '', path: '/task/finish/report/add'},
+
+	'/task/pause/report': {text: '报表', icon: 'el-icon-my-report', path: '/task/pause/report'},
+	'/task/pause/report/add': {text: '新建报表', icon: '', path: '/task/pause/report/add'},
+
+	'/fee/income/report': {text: '报表', icon: 'el-icon-my-report', path: '/fee/income/report'},
+	'/fee/income/report/add': {text: '新建报表', icon: '', path: '/fee/income/report/add'},
+
+	'/fee/pay/report': {text: '报表', icon: 'el-icon-my-report', path: '/fee/pay/report'},
+	'/fee/pay/report/add': {text: '新建报表', icon: '', path: '/fee/pay/report/add'},
+
+	'/fee/bill/report': {text: '报表', icon: 'el-icon-my-report', path: '/fee/bill/report'},
+	'/fee/bill/report/add': {text: '新建报表', icon: '', path: '/fee/bill/report/add'},
+
+	'/fee/payment/report': {text: '报表', icon: 'el-icon-my-report', path: '/fee/payment/report'},
+	'/fee/payment/report/add': {text: '新建报表', icon: '', path: '/fee/payment/report/add'},
+
 };
 tailRecursion(menu.data);
 
