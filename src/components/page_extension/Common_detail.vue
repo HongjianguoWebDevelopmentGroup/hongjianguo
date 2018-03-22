@@ -50,7 +50,7 @@
         <el-tab-pane label="审查记录">
           <defence></defence>
         </el-tab-pane>
-        <el-tab-pane label="著作变更">
+        <el-tab-pane label="动态">
           <detail-amendments></detail-amendments>
         </el-tab-pane>
       </el-tabs>

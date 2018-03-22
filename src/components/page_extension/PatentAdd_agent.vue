@@ -39,7 +39,6 @@ export default {
       this.$tool.coverObj(this.form, data); 
   	},
     submitForm () {
-      console.log(this.form);
       return this.form;
     },
     checkForm (callback) {

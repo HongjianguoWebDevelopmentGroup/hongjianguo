@@ -4,7 +4,7 @@
     <pa-base ref="base" :type="type"></pa-base>
     <person ref="person" :type="type"></person>
     <classification ref="classification"></classification>
-    <agent ref="agent" v-if="type == 'edit'"></agent>
+    <agent ref="agent"></agent>
     <case ref="case"></case>
     <other ref="other" :type="type"  @uploadSuccess="handleUploadSuccess"></other>
     <custom ref="custom" :type="type"></custom>
@@ -103,10 +103,8 @@ export default {
     formCheck (callback) {
       let key = "";
       let flag = false;
-
       const check = (index)=>{
         const key = getKeys[index];
-        console.log(key);
         if(key) {
           this.$refs[key].checkForm(_=>{
             if(_) {
@@ -119,9 +117,7 @@ export default {
           callback();
         }
       }
-      
       check(0);
-
     },
     cancel () {
       this.$router.push('/patent/list');
