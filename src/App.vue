@@ -21,7 +21,7 @@
 
     <nav>
         <img src="/static/static_img/hjg_logo.png" style="vertical-align: middle; height: 27px;">
-        <span class="logo_name">知识产权管理系统</span>
+        <!-- <span class="logo_name">知识产权管理系统</span> -->
         <el-dropdown  trigger="click" style="float: right; margin-right: 40px;" @command="handleCommond">
           <span class="el-dropdown-link" style="color: #20a0ff; cursor: pointer;">
             {{ username }}<i class="el-icon-caret-bottom el-icon--right"></i>
