@@ -25,6 +25,12 @@
         </el-form-item>
       </el-form>
     </el-dialog>
+
+      <el-dialog title="附件下载" :visible.sync="dialogVisible" >
+      <template>
+        <table-component :tableOption="option2" :data="tableData2.attachments"></table-component>
+      </template>
+    </el-dialog>
   </div>
 </template>
 
@@ -52,6 +58,7 @@ export default {
       refreshProxy: '',
       currentRow: '',
       shrinkVisible: false,
+      dialogVisible: false,
       
       downloadVisible: false,
       downloadIds: [],
@@ -65,6 +72,7 @@ export default {
         'search_placeholder': '搜索案号、标题、申请号', 
         'highlightCurrentRow': true,
         'rowClick': this.handleRowClick,
+        'cellClick': this.handleCellClick,
         'is_filter': true,
 
         'header_btn': [
@@ -143,6 +151,24 @@ export default {
               return h('span', t);
             }
           },
+          { type: 'text', label: '附件', prop: 'attachments', width: '240',   
+            render (h,item) {
+              return h(
+                'span', 
+                item.map(function (g) {
+                    return h('a', 
+                    {
+                      style: {
+                      marginRight: '2px',
+                  },
+                  attrs: {
+                    href: '#',
+                  },
+                    },g.name)
+                })
+              )
+            } 
+          },
           {type: 'text', label: '创建时间', prop: 'create_time', width: '200'},
           { type: 'text', label: '返发明人稿时间', prop: 'first_edition_to_inventor_time', is_import: true, width: '175', show: false,},
           { type: 'text', label: '发明人审核时间', prop: 'inventor_review_time', is_import: true, width: '175', show: false,},
@@ -188,7 +214,27 @@ export default {
           { type: 'text', label: '是否发明/新型同日申请', prop: 'is_utility', width: '198', is_import:true, render: this.renderBoolean},
         ] 
       },
+      option2: {
+        'is_search': false,
+        'is_pagination': false,
+        'columns':[
+          { type: 'text', label: '文件名称', prop: 'name', min_width: '120'},
+          { type: 'text', label: '上传日期', prop: 'create_time', min_width: '120'},
+          { type: 'text', label: '上传人', prop: 'uploader', min_width: '100'},
+          { type: 'text', label: '大小', prop: 'size', min_width: '80'},
+          { 
+            type: 'action',
+            label: '操作',
+            min_width: '120',
+            btns: [
+              { type: 'view', click: ({viewUrl})=>{window.open(viewUrl)}},
+              { type: 'download', click: ({downloadUrl})=>{window.open(downloadUrl)}},  
+            ]
+          }
+        ],
+      },
       tableData: [],
+      tableData2: [],
       filter: {},
     };
   },
@@ -242,6 +288,12 @@ export default {
     handleRowClick (row) {
       this.currentRow = row;
       if(!this.shrinkVisible) this.shrinkVisible = true;
+    },
+    handleCellClick (row,columns,cell) {
+      if(columns.property=='attachments'){
+        this.dialogVisible = true;
+        this.tableData2 = row;
+      }
     },
     close () {
       this.$refs.table.setCurrentRow();

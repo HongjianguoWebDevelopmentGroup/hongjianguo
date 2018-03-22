@@ -215,7 +215,7 @@ export default {
   		if(this.time == null) return;
   		const url = '/api/mails';
   		const imported = this.imported ? {imported: this.imported} : '';
-  		const data = 	Object.assign({}, options, this.time, {'mailbox': 1}, imported);
+  		const data = 	Object.assign({}, options, this.time, {'mailbox': 1}, imported,{'interact': 1 });
   		const success = _=>{ this.tableData = _.mails };
 
   		this.$axiosGet({url, data, success});

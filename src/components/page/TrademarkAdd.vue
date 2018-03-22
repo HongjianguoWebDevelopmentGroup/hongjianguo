@@ -67,6 +67,15 @@
 			<el-form-item label="地区" prop="area" :rules="{ type: pageType=='add' ? 'array' : 'string',required: true, message: '地区不能为空', trigger: 'change'}">
 				<static-select type="area" v-model="form.area" :multiple="pageType == 'add'"></static-select>
 			</el-form-item>
+			<el-form-item label="代理机构" prop="agency" v-if="pageType == 'edit'">
+				<remote-select v-model="form.agency" type="agency"></remote-select>
+			</el-form-item>
+			<el-form-item label="代理人" prop="agent" v-if="pageType == 'edit'">
+				<remote-select v-model="form.agent" type="agent"></remote-select>
+			</el-form-item>
+		 	<el-form-item label="代理机构案号" v-if="pageType == 'edit'">
+	          <el-input v-model="form.agency_serial" placeholder="请填写代理机构案号"></el-input>
+			</el-form-item>			
 			</el-form-item>
 			<el-form-item label="商标图形" prop="figure">
 				<!-- <upload v-model="form.figure" :file-list="figure" :multiple="false"></upload> -->
@@ -163,6 +172,9 @@ export default {
 			  	apd: '',
 			  	issue_date: '',
 			  	issue_number: '',
+			  	agency: '',
+			  	agency_serial: '',
+			  	agent: '',
 			  	priorities: []
 			},
 		  rules: {

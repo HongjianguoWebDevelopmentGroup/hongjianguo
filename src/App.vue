@@ -1,6 +1,6 @@
 <template>
   <div id="app" v-loading.fullscreen.lock="userinfoLoading" element-loading-text="初始化中...">
-    <el-popover
+<!--     <el-popover
       ref="popover"
       placement="bottom"
       title="系统消息"
@@ -17,7 +17,7 @@
       </template>
       <div v-else style="color: #ccc; margin-top: 10px; margin-left: 20px;">暂无系统消息...</div>      
     </div>
-    </el-popover>
+    </el-popover> -->
 
     <nav>
         <img src="/static/static_img/hjg_logo.png" style="vertical-align: middle; height: 27px;">
@@ -31,12 +31,12 @@
           </el-dropdown-menu>
         </el-dropdown>
         
-        <img 
+<!--         <img 
           v-popover:popover  
           style="cursor: pointer; float: right; margin-right: 20px; margin-top: 12px; font-size: 24px;" 
           title="系统消息"
           :src="sysmesg.length != 0 ? '/static/static_img/news_in.png' : '/static/static_img/news.png'"
-        />        
+        />   -->      
           <el-badge :value="pendingTaskCount" class="task-pending-top">
             <el-button size="mini" icon="warning" type="primary" @click="$router.push('/task/pending')" title="待办任务"></el-button>
           </el-badge>          

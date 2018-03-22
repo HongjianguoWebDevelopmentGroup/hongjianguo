@@ -8,7 +8,7 @@ menu.data = [
 		type: 'item'
 	},
 	{
-		text: '消息',
+		text: '邮件',
 		path: '/news',
 		icon: 'iconfont el-icon-my-email',
 		type: 'submenu',
@@ -20,11 +20,17 @@ menu.data = [
 				type: 'item',
 			},
 			{
-				text: '系统消息',
-				path: '/news/systemMessage',
-				icon: 'iconfont el-icon-my-newlabel',
+				text: '交互',
+				path: '/news/interact',
+				icon: 'iconfont el-icon-my-interact',
 				type: 'item',
-			}
+			},
+			// {
+			// 	text: '系统消息',
+			// 	path: '/news/systemMessage',
+			// 	icon: 'iconfont el-icon-my-newlabel',
+			// 	type: 'item',
+			// }
 		]
 	},
 	// {
@@ -160,12 +166,12 @@ menu.data = [
 				icon: 'iconfont	 el-icon-my-copyright',
 				type: 'item'
 			},
-			// {
-			// 	text: '通知书管理',
-			// 	path: '/copyright/notice',
-			// 	icon: 'iconfont el-icon-my-notice',
-			// 	type: 'item',
-			// },
+			{
+				text: '通知书管理',
+				path: '/copyright/notice',
+				icon: 'iconfont el-icon-my-notice',
+				type: 'item',
+			},
 		]
 	},
 	{
@@ -227,18 +233,18 @@ menu.data = [
 			type: 'item'
 		}]
 	},
-	{
-		text: '交互',
-		path: '/interact',
-		icon: 'iconfont el-icon-my-interact',
-		type: 'submenu',
-		children: [{
-			text: '邮件交互',
-			path: '/interact/email',
-			icon: 'iconfont el-icon-my-email',
-			type: 'item',
-		}]
-	},
+	// {
+	// 	text: '交互',
+	// 	path: '/interact',
+	// 	icon: 'iconfont el-icon-my-interact',
+	// 	type: 'submenu',
+	// 	children: [{
+	// 		text: '邮件交互',
+	// 		path: '/interact/email',
+	// 		icon: 'iconfont el-icon-my-email',
+	// 		type: 'item',
+	// 	}]
+	// },
 	{
 		text: '设置',
 		path: '/setting',

@@ -52,6 +52,9 @@
 					</el-form-item>
 					<el-form-item label="群组号" prop="group_number">
 						<el-input placeholder="请输入需要搜索的群组号" v-model="form.group_number"></el-input	>
+					</el-form-item>	
+					<el-form-item label="项目编号" prop="project_number">
+						<el-input placeholder="请输入需要搜索的项目编号" v-model="form.project_number"></el-input	>
 					</el-form-item>								
 					<el-form-item label="申请日" prop="apd">
 						<el-date-picker type="daterange" placeholder="请选择申请日" v-model="form.apd"></el-date-picker>
@@ -109,6 +112,7 @@ export default {
 				applicants: [],
 				inventors: [],
 				group_number: '',
+				project_number: '',
 				family_number: '',
 			},
 			options: {

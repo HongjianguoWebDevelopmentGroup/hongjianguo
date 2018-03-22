@@ -2,8 +2,8 @@
   <app-collapse col-title="扩展信息">
       <el-form label-width="120px" :model="form" ref="form">
         <el-form-item label="部门">
-          <branch v-model="form.branch" count-type="patent" v-if="type == 'add'"></branch>
-          <span v-else>{{ branchName ? branchName : '暂未归属某个部门' }}</span>
+          <branch v-model="form.branch" count-type="patent" ></branch>
+          <!-- <span v-else>{{ branchName ? branchName : '暂未归属某个部门' }}</span> -->
         </el-form-item>
       	<el-form-item label="IPR">
           <!-- <span class="form-item-text" v-if="type == 'add'">{{ user ? user.name : '暂未取得当前用户信息' }}</span> -->
@@ -183,6 +183,7 @@ export default {
       }
   	},
     submitForm () {
+      console.log(this.form);
       // if(this.type == 'add') this.form.ipr = this.user.id;
       return this.$tool.shallowCopy(this.form, { 'date': true });
     },

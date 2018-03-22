@@ -30,7 +30,7 @@ export default {
         'is_pagination': false,
         'columns': [
           { type: 'text', label: '管制事项', prop: 'name' },
-          { type: 'text', label: '当前节点', prop: 'node_name' },
+          // { type: 'text', label: '当前节点', prop: 'node_name' },
           { type: 'text', label: '承办人', prop: 'person_in_charge_name' },
           { type: 'text', label: '开始时间', prop: 'start_time' },
           { type: 'text', label: '指定期限', prop: 'due_time' },
