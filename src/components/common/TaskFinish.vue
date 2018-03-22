@@ -308,10 +308,9 @@ export default {
     },
     handleUploadSuccess (d) {
       const r = d.data.result;
-      if( !r ) {
-        return this.$message({message: '验证数据获取失败', type: 'warning'});
-      }
-      console.log(r);
+      
+      if(!r || r.length == 0) return;
+      
       if(r.status) {
         this.$message({message: r.info, type: 'success'});
         this.no_finish = false;

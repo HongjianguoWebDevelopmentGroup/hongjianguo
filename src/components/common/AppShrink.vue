@@ -64,8 +64,7 @@ export default {
 	},
 	watch: {
 		visible (val) {
-			console.log('toggle');
-
+			
 			if( !this.rendered && val) {
 				this.rendered = true;
 			}

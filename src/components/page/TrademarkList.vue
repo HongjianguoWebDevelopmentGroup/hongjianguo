@@ -39,7 +39,8 @@ export default {
 				{ type: 'import',},
 				{ type: 'export',},
 				{ type: 'batch_upload',},
-				{ type: 'control', label: '字段'}
+				{ type: 'report', click: _=>{this.$router.push('/trademark/report')} },
+				{ type: 'control', label: '字段'},
 				],
 				'import_type': 'trademark',
 				'upload_type': 'trademark',

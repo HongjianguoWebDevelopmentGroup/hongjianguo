@@ -45,6 +45,7 @@ export default {
           { type: 'export' },
           { type: 'import' },
           { type: 'batch_upload' },
+          { type: 'report', click: _=>{this.$router.push('/copyright/report')} },
           { type: 'control', label: '字段' },
         ],
         'columns': [

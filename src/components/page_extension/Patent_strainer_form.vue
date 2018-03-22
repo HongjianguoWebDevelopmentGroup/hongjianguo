@@ -15,22 +15,22 @@
 					</el-form-item>
 					
 					<el-form-item label="代理机构" prop="agency">
-						<remote-select type="agency" v-model="form.agency" multiple></remote-select>
+						<remote-select type="agency" v-model="form.agency" ref="agency" multiple></remote-select>
 					</el-form-item>
 					<el-form-item label="IPR" prop="ipr">
 						<static-select type="ipr" v-model="form.ipr" multiple></static-select>
 					</el-form-item>
 					<el-form-item label="代理人" prop="agent">
-						<remote-select type="agent" v-model="form.agent" multiple></remote-select>
+						<remote-select type="agent" v-model="form.agent" ref="agent" multiple></remote-select>
 					</el-form-item>
 					<el-form-item label="提案人" prop="proposer">
-						<remote-select type="member" v-model="form.proposer" multiple></remote-select>
+						<remote-select type="member" v-model="form.proposer" ref="proposer" multiple></remote-select>
 					</el-form-item>
 					<el-form-item label="申请人" prop="applicants">
-						<remote-select type="applicant" v-model="form.applicants" multiple></remote-select>
+						<remote-select type="applicant" v-model="form.applicants" ref="applicants" multiple></remote-select>
 					</el-form-item>
 					<el-form-item label="发明人" prop="inventors">
-						<remote-select type="inventor" v-model="form.inventors" multiple></remote-select>
+						<remote-select type="inventor" v-model="form.inventors" ref="inventors" multiple></remote-select>
 					</el-form-item>
 					<el-form-item label="专利族号" prop="family_number">
 						<el-input placeholder="请输入需要搜索的专利族号" v-model="form.family_number"></el-input>

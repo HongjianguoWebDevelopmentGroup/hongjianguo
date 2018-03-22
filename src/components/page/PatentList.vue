@@ -169,6 +169,7 @@ export default {
               )
             } 
           },
+          {type: 'text', label: '创建时间', prop: 'create_time', width: '200'},
           { type: 'text', label: '返发明人稿时间', prop: 'first_edition_to_inventor_time', is_import: true, width: '175', show: false,},
           { type: 'text', label: '发明人审核时间', prop: 'inventor_review_time', is_import: true, width: '175', show: false,},
           { type: 'text', label: '发明人审核次数', prop: 'inventor_review_times', is_import: true, width: '175', show: false,},

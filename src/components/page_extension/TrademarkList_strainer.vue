@@ -12,6 +12,8 @@
            <el-date-picker type="daterange" v-model="form.apd" placeholder="请选择申请日"></el-date-picker>
           </el-form-item>
         </el-col>
+      </el-row>
+      <el-row>
         <el-col :span="12">
         	<el-form-item label="地区" prop="area">
           	<static-select type="area" v-model="form.area" multiple></static-select>
@@ -22,6 +24,8 @@
            <el-date-picker type="daterange" v-model="form.public_date" placeholder="请选择初审公告日"></el-date-picker>
           </el-form-item>
         </el-col>
+      </el-row>
+      <el-row>
         <el-col :span="12">
           <el-form-item label="商标类别" prop="categories">
             <static-select type="categories" v-model="form.categories" multiple></static-select>
@@ -32,6 +36,8 @@
            <el-date-picker type="daterange" v-model="form.issue_date" placeholder="请选择核准注册日"></el-date-picker>
           </el-form-item>
         </el-col>
+      </el-row>
+      <el-row>
         <el-col :span="12">
           <el-form-item label="申请人" prop="applicants">
            <remote-select type="applicant" v-model="form.applicants" multiple></remote-select>

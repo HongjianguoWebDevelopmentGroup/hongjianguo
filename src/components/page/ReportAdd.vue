@@ -11,8 +11,8 @@
 			<template v-if="active == 1">
 				<static-select type="report_type" v-model="reportType"></static-select>
 			</template>
-			<template v-if="active == 2">
-				<report-form :report-type="reportType" :table-type="type" ref="reportForm"></report-form>
+			<template v-if="active == 2 || active == 3">
+				<report-form v-show="active == 2" :report-type="reportType" :table-type="type" ref="reportForm"></report-form>
 			</template>
 			<template v-if="active == 3">
 				<report-view :para="viewPara" @complete="thirdDisabled=false"></report-view>
@@ -76,7 +76,8 @@ export default {
 				title: '',
 				is_auto_mail: 0,
 				timing: [],
-			}
+			},
+			saveForm: '',
 		}
 	},
 	computed: {
@@ -102,7 +103,9 @@ export default {
 				return this.$message({type: 'warning', message: error_msg});
 			}
 
-			this.viewPara = {...this.$tool.deepCopy(this.$refs.reportForm.form), table_type: this.type, report_type: this.reportType};
+			this.viewPara = { ...this.$refs.reportForm.getFormData(), table_type: this.type, report_type: this.reportType };
+			this.saveForm = { ...this.$refs.reportForm.getFormData('save'), table_type: this.type, report_type: this.reportType };
+			
 			this.$nextTick(_=>{
 				this.active += 1;
 				this.thirdDisabled = true;
@@ -115,7 +118,7 @@ export default {
 			this.loading = true;
 			this.$axiosPost({
 				url,
-				data: this.$tool.shallowCopy(Object.assign({}, this.viewPara, this.form), {array: true}),
+				data: this.$tool.shallowCopy(Object.assign({}, this.saveForm, this.form), {array: true}),
 				success: _=>{ 
 					this.$message({type: 'success', message: '新建报表成功'});
 					this.$router.push(this.config.list_url);

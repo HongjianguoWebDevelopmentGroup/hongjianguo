@@ -14,7 +14,7 @@ const state = {
 				{id:'pie',name: '饼图'},
 				{id:'bar', name: '柱状图'},
 				{id:'line', name: '折线图'},
-				{id:'view', name: '数据视图'},
+				{id:'view', name: '数据透视表'},
 			]
 		}],
 	  ['categories',{
