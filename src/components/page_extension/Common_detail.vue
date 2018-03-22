@@ -4,6 +4,15 @@
     <span slot="header" style="float: right">
       <el-button size="small" type="primary" class="table-header-btn" @click="edit">保存</el-button>
       <el-button style="margin-left: 5px;" size="small" type="danger" @click="dialogClosed=true" v-if="type == 'patent'">结案</el-button>
+        <el-dropdown @command="handleCommand" trigger="click" style="margin-left: 5px;" size="small" v-if="type == 'patent'">
+          <el-button size="small">
+            委案<i class="el-icon-caret-bottom el-icon--right"></i>
+          </el-button>
+          <el-dropdown-menu slot="dropdown" class="app-dropdown-menu">
+            <el-dropdown-item command="cancel" :disabled="btnDisabled">撤回</el-dropdown-item>
+            <el-dropdown-item command="change" :disabled="btnDisabled">变更</el-dropdown-item>
+          </el-dropdown-menu>
+        </el-dropdown>      
     </span>
     <div  v-loading="detailLoading && visibleAuth" :element-loading-text="config.loadingText" :style="divStyle">
       <el-tabs v-model="activeName">
@@ -41,12 +50,18 @@
         <el-tab-pane label="审查记录">
           <defence></defence>
         </el-tab-pane>
+        <el-tab-pane label="著作变更">
+          <detail-amendments></detail-amendments>
+        </el-tab-pane>
       </el-tabs>
     </div>
   </app-shrink>
   <el-dialog title="提交结案请求" :visible.sync="dialogClosed" @close="$refs.closeForm.clear();">
     <close-form :id="id" @success="closeSuccess" ref="closeForm"></close-form>
   </el-dialog>
+    <el-dialog title="委案变更" :visible.sync="dialogChange" @close="$refs.changeForm.clear();">
+      <change-form :id="id" @success="dialogChange=false;refreshDetailData();" ref="changeForm"></change-form>
+    </el-dialog>
 </div>
 </template>
 
@@ -65,6 +80,8 @@ import Defence from '@/components/page_extension/CommonDetail_defence'
 import Quote from '@/components/page_extension/CommonDetail_quote'
 import Review from '@/components/page_extension/CommonDetail_review'
 import CloseForm from '@/components/page_extension/CommonDetail_closed'
+import ChangeForm from '@/components/page_extension/CommonDetail_commision_change'
+import DetailAmendments from '@/components/page_extension/CommonDetail_Amendments'
 
 import { mapGetters } from 'vuex'
 import { mapActions } from 'vuex'
@@ -105,6 +122,8 @@ export default {
 		  activeName: 'base',
       rendered: false,
       dialogClosed: false,
+      btnDisabled: false,
+      dialogChange: false,
 		}
   },
   computed: {
@@ -113,6 +132,7 @@ export default {
       'detailLoading',
       'menusMap',
       'innerHeight',
+      'detailBase',
     ]),
   	config () {
   		const config = map.get(this.type);
@@ -173,7 +193,41 @@ export default {
     closeSuccess () {
       this.dialogClosed = false;
       this.refreshDetailData();
-    }
+    },
+    handleCommand(command) {
+      if(command == 'cancel') {
+        this.commisionCancle(); //委案撤回
+      }
+      if(command == 'change') {
+        const d = this.detailBase;
+        //委案变更检测
+        if(d.agency && d.agency.name) {
+          this.dialogChange = true;
+          this.$nextTick(_=>{
+            this.$refs.changeForm.fill({agency: d.agency, agent: d.agent});
+          })
+        }else {
+          return this.$message({message: '当前案件没有委案，不可变更', type: 'warning'});
+        }
+      }
+    },
+    commisionCancle () {
+      this.$confirm('此操作将对当前专利进行撤回委托的操作, 是否继续?', '提示', {type: 'warning'})
+        .then(_=>{
+          this.btnDisabled = true;
+          this.$axiosPut({
+            url: `/api/projects/${this.id}/withdraw`,
+            success: _=>{
+              this.$message({type: 'success', message: '撤回委托成功'});
+              this.refreshDetail();
+            },
+            complete: _=>{
+              this.btnDisabled = false;
+            }
+          })
+        }).catch(_=>{});
+      
+    },
   },
   watch: {
   	id () {
@@ -199,6 +253,8 @@ export default {
     Quote,
     Review,
     CloseForm,
+    ChangeForm,
+    DetailAmendments,
   }
 }
 </script>

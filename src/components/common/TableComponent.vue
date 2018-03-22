@@ -122,6 +122,7 @@
       :table-selected.sync="selected"
       @sort-change="handleSortChange"
       @row-click="handleRowClick"
+      @cell-click="handleCellClick"
       ref="table"
     >
       <template slot="row_action" slot-scope="scope">
@@ -450,6 +451,10 @@ export default {
       // if(c.fixed) return false;
       const func = this.tableOption.rowClick;
       if(func) func(row, event, column);
+    },
+    handleCellClick (row, column, cell, event) {
+       const func = this.tableOption.cellClick;
+      if(func) func(row, column, cell, event);
     },
     handelExport(func, e) {
       // const fields = this.tableControl.filter(_=>{

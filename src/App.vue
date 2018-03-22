@@ -1,6 +1,6 @@
 <template>
   <div id="app" v-loading.fullscreen.lock="userinfoLoading" element-loading-text="初始化中...">
-    <el-popover
+<!--     <el-popover
       ref="popover"
       placement="bottom"
       title="系统消息"
@@ -17,11 +17,11 @@
       </template>
       <div v-else style="color: #ccc; margin-top: 10px; margin-left: 20px;">暂无系统消息...</div>      
     </div>
-    </el-popover>
+    </el-popover> -->
 
     <nav>
         <img src="/static/static_img/hjg_logo.png" style="vertical-align: middle; height: 27px;">
-        <span class="logo_name">知识产权管理系统</span>
+        <!-- <span class="logo_name">知识产权管理系统</span> -->
         <el-dropdown  trigger="click" style="float: right; margin-right: 40px;" @command="handleCommond">
           <span class="el-dropdown-link" style="color: #20a0ff; cursor: pointer;">
             {{ username }}<i class="el-icon-caret-bottom el-icon--right"></i>
@@ -31,12 +31,12 @@
           </el-dropdown-menu>
         </el-dropdown>
         
-        <img 
+<!--         <img 
           v-popover:popover  
           style="cursor: pointer; float: right; margin-right: 20px; margin-top: 12px; font-size: 24px;" 
           title="系统消息"
           :src="sysmesg.length != 0 ? '/static/static_img/news_in.png' : '/static/static_img/news.png'"
-        />        
+        />   -->      
           <el-badge :value="pendingTaskCount" class="task-pending-top">
             <el-button size="mini" icon="warning" type="primary" @click="$router.push('/task/pending')" title="待办任务"></el-button>
           </el-badge>          

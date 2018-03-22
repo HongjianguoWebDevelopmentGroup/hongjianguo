@@ -25,9 +25,10 @@ const map = new Map([
   ['case', '请正确填写相关案件信息'],
   ['other', '请正确填写其他信息及附件'],
   ['review', '请正确填写评审结果信息'],
+  ['agent','请正确填写代理机构信息'],
 ]);
 
-const getKeys = ['base', 'person', 'classification', 'case', 'other', 'custom', 'review'];
+const getKeys = ['base', 'person', 'classification','agent', 'case', 'other', 'custom', 'review'];
 const setKeys = ['base', 'person', 'classification', 'agent', 'case', 'other', 'custom', 'review'];
 
 const URL = '/api/patents';
@@ -105,6 +106,7 @@ export default {
 
       const check = (index)=>{
         const key = getKeys[index];
+        console.log(key);
         if(key) {
           this.$refs[key].checkForm(_=>{
             if(_) {

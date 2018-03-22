@@ -2,16 +2,16 @@
   <app-collapse col-title="委案信息">
       <el-form label-width="120px">
 				<el-form-item label="代理机构名称">
-					{{ agent }}
+          <remote-select type="agency" v-model="form.agency"></remote-select>
 				</el-form-item>
 				<el-form-item label="代理机构案号">
-					{{ agency_serial }}
+          <el-input v-model="form.agency_serial" placeholder="请填写代理机构案号"></el-input>
 				</el-form-item>
 				<el-form-item label="代理类型">
-					{{ agency_type }}
+          <static-select v-model="form.agency_type" type="agency_type"></static-select>
 				</el-form-item>
 				<el-form-item label="代理人信息">
-					{{ agency }}
+          <remote-select type="agent" v-model="form.agent" ></remote-select>
 				</el-form-item>
       </el-form>
     </app-collapse>
@@ -19,6 +19,8 @@
 
 <script>
 import AppCollapse from '@/components/common/AppCollapse'
+import StaticSelect from '@/components/form/StaticSelect'
+import RemoteSelect from '@/components/form/RemoteSelect'
 
 export default {
   name: 'patentAddAgent',
@@ -28,14 +30,21 @@ export default {
 				agency: '',
 				agency_serial: '',
 				agency_type: '',
-				agent: '',
+				agent: [],
 			}
     }
   },
   methods: {
   	setForm (data) {
       this.$tool.coverObj(this.form, data); 
-  	}
+  	},
+    submitForm () {
+      console.log(this.form);
+      return this.form;
+    },
+    checkForm (callback) {
+      callback(true);
+    },
   },
   computed: {
   	agent () {
@@ -51,7 +60,11 @@ export default {
   		return this.form.agent ? this.form.agent.name : '暂无代理人信息';
   	}
   },
-  components: {  AppCollapse }
+  components: { 
+   AppCollapse,
+   StaticSelect,
+   RemoteSelect,
+  }
 }
 </script>
 

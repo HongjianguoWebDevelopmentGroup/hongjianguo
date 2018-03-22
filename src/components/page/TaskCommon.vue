@@ -200,9 +200,9 @@ export default {
     agenPop () {
       const s = this.$refs.table.getSelect();
       let confirm = false;
-
       if(s) {
         for(let d of s) {
+
           if(d.agency !== "") {
             confirm = true;
             break;

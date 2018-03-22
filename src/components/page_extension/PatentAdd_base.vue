@@ -1,8 +1,8 @@
 <template>
   <app-collapse col-title="基本信息">
 		<el-form label-width="120px" :model="form" :rules="rules" ref="form">
-      <el-form-item label="案号" v-if="type=='edit'">
-        {{ serial }}
+      <el-form-item label="案号" prop="serial">
+       <el-input v-model="form.serial" placeholder="请填写案号"></el-input>
       </el-form-item>
 			<el-form-item label="标题" prop="title">
 				<el-input v-model="form.title" placeholder="请填写案件标题" ></el-input>
@@ -34,7 +34,10 @@
           >{{ item.text }}</el-checkbox>
         </el-checkbox-group>
         <span v-else>暂无可选项</span>
-      </el-form-item>     
+      </el-form-item>  
+      <el-form-item label="附件" prop="attachments">
+          <upload action="/api/files?action=parseDisclosure" @uploadSuccess="handleUploadSuccess" v-model="form.attachments" :file-list="attachments"></upload>
+      </el-form-item>   
 	  </el-form>
   </app-collapse>
 </template>
@@ -48,6 +51,7 @@ import StaticSelect from '@/components/form/StaticSelect'
 import RemoteSelect from '@/components/form/RemoteSelect'
 import Priorities from '@/components/form/Priorities'
 import Inventors from '@/components/form/Inventors'
+import Upload from '@/components/form/Upload'
 import { checkInventors } from '@/const/validator.js'
 
 const extensionHash = [
@@ -76,9 +80,10 @@ export default {
         applicants: [],
         inventors: [],
         priorities: [],
-        extension: [],       
+        extension: [], 
+        attachments: [],      
       },
-      
+      attachments: [],
       rules: {
         'title':{ required: true, message: '标题不能为空', trigger: 'blur' },
         'type': { type: 'number', required: true, message: '专利类型不能为空', trigger: 'change' },
@@ -139,7 +144,10 @@ export default {
             this.$refs.inventors.handleShare(data.inventors);
           }
         }
-
+        if(k == 'attachments') {
+          this.form[k] = data[k].map(_=>_.id);
+          this.attachments = data[k];
+        }
   			if( k == 'extension' ) {
   				const arr = [];
   				for(let d of data[k]) {
@@ -161,9 +169,9 @@ export default {
     submitForm () {
       return this.$tool.shallowCopy(this.form, { 'date': true });
     },
-  	handleUploadSuccess () {
-
-  	},
+    handleUploadSuccess (a, b, c) {
+      this.$emit('uploadSuccess', a, b, c);
+    },
   	handleUploadRemove () {
 
   	},
@@ -177,6 +185,7 @@ export default {
     RemoteSelect,
     Priorities,
     Inventors,
+    Upload, 
   }
 }
 </script>

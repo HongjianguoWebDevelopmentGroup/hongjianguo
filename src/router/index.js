@@ -84,7 +84,6 @@ const router = new Router({
     { path: '/dispatch', redirect: '/dispatch/administration' },
     { path: '/fee', redirect: '/fee/income'},
     { path: '/setting', redirect: '/setting/individual'},
-    { path: '/interact', redirect: '/interact/email'},
     { path: '/renewal', redirect: '/renawel/fee' },
     //###重定向###
     {
@@ -367,7 +366,7 @@ const router = new Router({
     { path: '/setting/template', name: 'SettingTemplate', component: SettingTemplate },
     { path: '/setting/template/edit', name: 'SettingTemplateEdit', component: SettingTemplateEdit },
     { path: '/setting/user', name: 'SettingUser', component: SettingUser },
-    { path: '/interact/email', name: 'InteractEmail', component: InteractEmail},
+    { path: '/news/interact', name: 'InteractEmail', component: InteractEmail},
   ]
 });
 router.beforeEach((to, from, next)=>{

@@ -47,6 +47,11 @@ const getters = {
   detailDefence: state=>state.data && state.data.defence ? state.data.defence : [],
   detailQuote: state=>state.data && state.data.quote ? state.data.quote : null,
   detailReview: state=>state.data && state.data.review ? state.data.review : [],
+  detailFundings: state=>state.data && state.data.fees.funding ? state.data.fees.funding : {},
+  detailOfficial: state=>state.data && state.data.fees.official ? state.data.fees.official : {},
+  detailAgency: state=>state.data && state.data.fees.agency ? state.data.fees.agency : {},
+  detailAnnual: state=>state.data && state.data.fees.annual ? state.data.fees.annual : {},
+  detailAmendments: state=>state.data && state.data.amendments ? state.data.amendments : [],
   detailLoading: state=>state.loading,
 }
 

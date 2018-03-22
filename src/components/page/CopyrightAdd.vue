@@ -31,6 +31,15 @@
 		<el-form-item label="部门分类" prop="branch">
 			<branch v-model="form.branch" count-type="copyright"></branch>
 		</el-form-item>
+		<el-form-item label="代理机构" prop="agency" v-if="type == 'edit'">
+			<remote-select v-model="form.agency" type="agency"></remote-select>
+		</el-form-item>
+		<el-form-item label="代理人" prop="agent" v-if="type == 'edit'">
+			<remote-select v-model="form.agent" type="agent"></remote-select>
+		</el-form-item>
+	 	<el-form-item label="代理机构案号" v-if="type == 'edit'">
+          <el-input v-model="form.agency_serial" placeholder="请填写代理机构案号"></el-input>
+		</el-form-item>
 		<el-form-item label="申请人" prop="applicants">
 			<remote-select type="applicant" v-model="form.applicants" multiple></remote-select>
 		</el-form-item>
@@ -99,6 +108,9 @@ export default {
 		  	apd: '',
 		  	issue_date: '',
 		  	issue_number: '',
+		  	agency: '',
+		  	agent: '',
+		  	agency_serial: '',
 		  },
 		  options: {
 		  	type: [

@@ -13,6 +13,7 @@
   @selection-change="handleSelectionChange" 
   @sort-change="_=>{$emit('sort-change', _)}"
   @row-click="handleRowClick"
+  @cell-click="handleCellClick"
 >
   <template v-for="(col, index) in columns">
     
@@ -211,9 +212,14 @@ export default {
   methods: {
     handleRowClick (row, event, column) {
       event.stopPropagation();
-      if(column.type == 'selection' || column.type == 'action') return false;
+      if(column.type == 'selection' || column.type == 'action' || column.property == "attachments") return false;
           
       this.$emit('row-click', row, event, column);
+    },
+    handleCellClick (row, column, cell, event) {
+      event.stopPropagation();
+       if(column.type == 'selection' || column.type == 'action') return false;
+       this.$emit('cell-click',row, column, cell, event);
     },
     handleSelectionChange(s) { 
       this.selected = s;
