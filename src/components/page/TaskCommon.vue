@@ -9,7 +9,7 @@
     </table-component>
  
     <el-dialog title="申请委案" :visible.sync="dialogAgenVisible" class="dialog-small">
-      <el-form :form="agen" ref="agen" label-width="80px" :model="agen">
+      <el-form :form="agen" ref="agen" label-width="120px" :model="agen">
         <el-form-item label="代理机构" prop="agency_id" :rules="{required: true, type: 'number', message: '代理机构必填', trigger: 'change' }">
           <remote-select type="agency" v-model="agen.agency_id"></remote-select><el-button size="mini" type="text" @click="showAgencyLoad">负载</el-button>
         </el-form-item>
@@ -19,14 +19,14 @@
         <el-form-item label="代理类型" prop="agency_type" :rules="{ required: true, type: 'number', message: '代理类型必填', trigger: 'change' }">
           <static-select type="agency_type" v-model="agen.agency_type"></static-select>
         </el-form-item>
-        <el-form-item label="权力要求返回日">
-          <el-date-picker v-model="agen.dib_date" type="date" placeholder="权力要求返回日"></el-date-picker>
+        <el-form-item label="权利要求返回日" prop="dib_date">
+          <el-date-picker v-model="agen.dib_date" type="date" placeholder="权力要求返回日" style="width: 100%;"></el-date-picker>
         </el-form-item>
-        <el-form-item label="说明书返回日">
-          <el-date-picker v-model="agen.manual_date" type="date" placeholder="说明书返回日"></el-date-picker>
+        <el-form-item label="说明书返回日" prop="manual_date">
+          <el-date-picker v-model="agen.manual_date" type="date" placeholder="说明书返回日" style="width: 100%;"></el-date-picker>
         </el-form-item>
-        <el-form-item label="定稿日期">
-          <el-date-picker v-model="agen.fv_date" type="date" placeholder="定稿日期"></el-date-picker>
+        <el-form-item label="定稿日期" prop="fv_date">
+          <el-date-picker v-model="agen.fv_date" type="date" placeholder="定稿日期" style="width: 100%;"></el-date-picker>
         </el-form-item>
         <el-form-item label="备注" prop="remark">
           <el-input v-model="agen.remark" type="textarea"></el-input>
@@ -243,7 +243,7 @@ export default {
         if(_) {
           const ids = this.$refs.table.getSelect().map(_=>_.id);
           const url = '/api/tasks/agency';
-          const data = Object.assign({}, this.agen, { ids });
+          const data = Object.assign({}, this.$tool.shallowCopy(this.agen, {date: true}), { ids });
           const success = _=>{
             this.dialogAgenVisible = false; 
             this.$message({type: 'success', message: '申请委案成功'});

@@ -1,12 +1,12 @@
 <template>
   <div class="main">
     
-    <pa-base ref="base" :type="type"></pa-base>
+    <pa-base ref="base" :type="type" @uploadSuccess="handleUploadSuccess"></pa-base>
     <person ref="person" :type="type"></person>
     <classification ref="classification"></classification>
     <agent ref="agent"></agent>
     <case ref="case"></case>
-    <other ref="other" :type="type"  @uploadSuccess="handleUploadSuccess"></other>
+    <other ref="other" :type="type" ></other>
     <custom ref="custom" :type="type"></custom>
     <review ref="review" :type="type"></review>
     <div style="margin-bottom: 20px;">
@@ -53,6 +53,7 @@ export default {
       pop_type: '',
       btn_disabled: false,
       shrink: false,
+      list: [],
     }
   },
   props: ['pageType'],
@@ -64,7 +65,7 @@ export default {
       
       this.formCheck(_=>{
         const url = URL;
-        const data = Object.assign( ...getKeys.map(_=>this.$refs[_].submitForm()) );
+        const data = Object.assign( ...getKeys.map(_=>this.$refs[_].submitForm()), {list: this.list} );
         const success = _=>{ 
           this.$message({message: '添加专利成功', type: 'success'});
           this.refreshUser();
@@ -134,14 +135,22 @@ export default {
       }
     },
     handleUploadSuccess (d) {
-      console.log(d);
       if( !d.data || !d.data.list ) {
-        return this.$message({type: 'warning', message: '识别交底书失败'});
+        return;
       }
 
-      getKeys.forEach(_=>{
-        this.$refs[_].setForm(d.data.list)
-      });
+      if (d.data.list.is_disclosure == 1) {
+
+        this.list.push(d.data.list);
+
+        getKeys.forEach(_=>{
+          this.$refs[_].setForm(d.data.list)
+        });
+
+      }else if(d.data.list.is_disclosure == 2) {
+        this.$message({type: 'warning', message: '文件识别失败'});
+      }
+      
     }
   },
   computed: {
