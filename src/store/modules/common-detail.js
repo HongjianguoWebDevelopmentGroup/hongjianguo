@@ -52,6 +52,7 @@ const getters = {
   detailAgency: state=>state.data && state.data.fees.agency ? state.data.fees.agency : {},
   detailAnnual: state=>state.data && state.data.fees.annual ? state.data.fees.annual : {},
   detailAmendments: state=>state.data && state.data.amendments ? state.data.amendments : [],
+  detailReminders: state=>state.data && state.data.reminders ? state.data.reminders : [],
   detailLoading: state=>state.loading,
 }
 

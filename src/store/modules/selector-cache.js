@@ -1,5 +1,14 @@
 const state = {
 	config: [
+		['reminder', {
+			placeholder: '请选择提醒类型',
+			options: [
+				{id: 'dib_date', name: '权利要求返回日' },
+        {id: 'manual_date', name: '说明书返回日' },
+        {id: 'fv_date', name: '定稿日期' },
+        {id: 'custom_date', name: '自定义' },
+			]
+		}],
 		['cycle', {
 			placeholder: '请选择数据周期',
 			options: [

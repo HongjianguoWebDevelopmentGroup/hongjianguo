@@ -47,11 +47,14 @@
 <!--         <el-tab-pane label="评审记录" name="review" v-if="type == 'patent'">
           <review></review>
         </el-tab-pane> -->
-        <el-tab-pane label="审查记录">
+        <el-tab-pane label="审查记录" name="review_records">
           <defence></defence>
         </el-tab-pane>
-        <el-tab-pane label="著作变更">
+        <el-tab-pane label="著作变更" name="work_change">
           <detail-amendments></detail-amendments>
+        </el-tab-pane>
+        <el-tab-pane label="提醒" name="remind" v-if="type == 'patent'">
+          <remind></remind>
         </el-tab-pane>
       </el-tabs>
     </div>
@@ -82,6 +85,7 @@ import Review from '@/components/page_extension/CommonDetail_review'
 import CloseForm from '@/components/page_extension/CommonDetail_closed'
 import ChangeForm from '@/components/page_extension/CommonDetail_commision_change'
 import DetailAmendments from '@/components/page_extension/CommonDetail_Amendments'
+import Remind from '@/components/page_extension/CommonDetail_remind'
 
 import { mapGetters } from 'vuex'
 import { mapActions } from 'vuex'
@@ -255,6 +259,7 @@ export default {
     CloseForm,
     ChangeForm,
     DetailAmendments,
+    Remind,
   }
 }
 </script>
