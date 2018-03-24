@@ -19,6 +19,15 @@
         <el-form-item label="代理类型" prop="agency_type" :rules="{ required: true, type: 'number', message: '代理类型必填', trigger: 'change' }">
           <static-select type="agency_type" v-model="agen.agency_type"></static-select>
         </el-form-item>
+        <el-form-item label="权力要求返回日">
+          <el-date-picker v-model="agen.dib_date" type="date" placeholder="权力要求返回日"></el-date-picker>
+        </el-form-item>
+        <el-form-item label="说明书返回日">
+          <el-date-picker v-model="agen.manual_date" type="date" placeholder="说明书返回日"></el-date-picker>
+        </el-form-item>
+        <el-form-item label="定稿日期">
+          <el-date-picker v-model="agen.fv_date" type="date" placeholder="定稿日期"></el-date-picker>
+        </el-form-item>
         <el-form-item label="备注" prop="remark">
           <el-input v-model="agen.remark" type="textarea"></el-input>
         </el-form-item>
@@ -548,6 +557,9 @@ export default {
         agency_agent: '',
         agency_type: '',
         remark: '',
+        dib_date: '',
+        manual_date: '',
+        fv_date: '',
       },
       dialogAgenVisible: false,
       btn_disabled: false,
