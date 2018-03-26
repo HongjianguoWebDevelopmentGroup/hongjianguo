@@ -45,6 +45,7 @@ import AppShrink from '@/components/common/AppShrink'
 import CommonDetail from '@/components/page_extension/Common_detail'
 import StaticSelect from '@/components/form/StaticSelect'
 import { mapGetters } from 'vuex'
+import { mapActions } from 'vuex'
 
 const URL = '/api/patents';
 const PATENT_TYPE = ['发明专利', '实用新型', '外观设计']; 
@@ -249,6 +250,10 @@ export default {
     ])
   },
   methods: {
+    ...mapActions([
+      'refreshFlows',
+      'refreshTaskDefs',
+    ]),
     add () {
       this.$router.push('/patent/add');
     },
@@ -368,6 +373,8 @@ export default {
     }
 
     this.filter = this.$route.query;
+    this.refreshFlows();
+    this.refreshTaskDefs();
   },
   mounted () {
     

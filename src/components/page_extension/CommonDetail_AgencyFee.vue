@@ -1,6 +1,6 @@
 <template>
-   <app-collapse :col-title="`代理费(总计：${detailAgency.sum?detailAgency.sum:''}CNY)`">
-     <app-table :columns="columns" :data="detailAgency.list"></app-table>
+   <app-collapse :col-title="`代理费(总计：${detailAgency.sum?detailAgency.sum:'0'}CNY)`">
+     <app-table :columns="columns" :data="agencyData"></app-table>
    </app-collapse> 
 </template>
 <script>
@@ -11,7 +11,7 @@ import { mapGetters } from 'vuex'
     name: 'commonDetailAgencyFee',
     data () {
       return {
-      	  columns:[
+          columns:[
             { type: 'text', label: '费用名称', prop: 'name', min_width: '160'},
             { type: 'text', label: '外币金额',  prop: 'amount', width: '100', align: 'right',
               render:(h,item,row)=>{
@@ -43,9 +43,12 @@ import { mapGetters } from 'vuex'
       }
     },
     computed: {
-    	...mapGetters([
-    		'detailAgency',
-    	]),
+      ...mapGetters([
+        'detailAgency',
+      ]),
+      agencyData () {
+        return this.detailAgency.list ? this.detailAgency.list : [];
+      },
     },
     components: {
       AppTable,

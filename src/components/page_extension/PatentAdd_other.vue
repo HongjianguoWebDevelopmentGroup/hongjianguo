@@ -2,7 +2,7 @@
   <app-collapse col-title="其他信息">
       <el-form label-width="120px">
         <el-form-item label="状态">
-          <el-input v-model="form.progress_name" placeholder="请填写案件状态"></el-input>
+          <remote-select type="progress" v-model="form.progress_name"></remote-select>
         </el-form-item>
         <el-form-item label="说明书字数">
           <el-input v-model="form.words" placeholder="请填写说明书字数"></el-input>
@@ -16,28 +16,29 @@
 
 <script>
 import AppCollapse from '@/components/common/AppCollapse'
+import RemoteSelect from '@/components/form/RemoteSelect'
 
 export default {
   name: 'patentAddOther',
   props: ['type'],
   data () {
-		return {
+    return {
       form: {
         progress_name: '',
         words: '',
         remark: '',
-			},
-		}
+      },
+    }
   },
   methods: {
-  	setForm (data) {
+    setForm (data) {
       for(let k in this.form) {
         const d = data[k];
         if(d == undefined) continue;
           this.form[k] = d;
       }
       this.progress_name = data['progress'] ? data['progress']['name'] : ''; 
-  	},
+    },
     submitForm () {
       return this.form;
     },
@@ -47,6 +48,7 @@ export default {
   },
   components: { 
     AppCollapse, 
+    RemoteSelect,
   }
 }
 </script>

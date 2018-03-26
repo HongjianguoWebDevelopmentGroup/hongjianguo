@@ -67,7 +67,7 @@ const URL = '/api/tasks';
 export default {
   name: 'taskEdit',
   mixins: [ AxiosMixins ],
-  props: [ 'type', 'row' ],
+  props: [ 'type', 'row', 'id' ],
   methods: {
     ...mapActions([
       'refreshUser',
@@ -98,6 +98,15 @@ export default {
     clear () {
       this.$refs.form.resetFields();
     },
+    fill (o,f,d) {
+      this.form.project_id = o;
+      window.setTimeout(_=>{
+        this.form.flow_id = f;
+        this.$nextTick(_=>{
+          this.form.task_def_id = d;
+        });
+      }, 0);
+    },    
     refreshRow () {
       if(this.type == 'edit') {
         

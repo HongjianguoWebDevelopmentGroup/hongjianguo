@@ -1,7 +1,7 @@
 <template>
-   <app-collapse :col-title="`资助/奖金(总计：${detailFundings.sum?detailFundings.sum:''}CNY)`">
-	   <table-component :tableOption="tableOption" :data="detailFundings.list"></table-component>
-     <app-table :columns="columns" :data="detailFundings.list"></app-table>
+   <app-collapse :col-title="`资助/奖金(总计：${detailFundings.sum?detailFundings.sum:'0'}CNY)`">
+     <!-- <table-component :tableOption="tableOption" :data="detailFundings.list"></table-component> -->
+     <app-table :columns="columns" :data="fundingsData"></app-table>
    </app-collapse> 
 </template>
 <script>
@@ -13,7 +13,7 @@ import { mapGetters } from 'vuex'
     data () {
       return {
 
-      	  columns:[
+          columns:[
             { type: 'text', label: '费用名称', prop: 'name', min_width: '160'},
             { type: 'text', label: '外币金额',  prop: 'amount', width: '100', align: 'right',
               render:(h,item,row)=>{
@@ -45,9 +45,12 @@ import { mapGetters } from 'vuex'
       }
     },
     computed: {
-    	...mapGetters([
-    		'detailFundings',
-    	]),
+      ...mapGetters([
+        'detailFundings',
+      ]),
+      fundingsData () {
+        return this.detailFundings.list ? this.detailFundings.list : [];
+      },
     },
     components: {
       AppTable,
