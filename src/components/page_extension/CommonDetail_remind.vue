@@ -1,7 +1,7 @@
 <template>
 	<div>
 		<table-component :tableOption="tableOption" :data="detailReminders"></table-component>
-		<el-dialog :visible.sync="dialogVisible" title="提醒设置" @close="$refs.form.resetFields()" class="dialog-small">
+		<el-dialog :visible.sync="dialogVisible" title="提醒设置" @close="$refs.form.resetFields()" :modal="false" class="dialog-small">
 			<el-form :model="form" ref="form" label-width="80px">
 				<el-form-item label="监控类型" prop="keyword" v-if="popType == 'add'" :rules="{ required: true, message: '监控类型不能为空', trigger: 'change' }">
 					<static-select type="reminder" v-model="form.keyword"></static-select>
@@ -45,7 +45,8 @@ export default {
 				url,
 				is_border: false,
 				is_search: false,
-				header_btns: [
+				is_pagination: false,
+				header_btn	: [
 					{ type: 'add', click: _=>{ this.popType = 'add'; this.dialogVisible = true; } },
 					{ type: 'delete' },
 				],
