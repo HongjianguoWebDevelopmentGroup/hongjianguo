@@ -1,6 +1,6 @@
 <template>
-   <app-collapse :col-title="`官费(总计：${detailOfficial.sum?detailOfficial.sum:''}CNY)`">
-    <app-table :columns="columns" :data="detailOfficial.list"></app-table>
+   <app-collapse :col-title="`官费(总计：${detailOfficial.sum?detailOfficial.sum:'0'}CNY)`">
+    <app-table :columns="columns" :data="officialData"></app-table>
    </app-collapse> 
 </template>
 <script>
@@ -12,9 +12,9 @@ import { mapGetters } from 'vuex'
     data () {
       return {
 
-      	  columns:[
-      	    { type: 'text', label: '费用名称', prop: 'name', min_width: '160'},
-      	    { type: 'text', label: '外币金额',  prop: 'amount', width: '100', align: 'right',
+          columns:[
+            { type: 'text', label: '费用名称', prop: 'name', min_width: '160'},
+            { type: 'text', label: '外币金额',  prop: 'amount', width: '100', align: 'right',
               render:(h,item,row)=>{
                 if( row.roe == 1 ){
                    return h('span','N/A');
@@ -40,13 +40,16 @@ import { mapGetters } from 'vuex'
             { type: 'text', label: '付款日期', prop: 'pay_date', width: '160'},
             { type: 'text', label: '状态', prop: 'status', width: '110'},
             { type: 'text', label: '备注', prop: 'remark', width: '160'},
-      	  ],
+          ],
       }
     },
     computed: {
-    	...mapGetters([
-    		'detailOfficial',
-    	]),
+      ...mapGetters([
+        'detailOfficial',
+      ]),
+      officialData () {
+        return this.detailOfficial.list ? this.detailOfficial.list : []; 
+      },
     },
     components: {
       AppTable,

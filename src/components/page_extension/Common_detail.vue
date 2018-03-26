@@ -2,7 +2,17 @@
 <div>
   <app-shrink :title="title" :visible=visibleAuth @update:visible="handleVisible">
     <span slot="header" style="float: right">
+      <el-button size="small" type="success" class="table-header-btn" @click="dialogDivide=true">分案</el-button>      
       <el-button size="small" type="primary" class="table-header-btn" @click="edit">保存</el-button>
+        <el-dropdown  @command="handleCommandSend" trigger="click" style="margin-left: 5px;" size="small" v-if="type == 'patent'">
+          <el-button size="small">
+            主动递交<i class="el-icon-caret-bottom el-icon--right"></i>
+          </el-button>
+          <el-dropdown-menu slot="dropdown" class="app-dropdown-menu">
+            <el-dropdown-item command="revision" :disabled="btnDisabled">主动补正</el-dropdown-item>
+            <el-dropdown-item command="articleChange" :disabled="btnDisabled">著录变更</el-dropdown-item>
+          </el-dropdown-menu>
+        </el-dropdown>      
       <el-button style="margin-left: 5px;" size="small" type="danger" @click="dialogClosed=true" v-if="type == 'patent'">结案</el-button>
         <el-dropdown @command="handleCommand" trigger="click" style="margin-left: 5px;" size="small" v-if="type == 'patent'">
           <el-button size="small">
@@ -50,7 +60,7 @@
         <el-tab-pane label="审查记录" name="review_records">
           <defence></defence>
         </el-tab-pane>
-        <el-tab-pane label="著作变更" name="work_change">
+        <el-tab-pane label="动态" name="work_change">
           <detail-amendments></detail-amendments>
         </el-tab-pane>
         <el-tab-pane label="提醒" name="remind" v-if="type == 'patent'">
@@ -65,6 +75,12 @@
     <el-dialog title="委案变更" :visible.sync="dialogChange" @close="$refs.changeForm.clear();">
       <change-form :id="id" @success="dialogChange=false;refreshDetailData();" ref="changeForm"></change-form>
     </el-dialog>
+  <el-dialog title="分案请求" :visible.sync="dialogDivide"  @close="$refs.divideForm.clear();">
+    <divide-form :id="id" @success="dialogChange=false;refreshDetailData();" ref="divideForm"></divide-form>
+  </el-dialog>
+  <el-dialog title="新增任务" :visible.sync="dialogTask">
+    <task-edit type="add" :id="id" ref="taskEdit" @addSuccess="addSuccess"></task-edit>
+  </el-dialog>    
 </div>
 </template>
 
@@ -85,6 +101,8 @@ import Review from '@/components/page_extension/CommonDetail_review'
 import CloseForm from '@/components/page_extension/CommonDetail_closed'
 import ChangeForm from '@/components/page_extension/CommonDetail_commision_change'
 import DetailAmendments from '@/components/page_extension/CommonDetail_Amendments'
+import DivideForm from '@/components/page_extension/CommonDetail_divide'
+import TaskEdit from '@/components/page_extension/TaskCommon_edit'
 import Remind from '@/components/page_extension/CommonDetail_remind'
 
 import { mapGetters } from 'vuex'
@@ -128,6 +146,8 @@ export default {
       dialogClosed: false,
       btnDisabled: false,
       dialogChange: false,
+      dialogDivide: false,
+      dialogTask: false,
 		}
   },
   computed: {
@@ -215,6 +235,23 @@ export default {
         }
       }
     },
+    handleCommandSend (command) {
+      this.dialogTask = true;
+      if(command == 'revision') {
+          this.$nextTick(_=>{
+            this.$refs.taskEdit.fill({id: this.id,name: this.title, category: 1},7,'23');
+          });
+      }
+      if(command == 'articleChange') {
+          this.$nextTick(_=>{
+            this.$refs.taskEdit.fill({id: this.id,name: this.title, category: 1},16,'90');
+          });
+      }      
+    },
+    addSuccess (val) {
+      this.dialogTask = false;
+      this.refreshDetail();
+    },       
     commisionCancle () {
       this.$confirm('此操作将对当前专利进行撤回委托的操作, 是否继续?', '提示', {type: 'warning'})
         .then(_=>{
@@ -259,6 +296,8 @@ export default {
     CloseForm,
     ChangeForm,
     DetailAmendments,
+    DivideForm,
+    TaskEdit,    
     Remind,
   }
 }

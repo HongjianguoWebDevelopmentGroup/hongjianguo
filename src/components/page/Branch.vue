@@ -1,7 +1,7 @@
 <template>
   <div class="main">
-  	
-				<div class="float-block" style="float: left; width: 400px;">
+    
+        <div class="float-block" style="float: left; width: 400px;">
 
           <div class="left-tree-header" style="padding: 0 20px; ">
             <span style="font-size: 15px; font-weight: bold;">部门</span>
@@ -18,41 +18,41 @@
             class="input-no-radius"
             style="border-radius: 0;">
           </el-input>
-					<el-tree
-						:data="branchData"
-						:props="props"
-					
-						highlight-current
-						:expand-on-click-node="false"
-						@node-click="nodeClick"
+          <el-tree
+            :data="branchData"
+            :props="props"
+          
+            highlight-current
+            :expand-on-click-node="false"
+            @node-click="nodeClick"
             :style="`height: ${innerHeight - 137}px; overflow: auto;border-top: 0;`"
             :filter-node-method="filterNode"
             ref="tree"
-					>
-					</el-tree>
-				</div>
-  		 	<div style="margin-left: 400px;" >
-  		  		<el-form label-width="120px">
+          >
+          </el-tree>
+        </div>
+        <div style="margin-left: 400px;" >
+            <el-form label-width="120px">
                 <el-form-item label="部门名称" class="form-block">
-    		  			  {{ currentNode ? currentNode.name : '' }}
-    		  			</el-form-item>
-    		  			
+                  {{ currentNode ? currentNode.name : '' }}
+                </el-form-item>
+                
                 <el-form-item label="部门描述" class="form-block">
-    		  			  {{ currentNode ? currentNode.description ? currentNode.description : '暂无描述' : ''}}
-    		  			</el-form-item>
-    		  			
+                  {{ currentNode ? currentNode.description ? currentNode.description : '暂无描述' : ''}}
+                </el-form-item>
+                
                 <el-form-item label="默认IPR" class="form-block">
-    		  				<template v-if="currentNode">
+                  <template v-if="currentNode">
                     <el-tooltip v-if="currentNode.ipr">
                       <div slot="content">{{ currentNode.ipr.name }}<br/>{{ currentNode.ipr.mobile }}<br/>{{ currentNode.ipr.email }}</div>
                       <el-tag>{{ currentNode.ipr.name }}</el-tag>
                     </el-tooltip>
                     <span v-else>暂未设置默认IPR</span>
                   </template>
-    		  			</el-form-item>
+                </el-form-item>
 
-    		  			<el-form-item label="拥有查看权限" class="form-block">
-    		  				<template v-if="currentNode">
+                <el-form-item label="拥有查看权限" class="form-block">
+                  <template v-if="currentNode">
                     <template v-if="currentNode.board">
                       <el-tooltip v-for="item in currentNode.board" :key="item.id">
                         <div slot="content">{{ item.name.split('-')[0] }}<br/>{{ item.name.split('-')[1] }}</div>
@@ -61,17 +61,17 @@
                     </template>
                     <span v-else>无人拥有查看权限</span>
                   </template>
-    		  			</el-form-item>
-    		  		  
+                </el-form-item>
+                
                 <el-form-item v-if="!!currentNode" style="margin-bottom: 0px;">
                   <el-button type="primary" @click="transferPop">移交部门专利</el-button>
                 </el-form-item>
                 
               </el-form>
               
-          	  		
-	  		</div>
-  		
+                  
+        </div>
+      
 
       <el-dialog title="移交部门专利" :visible.sync="dialogVisible">
         <div style="margin-bottom: 5px;">将<span style="color: red; font-size: 14px; font-weight: bold; padding: 0 5px;">{{ currentNode.name }}</span>的专利移交至</div>
@@ -79,7 +79,7 @@
         <el-button @click="transferAxios" type="primary">确认移交</el-button>
       </el-dialog>
 
-      <pop ref="pop" @refresh="refresh" :current-id="currentNode.id"></pop> 	
+      <pop ref="pop" @refresh="refresh" :current-id="currentNode.id"></pop>   
   </div>
 </template>
 
@@ -94,16 +94,16 @@ const url = '/api/branches';
 export default {
   name: 'branch',
   data () {
-		return {
-		  props: {
-		  	label: 'name',
-		  	children: 'children'
-		  },
+    return {
+      props: {
+        label: 'name',
+        children: 'children'
+      },
       currentNode: '',
       dialogVisible: false,
       transfer: '',
       filterText: '',
-		}
+    }
   },
   computed: {
     ...mapGetters([
@@ -116,9 +116,9 @@ export default {
     ...mapActions([
       'refreshBranch',
     ]),
-  	nodeClick (a) {
+    nodeClick (a) {
       this.currentNode = a;
-  	},
+    },
     addPop () {
       if(!this.currentNode) {
         this.currentNode = {id: 0};
@@ -155,7 +155,8 @@ export default {
         .then(_=>{
           const url = `${url}/${this.currentNode.id}`;
           const success = _=>{
-            this.$message({message: ``})
+            this.$message({message: _.info, type: 'success'});
+            this.refresh();
           }
           this.$axiosDelet({
             url, 

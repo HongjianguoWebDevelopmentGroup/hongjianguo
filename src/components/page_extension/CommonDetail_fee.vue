@@ -52,17 +52,19 @@ export default {
   },
   computed: {
   	...mapGetters([
-  		'detailFees',
+  		'detailFundings',
+  		'detailOfficial',
+  		'detailAgency'
   	]),
   	expend () {
-  		return this.detailFees.official.sum || this.detailFees.agency.sum  ? this.detailFees.official.sum + this.detailFees.agency.sum : '';
+  		return this.detailOfficial && this.detailAgency ? (this.detailOfficial.sum + this.detailAgency.sum) : '';
   	},
   	income () {
-  		return this.detailFees.funding.sum ? this.detailFees.funding.sum : '';
+  		return this.detailFundings ? this.detailFundings.sum : '';
   	},
-  	tableData () {
+/*  	tableData () {
   		return this.$store.getters.detailFees;
-  	}
+  	}*/
   },
   components: { 
   	TableComponent,
