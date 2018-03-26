@@ -2,7 +2,6 @@
 <div>
   <app-shrink :title="title" :visible=visibleAuth @update:visible="handleVisible">
     <span slot="header" style="float: right">
-      <el-button size="small" type="success" class="table-header-btn" @click="dialogDivide=true">分案</el-button>      
       <el-button size="small" type="primary" class="table-header-btn" @click="edit">保存</el-button>
         <el-dropdown  @command="handleCommandSend" trigger="click" style="margin-left: 5px;" size="small" v-if="type == 'patent'">
           <el-button size="small">
@@ -11,9 +10,9 @@
           <el-dropdown-menu slot="dropdown" class="app-dropdown-menu">
             <el-dropdown-item command="revision" :disabled="btnDisabled">主动补正</el-dropdown-item>
             <el-dropdown-item command="articleChange" :disabled="btnDisabled">著录变更</el-dropdown-item>
+            <el-dropdown-item command="divide" :disabled="btnDisabled">分案</el-dropdown-item>
           </el-dropdown-menu>
         </el-dropdown>      
-      <el-button style="margin-left: 5px;" size="small" type="danger" @click="dialogClosed=true" v-if="type == 'patent'">结案</el-button>
         <el-dropdown @command="handleCommand" trigger="click" style="margin-left: 5px;" size="small" v-if="type == 'patent'">
           <el-button size="small">
             委案<i class="el-icon-caret-bottom el-icon--right"></i>
@@ -22,7 +21,8 @@
             <el-dropdown-item command="cancel" :disabled="btnDisabled">撤回</el-dropdown-item>
             <el-dropdown-item command="change" :disabled="btnDisabled">变更</el-dropdown-item>
           </el-dropdown-menu>
-        </el-dropdown>      
+        </el-dropdown>  
+      <el-button style="margin-left: 5px;" size="small" type="danger" @click="dialogClosed=true" v-if="type == 'patent'">结案</el-button>
     </span>
     <div  v-loading="detailLoading && visibleAuth" :element-loading-text="config.loadingText" :style="divStyle">
       <el-tabs v-model="activeName">
@@ -36,8 +36,8 @@
         <el-tab-pane label="流程管理" name="control">
     			<detail-control></detail-control>
         </el-tab-pane>
-        <el-tab-pane label="官方来文" name="notice">
-    			<detail-notice></detail-notice>
+        <el-tab-pane label="官文&附件" name="notice">
+    			<detail-notice :type="type"></detail-notice>
         </el-tab-pane>
         <el-tab-pane label="所有费用" name="fourth">
     			<detail-fee></detail-fee>
@@ -45,9 +45,9 @@
         <el-tab-pane label="往來邮件" name="fee">
     			<detail-email></detail-email>
         </el-tab-pane>
-        <el-tab-pane label="文档" name="documents">
+<!--         <el-tab-pane label="文档" name="documents">
     			<detail-documents></detail-documents>
-        </el-tab-pane>
+        </el-tab-pane> -->
         <el-tab-pane label="群组/专利族" name="group_family" v-if="type == 'patent'">
           <group-family></group-family>
         </el-tab-pane>
@@ -236,16 +236,20 @@ export default {
       }
     },
     handleCommandSend (command) {
-      this.dialogTask = true;
       if(command == 'revision') {
+          this.dialogTask = true;
           this.$nextTick(_=>{
             this.$refs.taskEdit.fill({id: this.id,name: this.title, category: 1},7,'23');
           });
       }
       if(command == 'articleChange') {
+          this.dialogTask = true;
           this.$nextTick(_=>{
             this.$refs.taskEdit.fill({id: this.id,name: this.title, category: 1},16,'90');
           });
+      }
+      if(command == 'divide') {
+        this.dialogDivide = true;
       }      
     },
     addSuccess (val) {

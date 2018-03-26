@@ -88,17 +88,19 @@
       <upload v-if="next == '20'" v-model="form.attachments" :action="`/api/files?action=parseConfirmationList&id=${id}`" @uploadSuccess="handleUploadSuccess"></upload>
       <upload v-else v-model="form.attachments" :file-list="attachments"></upload>
     </el-form-item>
-    <el-form-item prop="remark" label="任务备注" v-if="fields.remark && !hide_r_a">
-      <el-input type="textarea" v-model="form.remark"></el-input>
-    </el-form-item>
     <el-form-item prop="rank" label="评分" v-if="fields.rank">
-      <el-rate 
+<!--       <el-rate 
         v-model="form.rank" 
         style="margin-top: 10px" 
         :colors="['#99A9BF', '#F7BA2A', '#FF9900']" 
         show-text 
         :texts="['20','40','60','80','100']"
-      ></el-rate>
+      ></el-rate> -->
+      <el-slider 
+        v-model="form.rank"
+        show-input
+      >
+      </el-slider>
     </el-form-item>
     <el-form-item v-if="next == '20'" prop="pconfirm" label="确认" :rules="confirmValidator">
       <el-checkbox v-model="form.pconfirm">已确认送件信息完整</el-checkbox><el-button type="text" size="mini" style="margin-left: 10px;" @click="$emit('more', 'patent')">查看</el-button>
@@ -114,6 +116,9 @@
     <el-form-item prop="is_supplement" label="补充" v-if="fields.is_supplement" >
       <app-switch type="is" v-model="form.is_supplement"></app-switch>
     </el-form-item>
+    <el-form-item prop="remark" label="任务备注" v-if="fields.remark && !hide_r_a">
+      <el-input type="textarea" v-model="form.remark"></el-input>
+    </el-form-item>    
     <ul v-if="data.description && data.description.length != 0" style="margin: 0; margin: 10px 0;margin-left:115px;padding: 0; font-size:14px;color:#bbb;">
       <li v-for="(item, index) in data.description" :key="index">{{ item }}</li>
     </ul>
@@ -257,9 +262,9 @@ export default {
           );
 
           //评分处理
-          if(data.rank) {
-            data.rank *= 20
-          };
+          // if(data.rank) {
+          //   data.rank *= 20
+          // };
 
           //评估单处理
           if(this.fields.estimate) {

@@ -1,5 +1,5 @@
 <template>
-   <app-collapse :col-title="`官费(总计：${detailOfficial.sum?detailOfficial.sum:'0'}CNY)`">
+   <app-collapse :col-title="`官费及发明人奖金(总计：${detailOfficial.sum?detailOfficial.sum:'0'}CNY)`">
     <app-table :columns="columns" :data="officialData"></app-table>
    </app-collapse> 
 </template>
@@ -39,7 +39,7 @@ import { mapGetters } from 'vuex'
             },
             { type: 'text', label: '付款日期', prop: 'pay_date', width: '160'},
             { type: 'text', label: '状态', prop: 'status', width: '110'},
-            { type: 'text', label: '备注', prop: 'remark', width: '160'},
+            { type: 'text', label: '备注', prop: 'remark', min_width: '130'},
           ],
       }
     },

@@ -29,19 +29,12 @@
   		<el-form-item label="承办人" prop="person_in_charge" v-if="type == 'add' && category != ''">
         <remote-select type="member" v-model="form.person_in_charge"></remote-select>
   		</el-form-item>
-
-      <el-row> 
-        <el-col :span="12"> 
           <el-form-item label="承办期限" prop="due_time">
             <el-date-picker type="date" v-model="form.due_time" placeholder="请选择承办期限"></el-date-picker>
           </el-form-item>
-        </el-col>
-        <el-col :span="12">
           <el-form-item label="法限" prop="deadline">
             <el-date-picker type="date" v-model="form.deadline" placeholder="请选择法限"></el-date-picker>
           </el-form-item>
-        </el-col>
-      </el-row>
       <el-form-item label="附件" prop="attachments">
         <upload v-model="form.attachments" :file-list="attachments"></upload>
       </el-form-item>
