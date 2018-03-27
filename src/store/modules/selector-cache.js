@@ -125,6 +125,21 @@ const state = {
 	    placeholder: '请选择版权通知书文件类型',
 	    url: '/api/fileTypes?category=3&type=1',
 	  }],
+	  ['patents_status', {
+    	url: '/api/progress',
+    	placeholder: '请输入状态关键词',
+    	params: { category: 1 },
+  	  }],
+	  ['copyrights_status', {
+    	url: '/api/progress',
+    	placeholder: '请输入状态关键词',
+    	params: { category: 2 },
+  	  }], 
+	  ['trademarks_status', {
+    	url: '/api/progress',
+    	placeholder: '请输入状态关键词',
+    	params: { category: 3 },
+  	  }], 	  
 	  ['group', {
 	    placeholder: '请选择用户组',
 	    options: 'groupOptions',

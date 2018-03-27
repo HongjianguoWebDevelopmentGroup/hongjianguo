@@ -1,6 +1,6 @@
 <template>
   <div class="main">
-  	<div class="total" style="margin: 15px 5px;font-size: 16px;">
+  	<div class="total" style="margin: 0px 5px 15px 5px;font-size: 16px;">
   		<span>总支出：{{ expend }}CNY</span>
   		<span>总收入：{{ income }}CNY</span>
   	</div>

@@ -56,12 +56,6 @@ const map = new Map([
 		DATA_KEY: 'agencies',
 		PLACEHOLDER: '请输入代理机构关键词',
 	}],
-  ['progress', {
-    URL: '/api/progress',
-    DATA_KEY: 'progress',
-    PLACEHOLDER: '请输入状态关键词',
-    PARAMS: { category: 1 },
-  }],  
 	['project', {
 		URL: '/api/projects',
 		DATA_KEY: 'projects',

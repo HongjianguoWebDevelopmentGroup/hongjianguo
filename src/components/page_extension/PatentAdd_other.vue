@@ -1,8 +1,8 @@
 <template>
   <app-collapse col-title="其他信息">
       <el-form label-width="120px">
-        <el-form-item label="状态">
-          <remote-select type="progress" v-model="form.progress_name"></remote-select>
+        <el-form-item label="状态" v-if="type == 'edit'">
+           <static-select type="patents_status" v-model="form.progress"></static-select>
         </el-form-item>
         <el-form-item label="说明书字数">
           <el-input v-model="form.words" placeholder="请填写说明书字数"></el-input>
@@ -16,7 +16,7 @@
 
 <script>
 import AppCollapse from '@/components/common/AppCollapse'
-import RemoteSelect from '@/components/form/RemoteSelect'
+import StaticSelect from '@/components/form/StaticSelect'
 
 export default {
   name: 'patentAddOther',
@@ -24,7 +24,7 @@ export default {
   data () {
     return {
       form: {
-        progress_name: '',
+        progress: '',
         words: '',
         remark: '',
       },
@@ -35,9 +35,11 @@ export default {
       for(let k in this.form) {
         const d = data[k];
         if(d == undefined) continue;
+          if( k == 'progress' ) {
+            this.form[k] = d['id'];
+          }
           this.form[k] = d;
       }
-      this.progress_name = data['progress'] ? data['progress']['name'] : ''; 
     },
     submitForm () {
       return this.form;
@@ -48,7 +50,7 @@ export default {
   },
   components: { 
     AppCollapse, 
-    RemoteSelect,
+    StaticSelect,
   }
 }
 </script>

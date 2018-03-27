@@ -43,6 +43,9 @@
 		<el-form-item label="申请人" prop="applicants">
 			<remote-select type="applicant" v-model="form.applicants" multiple></remote-select>
 		</el-form-item>
+		<el-form-item label="状态" prop="progress" v-if="type == 'edit'">
+			<static-select type="copyrights_status" v-model="form.progress"></static-select>
+		</el-form-item>			
 		<el-form-item label="附件" prop="attachments">
 			<upload v-model="form.attachments" :file-list="attachments"></upload>
 		</el-form-item>
@@ -100,6 +103,7 @@ export default {
 		  	tags: [],
 		  	ipr: '',
 		  	proposer: '',
+		  	progress: '',
 		  	branch: '',
 		  	applicants: [],
 		  	attachments: [],
@@ -190,7 +194,7 @@ export default {
   			this.id = data.id;
   			for(let k in this.form) {
   				const d = data[k];
-  				if(k == 'classification' || k == 'branch' || k == 'type' ) {
+  				if(k == 'classification' || k == 'branch' || k == 'type' || k == 'progress' ) {
   					this.form[k] = d.id;
   				}else if(k == 'attachments' || k == 'products') {
   					this.form[k] = d.map(_=>_.id);
