@@ -247,7 +247,7 @@ export default {
       'configsExtends2',
       'configsExtends3',
       'extendsData',
-    ])
+    ]),
   },
   methods: {
     ...mapActions([
