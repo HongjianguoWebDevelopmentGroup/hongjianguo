@@ -5,7 +5,7 @@
 
           <div class="left-tree-header" style="padding: 0 20px; ">
             <span style="font-size: 15px; font-weight: bold;">部门</span>
-            <el-tag v-if="!!branchUpdate" style="margin-left: 15px;">最后更新时间：{{ branchUpdate }}</el-tag>
+            <!-- <el-tag v-if="!!branchUpdate" style="margin-left: 15px;">最后更新时间：{{ branchUpdate }}</el-tag> -->
             <div style="float: right;">
               <el-button icon="plus" size="mini" title="添加部门" @click="addPop"></el-button>
               <el-button icon="edit" size="mini" title="编辑部门" style="margin-left: 0;" @click="editPop"></el-button>
@@ -90,7 +90,7 @@ import StaticSelect from '@/components/form/StaticSelect'
 import {mapGetters} from 'vuex'
 import {mapActions} from 'vuex'
 
-const url = '/api/branches';
+const URL = '/api/branches';
 export default {
   name: 'branch',
   data () {
@@ -140,6 +140,7 @@ export default {
     },
     branchDelete () {
       const c = this.currentNode;
+      console.log(c);
 
       if(!c) {
         this.$message({message: '请选择需要删除的部门', type: 'warning'});
@@ -153,12 +154,12 @@ export default {
 
       this.$confirm(`删除后不可恢复，确认删除‘${c.name}’？`, '删除确认', {type: 'warning'})
         .then(_=>{
-          const url = `${url}/${this.currentNode.id}`;
+          const url = `${URL}/${this.currentNode.id}`;
           const success = _=>{
             this.$message({message: _.info, type: 'success'});
             this.refresh();
           }
-          this.$axiosDelet({
+          this.$axiosDelete({
             url, 
             success,
           })

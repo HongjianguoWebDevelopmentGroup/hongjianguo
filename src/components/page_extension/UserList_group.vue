@@ -92,10 +92,10 @@ export default {
   		return this.popType == 'add' ? '新建用户组' : '编辑用户组';
   	},
   	editDisabled () {
-  		return this.value && this.value.id != 0 ? false : true;
+  		return this.value && this.value.id != 0 && this.value.id != 1 && this.value.id != 24? false : true;
   	},
   	deleteDisabled () {
-  		return this.value && this.value.id != 0 && this.value.isRemovable ? false : true;
+  		return this.value && this.value.id != 0 &&  this.value.id != 1 && this.value.id != 24 && this.value.isRemovable ? false : true;
   	},
     groupOptions () {
       let g = this.$store.getters.groupOptions;
@@ -148,7 +148,7 @@ export default {
               <span style="font-size: 12px">{ node.label }</span>
             </span>
             <span style="float: right; margin-right: 20px;">
-              {data.id !== 0 && data.id !== 1 ? <el-button size="mini" on-click={ () => this.powerPop(store, data) }>权限</el-button> : <i></i>}
+              {data.id !== 0 && data.id !== 1 && data.id !==24? <el-button size="mini" on-click={ () => this.powerPop(store, data) }>权限</el-button> : <i></i>}
             </span>
           </span>);
     },
@@ -186,7 +186,7 @@ export default {
   	},
   	editPop () {
   		const id = this.value.id;
-  		if( !id ) {
+  		if( !id || id==24 || id== 1) {
   			this.$message({message: '不可编辑，不可删除？', type: 'error'});
   			return false;
   		}
@@ -226,7 +226,7 @@ export default {
   	},
   	groupDelete () {
   		const id = this.value.id;
-  		if( !id ) {
+  		if( !id || id==24 || id==1 ) {
   			this.$message({message: '不可编辑，不可删除？', type: 'error'});
   			return false;
   		}

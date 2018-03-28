@@ -20,7 +20,7 @@ import TableComponent from '@/components/common/TableComponent'
 import Strainer from '@/components/page_extension/CopyrightList_strainer'
 import AppShrink from '@/components/common/AppShrink'
 import CommonDetail from '@/components/page_extension/Common_detail'
-
+import { mapActions } from 'vuex'
 const URL = '/api/copyrights';
 
 export default {
@@ -83,6 +83,9 @@ export default {
     };
   },
   methods: {
+    ...mapActions([
+      'initializeSelectorCache',
+    ]),    
     add () {
       this.$router.push('/copyright/add');
     },
@@ -124,6 +127,7 @@ export default {
   },
   mounted () {
     this.$refs.table.refresh();
+    this.initializeSelectorCache({type: 'file_type_copyright_notice'});
   },
   components: { 
     TableComponent, 

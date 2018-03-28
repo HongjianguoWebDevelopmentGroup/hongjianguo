@@ -13,6 +13,7 @@ const state = {
 }
 
 const getters = {
+  title: state=>state.data?state.data.title: '',
   detailId: state=>state.id,
   detail_type: state=>state.type,
   detailBase: state=>state.data ? state.data : {},

@@ -25,9 +25,9 @@
 			<span class="form-item-text" v-if="type == 'add'">{{ user ? user.name : '暂未读取到当前用户数据' }}</span>
 			<remote-select type="member" v-model="form.ipr" v-else></remote-select>
 		</el-form-item>
-		<el-form-item label="提案人" prop="proposer">
+<!-- 		<el-form-item label="提案人" prop="proposer">
 			<remote-select type="member" v-model="form.proposer"></remote-select>
-		</el-form-item>
+		</el-form-item> -->
 		<el-form-item label="部门分类" prop="branch">
 			<branch v-model="form.branch" count-type="copyright"></branch>
 		</el-form-item>

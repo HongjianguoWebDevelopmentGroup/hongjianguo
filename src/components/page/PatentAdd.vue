@@ -134,6 +134,24 @@ export default {
         setKeys.map(_=>this.$refs[_].setForm(copy));
       }
     },
+    fillForm (val) {
+      if(val instanceof Array && val.length != 0){
+        const copy = this.$tool.deepCopy(val);
+        // this.id = copy[0].id;
+        const relative_projects = [];
+        val.map(_=>{
+          relative_projects.push({id: _.id, name: _.title, type: 1});
+        })
+        const form = {};  
+        Object.assign(form, copy[0], {relative_projects} );
+        setKeys.map(_=>{
+          if(this.$refs[_]) {
+
+            this.$refs[_].setForm(form);
+          }
+        })
+      }
+    },    
     handleUploadSuccess (d) {
       if( !d.data || !d.data.list ) {
         return;
@@ -165,17 +183,31 @@ export default {
         this.shrink = false;
         return this.$route.meta.type;
       }
-    }
+    },
+    getParams () {
+      const s = this.$route.query.s; 
+      return s;
+    },
   },
   watch: {
     'detail': {
       handler: function(val) {
         this.refreshForm(val);
       }
-    } 
+    }, 
+    'getParams': {
+      handler: function(val) {
+        this.fillForm(val);
+      }
+    }, 
   },
   mounted () {
     this.refreshForm(this.detail);
+    this.$nextTick(_=>{
+      // if(this.getParams){
+        this.fillForm(this.getParams);
+      // }   
+    })
   },
   components: { 
     PaBase, 

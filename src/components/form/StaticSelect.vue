@@ -137,6 +137,7 @@ export default {
       
       cv.forEach(_=>{
         const val = this.map.get(_);
+        console.log(this.map,val);
         if(val) {
           arr.push(val);
         }else if(_ != '') {
