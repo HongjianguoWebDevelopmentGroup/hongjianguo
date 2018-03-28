@@ -362,7 +362,7 @@ export default {
           _.pct_search_result = '';
           _.pct_search_date = '';   
           if(_.type) {
-            _.type =  _.type.id;
+            _.type =  _.type.id-0;
           }
           lists.push(this.$tool.deepCopy(_));
           _.type = '';

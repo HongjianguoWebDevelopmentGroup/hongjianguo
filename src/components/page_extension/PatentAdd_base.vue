@@ -134,27 +134,68 @@ export default {
         callback(flag);
       });
   	},
+<<<<<<< HEAD
     //setForm 的Type用于区分正常填充 或者 是文件解析后的填充
   	setForm (data, type='normal') {
   		for (let k in this.form) {
         console.log(k);
         if(data[k] == undefined) continue;
         if(this.type == 'add' || type == 'upload') {
+=======
+  	// setForm (data) {
+  	// 	for (let k in this.form) {
+   //      console.log(k);
+   //      if(data[k] == undefined) continue;
+   //      if(this.type == 'add') {
+   //        if(data.inventors && data.inventors.length != 0) {
+   //          //复用组件内置的方法...
+   //          this.$refs.inventors.handleShare(data.inventors);
+   //        }
+   //      }
+   //      if(k == 'attachments') {
+   //        this.form[k] = data[k].map(_=>_.id);
+   //        this.attachments = data[k];
+   //      }
+  	// 		if( k == 'extension' ) {
+  	// 			const arr = [];
+  	// 			for(let d of data[k]) {
+  	// 				if(d['value']) arr.push(d['label']);
+  	// 			}
+
+  	// 			this.form[k] = arr;
+  	// 		}else if(k == 'area' || k == 'type') {
+   //        if(this.type == 'add' && k == 'area') {
+   //          this.form[k] = data[k].map(_=>_.id);
+   //        }else {
+   //          this.form[k] = data[k]['id'];
+   //        }
+   //      }else {
+  	// 			this.form[k] = data[k];
+  	// 		}
+  	// 	} 
+  	// },
+    setForm (data) {
+      const t = this.type;
+      for (let k in this.form) {
+        if(data[k] == undefined) continue;
+        if(t == 'add') {
+>>>>>>> 6f25eeb9a468b23fa439435ecc7d935a184529db
           if(data.inventors && data.inventors.length != 0) {
             //复用组件内置的方法...
             this.$refs.inventors.handleShare(data.inventors);
           }
-        }
+        } 
         if(k == 'attachments') {
           this.form[k] = data[k].map(_=>_.id);
           this.attachments = data[k];
-        }
-  			if( k == 'extension' ) {
-  				const arr = [];
-  				for(let d of data[k]) {
-  					if(d['value']) arr.push(d['label']);
-  				}
+        }       
+        if( k == 'extension' ) {
+          const arr = [];
+          for(let d of data[k]) {
+            if(d['value']) arr.push(d['label']);
+          }
 
+<<<<<<< HEAD
   				this.form[k] = arr;
   			}else if(k == 'area') {
           if(this.type == 'add') {
@@ -168,11 +209,24 @@ export default {
           }
         }else if(k == 'type') {
           this.form[k] = data[k]['id'];
+=======
+          this.form[k] = arr;
+        }else if( k == 'type') {
+          
+          this.form[k] = data[k]['id'];
+        }else if( k == 'area' ) {
+          if(t == 'edit') {
+            this.form[k] = data[k]['id'];
+          }
+          if(t == 'add') {
+            this.form[k] = data[k]['id'] ? [data[k]['id']] : [];
+          }
+>>>>>>> 6f25eeb9a468b23fa439435ecc7d935a184529db
         }else {
-  				this.form[k] = data[k];
-  			}
-  		} 
-  	},
+          this.form[k] = data[k];
+        }
+      } 
+    },    
     submitForm () {
       return this.$tool.shallowCopy(this.form, { 'date': true });
     },

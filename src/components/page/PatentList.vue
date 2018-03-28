@@ -171,7 +171,7 @@ export default {
             } 
           },
           { type: 'text', label: '创建时间', prop: 'create_time', width: '200'},
-          { type: 'text', label: '奖励等级', prop: 'bonus_level', width: '145'},
+          { type: 'text', label: '奖励等级', prop: 'bonus_level', width: '145' ,render_simple: 'name'},
           { type: 'text', label: '返发明人稿时间', prop: 'first_edition_to_inventor_time', is_import: true, width: '175', show: false,},
           { type: 'text', label: '发明人审核时间', prop: 'inventor_review_time', is_import: true, width: '175', show: false,},
           { type: 'text', label: '发明人审核次数', prop: 'inventor_review_times', is_import: true, width: '175', show: false,},
@@ -257,9 +257,16 @@ export default {
     ...mapActions([
       'refreshFlows',
       'refreshTaskDefs',
+      'initializeSelectorCache'
     ]),
     add () {
-      this.$router.push('/patent/add');
+      const s = this.$refs.table.getSelection();
+      if (s.length != 0) {
+          console.log(s);
+          this.$router.push({ path: '/patent/add', query: {s:s}});
+      }else {
+        this.$router.push('/patent/add');
+      }
     },
     refreshTableData (option) {
       const url = URL;
@@ -379,6 +386,7 @@ export default {
 
     this.refreshFlows();
     this.refreshTaskDefs();
+    this.initializeSelectorCache({type: 'file_type_patent_notice'});
   },
   mounted () {    
     this.$refs.table.refresh();

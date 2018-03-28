@@ -13,7 +13,7 @@
             <el-dropdown-item command="divide" :disabled="btnDisabled">分案</el-dropdown-item>
           </el-dropdown-menu>
         </el-dropdown>      
-        <el-dropdown @command="handleCommand" trigger="click" style="margin-left: 5px;" size="small" v-if="type == 'patent'">
+        <el-dropdown @command="handleCommand" trigger="click" style="margin-left: 5px;" size="small">
           <el-button size="small">
             委案<i class="el-icon-caret-bottom el-icon--right"></i>
           </el-button>
@@ -22,7 +22,7 @@
             <el-dropdown-item command="change" :disabled="btnDisabled">变更</el-dropdown-item>
           </el-dropdown-menu>
         </el-dropdown>  
-      <el-button style="margin-left: 5px;" size="small" type="danger" @click="dialogClosed=true" v-if="type == 'patent'">结案</el-button>
+      <el-button style="margin-left: 5px;" size="small" type="danger" @click="dialogClosed=true">结案</el-button>
     </span>
     <div  v-loading="detailLoading && visibleAuth" :element-loading-text="config.loadingText" :style="divStyle">
       <el-tabs v-model="activeName">
@@ -37,7 +37,7 @@
     			<detail-control></detail-control>
         </el-tab-pane>
         <el-tab-pane label="官文&附件" name="notice">
-    			<detail-notice :type="type"></detail-notice>
+    			<detail-notice :type="type" @uploadSuccess="edit"></detail-notice>
         </el-tab-pane>
         <el-tab-pane label="所有费用" name="fourth">
     			<detail-fee></detail-fee>
@@ -208,7 +208,7 @@ export default {
     },
     editSuccess () {
       this.refreshDetailData();
-      this.$emit('update:visible', false);
+      // this.$emit('update:visible', false);
       this.$emit('editSuccess');
     },
     handleVisible (val) {

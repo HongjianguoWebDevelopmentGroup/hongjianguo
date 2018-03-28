@@ -18,6 +18,7 @@ import TableComponent from '@/components/common/TableComponent'
 import AppDatePicker from '@/components/common/AppDatePicker'
 import CommonDetail from '@/components/page_extension/Common_detail'
 import Strainer from '@/components/page_extension/TrademarkList_strainer'
+import { mapActions } from 'vuex'
 
 const URL = '/api/trademarks'
 export default {
@@ -88,6 +89,9 @@ export default {
 		};
   },
   methods: {
+  	...mapActions([
+  		'initializeSelectorCache',
+  	]),
   	refreshTableData(option) {
   		
   		const success = d=>{
@@ -131,6 +135,7 @@ export default {
   },
   mounted () {
   	this.refresh();
+  	this.initializeSelectorCache({type: 'file_type_trademark_notice'});
   },
   components: { 
   	TableComponent, 
