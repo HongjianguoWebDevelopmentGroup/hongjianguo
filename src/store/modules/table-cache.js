@@ -147,7 +147,7 @@ const state = {
       { id: 'extends2',                      name: '自定义字段2'},//自定义字段2
       { id: 'extends3',                      name: '自定义字段3'},//自定义字段3
       { id: 'application_strategy',          name: '申请类型'},//申请类型
-      { id: 'subexam_timing',                name: '实审时间', date: true },//实审时间
+      { id: 'subexam_timing',                name: '实审时间'},//实审时间
       { id: 'core_concepts',                 name: '新申请申请策略'},//新申请申请策略
       { id: 'decision_reason',               name: '决定原因'},//决定原因
       { id: 'innovation_introduction',       name: '创新点简述'},//创新点简述

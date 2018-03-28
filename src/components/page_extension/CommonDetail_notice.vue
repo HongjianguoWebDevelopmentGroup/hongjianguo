@@ -1,6 +1,6 @@
 <template>
   <div class="main">
-    <div class="attachments" v-if="type=='patent'">
+<!--     <div class="attachments" v-if="type=='patent'">
       <span>交底书：
       <el-upload
         :action="attachments_upload_url"
@@ -12,7 +12,7 @@
       </el-upload>  
       <app-table :columns="columns2" :data="tableData2" style="margin-top: 15px;"></app-table>    
       </span>
-    </div>
+    </div> -->
     <div class="notice" style="margin-top: 15px;">
       <span>通知书：
       <el-upload
