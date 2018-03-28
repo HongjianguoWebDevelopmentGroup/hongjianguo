@@ -1,10 +1,10 @@
 let url = '/api/flows';
 const state = {
-	data: undefined,
+	data: null,
 }
 
 const getters = {
-	flowsData: state=>state.data,
+	flowsData: state=>state.data ? state.data : [],
 }
 
 const mutations = {
@@ -14,8 +14,9 @@ const mutations = {
 }
 
 const actions = {
-	refreshFlows ({commit, rootState, state}) {		
+	refreshFlows ({commit, rootState, state}, flag = false) {		
 		url = rootState.status ? url.replace(/\/api/, '') : url;
+		if(!flag && state.data != null) return;
 		rootState.axios
 			.get(url)
 			.then(response=>{

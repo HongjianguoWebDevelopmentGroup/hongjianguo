@@ -76,8 +76,9 @@ export default {
 		  		{ type: 'text', label: '入职日期', prop: 'begindate', width: '178'},
 		  		{ type: 'text', label: '离职日期', prop: 'leavedate', width: '178'},
 		  		{ type: 'text', label: '邮箱', prop: 'email', width: '240' },
-		  		{ type: 'text', label: '微信号', prop: 'weixin', width: '200' },
-		  		{ type: 'text', label: 'QQ', prop: 'qq', width: '200' },
+		  		{ type: 'text', label: '身份证号码', prop: 'identity', width: '200' },
+		  		// { type: 'text', label: '微信号', prop: 'weixin', width: '200' },
+		  		// { type: 'text', label: 'QQ', prop: 'qq', width: '200' },
 		  		{ 
 		  			type: 'action', label: '操作', width: '160',
 		  			btns: [

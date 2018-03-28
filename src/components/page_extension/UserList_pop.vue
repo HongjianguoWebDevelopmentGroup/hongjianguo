@@ -43,15 +43,18 @@
 	    <el-form-item label="邮箱" prop="email">
 	    	<el-input v-model="form.email"></el-input>	
 	    </el-form-item>
+      <el-form-item label="身份证号码" prop="identity">
+        <el-input v-model="form.identity"></el-input>
+      </el-form-item>
 	    <el-form-item label="手机号/座机" prop="mobile">
 	    	<el-input v-model="form.mobile"></el-input>	
 	    </el-form-item>
-	    <el-form-item label="微信号" prop="weixin">
+<!-- 	    <el-form-item label="微信号" prop="weixin">
 	    	<el-input v-model="form.weixin"></el-input>	
 	    </el-form-item>
 	    <el-form-item label="QQ" prop="qq">
 	    	<el-input v-model="form.qq"></el-input>
-	    </el-form-item>
+	    </el-form-item> -->
 
 	    <el-form-item style="margin-bottom: 0;">
         <el-button type="primary" :loading="loading" @click="save">{{ loading ? '保存中...' : '保存' }}</el-button>
@@ -97,6 +100,7 @@ export default {
 		  	weixin: '',
 		  	qq: '',
         parent: '',
+        identity: '',
 		  },
       loading: false,
 		  rules: {

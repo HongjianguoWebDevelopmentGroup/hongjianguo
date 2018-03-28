@@ -144,7 +144,7 @@ export default {
         this.list.push(d.data.list);
 
         getKeys.forEach(_=>{
-          this.$refs[_].setForm(d.data.list)
+          this.$refs[_].setForm(d.data.list, 'upload');
         });
 
       }else if(d.data.list.is_disclosure == 2) {

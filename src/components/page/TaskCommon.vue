@@ -283,7 +283,7 @@ export default {
     },
     refreshTableData (option) {
       const url = URL;
-      const data = Object.assign({}, this.filter, option, this.screen_value, {status: this.task_status}, {scope: this.task_toggle}, this.urlParams);
+      const data = Object.assign({}, this.query, this.filter, option, this.screen_value, {status: this.task_status}, {scope: this.task_toggle} );
       const success = d=>{
         if( data['format'] == 'excel' ) {
           window.location.href = d.tasks.downloadUrl;
@@ -575,7 +575,7 @@ export default {
     task_status () {
       return this.$route.meta.status;
     },
-    urlParams () {
+    query () {
       return this.$route.query;
     },
     categoryType () {

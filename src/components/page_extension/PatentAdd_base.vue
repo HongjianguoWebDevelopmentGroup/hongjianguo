@@ -134,11 +134,12 @@ export default {
         callback(flag);
       });
   	},
-  	setForm (data) {
+    //setForm 的Type用于区分正常填充 或者 是文件解析后的填充
+  	setForm (data, type='normal') {
   		for (let k in this.form) {
         console.log(k);
         if(data[k] == undefined) continue;
-        if(this.type == 'add') {
+        if(this.type == 'add' || type == 'upload') {
           if(data.inventors && data.inventors.length != 0) {
             //复用组件内置的方法...
             this.$refs.inventors.handleShare(data.inventors);
@@ -155,12 +156,18 @@ export default {
   				}
 
   				this.form[k] = arr;
-  			}else if(k == 'area' || k == 'type') {
-          if(this.type == 'add' && k == 'area') {
+  			}else if(k == 'area') {
+          if(this.type == 'add') {
             this.form[k] = data[k].map(_=>_.id);
+          }else if(this.type == 'edit' && type == 'upload') {
+            if(data[k][0]) {
+              this.form[k] = data[k][0]['id'];
+            }
           }else {
             this.form[k] = data[k]['id'];
           }
+        }else if(k == 'type') {
+          this.form[k] = data[k]['id'];
         }else {
   				this.form[k] = data[k];
   			}

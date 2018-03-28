@@ -4,15 +4,15 @@
 				<el-form-item label="代理机构名称">
           <remote-select type="agency" v-model="form.agency"></remote-select>
 				</el-form-item>
-				<el-form-item label="代理机构案号">
-          <el-input v-model="form.agency_serial" placeholder="请填写代理机构案号"></el-input>
-				</el-form-item>
-				<el-form-item label="代理类型">
-          <static-select v-model="form.agency_type" type="agency_type"></static-select>
-				</el-form-item>
 				<el-form-item label="代理人信息">
           <remote-select type="agent" v-model="form.agent" ></remote-select>
 				</el-form-item>
+        <el-form-item label="代理机构案号">
+          <el-input v-model="form.agency_serial" placeholder="请填写代理机构案号"></el-input>
+        </el-form-item>
+        <el-form-item label="代理类型">
+          <static-select v-model="form.agency_type" type="agency_type"></static-select>
+        </el-form-item>
       </el-form>
     </app-collapse>
 </template>
@@ -36,7 +36,7 @@ export default {
   },
   methods: {
   	setForm (data) {
-      this.$tool.coverObj(this.form, data); 
+      this.$tool.coverObj(this.form, data, {obj: ['agency_type']}); 
   	},
     submitForm () {
       console.log(this.form);

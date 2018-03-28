@@ -41,7 +41,7 @@ export default {
       'clearScreen',
     ]),
     handleClick (a) {
-      if(a.index == '/task/pending') {
+      if(a.index == '/task/pending' || a.index == '/patent/list') {
         this.clearScreen();
       }
     },

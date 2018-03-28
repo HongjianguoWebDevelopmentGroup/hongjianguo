@@ -105,6 +105,10 @@ export default {
   methods: {
     clear () {
       this.$refs.form.resetFields();
+    },
+    setForm (form) {
+      this.clear();
+      this.$tool.coverObj(this.form, form);
     }
   },
   watch: {

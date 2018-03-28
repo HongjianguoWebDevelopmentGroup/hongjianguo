@@ -2,7 +2,7 @@
   <div class="main">
     <strainer v-model="filter" @refresh="refresh"></strainer>
     
-    <table-component :tableOption="tableOption" :data="tableData" @refreshTableData="refreshTableData" ref="table" :refresh-proxy="refreshProxy" :filter="filter">
+    <table-component :tableOption="tableOption" :data="tableData" @refreshTableData="refreshTableData" ref="table" :refresh-proxy="refreshProxy">
       <el-button v-if="!!(menusMap && !menusMap.get('/patent/download') )" slot="download" :loading="downloadLoading" icon="share" @click="downloadPop" type="primary" style="margin-left: 5px; ">批量下载</el-button>
     </table-component>
     
@@ -249,6 +249,9 @@ export default {
       'configsExtends3',
       'extendsData',
     ]),
+    query () {
+      return this.$route.query;
+    }
   },
   methods: {
     ...mapActions([
@@ -260,7 +263,8 @@ export default {
     },
     refreshTableData (option) {
       const url = URL;
-      const data = Object.assign({}, option, this.filter);
+      const data = Object.assign({}, this.query, option, this.filter);
+      console.log(data);
       const success = d=>{
         if(data['format'] == 'excel') {
           window.location.href = d.patents.downloadUrl;
@@ -373,16 +377,10 @@ export default {
       c.push(getExtends('configsExtends3', 'extends3'));
     }
 
-    this.filter = this.$route.query;
     this.refreshFlows();
     this.refreshTaskDefs();
   },
-  mounted () {
-    
-    if(this.$route.query) {
-      console.log(this.$route.query);
-    }
-    
+  mounted () {    
     this.$refs.table.refresh();
   },
   components: {  

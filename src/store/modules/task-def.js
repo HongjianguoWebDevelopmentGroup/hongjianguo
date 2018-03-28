@@ -1,10 +1,10 @@
 let url = '/api/taskDefs';
 const state = {
-	data: undefined,
+	data: null,
 }
 
 const getters = {
-	taskDefsData: state=>state.data,
+	taskDefsData: state=>state.data ? state.data : [],
 }
 
 const mutations = {
@@ -14,8 +14,9 @@ const mutations = {
 }
 
 const actions = {
-	refreshTaskDefs ({commit, rootState, state}) {
-		url = rootState.status ? url.replace(/\/api/, '') : url;	
+	refreshTaskDefs ({commit, rootState, state}, flag = false) {
+		url = rootState.status ? url.replace(/\/api/, '') : url;
+		if(!flag && state.data != null)	return;
 		rootState.axios
 			.get(url)
 			.then(response=>{

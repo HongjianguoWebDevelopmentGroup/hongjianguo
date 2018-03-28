@@ -4,15 +4,9 @@
 
 <script>
 import AppTable from '@/components/common/AppTable'
-const url = '/api/reminders';
+const url = '/api/duetasks';
 export default {
 	name: 'homeRemindrs',
-	props: {
-		'refreshUrl': {
-			type: String,
-			required: true,
-		}
-	},
 	data () {
 		return {
 			loading: false,
@@ -28,51 +22,27 @@ export default {
 								type: 'text',
 							},
 							on: {
-								click: _ => { this.$router.push({ path: '/patent/list', query: { keyword: item }}); },
+								click: _ => { this.$router.push({ path: '/task/pending', query: { keyword: item }}); },
 							}
 						}, item);
 					},
 				},
 				{ type: 'text', prop: 'title', label: '案件名称' },
-				{ type: 'text', prop: 'keyword', label: '监控类型' },
-				{ type: 'text', prop: 'deadline', label: '期限' },
+				{ type: 'text', prop: 'type', label: '任务类型' },
+				{ type: 'text', prop: 'deadline', label: '法定期限' },
 				{ type: 'text', prop: 'day_text', label: '到期情况' },
 				{ type: 'text', prop: 'remark', label: '备注' },
-				{ 
-					type: 'action', 
-					btns: [
-						{
-							type: 'delete',
-							click: this.handleDelete,
-						}
-					],
-					fixed: false,
-					width: '100',
-				}
 			]
 		}
 	},
 	methods: {
-		handleDelete ({id}) {
-			this.$confirm('此操作将永久删除该提醒, 是否继续?', '提示', {type: 'warning'})
-				.then(() => {
-          this.$axiosDelete({
-          	url,
-          	data: {
-          		id: [id],
-          	},
-          	success: _=>{
-          		this.$message({type: 'success', message: '删除提醒成功'});
-          		this.refresh();
-          	}
-          })
-        })
-        .catch(() => {});
+		clickHandler (item) {
+			this.router.push({ path: '/task/pending', query: { keyword: item }});
 		},
 		refresh () {
 			this.loading = true;
 			this.$axiosGet({
-				url: this.refreshUrl,
+				url,
 				success: _=>{
 					this.data = _.result;
 				},

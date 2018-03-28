@@ -23,7 +23,15 @@
     </el-card>
 
     <el-card style="margin-top: 20px;">
-      <reminder></reminder>
+      <reminder refresh-url="/api/reminders?type=1"></reminder>
+    </el-card>
+
+    <el-card style="margin-top: 20px;">
+      <reminder refresh-url="/api/reminders?type=2"></reminder>
+    </el-card>
+
+    <el-card style="margin-top: 20px;">
+      <task></task>
     </el-card>
 
     <el-row v-for="(row, i) in arr" :gutter="20" :key="i">
@@ -37,6 +45,7 @@
 import AppFilter from '@/components/common/AppFilter'
 import Chart from '@/components/page_extension/Home_charts'
 import Reminder from '@/components/page_extension/Home_reminders'
+import Task from '@/components/page_extension/Home_tasks'
 import {mapGetters} from 'vuex'
 
 export default {
@@ -100,7 +109,8 @@ export default {
   components: { 
     AppFilter, 
     Chart,
-    Reminder, 
+    Reminder,
+    Task,
   },
 }
 </script>

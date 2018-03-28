@@ -5,7 +5,7 @@
           <branch v-model="form.branch" count-type="patent" ></branch>
           <!-- <span v-else>{{ branchName ? branchName : '暂未归属某个部门' }}</span> -->
         </el-form-item>
-      	<el-form-item label="IPR">
+      	<el-form-item label="IPR" prop="ipr" :rules="{type: 'number', required: true, message: 'IPR不能为空', trigger: 'change'}">
           <!-- <span class="form-item-text" v-if="type == 'add'">{{ user ? user.name : '暂未取得当前用户信息' }}</span> -->
           <static-select type="ipr" v-model="form.ipr"></static-select>
       	</el-form-item>
@@ -113,7 +113,6 @@ export default {
 			form: {
         branch: '',
 			  ipr: '',
-        proposer: '',
         issue_date: '',
         issue_number: '',
         abstract: '',
@@ -188,7 +187,11 @@ export default {
       return this.$tool.shallowCopy(this.form, { 'date': true });
     },
     checkForm (callback) {
-      callback(true);
+      let flag = true;
+      this.$refs.form.validate(_=>{
+        flag = _;
+        callback(flag);
+      });
     },
   },
   computed: {
