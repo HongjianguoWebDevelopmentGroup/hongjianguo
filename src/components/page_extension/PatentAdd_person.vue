@@ -5,10 +5,6 @@
           <branch v-model="form.branch" count-type="patent" ></branch>
           <!-- <span v-else>{{ branchName ? branchName : '暂未归属某个部门' }}</span> -->
         </el-form-item>
-      	<el-form-item label="IPR" prop="ipr" :rules="{type: 'number', required: true, message: 'IPR不能为空', trigger: 'change'}">
-          <!-- <span class="form-item-text" v-if="type == 'add'">{{ user ? user.name : '暂未取得当前用户信息' }}</span> -->
-          <static-select type="ipr" v-model="form.ipr"></static-select>
-      	</el-form-item>
 <!--         <el-form-item label="提案人">
           <remote-select type="member" v-model="form.proposer"></remote-select>
         </el-form-item> -->
@@ -112,7 +108,6 @@ export default {
 		return {
 			form: {
         branch: '',
-			  ipr: '',
         issue_date: '',
         issue_number: '',
         abstract: '',
@@ -174,7 +169,6 @@ export default {
             this.branchName = '';
           }
         }else if( k == 'ipr' ) {
-          this.form.ipr = data[k]['id'];
           this.ipr_name = data[k]['name'];
         }else {
           this.form[k] = data[k];

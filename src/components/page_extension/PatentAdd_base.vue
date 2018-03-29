@@ -16,6 +16,10 @@
 	    <el-form-item label="专利类型" prop="type">
 	      <static-select type="patent_type" v-model="form.type"></static-select>
 	    </el-form-item>
+      <el-form-item label="IPR" prop="ipr" :rules="{type: 'number', required: true, message: 'IPR不能为空', trigger: 'change'}">
+        <!-- <span class="form-item-text" v-if="type == 'add'">{{ user ? user.name : '暂未取得当前用户信息' }}</span> -->
+        <static-select type="ipr" v-model="form.ipr"></static-select>
+      </el-form-item>      
       <el-form-item label="申请人">
         <remote-select type="applicant" v-model="form.applicants" multiple></remote-select>
       </el-form-item >
@@ -77,6 +81,7 @@ export default {
         title: '',
         area: this.type == 'add' ? [] : '',
         type: '',
+        ipr: '',
         applicants: [],
         inventors: [],
         priorities: [],
@@ -167,6 +172,8 @@ export default {
           }
         }else if(k == 'type') {
           this.form[k] = data[k]['id'];
+        }else if (k == 'ipr') {
+          this.form[k] =data[k]['id'];
         }else {
           this.form[k] = data[k];
         }
