@@ -25,7 +25,7 @@
         <el-button type="primary" size="small">上传</el-button>
       </el-upload>
       </span>
-  	   <app-table :columns="columns" :data="detailNotices" style="margin-top: 15px;"></app-table>
+  	   <app-table :columns="columns" :data="detailNotices" style="margin-top: 15px;" :border="true"></app-table>
      </div>
      <div class="documents" style="margin-top: 15px;">
       <span>其他文档： 
@@ -100,7 +100,8 @@ export default {
           // { type: 'text', label: '审查员电话', prop: 'examiner_phone', width: '210' },
         {
           type: 'action',
-          'min_width': '168',
+          fixed: false,
+          width: '150',
           btns: [
             { type: 'download', click: ({downloadUrl})=>{ window.location.href = downloadUrl } },
             // { type: 'delete',  click: ({notice_name})=>{ this.$message({message: `暂时不可删除${notice_name}`, type: 'warning'}) } },
@@ -117,7 +118,8 @@ export default {
         { type: 'text', label: '上传时间', prop: 'create_time' ,width:'145'},
         {
           type: 'action',
-          'min_width': '192',
+          width: '150',
+          fixed: false,
           btns: [
             { type: 'download', click: ({downloadUrl})=>{ window.location.href = downloadUrl } },
             // { type: 'delete',  click: ({notice_name})=>{ this.$message({message: `暂时不可删除${notice_name}`, type: 'warning'}) } },

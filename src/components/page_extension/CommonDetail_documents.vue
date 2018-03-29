@@ -1,6 +1,6 @@
 <template>
   <div class="main">
-		<app-table :columns="columns" :data="tableData"></app-table>
+		<app-table :columns="columns" :data="tableData" :border="true"></app-table>
   </div>
 </template>
 
@@ -19,7 +19,8 @@ export default {
 		  	{ type: 'text', label: '上传人', prop: 'uploader',width:'100' },
 		  	{ type: 'text', label: '上传时间', prop: 'create_time' ,width:'145'},
 	  		{ type: 'action',
-	  			min_width: '192',
+	  			width: '150',
+	  			fixed: false,
 	  			btns: [
 	  				{ type: 'download', text: '下载', click: ({downloadUrl})=>{ window.location.href = downloadUrl; } },
 	  				{ type: 'view', text: '查看', click: ({viewUrl})=>{window.open(viewUrl)} },

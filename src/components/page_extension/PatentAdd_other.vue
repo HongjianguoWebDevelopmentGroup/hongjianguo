@@ -37,8 +37,9 @@ export default {
         if(d == undefined) continue;
           if( k == 'progress' ) {
             this.form[k] = d['id'];
+          }else{
+            this.form[k] = d;
           }
-          this.form[k] = d;
       }
     },
     submitForm () {

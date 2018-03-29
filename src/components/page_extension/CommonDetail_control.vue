@@ -74,7 +74,7 @@ export default {
         { 
           type: 'action',
           label: '操作',
-          min_width: '120',
+          width: '150',
           btns: [
             { type: 'view', click: ({viewUrl})=>{window.open(viewUrl)}},
             { type: 'download', click: ({downloadUrl})=>{window.open(downloadUrl)}},  
