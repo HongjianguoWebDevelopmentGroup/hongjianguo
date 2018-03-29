@@ -117,6 +117,7 @@ export default {
       'refreshBranch',
     ]),
     nodeClick (a) {
+      console.log(a);
       this.currentNode = a;
     },
     addPop () {

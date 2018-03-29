@@ -12,6 +12,10 @@ export default {
     'countType': {
       type: String,
       default: '',
+    },
+    'placeholder': {
+      type: String,
+      default: '选择部门',
     }
   },
   data () {
