@@ -1,7 +1,7 @@
 <template>
   <div class="main">
 <!--     <div class="attachments" v-if="type=='patent'">
-      <span>交底书：
+      <span><el-tag>交底书：</el-tag>
       <el-upload
         :action="attachments_upload_url"
         :on-success="handleAttachSuccess"
@@ -14,7 +14,7 @@
       </span>
     </div> -->
     <div class="notice" style="margin-top: 15px;">
-      <span>通知书：
+      <span><el-tag>通知书：</el-tag>
       <el-upload
         :action="notice_upload_url"
         :on-success="handleSuccess"
@@ -28,7 +28,7 @@
   	   <app-table :columns="columns" :data="detailNotices" style="margin-top: 15px;" :border="true"></app-table>
      </div>
      <div class="documents" style="margin-top: 15px;">
-      <span>其他文档： 
+      <span><el-tag>其他文档：</el-tag> 
       <el-upload
       :action="upload_url"
       :on-success="handleSuccess"
