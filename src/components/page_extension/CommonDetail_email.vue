@@ -1,7 +1,7 @@
 <template>
   <div class="main">
 		<app-table :columns="columns" :data="tableData" @row-click="handleRowClick"></app-table>
-		<email-detail ref="email_detail"></email-detail>
+		<email-detail  ref="email_detail"></email-detail>
   </div>
 </template>
 
@@ -36,9 +36,7 @@ export default {
     attachmentRender (h,item,row) {
       return (
        <span>
-          { row.attach?<el-tooltip effect="dark" content="有附件" placement="top">
-            <i class="table-flag" style="background-color: #008B8B;margin-right:10px;"></i>  
-          </el-tooltip> : '' } 
+          { row.attach?<i class="el-icon-my-attachment"></i>: <i></i> } 
             <span>{ item }</span>
         </span>
       )

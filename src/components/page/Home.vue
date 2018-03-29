@@ -23,16 +23,26 @@
     </el-card>
 
     <el-card style="margin-top: 20px;">
+      <div slot="header">
+        <span style="color: #888;">新申请提醒</span>
+     </div>
       <reminder refresh-url="/api/reminders?type=1"></reminder>
     </el-card>
 
     <el-card style="margin-top: 20px;">
-      <reminder refresh-url="/api/reminders?type=2"></reminder>
+      <div slot="header">
+        <span style="color: #888;">即将过期的OA</span>
+     </div>
+      <task></task>
     </el-card>
 
     <el-card style="margin-top: 20px;">
-      <task></task>
+      <div slot="header">
+        <span style="color: #888;">自定义提醒</span>
+     </div>
+      <reminder refresh-url="/api/reminders?type=2"></reminder>
     </el-card>
+
 
     <el-row v-for="(row, i) in arr" :gutter="20" :key="i">
       <el-col v-for="(item, i2) in row" :span="24/row.length" :key="i2">

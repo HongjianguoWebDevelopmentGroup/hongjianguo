@@ -481,6 +481,11 @@ nav {
     margin: 0 auto;
     margin-top: 80px;
   }
+  .el-card__header {
+    padding: 10px 20px;
+    border-bottom: 1px solid #d1dbe5;
+    box-sizing: border-box;
+    }
   .el-tree-node__expand-icon.expanded {
     -ms-transform: rotate(90deg);
     transform: rotate(90deg);

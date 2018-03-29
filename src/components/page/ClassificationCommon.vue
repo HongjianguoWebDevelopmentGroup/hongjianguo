@@ -82,7 +82,7 @@ export default {
               <em style="color: #20a0ff; font-style: normal;"> ({ data.projects_count })</em>
             </span>
             <span style="float: right; margin-right: 20px">
-              <el-button size="mini" on-click={ () => this.addPop(data.id) }>新建</el-button>
+              <el-button size="mini" on-click={ () => this.addPop(data.id) }>添加子节点</el-button>
               <el-button size="mini" on-click={ () => this.treeDelete(data.id) }>删除</el-button>
             </span>
           </span>);
