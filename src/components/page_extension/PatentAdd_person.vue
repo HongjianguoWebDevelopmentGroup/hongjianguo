@@ -9,9 +9,9 @@
           <!-- <span class="form-item-text" v-if="type == 'add'">{{ user ? user.name : '暂未取得当前用户信息' }}</span> -->
           <static-select type="ipr" v-model="form.ipr"></static-select>
       	</el-form-item>
-        <el-form-item label="提案人">
+<!--         <el-form-item label="提案人">
           <remote-select type="member" v-model="form.proposer"></remote-select>
-        </el-form-item>
+        </el-form-item> -->
         <el-form-item label="摘要">
           <el-input type="textarea" v-model="form.abstract" placeholder="请填写专利摘要" :rows="6" class="custom-textarea"></el-input>
         </el-form-item>

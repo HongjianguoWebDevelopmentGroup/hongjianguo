@@ -56,10 +56,16 @@ const map = new Map([
 		DATA_KEY: 'agencies',
 		PLACEHOLDER: '请输入代理机构关键词',
 	}],
-	['project', {
-		URL: '/api/projects',
-		DATA_KEY: 'projects',
-		PLACEHOLDER: '请输入案件关键词',
+  ['project', {
+    URL: '/api/projects',
+    DATA_KEY: 'projects',
+    PLACEHOLDER: '请输入案件关键词',
+  }],	
+  ['progress', {
+		URL: '/api/progress',
+		DATA_KEY: 'progress',
+		PLACEHOLDER: '请输入状态关键词',
+    PARAMS: { category: 1 },
 	}],
 	['proposal', {
 		URL: '/api/proposals',

@@ -68,7 +68,7 @@
     <el-form-item prop="type" label="专利类型" v-if="fields.type" :rules="{type: 'number', required: true, message: '专利类型不能为空', trigger: 'blur'}">
       <static-select type="patent_type" v-model="form.type" key="patent_type"></static-select>
     </el-form-item>
-     <el-form-item prop="title" label="专利标题" v-if="ifTitle" :rules="{required: true, message: '专利标题不能为空'}">
+     <el-form-item prop="title" label="专利标题" v-if="fields.title" :rules="{required: true, message: '专利标题不能为空'}">
       <el-input v-model="form.title" placeholder="请填写正式递交的标题"></el-input>
     </el-form-item>   
     <el-form-item prop="estimate" label="年费评估" v-if="fields.estimate" style="margin-bottom: 0px;">
@@ -83,13 +83,6 @@
         <el-radio-button label="优"></el-radio-button>
         <el-radio-button label="优+"></el-radio-button>
       </el-radio-group>
-    </el-form-item>
-    <el-form-item prop="attachments" label="附件" v-if="fields.attachments && !hide_r_a">
-      <upload v-if="next == '20'" v-model="form.attachments" :action="`/api/files?action=parseConfirmationList&id=${id}`" @uploadSuccess="handleUploadSuccess"></upload>
-      <upload v-else v-model="form.attachments" :file-list="attachments"></upload>
-    </el-form-item>
-    <el-form-item prop="remark" label="任务备注" v-if="fields.remark && !hide_r_a">
-      <el-input type="textarea" v-model="form.remark"></el-input>
     </el-form-item>
     <el-form-item prop="rank" label="评分" v-if="fields.rank">
       <el-rate 
@@ -113,6 +106,13 @@
     </template>
     <el-form-item prop="is_supplement" label="补充" v-if="fields.is_supplement" >
       <app-switch type="is" v-model="form.is_supplement"></app-switch>
+    </el-form-item>
+    <el-form-item prop="attachments" label="附件" v-if="fields.attachments && !hide_r_a">
+      <upload v-if="next == '20'" v-model="form.attachments" :action="`/api/files?action=parseConfirmationList&id=${id}`" @uploadSuccess="handleUploadSuccess"></upload>
+      <upload v-else v-model="form.attachments" :file-list="attachments"></upload>
+    </el-form-item>
+    <el-form-item prop="remark" label="任务备注" v-if="fields.remark && !hide_r_a">
+      <el-input type="textarea" v-model="form.remark"></el-input>
     </el-form-item>
     <ul v-if="data.description && data.description.length != 0" style="margin: 0; margin: 10px 0;margin-left:115px;padding: 0; font-size:14px;color:#bbb;">
       <li v-for="(item, index) in data.description" :key="index">{{ item }}</li>
