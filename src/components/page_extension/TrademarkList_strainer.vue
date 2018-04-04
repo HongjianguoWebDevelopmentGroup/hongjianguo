@@ -47,6 +47,16 @@
             <remote-select type="agency" v-model="form.agency" multiple></remote-select>
           </el-form-item>
         </el-col>
+        <el-col :span="12">
+          <el-form-item label="驳回日期" prop="reject_date">
+            <el-date-picker type="daterange" v-model="form.reject_date" placeholder="请选择驳回日期"></el-date-picker>
+          </el-form-item>
+        </el-col>
+        <el-col :span="12">
+          <el-form-item label="商标名称" prop="title">
+            <el-input v-model="form.title" placeholder="请填写要搜索的商标名称"></el-input>
+          </el-form-item>
+        </el-col>  
       </el-row>
       <el-row style="text-align: center;">
         <el-button type="primary" size="small" @click="search(form)">查询</el-button>
@@ -74,9 +84,11 @@ export default {
         categories: [],
         applicants: [],
         apd: '',
+        title: '',
         public_date: '',
         issue_date: '',
         expiring_date: '',
+        reject_date: '',
         agency: []
       }
 		}

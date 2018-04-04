@@ -33,20 +33,20 @@ const actions = {
 	refreshCity ({commit, rootState, state}) {	
 		url = rootState.status ? url.replace(/\/api/, '') : url;	
 		
-		const d = rootState.tool.getLocal('city');
-		if(d) {
-			commit('setCity', JSON.parse(d));
-		}else {
+		// const d = rootState.tool.getLocal('city');
+		// if(d) {
+		// 	commit('setCity', JSON.parse(d));
+		// }else {
 			
 			rootState.axios
 				.get(url)
 				.then(response=>{
 					const arr = eval(`${response.data}`);
 					commit('setCity', arr);
-					rootState.tool.setLocal('city', JSON.stringify(arr));
+					// rootState.tool.setLocal('city', JSON.stringify(arr));
 				})
 				.catch(error=>{console.log(error)});
-		}
+		// }
 	}
 }
 

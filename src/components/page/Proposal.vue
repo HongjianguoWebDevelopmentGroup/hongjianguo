@@ -230,9 +230,9 @@ export default {
         'columns': [
           { type: 'selection'},
           { type: 'text', label: '案号', prop: 'serial', sortable: true, width: '200' },
-          { type: 'text', label: '提案标题', prop: 'title', sortable: true, width: '300' },
+          { type: 'text', label: '提案名称', prop: 'title', sortable: true, width: '300' },
           { type: 'text', label: '提案人', prop: 'proposer', render_simple: 'name', sortable: true, width: '160' },
-          { type: 'text', label: '代理人', prop: 'agent', sortable: true, width: '160'},
+          // { type: 'text', label: '代理人', prop: 'agent', sortable: true, width: '160'},
           { type: 'text', label: 'IPR', prop: 'ipr', render_simple: 'name', sortable: true, width: '160'},
           { type: 'text', label: '当前节点', prop: 'flow_node', sortable: true, width: '240' },
           { type: 'text', label: '提案简介', prop: 'abstract', sortable: true, width: '300' },

@@ -49,7 +49,9 @@
                   <div slot="content">{{ currentNode.ipr.name }}<br/>{{ currentNode.ipr.mobile }}<br/>{{ currentNode.ipr.email }}</div>
                   <el-tag>{{ currentNode.ipr.name }}</el-tag>
                 </el-tooltip>
-                <span v-else>暂未设置默认IPR</span>
+                <span v-else>
+                  <el-tag></el-tag>
+                </span>
               </template>
 		  			</el-form-item>
 
@@ -89,7 +91,7 @@ import StaticSelect from '@/components/form/StaticSelect'
 import {mapGetters} from 'vuex'
 import {mapActions} from 'vuex'
 
-const url = '/api/branches';
+const URL= '/api/branches';
 export default {
   name: 'branch',
   data () {
@@ -139,7 +141,6 @@ export default {
     },
     branchDelete () {
       const c = this.currentNode;
-
       if(!c) {
         this.$message({message: '请选择需要删除的部门', type: 'warning'});
         return;
@@ -150,18 +151,23 @@ export default {
         return;
       }
 
+      const url = `${URL}/${this.currentNode.id}`;
       this.$confirm(`删除后不可恢复，确认删除‘${c.name}’？`, '提示', {type: 'warning'})
         .then(_=>{
-          const url = `${url}/${this.currentNode.id}`;
+          console.log(url);
+         
           const success = _=>{
-            this.$message({message: ``})
+            this.$message({message: _.info,type: 'success'});
+            this.refresh();
           }
-          this.$axiosDelet({
+          this.$axiosDelete({
             url, 
             success,
           })
         })
-        .catch(_=>{});      
+        .catch(_=>{
+
+        });      
     },
     refresh () {
       this.refreshBranch();

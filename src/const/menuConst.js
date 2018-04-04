@@ -4,25 +4,25 @@ menu.data = [
 	{
 		text: '个人中心',
 		path: '/statistics',
-		icon: 'iconfont icon-statistics',
+		icon: 'iconfont el-icon-my-statistics',
 		type: 'item'
 	},
 	{
 		text: '消息',
 		path: '/news',
-		icon: 'iconfont icon-email',
+		icon: 'iconfont el-icon-my-email',
 		type: 'submenu',
 		children: [
 			{
 				text: '邮件',
 				path: '/news/mailList',
-				icon: 'iconfont icon-email',
+				icon: 'iconfont el-icon-my-email',
 				type: 'item',
 			},
 			{
 				text: '系统消息',
 				path: '/news/systemMessage',
-				icon: 'iconfont icon-newlabel',
+				icon: 'iconfont el-icon-my-newlabel',
 				type: 'item',
 			}
 		]
@@ -30,37 +30,37 @@ menu.data = [
 	// {
 	// 	text: '邮件',
 	// 	path: '/mailList',
-	// 	icon: 'iconfont icon-email',
+	// 	icon: 'iconfont el-icon-my-email',
 	// 	type: 'item',
 	// },
 	{
 		text: '任务',
 		path: '/task',
-		icon: 'iconfont icon-task',
+		icon: 'iconfont el-icon-my-task',
 		type: 'submenu',
 		children: [
 			{
 				text: '未完成',
 				path: '/task/pending',
-				icon: 'iconfont icon-task-pending',
+				icon: 'iconfont el-icon-my-task-pending',
 				type: 'item',
 			},
 			{
 				text: '暂停处理',
 				path: '/task/pause',
-				icon: 'iconfont icon-pause',
+				icon: 'iconfont el-icon-my-pause',
 				type: 'item',
 			},
 			{
 				text: '已完成',
 				path: '/task/finish',
-				icon: 'iconfont icon-task-finish',
+				icon: 'iconfont el-icon-my-task-finish',
 				type: 'item',
 			},
 			{
 				text: '期限管控',
 				path: '/task/expiring',
-				icon: 'iconfont icon-task-pending',
+				icon: 'iconfont el-icon-my-task-pending',
 				type: 'item',
 			}
 		]
@@ -68,19 +68,19 @@ menu.data = [
 	{
 		text: '提案',
 		path: '/proposal',
-		icon: 'iconfont icon-proposal',
+		icon: 'iconfont el-icon-my-proposal',
 		type: 'submenu',
 		children: [
 			{
 				text: '新建提案',
 				path: '/proposal/add',
-				icon: 'iconfont icon-proposal-add',
+				icon: 'iconfont el-icon-my-proposal-add',
 				type: 'item'
 			},
 			{
 				text: '提案列表',
 				path: '/proposal/list',
-				icon: 'iconfont icon-proposal',
+				icon: 'iconfont el-icon-my-proposal',
 				type: 'item'
 			},
 		]
@@ -88,19 +88,19 @@ menu.data = [
 	{
 		text: '专利',
 		path: '/patent',
-		icon: 'iconfont icon-patent',
+		icon: 'iconfont el-icon-my-patent',
 		type: 'submenu',
 		children: [
 			{
 				text: '新建专利',
 				path: '/patent/add',
-				icon: 'iconfont icon-proposal-add',
+				icon: 'iconfont el-icon-my-proposal-add',
 				type: 'item'
 			},
 			{
 				text: '专利管理',
 				path: '/patent/list',
-				icon: 'iconfont icon-patent',
+				icon: 'iconfont el-icon-my-patent',
 				type: 'item',
 			},
 			// {
@@ -112,156 +112,171 @@ menu.data = [
 			{
 				text: '通知书管理',
 				path: '/patent/notice',
-				icon: 'iconfont icon-notice',
+				icon: 'iconfont el-icon-my-notice',
 				type: 'item',
+			}
+		]
+	},
+	{
+		text: '商标',
+		path: '/trademark',
+		icon: 'iconfont	 el-icon-my-task',
+		type: 'submenu',
+		children: [
+			{
+				text: '新建商标',
+				path: '/trademark/add',
+				icon: 'iconfont el-icon-my-proposal-add',
+				type: 'item'
+			},{
+				text: '商标管理',
+				icon: 'iconfont el-icon-my-trademark',
+				path: '/trademark/list',
+				type: 'item',
+			},
+			{
+				text: '通知书管理',
+				icon: 'iconfont el-icon-my-notice',
+				type: 'item',
+				path: '/trademark/notice',
 			}
 		]
 	},
 	{
 		text: '版权',
 		path: '/copyright',
-		icon: 'iconfont	 icon-copyright',
+		icon: 'iconfont	 el-icon-my-copyright',
 		type: 'submenu',
 		children: [
 			{
 				text: '新建版权',
 				path: '/copyright/add',
-				icon: 'iconfont icon-proposal-add',
+				icon: 'iconfont el-icon-my-proposal-add',
 				type: 'item'
 			},
 			{
 				text: '版权管理',
 				path: '/copyright/list',
-				icon: 'iconfont	 icon-copyright',
+				icon: 'iconfont	 el-icon-my-copyright',
 				type: 'item'
 			},
-			// {
-			// 	text: '通知书管理',
-			// 	path: '/copyright/notice',
-			// 	icon: 'iconfont icon-notice',
-			// 	type: 'item',
-			// },
-		]
-	},
-	{
-		text: '商标',
-		path: '/trademark',
-		icon: 'iconfont	 icon-task',
-		type: 'submenu',
-		children: [
 			{
-				text: '新建商标',
-				path: '/trademark/add',
-				icon: '',
-				type: 'item'
-			},{
-				text: '商标管理',
-				icon: '',
-				path: '/trademark/list',
-				type: 'item',
-			},{
 				text: '通知书管理',
-				icon: '',
-				path: '/trademark/notice',
-				type: 'item'				
-			}]
+				path: '/copyright/notice',
+				icon: 'iconfont el-icon-my-notice',
+				type: 'item',
+			},
+		]
 	},
 	{
 		text: '费用',
 		path: '/fee',
-		icon: 'iconfont icon-fee',
+		icon: 'iconfont el-icon-my-fee',
 		type: 'submenu',
 		children: [{
 			text: '应收明细',
 			path: '/fee/income',
-			icon: '',
+			icon: 'iconfont el-icon-my-deal',
 			type: 'item',
 		},{
 			text: '应付明细',
 			path: '/fee/pay',
-			icon: '',
+			icon: 'iconfont el-icon-my-receipt',
 			type: 'item',
 		},{
 			text: '请款单',
 			path: '/fee/bill',
-			icon: '',
+			icon: 'iconfont el-icon-my-deal',
 			type: 'item',
 		},{
 			text: '付款单', 
 			path: '/fee/payment',
-			icon: '',
+			icon: 'iconfont el-icon-my-pay',
 			type: 'item',
 		}]
 	},
 	{
+		text: '年费',
+		path: '/renewal',
+		icon: 'iconfont el-icon-my-renewal',
+		type: 'submenu',
+		children: [
+			{
+				text: '年费明细',
+				path: '/renewal/fee',
+				icon: 'iconfont el-icon-my-renewal-fee',
+				type: 'item',
+			},
+			{
+				text: '年费评估单',
+				path: '/renewal/estimate',
+				icon: 'iconfont el-icon-my-renewal-estimate',
+				type: 'item',
+			},
+		]
+	},
+	{
 		text: '发文',
 		path: '/dispatch',
-		icon: 'iconfont icon-email',
+		icon: 'iconfont el-icon-my-email',
 		type: 'submenu',
 		children: [{
 			text: '发文管理',
 			path: '/dispatch/administration',
-			icon: '',
+			icon: 'iconfont el-icon-my-dispatch',
 			type: 'item'
 		}]
 	},
 	{
 		text: '设置',
 		path: '/setting',
-		icon: 'iconfont icon-setting',
+		icon: 'iconfont el-icon-my-setting',
 		type: 'submenu',
 		children: [{
 			text: '我的个人设置',
 			path: '/setting/individual',
-			icon: '',
+			icon: 'iconfont el-icon-my-set-copy',
 			type: 'item'
 		},
 		{
 			text: '用户管理',
 			path: '/userList',
-			icon: '',
+			icon: 'iconfont el-icon-my-users',
 			type: 'item',
 		},
 		{
 			text: '申请人管理',
 			path: '/applicantList',
-			icon: '',
+			icon: 'iconfont el-icon-my-proposer',
 			type: 'item',
 		},
 		{ 
 			text: '发明人管理',
 			path: '/inventorList',
-			icon: '',
+			icon: 'iconfont el-icon-my-proposer',
 			type: 'item',
 		},
 		{
 			text: '技术分类管理',
 			path: '/classification',
-			icon: '',
+			icon: 'iconfont el-icon-my-techonology',
 			type: 'item',
 		},
 		{
 			text: '产品分类管理',
 			path: '/product',
-			icon: '',
+			icon: 'iconfont el-icon-my-products',
 			type: 'item',
 		},
 		{
 			text: '部门管理',
 			path: '/branch',
-			icon: '',
+			icon: 'iconfont el-icon-my-department',
 			type: 'item',
-		},		
-		{
-			text: '合同管理',
-			path: '/contractList',
-			icon: '',
-			type: 'item',
-		},
-		{
+		},{
 			text: '代理机构管理',
 			path: '/setting/agency',
-			icon: '',
+			icon: 'iconfont el-icon-my-organization',
 			type: 'item'
 		},
 		// {
@@ -273,7 +288,7 @@ menu.data = [
 		{
 			text: '系统设置',
 			path: '/setting/system',
-			icon: '',
+			icon: 'iconfont el-icon-my-system',
 			type: 'item'
 		},
 		// {
@@ -293,8 +308,8 @@ menu.data = [
 ];
 
 menu.map = {
-	'/': {text: '主页', icon: 'iconfont icon-home', path: '/'},
-	'/task/pending/check': {text: '提案审核', icon: 'iconfont icon-task-check', 'path': '/task/pending/check'},
+	'/': {text: '主页', icon: 'iconfont el-icon-my-home', path: '/'},
+	'/task/pending/check': {text: '提案审核', icon: 'iconfont el-icon-my-task-check', 'path': '/task/pending/check'},
 	'/patent/applied/detail': {text: '专利详情', icon: '', path: '/patent/applied/detail'},
 	'/patent/list/detail': {text: '专利详情', icon: '', path: '/patent/list/detail'},
 	'/copyright/list/detail': {text: '版权详情', icon: '', path: '/copyright/list/detail'},

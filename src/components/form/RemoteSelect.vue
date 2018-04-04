@@ -3,6 +3,7 @@
     <el-select
       :value="value2"
       @input="handleInput"
+      @change="handleChange"
       filterable
       remote
       :placeholder="PLACEHOLDER"
@@ -55,7 +56,7 @@ const map = new Map([
     URL: '/api/agencies',
     DATA_KEY: 'agencies',
     PLACEHOLDER: '请输入代理机构关键词',
-  }],
+  }],  
   ['project', {
     URL: '/api/projects',
     DATA_KEY: 'projects',
@@ -102,7 +103,15 @@ const map = new Map([
     PLACEHOLDER: '请输入邮箱',
     dynamicCreate: true,
     defaultFirstOption: true,
-  }]
+  }],
+   ['estimate', {
+    URL: '/api/renewalestimate',
+    DATA_KEY: 'data.data',
+    PLACEHOLDER: '请选择年费评估单',
+    handleData: _=>{
+      return _.map(_=>({ id: _.id, name: _.number }));
+    }
+  }] 
 ]);
 
 export default {
@@ -158,6 +167,9 @@ export default {
       }else {
         this.$emit('input', val);
       }
+    },
+    handleChange (val) {
+      this.$emit('getArea',this.selected);
     },
     initialization () {
       this.remoteMethod('');       
@@ -298,7 +310,10 @@ export default {
     }
   },
   watch: {
-    value2 (val) {
+    value2 (val,oVal) {
+      if(val != oVal){
+        this.handleChange();
+      }
       // console.log('-------------val');
       // console.log(val);
       // console.log('-------------val');

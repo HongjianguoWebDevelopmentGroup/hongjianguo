@@ -101,6 +101,7 @@
 import AxiosMixins from '@/mixins/axios-mixins'
 import RemoteSelect from '@/components/form/RemoteSelect'
 import StaticSelect from '@/components/form/StaticSelect'
+import {mapActions} from 'vuex'
 
 const config = [
   ['patent', {
@@ -135,6 +136,20 @@ const config = [
     pct_search_result: true,
     no_zip: true,
   }],
+  ['copyright_notice', {
+    action: 'getCopyrightNoticesDocuments',
+    url: '/copyrights_notice/documents',
+    type: 'copyright',
+    file_type: 'file_type_copyright_notice',
+    time: true,
+    legal_time: true,
+    issue_date: true,
+    apd: true,
+    apn: true,
+    pct_search_date: true,
+    pct_search_result: true,
+    no_zip: true,
+  }],  
   ['trademark_notice', {
     action: 'getTrademarkNoticesDocuments',
     url: '/trademarks_notice/documents',
@@ -186,6 +201,9 @@ export default {
     }
   },
   methods: {
+    ...mapActions([
+      'initializeSelectorCache',
+    ]),
     show () {
       this.project_id = "";
       this.dialogVisible = true;
@@ -198,7 +216,7 @@ export default {
       this.dialogVisible = false;
     },
     handleTypeChange (selected, index) {
-      // console.log(selected, index);
+      console.log(selected, index);
       let f;
       if(!selected) {
         f = {};
@@ -258,6 +276,12 @@ export default {
         o.project = _.project;
         o.name = _.name;
         o.type = _.type;
+        if(_.subfile) {
+          o.subfile = _.subfile;
+        }
+        if(_.zip) {
+          o.zip = _.zip;
+        }
         if(_.show_mail_date) {
           if(_.time) {
             o.time = this.$tool.getDate( new Date(_.time) );
@@ -325,19 +349,31 @@ export default {
       this.$axiosPost({url, data, success, complete});
     },
     handleSuccess (a,b,c) {
+      const l = this.tableData.length;
+      const lists = [];
       if(a.status) {
-        a.data.list.forEach(_=>{ 
-          _.type = _.type ? _.type.id : 830;
+        
+        a.data.list.forEach((_, key)=>{ 
           _.time = '';
           _.legal_time = '';
           _.apd = '';
           _.issue_date = '';
           _.apn = '';
           _.pct_search_result = '';
-          _.pct_search_date = ''; 
+          _.pct_search_date = '';   
+          if(_.type) {
+            _.type =  _.type.id;
+          }
+          lists.push(this.$tool.deepCopy(_));
+          _.type = '';
         });
-        this.tableData.push(...a.data.list);
-        this.file.push(a.data.file);
+          this.tableData.push(...a.data.list);
+          this.file.push(a.data.file);
+          this.$nextTick(_=>{
+            lists.forEach((v,k)=>{
+              this.tableData.splice(k+l,1,v);
+            })
+          })
       }else {
         this.$message({message: a.info, type: 'warning'});
       }
@@ -355,8 +391,11 @@ export default {
       this.tableData = [];
     }
   },
+  created () {
+    this.initializeSelectorCache({type: this.config.file_type});
+  },
   watch: {
-    
+
   },
   components: { 
     RemoteSelect,

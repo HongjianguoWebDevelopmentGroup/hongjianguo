@@ -64,9 +64,16 @@
 			<el-form-item label="申请人" prop="applicants">
 				<remote-select type="applicant" v-model="form.applicants" multiple></remote-select>
 			</el-form-item>
+			<el-form-item label="代理机构" prop="agency">
+				<remote-select type="agency" v-model="form.agency"></remote-select>
+			</el-form-item>
 			<el-form-item label="地区" prop="area" :rules="{ type: pageType=='add' ? 'array' : 'string',required: true, message: '地区不能为空', trigger: 'change'}">
 				<static-select type="area" v-model="form.area" :multiple="pageType == 'add'"></static-select>
+			</el-form-item>			
+			<el-form-item label="状态" prop="progress" v-if="pageType == 'edit'">
+				<static-select type="trademarks_status" v-model="form.progress"></static-select>
 			</el-form-item>
+
 			  <el-form-item label="权利人地址">
         		<el-input v-model="form.address" placeholder="请填写权利人地址"></el-input>
       		  </el-form-item>
@@ -156,10 +163,12 @@ export default {
 		  		type: '',
 			  	applicants: [],
 			  	area: this.pageType == 'add' ? [] : '',
+			  	agency: '',
 			  	address: '',
 			  	categories: [],
 			  	detail: '',
 			  	figure: '',
+			  	progress: '',
 			  	description: '',
 			  	public_date: '',
 			  	reject_date: '',
@@ -274,7 +283,7 @@ export default {
   	refreshForm () {
   		if(this.pageType == 'edit' && this.detailBaseTrademark) {
   			this.id = this.detailBaseTrademark.id;
-  			this.$tool.coverObj(this.form, this.detailBaseTrademark, {'obj': ['area', 'type', 'categories']});
+  			this.$tool.coverObj(this.form, this.detailBaseTrademark, {'obj': ['area', 'type', 'categories','progress']});
 
   			this.attachments = this.$tool.deepCopy(this.form.attachments);
   			this.form.attachments = this.attachments.map( _=>_.id );

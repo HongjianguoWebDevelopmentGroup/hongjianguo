@@ -443,6 +443,9 @@ nav {
   .el-form-item {
     margin-bottom: 22px;
   }
+  .el-table__body tr.current-row>td {
+    background:  #E0EEEE;
+}
   .el-tree-node__expand-icon {
     cursor: pointer;
     height: 0;
@@ -550,19 +553,21 @@ nav {
     display: table;
     content: "";
   }
-  .el-upload-list {
-    padding: 0;
-    list-style: none;
-    display: block;
-    margin-bottom: 40px;
-  }
-  .el-upload {
-    display: inline-block;
-    text-align: center;
-    cursor: pointer;
-    position: absolute;
-    bottom: 4px;
-    left: 0px;
+  .app-upload {
+    .el-upload-list {
+      padding: 0;
+      list-style: none;
+      display: block;
+      margin-bottom: 40px;
+    }
+    .el-upload {
+      display: inline-block;
+      text-align: center;
+      cursor: pointer;
+      position: absolute;
+      bottom: 4px;
+      left: 0px;
+    }
   }
  .el-dialog--small  .el-upload--text {
       display: inline-block;

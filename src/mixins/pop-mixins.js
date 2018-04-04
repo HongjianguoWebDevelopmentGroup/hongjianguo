@@ -43,7 +43,6 @@ export default {
       const data = this.addForm 
                     ? this.addForm() : this.submitForm 
                       ? this.submitForm() : this.form;
-      
       const success = _=>{
         this.$message({message: `添加${tex}成功`, type: 'success'});
         this.dialogVisible = false;

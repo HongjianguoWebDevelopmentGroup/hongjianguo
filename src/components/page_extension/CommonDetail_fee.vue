@@ -1,11 +1,19 @@
 <template>
   <div class="main">
-	<table-component :tableOption="option" :data="tableData"></table-component>
+	<!-- <table-component :tableOption="option" :data="tableData"></table-component> -->
+	<detail-official></detail-official>
+	<detail-agency></detail-agency>
+	<detail-fundings></detail-fundings>
+	<detail-annual></detail-annual>
   </div>
 </template>
 
 <script>
 import TableComponent from '@/components/common/TableComponent' 
+import DetailFundings from '@/components/page_extension/CommonDetail_fundings'
+import DetailOfficial from '@/components/page_extension/CommonDetail_OfficialFee'
+import DetailAgency from '@/components/page_extension/CommonDetail_AgencyFee'
+import DetailAnnual from '@/components/page_extension/CommonDetail_AnnualFee'
 
 export default {
   name: 'commonDetailFee',
@@ -43,7 +51,13 @@ export default {
   		return this.$store.getters.detailFees;
   	}
   },
-  components: { TableComponent }
+  components: { 
+  	TableComponent,
+  	DetailFundings,
+  	DetailOfficial,
+  	DetailAgency,
+  	DetailAnnual,
+  }
 }
 </script>
 

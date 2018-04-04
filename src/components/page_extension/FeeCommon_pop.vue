@@ -2,7 +2,7 @@
   <el-dialog :title=title :visible.sync="dialogVisible" class="dialog-small">
 		<el-form :model="form" ref="form" label-width="80px">
 			<el-form-item label="相关案件" prop="project">
-				<remote-select type="patent" v-model="form.project"></remote-select>
+				<remote-select type="patent" v-model="form.project" @getArea="getArea"></remote-select>
 			</el-form-item>
 			<el-form-item label="费用对象" prop="target">
 				<remote-select type="member" v-model="form.target"></remote-select>
@@ -10,7 +10,7 @@
 			<el-row>
 				<el-col :span="24">
 					<el-form-item label="费用代码" prop="code">
-						<static-select  type="fee_code" v-model="form.code" ref="fee_code"></static-select>
+						<static-select  type="fee_code" v-model="form.code" ref="fee_code" :filter-options="areaFilter"></static-select>
 					</el-form-item>
 				</el-col>
 			</el-row>			
@@ -97,6 +97,7 @@ export default {
   data () {
 		return {
 		  id: '',
+		  area: '',
 		  dialogVisible: false,
 		  feeAnnual: false,
 		  form: {
@@ -141,6 +142,14 @@ export default {
   		const key2 = this.feeType == 1 ? '应收' : '应付';
   		return `${key1}${key2}费用`;
   	},
+  	areaFilter () {
+      const value = this.area;
+      if(value) {
+        return [{key: 'area', value}];
+      }else {
+        return [{key: 'area', value: ''}];
+      }
+    },
   	submitForm: {
   		get () {
   			const form = this.form;
@@ -174,6 +183,11 @@ export default {
   	}
   },
   methods: {
+  	getArea (val) {
+  		if(val.length != 0){
+	  		this.area = val[0].area;
+  		}
+  	},
   	show (row) {
   		
   		this.dialogVisible = true;
@@ -219,7 +233,7 @@ export default {
   watch: {
 		'form.code': {
 			handler () {
-				console.log('aaaaa');
+				// console.log('aaaaa');
 				this.$nextTick(_=>{
 					const val = this.$refs.fee_code.getSelected()[0];
 					if(val) {

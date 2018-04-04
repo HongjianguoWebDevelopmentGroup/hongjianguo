@@ -71,6 +71,7 @@ export default {
 		  		{ type: 'text', label: '姓名', prop: 'name', width: '145' },
 		  		{ type: 'text', label: '登陆名', prop: 'username', width: '175' },
 		  		{ type: 'text', label: '手机号', prop: 'mobile', width: '200' },
+		  		{ type: 'text', label: '证件号码', prop: 'identity', width: '240'},
 		  		{ type: 'array', label: '所属用户组', prop: 'groups', width: '200', render: _=>_.map(_=>_.name) },
 		  		// { type: 'text', label: '用户角色', prop: 'role_name', width: '200' },
 		  		{ type: 'text', label: '部门', prop: 'orgname', width: '148'},

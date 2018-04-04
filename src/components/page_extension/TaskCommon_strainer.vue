@@ -43,7 +43,7 @@
           <el-date-picker type="daterange" placeholder="请选择法定期限" v-model="form.deadline"></el-date-picker>
         </el-form-item> 
         <el-form-item label="任务阶段" prop="stage">
-          <static-select type="stage" v-model="form.stage" multiple></static-select>
+          <static-select type="task_stage" v-model="form.stage" multiple></static-select>
         </el-form-item>      
       </el-col>
     </el-row>

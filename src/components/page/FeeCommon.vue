@@ -2,7 +2,7 @@
   <div class="main">
   	<strainer v-model="filter" @refresh="refresh"></strainer>
 		<table-component @refreshTableData="refreshTableData" :tableOption="option" :data="tableData" ref="table">
-			<fee-status slot="status" v-model="fee_status" style="width: 150px; margin-left: 5px;" :feeType="feeType" feeAnnual></fee-status>
+			<fee-status slot="status" v-model="fee_status" style="width: 150px; margin-left: 5px;" :feeType="feeType"></fee-status>
 			<remote-select v-if="fee_invoice_if" slot='invoice' v-model="fee_invoice" style="width: 220px; margin-left: 10px;display: inline-block;" :type="feeType ? 'bill' : 'pay'"></remote-select>
 		</table-component>
 		<pop ref="pop" :feeType="feeType" :popType="popType" @refresh="refresh"></pop>
@@ -107,7 +107,7 @@ export default {
           { type: 'text', label: '费用期限', prop: 'due_time', is_import: true, width: '175' },
           { type: 'text', label: '官方绝限', prop: 'deadline', width: '175' },
           { type: 'text', label: '付款时间', prop: 'pay_time', width: '175' },
-		  		{ type: 'text', label: '请款单', prop: 'invoice_id', width: '150' },
+		  		{ type: 'text', label: '请/付款单', prop: 'invoice_id', width: '150' },
 		  		//{ type: 'text', label: '请款单备注', prop: 'invoidce_remark', width: '150' },
 		  		//{ type: 'text', label: '发票抬头', prop: 'invoice_title', width: '330' },
 		  		//{ type: 'text', label: '纳税人识别号', prop: 'tax_payer_identifier', width: '160' },

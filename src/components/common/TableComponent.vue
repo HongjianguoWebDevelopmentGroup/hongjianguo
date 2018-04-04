@@ -116,6 +116,7 @@
       @row-click="handleRowClick"
       :highlight-current-row="tableOption.highlightCurrentRow !== undefined ? tableOption.highlightCurrentRow : false"
       :height="tableHeight"
+      :max-height="tableOption.maxHeight"
       :class="tableOption.empty_text_position == 'topLeft' ? 'empty-top-left' : ''"
       ref="table"
     >
@@ -155,7 +156,7 @@
           <template v-else-if="col.render_simple ? true : false ">
             <el-table-column :label="col.label" :prop="col.prop" :width="col.width ? col.width : ''" :min-width="col.min_width ? col.min_width : ''" :sortable="col.sortable ? 'custom' : false" :show-overflow-tooltip="col.overflow !== undefined ? col.overflow : true">
               <template slot-scope="scope">
-                <span class="table-column-render">{{ scope.row[col.prop][col.render_simple] }}</span>
+                <span class="table-column-render">{{ handleSimple(scope.row, col) }}</span>
               </template>
             </el-table-column>
           </template>
@@ -239,7 +240,7 @@
       <app-import v-if="tableOption.import_type" :visible.sync="dialogImportVisible" :columns="import_columns" :type="tableOption.import_type" @import-success="handleImportSuccess"></app-import>
     
 
-    <file-upload v-if="tableOption.upload_type !== undefined" :type="tableOption.upload_type" @upload-success="refresh" ref="file_upload"></file-upload>
+    <file-upload v-if="tableOption.upload_type !== undefined" :type="tableOption.upload_type" @uploadSuccess="update" ref="file_upload"></file-upload>
 
     <el-dialog class="dialog-control" :visible.sync="dialogControl" title="字段控制" @close="transferValue = control; $refs.transfer.clear();">
         <div style="margin-bottom: 10px;
@@ -349,6 +350,13 @@ const methods = Object.assign({}, tableConst.methods, {
       this.dialogImportVisible = true;
     }
   },
+  handleSimple (row, col) {
+      const key = col.render_key ? col.render_key : col.prop;
+      const obj = row[key];
+
+      return row[key] ? row[key][col.render_simple] : '';
+
+    },
   handleBatchUpload(func, e) {
     if(func) {
       func(e)

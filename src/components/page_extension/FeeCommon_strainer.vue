@@ -1,11 +1,18 @@
 <template>
   <app-collapse col-title="费用筛选" default-close>
     <el-form :model="form" label-width="100px" ref="form">
-    	
-      <el-form-item label="费用对象" prop="target">
-        <remote-select type="member" v-model="form.target" multiple></remote-select>
-      </el-form-item>
-      
+      <el-row>
+      	<el-col :span="12">
+          <el-form-item label="费用对象" prop="target">
+            <remote-select type="member" v-model="form.target" multiple></remote-select>
+          </el-form-item>
+        </el-col>
+        <el-col :span="12">
+          <el-form-item label="官费" prop="official">
+            <static-select type="official" v-model="form.official"></static-select>
+          </el-form-item>
+        </el-col>
+      </el-row>
       <el-row>
         <el-col :span="12">
           
@@ -95,6 +102,7 @@ export default {
   data () {
 		return {      
 		  form: {
+        official: '',
         target: [],
         code: [],
         mail_date: [],

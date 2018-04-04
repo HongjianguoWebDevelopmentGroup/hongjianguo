@@ -42,6 +42,9 @@
 	    <el-form-item label="姓名" prop="name">
 	    	<el-input v-model="form.name"></el-input>	
 	    </el-form-item>
+      <el-form-item label="证件号码" prop="identity">
+        <el-input v-model="form.identity"></el-input>
+      </el-form-item>
 	    <el-form-item label="邮箱" prop="email">
 	    	<el-input v-model="form.email"></el-input>	
 	    </el-form-item>
@@ -99,6 +102,7 @@ export default {
 		  	mobile: '',
 		  	weixin: '',
 		  	qq: '',
+        identity: '',
         parent: '',
 		  },
 		  'rules': {

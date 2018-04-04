@@ -1,6 +1,6 @@
 <template>
-   <app-collapse :col-title="`资助/奖金(总计：${detailFundings.sum?detailFundings.sum:''}CNY)`">
-	   <table-component :tableOption="tableOption" :data="detailFundings.list"></table-component>
+   <app-collapse :col-title="`监控中的年费(总计：${detailAnnual.sum?detailAnnual.sum:''}CNY)`">
+	   <table-component :tableOption="tableOption" :data="detailAnnual.list"></table-component>
    </app-collapse> 
 </template>
 <script>
@@ -8,7 +8,7 @@ import TableComponent from '@/components/common/TableComponent'
 import AppCollapse from '@/components/common/AppCollapse'
 import { mapGetters } from 'vuex'
   export default {
-    name: 'commonDetailFundings',
+    name: 'commonDetailAnnualFee',
     data () {
       return {
       	tableOption: {
@@ -49,7 +49,7 @@ import { mapGetters } from 'vuex'
     },
     computed: {
     	...mapGetters([
-    		'detailFundings',
+    		'detailAnnual',
     	]),
     },
     components: {

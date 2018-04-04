@@ -14,6 +14,8 @@ import city from '@/store/modules/city.js'
 import invoiceEntity from '@/store/modules/invoice-entity.js'
 import userGroup from '@/store/modules/user-group.js'
 import flows from '@/store/modules/flows.js'
+import cache from '@/store/modules/cache.js'
+import selectorCache from '@/store/modules/selector-cache.js'
 import taskDef from '@/store/modules/task-def.js'
 import currentUser from '@/store/modules/current-user.js'
 import sysmesg from '@/store/modules/sysmesg.js'
@@ -52,6 +54,8 @@ const store = new Vuex.Store({
     userGroup,
     flows,
     taskDef,
+    cache,
+    selectorCache,
     currentUser,
     sysmesg,
   },

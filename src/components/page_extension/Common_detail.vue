@@ -14,7 +14,7 @@
     			<detail-control></detail-control>
         </el-tab-pane>
         <el-tab-pane label="官方来文" name="notice">
-    			<detail-notice></detail-notice>
+    			<detail-notice :type="type" @uploadSuccess="edit"></detail-notice>
         </el-tab-pane>
         <el-tab-pane label="所有费用" name="fourth">
     			<detail-fee></detail-fee>
@@ -22,13 +22,10 @@
         <el-tab-pane label="往來邮件" name="fee">
     			<detail-email></detail-email>
         </el-tab-pane>
-        <el-tab-pane label="文档" name="documents">
+<!--         <el-tab-pane label="文档" name="documents">
           <detail-documents></detail-documents>
-        </el-tab-pane>        
-        <el-tab-pane label="资助/奖金" name="fundings">
-          <detail-fundings></detail-fundings>
-        </el-tab-pane>
-        <el-tab-pane label="著录变更" name="amendments">
+        </el-tab-pane>  -->       
+        <el-tab-pane label="动态" name="amendments">
     			<detail-amendments></detail-amendments>
         </el-tab-pane>
       </el-tabs>
@@ -46,7 +43,6 @@ import DetailNotice from '@/components/page_extension/CommonDetail_notice'
 import DetailFee from '@/components/page_extension/CommonDetail_fee'
 import DetailEmail from '@/components/page_extension/CommonDetail_email'
 import DetailDocuments from '@/components/page_extension/CommonDetail_documents'
-import DetailFundings from '@/components/page_extension/CommonDetail_fundings'
 import DetailAmendments from '@/components/page_extension/CommonDetail_amendments'
 import { mapGetters } from 'vuex'
 import { mapActions } from 'vuex'
@@ -169,7 +165,6 @@ export default {
     DetailFee,
     DetailEmail,
     DetailDocuments,
-    DetailFundings,
     DetailAmendments,
   }
 }

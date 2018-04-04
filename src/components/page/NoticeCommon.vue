@@ -1,3 +1,4 @@
+
 <template>
   <div class="main">
 	<table-component :tableOption="tableOption" :data="tableData" @refreshTableData="refreshTableData" ref="table"></table-component>
@@ -15,6 +16,11 @@ const config = [
 		import_type: 'patent_notice',
 		upload_type: 'patent_notice',
 
+	}],
+	['copyright', {
+		URL: '/api/copyrights/notices',
+		import_type: false,
+		upload_type: 'copyright_notice',
 	}],
 	['trademark', {
 		URL: '/api/trademarks/notices',

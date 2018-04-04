@@ -41,6 +41,7 @@ import AppShrink from '@/components/common/AppShrink'
 import CommonDetail from '@/components/page_extension/Common_detail'
 import StaticSelect from '@/components/form/StaticSelect'
 import { mapGetters } from 'vuex'
+import { mapActions } from 'vuex'
 
 const URL = '/api/patents';
 const PATENT_TYPE = ['发明专利', '实用新型', '外观设计']; 
@@ -89,18 +90,17 @@ export default {
           { type: 'array', label: '发明人',  width: '238',  prop: 'inventors',  is_import: true,  sortable : true,  render: _=>_.map(_=>_.name),},
           { type: 'text', label: '专利类型', prop: 'type', render_simple: 'name', sortable: true, is_import: true, width: '142',  },
           { type: 'text', label: '地区', prop: 'area', render_simple: 'name', sortable: true, is_import: true, width: '100' },
-          { type: 'text', label: '专利标题', prop: 'title', sortable: true, is_import: true, width: '260' },
           { type: 'text', label: '申请号', prop: 'apn', sortable: true, is_import: true, width: '178'},
           { type: 'text', label: '申请日', prop: 'apd', sortable: true, is_import: true, width: '120'},
           { type: 'text', label: '当前状态', prop: 'progress', render_simple: 'name',  sortable: true, width: '260' },
+          { type: 'text', label: '案件名称', prop: 'title', sortable: true, is_import: true, width: '200', is_agency: true },
+          { type: 'array', label: '提案标题', prop: 'proposals', width: '200', render: _=>_.map(_=>_.title),},
           { type: 'text', label: 'IPR', prop: 'ipr', render_simple: 'name', sortable: true, is_import: true, width: '110' },
-          { type: 'text', label: '备注', prop: 'remark', sortable: true, width: '265'},
           { type: 'text', label: '代理机构',prop: 'agency',sortable: true,width: '168',is_import: true,render_simple: 'name'},
           { type: 'text', label: '代理人',  prop: 'agent',  sortable: true,  width: '160',  render_simple: 'name'},
           { type: 'text', label: '事务所案号', prop: 'agency_serial', sortable: true,width: '168' },
           { type: 'text', label: '部门名称', prop: 'branch', sortable: true, render:  (h,item)=>h('span', item.name), width: '142' },
           { type: 'array', label: '标签', prop: 'tags', is_import: true, sortable : true, width: '160',},
-          { type: 'array', label: '产品名称',width: '180', prop: 'products', sortable: true, render: _=>_.map(_=>_.name),},
           { type: 'text', label: '权利人地址', prop: 'address', sortable: true,width: '240'},
           { type: 'text', label: '提案号', prop: 'proposal_serial', sortable: true,width: '200' },
           { type: 'text', label: '专利摘要', prop: 'abstract', sortable: true, width: '280'},
@@ -170,6 +170,11 @@ export default {
     ])
   },
   methods: {
+    ...mapActions([
+      'refreshFlows',
+      'refreshTaskDefs',
+      'initializeSelectorCache'
+    ]),    
     add () {
       const s = this.$refs.table.getSelection();
       if (s.length != 0) {
@@ -267,6 +272,11 @@ export default {
         }
       })
     },
+  },
+  created () {
+    this.refreshFlows();
+    this.refreshTaskDefs();
+    this.initializeSelectorCache({type: 'file_type_patent_notice'});
   },
   mounted () {
     this.$refs.table.refresh();
