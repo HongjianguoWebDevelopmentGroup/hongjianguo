@@ -156,9 +156,11 @@ export default {
         .then(_=>{
           const url = `${url}/${this.currentNode.id}`;
           const success = _=>{
-            this.$message({message: ``})
+            this.$message({message: _.info,type: 'success'});
+            this.refresh();
+
           }
-          this.$axiosDelet({
+          this.$axiosDelete({
             url, 
             success,
           })

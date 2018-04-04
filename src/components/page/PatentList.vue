@@ -93,7 +93,7 @@ export default {
           { type: 'text', label: '地区', prop: 'area', render_simple: 'name', sortable: true, is_import: true, width: '100', is_agency: true },
           { type: 'text', label: '当前状态', prop: 'progress', sortable: true, width: '180', is_agency: true },
           { type: 'text', label: 'IPR', prop: 'ipr', render_simple: 'name', sortable: true, is_import: true, width: '175', is_agency: true },
-          { type: 'text', label: '案件名', prop: 'title', sortable: true, is_import: true, width: '200', is_agency: true },
+          { type: 'text', label: '案件名称', prop: 'title', sortable: true, is_import: true, width: '200', is_agency: true },
           { type: 'array', label: '提案标题', prop: 'proposals', width: '200', render: _=>_.map(_=>_.title),},
           { type: 'text', label: '是否已用在产品上', prop: 'product_relevance', render_simple:'name', width: '200', sortable: true},
           { type: 'text', label: '提案人', prop: 'proposer', sortable: true, width: '123', is_import: true, is_agency: true, render_simple: 'name',},

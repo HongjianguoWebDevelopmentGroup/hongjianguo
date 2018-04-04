@@ -283,7 +283,7 @@ export default {
 
           },
         },
-        'identity': {pattern:  /(^\d{15}$)|(^\d{18}$)|(^\d{17}(\d|X|x)$)/, message: '证件号码格式错误'},   	
+        // 'identity': {pattern:  /(^\d{15}$)|(^\d{18}$)|(^\d{17}(\d|X|x)$)/, message: '证件号码格式错误'},   	
       },
       tableOption: {
         'is_search': false,
