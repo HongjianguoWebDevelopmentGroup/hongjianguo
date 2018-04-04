@@ -1,12 +1,12 @@
 <template>
   <div class="main">
     
-    <pa-base ref="base" :type="type"></pa-base>
+    <pa-base ref="base" :type="type" @uploadSuccess="handleUploadSuccess"></pa-base>
     <person ref="person" :type="type"></person>
     <classification ref="classification"></classification>
     <agent ref="agent" v-if="type == 'edit'"></agent>
     <case ref="case"></case>
-    <other ref="other" :type="type"  @uploadSuccess="handleUploadSuccess"></other>
+    <other ref="other" :type="type"></other>
     <custom ref="custom" :type="type"></custom>
     <review ref="review" :type="type"></review>
     <div style="margin-bottom: 20px;">
@@ -134,7 +134,7 @@ export default {
       }
     },
     handleUploadSuccess (d) {
-      console.log(d);
+      
       if( !d.data || !d.data.list ) {
         return this.$message({type: 'warning', message: '识别交底书失败'});
       }
