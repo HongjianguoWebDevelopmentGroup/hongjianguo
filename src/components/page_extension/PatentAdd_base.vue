@@ -136,7 +136,7 @@ export default {
   	},
   	setForm (data) {
   		for (let k in this.form) {
-        console.log(k);
+        // console.log(k);
         if(data[k] == undefined) continue;
         if(this.type == 'add') {
           if(data.inventors && data.inventors.length != 0) {

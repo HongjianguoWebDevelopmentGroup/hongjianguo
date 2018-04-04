@@ -183,7 +183,7 @@ export default {
       }
   	},
     submitForm () {
-      console.log(this.form);
+      // console.log(this.form);
       // if(this.type == 'add') this.form.ipr = this.user.id;
       return this.$tool.shallowCopy(this.form, { 'date': true });
     },
