@@ -1,21 +1,19 @@
 <template>
-   <app-collapse :col-title="`资助/奖金(总计：${detailFundings.sum?detailFundings.sum:''}CNY)`">
-	   <table-component :tableOption="tableOption" :data="detailFundings.list"></table-component>
+   <app-collapse :col-title="`资助/奖金(总计：${detailFundings.sum?detailFundings.sum:'0'}CNY)`">
+     <!-- <table-component :tableOption="tableOption" :data="detailFundings.list"></table-component> -->
+     <app-table :columns="columns" :data="fundingsData"></app-table>
    </app-collapse> 
 </template>
 <script>
-import TableComponent from '@/components/common/TableComponent'
+import AppTable from '@/components/common/AppTable'
 import AppCollapse from '@/components/common/AppCollapse'
 import { mapGetters } from 'vuex'
   export default {
     name: 'commonDetailFundings',
     data () {
       return {
-      	tableOption: {
-      	  'is_search': false,
-      	  'is_pagination': false,
-      	  'is_header': false,
-      	  'columns':[
+
+          columns:[
             { type: 'text', label: '费用名称', prop: 'name', min_width: '160'},
             { type: 'text', label: '外币金额',  prop: 'amount', width: '100', align: 'right',
               render:(h,item,row)=>{
@@ -42,18 +40,20 @@ import { mapGetters } from 'vuex'
             },
             { type: 'text', label: '付款日期', prop: 'pay_date', width: '160'},
             { type: 'text', label: '状态', prop: 'status', width: '110'},
-            { type: 'text', label: '备注', prop: 'remark', width: '160'},
+            { type: 'text', label: '备注', prop: 'remark', min_width: '130'},
           ],
-      	},
       }
     },
     computed: {
-    	...mapGetters([
-    		'detailFundings',
-    	]),
+      ...mapGetters([
+        'detailFundings',
+      ]),
+      fundingsData () {
+        return this.detailFundings.list ? this.detailFundings.list : [];
+      },
     },
     components: {
-      TableComponent,
+      AppTable,
       AppCollapse,
     }
   }

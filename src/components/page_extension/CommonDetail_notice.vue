@@ -13,7 +13,7 @@
       <app-table :columns="columns2" :data="tableData2" style="margin-top: 15px;"></app-table>    
       </span>
     </div> -->
-    <div class="notice" style="margin-top: 15px;">
+    <div class="notice" >
       <span><el-tag>通知书：</el-tag>
         <el-upload
         :action="notice_upload_url"

@@ -53,6 +53,7 @@ export default {
 		  		},
           { type: 'delete' },
           { type: 'export' },
+          { type: 'report', click: this.handleReport },          
           { type: 'import' },
 		  		{ type: 'control' },
           { type: 'serial_search'},
@@ -165,6 +166,12 @@ export default {
     }
   },
   methods: {
+    handleReport () {
+      const url = {0: '/fee/pay/report', 1: '/fee/income/report'}[this.feeType];
+      if(url) {
+        this.$router.push(url);
+      }
+    },    
   	refreshTableData (option) {
       if(this.fee_invoice instanceof Object) return;
 

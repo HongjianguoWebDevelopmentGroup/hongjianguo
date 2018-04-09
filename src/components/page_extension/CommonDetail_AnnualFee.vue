@@ -1,21 +1,18 @@
 <template>
-   <app-collapse :col-title="`监控中的年费(总计：${detailAnnual.sum?detailAnnual.sum:''}CNY)`">
-	   <table-component :tableOption="tableOption" :data="detailAnnual.list"></table-component>
+   <app-collapse :col-title="`监控中的年费(总计：${detailAnnual.sum?detailAnnual.sum:'0'}CNY)`">
+    <app-table :columns="columns" :data="annualData"></app-table>
    </app-collapse> 
 </template>
 <script>
-import TableComponent from '@/components/common/TableComponent'
+import AppTable from '@/components/common/AppTable'
 import AppCollapse from '@/components/common/AppCollapse'
 import { mapGetters } from 'vuex'
   export default {
     name: 'commonDetailAnnualFee',
     data () {
       return {
-      	tableOption: {
-      	  'is_search': false,
-      	  'is_pagination': false,
-      	  'is_header': false,
-      	  'columns':[
+
+          columns:[
             { type: 'text', label: '费用名称', prop: 'name', min_width: '160'},
             { type: 'text', label: '外币金额',  prop: 'amount', width: '100', align: 'right',
               render:(h,item,row)=>{
@@ -42,18 +39,20 @@ import { mapGetters } from 'vuex'
             },
             { type: 'text', label: '付款日期', prop: 'pay_date', width: '160'},
             { type: 'text', label: '状态', prop: 'status', width: '110'},
-            { type: 'text', label: '备注', prop: 'remark', width: '160'},
+            { type: 'text', label: '备注', prop: 'remark', min_width: '130'},
           ],
-      	},
       }
     },
     computed: {
-    	...mapGetters([
-    		'detailAnnual',
-    	]),
+      ...mapGetters([
+        'detailAnnual',
+      ]),
+      annualData () {
+        return this.detailAnnual.list ? this.detailAnnual.list : [];
+      },
     },
     components: {
-      TableComponent,
+      AppTable,
       AppCollapse,
     }
   }

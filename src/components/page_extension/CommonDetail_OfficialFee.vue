@@ -1,23 +1,20 @@
 <template>
-   <app-collapse :col-title="`官费(总计：${detailOfficial.sum?detailOfficial.sum:''}CNY)`">
-	   <table-component :tableOption="tableOption" :data="detailOfficial.list"></table-component>
+   <app-collapse :col-title="`官费及发明人奖金(总计：${detailOfficial.sum?detailOfficial.sum:'0'}CNY)`">
+    <app-table :columns="columns" :data="officialData"></app-table>
    </app-collapse> 
 </template>
 <script>
-import TableComponent from '@/components/common/TableComponent'
+import AppTable from '@/components/common/AppTable'
 import AppCollapse from '@/components/common/AppCollapse'
 import { mapGetters } from 'vuex'
   export default {
     name: 'commonDetailOfficialFee',
     data () {
       return {
-      	tableOption: {
-      	  'is_search': false,
-      	  'is_pagination': false,
-      	  'is_header': false,
-      	  'columns':[
-      	    { type: 'text', label: '费用名称', prop: 'name', min_width: '160'},
-      	    { type: 'text', label: '外币金额',  prop: 'amount', width: '100', align: 'right',
+
+          columns:[
+            { type: 'text', label: '费用名称', prop: 'name', min_width: '160'},
+            { type: 'text', label: '外币金额',  prop: 'amount', width: '100', align: 'right',
               render:(h,item,row)=>{
                 if( row.roe == 1 ){
                    return h('span','N/A');
@@ -42,18 +39,20 @@ import { mapGetters } from 'vuex'
             },
             { type: 'text', label: '付款日期', prop: 'pay_date', width: '160'},
             { type: 'text', label: '状态', prop: 'status', width: '110'},
-            { type: 'text', label: '备注', prop: 'remark', width: '160'},
-      	  ],
-      	},
+            { type: 'text', label: '备注', prop: 'remark', min_width: '130'},
+          ],
       }
     },
     computed: {
-    	...mapGetters([
-    		'detailOfficial',
-    	]),
+      ...mapGetters([
+        'detailOfficial',
+      ]),
+      officialData () {
+        return this.detailOfficial.list ? this.detailOfficial.list : []; 
+      },
     },
     components: {
-      TableComponent,
+      AppTable,
       AppCollapse,
     }
   }

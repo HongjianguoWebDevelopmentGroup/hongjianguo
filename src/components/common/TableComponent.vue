@@ -88,6 +88,10 @@
           <el-button class="table-header-btn" type="primary" icon="upload" @click="handleBatchUpload(btn.click, $event)">{{ btn.label ? btn.label : '文件上传' }}</el-button>
         </template>
 
+        <template v-else-if="btn.type == 'report'">
+          <el-button class="table-header-btn" type="primary" icon="my-report" @click="handleBatchUpdate(btn.click, $event)">报表</el-button>
+        </template>
+
         <template v-else-if="btn.type == 'serial_search'">
           <el-button class="table-header-btn" style="float: right;margin-right: 10px;" type="primary"   @click="handleSerialSearch(btn.click, $event)" >编号检索</el-button>
         </template>
@@ -435,6 +439,13 @@ const methods = Object.assign({}, tableConst.methods, {
 
     this.reset();
   },
+    handleBatchUpdate(func, e) {
+      if(func) {
+        func(e)
+      }else {
+        this.dialogUpdateVisible = true;
+      }
+    },  
   handleSortChange ({column, prop, order}) {
     this.sort.field = prop;
     this.sort.order = order;

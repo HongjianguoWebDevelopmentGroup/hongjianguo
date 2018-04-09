@@ -38,6 +38,7 @@ export default {
 		  	'header_btn': [
 		  		{ type: 'export' },
 		  		{ type: 'delete' },
+          { type: 'report',click: this.handleReport },          
 		  		{ type: 'control' },
           { type: 'serial_search'},
 		  	],
@@ -138,6 +139,12 @@ export default {
   	}
   },
   methods: {
+    handleReport () {
+      const url = {0: '/fee/payment/report', 1: '/fee/bill/report'}[this.feeType];
+      if(url) {
+        this.$router.push(url);
+      }
+    },    
     handleEdit (form) {
       this.$message({message: '编辑成功', type: 'success'});
       this.update();

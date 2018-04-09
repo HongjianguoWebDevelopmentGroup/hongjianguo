@@ -1,6 +1,9 @@
 <template>
   <div class="main">
-	<!-- <table-component :tableOption="option" :data="tableData"></table-component> -->
+  	<div class="total" style="margin: 0px 5px 15px 5px;font-size: 16px;">
+  		<el-tag>总支出：{{ expend }}CNY</el-tag>
+  		<el-tag>总收入：{{ income }}CNY</el-tag>
+  	</div>
 	<detail-official></detail-official>
 	<detail-agency></detail-agency>
 	<detail-fundings></detail-fundings>
@@ -14,6 +17,7 @@ import DetailFundings from '@/components/page_extension/CommonDetail_fundings'
 import DetailOfficial from '@/components/page_extension/CommonDetail_OfficialFee'
 import DetailAgency from '@/components/page_extension/CommonDetail_AgencyFee'
 import DetailAnnual from '@/components/page_extension/CommonDetail_AnnualFee'
+import { mapGetters } from 'vuex'
 
 export default {
   name: 'commonDetailFee',
@@ -47,9 +51,20 @@ export default {
 		}
   },
   computed: {
-  	tableData () {
+  	...mapGetters([
+  		'detailFundings',
+  		'detailOfficial',
+  		'detailAgency'
+  	]),
+  	expend () {
+  		return this.detailOfficial && this.detailAgency ? (this.detailOfficial.sum + this.detailAgency.sum) : '';
+  	},
+  	income () {
+  		return this.detailFundings ? this.detailFundings.sum : '';
+  	},
+/*  	tableData () {
   		return this.$store.getters.detailFees;
-  	}
+  	}*/
   },
   components: { 
   	TableComponent,

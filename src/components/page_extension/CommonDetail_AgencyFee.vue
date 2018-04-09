@@ -1,21 +1,17 @@
 <template>
-   <app-collapse :col-title="`代理费(总计：${detailAgency.sum?detailAgency.sum:''}CNY)`">
-	   <table-component :tableOption="tableOption" :data="detailAgency.list"></table-component>
+   <app-collapse :col-title="`代理费(总计：${detailAgency.sum?detailAgency.sum:'0'}CNY)`">
+     <app-table :columns="columns" :data="agencyData"></app-table>
    </app-collapse> 
 </template>
 <script>
-import TableComponent from '@/components/common/TableComponent'
+import AppTable from '@/components/common/AppTable'
 import AppCollapse from '@/components/common/AppCollapse'
 import { mapGetters } from 'vuex'
   export default {
     name: 'commonDetailAgencyFee',
     data () {
       return {
-      	tableOption: {
-      	  'is_search': false,
-      	  'is_pagination': false,
-      	  'is_header': false,
-      	  'columns':[
+          columns:[
             { type: 'text', label: '费用名称', prop: 'name', min_width: '160'},
             { type: 'text', label: '外币金额',  prop: 'amount', width: '100', align: 'right',
               render:(h,item,row)=>{
@@ -42,18 +38,20 @@ import { mapGetters } from 'vuex'
             },
             { type: 'text', label: '付款日期', prop: 'pay_date', width: '160'},
             { type: 'text', label: '状态', prop: 'status', width: '110'},
-            { type: 'text', label: '备注', prop: 'remark', width: '160'},
+            { type: 'text', label: '备注', prop: 'remark', min_width: '130'},
           ],
-      	},
       }
     },
     computed: {
-    	...mapGetters([
-    		'detailAgency',
-    	]),
+      ...mapGetters([
+        'detailAgency',
+      ]),
+      agencyData () {
+        return this.detailAgency.list ? this.detailAgency.list : [];
+      },
     },
     components: {
-      TableComponent,
+      AppTable,
       AppCollapse,
     }
   }

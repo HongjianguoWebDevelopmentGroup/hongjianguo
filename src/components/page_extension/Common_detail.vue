@@ -28,6 +28,9 @@
         <el-tab-pane label="动态" name="amendments">
     			<detail-amendments></detail-amendments>
         </el-tab-pane>
+        <el-tab-pane label="提醒" name="remind" v-if="type=='patent'">
+          <detail-remind></detail-remind>
+        </el-tab-pane>
       </el-tabs>
     </div>
   </app-shrink>
@@ -44,6 +47,7 @@ import DetailFee from '@/components/page_extension/CommonDetail_fee'
 import DetailEmail from '@/components/page_extension/CommonDetail_email'
 import DetailDocuments from '@/components/page_extension/CommonDetail_documents'
 import DetailAmendments from '@/components/page_extension/CommonDetail_amendments'
+import DetailRemind from '@/components/page_extension/CommonDetail_remind'
 import { mapGetters } from 'vuex'
 import { mapActions } from 'vuex'
 const config = [
@@ -166,6 +170,7 @@ export default {
     DetailEmail,
     DetailDocuments,
     DetailAmendments,
+    DetailRemind,
   }
 }
 </script>

@@ -1,5 +1,31 @@
 const state = {
 	config: [
+		['reminder', {
+			placeholder: '请选择提醒类型',
+			options: [
+				{id: 'dib_date', name: '权利要求返回日' },
+        {id: 'manual_date', name: '说明书返回日' },
+        {id: 'fv_date', name: '定稿日期' },
+        {id: 'custom_date', name: '自定义' },
+			]
+		}],
+		['cycle', {
+			placeholder: '请选择数据周期',
+			options: [
+				{id: 'day', name: '每天'},
+				{id: 'week', name: '每周'},
+				{id: 'month', name: '每月'},
+			]
+		}],
+		['report_type', {
+			placeholder: '请选择报表类型',
+			options: [
+				{id:'pie',name: '饼图'},
+				{id:'bar', name: '柱状图'},
+				{id:'line', name: '折线图'},
+				{id:'view', name: '数据透视表'},
+			]
+		}],		
 	  ['categories',{
 	    placeholder: '请选择商标大类',
 	    options:[

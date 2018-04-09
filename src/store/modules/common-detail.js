@@ -14,6 +14,7 @@ const state = {
 
 const getters = {
   detail_type: state=>state.type,
+  detailId: state=>state.id, 
   detailBase: state=>state.data ? state.data : {},
   detailBasePatent: state=>{
   	if(state.true_type == 'patent') {
@@ -46,6 +47,7 @@ const getters = {
   detailAgency: state=>state.data && state.data.fees.agency ? state.data.fees.agency : {},
   detailAnnual: state=>state.data && state.data.fees.annual ? state.data.fees.annual : {},
   detailAmendments: state=>state.data && state.data.amendments ? state.data.amendments : [],
+  detailReminders: state=>state.data && state.data.reminders ? state.data.reminders : [],
   detailLoading: state=>state.loading,
 }
 

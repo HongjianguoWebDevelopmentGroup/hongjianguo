@@ -78,6 +78,7 @@ export default {
           { type: 'import', map_if: '/patent/import' },
           { type: 'batch_upload', map_if: '/patent/upload' },
           { type: 'control', label: '字段' },
+          { type: 'report', click: _=>{this.$router.push('/patent/report')} },          
           { type: 'serial_search'},
         ],
         'header_slot': ['download'],
