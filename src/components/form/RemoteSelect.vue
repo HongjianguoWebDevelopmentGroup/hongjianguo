@@ -128,7 +128,8 @@ export default {
   data () {
   	return {
       options: [],
-      loading: false, 
+      loading: false,
+      keyword: '',
   		selected: [],
   		static_map: [],
       numberHandle: ['member', 'applicant', 'inventor', 'agent', 'agency', 'project', 'proposal', 'patent', 'copyright', 'bill', 'pay'],//需要做number类型处理的数据集合
@@ -190,7 +191,7 @@ export default {
       }
     },
     remoteMethod (keyword) {
-     
+      this.keyword = keyword;
       const s = { keyword, listOnly: '1' };
       const os = this.PARAMS;
       const key = this.DATA_KEY;
@@ -281,7 +282,7 @@ export default {
   	option_in () {
   		//由于一部分的val可能是通过object传入,单纯的options只含有动态部分
   		//所以取select_map和options的并集,取得selected的静态部分选项
-  		const arr = [ ...this.static_map, ...this.options ];
+  		const arr = this.keyword ? [...this.options] : [ ...this.static_map, ...this.options ];
       //以ID为唯一值 进行去重处理 ||邮箱的选项框因为多个人可以键入同一个邮箱 因此会有一定问题(暂未对这种情况进行处理)
   		const single = this.$tool.singleObject(arr,'id');  	  
       return single; 

@@ -1,8 +1,8 @@
 <template>
   <div class="main">
   	
-  		 <div style="overflow: hidden;">
-				<div style="width: 400px; float: left;">
+  		 <div style="overflow: hidden;display: flex;just-content: flex-start;">
+				<div style="width: 400px; min-width:330px;">
 
           <div class="left-tree-header" style="padding: 0 20px; ">
             <span style="font-size: 15px; font-weight: bold;">部门</span>
@@ -22,7 +22,6 @@
 					<el-tree
 						:data="branchData"
 						:props="props"
-					
 						highlight-current
 						:expand-on-click-node="false"
 						@node-click="nodeClick"
@@ -35,7 +34,7 @@
 					</el-tree>
 				</div>
   
-		  		<el-form label-width="120px" style="float: left;">
+		  		<el-form label-width="120px" style="">
 		  			
             <el-form-item label="部门名称">
 		  			  {{ currentNode ? currentNode.name : '' }}
@@ -79,7 +78,7 @@
         <el-button @click="transferAxios" type="primary">确认移交</el-button>
       </el-dialog>
 
-      <pop ref="pop" @refresh="handlePopRefresh" :current-id="currentNode.id"></pop> 	
+      <pop ref="pop" @refresh="handlePopRefresh"  :current-id="currentNode.id"></pop> 	
   </div>
 </template>
 
@@ -167,20 +166,19 @@ export default {
         })
         .catch(_=>{});      
     },
-    handlePopRefresh (str) {
+    handlePopRefresh (str,val) {
       if(str == 'edit') {
         this.refreshBranch({
           success: _=>{
             this.filterText = '';
             this.$nextTick(_=>{
-
               const key = this.currentNode.id;
               this.currentNode = this.branchMap.get(key);
               this.filterText = this.currentNode.name;
               this.nodeKey = key;
             })
           }
-        })
+        })    
       }
     },
     refresh () {

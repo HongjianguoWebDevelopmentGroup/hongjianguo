@@ -68,7 +68,7 @@ export default {
       const success = _=>{
         this.$message({message: `编辑${tex}成功`, type: 'success'});
         this.dialogVisible = false;
-        this.$emit('refresh', 'edit');
+        this.$emit('refresh', 'edit',this.form);
       }
       const complete = _=>{
         this.btn_disabled = false;

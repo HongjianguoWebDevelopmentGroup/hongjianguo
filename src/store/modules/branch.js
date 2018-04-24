@@ -36,7 +36,7 @@ const mutations = {
 	setBranch (state, d) {
 		state.data = d.branches;
 		state.lastUpdate = d.last_update;
-	}
+	},
 }
 
 const actions = {
