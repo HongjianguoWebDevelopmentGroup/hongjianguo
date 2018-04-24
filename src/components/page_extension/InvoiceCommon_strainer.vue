@@ -4,13 +4,16 @@
     	<el-row :gutter="20">
         <el-col :span="12">
           <el-form-item label="付款时间" prop="pay_time">
-            <el-date-picker type="daterange" placeholder="请选择付款时间" v-model="form.pay_time"></el-date-picker>
+            <date-strainer v-model="form.pay_time" ref="datePicker"></date-strainer>     
+            <!-- <el-date-picker type="daterange" placeholder="请选择付款时间" v-model="form.pay_time"></el-date-picker> -->
           </el-form-item>
           <el-form-item label="账单生成日期" prop="create_time">
-            <el-date-picker type="daterange" placeholder="请选择账单生成日期" v-model="form.create_time"></el-date-picker>
+            <date-strainer v-model="form.create_time" ref="datePicker"></date-strainer>     
+            <!-- <el-date-picker type="daterange" placeholder="请选择账单生成日期" v-model="form.create_time"></el-date-picker> -->
           </el-form-item>
           <el-form-item label="费用期限" prop="due_time">
-            <el-date-picker type="daterange" placeholder="请选择费用期限" v-model="form.due_time"></el-date-picker>
+            <date-strainer v-model="form.due_time" ref="datePicker"></date-strainer>     
+            <!-- <el-date-picker type="daterange" placeholder="请选择费用期限" v-model="form.due_time"></el-date-picker> -->
           </el-form-item>
           
           <!-- <el-form-item label="费用代码" prop="code">
@@ -53,6 +56,7 @@ import FeeStatus from '@/components/form/FeeStatus'
 // import Member from '@/components/form/Member'
 import RemoteSelect from '@/components/form/RemoteSelect'
 import StaticSelect from '@/components/form/StaticSelect'
+import DateStrainer from '@/components/form/DateStrainer'
 
 export default {
   name: 'FeeCommonStrainer',
@@ -73,7 +77,7 @@ export default {
 		}
   },
   watch: {},
-  components: { AppCollapse, FeeStatus, RemoteSelect, StaticSelect },
+  components: { AppCollapse, FeeStatus, RemoteSelect, StaticSelect, DateStrainer },
 }
 </script>
 

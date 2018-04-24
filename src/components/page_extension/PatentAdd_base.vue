@@ -16,6 +16,10 @@
 	    <el-form-item label="专利类型" prop="type">
 	      <static-select type="patent_type" v-model="form.type"></static-select>
 	    </el-form-item>
+      <el-form-item label="IPR" prop="ipr" :rules="{type: 'number', required: true, message: 'IPR不能为空', trigger: 'change'}">
+        <!-- <span class="form-item-text" v-if="type == 'add'">{{ user ? user.name : '暂未取得当前用户信息' }}</span> -->
+        <static-select type="ipr" v-model="form.ipr"></static-select>
+      </el-form-item>       
       <el-form-item label="申请人">
         <remote-select type="applicant" v-model="form.applicants" multiple></remote-select>
       </el-form-item >
@@ -35,9 +39,12 @@
         </el-checkbox-group>
         <span v-else>暂无可选项</span>
       </el-form-item>
-      <el-form-item label="权利人地址">
+<!--       <el-form-item label="权利人地址">
         <el-input v-model="form.address" placeholder="请填写权利人地址"></el-input>
-      </el-form-item>     
+      </el-form-item> -->
+      <el-form-item label="附件" prop="attachments">
+          <upload action="/api/files?action=parseDisclosure" @uploadSuccess="handleUploadSuccess" v-model="form.attachments" :file-list="attachments"></upload>
+      </el-form-item>             
 	  </el-form>
   </app-collapse>
 </template>
@@ -51,6 +58,7 @@ import StaticSelect from '@/components/form/StaticSelect'
 import RemoteSelect from '@/components/form/RemoteSelect'
 import Priorities from '@/components/form/Priorities'
 import Inventors from '@/components/form/Inventors'
+import Upload from '@/components/form/Upload'
 import { checkInventors } from '@/const/validator.js'
 
 const extensionHash = [
@@ -76,13 +84,15 @@ export default {
         title: '',
         area: '',
         type: '',
+        ipr: '',
         applicants: [],
         inventors: [],
         priorities: [],
         extension: [], 
-        address: '',      
+        address: '',
+        attachments: [],      
       },
-      
+      attachments: [],
       rules: {
         'title': { required: true, message: '标题不能为空', trigger: 'blur' },        
         'type': { type: 'number', required: true, message: '专利类型不能为空', trigger: 'change' },
@@ -145,7 +155,10 @@ export default {
   				}
 
   				this.form[k] = arr;
-  			}else if( k == 'type') {
+  			}else if( k == 'attachments') {
+          this.form[k] = data[k].map(_=>_.id);
+          this.attachments = data[k];
+        }else if( k == 'type') {
           
           this.form[k] = data[k]['id'];
         }else if( k == 'area' ) {
@@ -155,6 +168,8 @@ export default {
           if(t == 'add') {
             this.form[k] = data[k]['id'] ? [data[k]['id']] : [];
           }
+        }else if( k == 'ipr'){
+          this.form[k] = data[k]['id'];
         }else {
   				this.form[k] = data[k];
   			}
@@ -163,8 +178,8 @@ export default {
     submitForm () {
       return this.$tool.shallowCopy(this.form, { 'date': true });
     },
-  	handleUploadSuccess () {
-
+  	handleUploadSuccess (a, b, c) {
+      this.$emit('uploadSuccess', a, b, c);
   	},
   	handleUploadRemove () {
 
@@ -179,6 +194,18 @@ export default {
       this.form.area = [];
     }
   },
+  watch: {
+    'form.area': {
+      handler (v) {
+        if(v && this.type == 'edit') {
+          this.$nextTick(()=>{
+            console.log(v);
+            this.$emit('getArea',v);
+          })
+      }
+      }
+    }
+  },
   components: { 
     AppCollapse, 
     Region, 
@@ -188,6 +215,7 @@ export default {
     RemoteSelect,
     Priorities,
     Inventors,
+    Upload,
   }
 }
 </script>

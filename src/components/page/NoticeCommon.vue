@@ -19,11 +19,13 @@ const config = [
 	}],
 	['copyright', {
 		URL: '/api/copyrights/notices',
+		deleteURL: '/api/notices',
 		import_type: false,
 		upload_type: 'copyright_notice',
 	}],
 	['trademark', {
 		URL: '/api/trademarks/notices',
+		deleteURL: '/api/notices',
 		import_type: false,
 		upload_type: 'trademark_notice',
 	}]
@@ -40,7 +42,7 @@ export default {
 				'header_btn': [
 					// { type: 'custom', label: '筛选', icon: '', click: ()=>{alert("筛选")} },
 					// { type: 'custom', label: '统计', icon: '', click: ()=>{alert("统计")} },
-					{ type: 'delete', map_if: '/patent/notice/delete' },
+					{ type: 'delete', map_if: '/patent/notice/delete', click: ()=>{this.handleDelete()} },
 					{ type: 'export' },
 					{ type: 'import' ,label: 'CPC通知书导入'},
 					{ type: 'batch_upload', label: '通知书上传'},
@@ -102,6 +104,9 @@ export default {
 		refresh () {
 			this.$refs.table.refresh();
 		},
+		update () {
+			this.$refs.table.update();
+		},
 		refreshTableData (option) {
 			const url = this.config.URL;
 			const data = option;
@@ -117,8 +122,25 @@ export default {
 			};
 
 			this.$axiosGet({url, data, success});
-		}
+		},
+		handleDelete () {
+		 	const s = this.$refs.table.getSelect();
+
+		 	if(s){
+		        this.$confirm('删除后不可恢复，确认删除？', '删除确认', {type: 'warning'})
+		          .then(_=>{
+		            const url = this.type=='patent'?this.config.URL:this.config.deleteURL;
+		            const data = { id: this.$tool.splitObj(s, 'id') }; // 见/const/tool.js splitObj函数的注释
+		            const success = _=>{ 
+		              this.$message({type: 'success', message: '删除成功'});
+		     		  this.update();
+		            };
+		            this.axiosDelete({ url, data, success });
+		          })
+		          .catch(_=>{console.log(_)});     			
+		 	}
 	},
+},
 	created () {
 		if(this.config.import_type) {
 			this.tableOption.import_type = this.config.import_type;

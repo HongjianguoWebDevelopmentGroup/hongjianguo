@@ -1,10 +1,10 @@
 <template>
   <div class="main">
     
-    <pa-base ref="base" :type="type"></pa-base>
-    <person ref="person" :type="type"></person>
+    <pa-base ref="base" :type="type" @getArea="getArea"></pa-base>
+    <person ref="person" :type="type" :area="area"></person>
     <classification ref="classification"></classification>
-    <agent ref="agent" v-if="type == 'edit'"></agent>
+    <agent ref="agent"></agent>
     <case ref="case"></case>
     <other ref="other" :type="type"></other>
     <div style="margin-bottom: 20px;">
@@ -42,6 +42,7 @@ export default {
   name: 'patentAdd',
   data () {
     return {
+      area: '',
       id: '',
       pop_type: '',
       btn_disabled: false,
@@ -54,6 +55,11 @@ export default {
     ...mapActions([
       'refreshUser',
     ]),
+    getArea (val) {
+      if(val) {
+        this.area = val;
+      }
+    },
     add () {
       
       this.formCheck(_=>{

@@ -118,6 +118,8 @@ export default {
           { type: 'text', label: '国际公开日', prop: 'pct_public_date', sortable: true, width: '175', show: false},
           { type: 'text', label: '国际公开语言', prop: 'pct_public_language', sortable: true, width: '263', show: false},
           { type: 'text', label: '国际公开号', prop: 'pct_public_no', sortable: true, width: '263', show: false},
+          { type: 'text', label: '国际检索日期', prop: 'pct_search_date', sortable: true, width: '175', show: false},
+          { type: 'text', label: '国际检索结论', prop: 'pct_search_result', sortable: true, width: '263', show: false},
           { type: 'text', label: '复审委内编号', prop: 'board_number', sortable: true, width: '263', show: false},
           { type: 'text', label: '说明书字数', prop: 'words', sortable: true, width: '145', show: false},
           { type: 'text', label: '提案人',prop: 'proposer',sortable: true,width: '123',is_import: true,render_simple: 'name',},
@@ -125,6 +127,7 @@ export default {
           { type: 'array', label: '优先权', prop: 'priorities', width: '145',render: _=>_.map(_=>_.number),},
           { type: 'array', label: '产品名称', width: '180', prop: 'products', sortable: true, render: _=>_.map(_=>_.name),},
           { type: 'array', label: '相关案件', prop: 'relative_projects', width: '200', render: _=>_.map(_=>`${_.title}-${_.serial}`),},
+          { type: 'text', label: '立案时间', prop: 'create_time', width: '175',sortable : true, is_import: true, },          
           { type: 'text', label: '委案时间', prop: 'entrusting_time', is_import: true, width: '175',         
             render: (h,item)=>{
               let t = item;
@@ -162,6 +165,7 @@ export default {
       },
       tableData: [],
       filter: {},
+      area: '',
     };
   },
   computed: {
@@ -186,8 +190,9 @@ export default {
       }
     },
     refreshTableData (option) {
+      console.log(this.area);
       const url = URL;
-      const data = Object.assign({}, option, this.filter);
+      const data = Object.assign({}, option, this.filter, this.area);
       const success = d=>{
         if(data['format'] == 'excel') {
           window.location.href = d.patents.downloadUrl;
@@ -280,6 +285,10 @@ export default {
     this.initializeSelectorCache({type: 'file_type_patent_notice'});
   },
   mounted () {
+    if(this.$route.meta) {
+      console.log(this.$route.meta);
+      this.area = this.$route.meta;
+    }
     this.$refs.table.refresh();
   },
   components: {  

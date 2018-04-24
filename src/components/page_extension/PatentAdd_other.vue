@@ -10,16 +10,12 @@
         <el-form-item label="备注">
           <el-input v-model="form.remark" type="textarea" placeholder="请填写备注信息"></el-input>
         </el-form-item>
-        <el-form-item label="附件">
-          <upload v-model="form.attachments" :file-list="attachments"></upload>
-        </el-form-item>
       </el-form>
     </app-collapse>
 </template>
 
 <script>
 import AppCollapse from '@/components/common/AppCollapse'
-import Upload from '@/components/form/Upload'
 import StaticSelect from '@/components/form/StaticSelect'
 
 export default {
@@ -30,20 +26,15 @@ export default {
 			form: {
         words: '',
         remark: '',
-        attachments: [],
         progress: '',
 			},
-      attachments: [],
 		}
   },
   methods: {
   	setForm (data) {
       for(let k in this.form) {
         const d = data[k];
-        if(k == 'attachments') {
-          this.form[k] = d.map(_=>_.id);
-          this.attachments = d;
-        }else if(k == 'progress') {
+        if(k == 'progress') {
           this.form[k] = d['id'];
         }else {
           this.form[k] = d;
@@ -57,7 +48,7 @@ export default {
       callback(true);
     },
   },
-  components: { AppCollapse, Upload,StaticSelect }
+  components: { AppCollapse,StaticSelect }
 }
 </script>
 

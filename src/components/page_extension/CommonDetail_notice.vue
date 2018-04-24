@@ -14,7 +14,7 @@
       </span>
     </div> -->
     <div class="notice" >
-      <span><el-tag>通知书：</el-tag>
+      <span>
         <el-upload
         :action="notice_upload_url"
         :on-success="handleSuccess"
@@ -22,13 +22,23 @@
         :show-file-list="false"
         style="display: inline-block;"
       >
-        <el-button type="primary" size="small">上传</el-button>
+        <el-button type="primary" size="small">通知书上传</el-button>
       </el-upload>
       </span>
-       <app-table :columns="columns" :data="detailNotices" style="margin-top: 15px;" :border="true"></app-table>
+      <span style="margin-left: 6px;" v-if="type=='patent'">
+      <el-upload
+      :action="patentNoice_upload_url"
+      :show-file-list="false"
+      :on-success="handlePatentSuccess"
+      style="display: inline-block;"
+      >
+        <el-button type="primary" size="small"> CPC通知书上传</el-button>
+      </el-upload>
+      </span>
+       <app-table :columns="columns" :data="detailNotices" style="margin-top: 10px;" :border="true" :max-height="500"></app-table>
      </div>
      <div class="documents" style="margin-top: 15px;">
-      <span><el-tag>其他文档：</el-tag> 
+      <span>
       <el-upload
       :action="upload_url"
       :on-success="handleSuccess"
@@ -36,13 +46,48 @@
       :show-file-list="false"
       style="display: inline-block;"
     >
-      <el-button type="primary" size="small">上传</el-button>
+      <el-button type="primary" size="small">其他文档上传</el-button>
     </el-upload>
   </span>
-       <documents style="margin-top: 15px;"></documents>
+       <documents style="margin-top: 10px;"></documents>
      </div>
-    <el-dialog title="文件上传" :visible.sync="dialogVisible" class="dialog-medium" :modal="false"> 
+    <el-dialog :title="this.isNotice?'通知书上传':'其他文档上传'" :visible.sync="dialogVisible" class="dialog-medium" :modal="false"> 
      <documents-upload  :type="types" :tableData="tableDatas" :file="file" @dialogVisible="val=>{dialogVisible=val}" @uploadSuccess="refreshDetailData"></documents-upload>
+   </el-dialog>
+   <el-dialog title="CPC通知书上传" :visible.sync="dialogPatentVisible" class="dialog-small" :modal="false">
+     <el-form :model="patentForm" ref="patentForm" label-width="110px" class="patent_notice">
+       <el-form-item label="内部案号">
+         <span>{{ detail_serial }}</span>
+       </el-form-item>
+       <el-form-item label="事务所案号">
+         <span>{{ patentForm.agency_serial }}</span>
+       </el-form-item>
+       <el-form-item label="案件名称">
+         <span>{{ title }}</span>
+       </el-form-item>
+       <el-form-item label="申请号">
+         <span>{{ patentForm.apn }}</span>
+       </el-form-item>
+       <el-form-item label="通知书名称">
+         <span>{{ patentForm.code }}</span>
+       </el-form-item>
+       <el-form-item label="发文日">
+         <span>{{ patentForm.mail_date }}</span>
+       </el-form-item>
+       <el-form-item label="发文序列号">
+         <span> {{ patentForm.notice_serial }} </span>
+       </el-form-item>
+       <el-form-item label="申请日">
+         <span>{{ patentForm.apd }}</span>
+       </el-form-item>
+       <el-form-item label="费用">
+         <span><el-tag v-if="patentForm.fees.length!==0" v-for="(item,i) in patentForm.fees" :key="i" style="margin-left:5px;">{{ `${item.name}：${item.fee}` }}</el-tag><span v-if="patentForm.fees.length==0">无</span></span>
+       </el-form-item>
+       <el-form-item>
+         <el-button type="primary" @click="importData" :loading='loading'>{{loading?'上传中...':'确认上传'}}</el-button>
+         <el-button @click="clearAll">取消</el-button>
+       </el-form-item>
+     </el-form>
    </el-dialog>
   </div>
 </template>
@@ -86,10 +131,21 @@ export default {
   data () {
     return {
       dialogVisible: false,
+      dialogPatentVisible: false,
       noticeType: '',
+      loading: false,
       isNotice: false,
       tableDatas: [],
       file: [],
+      patentForm: {
+        agency_serial: '',
+        apd: '',
+        apn: '',
+        code: '',
+        mail_date: '',
+        notice_serial: '',
+        fees: []
+      },
       columns: [
           { type: 'text', label: '通知书名称', prop: 'notice_name', min_width: '180' },
           { type: 'text', label: '发文日', prop: 'mail_date', width: '160' },
@@ -128,6 +184,7 @@ export default {
         }        
       ],
       tableData2: [],
+      tableData3:[],
     };
   },
   props: ['type'],
@@ -135,6 +192,9 @@ export default {
     ...mapGetters([
       'detailBase',
       'detailNotices',
+      'detail_serial',
+      'title',
+      'detailId',
     ]),
     notice_upload_url () {
       this.noticeType = this.type;
@@ -146,6 +206,10 @@ export default {
         url += `?action=${action}`;
       }
       return url;
+    },
+    patentNoice_upload_url () {
+      let url = '/api/files?action=getPatentNotices';
+      return url
     },
     upload_url () {
       const config = map.get(this.type);
@@ -183,7 +247,8 @@ export default {
       this.isNotice =false;
     },
     handleSuccess (a,b,c) {
-       console.log(a);
+      console.log(a);
+      this.clear();
       const l = this.tableDatas.length;
       const lists = [];
       if(a.status) {
@@ -213,6 +278,24 @@ export default {
         this.$message({message: a.info, type: 'warning'});
       }
     },
+    handlePatentSuccess (a,b,c) {
+       if(a.status) {
+        console.log(a);
+        this.dialogPatentVisible = true;
+        this.tableData3.push(a.data.list[0]);
+        console.log(this.tableData3);
+        const d = a.data.list[0];
+        for(let k in this.patentForm) {
+          if(k == 'code') {
+            this.patentForm[k] = d[k]['name'];
+          }else{
+            this.patentForm[k] = d[k];
+          }
+        }
+       }else {
+        this.$message({ message: a.info, type: 'warning' });        
+       } 
+    },
     handleAttachSuccess (p, f, list) {
           if(p.status) {
             const id = p.data.file.id;
@@ -236,6 +319,40 @@ export default {
           }else {
             this.$message({message: p.info, type: 'warning'});
           }
+    },
+    importData () {
+      const url = '/notices/import';
+      console.log(this.tableData3);
+      if(this.tableData3.length==0) {
+        this.$message({message: '上传数据不能为空', type: 'warning'});
+        return false;
+      }
+      if(this.title){
+        this.tableData3[0].project = {id:this.detailId,name:this.title};
+      }
+      if(this.detail_serial) {
+        this.tableData3[0].serial = this.detail_serial;
+      }
+      const data = this.tableData3;
+      const success = _=>{
+        this.tableData3 = [];
+        this.refreshDetailData();
+        this.dialogPatentVisible = false;
+      };
+      const complete = _=>{
+        this.loading = false;
+      };
+      this.loading = true;
+      this.$axiosPost({url, data, success,complete});
+    },
+    clearAll () {
+       this.tableData3 = [];
+       this.$refs['patentForm'].resetFields();
+       this.dialogPatentVisible = false;
+    },
+    clear () {
+      this.tableDatas = [];
+      this.file = [];
     },
   },
   watch: {

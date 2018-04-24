@@ -46,12 +46,14 @@
       <el-row>
         <el-col :span="12">
           <el-form-item label="申请日" prop="apd">
-            <el-date-picker type="daterange" v-model="form.apd" placeholder="请选择申请日"></el-date-picker>
+            <date-strainer v-model="form.apd" ref="datePicker"></date-strainer>            
+            <!-- <el-date-picker type="daterange" v-model="form.apd" placeholder="请选择申请日"></el-date-picker> -->
           </el-form-item>
         </el-col>
         <el-col :span="12">
           <el-form-item label="公告日" prop="issue_date">
-            <el-date-picker type="daterange" v-model="form.issue_date" placeholder="请选择公告日"></el-date-picker>
+            <date-strainer v-model="form.issue_date" ref="datePicker"></date-strainer>     
+            <!-- <el-date-picker type="daterange" v-model="form.issue_date" placeholder="请选择公告日"></el-date-picker> -->
           </el-form-item>
         </el-col>
       </el-row>
@@ -69,6 +71,7 @@ import Strainer from '@/mixins/strainer'
 import Product from '@/components/form/Product'
 import RemoteSelect from '@/components/form/RemoteSelect'
 import StaticSelect from '@/components/form/StaticSelect'
+import DateStrainer from '@/components/form/DateStrainer'
 
 export default {
   name: 'NoticeCommonStrainer',
@@ -93,7 +96,8 @@ export default {
     AppCollapse, 
     Product, 
     RemoteSelect,
-    StaticSelect, 
+    StaticSelect,
+    DateStrainer, 
   },
 }
 </script>

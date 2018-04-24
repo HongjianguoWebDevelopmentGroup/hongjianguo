@@ -1,6 +1,6 @@
 <template>
   <div id="app" v-loading.fullscreen.lock="userinfoLoading" element-loading-text="初始化中...">
-    <el-popover
+<!--     <el-popover
       ref="popover"
       placement="bottom"
       title="系统消息"
@@ -17,7 +17,7 @@
       </template>
       <div v-else style="color: #ccc; margin-top: 10px; margin-left: 20px;">暂无系统消息...</div>      
     </div>
-    </el-popover>
+    </el-popover> -->
 
     <nav>
         <img src="/static/static_img/hjg_logo.png" style="vertical-align: middle; height: 27px;">
@@ -31,12 +31,12 @@
           </el-dropdown-menu>
         </el-dropdown>
         
-        <img 
+<!--         <img 
           v-popover:popover  
           style="cursor: pointer; float: right; margin-right: 20px; margin-top: 12px; font-size: 24px;" 
           title="系统消息"
           :src="sysmesg.length != 0 ? '/static/static_img/news_in.png' : '/static/static_img/news.png'"
-        />        
+        />  -->       
           <el-badge :value="pendingTaskCount" class="task-pending-top">
             <el-button size="mini" icon="warning" type="primary" @click="$router.push('/task/pending')" title="待办任务"></el-button>
           </el-badge>          
@@ -443,6 +443,9 @@ nav {
   .el-form-item {
     margin-bottom: 22px;
   }
+  .patent_notice .el-form-item {
+    margin-bottom: 6px;
+  }
   .el-table__body tr.current-row>td {
     background:  #E0EEEE;
 }
@@ -576,7 +579,14 @@ nav {
       position: static; 
     }
  
-
+  /*icon库扩展*/
+  [class^="el-icon-my"], [class*=" el-icon-my"] {
+    font-family:"iconfont" !important;
+    font-size:16px;
+    font-style:normal;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
 }
 .el-tooltip__popper {
   max-width: 500px;

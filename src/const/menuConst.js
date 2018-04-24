@@ -7,26 +7,26 @@ menu.data = [
 		icon: 'iconfont el-icon-my-statistics',
 		type: 'item'
 	},
-	{
-		text: '消息',
-		path: '/news',
-		icon: 'iconfont el-icon-my-email',
-		type: 'submenu',
-		children: [
-			{
-				text: '邮件',
-				path: '/news/mailList',
-				icon: 'iconfont el-icon-my-email',
-				type: 'item',
-			},
-			{
-				text: '系统消息',
-				path: '/news/systemMessage',
-				icon: 'iconfont el-icon-my-newlabel',
-				type: 'item',
-			}
-		]
-	},
+	// {
+	// 	text: '消息',
+	// 	path: '/news',
+	// 	icon: 'iconfont el-icon-my-email',
+	// 	type: 'submenu',
+	// 	children: [
+	// 		{
+	// 			text: '邮件',
+	// 			path: '/news/mailList',
+	// 			icon: 'iconfont el-icon-my-email',
+	// 			type: 'item',
+	// 		},
+	// 		{
+	// 			text: '系统消息',
+	// 			path: '/news/systemMessage',
+	// 			icon: 'iconfont el-icon-my-newlabel',
+	// 			type: 'item',
+	// 		}
+	// 	]
+	// },
 	// {
 	// 	text: '邮件',
 	// 	path: '/mailList',
@@ -98,23 +98,35 @@ menu.data = [
 				type: 'item'
 			},
 			{
-				text: '专利管理',
+				text: '所有专利',
 				path: '/patent/list',
 				icon: 'iconfont el-icon-my-patent',
 				type: 'item',
 			},
+			{
+				text: '	CN',
+				path: '/patent/listcn',
+				icon: 'iconfont el-icon-my-patent',
+				type: 'item',
+			},
+			{
+				text: '	PCT',
+				path: '/patent/listpct',
+				icon: 'iconfont el-icon-my-patent',
+				type: 'item',
+			},
+			{
+				text: '其他',
+				path: '/patent/listother',
+				icon: 'iconfont el-icon-my-patent',
+				type: 'item',
+			},					
 			// {
 			// 	text: '专利统计',
 			// 	path: '/patent/statistics',
 			// 	icon: '',
 			// 	type: 'item',
 			// },
-			{
-				text: '通知书管理',
-				path: '/patent/notice',
-				icon: 'iconfont el-icon-my-notice',
-				type: 'item',
-			}
 		]
 	},
 	{
@@ -129,17 +141,26 @@ menu.data = [
 				icon: 'iconfont el-icon-my-proposal-add',
 				type: 'item'
 			},{
-				text: '商标管理',
+				text: '所有商标',
 				icon: 'iconfont el-icon-my-trademark',
 				path: '/trademark/list',
 				type: 'item',
-			},
-			{
-				text: '通知书管理',
-				icon: 'iconfont el-icon-my-notice',
+			},{
+				text: 'CN',
+				icon: 'iconfont el-icon-my-trademark',
+				path: '/trademark/listcn',
 				type: 'item',
-				path: '/trademark/notice',
-			}
+			},{
+				text: 'Madrid',
+				icon: 'iconfont el-icon-my-trademark',
+				path: '/trademark/listmadrid',
+				type: 'item',
+			},{
+				text: '其他',
+				icon: 'iconfont el-icon-my-trademark',
+				path: '/trademark/listother',
+				type: 'item',
+			},
 		]
 	},
 	{
@@ -160,12 +181,6 @@ menu.data = [
 				icon: 'iconfont	 el-icon-my-copyright',
 				type: 'item'
 			},
-			{
-				text: '通知书管理',
-				path: '/copyright/notice',
-				icon: 'iconfont el-icon-my-notice',
-				type: 'item',
-			},
 		]
 	},
 	{
@@ -174,13 +189,23 @@ menu.data = [
 		icon: 'iconfont el-icon-my-fee',
 		type: 'submenu',
 		children: [{
-			text: '应收明细',
+			text: '资助',
 			path: '/fee/income',
 			icon: 'iconfont el-icon-my-deal',
 			type: 'item',
 		},{
-			text: '应付明细',
+			text: '所有应付',
 			path: '/fee/pay',
+			icon: 'iconfont el-icon-my-receipt',
+			type: 'item',
+		},{
+			text: '应付官费',
+			path: '/fee/official',
+			icon: 'iconfont el-icon-my-receipt',
+			type: 'item',
+		},{
+			text: '应付代理费',
+			path: '/fee/agency',
 			icon: 'iconfont el-icon-my-receipt',
 			type: 'item',
 		},{
@@ -211,6 +236,38 @@ menu.data = [
 				text: '年费评估单',
 				path: '/renewal/estimate',
 				icon: 'iconfont el-icon-my-renewal-estimate',
+				type: 'item',
+			},
+		]
+	},
+	{
+		text: '交互',
+		path: '/news',
+		icon: 'iconfont el-icon-my-interact',
+		type: 'submenu',
+		children: [
+			{
+				text: '全部通知邮件',
+				path: '/news/mailList',
+				icon: 'iconfont el-icon-my-email',
+				type: 'item',
+			},
+			{
+				text: '专利通知书',
+				path: '/patent/notice',
+				icon: 'iconfont el-icon-my-notice',
+				type: 'item',
+			},
+			{
+				text: '商标通知书',
+				path: '/trademark/notice',
+				icon: 'iconfont el-icon-my-notice',
+				type: 'item',
+			},
+			{
+				text: '版权通知书',
+				path: '/copyright/notice',
+				icon: 'iconfont el-icon-my-notice',
 				type: 'item',
 			},
 		]
@@ -266,6 +323,12 @@ menu.data = [
 			text: '产品分类管理',
 			path: '/product',
 			icon: 'iconfont el-icon-my-products',
+			type: 'item',
+		},
+		{
+			text: '合同管理',
+			path: '/contractList',
+			icon: 'iconfont el-icon-my-contract',
 			type: 'item',
 		},
 		{

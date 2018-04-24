@@ -1,7 +1,7 @@
 <template>
 	<div class="main">
     <app-collapse col-title="提案筛选" default-close>   
-      <el-form label-width="80px">
+      <el-form label-width="80px" >
         <el-row>
           <el-col :span="12">
             <el-form-item label="提案标题">
@@ -28,7 +28,8 @@
               <static-select type="tag" v-model="tags" multiple></static-select>
             </el-form-item>
             <el-form-item label="提案时间">
-              <el-date-picker type="daterange" placeholder="请选择提案时间" v-model="create_time"></el-date-picker>
+              <!-- <el-date-picker type="daterange" placeholder="请选择提案时间" v-model="create_time"></el-date-picker> -->
+              <date-strainer v-model="create_time" ref="datePicker"></date-strainer>
             </el-form-item>
           </el-col>
         </el-row>
@@ -75,6 +76,7 @@ import ProposalDetail from '@/components/page_extension/Proposal_detail'
 import RemoteSelect from '@/components/form/RemoteSelect'
 import StaticSelect from '@/components/form/StaticSelect'
 import AxiosMixins from '@/mixins/axios-mixins'
+import DateStrainer from '@/components/form/DateStrainer'
 
 import {mapGetters} from 'vuex'
 
@@ -154,8 +156,11 @@ export default {
     },
     clear () {
       this.title = "";
-      strainerArr.forEach(d=>{this[d] = []});
-
+      
+      strainerArr.forEach(d=>{this[d] = [];
+        console.log(this[d]);
+      });
+      this.$refs.datePicker.clearDate();
       this.filter = {};
       this.$refs.table.refresh();
     },
@@ -223,6 +228,7 @@ export default {
           { type: 'add', click: this.add },
           { type: 'delete' },
           { type: 'export' },
+          { type: 'report', click: _=>{this.$router.push('/proposal/report')}},
           { type: 'control' },
           { type: 'serial_search'},
         ],
@@ -236,7 +242,7 @@ export default {
           { type: 'text', label: 'IPR', prop: 'ipr', render_simple: 'name', sortable: true, width: '160'},
           { type: 'text', label: '当前节点', prop: 'flow_node', sortable: true, width: '240' },
           { type: 'text', label: '提案简介', prop: 'abstract', sortable: true, width: '300' },
-          { type: 'text', label: '创建时间', prop: 'create_time', sortable: true, width: '200' },
+          { type: 'text', label: '提案时间', prop: 'create_time', sortable: true, width: '200' },
           { type: 'text', label: '部门', prop: 'branch', render_simple: 'name', sortable: true, width: '200' },
           { type: 'text', label: '技术分类', prop: 'classification', render_simple: 'name', sortable: true, width: '200' },
           { type: 'array', label: '产品分类', prop: 'products', render: _=>_.map(_=>_.name), width: '200' },
@@ -289,6 +295,7 @@ export default {
     ProposalDetail, 
     StaticSelect,
     Branch,
+    DateStrainer,
   }, 
 }
 </script>

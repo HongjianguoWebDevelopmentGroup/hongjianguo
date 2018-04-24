@@ -37,6 +37,19 @@ export default {
 		}
 		return obj;
 	},
+	//清空对象里面的值
+	clearObjVal(obj) {
+		for (let k in obj) {
+			const d = obj[k];
+			if( d instanceof Object ) {
+				for (let i in d) {
+					if (Object.keys(d).length!=0) {
+						d[i] = ''; 
+					}
+				}
+			}
+		}
+	},
 	//获取日期
 	getDate (date) {
 		if(date instanceof Date) {

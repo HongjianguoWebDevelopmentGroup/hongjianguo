@@ -17,6 +17,7 @@ import TableComponent from '@/components/common/TableComponent'
 import AppDatePicker from '@/components/common/AppDatePicker'
 import CommonDetail from '@/components/page_extension/Common_detail'
 import Strainer from '@/components/page_extension/TrademarkList_strainer'
+import { mapActions } from 'vuex'
 
 const URL = '/api/trademarks'
 export default {
@@ -150,6 +151,7 @@ export default {
 					sortable : true,
 			    },
 				{ type: 'text', label: '驳回日期', prop: 'reject_date', width: '120', show: true, is_import: true, sortable: true},
+				{ type: 'text', label: '立案时间', prop: 'create_time', width: '175',sortable : true, is_import: true },
 			  	{
 					'show': true,
 					'type': 'text',
@@ -263,9 +265,13 @@ export default {
 			currentRow: '',
 			shrinkVisible: false,
 			filter: {},
+			area: '',
 		};
   },
   methods: {
+  	...mapActions([
+  		'initializeSelectorCache',
+  	]),
   	refreshTableData(option) {
   		
   		const success = d=>{
@@ -277,7 +283,7 @@ export default {
   		}
   		this.$axiosGet({
   			url: URL,
-  			data: Object.assign({}, this.filter, option),
+  			data: Object.assign({}, this.filter, option, this.area),
   			success,
   		})
   	},
@@ -294,7 +300,13 @@ export default {
   		}
   	}
   },
+  created () {
+  	this.initializeSelectorCache({type: 'file_type_trademark_notice'});
+  },
   mounted () {
+  	if(this.$route.meta) {
+  		this.area = this.$route.meta;
+  	}
   	this.refresh();
   },
   components: { 

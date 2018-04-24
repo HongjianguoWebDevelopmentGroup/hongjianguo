@@ -28,19 +28,19 @@
       </el-col>
       <el-col :span="12">
         <el-form-item label="申请日" prop="apd">
-          <el-date-picker type="daterange" placeholder="请选择申请日" v-model="form.apd"></el-date-picker>
+         <date-strainer v-model="form.apd" ref="datePicker"></date-strainer>        
         </el-form-item>
         <el-form-item label="完成时间" prop="end_time">
-          <el-date-picker type="daterange" placeholder="请选择完成时间" v-model="form.end_time"></el-date-picker>
+          <date-strainer v-model="form.end_time" ref="datePicker"></date-strainer>
         </el-form-item>
         <el-form-item label="指定期限" prop="due_time">
-          <el-date-picker type="daterange" placeholder="请选择指定期限" v-model="form.due_time"></el-date-picker>
-        </el-form-item>
+          <date-strainer v-model="form.due_time" ref="datePicker"></date-strainer>
+        </el-form-item>  
         <el-form-item label="管控期限" prop="inner_deadline">
-          <el-date-picker type="daterange" placeholder="请选择管控期限" v-model="form.inner_deadline"></el-date-picker>
+          <date-strainer v-model="form.inner_deadline" ref="datePicker"></date-strainer>
         </el-form-item>
         <el-form-item label="法定期限" prop="deadline">
-          <el-date-picker type="daterange" placeholder="请选择法定期限" v-model="form.deadline"></el-date-picker>
+          <date-strainer v-model="form.deadline" ref="datePicker"></date-strainer>              
         </el-form-item> 
         <el-form-item label="任务阶段" prop="stage">
           <static-select type="task_stage" v-model="form.stage" multiple></static-select>
@@ -64,7 +64,7 @@ import Member from '@/components/form/Member'
 import DateArea from '@/components/form/DateArea'
 import RemoteSelect from '@/components/form/RemoteSelect'
 import StaticSelect from '@/components/form/StaticSelect'
-
+import DateStrainer from '@/components/form/DateStrainer'
 export default {
   name: 'pendingTaskStrainer',
   data () {
@@ -91,13 +91,22 @@ export default {
   		for(let k in this.form) {
         const d = this.form[k]
         if(d instanceof Array) {
-          if(d[0]) {
-            if(d[0] instanceof Date) {
+          if(d[0] || d[1]) {
+            if(d[0] instanceof Date || d[1] instanceof Date) {
               copy[k] = d.map(_=>this.$tool.getDate(_)).join(",");  
             }else {
               copy[k] = d.join(',');
             }
           }
+        }else if( d instanceof Object ) {
+          const t = Object.values(d);
+          if(t[0] || t[t.length-1]) {
+            if(t[t.length-1] instanceof Date || t[0] instanceof Date) {
+              copy[k] = t.map(_=>this.$tool.getDate(_)).join(",");
+            }else {
+              copy[k] = t.join(",");
+            }
+          }   
         }else {
           if(d !== '') {
             copy[k] = d;  
@@ -108,10 +117,11 @@ export default {
   	},
   	clear () {
   		this.$refs.form.resetFields();
+      this.$refs.datePicker.clearDate();
   		this.$emit('clear');
   	}
   },
-  components: { Agency, Ipr, Agent, Member, DateArea, AppCollapse, RemoteSelect, StaticSelect }
+  components: { Agency, Ipr, Agent, Member, DateArea, AppCollapse, RemoteSelect, StaticSelect , DateStrainer }
 }
 </script>
 

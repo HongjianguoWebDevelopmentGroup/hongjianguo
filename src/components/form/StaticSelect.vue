@@ -183,6 +183,7 @@ export default {
       }
     },
     filterOptions () {
+
       if(this.multiple) {
         this.$emit('input', []);
       }else {

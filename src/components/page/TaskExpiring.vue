@@ -24,10 +24,11 @@
 			:data="treeData"
 			:render-content="renderContent"
 			node-key="value"
-			highlight-current
-		  	@current-change="handleCurrentChange"
+			show-checkbox
+			ref="tree"
+		  @check-change="handleCheckChange"
+		  @node-click="handleClick"
 			:style="`font-size: 12px; height:${innerHeight - 98}px; overflow-y: auto; overflow-x: hidden;`"
-
 		>
 		</el-tree>
 	</div>
@@ -47,13 +48,13 @@
           <task-finish :id="currentRow.id"></task-finish>
         </el-tab-pane>
         <el-tab-pane label="详细信息" name="edit">          
-          <information :row="currentRow"></information>          
+          <information :row="currentRow" @more="moreVisible = true"></information>          
         </el-tab-pane>
         <el-tab-pane label="相关任务" name="cccc">          
           <detail :row="currentRow" style="margin: 10px 0;"></detail>          
         </el-tab-pane>
         <el-tab-pane label="任务提醒" name="remind">
-        	<remind :id="currentRow.id" ref="remind" :action="activeName"></remind>
+        	<remind :id="currentRow.id" ref="remind"></remind>
         </el-tab-pane>
       </el-tabs>
 
@@ -62,6 +63,15 @@
     	<el-input type="textarea" placeholder="请填写任务提醒的备注..." v-model="reminderRemark" style="margin-bottom: 10px;"></el-input>
     	<el-button type="primary" @click="sendEmail" :loading="reminderLoading">{{ reminderLoading ? '发送中...' : '发送提醒' }}</el-button>
     </el-dialog>
+    <common-detail 
+      :type="currentRowCategory" 
+      :id="currentRow.project_id" 
+      :visible.sync="moreVisible" 
+      :title="currentRow.title"
+      @editSuccess="editProjectSuccess"
+      :refresh-switch="false"
+      ref="detail">
+    </common-detail> 
 </div>
 </template>
 
@@ -75,20 +85,23 @@ import TaskFinish from '@/components/common/TaskFinish'
 import Information from '@/components/page_extension/TaskCommon_information'
 import Detail from '@/components/page_extension/TaskCommon_detail'
 import Remind from '@/components/page_extension/TaskCommon_remind'
-
+import CommonDetail from '@/components/page_extension/Common_detail'
 export default {
 	name: 'taskExpiring',
 	mixins: [AxiosMixins],
 	data () {
 		return {
+			moreVisible: false,
 			option: {
-				'is_header': false,
 				'is_pagination': false,
 				'is_border': false,
-				'height': 'default4',
+				'height': 'default3',
+				'handleSearch':this.handleSearch,
 				'empty_text_position': 'topLeft',
-				'columns': [
-				       
+				'header_btn': [
+					{ type: 'export', click: _=>{this.refresh('export')} },
+				],
+				'columns': [				       
 					{type: 'text', label: '案号', prop: 'serial' ,width: '200'},
 					{type: 'text', label: '案件名称', prop: 'title',width: '200'},
 					{type: 'text', label: '管制事项', prop: 'name',width: '200'},
@@ -115,24 +128,28 @@ export default {
         'rowClick': this.handleRowClick,
 
 			},
+			tableData: [],
+			treeData: [],
+			keyword: '',
+			currentRow: '',
+			treeSelected: [],
+			day: 2,
+			date: 'due_time',
 			reminderId: '',
 			reminderRemark: '',
 			reminderVisible: false,
 			reminderLoading: false,
-			tableData: [],
-			treeData: [],
-			currentRow: '',
-			currentNode: '',
-			day: 2,
-			date: 'due_time',
 			days: [
 				{label: '已过期10天及以上', value: -10},
 				{label: '已过期6-10天', value: -6},
 				{label: '已过期3-5天', value: -3},
 				{label: '已过期1-2天', value: -1},
+				{label: '所有已过期',  value: -100},
 				{label: '2天内到期', value: 2},
 				{label: '5天内到期', value: 5},
 				{label: '10天内到期', value: 10},
+				{label: '所有即将到期', value: 100},
+				{label: '所有', value: 1},
 			],
 			dates: [
 				{label: '指定期限', value: 'due_time'},
@@ -145,8 +162,12 @@ export default {
 	},
 	computed: {
 		...mapGetters([
-	      'innerHeight',
-	    ]),
+      'innerHeight',
+    ]),
+    currentRowCategory () {
+    	const r = {1: 'patent', 3: 'category'}[this.currentRow.category];
+    	return r ? r : '';
+    }
 	},
 	methods: {
 		renderContent(h, { node, data, store }) {
@@ -159,24 +180,57 @@ export default {
         </span>       
       );
   	},
-  	handleCurrentChange (d) {
-  		this.currentNode = d;  		
+  	handleCheckChange () {
+  		this.treeSelected = this.$refs.tree.getCheckedKeys();		
   	},
+  	handleClick (a,b,c) {
+      this.$refs.tree.setChecked(a.value, !b.checked);
+    },
+    handleSearch (keyword) {
+    	this.keyword = keyword;
+    	const url = "/api/tasks/expiring";
+   		const data = {
+  			days: this.day,
+  			date: this.date,
+  			keyword,
+  		};
+  		let success = _=>{
+  			this.tableData = _.data;
+  		}
+
+  		this.axiosPost({url, data, success});   	
+    },  
   	handleRowClick (row) { 
     	this.currentRow = row;
     	if( !this.dialogShrinkVisible ) this.dialogShrinkVisible = true;
   	},
-  	refresh () {
-  		if(!this.currentNode || !this.day || !this.date) return;
+  	refresh (key) {
+  		if(this.treeSelected.length == 0 || !this.day || !this.date) {
+  			this.tableData = [];
+  			if(key == 'export') {
+  				this.$message({type: 'warning', message: '请指定要导出的内容'});
+  			}
+  			return;
+  		}
 
   		const url = "/api/tasks/expiring";
+  		
   		const data = {
-  			type: this.currentNode.value,
+  			type: this.treeSelected.join(','),
   			days: this.day,
   			date: this.date,
   		};
-  		const success = _=>{
+  		if(key == 'export') {
+  			Object.assign(data, {format: 'excel'},{keyword: this.keyword});
+  		}
+
+  		let success = _=>{
   			this.tableData = _.data;
+  		}
+  		if(key == 'export') {
+  			success = _=>{
+  				window.location.href = _.data.downloadUrl;
+  			}
   		}
 
   		this.axiosPost({url, data, success});
@@ -189,12 +243,19 @@ export default {
 				date: this.date,
 				days: this.day,
 			}
-			const success = _=>{this.treeData = _.data};
+			const success = _=>{
+				this.treeData = _.data
+			};
+			this.treeSelected = [];
 			this.axiosGet({url, data, success});
   	},
   	handleEmail ({id}) {
   		this.reminderId = id;
   		this.reminderVisible = true;
+  		// const url = `tasks/${id}/remind`;
+  		// const success = _=>{this.$message({message: '发送邮件提醒成功', type: 'success'})};
+
+  		// this.axiosPost({url, success});
   	},
   	sendEmail () {
   		const url = `tasks/${this.reminderId}/remind`;
@@ -202,8 +263,7 @@ export default {
   		const success = _=>{
   			this.$message({type: 'success', message: '发送邮件提醒成功'});
   			this.reminderVisible = false;
-  			//刷新缓存数据
-  			if(this.$refs.remind && this.currentRow.id == this.reminderId) {
+  			if(this.$refs.remind) {
   				this.$refs.remind.refreshTable();
   			}
   		};
@@ -212,22 +272,24 @@ export default {
   		}
   		this.reminderLoading = true;
   		this.$axiosPost({url, data, success, complete});
+  	},
+  	editProjectSuccess () {
+  		this.refresh();
   	}
 	},
 	created () {
+		
 		this.refreshTreeData();
 	},
 	watch: {
-		currentNode (val) {
+		treeSelected (val) {
 			this.refresh();
 		},
 		day (val) {
 			this.refreshTreeData();
-			this.refresh();
 		},
 		date (val) {
 			this.refreshTreeData();
-			this.refresh();
 		}
 	},
 	components: {
@@ -237,6 +299,7 @@ export default {
 		Information,
 		Detail,
 		Remind,
+		CommonDetail,
 	}
 
 }

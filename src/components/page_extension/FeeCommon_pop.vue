@@ -1,8 +1,8 @@
 <template>
-  <el-dialog :title=title :visible.sync="dialogVisible" class="dialog-small">
+  <el-dialog :title=title :visible.sync="dialogVisible" class="dialog-small" @close="$refs.form.resetFields();">
 		<el-form :model="form" ref="form" label-width="80px">
 			<el-form-item label="相关案件" prop="project">
-				<remote-select type="patent" v-model="form.project" @getArea="getArea"></remote-select>
+				<remote-select type="patent" v-model="form.project" ref="project"></remote-select>
 			</el-form-item>
 			<el-form-item label="费用对象" prop="target">
 				<remote-select type="member" v-model="form.target"></remote-select>
@@ -14,7 +14,7 @@
 					</el-form-item>
 				</el-col>
 			</el-row>			
-			<el-form-item label="费用状态" prop="status" v-if="popType == 'add'">
+			<el-form-item label="费用状态" prop="status" v-if="type == 'add'">
 				<fee-status v-model="form.status" :feeAnnual="feeAnnual"></fee-status>
 			</el-form-item>
 			<el-form-item label="费用金额" prop="money">
@@ -68,8 +68,8 @@
 				<el-input type="textarea" placeholder="请填写备注" v-model="form.remark"></el-input>
 			</el-form-item>
 			<el-form-item style="margin-bottom: 0px">
-				<el-button type="primary" @click="add" v-if="popType == 'add'">添加</el-button>
-				<el-button type="primary" @click="edit" v-else-if="popType == 'edit'">编辑</el-button>
+				<el-button type="primary" @click="add" v-if="type == 'add'">添加</el-button>
+				<el-button type="primary" @click="edit" v-else-if="type == 'edit'">编辑</el-button>
 				<el-button @click="cancel">取消</el-button>
 			</el-form-item>
 		</el-form>
@@ -92,14 +92,15 @@ export default {
   mixins: [ AxiosMixins ],
   props: {
   	feeType: Number,
-  	popType: String,
   },
   data () {
 		return {
 		  id: '',
+		  type: '',
 		  area: '',
 		  dialogVisible: false,
 		  feeAnnual: false,
+		  beforeEdit: false,
 		  form: {
 		  	project: '',
 		  	target: '',
@@ -138,7 +139,7 @@ export default {
   },
   computed: {
   	title () {
-  		const key1 = this.popType == 'add' ? '新增' : '编辑';
+  		const key1 = this.type == 'add' ? '新增' : '编辑';
   		const key2 = this.feeType == 1 ? '应收' : '应付';
   		return `${key1}${key2}费用`;
   	},
@@ -170,33 +171,44 @@ export default {
   			return o;
   		},
   		set (val) {
-  			const arr = ['amount', 'currency', 'roe'] 
 
+  			const arr = ['amount', 'currency', 'roe'] 
+  			this.beforeEdit = true;
   			this.id = val.id;
-  			this.$tool.coverObj(this.form, val);
-  			if(this.form.code) {
-  				this.form.code = this.form.code.id;
-  			}
+  			this.$tool.coverObj(this.form, val, {skip: ['code']});
   			this.form.status = this.form.status.id;
-  			arr.forEach( d=>{this.form.money[d] = val[d] });
+  			this.area = val['area']['id'];
+  			this.$nextTick(() => {
+					
+					this.form.code = val.code.id;
+	  			
+	  			this.$nextTick(() => {
+	  				arr.forEach( d=>{this.form.money[d] = val[d] });
+	  				this.beforeEdit = false;	
+	  			})
+
+  			})
+  			
   		}
   	}
   },
   methods: {
   	getArea (val) {
-  		if(val.length != 0){
-	  		this.area = val[0].area;
+  		if(val.length != 0 ){
+  			if(!val[0].area) {
+  			return	this.area = 'CN'; 
+  			}else {
+	  			this.area = val[0].area;
+  			}
   		}
   	},
-  	show (row) {
-  		
+  	show (row, type='add') {
+  		this.type = type;
   		this.dialogVisible = true;
   		this.$nextTick(()=>{
-  			if( this.popType == 'add' ) {  		
-  				this.$refs.form.resetFields(); 			
-	  		}else {
+  			if(type == 'edit') {
 	  			this.submitForm = row;
-	  		}
+  			}
   		});
   		
   	},
@@ -232,14 +244,25 @@ export default {
   },
   watch: {
 		'form.code': {
-			handler () {
-				// console.log('aaaaa');
-				this.$nextTick(_=>{
-					const val = this.$refs.fee_code.getSelected()[0];
-					if(val) {
-						this.codeChange(val);
-					}	
-				})
+			handler (v) {
+				if(v) {
+					const val = this.$refs.fee_code.getSelected(v)[0];
+					this.form.money.currency = 'CNY';
+					this.$tool.coverObj(this.form.money, val);
+				}
+				
+			}
+		},
+		'form.project': {
+			handler (v) {
+				if(this.beforeEdit) return;
+				if(!v) return this.area = '';
+				if(typeof v != 'object') {
+
+					const project = this.$refs.project.map.get(v);
+					this.area = project.area;
+
+				}
 				
 			}
 		}

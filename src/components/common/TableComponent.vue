@@ -458,7 +458,7 @@ const methods = Object.assign({}, tableConst.methods, {
   },
   handleSearch () {
     const func = this.tableOption.handleSearch;
-    if(func && this.search_value) {
+    if(func) {
       func(this.search_value);
     }
 

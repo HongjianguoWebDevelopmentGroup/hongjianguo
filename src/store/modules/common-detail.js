@@ -13,6 +13,8 @@ const state = {
 }
 
 const getters = {
+  title: state=>state.data?state.data.title: '',
+  detail_serial:state=> state.data?state.data.serial: '',	
   detail_type: state=>state.type,
   detailId: state=>state.id, 
   detailBase: state=>state.data ? state.data : {},
@@ -48,6 +50,7 @@ const getters = {
   detailAnnual: state=>state.data && state.data.fees.annual ? state.data.fees.annual : {},
   detailAmendments: state=>state.data && state.data.amendments ? state.data.amendments : [],
   detailReminders: state=>state.data && state.data.reminders ? state.data.reminders : [],
+  detailAgencies: state=>state.data && state.data.agencies ? state.data.agencies : [],
   detailLoading: state=>state.loading,
 }
 

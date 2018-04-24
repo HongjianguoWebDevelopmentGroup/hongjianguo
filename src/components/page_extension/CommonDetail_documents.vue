@@ -32,6 +32,7 @@ export default {
   computed: {
   	tableData () {
   		return this.$store.getters.detailDocuments; 
+  	
   	}
   },
   components: { 

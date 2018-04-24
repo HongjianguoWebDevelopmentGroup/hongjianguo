@@ -275,9 +275,27 @@ const router = new Router({
     },
     {
       path: '/patent/list',
-      name: 'PattentList',
+      name: 'PatentList',
       component: PatentList
     },
+    {
+      path: '/patent/listcn',
+      name: 'PatentListCn',
+      component: PatentList,
+      meta: { 'area': 'CN' },
+    },
+    {
+      path: '/patent/listpct',
+      name: 'PatentListPct',
+      component: PatentList,
+      meta: { 'area': 'PCT' },
+    },
+    {
+      path: '/patent/listother',
+      name: 'PatentListOther',
+      component: PatentList,
+      meta: { 'area': 'other' },
+    },        
     {
       path: '/patent/applying',
       name: 'ApplyingPatent',
@@ -299,6 +317,24 @@ const router = new Router({
       path: '/trademark/list',
       name: 'TrademarkList',
       component: TrademarkList
+    },    
+    {
+      path: '/trademark/listcn',
+      name: 'TrademarkListCn',
+      component: TrademarkList,
+      meta: { 'area': 'CN' },
+    },    
+    {
+      path: '/trademark/listmadrid',
+      name: 'TrademarkListMadrid',
+      component: TrademarkList,
+      meta: { 'area': 'Madrid' },
+    }, 
+    {
+      path: '/trademark/listother',
+      name: 'TrademarkListOther',
+      component: TrademarkList,
+      meta: { 'area': 'other' },
     },
     {
       path: '/trademark/add',
@@ -411,6 +447,18 @@ const router = new Router({
       path: '/fee/pay',
       name: 'FeePay',
       component: FeeCommon,
+    },
+    {
+      path: '/fee/official',
+      name: 'FeeOfficial',
+      component: FeeCommon,
+      meta: { fee_type: 3 },
+    },
+    {
+      path: '/fee/agency',
+      name: 'FeeAgency',
+      component: FeeCommon,
+      meta: { fee_type: 2 },
     },
     {
       path: '/fee/bill',

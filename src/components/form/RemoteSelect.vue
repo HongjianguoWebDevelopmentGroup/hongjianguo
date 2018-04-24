@@ -148,6 +148,7 @@ export default {
   data () {
     return {
       options: [],
+      keyword: '',
       loading: false, 
       selected: [],
       static_map: [],
@@ -212,7 +213,7 @@ export default {
       }
     },
     remoteMethod (keyword) {
-     
+     this.keyword = keyword;
       const s = { keyword, listOnly: '1' };
       const os = this.PARAMS;
       const key = this.DATA_KEY;
@@ -287,7 +288,7 @@ export default {
     option_in () {
       //由于一部分的val可能是通过object传入,单纯的options只含有动态部分
       //所以取select_map和options的并集,取得selected的静态部分选项
-      const arr = [ ...this.static_map, ...this.options ];
+      const arr = this.keyword ? [...this.options] : [ ...this.static_map, ...this.options ];
       // console.log(this.selected, this.options, arr);
       // console.log(arr);
       return this.$tool.singleObject(arr,'id');

@@ -15,6 +15,7 @@ import invoiceEntity from '@/store/modules/invoice-entity.js'
 import userGroup from '@/store/modules/user-group.js'
 import flows from '@/store/modules/flows.js'
 import cache from '@/store/modules/cache.js'
+import feeCode from '@/store/modules/fee-code.js'
 import selectorCache from '@/store/modules/selector-cache.js'
 import taskDef from '@/store/modules/task-def.js'
 import currentUser from '@/store/modules/current-user.js'
@@ -59,6 +60,7 @@ const store = new Vuex.Store({
     selectorCache,
     currentUser,
     sysmesg,
+    feeCode,
     tableCache,
   },
   getters: {

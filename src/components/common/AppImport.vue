@@ -221,11 +221,13 @@ export default {
   			this.$message({message: '导入数据不能为空', type: 'warning'});
   			return;
   		}
-      if(this.config.url === '/notices/import')
+      if(this.config.url === '/notices/import') {
+        
         if( this.tableData.filter(_=>_.serial == '').length != 0 ) {
           this.$message({message: '必须指定案件名称', type: 'warning'});
           return;
         }
+      }
       
   		const url = this.config.url;
   		const data = this.tableData;

@@ -1,6 +1,9 @@
 <template>
 	<div class="main" id="trademarkAdd">
 		<el-form :model="form" ref="form" label-width="120px" :rules="rules">
+			<el-form-item label="案号" prop="serial">
+				<el-input v-model="form.serial" placeholder="请填写案号"></el-input>
+			</el-form-item>
 			<el-form-item label="商标名称" prop="title">
 				<el-input v-model="form.title" placeholder="请输入商标名称"></el-input>
 			</el-form-item>
@@ -117,6 +120,10 @@
 			<el-form-item label="驳回日期" prop="reject_date">
 				<el-date-picker type="date" v-model="form.reject_date" placeholder="请选择驳回日期"></el-date-picker>
 			</el-form-item>
+			<el-form-item label="立案时间" prop="create_time">
+				<el-date-picker type="date" v-model="form.create_time" placeholder="请选择立案时间"></el-date-picker>
+			</el-form-item>
+
 			<el-form-item label="附件" prop="attachments">
 				<upload v-model="form.attachments" :file-list="attachments"></upload>
 			</el-form-item>
@@ -159,6 +166,7 @@ export default {
 		return {
 			id: '',
 			form: {
+				serial: '',
 				title: '',
 		  		type: '',
 			  	applicants: [],
@@ -178,6 +186,7 @@ export default {
 			  	remark: '',
 			  	apn: '',
 			  	apd: '',
+			  	create_time: '',
 			  	issue_date: '',
 			  	issue_number: '',
 			  	priorities: []

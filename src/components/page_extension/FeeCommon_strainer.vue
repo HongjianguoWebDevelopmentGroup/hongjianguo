@@ -44,12 +44,14 @@
       <el-row>
         <el-col :span="12">
           <el-form-item label="通知书发文日" prop="mail_date">
-            <el-date-picker type="daterange" placeholder="请选择通知书发文日" v-model="form.mail_date"></el-date-picker>
+            <date-strainer v-model="form.mail_date" ref="datePicker"></date-strainer>     
+            <!-- <el-date-picker type="daterange" placeholder="请选择通知书发文日" v-model="form.mail_date"></el-date-picker> -->
           </el-form-item>
         </el-col>
         <el-col :span="12">
           <el-form-item label="付款时间" prop="pay_time">
-            <el-date-picker type="daterange" placeholder="请选择付款时间" v-model="form.pay_time"></el-date-picker>
+            <date-strainer v-model="form.pay_time" ref="datePicker"></date-strainer>     
+            <!-- <el-date-picker type="daterange" placeholder="请选择付款时间" v-model="form.pay_time"></el-date-picker> -->
           </el-form-item>
         </el-col>
       </el-row>
@@ -57,12 +59,14 @@
       <el-row>
         <el-col :span="12">
           <el-form-item label="费用生成日期" prop="create_time">
-            <el-date-picker type="daterange" placeholder="请选择费用生成日期" v-model="form.create_time"></el-date-picker>
+            <date-strainer v-model="form.create_time" ref="datePicker"></date-strainer>     
+            <!-- <el-date-picker type="daterange" placeholder="请选择费用生成日期" v-model="form.create_time"></el-date-picker> -->
           </el-form-item>
         </el-col>
         <el-col :span="12">
           <el-form-item label="账单期限" prop="due_time">
-            <el-date-picker type="daterange" placeholder="请选择账单期限" v-model="form.due_time"></el-date-picker>
+            <date-strainer v-model="form.due_time" ref="datePicker"></date-strainer>     
+            <!-- <el-date-picker type="daterange" placeholder="请选择账单期限" v-model="form.due_time"></el-date-picker> -->
           </el-form-item>
         </el-col>
       </el-row>
@@ -70,12 +74,14 @@
       <el-row>
         <el-col :span="12">
           <el-form-item label="官方绝限" prop="deadline">
-            <el-date-picker type="daterange" placeholder="请选择官方绝限" v-model="form.deadline"></el-date-picker>
+            <date-strainer v-model="form.deadline" ref="datePicker"></date-strainer>     
+            <!-- <el-date-picker type="daterange" placeholder="请选择官方绝限" v-model="form.deadline"></el-date-picker> -->
           </el-form-item>
         </el-col>
         <el-col :span="12">
           <el-form-item label="申请日" prop="apd">
-            <el-date-picker type="daterange" placeholder="请选择申请日" v-model="form.apd"></el-date-picker>
+            <date-strainer v-model="form.apd" ref="datePicker"></date-strainer>     
+            <!-- <el-date-picker type="daterange" placeholder="请选择申请日" v-model="form.apd"></el-date-picker> -->
           </el-form-item>
         </el-col>
       </el-row>
@@ -94,6 +100,7 @@ import Strainer from '@/mixins/strainer'
 import FeeStatus from '@/components/form/FeeStatus'
 import RemoteSelect from '@/components/form/RemoteSelect'
 import StaticSelect from '@/components/form/StaticSelect'
+import DateStrainer from '@/components/form/DateStrainer'
 
 export default {
   name: 'FeeCommonStrainer',
@@ -118,7 +125,7 @@ export default {
 		}
   },
   watch: {},
-  components: { AppCollapse, FeeStatus, RemoteSelect, StaticSelect },
+  components: { AppCollapse, FeeStatus, RemoteSelect, StaticSelect, DateStrainer },
 }
 </script>
 

@@ -111,7 +111,7 @@ const state = {
 	  }],
 	  ['file_type', {
 	    placeholder: '请选择文件类型',
-	    url: '/api/fileTypes',
+	    url: '/api/fileTypes?category=1',
 	  }],
 	  ['file_type_patent', {
 	    placeholder: '请选择专利文件类型',
@@ -149,12 +149,12 @@ const state = {
 	  ['copyrights_status', {
     	url: '/api/progress',
     	placeholder: '请输入状态关键词',
-    	params: { category: 2 },
+    	params: { category: 3 },
   	  }], 
 	  ['trademarks_status', {
     	url: '/api/progress',
     	placeholder: '请输入状态关键词',
-    	params: { category: 3 },
+    	params: { category: 2 },
   	  }],   	    	    
 	  ['mail', {
 	    placeholder: '请输入邮箱地址',

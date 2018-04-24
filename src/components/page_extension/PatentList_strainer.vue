@@ -49,23 +49,23 @@
 						<static-select type="tag" v-model="form.tags" multiple></static-select>
 					</el-form-item>	
 					<el-form-item label="申请日" prop="apd">
-						<el-date-picker type="daterange" placeholder="请选择申请日" v-model="form.apd"></el-date-picker>
+						<date-strainer v-model="form.apd" ref="datePicker"></date-strainer>
 					</el-form-item>
 					<el-form-item label="立案日" prop="create_time">
-						<el-date-picker type="daterange" placeholder="请选择立案时间" v-model="form.create_time"></el-date-picker>
+						<date-strainer v-model="form.create_time" ref="datePicker"></date-strainer>				
 					</el-form-item>
 					<el-form-item label="授权日" prop="issue_date">
-						<el-date-picker type="daterange" placeholder="请选择授权日" v-model="form.issue_date"></el-date-picker>
+						<date-strainer v-model="form.issue_date" ref="datePicker"></date-strainer>					
 					</el-form-item>
 					<el-form-item label="公开日" prop="public_date">
-						<el-date-picker type="daterange" placeholder="请选择公开日" v-model="form.public_date"></el-date-picker>
+						<date-strainer v-model="form.public_date" ref="datePickerr"></date-strainer>
 					</el-form-item>
 					
 				</el-col>
   		</el-row>
   		<el-row style="text-align: center;">
 				<el-button @click="search(form, $refs.form)" type="primary" size="small">查询</el-button>
-				<el-button @click="clear($refs.form)" type="danger" size="small">清空</el-button>
+				<el-button @click="clear(form,$refs.form)" type="danger" size="small">清空</el-button>
   		</el-row>
   	</el-form>
   </app-collapse>
@@ -76,6 +76,7 @@ import AppCollapse from '@/components/common/AppCollapse'
 import Classification from '@/components/form/Classification'
 import Product from '@/components/form/Product'
 import Branch from '@/components/form/Branch'
+import DateStrainer from '@/components/form/DateStrainer'
 
 import RemoteSelect from '@/components/form/RemoteSelect'
 import StaticSelect from '@/components/form/StaticSelect'
@@ -87,7 +88,7 @@ export default {
 			form: {
 				type: '',
 				area: '',
-				apd: '',
+				apd: [],
 				progress: [],
 				create_time: [],
 				agency: [],
@@ -118,13 +119,22 @@ export default {
   		for(let k in f) {
   			const d = f[k];
   			if( d instanceof Array ) {
-  				if(d[0]) {
-  					if(d[0] instanceof Date) {
+  				if(d[0] || d[1]) {
+  					if(d[0] instanceof Date || d[1] instanceof Date) {
   						filter[k] = d.map(_=>this.$tool.getDate(_)).join(",")
   					}else {
   						filter[k] = d.join(",")
   					}
   				}
+  			}else if( d instanceof Object ) {
+  				const t = Object.values(d);
+	  			if(t[0] || t[t.length-1]) {
+	  				if(t[t.length-1] instanceof Date || t[0] instanceof Date) {
+	  					filter[k] = t.map(_=>this.$tool.getDate(_)).join(",");
+	  				}else {
+	  					filter[k] = t.join(",");
+	  				}
+	  			}		
   			}else {
   				if(d != "") filter[k] = d;
   			}
@@ -132,7 +142,8 @@ export default {
   		this.$emit('input', filter);
   		this.$emit('refresh');
   	},
-  	clear (form) {
+  	clear (f,form) {
+  		// this.$refs.datePicker.clearDate();
   		form.resetFields();
   		this.$emit('input', {});
   		this.$emit('refresh');
@@ -142,8 +153,8 @@ export default {
   	AppCollapse, 
   	Classification, 
   	Product, 
-  	Branch, 
-
+  	Branch,
+  	DateStrainer, 
   	RemoteSelect, 
   	StaticSelect,
   },

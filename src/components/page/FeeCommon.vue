@@ -27,7 +27,7 @@ import Pop from '@/components/page_extension/feeCommon_pop'
 import FeeStatus from '@/components/form/FeeStatus'
 import AxiosMixins from '@/mixins/axios-mixins'
 import RemoteSelect from '@/components/form/RemoteSelect'
-
+import { mapActions} from 'vuex'
 const URL = '/api/fees';
 const URL_INVOICE = '/api/invoices';
 
@@ -126,6 +126,7 @@ export default {
 		  tableData: [],
 		  filter: {},
 		  fee_status: 0,
+      fee_type: '',
 		  fee_invoice: '',
       fee_invoice_if: false,
       fee_invoice_scope: '',
@@ -166,6 +167,9 @@ export default {
     }
   },
   methods: {
+    ...mapActions([
+      'initializeSelectorCache',
+    ]),    
     handleReport () {
       const url = {0: '/fee/pay/report', 1: '/fee/income/report'}[this.feeType];
       if(url) {
@@ -179,7 +183,7 @@ export default {
   		const debit = this.feeType;
   		const status = this.fee_status;
       const invoice = this.fee_invoice_if && this.fee_invoice != '' ? {fee_invoice: this.fee_invoice} : {};
-  		const data = Object.assign({}, option, { debit, status }, this.filter, invoice);
+  		const data = Object.assign({}, option, { debit, status }, this.filter, invoice, this.fee_type);
   		const success = d=>{ 
         const totalData = d.fees.data;
         for (var i = 0; i < totalData.length; i++) {
@@ -204,15 +208,13 @@ export default {
 
     },
   	addPop () {
-  		this.popType = 'add';
   		this.$nextTick(()=>{
   			this.$refs.pop.show();	
   		})
   		
   	},
   	editPop (row) {
-  		this.popType = 'edit';
-  		this.$refs.pop.show(row);
+  		this.$refs.pop.show(row,'edit');
   	},
   	feeDelete ({id, name}) {
   		this.$confirm(`删除后不可恢复，确认删除‘${name}’吗？`, { type: 'warning' })
@@ -320,11 +322,15 @@ export default {
     if(this.$route.query.id) {
       this.fee_status = this.feeType ? 1 : 2;
       this.fee_invoice = {id: this.$route.query.id, name: this.$route.query.name};
-    }else {
-      this.refresh();  
     }
+    if(this.$route.meta) {
+      this.fee_type = this.$route.meta;
+    }
+      this.refresh();  
   },
-  
+  created () {
+    this.initializeSelectorCache({ type: 'fee_code'});
+  },
   components: { 
     TableComponent, 
     Strainer, 
