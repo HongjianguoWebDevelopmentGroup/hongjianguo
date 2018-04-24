@@ -14,6 +14,7 @@ const state = {
 
 const getters = {
   title: state=>state.data?state.data.title: '',
+  detail_serial:state=> state.data?state.data.serial: '',
   detailId: state=>state.id,
   detail_type: state=>state.type,
   detailBase: state=>state.data ? state.data : {},

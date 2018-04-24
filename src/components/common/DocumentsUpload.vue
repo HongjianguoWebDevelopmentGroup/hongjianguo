@@ -13,7 +13,7 @@
       <el-form-item label="发文日" prop="time" v-if="config.time&&(!!tableData[0]['show_mail_date'])">
         <el-date-picker type="date" v-model="form.time"></el-date-picker>
       </el-form-item>      
-      <el-form-item label="法定期限" prop="legal_time" v-if="!!tableData[0]['show_deadline']&&config.legal_time">
+      <el-form-item label="法定期限" prop="legal_time" v-if="(!!tableData[0]['show_deadline'])&&config.legal_time">
         <el-date-picker type="date" v-model="form.legal_time"  ></el-date-picker>
       </el-form-item>    
       <el-form-item label="申请日" prop="apd" v-if="config.apd&&(!!tableData[0]['show_apd'])">
@@ -31,8 +31,10 @@
       <el-form-item label="国际检索摘要" prop="pct_search_result" v-if="!!tableData[0]['show_pct_search_result']&&config.pct_search_result">
         <el-input v-model="form.pct_search_result"></el-input>
       </el-form-item>      
+      <el-form-item>
+        <el-button type="primary" @click="importData" :loading="loading">{{ loading ? '上传中...' : '确认上传' }}</el-button>
+      </el-form-item>
     </el-form>
-    <el-button type="primary" @click="importData" :loading="loading">{{ loading ? '上传中...' : '确认上传' }}</el-button>
   </div>
 </template>
 
@@ -214,7 +216,11 @@ export default {
         o.file_id = _.file_id;
         o.project = this.detailId;
         o.name = _.name;
-        o.type = _.type;
+        if(_.type) {
+          o.type = _.type;
+        }else {
+          o.type = this.form.type;
+        }
         if(_.subfile) {
           o.subfile = _.subfile;
         }
@@ -229,8 +235,8 @@ export default {
           }
         }
         if(_.show_deadline) {
-          if(_.legal_time) {
-            o.legal_time = this.$tool.getDate( new Date(_.legal_time) );
+          if(this.form.legal_time) {
+            o.legal_time = this.$tool.getDate( new Date(this.form.legal_time) );
           }else {
             return this.$message({type: 'warning', message: '请填写法定期限'}); 
           }
@@ -276,11 +282,13 @@ export default {
       const data = {file: this.file, list: list2 };
       const success = _=>{
         this.clear();
-        this.dialogVisible = false;
+        this.close();
         this.$message({message: '上传文件成功', type: 'success'});
         this.$emit('uploadSuccess');
       };
       const complete = _=>{
+        console.log(this.tableData);
+        console.log(this.file);
         this.loading = false;
       }
 
@@ -295,10 +303,11 @@ export default {
     clear () {
       this.file = [];
       this.tableData = [];
+      this.$refs.uploadForm.resetFields();
     },
     close () {
       this.dialogVisible = false;
-      this.$emit('dialogVisible',this.dialogVisible)
+      this.$emit('dialogVisible',this.dialogVisible);
     },
   },
   created () {

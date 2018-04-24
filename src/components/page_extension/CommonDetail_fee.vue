@@ -57,10 +57,10 @@ export default {
   		'detailAgency'
   	]),
   	expend () {
-  		return this.detailOfficial && this.detailAgency ? (this.detailOfficial.sum + this.detailAgency.sum) : '';
+  		return this.detailOfficial && this.detailAgency ? (this.detailOfficial.sum + this.detailAgency.sum) : '0';
   	},
   	income () {
-  		return this.detailFundings ? this.detailFundings.sum : '';
+  		return this.detailFundings ? this.detailFundings.sum : '0';
   	},
 /*  	tableData () {
   		return this.$store.getters.detailFees;

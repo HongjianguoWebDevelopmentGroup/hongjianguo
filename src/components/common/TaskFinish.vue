@@ -182,7 +182,7 @@ export default {
         agency_type: '',
         remark: '',
         attachments: [],
-        rank: 5,
+        rank: 60,
         area: [],
         type: '',
         pconfirm: false,
@@ -409,7 +409,7 @@ export default {
       return this.data.next && this.data.next.length != 0 ? true : false;
     },
     ifTitle () {
-      return this.data.flow_node_id == 20
+      return this.data.flow_node_id == 14;
     }
 	},
 	components: { 

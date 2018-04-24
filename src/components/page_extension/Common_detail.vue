@@ -42,7 +42,7 @@
         <el-tab-pane label="所有费用" name="fourth">
     			<detail-fee></detail-fee>
         </el-tab-pane>
-        <el-tab-pane label="往來邮件" name="fee">
+        <el-tab-pane label="往来邮件" name="fee">
     			<detail-email></detail-email>
         </el-tab-pane>
 <!--         <el-tab-pane label="文档" name="documents">
