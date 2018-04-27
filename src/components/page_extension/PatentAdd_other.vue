@@ -2,7 +2,7 @@
   <app-collapse col-title="其他信息">
       <el-form label-width="120px">
         <el-form-item label="状态">
-          <remote-select type="progress" v-model="form.progress_name"></remote-select>
+          <static-select type="patents_status" v-model="form.progress"></static-select>
         </el-form-item>
         <el-form-item label="说明书字数">
           <el-input v-model="form.words" placeholder="请填写说明书字数"></el-input>

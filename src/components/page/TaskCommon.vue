@@ -2,10 +2,6 @@
   <div class="main" id="task_common">
     <strainer @query="strainerQuery" @clear="strainerClear"></strainer>
     <table-component :tableOption="tableOption" :data="tableData" @refreshTableData="refreshTableData" :refresh-proxy="refreshProxy" ref="table">
-      <el-select v-if="menusMap && !menusMap.get('/tasks/all')" slot="toggle" class="expand" v-model="task_toggle" style="width: 110px; margin-left: 5px;">
-        <el-option key="mine" label="我的任务" value="personal"></el-option>
-        <el-option key="all" label="所有任务" value="all"></el-option>
-      </el-select>
     </table-component>
  
     <el-dialog title="申请委案" :visible.sync="dialogAgenVisible" class="dialog-small">
@@ -138,7 +134,7 @@ import { mapGetters } from 'vuex'
 import { mapActions } from 'vuex'
 // import $ from 'jquery'
 
-const URL = '/api/tasks';
+const URL = '/tasks';
 const colorMap = new Map([
   [-2, '#339'],
   [-1, '#09C'],
@@ -233,7 +229,7 @@ export default {
       this.$refs.agen.validate(_=>{
         if(_) {
           const ids = this.$refs.table.getSelect().map(_=>_.id);
-          const url = '/api/tasks/agency';
+          const url = '/tasks/agency';
           const data = Object.assign({}, this.agen, { ids });
           const success = _=>{
             this.dialogAgenVisible = false; 
@@ -274,7 +270,7 @@ export default {
     },
     refreshTableData (option) {
       const url = URL;
-      const data = Object.assign({}, this.filter, option, this.screen_value, {status: this.task_status}, {scope: this.task_toggle}, this.urlParams);
+      const data = Object.assign({}, this.filter, option, this.screen_value, {status: this.task_status}, this.urlParams, this.inParams);
       const success = d=>{
         if( data['format'] == 'excel' ) {
           window.location.href = d.tasks.downloadUrl;
@@ -480,7 +476,6 @@ export default {
           { type: 'control', label: '字段'},
           // { type: 'custom', label: '设定', icon: '', click: ()=>{ this.dialogSettingVisible = true; } }
         ],
-        'header_slot': [ 'toggle' ],
         'highlightCurrentRow': true, 
         'rowClick': this.handleRowClick,
         // 'expandFun': (row, expanded)=>{ 
@@ -542,7 +537,6 @@ export default {
         ],
       },
       tableData: [],
-      task_toggle: 'personal',
       agen: {
         agency_id: '',
         agency_agent: '',
@@ -561,7 +555,12 @@ export default {
       'menusMap',
     ]),
     task_status () {
-      return this.$route.meta.status;
+      const s = this.$route.meta.status; 
+      return s !== undefined ? s : 0;
+    },
+    inParams () {
+      const p = this.$route.meta.params; 
+      return p ? p : {};
     },
     urlParams () {
       return this.$route.query;
@@ -587,9 +586,6 @@ export default {
   },  
   watch: {
     filter () {
-      this.refresh();
-    },
-    task_toggle () {
       this.refresh();
     },
     'agen.agency_id': {

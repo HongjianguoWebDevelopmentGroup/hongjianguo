@@ -72,20 +72,21 @@ export default {
 			    subtext: '使用鼠标滚轮放大或缩小,可拖动',
 			  },
 			  tooltip: {
-					show: true,
-					type: 'item',
-					transitionDuration: 0,
-					formatter: a=>{
-						const d = a.data;
-						if(d.type) {
-							const str = `${this.nodeMap.get(d.source)['serial']} > ${this.nodeMap.get(d.target)['serial']}`;
-							const type = lineMap.get(d.type)['text']; 
-							return `${type}<br/>${str}`;
-						}else {
-							return `案号：${d.serial}<br/>标题：${d.title}<br/>地区：${d.area}<br/>申请号：${d.apn}`;
-						}
-					}
-				},
+			  	show: true,
+			  	type: 'item',
+			  	transitionDuration: 0,
+			  	formatter: (a) => {
+			  		const d = a.data;
+			  		console.log(d);
+			  		if(d.type) {
+			  			const str = `${this.nodeMap.get(d.source)['serial']} > ${this.nodeMap.get(d.target)['serial']}`;
+			  			const type = lineMap.get(d.type)['text'];
+			  			return `${type}<br/>${str}`;
+			  		}else {
+			  			return `案号：${d.serial}<br/>标题：${d.title}<br/>地区：${d.area}<br/>申请号：${d.apn}`;
+			  		}
+          }
+			  },
 			  series : [
 			    {
 			      name: 'Les Miserables',
@@ -100,7 +101,7 @@ export default {
 			          show: true,
 			          position: 'right',
 			          formatter: function (a,b,c) {
-			          	return a.data.title ? `[${a.data.serial}]${a.data.title}` : ''
+			          	return a.data.title ? `[${a.data.serial}]${a.data.title}` : '';
 			          },
 			        }
 			      },
@@ -169,7 +170,7 @@ export default {
 	},
 	mounted () {
 		this.chart = echarts.init(document.getElementById('quote_chart'));
-		this.refreshChart ();
+		this.refreshChart();
 		this.lineNum();
 	},
 	watch: {

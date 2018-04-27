@@ -13,7 +13,7 @@
       :id="currentRow.id" 
       ref="detail"
       @editSuccess="refresh">
-    </common-detail>    
+    </common-detail> 
 
     <el-dialog title="批量下载" :visible.sync="downloadVisible">
       <el-form>
@@ -36,7 +36,7 @@
 
 <script>
 import AxiosMixins from '@/mixins/axios-mixins'
-import AppFilter from '@/components/common/AppFilter'
+import Filter from '@/components/common/AppListFilter'
 import TableComponent from '@/components/common/TableComponent'
 import AppTree from '@/components/common/AppTree'
 import AppDatePicker from '@/components/common/AppDatePicker'
@@ -247,7 +247,11 @@ export default {
       'configsExtends2',
       'configsExtends3',
       'extendsData',
-    ])
+    ]),
+    inParams () {
+      const p = this.$route.meta.params; 
+      return p ? p : {};
+    },
   },
   methods: {
     ...mapActions([
@@ -259,7 +263,7 @@ export default {
     },
     refreshTableData (option) {
       const url = URL;
-      const data = Object.assign({}, option, this.filter);
+      const data = Object.assign({}, option, this.filter, this.inParams);
       const success = d=>{
         if(data['format'] == 'excel') {
           window.location.href = d.patents.downloadUrl;
@@ -385,7 +389,7 @@ export default {
     this.$refs.table.refresh();
   },
   components: {  
-    AppFilter, 
+    Filter, 
     TableComponent, 
     AppTree, 
     AppDatePicker, 

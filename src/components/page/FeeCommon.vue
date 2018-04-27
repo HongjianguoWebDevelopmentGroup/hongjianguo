@@ -30,8 +30,8 @@ import RemoteSelect from '@/components/form/RemoteSelect'
 import {mapActions} from 'vuex'
 import {mapGetters} from 'vuex'
 
-const URL = '/api/fees';
-const URL_INVOICE = '/api/invoices';
+const URL = '/fees';
+const URL_INVOICE = '/invoices';
 
 export default {
   name: 'feeCommon',
@@ -131,12 +131,14 @@ export default {
           { type: 'text', label: '官方绝限', prop: 'deadline', width: '175' },
           { type: 'text', label: '付款时间', prop: 'pay_time', width: '175' },
           { type: 'text', label: '请款单', prop: 'invoice_id', width: '150' },
+          { type: 'text', label: '企业意见', prop: 'remark_enterprise', width: '160' },
           { type: 'text', label: '备注', prop: 'remark', is_import: true, width: '160' },
           { 
             type: 'action',
             width: '80',
+            align: 'center',
             btns: [
-              { type: 'edit', click:  this.editPop, btn_disabled: row=>row.status.id != 0 },
+              { type: 'edit', click:  this.editPop, btn_disabled: row=>row.status.name != '未付款' },
             ]
           }
         ],
@@ -248,7 +250,7 @@ export default {
       const o = {};
       for(let i = 0; i < s.length; i++) {
         const row = s[i];
-        if(row.status.id != 0) return this.$message({type: 'warning', message: '请不要选择未付款状态以外的费用'});
+        // if(row.status.id != 0) return this.$message({type: 'warning', message: '请不要选择未付款状态以外的费用'});
         o[row.target.id] = true;
       }
       if(this.$tool.getObjLength(o) != 1) {

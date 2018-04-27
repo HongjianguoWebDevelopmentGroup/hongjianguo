@@ -39,7 +39,7 @@ export default {
 	methods: {
 		getData () {
 			this.loading = true;
-			const url = '/api/agencyStats';
+			const url = '/agencyStats';
 			const success = _=>{
 				this.data = _.data;
 			};

@@ -1,134 +1,137 @@
 <template>
-	<div class="main" id="trademarkAdd">
-		<el-form :model="form" ref="form" label-width="120px" :rules="rules">
-			<el-form-item label="商标名称" prop="title">
-				<el-input v-model="form.title" placeholder="请输入商标名称"></el-input>
-			</el-form-item>
-			<el-form-item label="商标类型" prop="type">
-				<static-select type="type" v-model="form.type"></static-select>
-			</el-form-item>
-			<el-form-item label="商标大类" prop="categories">
-				<static-select type="categories" v-model="form.categories" multiple></static-select>
-			</el-form-item>
-			<el-form-item label="商标小类" prop="detail">
-				<el-input v-model="form.detail" type="textarea"></el-input>
-			</el-form-item>
-			<el-form-item>
-				<el-button type=primary @click="trademarkJson" size='small'>商标分类表（参照）</el-button>
-				<el-dialog title="商标分类（请选择并复制粘贴至“商标小类”文本框中）" :visible.sync='dialogVisible' :modal-append-to-body=false top='8%' >
-					<div class="search" style="width: 200px;position: absolute;right: 50px;top: 15px">
-							<el-input
-							  placeholder="请输入关键字"
-							  icon="search"
-							  v-model="inputValue"
-							  :on-icon-click="searchDetail"
-							  @keyup.enter.native="searchDetail"
-							  >
-							</el-input>
-					</div>
-					<div class="link_drop" id="linkDrop" style="height: 90px;overflow-y: auto; border: 1px solid #ccc;padding: 10px;">
-						<div class="anchor" v-for="(item,index) in classifyContent">
-							<a :href="`#fl${index}`" @click="highLightColors('linkDrop','a',$event)">{{ `第${index+1}类` }}</a>
+	<div class="main" id="trademarkAdd" :style="`height: ${innerHeight - 70}px`">
+		<custom-form 
+			:model="form" 
+			ref="form" 
+			label-width="120px" 
+			:rules="rules"
+			:post-data="postData">
+			<template>
+				<el-form-item label="商标名称" prop="title">
+					<el-input v-model="form.title" placeholder="请输入商标名称"></el-input>
+				</el-form-item>
+				<el-form-item label="商标类型" prop="type">
+					<static-select type="trademark_type" v-model="form.type"></static-select>
+				</el-form-item>
+				<el-form-item label="商标大类" prop="categories">
+					<static-select type="categories" v-model="form.categories" multiple></static-select>
+				</el-form-item>
+				<el-form-item label="商标小类" prop="detail">
+					<el-input v-model="form.detail" type="textarea"></el-input>
+				</el-form-item>
+				<el-form-item>
+					<el-button type=primary @click="trademarkJson" size='small'>商标分类表（参照）</el-button>
+					<el-dialog title="商标分类（请选择并复制粘贴至“商标小类”文本框中）" :visible.sync='dialogVisible' :modal-append-to-body=false top='8%' >
+						<div class="search" style="width: 200px;position: absolute;right: 50px;top: 15px">
+								<el-input
+								  placeholder="请输入关键字"
+								  icon="search"
+								  v-model="inputValue"
+								  :on-icon-click="searchDetail"
+								  @keyup.enter.native="searchDetail"
+								  >
+								</el-input>
 						</div>
-					</div>
-
-					<div style="height: 300px; overflow-y: auto; border: solid 1px #ccc;margin-top: 10px; padding: 10px;" id="classifyContent">
-						<div class="classify_content"  v-for="(item,index) in classifyContent" :id="`fl${index}`">
-							<div class="left_side">
-								<div class="classify_num">
-									<p>{{ item.name }}</p>
-								</div>
-								<div class="comment">
-									<p>{{ item.description }}</p>
-								</div>
-							</div>
-							<div class="right_side">
-								<ul >
-									<li v-for = "(group,index2) in item['groups']" @click="show(index,index2)">{{group.name}}</li>
-								</ul>
+						<div class="link_drop" id="linkDrop" style="height: 90px;overflow-y: auto; border: 1px solid #ccc;padding: 10px;">
+							<div class="anchor" v-for="(item,index) in classifyContent">
+								<a :href="`#fl${index}`" @click="highLightColors('linkDrop','a',$event)">{{ `第${index+1}类` }}</a>
 							</div>
 						</div>
-					</div>
 
-					<div class="classify_detail" style="height: 200px; overflow-y: auto; border: solid 1px #ccc; margin-top: 10px; padding: 10px;" >
-						<div class="detail_click" v-if="flag">
-							<div class="con_detail" v-html="detailContent"></div>
-							<div class="con_description" v-html="descriptionContent" style="color: red;"></div>	
+						<div style="height: 300px; overflow-y: auto; border: solid 1px #ccc;margin-top: 10px; padding: 10px;" id="classifyContent">
+							<div class="classify_content"  v-for="(item,index) in classifyContent" :id="`fl${index}`">
+								<div class="left_side">
+									<div class="classify_num">
+										<p>{{ item.name }}</p>
+									</div>
+									<div class="comment">
+										<p>{{ item.description }}</p>
+									</div>
+								</div>
+								<div class="right_side">
+									<ul >
+										<li v-for = "(group,index2) in item['groups']" @click="show(index,index2)">{{group.name}}</li>
+									</ul>
+								</div>
+							</div>
 						</div>
-						<div class="detail_search" v-else>
-							<span v-for="item in newArr2" class="searchContent" v-html="item"></span>
+
+						<div class="classify_detail" style="height: 200px; overflow-y: auto; border: solid 1px #ccc; margin-top: 10px; padding: 10px;" >
+							<div class="detail_click" v-if="flag">
+								<div class="con_detail" v-html="detailContent"></div>
+								<div class="con_description" v-html="descriptionContent" style="color: red;"></div>	
+							</div>
+							<div class="detail_search" v-else>
+								<span v-for="item in newArr2" class="searchContent" v-html="item"></span>
+							</div>
 						</div>
-					</div>
-				</el-dialog>
-			</el-form-item>
-			<el-form-item label="申请人" prop="applicants">
-				<remote-select type="applicant" v-model="form.applicants" multiple></remote-select>
-			</el-form-item>
-			<el-form-item label="地区" prop="area" :rules="{ type: pageType=='add' ? 'array' : 'string',required: true, message: '地区不能为空', trigger: 'change'}">
-				<static-select type="area" v-model="form.area" :multiple="pageType == 'add'"></static-select>
-			</el-form-item>
-			<el-form-item label="代理机构" prop="agency" v-if="pageType == 'edit'">
-				<remote-select v-model="form.agency" type="agency"></remote-select>
-			</el-form-item>
-			<el-form-item label="代理人" prop="agent" v-if="pageType == 'edit'">
-				<remote-select v-model="form.agent" type="agent"></remote-select>
-			</el-form-item>
-		 	<el-form-item label="代理机构案号" v-if="pageType == 'edit'">
-	          <el-input v-model="form.agency_serial" placeholder="请填写代理机构案号"></el-input>
-			</el-form-item>			
-			</el-form-item>
-			<el-form-item label="商标图形" prop="figure">
-				<!-- <upload v-model="form.figure" :file-list="figure" :multiple="false"></upload> -->
-				<el-upload
-				  class="avatar-uploader"
-				  action="/api/files"
-				  :show-file-list="false"
-				  :on-success="successUpload"
-				  :before-upload="beforeUpload">
-				  <img v-if="form.figure" :src="figure_src" alt="" class="avatar">
-				  <i v-else class="el-icon-plus avatar-uploader-icon"></i>
-				</el-upload>
-			</el-form-item>
-			<el-form-item label="优先权" prop="priorities">
-				<priorities v-model="form.priorities"></priorities>
-			</el-form-item>
-			<el-form-item label="申请日" prop="apd">
-				<el-date-picker type="date" v-model="form.apd" placeholder="请选择申请日"></el-date-picker>
-			</el-form-item>
-			<el-form-item label="申请号" prop="apn">
-				<el-input v-model="form.apn" placeholder="请填写申请号"></el-input>
-			</el-form-item>
-			<el-form-item label="初审公告日" prop="public_date">
-				<el-date-picker type="date" v-model="form.public_date" placeholder="请选择初审公告日"></el-date-picker>
-			</el-form-item>
-			<el-form-item label="初审公告期数" prop="public_number">
-				<el-input v-model="form.public_number" placeholder="请填写初审公告期数"></el-input>
-			</el-form-item>
-			<el-form-item label="核准注册日" prop="issue_date">
-				<el-date-picker type="date" v-model="form.issue_date" placeholder="请选择核准注册日"></el-date-picker>
-			</el-form-item>
-			<el-form-item label="核准公告期数" prop="issue_number">
-				<el-input v-model="form.issue_number" placeholder="请填写核准公告期数"></el-input>
-			</el-form-item>
-			<el-form-item label="专用权期限" prop="expiring_date">
-				<el-date-picker type="date" v-model="form.expiring_date" placeholder="请选择专用权期限"></el-date-picker>
-			</el-form-item>
-			<el-form-item label="附件" prop="attachments">
-				<upload v-model="form.attachments" :file-list="attachments"></upload>
-			</el-form-item>
-			<el-form-item label="备注" prop="remark">
-				<el-input type="textarea" v-model="form.remark" placeholder="请填写备注"></el-input>
-			</el-form-item>
-			<el-form-item >
-				<el-button  @click="add" v-if="pageType == 'add'" :disabled="btn_disabled" type="primary">添加</el-button>
-				<!-- <el-button  v-if="type == 'edit'" :disable="btn_disabled" type="primary">编辑</el-button> -->
-			</el-form-item>
-		</el-form>
+					</el-dialog>
+				</el-form-item>
+				<el-form-item label="申请人" prop="applicants">
+					<remote-select type="applicant" v-model="form.applicants" multiple></remote-select>
+				</el-form-item>
+				<el-form-item label="地区" prop="area" :rules="{ type: pageType=='add' ? 'array' : 'string',required: true, message: '地区不能为空', trigger: 'change'}">
+					<static-select type="area" v-model="form.area" :multiple="pageType == 'add'"></static-select>
+				</el-form-item>
+				<el-form-item label="状态" prop="progress" v-if="pageType == 'edit'">
+					<static-select type="trademarks_status" v-model="form.progress"></static-select>
+				</el-form-item>
+				<el-form-item label="代理机构" prop="agency" v-if="pageType == 'edit'">
+					<remote-select v-model="form.agency" type="agency"></remote-select>
+				</el-form-item>
+				<el-form-item label="代理人" prop="agent" v-if="pageType == 'edit'">
+					<remote-select v-model="form.agent" type="agent"></remote-select>
+				</el-form-item>
+			 	<el-form-item label="代理机构案号" v-if="pageType == 'edit'">
+		          <el-input v-model="form.agency_serial" placeholder="请填写代理机构案号"></el-input>
+				</el-form-item>			
+				</el-form-item>
+				<el-form-item label="商标图形" prop="figure">
+					<el-upload
+					  class="avatar-uploader"
+					  action="/api/files"
+					  :show-file-list="false"
+					  :on-success="successUpload"
+					  :before-upload="beforeUpload">
+					  <img v-if="form.figure" :src="figure_src" alt="" class="avatar">
+					  <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+					</el-upload>
+				</el-form-item>
+				<el-form-item label="优先权" prop="priorities">
+					<priorities v-model="form.priorities"></priorities>
+				</el-form-item>
+				<el-form-item label="申请日" prop="apd">
+					<el-date-picker type="date" v-model="form.apd" placeholder="请选择申请日"></el-date-picker>
+				</el-form-item>
+				<el-form-item label="申请号" prop="apn">
+					<el-input v-model="form.apn" placeholder="请填写申请号"></el-input>
+				</el-form-item>
+				<el-form-item label="初审公告日" prop="public_date">
+					<el-date-picker type="date" v-model="form.public_date" placeholder="请选择初审公告日"></el-date-picker>
+				</el-form-item>
+				<el-form-item label="初审公告期数" prop="public_number">
+					<el-input v-model="form.public_number" placeholder="请填写初审公告期数"></el-input>
+				</el-form-item>
+				<el-form-item label="核准注册日" prop="issue_date">
+					<el-date-picker type="date" v-model="form.issue_date" placeholder="请选择核准注册日"></el-date-picker>
+				</el-form-item>
+				<el-form-item label="核准公告期数" prop="issue_number">
+					<el-input v-model="form.issue_number" placeholder="请填写核准公告期数"></el-input>
+				</el-form-item>
+				<el-form-item label="专用权期限" prop="expiring_date">
+					<el-date-picker type="date" v-model="form.expiring_date" placeholder="请选择专用权期限"></el-date-picker>
+				</el-form-item>
+				<el-form-item label="附件" prop="attachments">
+					<upload v-model="form.attachments" :file-list="attachments"></upload>
+				</el-form-item>
+				<el-form-item label="备注" prop="remark">
+					<el-input type="textarea" v-model="form.remark" placeholder="请填写备注"></el-input>
+				</el-form-item>
+			</template>
+		</custom-form>
 	</div>
 </template>
 <script>
-import {mapGetters} from 'vuex'
-import AxiosMixins from '@/mixins/axios-mixins'
 import Classification from '@/components/form/Classification'
 import Product from '@/components/form/Product'
 import Branch from '@/components/form/Branch'
@@ -137,10 +140,12 @@ import Upload from '@/components/form/Upload'
 import RemoteSelect from '@/components/form/RemoteSelect'
 import StaticSelect from '@/components/form/StaticSelect'
 import Priorities  from '@/components/form/Priorities'
+import CustomForm from '@/components/common/CustomForm'
 
 import {mapActions} from 'vuex'
+import {mapGetters} from 'vuex'
 
-const URL = '/api/trademarks'
+const URL = '/trademarks'
 
 export default {
 	name: 'trademarkAdd',
@@ -150,7 +155,6 @@ export default {
 			default: 'add',
 		},
 	},
-	mixins: [AxiosMixins],
 	data () {
 		return {
 			id: '',
@@ -175,7 +179,8 @@ export default {
 			  	agency: '',
 			  	agency_serial: '',
 			  	agent: '',
-			  	priorities: []
+			  	progress: '',
+			  	priorities: [],
 			},
 		  rules: {
 		  	title: { required: true, message: '商标名称不能为空', trigger: 'blur' },
@@ -184,9 +189,10 @@ export default {
 		  	detail: {required: true, message: '商标小类不能为空', trigger: 'blur'},
 		  	categories: {type: 'array', required: true, message: '商标大类不能为空', trigger: 'change'}
 		  },
+
 		  attachments: [],
-		  btn_disabled: false,
 		  figure_src: '',
+
 		  dialogVisible: false,
 		  classifyContent: [],
 		  groups:[],
@@ -200,8 +206,13 @@ export default {
 	},
 	computed: {
 		...mapGetters([
+			'trademarkFormCustom',
+			'innerHeight',
 			'detailBaseTrademark',
-		])
+		]),
+		type () {
+  		return this.pageType ? this.pageType : this.$route.meta.pageType;
+  	}
 	},
 	methods:{
 		...mapActions([
@@ -234,64 +245,65 @@ export default {
 			}
 			
 		},
-		add () {
-  		if(this.checkForm()) return;
+		postData (form) {
 
-  		this.btn_disabled = true;
+			if(this.type == 'add') {
+				return this.add(form);
+			}
+
+			if(this.type == 'edit') {
+				return this.edit(form);
+			}
+
+		},
+		cancel () {
+      if(this.type == 'add') {
+        this.$router.push('/trademark/list');
+      }else if(this.type == 'cancell') {
+        this.$emit('editeCancell');
+      }
+    },
+		add (form) {
   		const url = URL;
-  		const data = this.$tool.shallowCopy(this.form, {'date': true});
+  		const data = form;
 
   		const success = _=>{ 
   			this.$message({message: '新建商标成功', type: 'success'});
   			this.refreshUser();
-  			this.$router.push('/trademark/list') 
+  			this.$router.push('/trademark/list');
   		};
-  		const complete = _=>{ this.btn_disabled = false };
 
-  		this.$axiosPost({url, data, success, complete});
+  		return this.$axiosPost({url, data, success});
   	},
-  	edit () {
-  		if(this.checkForm()) return;
-
-  		this.btn_disabled = true;
+  	edit (form) {
   		const url = `${URL}/${this.id}`;
-  		const data = this.$tool.shallowCopy(this.form, {'date': true});
+  		const data = form;
  
   		const success = _=>{ 
   			this.$message({message: _.info, type: 'success'});
   			this.$emit('editSuccess');
   		};
-  		const complete = _=>{ this.btn_disabled = false };
 
-  		this.$axiosPut({url, data, success, complete});
+  		return this.$axiosPut({url, data, success});
   	},
-  	checkForm () {
-  		let flag = false;
-  		this.$refs.form.validate(_=>{flag = !_});
-
-  		if(flag) {
-  			this.$message({message: '请正确填写商标字段', type: 'warning'});
-  		}
-
-  		return flag;
+  	clear () {
+			this.$refs.form.resetFields();
+			this.attachments = [];
+			this.figure_src = '';
+		},
+  	fillForm (form) {  			
+  		this.id = form.id ? form.id : '';
+      this.$tool.coverObj(this.form, form, {obj: ['area', 'type', 'categories', 'attachments', 'figure', 'progress']});
+      this.attachments = form['attachments'] ? form['attachments'] : '';
+      this.figure_src = form['figure'] ? form['figure']['id'] : ''; 
+      if(this.trademarkFormCustom) {
+        this.$refs.form.fillCustomForm(form);
+      }
   	},
   	refreshForm () {
-  		if(this.pageType == 'edit' && this.detailBaseTrademark) {
-  			this.id = this.detailBaseTrademark.id;
-  			this.$tool.coverObj(this.form, this.detailBaseTrademark, {'obj': ['area', 'type', 'categories']});
-
-  			this.attachments = this.$tool.deepCopy(this.form.attachments);
-  			this.form.attachments = this.attachments.map( _=>_.id );
-
-  			if(this.form.figure) {
-  				const o = this.$tool.deepCopy(this.form.figure);
-  				this.form.figure = o.id;
-  				this.figure_src = o.viewUrl;	
-  			}else {
-  				this.form.figure = "";
-  				this.form_src = "";
-  			}
-  		}
+      if(this.type === 'edit' && this.detailBaseTrademark) {
+        this.fillForm(this.detailBaseTrademark);
+      }
   	},
   	trademarkJson () {
   		
@@ -315,7 +327,6 @@ export default {
 		 		this.figure_src = d.file.viewUrl;	
 	    }else {
 	    	this.$message({message: p.info, type: 'warning'});
-	      // this.$messa(p.info);
 	    }
   	},
   	beforeUpload (file) {
@@ -327,9 +338,9 @@ export default {
   		return isJPG;
   	},
   	searchDetail () {
-  		// console.log(this.classifyContent);
+  		
   		if(!this.inputValue){
-           return this.newArr = [];
+        return this.newArr = [];
   		}else{
   			this.flag = false;
   			let total = this.classifyContent;
@@ -346,12 +357,8 @@ export default {
 	  		for(var k = 0;k < this.newArr.length; k++){
 	  			//用正则表达式将检索字段标红
 	  			this.newArr2.push(this.newArr[k].replace(new RegExp(this.inputValue,'g'),'<span style="color:red;">'+this.inputValue+'</span>'));	
-	  			// console.log(123);
-	  			
 	  		}
   		}
-  		// console.log(this.newArr);
-
   	},
 	},
 	created () {
@@ -369,7 +376,8 @@ export default {
 		Upload, 
 		RemoteSelect, 
 		StaticSelect, 
-		Priorities
+		Priorities,
+		CustomForm,
 	},
 }
 </script>

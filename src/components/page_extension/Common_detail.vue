@@ -1,9 +1,8 @@
 <template>
 <div>
-  <app-shrink :title="title" :visible=visibleAuth @update:visible="handleVisible">
+  <app-shrink :title="title" :visible="visibleAuth" @update:visible="handleVisible">
     <span slot="header" style="float: right">
       <el-button size="small" type="success" class="table-header-btn" @click="dialogDivide=true">分案</el-button>
-      <el-button size="small" type="primary" class="table-header-btn" @click="edit">保存</el-button>
       <el-button style="margin-left: 5px;" size="small" type="danger" @click="dialogClosed=true" v-if="type == 'patent'">结案</el-button>
         <el-dropdown  @command="handleCommandSend" trigger="click" style="margin-left: 5px;" size="small" v-if="type == 'patent'">
           <el-button size="small">
@@ -28,9 +27,9 @@
       <el-tabs v-model="activeName">
         <el-tab-pane label="基本信息" name="base">
           <div :style="`height: ${innerHeight - 150}px; overflow: auto;`">
-    			  <detail-patent page-type="edit" v-if="type == 'patent'" @editSuccess="editSuccess" ref="patent"></detail-patent>
-            <detail-copyright page-type="edit" v-if="type == 'copyright'" @editSuccess="editSuccess" ref="copyright"></detail-copyright>
-            <detail-trademark page-type="edit" v-if="type == 'trademark'" @editSuccess="editSuccess" ref="trademark"></detail-trademark>
+    			  <detail-patent style="height: 100%;" page-type="edit" v-if="type == 'patent'" @editSuccess="editSuccess" ref="patent"></detail-patent>
+            <detail-trademark style="height: 100%;" page-type="edit" v-if="type == 'trademark'" @editSuccess="editSuccess" ref="trademark"></detail-trademark>
+            <detail-copyright style="height: 100%;" page-type="edit" v-if="type == 'copyright'" @editSuccess="editSuccess" ref="copyright"></detail-copyright>
           </div>
         </el-tab-pane>
         <el-tab-pane label="流程管理" name="control">
@@ -204,7 +203,7 @@ export default {
     },
     editSuccess () {
       this.refreshDetailData();
-      this.$emit('update:visible', false);
+      // this.$emit('update:visible', false);
       this.$emit('editSuccess');
     },
     handleVisible (val) {

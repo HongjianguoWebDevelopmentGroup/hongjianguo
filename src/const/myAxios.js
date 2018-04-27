@@ -8,7 +8,6 @@ export default {
 }
 
 //------------------默认配置项start-------------------------
-const status = false;
 
 const URLDEFAULT = '';
 
@@ -33,7 +32,7 @@ const completeFunc = function (d, t) {}
 //------------------默认配置项end-------------------------
 
 function axiosGet ({url=URLDEFAULT, data=dd, success=_=>{successFunc(_, this)}, error=_=>{errorFunc(_, this)}, catchFunc=_=>{catchFunct(_, this)}, complete=_=>{completeFunc(_, this)} }) {
-  url = status ? url.replace(/\/api/, '') : url;
+  
   
   const res = this.$axios.get(url, { params: data });
   res
@@ -57,7 +56,7 @@ function axiosGet ({url=URLDEFAULT, data=dd, success=_=>{successFunc(_, this)}, 
   return res;
 }
 function axiosDelete({ url=URLDEFAULT, data=dd, success=_=>{successFunc(_, this)}, error=_=>{errorFunc(_, this)}, catchFunc=_=>{catchFunct(_, this)}, complete=_=>{completeFunc(_, this)} }) {
-  url = status ? url.replace(/\/api/, '') : url;
+
 
   const res = this.$axios.delete(url, { params: data });
   res
@@ -76,7 +75,7 @@ function axiosDelete({ url=URLDEFAULT, data=dd, success=_=>{successFunc(_, this)
 }
 
 function axiosPost ({ url=URLDEFAULT, data=dd, success=_=>{successFunc(_, this)}, error=_=>{errorFunc(_, this)}, catchFunc=_=>{catchFunct(_, this)}, complete=_=>{completeFunc(_, this)} }) {
-  url = status ? url.replace(/\/api/, '') : url;
+
   
   const res = this.$axios.post(url, data);
   res
@@ -95,7 +94,7 @@ function axiosPost ({ url=URLDEFAULT, data=dd, success=_=>{successFunc(_, this)}
 }
 
 function axiosPut ({ url=URLDEFAULT, data=dd, success=_=>{successFunc(_, this)}, error=_=>{errorFunc(_, this)}, catchFunc=_=>{catchFunct(_, this)}, complete=_=>{completeFunc(_, this)} }) {
-  url = status ? url.replace(/\/api/, '') : url;
+
   
   const res = this.$axios.put(url, data);
   res

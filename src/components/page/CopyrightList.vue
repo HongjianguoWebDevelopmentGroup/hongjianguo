@@ -3,20 +3,26 @@
     <strainer v-model="filter" @refresh="refresh"></strainer>
     <table-component :tableOption="tableOption" :data="tableData" @refreshTableData="refreshTableData" ref="table"></table-component>
     
-      <common-detail
-        :title="currentRow.title"
-        :visible.sync="shrinkVisible" 
-        type="copyright" 
-        :id="currentRow.id"
-        @editSuccess="refresh">
-      </common-detail>
+    <common-detail
+      :title="currentRow.title"
+      :visible.sync="shrinkVisible" 
+      type="copyright" 
+      :id="currentRow.id"
+      @editSuccess="refresh">
+    </common-detail>
+
+    <list-filter
+      ref="filter"
+      type="copyright"
+      :visible.sync="filterVisible"
+    ></list-filter>
 
   </div>
 </template>
 
 <script>
-import AxiosMixins from '@/mixins/axios-mixins'
 import TableComponent from '@/components/common/TableComponent'
+import ListFilter from '@/components/common/AppListFilter'
 import Strainer from '@/components/page_extension/CopyrightList_strainer'
 import AppShrink from '@/components/common/AppShrink'
 import CommonDetail from '@/components/page_extension/Common_detail'
@@ -25,7 +31,6 @@ const URL = '/api/copyrights';
 
 export default {
   name: 'copyrightList',
-  mixins: [ AxiosMixins ],
   data () {
     return {
       currentRow: '',
@@ -45,8 +50,9 @@ export default {
           { type: 'export' },
           { type: 'import' },
           { type: 'batch_upload' },
-          { type: 'report', click: _=>{this.$router.push('/copyright/report')} },
+          { type: 'report', click: () => {this.$router.push('/copyright/report')} },
           { type: 'control', label: '字段' },
+          { type: 'filter', click: () => {this.filterVisible = true} }, 
         ],
         'columns': [
           { type: 'selection' },
@@ -80,7 +86,14 @@ export default {
       },
       tableData: [],
       filter: {},
+      filterVisible: false,
     };
+  },
+  computed: {
+    inParams () {
+      const p = this.$route.meta.params; 
+      return p ? p : {};
+    },
   },
   methods: {
     add () {
@@ -88,7 +101,7 @@ export default {
     },
     refreshTableData (option) {
       const url = URL;
-      const data = Object.assign({}, option, this.filter);
+      const data = Object.assign({}, option, this.filter, this.inParams);
       const success = d=>{
         if(data['format'] == 'excel') {
           window.location.href = d.copyrights.downloadUrl;
@@ -96,7 +109,7 @@ export default {
           this.tableData = d.copyrights;  
         }      
       };
-      this.axiosGet({url, data, success});
+      this.$axiosGet({url, data, success});
     },
     refresh () {
       this.$refs.table.refresh();
@@ -129,7 +142,8 @@ export default {
     TableComponent, 
     Strainer, 
     AppShrink, 
-    CommonDetail 
+    CommonDetail,
+    ListFilter,
   }
 }
 </script>

@@ -11,7 +11,7 @@ import AxiosMixins from '@/mixins/axios-mixins'
 import TableComponent from '@/components/common/TableComponent'
 import Pop from '@/components/page_extension/ApplicantList_pop'
 
-const URL = '/api/applicants';
+const URL = '/applicants';
 
 export default {
   name: 'applicantList',
@@ -20,7 +20,7 @@ export default {
 		return {
 		  option: {
         'name': 'applicant',
-        'url': '/api/applicants',
+        'url': '/applicants',
         'height': 'default2',
 		  	'header_btn': [
 		  		{ type: 'add', click: this.addPopUp },

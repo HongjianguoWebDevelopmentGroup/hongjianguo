@@ -19,7 +19,7 @@ import AppDatePicker from '@/components/common/AppDatePicker'
 import CommonDetail from '@/components/page_extension/Common_detail'
 import Strainer from '@/components/page_extension/TrademarkList_strainer'
 
-const URL = '/api/trademarks'
+const URL = '/trademarks'
 export default {
   name: 'trademarkList', 
   data () {
@@ -87,6 +87,12 @@ export default {
 			filter: {},
 		};
   },
+  computed: {
+  	inParams () {
+      const p = this.$route.meta.params; 
+      return p ? p : {};
+    },
+  },
   methods: {
   	refreshTableData(option) {
   		
@@ -99,7 +105,7 @@ export default {
   		}
   		this.$axiosGet({
   			url: URL,
-  			data: Object.assign({}, this.filter, option),
+  			data: Object.assign({}, this.filter, option, this.inParams),
   			success,
   		})
   	},

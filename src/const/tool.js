@@ -13,6 +13,7 @@ export default {
 
 		for(let k in obj) {
       const d = obj[k];
+
       if(date && d instanceof Date) {
         data[k] = this.getDate(d);
       }else if(array && d instanceof Array) {
@@ -45,15 +46,20 @@ export default {
 			return date;
 		}		
 	},
-	coverObj (a1, a2, { obj, skip } = {}) {
+	coverObj (a1, a2, { obj, skip, date } = {}) {
 		
-		const map = new Map();
+		const objMap = new Map();
+		const dateMap = new Map();
 		const skipMap = new Map();
+		
 		if(obj) {
-			obj.forEach(_=>{ map.set(_, true) });
+			obj.forEach( _ => { objMap.set(_, true)} );
+		}
+		if(date) {
+			date.forEach( _ => { dateMap.set(_, true)} );
 		}
 		if(skip) {
-			skip.forEach(_=>{ skipMap.set(_, true) });	
+			skip.forEach( _ => { skipMap.set(_, true)} );	
 		}
 
 		for (let key in a1) {
@@ -61,14 +67,16 @@ export default {
 
 			if(v === undefined || skipMap.get(key)) continue;
 
-			if( obj && typeof v == 'object' && map.get(key) ) {
+			if( obj && typeof v == 'object' && objMap.get(key) ) {
 				if( Array.isArray(v) ) {
-					a1[key] = v.map(_=>_.id);
+					a1[key] = v.map(_=>_.id ? _.id : '');
 				}else {
-					a1[key] = v.id;	
+					a1[key] = v.id ? v.id : '';	
 				}
+			}else if(date && dateMap.get(key)) {
+				a1[key] = v ? new Date(v) : v;
 			}else {
-				a1[key] = v == undefined ? a1[key] : v;	
+				a1[key] = v;	
 			}
 				
 		}
@@ -177,10 +185,10 @@ export default {
 	},
 	windowChangeUrl (string) {
 		if (!window.location.origin) {
-        	window.location.origin = window.location.protocol + "//" + window.location.hostname + (window.location.port ? ':' + window.location.port: '');
-    	}
+      window.location.origin = window.location.protocol + "//" + window.location.hostname + (window.location.port ? ':' + window.location.port: '');
+    }
 
-    	window.location.href = `${window.location.origin}/${string}`;
+    window.location.href = `${window.location.origin}/${string}`;
 	},
 	detectionTime (time) {
 		let str = '';

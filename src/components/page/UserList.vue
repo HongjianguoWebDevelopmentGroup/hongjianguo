@@ -45,8 +45,8 @@ import Pop from '@/components/page_extension/UserList_pop'
 import UserRole from '@/components/form/UserRole'
 import StaticSelect from '@/components/form/StaticSelect'
 
-const URL = 'api/members'
-const URL_GROUP = 'api/groups'
+const URL = '/members'
+const URL_GROUP = '/groups'
 
 export default {
   name: 'userList',
