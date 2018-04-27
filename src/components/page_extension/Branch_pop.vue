@@ -44,7 +44,7 @@ export default {
 	methods: {
 		addForm () {
 			return Object.assign({'parent': this.currentId}, this.form);
-		}
+		},
 	},
 	components: {
 		StaticSelect,

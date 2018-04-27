@@ -27,6 +27,9 @@
 						@node-click="nodeClick"
             :style="`height: ${innerHeight - 137}px; overflow: auto;border-top: 0;`"
             :filter-node-method="filterNode"
+            :current-node-key="nodeKey"
+            node-key="id"
+            :default-expanded-keys="defaultKeys"
             ref="tree"
 					>
 					</el-tree>
@@ -79,7 +82,7 @@
         <el-button @click="transferAxios" type="primary">确认移交</el-button>
       </el-dialog>
 
-      <pop ref="pop" @refresh="refresh" :current-id="currentNode.id"></pop> 	
+      <pop ref="pop" @refresh="handlePopRefresh" :current-id="currentNode.id"></pop> 	
   </div>
 </template>
 
@@ -102,6 +105,8 @@ export default {
       currentNode: '',
       dialogVisible: false,
       transfer: '',
+      defaultKeys: [],
+      nodeKey: '',
       filterText: '',
 		}
   },
@@ -109,6 +114,7 @@ export default {
     ...mapGetters([
       'innerHeight',
       'branchData',
+      'branchMap',
       'branchUpdate',
     ]),
   },
@@ -137,6 +143,21 @@ export default {
       const d = this.$tool.deepCopy(this.currentNode);
       d.ipr = d.ipr ? d.ipr.id : '';
       this.$refs.pop.show('edit', d);
+    },
+    handlePopRefresh (str,val) {
+      if(str == 'edit') {
+        this.refreshBranch({
+          success: _=>{
+            console.log(12231);
+            this.$nextTick(_=>{
+              const key = this.currentNode.id;
+              this.defaultKeys.push(key);
+              this.currentNode = this.branchMap.get(key);
+              this.nodeKey = key;
+            })
+          }
+        })    
+      }
     },
     branchDelete () {
       const c = this.currentNode;
