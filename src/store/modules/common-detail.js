@@ -39,7 +39,7 @@ const getters = {
   },
   detailTasks: state=>state.data ? state.data.tasks : [],
   detailNotices: state=>state.data ? state.data.notices : [],
-  detailFees: state=>state.data ? state.data.fees : [],
+  detailFees: state=>state.data ? state.data.fees : {},
   detailMails: state=>state.data ? state.data.mails : [],
   detailDocuments: state=>state.data ? state.data.documents : [],
   detailGroup: state=>state.data && state.data.group ? state.data.group : [],

@@ -1,6 +1,6 @@
 <template>
-   <app-collapse :col-title="`监控中的年费(总计：${detailAnnual.sum?detailAnnual.sum:''}CNY)`">
-    <app-table :columns="columns" :data="detailAnnual.list"></app-table>
+   <app-collapse :col-title="`监控中的年费(总计：${detailAnnual.sum?detailAnnual.sum:'0'}CNY)`">
+    <app-table :columns="columns" :data="annualData"></app-table>
    </app-collapse> 
 </template>
 <script>
@@ -47,6 +47,9 @@ import { mapGetters } from 'vuex'
     	...mapGetters([
     		'detailAnnual',
     	]),
+      annualData () {
+        return this.detailAnnual.list ? this.detailAnnual.list : [];
+      },
     },
     components: {
       AppTable,

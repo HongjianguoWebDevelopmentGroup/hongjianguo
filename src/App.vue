@@ -1,5 +1,5 @@
 <template>
-  <div id="app" v-loading.fullscreen.lock="userinfoLoading" element-loading-text="初始化中...">
+  <div id="app" :style="`padding-left: ${appPaddingLef};`" v-loading.fullscreen.lock="userinfoLoading" element-loading-text="初始化中...">
 <!--     <el-popover
       ref="popover"
       placement="bottom"
@@ -20,16 +20,22 @@
     </el-popover> -->
 
     <nav>
-        <img src="/static/static_img/hjg_logo.png" style="vertical-align: middle; height: 27px;">
+        <div style="display: inline-block;vertical-align: top;">
+          <img src="/static/static_img/hjg_logo.png" style=" height: 27px;vertical-align: middle;">
+        </div>
         <!-- <span class="logo_name">知识产权管理系统</span> -->
-        <el-dropdown  trigger="click" style="float: right; margin-right: 40px;" @command="handleCommond">
-          <span class="el-dropdown-link" style="color: #20a0ff; cursor: pointer;">
-            {{ username }}<i class="el-icon-caret-bottom el-icon--right"></i>
-          </span>
-          <el-dropdown-menu slot="dropdown" >
-            <el-dropdown-item command="login_out">登出</el-dropdown-item>
-          </el-dropdown-menu>
-        </el-dropdown>
+        <div style="display: inline-block;">
+          <app-nav></app-nav>
+        </div>
+        <div style="position: absolute;top: 0;right: 0;overflow: hidden;">
+          <el-dropdown  trigger="click" style="float: right; margin-right: 40px;" @command="handleCommond">
+            <span class="el-dropdown-link" style="color: #20a0ff; cursor: pointer;">
+              {{ username }}<i class="el-icon-caret-bottom el-icon--right"></i>
+            </span>
+            <el-dropdown-menu slot="dropdown" >
+              <el-dropdown-item command="login_out">登出</el-dropdown-item>
+            </el-dropdown-menu>
+          </el-dropdown>
         
 <!--         <img 
           v-popover:popover  
@@ -39,21 +45,21 @@
         />   -->      
           <el-badge :value="pendingTaskCount" class="task-pending-top">
             <el-button size="mini" icon="warning" type="primary" @click="$router.push('/task/pending')" title="待办任务"></el-button>
-          </el-badge>          
+          </el-badge>
+        </div>       
     </nav>
-      <span class="nav-left-btn" @click="navToggle"><span class="nav-left-btn-arrow el-icon-arrow-left"></span></span>
-      <div class="nav-left" :style="`height: ${innerHeight}px`">
-        
-        <el-menu v-if="menusMap != null" theme="dark" router unique-opened :default-active="select.path" :collapse="isCollapse">
-          <app-menu-item v-for="item in menu_data" :dd="item" :key="item.path"></app-menu-item>
-        </el-menu>
-
-      </div>
+      
+    <div class="nav-left" :style="`height: ${innerHeight}px; left: ${navLeft}`" v-if="!noMenu">
+      <span class="nav-left-btn" :style="`left: ${navLeftBtn};`" @click="navToggle" v-if="!noMenu"><span :class="navLeftBtnClass"></span></span>
+      <el-menu v-if="menusMap != null" theme="dark" router unique-opened :default-active="leftMenuActive" mode="vertical">
+        <app-menu-item v-for="item in menuSource" :dd="item" :key="item.path"></app-menu-item>
+      </el-menu>
+    </div>
     <div v-loading="loading" :element-loading-text="loadingText" >
       <div :style="`height: ${innerHeight-10}px; padding: 10px 15px 0; background-color: #F9FAFC;overflow:auto;`">
         <div class="container">
           <!-- <h1 class="container-menu"><i :class="select.icon"></i><span>{{ select.text }}</span></h1> -->
-          <div class="container-nav">
+          <div class="container-nav" v-if="!noMenu">
             <el-breadcrumb separator=">">
               <el-breadcrumb-item v-for="item in select_arr" :to="item.path" :key="item.path">
                 <i :class="item.icon"></i>{{ item.text }}
@@ -62,7 +68,7 @@
                 <el-tag 
                   v-for="(tag, index) in screen_label"
                   :closable="true"
-                  :key="tag" 
+                  :key="tag"
                   type="primary"
                   :close-transition="false"
                   @close="handleClose(index)"
@@ -85,33 +91,46 @@
 </template>
 
 <script>
-import AxiosMixins from '@/mixins/axios-mixins'
 
 import AgencyLoad from '@/components/form/AgencyLoad'
 
 import menu from '@/const/menuConst'
+import AppNav from '@/components/common/AppNav'
 import AppMenuItem from '@/components/common/AppMenuItem'
+
 import { mapGetters } from 'vuex'
+import { mapMutations } from 'vuex'
 import { mapActions } from 'vuex'
+
 export default {
   name: 'app',
-  mixins: [ AxiosMixins ],
   computed: {
-    select () {
-      const d = this;
-      let path = d.$route.path;
-      const params = d.$route.params;
+    ...mapGetters([
+      'screen_label',
+      'innerHeight',
+      'loading',
+      'loadingText',
+      'viewLoading',
+      'viewLoadingText',
+      'username',
+      'leftVisible',
+      'agencyLoadVisible',
+      'menusMap',
+      'pendingTaskCount',
+      'menuSource',
+      'menuType',
+      'noMenu',
+    ]),
+    path () {
+      let path = this.$route.path;
       path = path.split("__")[0];
-      
-      return menu.map[path];
+      return path;
     },
     select_arr () {
       const d = this;
       const arr = [];
-      let path = d.$route.path;
+      const path = this.path;
       const params = d.$route.params;
-
-      path = path.split("__")[0];
 
       const arr2 = path.split("/");
 
@@ -131,19 +150,22 @@ export default {
       if(s.length > 3) s = s.slice(0,3);
       return s;
     },
-    ...mapGetters([
-      'screen_label',
-      'innerHeight',
-      'loading',
-      'loadingText',
-      'viewLoading',
-      'viewLoadingText',
-      'username',
-      'leftVisible',
-      'agencyLoadVisible',
-      'menusMap',
-      'pendingTaskCount',
-    ]),
+    appPaddingLef () {
+      if(this.noMenu) return '0px';
+      return this.leftVisible ? '200px' : '0px';
+    },
+    navLeft () {
+      return this.leftVisible ? '0px' : '-200px';
+    },
+    navLeftBtn () {
+      return this.leftVisible ? '200px' : '0px';
+    },
+    navLeftBtnClass () {
+      const arr = ['nav-left-btn-arrow', 'el-icon-arrow-left'];
+      this.leftVisible ? arr.push('el-icon-arrow-left') : arr.push('el-icon-arrow-right');
+      return arr.join(' ');   
+    }
+
   },
   data () {
     return {      
@@ -153,7 +175,7 @@ export default {
       windowLock: false,
       userinfoLoading: true,
       isCollapse: false,
-      screenWidth: document.documentElement.clientWidth,
+      leftMenuActive: '',
     };
   },
   methods: {
@@ -165,8 +187,15 @@ export default {
       'refreshArea',
       'refreshCity',
     ]),
+    ...mapMutations([
+      'removeScreen',
+      'toggleLeftVisible',
+      'setInnerHeight',
+      'setInnerWidth',
+      'setUser',
+    ]),
     handleClose (index) {
-      this.$store.commit('removeScreen', index);
+      this.removeScreen(index);
     },
     handleCommond (commond) {
       if(commond == 'login_out') {
@@ -176,44 +205,60 @@ export default {
           window.location.href = '/login';
         }
 
-        this.axiosGet({url, success});
+        this.$axiosGet({url, success});
       }
     },
     navToggle () {
-      let i = 32;
-      let n = this.leftVisible ? 160 : 0;
-      i = this.leftVisible ? -i : i;
+      this.toggleLeftVisible();
 
-      this.$store.commit('toggleLeftVisible');
-
-      const left = $('.nav-left');
-      const app = $('#app');
-      const btn = $('.nav-left-btn');
-      animation();
+      // let i = 32;
+      // let n = this.leftVisible ? 160 : 0;
+      // i = this.leftVisible ? -i : i;
+      // animation();
       
-      function animation () {        
-        n += i;
-        left.css('width', n);
-        app.css('padding-left', n);
-        btn.css('left', n);
+      //滑动效果
+      // function animation () {        
+      //   n += i;
+      //   left.css('width', n);
+      //   app.css('padding-left', n);
+      //   btn.css('left', n);
 
-        if(n == 0) {
-          btn.find('.nav-left-btn-arrow').removeClass('el-icon-arrow-left').addClass('el-icon-arrow-right');
-        }else if( n== 160) {
-          btn.find('.nav-left-btn-arrow').removeClass('el-icon-arrow-right').addClass('el-icon-arrow-left');
-        }else {
-          window.requestAnimationFrame(animation);
-        }
-      }     
+      //   if(n == 0) {
+      //     btn.find('.nav-left-btn-arrow').removeClass('el-icon-arrow-left').addClass('el-icon-arrow-right');
+      //   }else if( n== 160) {
+      //     btn.find('.nav-left-btn-arrow').removeClass('el-icon-arrow-right').addClass('el-icon-arrow-left');
+      //   }else {
+      //     window.requestAnimationFrame(animation);
+      //   }
+      // }     
     }
   },
   created () {
-  
+    // this.leftMenuActive = this.path;
+
+    const refreshWindow =  _=> {
+      this.setInnerHeight(window.innerHeight);
+      this.setInnerWidth(window.innerWidth);
+    }
+
+    refreshWindow();
+    window.onresize = _=>{
+      if( !this.windowLock ) {
+        this.windowLock = true;
+         
+        window.setTimeout(_=>{
+          refreshWindow(); 
+          this.windowLock = false;
+        },100)
+      }
+    };
+
+
     const success = _=>{
       this.userinfoLoading = false;
       
       //设置个人信息
-      this.$store.commit('setUser', window.appCache.userinfo);
+      this.setUser(window.appCache.userinfo);
       
       //获取系统配置数据
       this.refreshExtends(false);
@@ -242,44 +287,35 @@ export default {
     success();
 
   },
-  beforeCreate () {
-    const refreshWindow =  _=> {
-      this.$store.commit('setInnerHeight', window.innerHeight - 50);
-      this.$store.commit('setInnerWidth', window.innerWidth);
-    }
-
-    refreshWindow();
-    window.onresize = _=>{
-      if( !this.windowLock ) {
-        this.windowLock = true;
-         
-        window.setTimeout(_=>{
-          refreshWindow(); 
-          this.windowLock = false;
-        },100)
-      }
-    }
-  },
   components: { 
     AppMenuItem,
-    AgencyLoad, 
+    AgencyLoad,
+    AppNav,
   },
   watch: {
-    screenWidth (val) {
-      this.screenWidth = val;
+    //路径更改 左侧菜单自东变更active项
+    path (val) {
+      this.leftMenuActive = val; 
+    },
+    //解决菜单切换时 左侧菜单的active项为空
+    menuType () {
+      this.leftMenuActive = '';
+      this.$nextTick(() => {
+        this.leftMenuActive = this.path;
+      });
     }
   }
 }
 </script>
 <style lang="scss">
-@media only screen and (min-width: 1024px) and (max-width: 1338px){
+@media only screen and (max-width: 1338px){
   @import './style/common';
 }
 $nav_bgColor: #383838;
 $nav_height: 50px;
 
 $navL_bgColor: #324157;
-$navL_width: 160px;
+$navL_width: 200px;
 
 $container_padding: 20px;
 
@@ -323,7 +359,7 @@ nav {
 }
 .nav-left-btn {
   position: fixed;
-  left: 160px;
+  left: $navL_width;
   top: 50%;
   margin-top: -50px;
   background-color: #68758a;
@@ -359,7 +395,7 @@ nav {
   margin-right: 10px;
   vertical-align: middle;
   position: relative;
-    top: -8px;
+  top: -8px;
 }
 .container-nav {
   border-radius: 4px;
@@ -577,7 +613,7 @@ nav {
     transform: translateY(-50%) translateX(100%) scale(0.8);
   }
   .el-submenu .el-menu-item {
-    margin-left: -15px;
+    /*margin-left: -15px;*/
   }
   .empty-top-left .el-table__empty-text {
     top: 40px;

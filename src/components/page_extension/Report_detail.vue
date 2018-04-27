@@ -18,6 +18,7 @@
 
 import ReportView from '@/components/page_extension/Report_view'
 import ReportForm from '@/components/page_extension/Report_form'
+import {configs} from '@/const/reportSetting'
 import {mapGetters} from 'vuex'
 
 export default {
@@ -41,7 +42,6 @@ export default {
 	computed: {
 		...mapGetters([
 			'innerHeight',
-			'tableConfigsCache',
 		]),
 		reportType () {
 			return this.currentRow ? this.currentRow.report_type : '';
@@ -50,7 +50,7 @@ export default {
 			return this.currentRow ? this.currentRow.table_type : '';
 		},
 		config () {
-			return this.tableConfigsCache[this.tableType];
+			return configs[this.tableType];
 		}
 	},
 	methods: {

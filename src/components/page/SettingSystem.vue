@@ -14,7 +14,7 @@ import AppCollapse from '@/components/common/AppCollapse'
 import {mapActions} from 'vuex'
 import {mapGetters} from 'vuex'
 
-const URL = '/api/configs'
+const URL = '/configs'
 
 export default {
   name: 'settingSystem',

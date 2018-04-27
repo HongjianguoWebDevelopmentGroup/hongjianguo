@@ -67,11 +67,18 @@ const URL = '/api/tasks';
 export default {
   name: 'taskEdit',
   mixins: [ AxiosMixins ],
-  props: [ 'type', 'row' ],
+  props: [ 'type', 'row', 'id'],
   methods: {
     ...mapActions([
       'refreshUser',
+      'refreshFlows',
     ]),
+    projectId () {
+    const arr = [];
+      if(this.id) {
+        return this.id = arr.push(this.id);
+      }
+    },
     add () {
       const url = URL;
       const data = this.$tool.shallowCopy(this.form, {'date': true});
@@ -98,6 +105,15 @@ export default {
     clear () {
       this.$refs.form.resetFields();
     },
+    fill (o,f,d) {
+      this.form.project_id = o;
+      window.setTimeout(_=>{
+        this.form.flow_id = f;
+        this.$nextTick(_=>{
+          this.form.task_def_id = d;
+        });
+      }, 0);
+    },
     refreshRow () {
       if(this.type == 'edit') {
         
@@ -109,7 +125,6 @@ export default {
             this.attachments = d;
           }else if(k == 'person_in_charge') {
             this.form[k] = {id: d, name: this.row['person_in_charge_name']};
-            console.log(this.form[k]);
           }else {
             if(d) {
               this.form[k] = d;  
@@ -143,14 +158,13 @@ export default {
   },
   computed: {
     flowsData () {
-      return this.$store.getters.flowsData;
+      return this.$store.getters.flowsData; // flows
     },
     taskDefsData () {
       return this.$store.getters.taskDefsData;
     },
     flowOptions () {
       const c = this.category;
-      this.form.flow_id = '';
       if( !this.flowsData[c] ) {
         return [];
       }else {
@@ -160,8 +174,7 @@ export default {
       }     
     },
     defOptions () {
-      const f = this.form.flow_id;
-      this.form.task_def_id = '';
+      const f = this.form.flow_id;     
       const arr = [];
 
       this.taskDefsData.forEach(_=>{
@@ -176,17 +189,23 @@ export default {
       handler () {
         if(this.type == 'add') {
           this.$nextTick(_=>{
+            this.form.flow_id = '';
             const select = this.$refs.project.getSelected()[0];
             this.category = select ? select['category'] : '';  
           })
         }
       }
     },
+    'form.flow_id': {
+      handler () {
+        this.form.task_def_id = '';
+      }
+    },
     'row.id': {
       handler () {
         this.refreshRow();
       }
-    }
+    },
   },
   mounted () {
     this.refreshRow();

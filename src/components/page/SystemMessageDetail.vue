@@ -20,7 +20,7 @@
 <script>
 import AxiosMixins from '@/mixins/axios-mixins'
 
-const URL = '/api/mails';
+const URL = '/mails';
 
 export default {
   name: 'systemMessageDetail',

@@ -56,10 +56,16 @@ const map = new Map([
 		DATA_KEY: 'agencies',
 		PLACEHOLDER: '请输入代理机构关键词',
 	}],
-	['project', {
-		URL: '/api/projects',
-		DATA_KEY: 'projects',
-		PLACEHOLDER: '请输入案件关键词',
+  ['project', {
+    URL: '/api/projects',
+    DATA_KEY: 'projects',
+    PLACEHOLDER: '请输入案件关键词',
+  }],	
+  ['progress', {
+		URL: '/api/progress',
+		DATA_KEY: 'progress',
+		PLACEHOLDER: '请输入状态关键词',
+    PARAMS: { category: 1 },
 	}],
 	['proposal', {
 		URL: '/api/proposals',
@@ -148,6 +154,7 @@ export default {
       options: [],
       loading: false, 
   		selected: [],
+      keyword: '',
   	};
   },
   methods: {
@@ -191,7 +198,6 @@ export default {
       }else {
         //selected通过map映射
         const arr = [];
-        console.log(val);
         val.forEach(_=>{
           //在map中搜索, 若不存在，则自定义
           const v = this.map.get(_);
@@ -207,7 +213,7 @@ export default {
       }
     },
     remoteMethod (keyword) {
-     
+      this.keyword = keyword;
       const s = { keyword, listOnly: '1' };
       const os = this.PARAMS;
       const key = this.DATA_KEY;
@@ -284,7 +290,7 @@ export default {
   	},
   	option_in () {
       //将已经选择的OPTION合并到查询OPTION中
-  		const arr = [ ...this.selected, ...this.options ];
+  		const arr = this.keyword ? this.options : [ ...this.selected, ...this.options ];
       //对象去重(ID)
   		return this.$tool.singleObject(arr,'id');
   	},
@@ -315,9 +321,11 @@ export default {
         this.$refs.select.visible = false;
       }
 
-      this.refreshSelected(val);   
-
-  	}
+      this.refreshSelected(val);
+  	},
+    // type () {
+    //   this.refreshSelected(this.value2);  
+    // }
   },
   created () {
     this.refreshSelected(this.value2);

@@ -61,6 +61,12 @@ export default {
     'multipleLimit': {
       type: Number,
       default: 0,
+    },
+    'skip': {
+      type: Array,
+      default () {
+        return [];
+      }
     }
   },
   data () {    
@@ -95,9 +101,18 @@ export default {
       return op;
     },
     optionsIn () {
+      const s = this.skip;
       const f = this.filterOptions;
+      let options = this.options;
+      
+      if(s.length != 0) {
+        options = options.filter(v => {
+          return s.indexOf(v.id) < 0;
+        })
+      }
+
       if(f.length != 0) {
-        return this.options.filter(_=>{
+        options = options.filter(_=>{
           for(let i = 0; i < f.length; i++) {
             const item = f[i];
 
@@ -107,9 +122,9 @@ export default {
           }
           return true;
         })
-      }else {
-        return this.options;
       }
+
+      return options;
     }
   },
   watch: {
@@ -182,6 +197,9 @@ export default {
     this.setOptions();
   },
   watch: {
+    config () {
+      this.setOptions();
+    },
     cacheData (val) {
       if(val) {
         this.options = val;  

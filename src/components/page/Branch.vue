@@ -90,7 +90,7 @@ import StaticSelect from '@/components/form/StaticSelect'
 import {mapGetters} from 'vuex'
 import {mapActions} from 'vuex'
 
-const url = '/api/branches';
+const url = '/branches';
 export default {
   name: 'branch',
   data () {
@@ -155,7 +155,8 @@ export default {
         .then(_=>{
           const url = `${url}/${this.currentNode.id}`;
           const success = _=>{
-            this.$message({message: ``})
+            this.$message({message: _.info, type: 'success'});
+            this.refresh();
           }
           this.$axiosDelet({
             url, 
@@ -180,7 +181,7 @@ export default {
         return;
       }
 
-      const url = '/api/branches/transfer';
+      const url = '/branches/transfer';
       const data = {
         id: this.currentNode.id,
         target: this.transfer,

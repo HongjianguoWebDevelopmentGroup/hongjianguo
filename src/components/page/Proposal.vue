@@ -165,7 +165,7 @@ export default {
     },
     refreshTableData (option) {
       const url = '/api/proposals';
-      const data = Object.assign({}, option, this.filter, this.screen_value);
+      const data = Object.assign({}, option, this.filter, this.screen_value, this.inParams);
       const success = _=>{
         if(data.format == 'excel') {
           window.location.href = _.proposals.downloadUrl;
@@ -278,7 +278,11 @@ export default {
   computed: {
     ...mapGetters([
       'menusMap',
-    ])
+    ]),
+    inParams () {
+      const p = this.$route.meta.params; 
+      return p ? p : {};
+    },
   },
   mounted () {
     this.refresh();

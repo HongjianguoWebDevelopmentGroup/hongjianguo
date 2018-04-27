@@ -169,7 +169,7 @@ export default {
   	refresh () {
   		if(!this.currentNode || !this.day || !this.date) return;
 
-  		const url = "/api/tasks/expiring";
+  		const url = "/tasks/expiring";
   		const data = {
   			type: this.currentNode.value,
   			days: this.day,
@@ -183,7 +183,7 @@ export default {
   	},
   	refreshTreeData () {
   		if( !this.day || !this.date) return;
-  		const url = '/api/tasks/expiring';
+  		const url = '/tasks/expiring';
 
 			const data = {
 				date: this.date,

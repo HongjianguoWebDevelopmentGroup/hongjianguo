@@ -62,7 +62,7 @@ const extensionHash = [
   { text: '是否是分案申请', label: 'is_division', area: '', type: [] },
   { text: '是否与生物相关', label: 'is_biological', area: '', type: 1 },
   { text: '是否有序列表', label: 'is_sequence', area: '', type: 1 },
-  { text: '是否依赖于遗传资源', label: 'is_genetci', area: 'CN', type: [] },
+  { text: '是否依赖于遗传资源', label: 'is_genetic', area: 'CN', type: [] },
   { text: '是否不丧失新颖性公开', label: 'is_leakage', area: 'CN', type: [] },
   { text: '是否要求优先权', label: 'is_priority', area: '', type: [] },
 ] 

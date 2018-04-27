@@ -104,7 +104,7 @@
 
             <el-button v-else-if="btn.type == 'view' && scope.row.isView" :type="btn.btn_type ? btn.btn_type : 'text'" :key="index" :size="btn.size ? btn.size : 'mini'" icon="view" @click="handleActionCommand(btn.click, scope, $event)" >查看</el-button>
 
-            <el-button v-else-if="btn.type == undefined || btn.type == 'custom'" :type="btn.btn_type ? btn.btn_type : ''" :key="index" :size="btn.size ? btn.size : 'mini'" :icon="btn.icon" @click="handleActionCommand(btn.click, scope, $event)">{{ btn.label }}</el-button>
+            <el-button v-else-if="btn.type == undefined || btn.type == 'custom'" :disabled="handleBtnBoolean(btn, scope.row, 'btn_disabled')" :type="btn.btn_type ? btn.btn_type : ''" :key="index" :size="btn.size ? btn.size : 'mini'" :icon="btn.icon" @click="handleActionCommand(btn.click, scope, $event)">{{ btn.label }}</el-button>
 
           </template>
         </template>
@@ -200,6 +200,9 @@ export default {
           height = height < 300 ? 300 : height;
         }else if(hk === 'default4') {
           height = this.innerHeight - 55;
+          height = height < 300 ? 300 : height;
+        }else if(hk === 'default5') {
+          height = this.innerHeight - 120;
           height = height < 300 ? 300 : height;
         }else {
           height = hk;

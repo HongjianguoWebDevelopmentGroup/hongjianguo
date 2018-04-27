@@ -1,6 +1,6 @@
 <template>
-   <app-collapse :col-title="`代理费(总计：${detailAgency.sum?detailAgency.sum:''}CNY)`">
-     <app-table :columns="columns" :data="detailAgency.list"></app-table>
+   <app-collapse :col-title="`代理费(总计：${detailAgency.sum?detailAgency.sum:'0'}CNY)`">
+     <app-table :columns="columns" :data="agencyData"></app-table>
    </app-collapse> 
 </template>
 <script>
@@ -46,6 +46,9 @@ import { mapGetters } from 'vuex'
     	...mapGetters([
     		'detailAgency',
     	]),
+      agencyData () {
+        return this.detailAgency.list ? this.detailAgency.list : [];
+      },
     },
     components: {
       AppTable,

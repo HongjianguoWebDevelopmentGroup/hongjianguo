@@ -5,6 +5,12 @@ const state = {
 
 const getters = {
 	productData: state=>state.data,
+	productOptions: (state, getters)=>{
+		const map = getters.productMap;
+		const arr = [...map.values()];
+
+		return arr;
+	},
 	productMap: state=>{
 		const map = new Map();
 		a(state.data);

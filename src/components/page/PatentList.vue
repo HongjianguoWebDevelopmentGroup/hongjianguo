@@ -13,7 +13,7 @@
       :id="currentRow.id" 
       ref="detail"
       @editSuccess="refresh">
-    </common-detail>    
+    </common-detail> 
 
     <el-dialog title="批量下载" :visible.sync="downloadVisible">
       <el-form>
@@ -36,7 +36,7 @@
 
 <script>
 import AxiosMixins from '@/mixins/axios-mixins'
-import AppFilter from '@/components/common/AppFilter'
+import Filter from '@/components/common/AppListFilter'
 import TableComponent from '@/components/common/TableComponent'
 import AppTree from '@/components/common/AppTree'
 import AppDatePicker from '@/components/common/AppDatePicker'
@@ -45,6 +45,7 @@ import AppShrink from '@/components/common/AppShrink'
 import CommonDetail from '@/components/page_extension/Common_detail'
 import StaticSelect from '@/components/form/StaticSelect'
 import { mapGetters } from 'vuex'
+import { mapActions } from 'vuex'
 
 const URL = '/api/patents';
 const PATENT_TYPE = ['发明专利', '实用新型', '外观设计']; 
@@ -246,15 +247,23 @@ export default {
       'configsExtends2',
       'configsExtends3',
       'extendsData',
-    ])
+    ]),
+    inParams () {
+      const p = this.$route.meta.params; 
+      return p ? p : {};
+    },
   },
   methods: {
+    ...mapActions([
+      'refreshFlows',
+      'refreshTaskDefs',
+    ]),
     add () {
       this.$router.push('/patent/add');
     },
     refreshTableData (option) {
       const url = URL;
-      const data = Object.assign({}, option, this.filter);
+      const data = Object.assign({}, option, this.filter, this.inParams);
       const success = d=>{
         if(data['format'] == 'excel') {
           window.location.href = d.patents.downloadUrl;
@@ -368,6 +377,8 @@ export default {
     }
 
     this.filter = this.$route.query;
+    this.refreshFlows();
+    this.refreshTaskDefs();
   },
   mounted () {
     
@@ -378,7 +389,7 @@ export default {
     this.$refs.table.refresh();
   },
   components: {  
-    AppFilter, 
+    Filter, 
     TableComponent, 
     AppTree, 
     AppDatePicker, 

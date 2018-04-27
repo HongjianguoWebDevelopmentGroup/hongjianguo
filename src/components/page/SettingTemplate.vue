@@ -18,7 +18,7 @@
 import TableComponent from '@/components/common/TableComponent'
 import AxiosMixins from '@/mixins/axios-mixins'
 
-const URL = '/api/templates'
+const URL = '/templates'
 
 export default {
   name: 'settingTemplate',
