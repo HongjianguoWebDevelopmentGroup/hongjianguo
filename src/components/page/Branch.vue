@@ -148,15 +148,33 @@ export default {
       if(str == 'edit') {
         this.refreshBranch({
           success: _=>{
-            console.log(12231);
             this.$nextTick(_=>{
               const key = this.currentNode.id;
-              this.defaultKeys.push(key);
+              this.defaultKeys.splice(0,1,key);
               this.currentNode = this.branchMap.get(key);
               this.nodeKey = key;
             })
           }
         })    
+      }else{
+        this.refreshBranch({
+          success: _=>{
+            this.$nextTick(_=>{
+            if(val) {
+              const key = val.id;
+              this.defaultKeys.splice(0,1,key);
+              this.currentNode = this.branchMap.get(key);
+              this.nodeKey = key;
+              }else{
+                this.currentNode = '';
+                this.defaultKeys = [];
+              }
+            })
+          }
+        });
+        this.currentNode = '';
+        this.defaultKeys = [];
+        val.id? this.defaultKeys.push(val.id) : [];
       }
     },
     branchDelete () {
@@ -179,7 +197,7 @@ export default {
             this.$message({message: _.info, type: 'success'});
             this.refresh();
           }
-          this.$axiosDelet({
+          this.$axiosDelete({
             url, 
             success,
           })
