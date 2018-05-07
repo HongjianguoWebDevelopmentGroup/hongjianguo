@@ -1,6 +1,12 @@
 <template>
   <div class="main">
     <el-button type="primary" @click="addPop(0)" style="margin-bottom: 10px;">添加根节点</el-button>
+    <el-input
+      placeholder="输入关键字进行过滤"
+      v-model="filterText"
+      class="input-no-radius"
+      style="border-radius: 0;">
+    </el-input>
 	  <el-tree 
 	  	:data="options"
 	  	:props="props"
@@ -10,8 +16,9 @@
 	  	:render-content="renderContent"
 	  	:current-node-key="currentNodeKey"
 	  	@current-change="handleCurrentChange"
+      :filter-node-method="filterNode"
       :style="`height: ${innerHeight - 450}px; overflow: auto; font-size: 14px;`"
-
+      ref="tree"
 	  >
 	  </el-tree>
 	  <app-collapse :col-title="colTitle" v-if="currentNodeKey != ''" style="margin-top: 15px; margin-bottom: 0px;">
@@ -54,6 +61,7 @@ export default {
   mixins: [ AxiosMixins ],
   data () {
 		return {
+      filterText: '',
 		  'currentNodeKey': '',
 		  'props': {
 		  	label: 'name',
@@ -141,6 +149,10 @@ export default {
   			.catch(_=>{});
   		
   	},
+    filterNode(value, data) {
+      if (!value) return true;
+      return data.name.indexOf(value) !== -1;
+    },
   	refresh () {
   		if(this.pageType == 'classification') {
   			this.$store.dispatch('refreshClassification');
@@ -178,6 +190,12 @@ export default {
   		return t == 'classification' ? '技术详情' : '产品详情';
   	}
   },
+  watch: {
+    filterText(val) {
+      this.$refs.tree.filter(val);
+    }
+  },
+
   components: { AppCollapse },
 }
 </script>

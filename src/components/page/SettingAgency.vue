@@ -3,7 +3,7 @@
 		<table-component :tableOption="option" :data="tableData" @refreshTableData="refreshTableData" ref="table">
 			<template slot-scope="scope" slot="is_core_partner"> 
 				<el-select v-model="is_core_partner" style="width: 130px;">
-					<el-option v-for="(item, index) in options.is_core_partner" :label="item.l" :value="item.v" :key=index></el-option>
+					<el-option v-for="(item, index) in options.is_core_partner" :label="item.l" :value="item.v" :key="index"></el-option>
 				</el-select>
 			</template>
 		</table-component>
@@ -31,16 +31,16 @@ export default {
 				],
 				'header_slot': [ 'is_core_partner' ],
 				'columns': [
-					{ type: 'selection' },
+					// { type: 'selection' },
 					{ type: 'text', label: '机构名称', prop: 'name', width: '150' },
 					{ type: 'text', label: '联系人', prop: 'contact', width: '84' },
 					{ type: 'text', label: '地址', prop: 'address', width: '341' },
 					{ type: 'text', label: '联系电话', prop: 'telephone', width: '179' },
 					{ type: 'text', label: '邮箱', prop: 'email', width: '204' },
 					{ type: 'text', label: '状态', prop: 'status_name', width: '80' },
-					{ type: 'text', label: '核心合作伙伴', prop: 'is_core_partner_name', width: '133' },
-					{ type: 'array', label: '业务范围', prop: 'scope', width: '250' },
-					{ type: 'text', label: '评分', prop: 'rank', width: '180',
+					{ type: 'text', label: '核心合作伙伴', prop: 'is_core_partner_name',show: false, width: '133' },
+					{ type: 'array', label: '业务范围', prop: 'scope', width: '250' ,show: false,},
+					{ type: 'text', label: '评分', prop: 'rank', width: '180', show: false,
 					  render: (h,item)=>{
 					  	const rank = item/20;
 					  	return h('el-rate', {
@@ -58,8 +58,8 @@ export default {
 						type: 'action',
 						width: '220',
 						btns: [
-							{ type: 'edit', click: this.edit },
 							{ type: 'detail', click: this.detail },
+							{ type: 'edit', click: this.edit },
 							{ type: 'delete', click: this.deleteSingle },
 						]
 					}

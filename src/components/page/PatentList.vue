@@ -42,7 +42,7 @@ import StaticSelect from '@/components/form/StaticSelect'
 import { mapGetters } from 'vuex'
 import { mapActions } from 'vuex'
 
-const URL = '/api/patents';
+const URL = '/patents';
 const PATENT_TYPE = ['发明专利', '实用新型', '外观设计']; 
 
 export default {
