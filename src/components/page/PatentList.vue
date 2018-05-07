@@ -1,6 +1,6 @@
 <template>
   <div class="main">
-    <strainer v-model="filter" @refresh="refresh"></strainer>
+    <list-filter type="patent" :visible.sync="filterVisible" :refresh="refresh"></list-filter>
     
     <table-component :tableOption="tableOption" :data="tableData" @refreshTableData="refreshTableData" ref="table" :refresh-proxy="refreshProxy" :filter="filter">
       <el-button v-if="!!(menusMap && !menusMap.get('/patent/download') )" slot="download" :loading="downloadLoading" icon="share" @click="downloadPop" type="primary" style="margin-left: 5px; ">批量下载</el-button>
@@ -35,13 +35,8 @@
 </template>
 
 <script>
-import AxiosMixins from '@/mixins/axios-mixins'
-import Filter from '@/components/common/AppListFilter'
 import TableComponent from '@/components/common/TableComponent'
-import AppTree from '@/components/common/AppTree'
-import AppDatePicker from '@/components/common/AppDatePicker'
-import Strainer from '@/components/page_extension/PatentList_strainer'
-import AppShrink from '@/components/common/AppShrink'
+import ListFilter from '@/components/common/AppListFilter'
 import CommonDetail from '@/components/page_extension/Common_detail'
 import StaticSelect from '@/components/form/StaticSelect'
 import { mapGetters } from 'vuex'
@@ -52,7 +47,6 @@ const PATENT_TYPE = ['发明专利', '实用新型', '外观设计'];
 
 export default {
   name: 'patentList',
-  mixins: [ AxiosMixins ],
   data () {
     return {
       value6: '',
@@ -60,6 +54,7 @@ export default {
       currentRow: '',
       shrinkVisible: false,
       dialogVisible: false,
+      filterVisible: false,
       
       downloadVisible: false,
       downloadIds: [],
@@ -85,6 +80,7 @@ export default {
           // { type: 'batch_update' },
           { type: 'control', label: '字段' },
           { type: 'report', click: _=>{this.$router.push('/patent/report')} },
+          { type: 'filter', click: () => {this.filterVisible = true;} }
         ],
         'export_type': 'patent',
         'import_type': 'patent',
@@ -252,6 +248,10 @@ export default {
       const p = this.$route.meta.params; 
       return p ? p : {};
     },
+    custom () {
+      const custom = this.$route.meta.custom;
+      return custom !== undefined ? custom : false;
+    },
   },
   methods: {
     ...mapActions([
@@ -272,7 +272,7 @@ export default {
         }
       };
 
-      this.refreshProxy = this.axiosGet({url, data, success});
+      this.refreshProxy = this.$axiosGet({url, data, success});
     },
     refresh () {
       this.$refs.table.refresh();
@@ -286,7 +286,7 @@ export default {
         .then(()=>{
           const url=`${URL}/${id}`;
           const success = _=>{this.$refs.table.update()};
-          this.axiosDelete({url, success});    
+          this.$axiosDelete({url, success});    
         })
         .catch(()=>{});
     },
@@ -330,7 +330,7 @@ export default {
 
       this.downloadVisible = false;
       this.downloadLoading = true;
-      this.axiosPost({url, data, success, complete})
+      this.$axiosPost({url, data, success, complete})
     },
     save () {
       this.$refs.detail.edit();
@@ -386,15 +386,13 @@ export default {
       console.log(this.$route.query);
     }
     
-    this.$refs.table.refresh();
+    if(!this.custom) {
+      this.refresh();
+    }
   },
   components: {  
-    Filter, 
     TableComponent, 
-    AppTree, 
-    AppDatePicker, 
-    Strainer, 
-    AppShrink, 
+    ListFilter,
     CommonDetail,
     StaticSelect,
   },

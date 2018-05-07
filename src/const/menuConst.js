@@ -48,6 +48,13 @@ const taskMenu = [
 			{ type: 'item', text: '版权', path: '/task/type/copyright', icon: '' },
 		],
 	},
+	{
+		type: 'submenu',
+		text: '我的搜索项',
+		path: '/task/custom',
+		icon: 'iconfont el-icon-my-task',
+		children: [],
+	}
 ];
 
 const proposalMenu = [
@@ -72,6 +79,13 @@ const proposalMenu = [
 			{ type: 'item', text: '有新颖性', path: '/proposal/novelty/existent', icon: '' },
 			{ type: 'item', text: '无新颖性结案', path: '/proposal/novelty/non-existent', icon: '' },
 		]
+	},
+	{
+		type: 'submenu',
+		text: '我的搜索项',
+		path: '/proposal/custom',
+		icon: 'iconfont el-icon-my-proposal',
+		children: [],
 	}
 ]
 
@@ -116,6 +130,13 @@ const patentMenu = [
 			{ type: 'item', text: '下月PCT19条修改到期', path: '/patent/duration/pct19', icon: '' },
 		]
 	},
+	{
+		type: 'submenu',
+		text: '我的搜索项',
+		path: '/patent/custom',
+		icon: 'iconfont el-icon-my-patent',
+		children: [],
+	}
 ];
 
 const trademarkMenu = [
@@ -147,6 +168,13 @@ const trademarkMenu = [
 			{ type: 'item', text: '其他', path: '/trademark/area/other', icon: '' },
 		], 
 	},
+	{
+		type: 'submenu',
+		text: '我的搜索项',
+		path: '/trademark/custom',
+		icon: 'iconfont el-icon-my-trademark',
+		children: [],
+	}
 ];
 
 const copyrightMenu = [
@@ -172,6 +200,13 @@ const copyrightMenu = [
 			{ type: 'item', text: '其他', path: '/copyright/area/other', icon: '' },
 		], 
 	},
+	{
+		type: 'submenu',
+		text: '我的搜索项',
+		path: '/copyright/custom',
+		icon: 'iconfont el-icon-my-copyright',
+		children: [],
+	}
 ];
 
 const feeMenu = [
@@ -249,14 +284,14 @@ menu.source = [
 		text: '商标',
 		key: 'trademark',
 		path: '/trademark',
-		icon: 'iconfont	 el-icon-my-task',
+		icon: 'iconfont el-icon-my-trademark',
 		menu: trademarkMenu,
 	},
 	{
 		text: '版权',
 		key: 'copyright',
 		path: '/copyright',
-		icon: 'iconfont	 el-icon-my-copyright',
+		icon: 'iconfont el-icon-my-copyright',
 		menu: copyrightMenu,
 	},
 	{
@@ -323,7 +358,6 @@ menu.map = {
 	'/trademark/add': {text: '新建商标', icon: '', path: '/trademark/add'},
 	'/copyright/add': {text: '新建版权', icon: '', path: '/copyright/add'},
 
-
 	'/report/task/add': {text: '新建报表', icon: '', path: '/report/task/add'},	
 	'/report/proposal/add': {text: '新建报表', icon: '', path: '/report/proposal/add'},	
 	'/report/patent/add': {text: '新建报表', icon: '', path: '/report/patent/add'},	
@@ -350,7 +384,7 @@ for(let k in menu.source) {
 	const text = item["text"] ? item["text"] : '';
 	const icon = item["icon"] ? item["icon"] : '';
 	const path = item["path"]; 
-	const parent = '';
+	const parent = '/';
 	menu["map"][item["path"]] = { text, icon, path, parent };
 	if(item['menu'] && item['menu']['length'] != 0) {
 		tailRecursion(item['menu']);		

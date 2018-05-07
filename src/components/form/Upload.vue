@@ -4,11 +4,12 @@
       :on-remove="handleUploadRemove"
       :on-change="handleChange"
       class="app-upload"
-      :action=action
+      :action="action"
       :on-preview="onPreview"
       :before-upload="handleUploadBefore"
       :file-list="fileList"
       :multiple="multiple"
+      :data="data"
       ref="upload"
     >           <!-- <i class="el-icon-upload"></i> -->
         <el-button size="small" type="primary">点击上传</el-button>
@@ -35,6 +36,12 @@
         'action': {
           type: String,
           default: '/api/files',
+        },
+        'data': {
+          type: Object,
+          default () {
+            return {};
+          }
         }
       },
       data () {
@@ -48,6 +55,7 @@
           this.$refs.upload.clearFiles();
         },
         handleUploadBefore (f) {
+          this.$emit('beforeUpload');
           if (f.size > 200*1024*1024) {
             this.$message({type: 'warning',message:'上传文件大小不能超过200M！'});
             return false;

@@ -7,6 +7,16 @@ export default [
 			{ name: '每月', id: 'month' },
 		]
 	}],
+  ['invoice_status', {
+    placeholder: '请选择账单状态',
+    options: [
+      { name: 1, id: '1' },
+      { name: 2, id: '2' },
+      { name: 3, id: '3' },
+      { name: 4, id: '4' },
+      { name: 5, id: '5' },
+    ]
+  }],
 	['report_type', {
 		placeholder: '请选择报表类型',
 		options: [

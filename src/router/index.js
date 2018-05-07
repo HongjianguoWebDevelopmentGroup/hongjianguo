@@ -305,6 +305,15 @@ const router = new Router({
       name: 'TaskExpiring',
       component: TaskExpiring,
     },
+    {
+      path: '/task/custom/:id',
+      name: 'TaskCustom',
+      component: TaskCommon,
+      meta: {
+        status: 0,
+        custom: true,
+      },
+    },
 //################### 任务路由 end #####################
 
 //################### 提案路由 begin ###################
@@ -360,16 +369,12 @@ const router = new Router({
       alias: ['/proposal/detail', '/task/pending/proposal_check', '/proposal/edit'],
     },
     {
-      path: '/proposal/report',
-      name: 'ProposalReport',
-      component: Report,
-      meta: { 'type': 'proposal' },
-    },
-    {
-      path: '/proposal/report/add',
-      name: 'ProposalReportAdd',
-      component: ReportAdd,
-      meta: {'type': 'proposal'},
+      path: '/proposal/custom/:id',
+      name: 'ProposalCustom',
+      component: Proposal,
+      meta: {
+        custom: true,
+      },
     },
 //################### 提案路由 end #####################
 
@@ -516,6 +521,14 @@ const router = new Router({
       meta: { type: 'patent' },
       component: NoticeCommon,
     },
+    {
+      path: '/patent/custom/:id',
+      name: 'PatentCustom',
+      component: PatentList,
+      meta: {
+        custom: true,
+      },
+    },
 //################### 专利路由 end #####################
 
 //################### 商标路由 begin ###################
@@ -613,6 +626,14 @@ const router = new Router({
       }
     },
     {
+      path: '/trademark/custom/:id',
+      name: 'TrademarkCustom',
+      component: TrademarkList,
+      meta: {
+        custom: true,
+      },
+    },
+    {
       path: '/trademark/add',
       name: 'TrademarkAdd',
       meta: { type: 'edit' },
@@ -660,6 +681,30 @@ const router = new Router({
       meta: {
         params: { stage: 4 },
       }
+    },
+    {
+      path: '/copyright/area/cn',
+      name: 'CopyrightAreaCn',
+      component: CopyrightList,
+      meta: {
+        params: { area: 'CN' },
+      }
+    },
+    {
+      path: '/copyright/area/other',
+      name: 'CopyrightAreaOther',
+      component: CopyrightList,
+      meta: {
+        params: { area: 'other' },
+      }
+    },
+    {
+      path: '/copyright/custom/:id',
+      name: 'CopyrightCustom',
+      component: CopyrightList,
+      meta: {
+        custom: true,
+      },
     },
     {
       path: '/copyright/add',
@@ -912,13 +957,5 @@ const router = new Router({
     { path: '/setting/user', name: 'SettingUser', component: SettingUser },
     { path: '/news/interact', name: 'InteractEmail', component: InteractEmail},
   ]
-});
-router.beforeEach((to, from, next)=>{
-  // console.log(to, from);
-  const store = this.a.app.$store;
-  if(store) {
-    store.commit('clearScreen');
-  }
-  next();
 });
 export default router

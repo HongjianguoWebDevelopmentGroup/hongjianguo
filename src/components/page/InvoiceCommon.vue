@@ -39,10 +39,10 @@
     <app-shrink v-if="feeType == 0" :visible.sync="uploadVisible" title="上传凭证" :modal="true">
       <template slot="header">
         <span style="float: right; line-height: 40px;">
-          <el-button type="primary" size="small" >完成上传</el-button>
+          <el-button type="primary" size="small" @click="uploadFinish">完成上传</el-button>
         </span>
       </template>
-      <upload-invoice ref="uploadInvoice"></upload-invoice>
+      <upload-invoice style="margin-top: 10px;" ref="uploadInvoice"></upload-invoice>
     </app-shrink>
 
   </div>
@@ -190,6 +190,14 @@ export default {
   methods: {
     checkSave () {
       this.$refs.checkInvoice.save();
+    },
+    async uploadFinish () {
+      const response = await this.$refs.uploadInvoice.finish();
+
+      if(response.data.status) {
+        this.uploadVisible = false;
+        this.update();
+      } 
     },
     checkClick ({id}) {
       this.checkVisible = true;

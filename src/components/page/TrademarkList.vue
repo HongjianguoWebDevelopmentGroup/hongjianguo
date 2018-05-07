@@ -1,7 +1,6 @@
 <template>
   <div class="main">
-  	<strainer v-model="filter" @refresh="refresh"></strainer>
-		<table-component :tableOption="tableOption" :data="tableData" ref="table" @refreshTableData="refreshTableData"></table-component>
+		<table-component :tableOption="tableOption" :data="tableData" ref="table" :refreshTableData="refreshTableData"></table-component>
 		<common-detail
       :title="currentRow.title"
       :visible.sync="shrinkVisible" 
@@ -9,6 +8,7 @@
       :id="currentRow.id"
       @editSuccess="refresh">
     </common-detail>
+    <list-filter type="trademark" :visible.sync="filterVisible" :refresh="refresh"></list-filter>
     <!-- <el-button @click="customFields()">按钮</el-button> -->
   </div>
 </template>
@@ -17,30 +17,33 @@
 import TableComponent from '@/components/common/TableComponent'
 import AppDatePicker from '@/components/common/AppDatePicker'
 import CommonDetail from '@/components/page_extension/Common_detail'
-import Strainer from '@/components/page_extension/TrademarkList_strainer'
+import ListFilter from '@/components/common/AppListFilter'
 
 const URL = '/trademarks'
 export default {
   name: 'trademarkList', 
   data () {
 		return {
+			filterVisible: false,
 			dialogScreenVisible: false,
 			tableOption: {
 				'name': 'trademark',
 				'url': URL,
 				'is_filter' : true,
-				'header_btn': [{
-					'type': 'add',
-					click: _=>{
-						this.$router.push('/trademark/add');
-					}
-				},
-				{ type: 'delete',},
-				{ type: 'import',},
-				{ type: 'export',},
-				{ type: 'batch_upload',},
-				{ type: 'report', click: _=>{this.$router.push('/trademark/report')} },
-				{ type: 'control', label: '字段'},
+				'header_btn': [
+					{
+						'type': 'add',
+						click: _=>{
+							this.$router.push('/trademark/add');
+						}
+					},
+					{ type: 'delete',},
+					{ type: 'import',},
+					{ type: 'export',},
+					{ type: 'batch_upload',},
+					{ type: 'report', click: _=>{this.$router.push('/trademark/report')} },
+					{ type: 'control', label: '字段'},
+					{ type: 'filter', click: () => {this.filterVisible = true} }
 				],
 				'import_type': 'trademark',
 				'upload_type': 'trademark',
@@ -92,6 +95,10 @@ export default {
       const p = this.$route.meta.params; 
       return p ? p : {};
     },
+    custom () {
+    	const custom = this.$route.meta.custom;
+    	return custom !== undefined ? custom : false;
+    }
   },
   methods: {
   	refreshTableData(option) {
@@ -136,13 +143,15 @@ export default {
   	}
   },
   mounted () {
-  	this.refresh();
+  	if(!this.custom) {
+  		this.refresh();
+  	}
   },
   components: { 
   	TableComponent, 
   	AppDatePicker,
   	CommonDetail,
-  	Strainer,
+  	ListFilter,
   },
   watch: {
 

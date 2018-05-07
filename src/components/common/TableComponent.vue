@@ -7,7 +7,7 @@
         placement="right"
         width="800"
         trigger="click"
-        v-model="filterVisible"
+        :value="screenVisible"
         :open-delay="300"
         v-if="tableOption.is_filter ? true : false"
       >
@@ -183,11 +183,34 @@ import AppTable from '@/components/common/AppTable'
 import AppExport from '@/components/common/AppExport'
 import { mapGetters } from 'vuex'
 import { mapMutations } from 'vuex'
+import { mapActions } from 'vuex'
 
 export default {
   name: 'tableComponent',
   mixins: [ AxiosMixins ],
-  props: ['tableOption', 'data', 'tableStyle', 'refreshProxy', 'filter'],
+  props: {
+    tableOption: {
+      type: Object,
+      required: true,
+    },
+    data: {
+      type: null,
+      required: true,
+    },
+    tableStyle: {
+      type: String,
+      default: '',
+    },
+    refreshProxy: {
+      type: null,
+    },
+    filter: {
+      type: null,
+    },
+    refreshTableData: {
+      type: Function,  
+    }
+  },
   data () {
     const d = this;
     const cols = d.tableOption.columns;
@@ -275,7 +298,6 @@ export default {
       sort: {field: null, order: null},
       dialogImportVisible: false,
       dialogUpdateVisible: false,
-      filterVisible: false,
       exportLoading: false,
       dialogControl: false,
       control,
@@ -290,9 +312,13 @@ export default {
   },
   computed: {
     ...mapGetters([
-      'screen_obj',
+      'filterLock',
+      'screenVisible',
+      'filterForm',
       'pagesize',
       'menusMap',
+      'screenValue',
+      'filterForm',
     ]),
     default_choose () {
       return this.control[1].map(_=>_.key);
@@ -426,6 +452,10 @@ export default {
     ...mapMutations([
       'setPageSize',
     ]),
+    ...mapActions([
+      'setScreenVisible',
+      'clearFilter',
+    ]),
     getPageData (c) {
       const d = this,
           start = (c - 1) * d.pageSize,
@@ -467,6 +497,9 @@ export default {
         func(e)
       }else {
         //合并获得导出请求的请求参数
+        if(this.refreshTableData) {
+          this.refreshTableData(Object.assign({}, this.getRequestOption(), {format: 'excel'}));
+        }
         this.$emit('refreshTableData', Object.assign({}, this.getRequestOption(), {format: 'excel'} ) );
         //Vue Api.
         this.$nextTick(_=>{
@@ -611,7 +644,10 @@ export default {
       return this.$refs.table.getSelected(flag);
     },
     update () {
-      this.$emit('refreshTableData', Object.assign({}, this.getRequestOption(), this.screen_obj) );
+      if(this.refreshTableData) {
+        this.refreshTableData(Object.assign({}, this.getRequestOption(), this.filterForm));
+      }
+      this.$emit('refreshTableData', Object.assign({}, this.getRequestOption(), this.filterForm) );
     },
     search (val) {
       this.page = 1;
@@ -623,6 +659,7 @@ export default {
       this.update();
     },
     refresh () {
+      console.log('-------------refresh--------------');
       this.page = 1;
       this.search_value = "";
       this.update();
@@ -652,8 +689,8 @@ export default {
       handler: function () {},
       deep: true,
     },
-    screen_obj (val) {
-      this.filterVisible = false;
+    filterForm (val) {
+      if(this.filterLock) return;
       this.refresh();    
     }
   },
@@ -685,8 +722,11 @@ export default {
     AppTable,
     AppExport,
   },
-  mounted () {
+  beforeDestroy () {
+    console.log('beforeDestroy');
+    this.clearFilter();
   },
+  mounted () {},
 }
 </script>
 

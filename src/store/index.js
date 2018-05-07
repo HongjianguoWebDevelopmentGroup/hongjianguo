@@ -24,6 +24,7 @@ import tableCache from '@/store/modules/table-cache.js'
 import menuCache from '@/store/modules/menu-cache.js'
 import customForm from '@/store/modules/custom-form.js'
 import tool from '@/const/tool.js'
+
 Vue.use(Vuex);
 
 const store = new Vuex.Store({

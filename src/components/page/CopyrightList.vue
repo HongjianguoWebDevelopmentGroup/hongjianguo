@@ -1,7 +1,6 @@
 <template>
   <div class="main">
-    <strainer v-model="filter" @refresh="refresh"></strainer>
-    <table-component :tableOption="tableOption" :data="tableData" @refreshTableData="refreshTableData" ref="table"></table-component>
+    <table-component :tableOption="tableOption" :data="tableData" :refreshTableData="refreshTableData" ref="table"></table-component>
     
     <common-detail
       :title="currentRow.title"
@@ -12,9 +11,9 @@
     </common-detail>
 
     <list-filter
-      ref="filter"
       type="copyright"
       :visible.sync="filterVisible"
+      :refresh="refresh"
     ></list-filter>
 
   </div>
@@ -23,7 +22,6 @@
 <script>
 import TableComponent from '@/components/common/TableComponent'
 import ListFilter from '@/components/common/AppListFilter'
-import Strainer from '@/components/page_extension/CopyrightList_strainer'
 import AppShrink from '@/components/common/AppShrink'
 import CommonDetail from '@/components/page_extension/Common_detail'
 
@@ -50,9 +48,8 @@ export default {
           { type: 'export' },
           { type: 'import' },
           { type: 'batch_upload' },
-          { type: 'report', click: () => {this.$router.push('/copyright/report')} },
           { type: 'control', label: '字段' },
-          { type: 'filter', click: () => {this.filterVisible = true} }, 
+          { type: 'filter', click: () => {this.filterVisible = true} },
         ],
         'columns': [
           { type: 'selection' },
@@ -85,7 +82,6 @@ export default {
         ] 
       },
       tableData: [],
-      filter: {},
       filterVisible: false,
     };
   },
@@ -94,6 +90,10 @@ export default {
       const p = this.$route.meta.params; 
       return p ? p : {};
     },
+    custom () {
+      const custom = this.$route.meta.custom;
+      return custom !== undefined ? custom : false;
+    },
   },
   methods: {
     add () {
@@ -101,7 +101,7 @@ export default {
     },
     refreshTableData (option) {
       const url = URL;
-      const data = Object.assign({}, option, this.filter, this.inParams);
+      const data = Object.assign({}, option, this.inParams);
       const success = d=>{
         if(data['format'] == 'excel') {
           window.location.href = d.copyrights.downloadUrl;
@@ -109,19 +109,10 @@ export default {
           this.tableData = d.copyrights;  
         }      
       };
-      this.$axiosGet({url, data, success});
+      return this.$axiosGet({url, data, success});
     },
     refresh () {
       this.$refs.table.refresh();
-    },
-    deleteSingle ({ title, id }) {
-      this.$confirm(`删除后不可恢复，确认删除‘${title}’吗？`)
-        .then(()=>{
-          const url=`${URL}/${id}`;
-          const success = _=>{this.$refs.table.update()};
-          this.axiosDelete({url, success});    
-        })
-        .catch(()=>{});
     },
     detail ({id}) {
       const path = `/copyright/list/detail/${id}`; 
@@ -136,11 +127,12 @@ export default {
     }
   },
   mounted () {
-    this.$refs.table.refresh();
+    if(!this.custom) {
+      this.refresh();
+    }
   },
   components: { 
-    TableComponent, 
-    Strainer, 
+    TableComponent,
     AppShrink, 
     CommonDetail,
     ListFilter,

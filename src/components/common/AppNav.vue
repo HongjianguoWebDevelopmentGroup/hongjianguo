@@ -82,9 +82,6 @@ export default{
 			this.hideMap = map;
 		},
 	},
-	created () {
-		this.changeMenuType(this.menuType);
-	},
 	mounted () {
 		this.refreshNav();
 	},
@@ -92,7 +89,7 @@ export default{
 		windowWidth () {
 			this.refreshNav();
 		},
-		menuType (val) {
+		menuType (val, val2) {
 			this.changeMenuType(this.menuType);
 		}
 	}

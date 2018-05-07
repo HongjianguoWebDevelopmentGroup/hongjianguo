@@ -190,7 +190,7 @@ export default {
 
       if(hk !== undefined) {
         if(hk == 'default') {
-          height = this.innerHeight - 200;
+          height = this.innerHeight - 150;
           height = height < 300 ? 300 : height;
         }else if(hk == 'default2') {
           height = this.innerHeight - 150;
