@@ -1,21 +1,21 @@
 <template>
   <app-collapse col-title="基本信息">
-		<el-form label-width="120px" :model="form" :rules="rules" ref="form">
+    <el-form label-width="120px" :model="form" :rules="rules" ref="form">
       <el-form-item label="案号" prop="serial">
        <el-input v-model="form.serial" placeholder="请填写案号"></el-input>
       </el-form-item>
-			<el-form-item label="标题" prop="title">
-				<el-input v-model="form.title" placeholder="请填写案件标题" ></el-input>
-			</el-form-item>
-	    <el-form-item label="申请地区" prop="area" :rules="{ type: type=='add' ? 'array' : 'string',required: true, message: '地区不能为空', trigger: 'change'}">
-	    	<region 
+      <el-form-item label="标题" prop="title">
+        <el-input v-model="form.title" placeholder="请填写案件标题" ></el-input>
+      </el-form-item>
+      <el-form-item label="申请地区" prop="area" :rules="{ type: type=='add' ? 'array' : 'string',required: true, message: '地区不能为空', trigger: 'change'}">
+        <region 
           v-model="form.area" 
           :multiple="type == 'add'"
         ></region>
-	    </el-form-item>
-	    <el-form-item label="专利类型" prop="type">
-	      <static-select type="patent_type" v-model="form.type"></static-select>
-	    </el-form-item>
+      </el-form-item>
+      <el-form-item label="专利类型" prop="type">
+        <static-select type="patent_type" v-model="form.type"></static-select>
+      </el-form-item>
       <el-form-item label="IPR" prop="ipr" :rules="{type: 'number', required: true, message: 'IPR不能为空', trigger: 'change'}">
         <!-- <span class="form-item-text" v-if="type == 'add'">{{ user ? user.name : '暂未取得当前用户信息' }}</span> -->
         <static-select type="ipr" v-model="form.ipr"></static-select>
@@ -23,6 +23,12 @@
       <el-form-item label="申请人">
         <remote-select type="applicant" v-model="form.applicants" multiple></remote-select>
       </el-form-item >
+      <el-form-item label="交底书撰写人">
+          <remote-select type="member" v-model="form.proposer"></remote-select>
+      </el-form-item>
+      <el-form-item label="案件等级">
+        <static-select type="case_level" v-model="form.case_level"></static-select>
+      </el-form-item>
       <el-form-item label="发明人" prop="inventors">
         <inventors v-model="form.inventors" ref="inventors" @addInventor="$refs.form.validateField('inventors')" @deleteInventor="$refs.form.validateField('inventors')"></inventors>
       </el-form-item>
@@ -42,7 +48,7 @@
       <el-form-item label="附件" prop="attachments">
           <upload action="/api/files?action=parseDisclosure" @uploadSuccess="handleUploadSuccess" v-model="form.attachments" :file-list="attachments"></upload>
       </el-form-item>   
-	  </el-form>
+    </el-form>
   </app-collapse>
 </template>
 
@@ -66,7 +72,7 @@ const extensionHash = [
   { text: '是否是分案申请', label: 'is_division', area: '', type: [] },
   { text: '是否与生物相关', label: 'is_biological', area: '', type: 1 },
   { text: '是否有序列表', label: 'is_sequence', area: '', type: 1 },
-  { text: '是否依赖于遗传资源', label: 'is_genetci', area: 'CN', type: [] },
+  { text: '是否依赖于遗传资源', label: 'is_genetic', area: 'CN', type: [] },
   { text: '是否不丧失新颖性公开', label: 'is_leakage', area: 'CN', type: [] },
   { text: '是否要求优先权', label: 'is_priority', area: '', type: [] },
 ] 
@@ -75,18 +81,20 @@ export default {
   name: 'patentAddBase',
   props: ['type'],
   data () {
-		return {
-		  form: {
+    return {
+      form: {
         serial: '',
         title: '',
         area: this.type == 'add' ? [] : '',
         type: '',
         ipr: '',
+        case_level: '',
         applicants: [],
         inventors: [],
         priorities: [],
         extension: [], 
-        attachments: [],      
+        attachments: [],
+        proposer:[],      
       },
       attachments: [],
       rules: {
@@ -102,17 +110,17 @@ export default {
           },
         },
       },
-		};
+    };
   },
   computed: {
-  	extensionSet () {
-  		const area = this.type == 'add' ? this.form.area.join(',') : this.form.area;
-  		const type = this.form.type;
-  		const arr = [];
-  		extensionHash.forEach(d=>{
-  			const areaReg = new RegExp(d.area);
-  			const typeArr = d.type instanceof Array ? d.type : [d.type];
-  			if ( areaReg.test(area) ) {
+    extensionSet () {
+      const area = this.type == 'add' ? this.form.area.join(',') : this.form.area;
+      const type = this.form.type;
+      const arr = [];
+      extensionHash.forEach(d=>{
+        const areaReg = new RegExp(d.area);
+        const typeArr = d.type instanceof Array ? d.type : [d.type];
+        if ( areaReg.test(area) ) {
           if(typeArr.length == 0) {
             arr.push({ text: d.text, label: d.label });
           }else {
@@ -123,26 +131,29 @@ export default {
               }
             }  
           }
-  			}
-  		})
-  		return arr;
-  	},
+        }
+      })
+      return arr;
+    },
     serial () {
       return this.form.serial ? this.form.serial : '暂无案号信息';
     },
+    userId () {
+      return this.$store.getters.userid;
+    },
   },
   methods: {
-  	checkForm (callback) {
+    checkForm (callback) {
       let flag = true;
       this.$refs.form.validate(_=>{
         flag = _;
         callback(flag);
       });
-  	},
+    },
     //setForm 的Type用于区分正常填充 或者 是文件解析后的填充
-  	setForm (data, type='normal') {
-  		for (let k in this.form) {
-        console.log(k);
+    setForm (data, type='normal') {
+      for (let k in this.form) {
+        // console.log(k);
         if(data[k] == undefined) continue;
         if(this.type == 'add' || type == 'upload') {
           if(data.inventors && data.inventors.length != 0) {
@@ -159,8 +170,8 @@ export default {
           for(let d of data[k]) {
             if(d['value']) arr.push(d['label']);
           }
-  				this.form[k] = arr;
-  			}else if(k == 'area') {
+          this.form[k] = arr;
+        }else if(k == 'area') {
           if(this.type == 'add') {
             this.form[k] = data[k].map(_=>_.id);
           }else if(this.type == 'edit' && type == 'upload') {
@@ -170,10 +181,8 @@ export default {
           }else {
             this.form[k] = data[k]['id'];
           }
-        }else if(k == 'type') {
+        }else if(k == 'type' || k == 'ipr' || k == 'proposer' || k == 'case_level'){
           this.form[k] = data[k]['id'];
-        }else if (k == 'ipr') {
-          this.form[k] =data[k]['id'];
         }else {
           this.form[k] = data[k];
         }
@@ -185,9 +194,12 @@ export default {
     handleUploadSuccess (a, b, c) {
       this.$emit('uploadSuccess', a, b, c);
     },
-  	handleUploadRemove () {
+    handleUploadRemove () {
 
-  	},
+    },
+  },
+  created () {
+    this.userId ? this.form.ipr = this.userId : this.form.ipr = ''; 
   },
   components: { 
     AppCollapse, 

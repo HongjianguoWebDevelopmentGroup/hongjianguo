@@ -1,6 +1,6 @@
 <template>
 <div>
-  <app-shrink :title="title" :visible=visibleAuth @update:visible="handleVisible">
+  <app-shrink :title="title" :visible="visibleAuth" @update:visible="handleVisible">
     <span slot="header" style="float: right">
       <el-button size="small" type="primary" class="table-header-btn" @click="edit">保存</el-button>
         <el-dropdown  @command="handleCommandSend" trigger="click" style="margin-left: 5px;" size="small" v-if="type == 'patent'">
@@ -13,7 +13,7 @@
             <el-dropdown-item command="divide" :disabled="btnDisabled">分案</el-dropdown-item>
           </el-dropdown-menu>
         </el-dropdown>      
-        <el-dropdown @command="handleCommand" trigger="click" style="margin-left: 5px;" size="small">
+        <el-dropdown @command="handleCommand" trigger="click" style="margin-left: 5px;" size="small" v-if="type == 'patent'">
           <el-button size="small">
             委案<i class="el-icon-caret-bottom el-icon--right"></i>
           </el-button>
@@ -28,25 +28,25 @@
       <el-tabs v-model="activeName">
         <el-tab-pane label="基本信息" name="base">
           <div :style="`height: ${innerHeight - 150}px; overflow: auto;`">
-    			  <detail-patent page-type="edit" v-if="type == 'patent'" @editSuccess="editSuccess" ref="patent"></detail-patent>
-            <detail-copyright page-type="edit" v-if="type == 'copyright'" @editSuccess="editSuccess" ref="copyright"></detail-copyright>
-            <detail-trademark page-type="edit" v-if="type == 'trademark'" @editSuccess="editSuccess" ref="trademark"></detail-trademark>
+            <detail-patent style="height: 100%;" page-type="edit" v-if="type == 'patent'" @editSuccess="editSuccess" ref="patent"></detail-patent>
+            <detail-trademark style="height: 100%;" page-type="edit" v-if="type == 'trademark'" @editSuccess="editSuccess" ref="trademark"></detail-trademark>
+            <detail-copyright style="height: 100%;" page-type="edit" v-if="type == 'copyright'" @editSuccess="editSuccess" ref="copyright"></detail-copyright>
           </div>
         </el-tab-pane>
         <el-tab-pane label="流程管理" name="control">
-    			<detail-control></detail-control>
+          <detail-control></detail-control>
         </el-tab-pane>
         <el-tab-pane label="官文&附件" name="notice">
-    			<detail-notice :type="type" @uploadSuccess="edit"></detail-notice>
+          <detail-notice :type="type" @uploadSuccess="edit"></detail-notice>
         </el-tab-pane>
         <el-tab-pane label="所有费用" name="fourth">
-    			<detail-fee></detail-fee>
+          <detail-fee></detail-fee>
         </el-tab-pane>
         <el-tab-pane label="往来邮件" name="fee">
-    			<detail-email></detail-email>
+          <detail-email></detail-email>
         </el-tab-pane>
 <!--         <el-tab-pane label="文档" name="documents">
-    			<detail-documents></detail-documents>
+          <detail-documents></detail-documents>
         </el-tab-pane> -->
         <el-tab-pane label="群组/专利族" name="group_family" v-if="type == 'patent'">
           <group-family></group-family>
@@ -60,6 +60,7 @@
         <el-tab-pane label="审查记录" name="review_records">
           <defence></defence>
         </el-tab-pane>
+
         <el-tab-pane label="动态" name="work_change">
           <detail-amendments></detail-amendments>
         </el-tab-pane>
@@ -76,7 +77,7 @@
       <change-form :id="id" @success="dialogChange=false;refreshDetailData();" ref="changeForm"></change-form>
     </el-dialog>
   <el-dialog title="分案请求" :visible.sync="dialogDivide"  @close="$refs.divideForm.clear();">
-    <divide-form :id="id" @success="dialogChange=false;refreshDetailData();" ref="divideForm"></divide-form>
+    <divide-form :id="id" @success="dialogDivide=false;$emit('editSuccess');$emit('update:visible', false);" ref="divideForm"></divide-form>
   </el-dialog>
   <el-dialog title="新增任务" :visible.sync="dialogTask">
     <task-edit type="add" :id="id" ref="taskEdit" @addSuccess="addSuccess"></task-edit>
@@ -109,14 +110,14 @@ import { mapGetters } from 'vuex'
 import { mapActions } from 'vuex'
 
 const config = [
-	['patent', {
-		loadingText: '加载专利信息中...',
+  ['patent', {
+    loadingText: '加载专利信息中...',
     auth: '/patent/detail_panel',
-	}],
-	['copyright', {
-		loadingText: '加载版权信息中...',
+  }],
+  ['copyright', {
+    loadingText: '加载版权信息中...',
     auth: '/copyright/detail_panel',
-	}],
+  }],
   ['trademark', {
     loadingText: '加载商标信息中...',
     auth: '/trademark/detail_panel',
@@ -140,15 +141,15 @@ export default {
     },
   },
   data () {
-		return {
-		  activeName: 'base',
+    return {
+      activeName: 'base',
       rendered: false,
       dialogClosed: false,
       btnDisabled: false,
       dialogChange: false,
       dialogDivide: false,
       dialogTask: false,
-		}
+    }
   },
   computed: {
     ...mapGetters([
@@ -158,10 +159,10 @@ export default {
       'innerHeight',
       'detailBase',
     ]),
-  	config () {
-  		const config = map.get(this.type);
-  		return config ? config : this.type;
-  	},
+    config () {
+      const config = map.get(this.type);
+      return config ? config : this.type;
+    },
     divStyle () {
       let s = '';
       if(this.detailLoading) {
@@ -236,6 +237,7 @@ export default {
       }
     },
     handleCommandSend (command) {
+
       if(command == 'revision') {
           this.dialogTask = true;
           this.$nextTick(_=>{
@@ -250,6 +252,9 @@ export default {
       }
       if(command == 'divide') {
         this.dialogDivide = true;
+          this.$nextTick(_=>{
+            this.$refs.taskEdit.fill({id: this.id,name: this.title, category: 1},16,'90');
+          });
       }      
     },
     addSuccess (val) {
@@ -275,13 +280,13 @@ export default {
     },
   },
   watch: {
-  	id () {
+    id () {
       if(this.type) {
-  		  this.refreshDetail();
+        this.refreshDetail();
       }else {
         this.$emit('update:visible', false);
       }
-  	}
+    }
   },
   components: {
     AppShrink,

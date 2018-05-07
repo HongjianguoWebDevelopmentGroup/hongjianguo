@@ -5,9 +5,6 @@
           <branch v-model="form.branch" count-type="patent" ></branch>
           <!-- <span v-else>{{ branchName ? branchName : '暂未归属某个部门' }}</span> -->
         </el-form-item>
-<!--         <el-form-item label="提案人">
-          <remote-select type="member" v-model="form.proposer"></remote-select>
-        </el-form-item> -->
         <el-form-item label="摘要">
           <el-input type="textarea" v-model="form.abstract" placeholder="请填写专利摘要" :rows="6" class="custom-textarea"></el-input>
         </el-form-item>
@@ -105,8 +102,8 @@ export default {
   name: 'patentAddPerson',
   props: ['type'],
   data () {
-		return {
-			form: {
+    return {
+      form: {
         branch: '',
         issue_date: '',
         issue_number: '',
@@ -130,7 +127,7 @@ export default {
         group_number: '',
         family_number: '',
         is_support: 0,
-			},
+      },
       ipr_name: '',
       branchName: '',
       options: {
@@ -150,14 +147,14 @@ export default {
           {name:"西班牙-Spanish",id:"ES"}
         ]
       },
-		}
+    }
   },
   methods: {
     handleInventor (val) {
       this.form.inventors = val;
       this.$refs.form.validateField('inventors');
     },
-  	setForm (data) {
+    setForm (data) {
       for(let k in this.form) {
         if(data[k] == undefined) continue;
         if( k == 'branch' ) {
@@ -174,9 +171,9 @@ export default {
           this.form[k] = data[k];
         }
       }
-  	},
+    },
     submitForm () {
-      console.log(this.form);
+      // console.log(this.form);
       // if(this.type == 'add') this.form.ipr = this.user.id;
       return this.$tool.shallowCopy(this.form, { 'date': true });
     },
