@@ -56,23 +56,6 @@ export default {
     ...mapActions([
       'refreshUser',
     ]),
-    validateInventors () {
-      this.$refs.form.validateField('inventors');
-    },
-    postData (form) {
-      if(this.type == 'add') {
-        return this.add(form);
-      }else if(this.type == 'edit') {
-        return this.edit(form);
-      }
-    },
-    cancel () {
-      if(this.type == 'add') {
-        this.$router.push('/patent/list');
-      }else if(this.type == 'cancell') {
-        this.$emit('editeCancell');
-      }
-    },
     add (form) {      
       
 
@@ -89,54 +72,61 @@ export default {
         }
 
 
-      return this.$axiosPost({url, data, success});  
+       this.$axiosPost({url, data, success});  
       })   
     },
-    edit (form) {
+    edit () {
+      this.formCheck(_=>{
+        const url = `${URL}/${this.id}`;
+        const data = Object.assign( ...getKeys.map(d=>this.$refs[d].submitForm()) );
+        const success = _=>{ 
+          this.$message({message: '编辑专利成功', type: 'success'});
+          this.$emit('editSuccess');
+          // this.$router.push('/patent/list');
+        };
+        const complete = _=>{
+          this.btn_disabled = false;
+        }
 
-      const url = `${URL}/${this.id}`;
-      const data = form;
-      const success = _=>{ 
-        this.$message({message: '编辑专利成功', type: 'success'});
-        this.$emit('editSuccess');
-      };
-      
-      return this.$axiosPut({url, data, success});  
-      
+        this.btn_disabled = true;
+        this.$axiosPut({url, data, success, complete});  
+      })
     },
     clear () {
       this.$refs.form.resetFields();
       this.attachments = [];
       this.list = [];
     },
-    //upload参数区别当前填充行为是否附件上传引起的填充
-    fillForm (form, upload=false) {
-      this.id = form.id ? form.id : '';
-      this.$tool.coverObj(this.form, form, {
-        obj: [ 'attachments', 'type', 'products', 'classification', 'branch', 'progress', 'ipr' ], 
-        skip:[ 'extension', 'area' ],
-      });
-      if(form['extension']) {
-        const arr = [];
-        for(let d of form['extension']) {
-          if(d['value']) arr.push(d['label']);
+    formCheck (callback) {
+      let key = "";
+      let flag = false;
+
+      const check = (index)=>{
+        const key = getKeys[index];
+        if(key) {
+          this.$refs[key].checkForm(_=>{
+            if(_) {
+              check(index+1);
+            }else {
+              this.$message({message: map.get(key), type: 'warning'})      
+            }
+          })  
+        }else {
+          callback();
         }
-        this.form.extension = arr;
       }
-      if(upload) {
-        if(this.form.inventors && this.form.inventors.length != 0) {
-          //复用组件内置的方法...
-          this.$refs.inventors.handleShare(this.form.inventors);
-        }
-        this.form.area = this.type == 'add' ? form.area.map(_=>_.id) : area[0]['id'];
-      }else {
-        this.attachments = form.attachments ? form.attachments : [];
-        this.form.area = Array.isArray(form.area) ? form.area.map(_=>_.id) : form.area.id; 
-      }
-    },
-    refreshForm () {
-      if( this.type == 'edit' && this.detailBasePatent ) {
-        this.fillForm(this.detailBasePatent);
+      
+      check(0);
+
+    },  
+    cancel () {
+      this.$router.push('/patent/list');
+    },      
+    refreshForm (val) {
+      if( this.type == 'edit' && this.$tool.getObjLength(val) != 0) {
+        const copy = this.$tool.deepCopy(val);
+        this.id = copy.id;
+        setKeys.map(_=>this.$refs[_].setForm(copy));
       }
     },
     fillForm (val) {
