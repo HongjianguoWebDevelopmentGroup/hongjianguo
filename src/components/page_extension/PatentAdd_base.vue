@@ -7,7 +7,7 @@
 			<el-form-item label="标题" prop="title">
 				<el-input v-model="form.title" placeholder="请填写案件标题" ></el-input>
 			</el-form-item>
-	    <el-form-item label="申请地区" prop="area" :rules="{ type: type=='add' ? 'array' : 'string',required: true, message: '地区不能为空', trigger: 'change'}">
+	    <el-form-item label="申请地区" prop="area" :rules="{ type: type=='add' ? 'array' : 'string',required: true, message: '地区不能为空', trigger: 'change' }">
 	    	<region 
           v-model="form.area" 
           :multiple="type == 'add'"
