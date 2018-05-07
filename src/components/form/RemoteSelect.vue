@@ -146,6 +146,7 @@ export default {
   data () {
   	return {
       options: [],
+      keyword: '',
       loading: false, 
   		selected: [],
   	};
@@ -207,7 +208,7 @@ export default {
       }
     },
     remoteMethod (keyword) {
-     
+     this.keyword = keyword;
       const s = { keyword, listOnly: '1' };
       const os = this.PARAMS;
       const key = this.DATA_KEY;
@@ -284,7 +285,7 @@ export default {
   	},
   	option_in () {
       //将已经选择的OPTION合并到查询OPTION中
-  		const arr = [ ...this.selected, ...this.options ];
+      const arr = this.keyword ? [...this.options] : [ ...this.selected, ...this.options ];
       //对象去重(ID)
   		return this.$tool.singleObject(arr,'id');
   	},

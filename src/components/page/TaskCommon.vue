@@ -627,11 +627,11 @@ export default {
     }
     this.refresh();
 
-    if(this.$store.getters.flowsData === undefined) {
+    if(this.$store.getters.flowsData.length == 0 ) {
       this.$store.dispatch('refreshFlows');  
     }
     
-    if(this.$store.getters.taskDefsData === undefined) {
+    if(this.$store.getters.taskDefsData.length == 0) {
       this.$store.dispatch('refreshTaskDefs');
     }
 

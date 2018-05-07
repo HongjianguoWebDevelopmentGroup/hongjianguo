@@ -1,6 +1,6 @@
 <template>
 	<div>
-	  <el-input placeholder="选择部门" readonly @focus="$refs.tree.show()" :value="text" :disabled="disabled"  ></el-input>
+	  <el-input :placeholder="placeholder" readonly @focus="$refs.tree.show()" :value="text" :disabled="disabled"  ></el-input>
 	  <pop-tree 
 	    title="选择部门"
 	    :data="data" 

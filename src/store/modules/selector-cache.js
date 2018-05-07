@@ -1,5 +1,13 @@
 const state = {
 	config: [
+		['case_level',{
+			placeholder: '请选择案件等级',
+			options: [
+				{id: 1, name: '非常重要'},
+				{id: 2, name: '重要'},
+				{id: 3, name: '一般'},
+			]
+		}],
 		['reminder', {
 			placeholder: '请选择提醒类型',
 			options: [
@@ -99,7 +107,7 @@ const state = {
 	  }],
 	  ['file_type', {
 	    placeholder: '请选择文件类型',
-	    url: '/api/fileTypes',
+	    url: '/api/fileTypes?',
 	  }],
 	  ['file_type_patent', {
 	    placeholder: '请选择专利文件类型',

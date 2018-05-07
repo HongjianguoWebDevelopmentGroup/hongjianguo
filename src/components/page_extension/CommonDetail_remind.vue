@@ -48,7 +48,7 @@ export default {
 				is_search: false,
 				is_pagination: false,
 				highlightCurrentRow: true,
-        rowClick: this.handleRowClick,
+        		rowClick: this.handleRowClick,
 				header_btn	: [
 					{ type: 'add', click: _=>{ this.popType = 'add'; this.dialogVisible = true; } },
 					{ type: 'delete', callback: this.refreshDetailData },

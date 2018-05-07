@@ -1,8 +1,8 @@
 <template>
   <div class="main">
   	<div class="total" style="margin: 0px 5px 15px 5px;font-size: 16px;">
-  		<span>总支出：{{ expend }}CNY</span>
-  		<span>总收入：{{ income }}CNY</span>
+  		<el-tag>总支出：{{ expend }}CNY</el-tag>
+  		<el-tag>总收入：{{ income }}CNY</el-tag>
   	</div>
 	<detail-official></detail-official>
 	<detail-agency></detail-agency>
@@ -57,10 +57,10 @@ export default {
   		'detailAgency'
   	]),
   	expend () {
-  		return this.detailOfficial && this.detailAgency ? (this.detailOfficial.sum + this.detailAgency.sum) : '';
+  		return this.detailOfficial && this.detailAgency ? (this.detailOfficial.sum + this.detailAgency.sum) : '0';
   	},
   	income () {
-  		return this.detailFundings ? this.detailFundings.sum : '';
+  		return this.detailFundings ? this.detailFundings.sum : '0';
   	},
 /*  	tableData () {
   		return this.$store.getters.detailFees;

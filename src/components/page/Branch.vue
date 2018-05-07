@@ -27,6 +27,9 @@
             @node-click="nodeClick"
             :style="`height: ${innerHeight - 137}px; overflow: auto;border-top: 0;`"
             :filter-node-method="filterNode"
+            :default-expanded-keys="defaultKeys"
+            node-key="id"
+            :current-node-key="nodeKey"
             ref="tree"
           >
           </el-tree>
@@ -101,7 +104,9 @@ export default {
       },
       currentNode: '',
       dialogVisible: false,
+      defaultKeys: [],
       transfer: '',
+      nodeKey: '',
       filterText: '',
     }
   },
@@ -109,6 +114,7 @@ export default {
     ...mapGetters([
       'innerHeight',
       'branchData',
+      'branchMap',
       'branchUpdate',
     ]),
   },
@@ -117,6 +123,7 @@ export default {
       'refreshBranch',
     ]),
     nodeClick (a) {
+      console.log(a);
       this.currentNode = a;
     },
     addPop () {
@@ -166,9 +173,23 @@ export default {
         })
         .catch(_=>{});      
     },
-    refresh () {
-      this.refreshBranch();
-      this.currentNode = '';
+    refresh (str) {
+      if(str == 'edit') {
+        this.refreshBranch({
+          success: _=>{
+            this.$nextTick(_=>{
+              const key = this.currentNode.id;
+              this.defaultKeys.push(key);
+              this.currentNode = this.branchMap.get(key);
+              this.nodeKey = key;
+            })
+          }
+        })    
+      }else{
+        this.refreshBranch();
+        this.currentNode = '';
+        this.defaultKeys = [];
+      }
     },
     transferPop () {
       if(this.currentNode) {
