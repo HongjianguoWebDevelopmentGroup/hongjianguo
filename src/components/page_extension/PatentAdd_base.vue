@@ -27,7 +27,7 @@
           <remote-select type="member" v-model="form.proposer"></remote-select>
       </el-form-item>
       <el-form-item label="案件等级">
-        <static-select type="case_level" v-model="form.case_level"></static-select>
+        <static-select type="case_level" v-model="form.level"></static-select>
       </el-form-item>
       <el-form-item label="发明人" prop="inventors">
         <inventors v-model="form.inventors" ref="inventors" @addInventor="$refs.form.validateField('inventors')" @deleteInventor="$refs.form.validateField('inventors')"></inventors>
@@ -88,7 +88,7 @@ export default {
         area: this.type == 'add' ? [] : '',
         type: '',
         ipr: '',
-        case_level: '',
+        level: '一般',
         applicants: [],
         inventors: [],
         priorities: [],

@@ -147,10 +147,10 @@ export default {
         fees: []
       },
       columns: [
-          { type: 'text', label: '通知书名称', prop: 'notice_name', min_width: '180' },
-          { type: 'text', label: '发文日', prop: 'mail_date', width: '160' },
-          { type: 'text', label: '法定期限', prop: 'deadline', width: '160' },
-          { type: 'text', label: '发文序列号', prop: 'notice_serial', width: '190' },
+          { type: 'text', label: '通知书名称', prop: 'notice_name', min_width: '220' },
+          { type: 'text', label: '发文日', prop: 'mail_date', min_width: '160' },
+          { type: 'text', label: '法定期限', prop: 'deadline', min_width: '160' },
+          // { type: 'text', label: '发文序列号', prop: 'notice_serial', width: '190' },
           // { type: 'text', label: '审查员', prop: 'examiner', width: '210' },
           // { type: 'text', label: '审查部门', prop: 'examiner_dept', width: '210' },
           // { type: 'text', label: '审查员电话', prop: 'examiner_phone', width: '210' },
