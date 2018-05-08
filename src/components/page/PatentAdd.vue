@@ -1,16 +1,16 @@
 <template>
   <div class="main">
     
-    <pa-base ref="base" :type="type" @uploadSuccess="handleUploadSuccess"></pa-base>
-    <person ref="person" :type="type"></person>
+    <pa-base ref="base" :type="pageType" @uploadSuccess="handleUploadSuccess"></pa-base>
+    <person ref="person" :type="pageType"></person>
     <classification ref="classification"></classification>
     <agent ref="agent"></agent>
     <case ref="case"></case>
-    <other ref="other" :type="type" ></other>
+    <other ref="other" :type="pageType" ></other>
     <div style="margin-bottom: 20px;">
-      <el-button @click="add" type="primary" v-if="type == 'add'" :disabled="btn_disabled">添加</el-button>
+      <el-button @click="add" type="primary" v-if="pageType == 'add'" :disabled="btn_disabled">添加</el-button>
       <!-- <el-button @click="edit" type="primary" v-if="type == 'edit'" :disabled="btn_disabled">编辑</el-button> -->
-      <el-button @click="cancel" v-if="!shrink" :disabled="btn_disabled">取消</el-button>
+      <el-button @click="cancel" v-if="pageType == 'add'" :disabled="btn_disabled">取消</el-button>
     </div>
 
   </div>
@@ -47,7 +47,6 @@ export default {
       id: '',
       pop_type: '',
       btn_disabled: false,
-      shrink: false,
       list: [],
 
     }
@@ -123,7 +122,7 @@ export default {
       this.$router.push('/patent/list');
     },      
     refreshForm (val) {
-      if( this.type == 'edit' && this.$tool.getObjLength(val) != 0) {
+      if( this.pageType == 'edit' && this.$tool.getObjLength(val) != 0) {
         const copy = this.$tool.deepCopy(val);
         this.id = copy.id;
         setKeys.map(_=>this.$refs[_].setForm(copy));
@@ -168,13 +167,16 @@ export default {
       if( !d.data || !d.data.list ) {
         return;
       }
-
+      //2锁定title disclosure_type
       if (d.data.list.is_disclosure == 1) {
 
         this.list.push(d.data.list);
-
+        
+        let disclosure_type = d.data.list.disclosure_type;
+        disclosure_type = disclosure_type !== undefined ? disclosure_type : ''; 
+        
         getKeys.forEach(_=>{
-          this.$refs[_].setForm(d.data.list, 'upload');
+          this.$refs[_].setForm(d.data.list, true, disclosure_type);
         });
 
       }else if(d.data.list.is_disclosure == 2) {
@@ -186,15 +188,6 @@ export default {
   computed: {
     detail () {
       return this.$store.getters.detailBase;
-    },
-    type () {
-      if(this.pageType) {
-        this.shrink = true;
-        return this.pageType;
-      }else {
-        this.shrink = false;
-        return this.$route.meta.type;
-      }
     },
     getQuery () {
       const s = this.$route.query.s; 

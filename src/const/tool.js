@@ -63,12 +63,12 @@ export default {
 
 			if( obj && typeof v == 'object' && map.get(key) ) {
 				if( Array.isArray(v) ) {
-					a1[key] = v.map(_=>_.id);
+					a1[key] = v ? v.map(_=>_.id) : v;
 				}else {
-					a1[key] = v.id;	
+					a1[key] = v ? v.id : v;	
 				}
 			}else {
-				a1[key] = v == undefined ? a1[key] : v;	
+				a1[key] = v;	
 			}
 				
 		}

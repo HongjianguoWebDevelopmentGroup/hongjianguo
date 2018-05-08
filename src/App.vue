@@ -44,7 +44,7 @@
       <span class="nav-left-btn" @click="navToggle"><span class="nav-left-btn-arrow el-icon-arrow-left"></span></span>
       <div class="nav-left" :style="`height: ${innerHeight}px`">
         
-        <el-menu v-if="menusMap != null" theme="dark" router unique-opened :default-active="select.path" :collapse="isCollapse">
+        <el-menu @select="handleMenuSelect" v-if="menusMap != null" theme="dark" router unique-opened :default-active="select.path" :collapse="isCollapse">
           <app-menu-item v-for="item in menu_data" :dd="item" :key="item.path"></app-menu-item>
         </el-menu>
 
@@ -73,7 +73,7 @@
             </el-breadcrumb>
           </div>
 
-          <router-view :key="$route.path.split('__')[0]" ></router-view>
+          <router-view v-if="routerIf" :key="$route.path.split('__')[0]" ></router-view>
         </div>
       
       </div>
@@ -97,6 +97,23 @@ export default {
   name: 'app',
   mixins: [ AxiosMixins ],
   computed: {
+    ...mapGetters([
+      'screen_label',
+      'innerHeight',
+      'loading',
+      'loadingText',
+      'viewLoading',
+      'viewLoadingText',
+      'username',
+      'leftVisible',
+      'agencyLoadVisible',
+      'menusMap',
+      'pendingTaskCount',
+      'routerIf',
+    ]),
+    path () {
+      return this.$route.path;
+    },
     select () {
       const d = this;
       let path = d.$route.path;
@@ -130,20 +147,7 @@ export default {
       }
       if(s.length > 3) s = s.slice(0,3);
       return s;
-    },
-    ...mapGetters([
-      'screen_label',
-      'innerHeight',
-      'loading',
-      'loadingText',
-      'viewLoading',
-      'viewLoadingText',
-      'username',
-      'leftVisible',
-      'agencyLoadVisible',
-      'menusMap',
-      'pendingTaskCount',
-    ]),
+    }    
   },
   data () {
     return {      
@@ -164,7 +168,16 @@ export default {
       'refreshBranch',
       'refreshArea',
       'refreshCity',
+      'refreshRouter',
+      'clearScreen',
     ]),
+    //处理同路径不刷新界面的问题
+    handleMenuSelect (index) {
+      if(this.path === index) {
+        this.clearScreen();
+        this.refreshRouter();
+      }
+    },
     handleClose (index) {
       this.$store.commit('removeScreen', index);
     },

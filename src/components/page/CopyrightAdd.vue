@@ -31,19 +31,19 @@
 		<el-form-item label="部门分类" prop="branch">
 			<branch v-model="form.branch" count-type="copyright"></branch>
 		</el-form-item>
-		<el-form-item label="代理机构" prop="agency" v-if="type == 'edit'">
+		<el-form-item label="代理机构" prop="agency" v-if="pageType == 'edit'">
 			<remote-select v-model="form.agency" type="agency"></remote-select>
 		</el-form-item>
-		<el-form-item label="代理人" prop="agent" v-if="type == 'edit'">
+		<el-form-item label="代理人" prop="agent" v-if="pageType == 'edit'">
 			<remote-select v-model="form.agent" type="agent"></remote-select>
 		</el-form-item>
-	 	<el-form-item label="代理机构案号" v-if="type == 'edit'">
+	 	<el-form-item label="代理机构案号" v-if="pageType == 'edit'">
           <el-input v-model="form.agency_serial" placeholder="请填写代理机构案号"></el-input>
 		</el-form-item>
 		<el-form-item label="申请人" prop="applicants">
 			<remote-select type="applicant" v-model="form.applicants" multiple></remote-select>
 		</el-form-item>
-		<el-form-item label="状态" prop="progress" v-if="type == 'edit'">
+		<el-form-item label="状态" prop="progress" v-if="pageType == 'edit'">
 			<static-select type="copyrights_status" v-model="form.progress"></static-select>
 		</el-form-item>			
 		<el-form-item label="附件" prop="attachments">
@@ -65,7 +65,7 @@
 			<el-input v-model="form.issue_number" placeholder="请填写证书号"></el-input>
 		</el-form-item>
 		<el-form-item>
-			<el-button @click="add" v-if="type == 'add'" :disabled="btn_disabled" type="primary">添加</el-button>
+			<el-button @click="add" v-if="pageType == 'add'" :disabled="btn_disabled" type="primary">添加</el-button>
 			<!-- <el-button @click="edit" v-if="type == 'edit'" :disable="btn_disabled" type="primary">编辑</el-button> -->
 		</el-form-item>
   	</el-form>
@@ -90,7 +90,12 @@ const URL = '/api/copyrights'
 export default {
   name: 'copyrightAdd',
   mixins: [ AxiosMixins ],
-  props: ['pageType'],
+  props: {
+  	pageType: {
+  		type: String,
+  		default: '',
+  	}
+  },
   data () {
 		return {
 		  id: '',
@@ -133,9 +138,6 @@ export default {
 		}
   },
   computed: {
-  	type () {
-  		return this.pageType ? this.pageType : this.$route.meta.pageType;
-  	},
   	detail () {
       return this.$store.getters.detailBase;
     },
@@ -189,7 +191,7 @@ export default {
   	},
   	refreshForm () {
   		const data = this.detail;
-  		if(this.type == 'edit' && this.$tool.getObjLength(data) != 0) {
+  		if(this.pageType == 'edit' && this.$tool.getObjLength(data) != 0) {
   			
   			this.id = data.id;
   			for(let k in this.form) {

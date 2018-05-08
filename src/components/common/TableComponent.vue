@@ -293,6 +293,7 @@ export default {
       'screen_obj',
       'pagesize',
       'menusMap',
+      'filterLock',
     ]),
     default_choose () {
       return this.control[1].map(_=>_.key);
@@ -653,6 +654,7 @@ export default {
       deep: true,
     },
     screen_obj (val) {
+      if(this.filterLock) return;
       this.filterVisible = false;
       this.refresh();    
     }

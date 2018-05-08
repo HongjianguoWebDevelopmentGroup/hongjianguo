@@ -31,6 +31,24 @@
 import AxiosMixins from '@/mixins/axios-mixins'
 
 const map = new Map([
+  ['family_number', {
+    URL: '/api/patents/groupfamily',
+    DATA_KEY: 'data',
+    PLACEHOLDER: '请输入群组号',
+    PARAMS: { type: 'family' },
+    handleData: data => {
+      return data.map(v => ({ id: v, name: v }));
+    }
+  }],
+  ['group_number', {
+    URL: '/api/patents/groupfamily',
+    DATA_KEY: 'data',
+    PLACEHOLDER: '请输入专利族号',
+    PARAMS: { type: 'group' },
+    handleData: data => {
+      return data.map(v => ({ id: v, name: v }));
+    }
+  }],
 	['member', {
 		URL: '/api/members',
 		DATA_KEY: 'members',
@@ -192,7 +210,7 @@ export default {
       }else {
         //selected通过map映射
         const arr = [];
-        console.log(val);
+        // console.log(val);
         val.forEach(_=>{
           //在map中搜索, 若不存在，则自定义
           const v = this.map.get(_);
@@ -220,12 +238,13 @@ export default {
         let op = this.$tool.safeGet(_, key);
         if(!op) return this.options = [];
 
+        op = h ? h(op) : op;
         op = op.map(_=>{
           if(!_.name) _.name = _.label;
           if(!_.id) _.id = _.value;
           return _;
         });
-        this.options = h ? h(op) : op;
+        this.options = op;
       }
 
       this.loading = true;

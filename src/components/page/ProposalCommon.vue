@@ -41,7 +41,7 @@
               <static-select type='tag' v-model="formData.tags" multiple></static-select>
             </el-form-item>
             <el-form-item label="附件" prop="attachments">
-               <upload v-model="formData.attachments" :file-list="attachments" ref="upload"></upload>
+               <upload v-model="formData.attachments" :file-list="attachments" ref="upload" :data="{action: 'parseDisclosure'}"></upload>
             </el-form-item>
             <el-form-item label="评审结果" prop="remark">
               <el-input type="textarea" v-model="formData.remark"></el-input>

@@ -46,7 +46,7 @@
         <span v-else>暂无可选项</span>
       </el-form-item>  
       <el-form-item label="附件" prop="attachments">
-          <upload action="/api/files?action=parseDisclosure" @uploadSuccess="handleUploadSuccess" v-model="form.attachments" :file-list="attachments"></upload>
+          <upload action="/api/files" :data="uploadPara" @uploadSuccess="handleUploadSuccess" v-model="form.attachments" :file-list="attachments"></upload>
       </el-form-item>   
     </el-form>
   </app-collapse>
@@ -94,8 +94,9 @@ export default {
         priorities: [],
         extension: [], 
         attachments: [],
-        proposer:[],      
+        proposer:[],    
       },
+      titleLock: false, //标题锁 当评审表被上传且标题自动填充后 不再自动填充 
       attachments: [],
       rules: {
         'title':{ required: true, message: '标题不能为空', trigger: 'blur' },
@@ -141,6 +142,13 @@ export default {
     userId () {
       return this.$store.getters.userid;
     },
+    uploadPara () {
+      const obj = {};
+      if(this.type == 'add') {
+        obj.action = 'parseDisclosure';
+      }
+      return obj;
+    }
   },
   methods: {
     checkForm (callback) {
@@ -151,42 +159,35 @@ export default {
       });
     },
     //setForm 的Type用于区分正常填充 或者 是文件解析后的填充
-    setForm (data, type='normal') {
-      for (let k in this.form) {
-        // console.log(k);
-        if(data[k] == undefined) continue;
-        if(this.type == 'add' || type == 'upload') {
-          if(data.inventors && data.inventors.length != 0) {
-            //复用组件内置的方法...
-            this.$refs.inventors.handleShare(data.inventors);
-          }
-        } 
-        if(k == 'attachments') {
-          this.form[k] = data[k].map(_=>_.id);
-          this.attachments = data[k];
-        }       
-        if( k == 'extension' ) {
-          const arr = [];
-          for(let d of data[k]) {
-            if(d['value']) arr.push(d['label']);
-          }
-          this.form[k] = arr;
-        }else if(k == 'area') {
-          if(this.type == 'add') {
-            this.form[k] = data[k].map(_=>_.id);
-          }else if(this.type == 'edit' && type == 'upload') {
-            if(data[k][0]) {
-              this.form[k] = data[k][0]['id'];
-            }
-          }else {
-            this.form[k] = data[k]['id'];
-          }
-        }else if(k == 'type' || k == 'ipr' || k == 'proposer' || k == 'case_level'){
-          this.form[k] = data[k]['id'];
-        }else {
-          this.form[k] = data[k];
+    setForm (form, upload=false, disclosureType='') {
+      this.$tool.coverObj(this.form, form, {
+        obj: [ 'attachments', 'area', 'type', 'ipr', 'case_level' ], 
+        skip:[ 'extension', 'title' ],
+      });
+
+      if(form['title'] != undefined && !this.titleLock) {
+        this.form.title = form['title'];
+      }
+      
+      if(form['extension']) {
+        const arr = [];
+        for(let d of form['extension']) {
+          if(d['value']) arr.push(d['label']);
         }
-      } 
+        this.form.extension = arr;
+      }
+
+      if(upload) {
+        if(this.form.inventors && this.form.inventors.length != 0) {
+          //复用组件内置的方法...
+          this.$refs.inventors.handleShare(this.form.inventors);
+        }
+        if(disclosureType == 2) {
+          this.titleLock = true;
+        }
+      }else {
+        this.attachments = form.attachments ? form.attachments : [];
+      }      
     },    
     submitForm () {
       return this.$tool.shallowCopy(this.form, { 'date': true });
