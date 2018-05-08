@@ -147,7 +147,7 @@ const state = {
     	url: '/api/progress',
     	placeholder: '请输入状态关键词',
     	params: { category: 3 },
-  	  }], 	  
+  	}], 	  
 	  ['group', {
 	    placeholder: '请选择用户组',
 	    options: 'groupOptions',
