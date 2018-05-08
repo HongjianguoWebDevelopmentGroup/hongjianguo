@@ -3,9 +3,9 @@ const state = {
 		['case_level',{
 			placeholder: '请选择案件等级',
 			options: [
-				{id: 1, name: '非常重要'},
-				{id: 2, name: '重要'},
-				{id: 3, name: '一般'},
+				{id: '非常重要', name: '非常重要'},
+				{id: '重要', name: '重要'},
+				{id: '一般', name: '一般'},
 			]
 		}],
 		['reminder', {
@@ -107,7 +107,7 @@ const state = {
 	  }],
 	  ['file_type', {
 	    placeholder: '请选择文件类型',
-	    url: '/api/fileTypes?',
+	    url: '/api/fileTypes?category=1',
 	  }],
 	  ['file_type_patent', {
 	    placeholder: '请选择专利文件类型',

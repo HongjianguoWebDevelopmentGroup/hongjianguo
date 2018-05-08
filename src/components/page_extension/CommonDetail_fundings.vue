@@ -14,7 +14,8 @@ import { mapGetters } from 'vuex'
       return {
 
           columns:[
-            { type: 'text', label: '费用名称', prop: 'name', min_width: '160'},
+            { type: 'text', label: '费用名称', prop: 'name', min_width: '145'},
+            { type: 'text', label: '费用对象', prop: 'target', render_simple: 'name',},
             { type: 'text', label: '外币金额',  prop: 'amount', width: '100', align: 'right',
               render:(h,item,row)=>{
                 if( row.roe == 1 ){
@@ -24,7 +25,7 @@ import { mapGetters } from 'vuex'
                 }
               } 
             },
-            { type: 'text', label: '汇率', prop: 'roe', width: '80', align: 'right',
+            { type: 'text', label: '汇率', prop: 'roe', width: '70', align: 'right',
               render:(h,item)=>{
                 if( item == 1 ){
                   return h('span','N/A');
@@ -38,9 +39,9 @@ import { mapGetters } from 'vuex'
                 return h('span',`${item}CNY`)
                 }
             },
-            { type: 'text', label: '付款日期', prop: 'pay_date', width: '160'},
-            { type: 'text', label: '状态', prop: 'status', width: '110'},
-            { type: 'text', label: '备注', prop: 'remark', min_width: '130'},
+            { type: 'text', label: '付款日期', prop: 'pay_date', width: '120'},
+            { type: 'text', label: '状态', prop: 'status', width: '90'},
+            { type: 'text', label: '备注', prop: 'remark', min_width: '90'},
           ],
       }
     },

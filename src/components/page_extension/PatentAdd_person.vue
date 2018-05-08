@@ -85,6 +85,9 @@
         <el-form-item label="已申请资助">
           <app-switch type="is" v-model="form.is_support"></app-switch>
         </el-form-item>
+        <el-form-item label="专利实施情况">
+          <el-input type="textarea" placeholder="请填写专利实施情况" v-model="form.application"></el-input>
+        </el-form-item>
       </el-form>
     </app-collapse>
 </template>
@@ -127,6 +130,7 @@ export default {
         group_number: '',
         family_number: '',
         is_support: 0,
+        application: '',
       },
       ipr_name: '',
       branchName: '',
