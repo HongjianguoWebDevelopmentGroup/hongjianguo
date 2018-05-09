@@ -161,10 +161,12 @@ export default {
     tansmitData(data){
       // console.log(data);
       if(data[1] !== undefined) {
-        this.formData.inventors.push(data[1]);
+        const obj = Object.assign(data[1],{share: ''});
+        this.formData.inventors.push(obj);
         if(this.formData.inventors && this.formData.inventors.length != 0) {
-            //复用组件内置的方法...
+            //复用组件内置的方法...  
           this.$refs.inventors.handleShare(this.formData.inventors);
+          this.dialogVisible2 = false;
         }
       }
     },
