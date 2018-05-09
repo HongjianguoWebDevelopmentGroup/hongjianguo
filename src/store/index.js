@@ -27,6 +27,7 @@ Vue.use(Vuex);
 const store = new Vuex.Store({
   strict: true,
   state: {
+    Vue,
     dragId: null,
     axios,
     tool,
@@ -42,6 +43,7 @@ const store = new Vuex.Store({
     leftNavVisible: true,
     agencyLoadVisible: false,
     importLoading: false,
+    routerIf: true,
   },
   modules: {
     filter,
@@ -66,20 +68,21 @@ const store = new Vuex.Store({
     tableCache,
   },
   getters: {
-    getDragId: state=>state.dragId,
-    loading: state=>state.loading,
-    loadingText: state=>state.loadingText,
-    viewLoading: state=>state.view_loading,
-    viewLoadingText: state=>state.view_loading_text,
-    shrinkLoading: state=>state.shrinkLoading,
-    shrinkLoadingText: state=>state.shrinkLoadingText,
-    innerHeight: state=>state.inner_height,
-    innerWidth: state=>state.leftNavVisible ? state.inner_width - 160 : state.inner_width,
-    shrinkHeight: state=>state.inner_height - 80,
-    getInnerWidth: state=>state.leftNavVisible ? state.inner_width - 160 : state.inner_width, 
-    leftVisible: state=>state.leftNavVisible,
-    agencyLoadVisible: state=>state.agencyLoadVisible,
-    importLoading: state=>state.importLoading,
+    getDragId: state => state.dragId,
+    loading: state => state.loading,
+    loadingText: state => state.loadingText,
+    viewLoading: state => state.view_loading,
+    viewLoadingText: state => state.view_loading_text,
+    shrinkLoading: state => state.shrinkLoading,
+    shrinkLoadingText: state => state.shrinkLoadingText,
+    innerHeight: state => state.inner_height,
+    innerWidth: state => state.leftNavVisible ? state.inner_width - 160 : state.inner_width,
+    shrinkHeight: state => state.inner_height - 80,
+    getInnerWidth: state => state.leftNavVisible ? state.inner_width - 160 : state.inner_width, 
+    leftVisible: state => state.leftNavVisible,
+    agencyLoadVisible: state => state.agencyLoadVisible,
+    importLoading: state => state.importLoading,
+    routerIf: state => state.routerIf,
   },
   mutations: {
     setDragId (state, id) {
@@ -123,6 +126,9 @@ const store = new Vuex.Store({
     setImportLoading(state, boolean) {
       state.importLoading = boolean;
     },
+    setRouterIf(state, bool) {
+      state.routerIf = bool;
+    }
   },
   actions: {
     onShrinkLoading({state, commit},text="加载中...") {
@@ -136,6 +142,12 @@ const store = new Vuex.Store({
       commit('setShrinkLoading', false);
       // state.shrinkLoadingText = '';
       // state.shrinkLoading = false;
+    },
+    refreshRouter({state, commit}) {
+      commit('setRouterIf', false);
+      Vue.nextTick(() => {
+        commit('setRouterIf', true);
+      })
     }
   }
 });

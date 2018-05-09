@@ -89,7 +89,7 @@ const router = new Router({
     {
       path: '/statistics',
       name: 'Home',
-      component: Home
+      component: Home,
     },
     {
       path: '/inventorList',
@@ -286,7 +286,7 @@ const router = new Router({
       path: '/patent/add',
       name: 'PatentAdd',
       component: PatentAdd,
-      meta: { type: 'add' },
+      props: { pageType: 'add' },
     },
     {
       path: '/patent/notice',
@@ -302,13 +302,14 @@ const router = new Router({
     {
       path: '/trademark/add',
       name: 'TrademarkAdd',
-      component: TrademarkAdd
+      component: TrademarkAdd,
+      props: { pageType: 'add' },
     }, 
     {
       path: '/trademark/notice',
       name: 'TrademarkNotice',
-      meta: { type: 'trademark' },
       component: NoticeCommon,
+      meta: { type: 'trademark' },
     },
     {
       path:'/trademark/statistics',
@@ -318,8 +319,8 @@ const router = new Router({
     {
       path: '/copyright/add',
       name: 'CopyrightAdd',
-      meta: { pageType: 'add' },
-      component: CopyrightAdd
+      component: CopyrightAdd,
+      props: { pageType: 'add' },
     },
     {
       path: '/copyright/list',
@@ -481,7 +482,7 @@ const router = new Router({
 router.beforeEach((to, from, next)=>{
   const store = this.a.app.$store;
   if(store) {
-    store.commit('clearScreen');
+    store.dispatch('clearScreen');
   }
   next();
 });

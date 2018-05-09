@@ -1,9 +1,9 @@
 <template>
   <app-collapse col-title="相关案件">
       <el-form label-width="120px">
-<!--         <el-form-item label="相关提案">
+        <el-form-item label="相关提案">
           <remote-select type="proposal" v-model="form.proposals" multiple></remote-select>
-        </el-form-item> -->
+        </el-form-item>
         <el-form-item label="相关案件">
           <relative-projects v-model="form.relative_projects"></relative-projects>
         </el-form-item>

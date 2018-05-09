@@ -150,13 +150,18 @@ export default {
       return config ? config : this.type;
     },
     name () {
-      return this.tableData[0]['name']?this.tableData[0]['name']:'';
+      return this.tableData.length!=0?this.tableData[0]['name']:'';
     },
   },
   methods: {
     show () {
-      this.project_id = "";
-      this.dialogVisible = true;
+        this.$nextTick(_=>{
+        if(this.tableData.length!=0) {
+          this.form.type = this.tableData[0]['type']['id']?this.tableData[0]['type']['id']-0:'';
+          const  v = this.$refs.static.getSelected(this.form.type);
+          this.handleTypeChange(v,0);
+        }  
+       });
     },
     design() {
       const o = this.$tool.deepCopy(this.tableData[this.$index]);
@@ -172,6 +177,9 @@ export default {
         f = {};
       }else {
         f = selected.fields;
+        if(selected instanceof Array && selected.length !== 0 ) {
+          f = selected[0].fields;
+        }
       }
       if (!f) return;
       const copy = this.$tool.deepCopy(this.tableData[index]);
@@ -287,8 +295,6 @@ export default {
         this.$emit('uploadSuccess');
       };
       const complete = _=>{
-        console.log(this.tableData);
-        console.log(this.file);
         this.loading = false;
       }
 
@@ -311,21 +317,18 @@ export default {
     },
   },
   created () {
-    // console.log(this.tableData[0]);
-    this.$nextTick(_=>{
-      this.form.type = this.tableData[0]['type']['id']?this.tableData[0]['type']['id']-0:'';
-    });
+    // console.log(this.tableData[0])
 
   },
   watch: {
     'form.type': {
-      handler:function(val){
-        if(val!=="") {
-        const aa =  this.$refs.static.getSelected(val);
-        console.log(aa);
+      handler:function(val,oVal){
+        if(val!=="") {  
+          const v =  this.$refs.static.getSelected(val);
+          this.handleTypeChange(v,0);
         }
       }
-    }
+    },
   },
   components: { 
     RemoteSelect,

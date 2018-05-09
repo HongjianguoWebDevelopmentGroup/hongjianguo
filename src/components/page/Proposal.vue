@@ -1,5 +1,5 @@
 <template>
-	<div class="main">
+  <div class="main">
     <app-collapse col-title="提案筛选" default-close ref="collapse">   
       <el-form label-width="80px">
         <el-row>
@@ -42,11 +42,13 @@
       </el-form>
     </app-collapse>
     
-		<table-component :tableOption="tableOption" :data="tableData" ref="table" @refreshTableData="refreshTableData" :refresh-proxy="refreshProxy">
+    <table-component :tableOption="tableOption" :data="tableData" ref="table" @refreshTableData="refreshTableData" :refresh-proxy="refreshProxy">
       <el-button v-if="menusMap && !menusMap.get('/proposals/proposer')" type="primary" icon="d-arrow-right" class="table-header-btn" @click="transferPop" slot="transfer" style="margin-left: 5px;">移交</el-button>
+      <el-button v-if="menusMap && !menusMap.get('/proposals/proposer')" type="primary"  class="table-header-btn" @click="mergePropsals"  slot="mergePropsal" style="margin-left: 5px;">合并立案</el-button>
       
       <template slot="row_action" slot-scope="scope">
         <el-button type="text" icon="edit" size="mini" @click="edit(scope.row)" :disabled="scope.row.status ? true : false" >编辑</el-button>
+        <el-button type="text" icon="plus" size="mini" @click="singleMerge(scope.row)">立案</el-button>
       </template>
     </table-component>
 
@@ -165,7 +167,7 @@ export default {
     },
     refreshTableData (option) {
       const url = '/api/proposals';
-      const data = Object.assign({}, option, this.filter, this.screen_value);
+      const data = Object.assign({}, option, this.filter, this.screen_value, this.inParams);
       const success = _=>{
         if(data.format == 'excel') {
           window.location.href = _.proposals.downloadUrl;
@@ -210,7 +212,20 @@ export default {
 
       this.transferDisabled = true;
       this.axiosPut({url, data, success, complete});
-    }
+    },
+    mergePropsals () {
+      const s = this.$refs.table.getSelect();
+      if(s instanceof Array && s.length!=0){
+        this.$router.push({name:'PatentAdd',params:{dataobj:s}});
+      }
+    },
+    singleMerge (row) {
+      const arr = [];
+      arr.push(row);
+      if(arr.length!=0){
+          this.$router.push({name:'PatentAdd',params:{dataobj:arr}});
+      }
+    },
   },
   data () {
     return {
@@ -230,7 +245,7 @@ export default {
           { type: 'control' },
           { type: 'report', click: _=>{this.$router.push('/proposal/report')} },
         ],
-        'header_slot': ['transfer'],
+        'header_slot': ['transfer','mergePropsal'],
         'columns': [
           { type: 'selection'},
           { type: 'text', label: '案号', prop: 'serial', sortable: true, width: '200' },
@@ -278,7 +293,11 @@ export default {
   computed: {
     ...mapGetters([
       'menusMap',
-    ])
+    ]),
+    inParams () {
+      const p = this.$route.meta.params; 
+      return p ? p : {};
+    },
   },
   mounted () {
     this.refresh();

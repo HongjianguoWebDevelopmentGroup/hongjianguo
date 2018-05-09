@@ -1,10 +1,11 @@
     <template>
       <el-upload
+      class="app-upload"
       :on-success="handleUploadSuccess"
       :on-remove="handleUploadRemove"
       :on-change="handleChange"
-      class="app-upload"
-      :action=action
+      :action="action"
+      :data="data"
       :on-preview="onPreview"
       :before-upload="handleUploadBefore"
       :file-list="fileList"
@@ -35,6 +36,12 @@
         'action': {
           type: String,
           default: '/api/files',
+        },
+        'data': {
+          type: Object,
+          default () {
+            return {};
+          }
         }
       },
       data () {

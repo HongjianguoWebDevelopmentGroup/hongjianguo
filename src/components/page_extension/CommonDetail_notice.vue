@@ -52,7 +52,7 @@
        <documents style="margin-top: 10px;"></documents>
      </div>
     <el-dialog :title="this.isNotice?'通知书上传':'其他文档上传'" :visible.sync="dialogVisible" class="dialog-medium" :modal="false"> 
-     <documents-upload  :type="types" :tableData="tableDatas" :file="file" @dialogVisible="val=>{dialogVisible=val}" @uploadSuccess="refreshDetailData"></documents-upload>
+     <documents-upload   :type="types" :tableData="tableDatas" :file="file" @dialogVisible="val=>{dialogVisible=val}" @uploadSuccess="refreshDetailData" ref="docupload"></documents-upload>
    </el-dialog>
    <el-dialog title="CPC通知书上传" :visible.sync="dialogPatentVisible" class="dialog-small" :modal="false">
      <el-form :model="patentForm" ref="patentForm" label-width="110px" class="patent_notice">
@@ -147,10 +147,10 @@ export default {
         fees: []
       },
       columns: [
-          { type: 'text', label: '通知书名称', prop: 'notice_name', min_width: '180' },
-          { type: 'text', label: '发文日', prop: 'mail_date', width: '160' },
-          { type: 'text', label: '法定期限', prop: 'deadline', width: '160' },
-          { type: 'text', label: '发文序列号', prop: 'notice_serial', width: '190' },
+          { type: 'text', label: '通知书名称', prop: 'notice_name', min_width: '220' },
+          { type: 'text', label: '发文日', prop: 'mail_date', min_width: '160' },
+          { type: 'text', label: '法定期限', prop: 'deadline', min_width: '160' },
+          // { type: 'text', label: '发文序列号', prop: 'notice_serial', width: '190' },
           // { type: 'text', label: '审查员', prop: 'examiner', width: '210' },
           // { type: 'text', label: '审查部门', prop: 'examiner_dept', width: '210' },
           // { type: 'text', label: '审查员电话', prop: 'examiner_phone', width: '210' },
@@ -233,6 +233,7 @@ export default {
     },
   },
   created(){
+
   },
   methods: {
     ...mapActions([
@@ -247,33 +248,31 @@ export default {
       this.isNotice =false;
     },
     handleSuccess (a,b,c) {
-      console.log(a);
-      this.clear();
-      const l = this.tableDatas.length;
-      const lists = [];
       if(a.status) {
-        this.dialogVisible = true;
-        a.data.list.forEach((_, key)=>{ 
-          _.time = '';
-          _.legal_time = '';
-          _.apd = '';
-          _.issue_date = '';
-          _.apn = '';
-          _.pct_search_result = '';
-          _.pct_search_date = '';   
-          // if(_.type) {
-          //   _.type =  _.type.id;
-          // }
-          lists.push(this.$tool.deepCopy(_));
-        });
+        this.$nextTick(_=>{
+          this.clear();
+          const l = this.tableDatas.length;
+          const lists = [];  
+          this.dialogVisible = true;
+          a.data.list.forEach((_, key)=>{ 
+            _.time = '';
+            _.legal_time = '';
+            _.apd = '';
+            _.issue_date = '';
+            _.apn = '';
+            _.pct_search_result = '';
+            _.pct_search_date = '';   
+            lists.push(this.$tool.deepCopy(_));
+          });
           this.tableDatas.push(...a.data.list);
           this.file.push(a.data.file);
-         
-          this.$nextTick(_=>{
             lists.forEach((v,k)=>{
               this.tableDatas.splice(k+l,1,v);
             })
-          })
+          this.$nextTick(_=>{
+            this.$refs.docupload.show();
+           })
+        });
       }else {
         this.$message({message: a.info, type: 'warning'});
       }

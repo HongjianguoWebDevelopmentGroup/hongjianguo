@@ -148,9 +148,9 @@ const URL = '/api/trademarks'
 export default {
 	name: 'trademarkAdd',
 	props: {
-		'pageType': {
+		pageType: {
 			type: String,
-			default: 'add',
+			default: '',
 		},
 	},
 	mixins: [AxiosMixins],
@@ -159,27 +159,27 @@ export default {
 			id: '',
 			form: {
 				title: '',
-		  		type: '',
-			  	applicants: [],
-			  	area: this.pageType == 'add' ? [] : '',
-			  	categories: [],
-			  	detail: '',
-			  	figure: '',
-			  	description: '',
-			  	public_date: '',
-			  	public_number: '',
-			  	expiring_date: '',
-			  	attachments: [],
-			  	remark: '',
-			  	apn: '',
-			  	apd: '',
-			  	issue_date: '',
-			  	issue_number: '',
-			  	agency: '',
-			  	agency_serial: '',
-			  	agent: '',
-			  	progress: '',
-			  	priorities: []
+	  		type: '',
+		  	applicants: [],
+		  	area: '',
+		  	categories: [],
+		  	detail: '',
+		  	figure: '',
+		  	description: '',
+		  	public_date: '',
+		  	public_number: '',
+		  	expiring_date: '',
+		  	attachments: [],
+		  	remark: '',
+		  	apn: '',
+		  	apd: '',
+		  	issue_date: '',
+		  	issue_number: '',
+		  	agency: '',
+		  	agency_serial: '',
+		  	agent: '',
+		  	progress: '',
+		  	priorities: []
 			},
 		  rules: {
 		  	title: { required: true, message: '商标名称不能为空', trigger: 'blur' },
@@ -211,6 +211,9 @@ export default {
 		...mapActions([
 			'refreshUser',
 		]),
+		init () {
+			this.form.area = this.pageType == 'add' ? [] : '';
+		},
 		highLightColors(id,tagName,event) {				//点击标签颜色高亮
 			var pId = document.getElementById(id);
 			var aList = pId.getElementsByTagName(tagName);
@@ -359,6 +362,7 @@ export default {
   	},
 	},
 	created () {
+		this.init();
 		this.refreshForm();
 	},
 	watch: {

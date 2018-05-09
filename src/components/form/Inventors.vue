@@ -1,6 +1,6 @@
 <template>
   <div>
-  	<inventor v-for="(item, index) in value" :key="index" style="margin-bottom: 5px" :value="value[index]" @input="(val)=>{handleInput({val, index})}" is-delete @deleteInventor="handleDelete(index)" :disabled="disabled"></inventor>
+    <inventor v-for="(item, index) in value" :key="index" style="margin-bottom: 5px" :value="value[index]" @input="(val)=>{handleInput({val, index})}" is-delete @deleteInventor="handleDelete(index)" :disabled="disabled"></inventor>
 
     <el-row>
       <el-button type='text' @click="handleAdd" v-if="!disabled&&propType!='proposal'">添加发明人</el-button>
@@ -15,10 +15,10 @@ import Inventor from '@/components/form/Inventor'
 
 const shareMap = new Map([
   [1, [1]],
-  [2, [1,1]],
-  [3, [4,3,3]],
-  [4, [1,1,1,1]],
-  [5, [1,1,1,1,1]],
+  [2, [3,2]],
+  [3, [5,3,2]],
+  [4, [9,5,4,2]],
+  [5, [8,5,3,2,2]],
 ]);
 
 export default {
@@ -26,20 +26,20 @@ export default {
   mixins: [ Multiline ],
   props: ['propType'],
   methods: {
-  	handleAdd () {
+    handleAdd () {
       const v = this.$tool.deepCopy(this.value);
       v.push({share: '', id: ''});
       this.handleShare(v);
       this.$emit('input', v);
-  		this.$emit('addInventor');
-  	},
-  	handleDelete (index) {
+      this.$emit('addInventor');
+    },
+    handleDelete (index) {
       const v = this.$tool.deepCopy(this.value);
       v.splice(index, 1);
       this.handleShare(v);
       this.$emit('input', v);
-  		this.$emit('deleteInventor', index);
-  	},
+      this.$emit('deleteInventor', index);
+    },
     //自动生成发明人贡献率
     handleShare (v) {
       let l = v.length;
@@ -68,11 +68,11 @@ export default {
         return _;
       })
     },
-  	handleInput ({val, index}) {
-  		const copy = this.$tool.deepCopy(this.value);
-  		copy[index] = val;
-  		this.$emit('input', copy);
-  	}
+    handleInput ({val, index}) {
+      const copy = this.$tool.deepCopy(this.value);
+      copy[index] = val;
+      this.$emit('input', copy);
+    }
   },
   components: { Inventor }
 }

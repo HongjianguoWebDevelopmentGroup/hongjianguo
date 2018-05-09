@@ -1,8 +1,8 @@
  <template>
-  	<div class="main">
-  		<el-row>
-	  		<el-col :span="18">
-		  		<el-form label-width="92px" :rules="formRules" :model="formData" ref="form">
+    <div class="main">
+      <el-row>
+        <el-col :span="18">
+          <el-form label-width="92px" :rules="formRules" :model="formData" ref="form">
             
             <el-form-item label="提案人">{{ proposer_name }}</el-form-item>
             
@@ -21,10 +21,15 @@
               </inventors>   
              
             </el-form-item>
-
-            <el-form-item label="证件号码(第一发明人)" prop="identity" class="is-required">
-              <el-input v-model="formData.identity" placeholder="请填写第一发明人证件号码"></el-input>
+            <el-form-item label="项目名称" prop="project_name">
+              <el-input v-model="formData.project_name" placeholder="请填写项目名称"></el-input>
             </el-form-item>
+            <el-form-item label="项目编号" prop="project_serial">
+              <el-input v-model="formData.project_serial" placeholder="请填写项目编号"></el-input>
+            </el-form-item>
+<!--             <el-form-item label="证件号码(第一发明人)" prop="identity" class="is-required">
+              <el-input v-model="formData.identity" placeholder="请填写第一发明人证件号码"></el-input>
+            </el-form-item> -->
 
             <el-form-item label="技术分类" prop="classification">
               <classification v-model="formData.classification" count-type="proposal"></classification>
@@ -32,25 +37,25 @@
             <el-form-item label="产品名称" prop="products">
               <product v-model="formData.products" count-type="proposal" multiple></product>
             </el-form-item>
-						<el-form-item label="标签" prop="tags">
-							<static-select type='tag' v-model="formData.tags" multiple></static-select>
-						</el-form-item>
-						<el-form-item label="附件" prop="attachments" class="is-required">
-               <upload v-model="formData.attachments" :file-list="attachments" ref="upload"></upload>
-						</el-form-item>
-            <el-form-item label="备注" prop="remark">
+            <el-form-item label="标签" prop="tags">
+              <static-select type='tag' v-model="formData.tags" multiple></static-select>
+            </el-form-item>
+            <el-form-item label="附件" prop="attachments">
+               <upload v-model="formData.attachments" :file-list="attachments" ref="upload" :data="{action: 'parseDisclosure'}"></upload>
+            </el-form-item>
+            <el-form-item label="评审结果" prop="remark">
               <el-input type="textarea" v-model="formData.remark"></el-input>
             </el-form-item>
 
-						<el-form-item>
-						   <el-button @click="submit" type="primary" :disabled="btn_disabled">提交</el-button>
+            <el-form-item>
+               <el-button @click="submit" type="primary" :disabled="btn_disabled">提交</el-button>
                <el-button @click="save()" :disabled="btn_disabled">暂存</el-button>
-						   <el-button @click="cancel" :disabled="btn_disabled">取消</el-button>
-						</el-form-item>
+               <el-button @click="cancel" :disabled="btn_disabled">取消</el-button>
+            </el-form-item>
 
-			  	</el-form>
-		  	</el-col>
-		  	<el-col :span="6" style="padding-left: 40px;">
+          </el-form>
+        </el-col>
+        <el-col :span="6" style="padding-left: 40px;">
 
             <h3 style="margin-top: 40px;">提案模板</h3>
             <ul class="proposal-model">
@@ -61,8 +66,8 @@
               <li><i class="iconfont icon-ppt"></i><a href="javascript:void(0)">15分钟如何写一个专利底稿.pptx</a></li> -->
             </ul>
 
-		  	</el-col>
-	  	</el-row>
+        </el-col>
+      </el-row>
       <el-dialog title="提交任务" :visible.sync="dialogVisible">
         <task-finish 
            
@@ -84,7 +89,7 @@
       </el-dialog>
 
       <pop-panel ref="pop" @refresh="tansmitData"></pop-panel>
-  	</div>
+    </div>
 </template>
 
 <script>
@@ -198,14 +203,14 @@ export default {
               this.$message({message: '请填写发明人', type: 'warning'});
               return;
             }
-            if(this.formData.identity == 0) {
-              this.$message({message: '请填写第一发明人的证件号码', type: 'warning'});
-              return;
-            }
-            if(this.formData.attachments.length == 0) {
-              this.$message({message: '请添加附件', type: 'warning'});
-              return;
-            }
+            // if(this.formData.identity == 0) {
+            //   this.$message({message: '请填写第一发明人的证件号码', type: 'warning'});
+            //   return;
+            // }
+            // if(this.formData.attachments.length == 0) {
+            //   this.$message({message: '请添加附件', type: 'warning'});
+            //   return;
+            // }
             temp = {};
           }
 
@@ -315,7 +320,9 @@ export default {
         attachments: [],
         classification: '',
         products: [],
-        identity: '',
+        project_serial: '',
+        project_name: '',
+        // identity: '',
       },
       timeInterval: '',
       attachments: [],
@@ -323,11 +330,11 @@ export default {
       update_time: '',
       proposer_name: '',
       formRules: {
-      	'title': [
+        'title': [
           {required: true, message: '案件名称不能为空'},
           {pattern: /^[^~!@#$%^&*]+$/, message: '案件名不能包含非法字符', trigger: 'blur'},
           {max: 150, message: '长度不能超过150个字符', trigger: 'blur' }
-      	],
+        ],
         'abstract': [
           {max: 1000, message: '长度不能超过1000个字符', trigger: 'blur' }  
         ],
@@ -344,7 +351,7 @@ export default {
 
           },
         },
-        'identity': {pattern:  /(^\d{15}$)|(^\d{18}$)|(^\d{17}(\d|X|x)$)/, message: '证件号码格式错误'},   	
+        // 'identity': {pattern:  /(^\d{15}$)|(^\d{18}$)|(^\d{17}(\d|X|x)$)/, message: '证件号码格式错误'},     
       },
       tableOption: {
         'is_search': false,
@@ -430,13 +437,13 @@ export default {
     userid () {
       this.refreshCommon();
     },
-    'formData.inventors': {
-      handler(val) {
-        if(val[0] && val[0]['identity']) {
-          this.formData.identity = val[0]['identity'];
-        }
-      }
-    }
+    // 'formData.inventors': {
+    //   handler(val) {
+    //     if(val[0] && val[0]['identity']) {
+    //       this.formData.identity = val[0]['identity'];
+    //     }
+    //   }
+    // }
   },
   components: { 
     PopTree, 

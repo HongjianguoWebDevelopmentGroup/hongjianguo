@@ -34,7 +34,7 @@
 						<remote-select type="inventor" v-model="form.inventors" multiple></remote-select>
 					</el-form-item>
 					<el-form-item label="专利族号" prop="family_number">
-						<el-input placeholder="请输入需要搜索的专利族号" v-model="form.family_number"></el-input>
+						<remote-select type="family_number" v-model="form.family_number" single></remote-select>
 					</el-form-item>
 				</el-col>
 				<el-col :span="12">
@@ -51,7 +51,7 @@
 						<static-select type="tag" v-model="form.tags" multiple></static-select>
 					</el-form-item>
 					<el-form-item label="群组号" prop="group_number">
-						<el-input placeholder="请输入需要搜索的群组号" v-model="form.group_number"></el-input	>
+						<remote-select type="group_number" v-model="form.group_number" single></remote-select>
 					</el-form-item>	
 					<el-form-item label="项目编号" prop="project_number">
 						<el-input placeholder="请输入需要搜索的项目编号" v-model="form.project_number"></el-input	>

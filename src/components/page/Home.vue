@@ -1,6 +1,5 @@
 <template>
 	<div class="main">
-    
     <el-card v-if="pendingTask" style="position: relative;">
       <div style="display: table;">
       <span v-if="pendingTask.length != 0"  v-for="m in pendingTask" :key="m.label"
