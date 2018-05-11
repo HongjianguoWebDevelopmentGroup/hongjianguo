@@ -309,25 +309,35 @@ export default {
       
     },
     handleUploadSuccess (d,f,fl) {
-        console.log(fl);
+      console.log(fl);
       const list = d.data.list;
-      if(list.is_disclosure == 1) {
-        this.praseVisible = true;
-        this.praseData = list.contents;
-        if(this.all_equal){
+      if(list instanceof Object ) {
+        if(list.is_disclosure == 1) {
+          this.praseVisible = true;
+          this.praseData = list.contents;
+          if(this.all_equal){
+            this.$message({message: d.info, type: 'success'});
+            this.no_finish = false;       
+          }else {
+            this.no_finish = true;
+           this.$nextTick(_=>{
+            this.attachments = fl.splice(fl.length-1,1);
+           });
+            this.$message({message: '上传的确认表和系统的字段不一致，请修改后重新上传', type: 'warning'});
+          }
+        }else { 
           this.$message({message: d.info, type: 'success'});
-          this.no_finish = false;       
-        }else {
           this.no_finish = true;
-          console.log('ahhah');
-         this.$nextTick(_=>{
-          this.attachments = fl.splice(fl.length-1,1);
-         });
-          this.$message({message: '上传的确认表和系统的字段不一致，请修改后重新上传', type: 'warning'});
         }
-      }else { 
-        this.$message({message: d.info, type: 'success'});
+      }else {
         this.no_finish = true;
+        this.$nextTick(()=>{
+          this.attachments = fl.splice(fl.length-1,1);
+          this.$message({
+            type: 'warning',
+            message: '解析文件失败'
+          });
+        });
       }
     },
     inform(val) {

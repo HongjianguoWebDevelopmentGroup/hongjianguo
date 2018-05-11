@@ -1,8 +1,8 @@
 <template>
    <el-dialog title="检验结果" :visible="visible" @update:visible="handleVisible" :modal="false" class="dialog-medium">
-    <app-table :columns="columns" :data="tableData"></app-table>
-    <div style="margin-top: 20px;"><span>如果检验结果不通过请</span><el-button type="text" size="mini" @click="$emit('more', 'patent')" style="margin-left:6px;" v-if="!allEqual">前往修改</el-button></div>
-    <el-button type="primary" @click="checkOut" style="margin-top:20px;" v-if="allEqual">确认</el-button>
+      <app-table :columns="columns" :data="tableData"></app-table>
+      <div style="margin-top: 20px;"><span>如果检验结果不通过请</span><el-button type="text" size="mini" @click="$emit('more', 'patent')" style="margin-left:6px;" v-if="!allEqual">前往修改</el-button></div>
+      <el-button type="primary" @click="checkOut" style="margin-top:20px;" v-if="allEqual">确认</el-button>
    </el-dialog>
 </template>
 <script>
@@ -37,18 +37,18 @@ export default {
 
   },
   methods: {
-  handleVisible(val) {
-    this.$emit('update:visible',val);
-  },
-  handleData(d) {
-    console.log(d);
-    this.allEqual = d.every((v,i,arr)=>{
-    return v['is_equal'] === true;
-    });
-  },
-  checkOut() {
-    this.$emit('check-out',true);
-  },
+    handleVisible(val) {
+      this.$emit('update:visible',val);
+    },
+    handleData(d) {
+      console.log(d);
+      this.allEqual = d.every((v,i,arr)=>{
+      return v['is_equal'] === true;
+      });
+    },
+    checkOut() {
+      this.$emit('check-out',true);
+    },
   },
   mounted() {
 
