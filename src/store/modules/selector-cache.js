@@ -1,5 +1,14 @@
 const state = {
 	config: [
+		['judge_type',{
+			placeholder: '请选择评审类型',
+			options:[
+				{id: 1, name: '提案评审'},
+				{id: 2, name: '复审评估'},
+				{id: 3, name: 'PCT评审'},
+				{id: 4, name: '自定义评审'},
+			]
+		}],
 		['case_level',{
 			placeholder: '请选择案件等级',
 			options: [

@@ -33,16 +33,16 @@
             <detail-copyright style="height: 100%;" page-type="edit" v-if="type == 'copyright'" @editSuccess="editSuccess" ref="copyright"></detail-copyright>
           </div>
         </el-tab-pane>
-        <el-tab-pane label="流程管理" name="control">
+        <el-tab-pane label="流程" name="control">
           <detail-control></detail-control>
         </el-tab-pane>
         <el-tab-pane label="官文&附件" name="notice">
           <detail-notice :type="type" @uploadSuccess="edit"></detail-notice>
         </el-tab-pane>
-        <el-tab-pane label="所有费用" name="fourth">
+        <el-tab-pane label="费用" name="fourth">
           <detail-fee></detail-fee>
         </el-tab-pane>
-        <el-tab-pane label="往来邮件" name="fee">
+        <el-tab-pane label="邮件" name="fee">
           <detail-email></detail-email>
         </el-tab-pane>
 <!--         <el-tab-pane label="文档" name="documents">
@@ -51,13 +51,13 @@
         <el-tab-pane label="群组/专利族" name="group_family" v-if="type == 'patent'">
           <group-family></group-family>
         </el-tab-pane>
-        <el-tab-pane label="引用关系" name="quote" v-if="type == 'patent'">
+        <el-tab-pane label="引用" name="quote" v-if="type == 'patent'">
           <quote></quote>
         </el-tab-pane>
 <!--         <el-tab-pane label="评审记录" name="review" v-if="type == 'patent'">
           <review></review>
         </el-tab-pane> -->
-        <el-tab-pane label="审查记录" name="review_records">
+        <el-tab-pane label="审查" name="review_records">
           <defence></defence>
         </el-tab-pane>
 
@@ -66,6 +66,9 @@
         </el-tab-pane>
         <el-tab-pane label="提醒" name="remind" v-if="type == 'patent'">
           <remind></remind>
+        </el-tab-pane> 
+        <el-tab-pane label="评审" name="judge" v-if="type == 'patent'">
+          <judge></judge>
         </el-tab-pane>
       </el-tabs>
     </div>
@@ -105,6 +108,7 @@ import DetailAmendments from '@/components/page_extension/CommonDetail_Amendment
 import DivideForm from '@/components/page_extension/CommonDetail_divide'
 import TaskEdit from '@/components/page_extension/TaskCommon_edit'
 import Remind from '@/components/page_extension/CommonDetail_remind'
+import Judge from '@/components/page_extension/CommonDetail_judge'
 
 import { mapGetters } from 'vuex'
 import { mapActions } from 'vuex'
@@ -308,6 +312,7 @@ export default {
     DivideForm,
     TaskEdit,    
     Remind,
+    Judge,
   }
 }
 </script>
