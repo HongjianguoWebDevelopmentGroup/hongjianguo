@@ -7,6 +7,7 @@
     <agent ref="agent"></agent>
     <case ref="case"></case>
     <other ref="other" :type="pageType" ></other>
+    <review ref="review" :type="pageType"></review>
     <div style="margin-bottom: 20px;">
       <el-button @click="add" type="primary" v-if="pageType == 'add'" :disabled="btn_disabled">添加</el-button>
       <!-- <el-button @click="edit" type="primary" v-if="type == 'edit'" :disabled="btn_disabled">编辑</el-button> -->
@@ -18,17 +19,18 @@
 
 <script>
 const map = new Map([
-  ['base', '请正确填写基本信息！'],
-  ['person', '请正确填写扩展信息！'],
+  ['base', '请正确填写基本信息'],
+  ['person', '请正确填写扩展信息'],
   ['classification', '请正确填写分类信息'],
   ['case', '请正确填写相关案件信息'],
-  ['other', '请正确填写其他信息及附件'],
+  ['other', '请正确填写其他信息'],
+  ['review', '请正确填写评审结果']
 ]);
 
-const getKeys = ['base', 'person', 'classification', 'case', 'other'];
-const setKeys = ['base', 'person', 'classification', 'agent', 'case', 'other'];
+const getKeys = ['base', 'person', 'classification', 'agent', 'case', 'other', 'review'];
+const setKeys = ['base', 'person', 'classification', 'agent', 'case', 'other', 'review'];
 
-const URL = '/api/patents';
+const URL = '/patents';
 
 import AxiosMixins from '@/mixins/axios-mixins'
 import AppCollapse from '@/components/common/AppCollapse'
@@ -38,6 +40,7 @@ import Classification from '@/components/page_extension/PatentAdd_classification
 import Agent from '@/components/page_extension/PatentAdd_agent'
 import Case from '@/components/page_extension/PatentAdd_case'
 import Other from '@/components/page_extension/PatentAdd_other'
+import Review from '@/components/page_extension/PatentAdd_review'
 import {mapActions} from 'vuex'
 export default {
   name: 'patentAdd',
@@ -55,12 +58,12 @@ export default {
     ...mapActions([
       'refreshUser',
     ]),
-    add (form) {      
-      
-
-      this.formCheck(_=>{
+    async add (form) {
+      const flag = await this.formCheck();
+      if(flag) {
         const url = URL;
         const data = Object.assign( ...getKeys.map(_=>this.$refs[_].submitForm()), {list: this.list} );
+        
         const success = _=>{ 
           this.$message({message: '添加专利成功', type: 'success'});
           this.refreshUser();
@@ -69,15 +72,16 @@ export default {
         const complete = _=>{
           this.btn_disabled = false;
         }
-
-
-       this.$axiosPost({url, data, success});  
-      })   
+        
+        this.$axiosPost({url, data, success});
+      }
     },
-    edit () {
-      this.formCheck(_=>{
+    async edit () {
+      const flag = await this.formCheck();
+      if(flag) {
         const url = `${URL}/${this.id}`;
-        const data = Object.assign( ...getKeys.map(d=>this.$refs[d].submitForm()) );
+        const data = Object.assign( ...setKeys.map(d=>this.$refs[d].submitForm()) );
+        console.log(data);
         const success = _=>{ 
           this.$message({message: '编辑专利成功', type: 'success'});
           this.$emit('editSuccess');
@@ -88,35 +92,35 @@ export default {
         }
 
         this.btn_disabled = true;
-        this.$axiosPut({url, data, success, complete});  
-      })
+        return this.$axiosPut({url, data, success, complete});
+      }
     },
     clear () {
       this.$refs.form.resetFields();
       this.attachments = [];
       this.list = [];
     },
-    formCheck (callback) {
-      let key = "";
-      let flag = false;
-
-      const check = (index)=>{
-        const key = getKeys[index];
-        if(key) {
-          this.$refs[key].checkForm(_=>{
-            if(_) {
-              check(index+1);
-            }else {
-              this.$message({message: map.get(key), type: 'warning'})      
-            }
-          })  
-        }else {
-          callback();
+    formCheck () {
+      return new Promise((resolve) => {
+        //递归检测
+        const check = (index) => {
+          const key = getKeys[index];
+          if(key) {
+            this.$refs[key].checkForm(_=>{
+              if(_) {
+                check(index+1);
+              }else {
+                this.$message({message: map.get(key), type: 'warning'});    
+                resolve(false);
+              }
+            })  
+          }else {
+            resolve(true);
+          }
         }
-      }
-      
-      check(0);
 
+        check(0);
+      });
     },  
     cancel () {
       this.$router.push('/patent/list');
@@ -224,7 +228,16 @@ export default {
       this.proposalFill(this.getParams);
     })
   },
- components: { PaBase, Person, Classification, Agent, Case, Other, AppCollapse }
+ components: { 
+    PaBase, 
+    Person, 
+    Classification, 
+    Agent, 
+    Case, 
+    Other, 
+    AppCollapse,
+    Review, 
+  }
 }
 </script>
 

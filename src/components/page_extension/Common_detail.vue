@@ -2,7 +2,7 @@
 <div>
   <app-shrink :title="title" :visible="visibleAuth" @update:visible="handleVisible">
     <span slot="header" style="float: right">
-      <el-button size="small" type="primary" class="table-header-btn" @click="edit">保存</el-button>
+      <el-button size="small" type="primary" class="table-header-btn" @click="edit" :loading="saveLoading">{{ saveLoading ? '保存中...' : '保存' }}</el-button>
         <el-dropdown  @command="handleCommandSend" trigger="click" style="margin-left: 5px;" size="small" v-if="type == 'patent'">
           <el-button size="small">
             主动递交<i class="el-icon-caret-bottom el-icon--right"></i>
@@ -149,6 +149,7 @@ export default {
       dialogChange: false,
       dialogDivide: false,
       dialogTask: false,
+      saveLoading: false,
     }
   },
   computed: {
@@ -193,19 +194,19 @@ export default {
       
       this.refreshDetailData({ id, type });
     },
-    edit () {
+    async edit () {
+      this.saveLoading = true;
+      try {
+        if(this.type == 'patent' && this.$refs.patent) {
+          await this.$refs.patent.edit();
+        }else if(this.type == 'copyright' && this.$refs.copyright) {
+          await this.$refs.copyright.edit();
+        }else if(this.type == 'trademark' && this.$refs.trademark) {
+          await this.$refs.trademark.edit();
+        }
+      }catch (e) {}
+      this.saveLoading = false;
       
-      if(this.$refs.patent) {
-        this.$refs.patent.edit();
-      }
-
-      if(this.$refs.copyright) {
-        this.$refs.copyright.edit();
-      }
-
-      if(this.$refs.trademark) {
-        this.$refs.trademark.edit();
-      }
     },
     editSuccess () {
       this.refreshDetailData();

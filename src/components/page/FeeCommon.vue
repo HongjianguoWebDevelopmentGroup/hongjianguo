@@ -1,11 +1,11 @@
 <template>
   <div class="main">
-  	<strainer v-model="filter" @refresh="refresh"></strainer>
-		<table-component @refreshTableData="refreshTableData" :tableOption="option" :data="tableData" ref="table">
-			<fee-status slot="status" v-model="fee_status" style="width: 150px; margin-left: 5px;" :feeType="feeType"></fee-status>
-			<remote-select v-if="fee_invoice_if" slot='invoice' v-model="fee_invoice" style="width: 220px; margin-left: 10px; display: inline-block;" class="pay_search" :type="feeType ? 'bill' : 'pay'"></remote-select>
-		</table-component>
-		<pop ref="pop" :feeType="feeType" @refresh="refresh"></pop>
+    <list-filter type="fee" :visible.sync="filterVisible" :refresh="refresh"></list-filter>
+    <table-component @refreshTableData="refreshTableData" :tableOption="option" :data="tableData" ref="table">
+      <fee-status slot="status" v-model="fee_status" style="width: 150px; margin-left: 5px;" :feeType="feeType"></fee-status>
+      <remote-select v-if="fee_invoice_if" slot='invoice' v-model="fee_invoice" style="width: 220px; margin-left: 10px; display: inline-block;" class="pay_search" :type="feeType ? 'bill' : 'pay'"></remote-select>
+    </table-component>
+    <pop ref="pop" :feeType="feeType" @refresh="refresh"></pop>
 
     <el-dialog :title="dialogTitle" :visible.sync="dialogVisible" class="dialog-small">
       <div style="margin-bottom: 10px; color: #8492A6; font-size: 14px;">
@@ -23,15 +23,15 @@
 
 <script>
 import TableComponent from '@/components/common/TableComponent' 
-import Strainer from '@/components/page_extension/FeeCommon_strainer'
+import ListFilter from '@/components/common/AppListFilter'
 import Pop from '@/components/page_extension/feeCommon_pop'
 import FeeStatus from '@/components/form/FeeStatus'
 import RemoteSelect from '@/components/form/RemoteSelect'
 import {mapActions} from 'vuex'
 import {mapGetters} from 'vuex'
 
-const URL = '/api/fees';
-const URL_INVOICE = '/api/invoices';
+const URL = '/fees';
+const URL_INVOICE = '/invoices';
 
 export default {
   name: 'feeCommon',
@@ -57,6 +57,7 @@ export default {
           { type: 'report', click: this.handleReport },
           { type: 'import' },
           { type: 'control' },
+          { type: 'filter', click: () => {this.filterVisible = true} },
         ],
         'import_type': '',
         'header_slot': [ 'status', 'invoice' ],
@@ -131,18 +132,20 @@ export default {
           { type: 'text', label: '官方绝限', prop: 'deadline', width: '175' },
           { type: 'text', label: '付款时间', prop: 'pay_time', width: '175' },
           { type: 'text', label: '请款单', prop: 'invoice_id', width: '150' },
+          { type: 'text', label: '企业意见', prop: 'remark_enterprise', width: '160' },
           { type: 'text', label: '备注', prop: 'remark', is_import: true, width: '160' },
           { 
             type: 'action',
             width: '80',
+            align: 'center',
             btns: [
-              { type: 'edit', click:  this.editPop, btn_disabled: row=>row.status.id != 0 },
+              { type: 'edit', click:  this.editPop, btn_disabled: row=>row.status.name != '未付款' },
             ]
           }
         ],
       },
       tableData: [],
-      filter: {},
+      filterVisible: false,
       fee_status: '',
       fee_invoice: '',
       fee_invoice_if: false,
@@ -204,7 +207,7 @@ export default {
       const debit = this.feeType;
       const status = this.fee_status === '' ? {} : {status: this.fee_status};
       const invoice = this.fee_invoice_if && this.fee_invoice != '' ? {fee_invoice: this.fee_invoice} : {};
-      const data = Object.assign({}, option, { debit }, this.filter, invoice, status);
+      const data = Object.assign({}, option, { debit }, invoice, status);
       const success = d=>{ 
         const totalData = d.fees.data;
         if(data['format'] == 'excel') {
@@ -215,19 +218,19 @@ export default {
           this.tableData = d.fees;  
         } 
       };
-  		this.$axiosGet({url, data, success});
-  	},
-  	addPop () {
-  		this.$refs.pop.show();	
-  	},
-  	editPop (row) {
-  		this.$refs.pop.show('edit', row);
-  	},
-  	feeDelete ({id, name}) {
-  		this.$confirm(`删除后不可恢复，确认删除‘${name}’吗？`, { type: 'warning' })
-  			.then(()=>{
-  				const url = `${URL}/${id}`;
-		  		const success = ()=>{ 
+      this.$axiosGet({url, data, success});
+    },
+    addPop () {
+      this.$refs.pop.show();  
+    },
+    editPop (row) {
+      this.$refs.pop.show('edit', row);
+    },
+    feeDelete ({id, name}) {
+      this.$confirm(`删除后不可恢复，确认删除‘${name}’吗？`, { type: 'warning' })
+        .then(()=>{
+          const url = `${URL}/${id}`;
+          const success = ()=>{ 
             this.$message({message: '删除费用成功', type: 'success'});
             this.$refs.table.update() 
           };
@@ -248,7 +251,7 @@ export default {
       const o = {};
       for(let i = 0; i < s.length; i++) {
         const row = s[i];
-        if(row.status.id != 0) return this.$message({type: 'warning', message: '请不要选择未付款状态以外的费用'});
+        // if(row.status.id != 0) return this.$message({type: 'warning', message: '请不要选择未付款状态以外的费用'});
         o[row.target.id] = true;
       }
       if(this.$tool.getObjLength(o) != 1) {
@@ -349,7 +352,7 @@ export default {
   
   components: { 
     TableComponent, 
-    Strainer, 
+    ListFilter, 
     Pop, 
     FeeStatus, 
     RemoteSelect 

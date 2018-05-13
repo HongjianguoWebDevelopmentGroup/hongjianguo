@@ -88,7 +88,7 @@ const actions = {
 			id = state.id;
 		}
     if(!id || !type) return;
-		let url = `/api/${state.type}s`;
+		let url = `/${state.type}s`;
 		url = rootState.status ? url.replace(/\/api/, '') : url;
     commit('setLoading', true);
     const n = rootState.axios.get(`${url}/${id}`)

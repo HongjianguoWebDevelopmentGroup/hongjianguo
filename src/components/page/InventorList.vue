@@ -12,7 +12,7 @@ import TableComponent from '@/components/common/TableComponent'
 import PopPanel from '@/components/page_extension/InventorList_pop'
 import AxiosMixins from '@/mixins/axios-mixins'
 
-const URL = '/api/inventors'
+const URL = '/inventors'
 
 export default {
   name: 'inventorList',

@@ -28,113 +28,16 @@
 </template>
 
 <script>
-import AxiosMixins from '@/mixins/axios-mixins'
+import config from '@/const/remoteSelectConfig'
 
-const map = new Map([
-  ['family_number', {
-    URL: '/api/patents/groupfamily',
-    DATA_KEY: 'data',
-    PLACEHOLDER: '请输入群组号',
-    PARAMS: { type: 'family' },
-    handleData: data => {
-      return data.map(v => ({ id: v, name: v }));
-    }
-  }],
-  ['group_number', {
-    URL: '/api/patents/groupfamily',
-    DATA_KEY: 'data',
-    PLACEHOLDER: '请输入专利族号',
-    PARAMS: { type: 'group' },
-    handleData: data => {
-      return data.map(v => ({ id: v, name: v }));
-    }
-  }],
-	['member', {
-		URL: '/api/members',
-		DATA_KEY: 'members',
-		PLACEHOLDER: '请输入用户关键词',
-	}],
-	['applicant', {
-		URL: '/api/applicants',
-		DATA_KEY: 'applicants',
-		PLACEHOLDER: '请输入申请人关键词',
-	}],
-	['inventor', {
-		URL: '/api/inventors',
-		DATA_KEY: 'data',
-		PLACEHOLDER: '请输入发明人关键词',
-	}],
-	['agent', {
-		URL: '/api/agents',
-		DATA_KEY: 'members',
-		PLACEHOLDER: '请输入代理人关键词',
-	}],
-	['agency', {
-		URL: '/api/agencies',
-		DATA_KEY: 'agencies',
-		PLACEHOLDER: '请输入代理机构关键词',
-	}],
-	['project', {
-		URL: '/api/projects',
-		DATA_KEY: 'projects',
-		PLACEHOLDER: '请输入案件关键词',
-	}],
-	['proposal', {
-		URL: '/api/proposals',
-		DATA_KEY: 'proposals',
-		PLACEHOLDER: '请输入提案关键词',
-	}],
-	['patent', {
-		URL: '/api/projects',
-		DATA_KEY: 'projects',
-		PLACEHOLDER: '请输入专利关键词',
-		PARAMS: { category: 1 },
-	}],
-  ['trademark', {
-    URL: '/api/projects',
-    DATA_KEY: 'projects',
-    PLACEHOLDER: '请输入商标关键词',
-    PARAMS: { category: 2 },
-  }],
-	['copyright', {
-		URL: '/api/projects',
-		DATA_KEY: 'projects',
-		PLACEHOLDER: '请输入版权关键词',
-		PARAMS: { category: 3 },
-	}],
-  ['bill', {
-    URL: '/api/invoices',
-    DATA_KEY: 'invoices',
-    PLACEHOLDER: '请输入请款单关键词',
-    PARAMS: { debit: 1 },
-  }],
-  ['pay', {
-    URL: '/api/invoices',
-    DATA_KEY: 'invoices',
-    PLACEHOLDER: '请输入付款单关键词',
-    PARAMS: { debit: 0 },
-  }],
-  ['mail', {
-    URL: '/api/mailAddress',
-    DATA_KEY: 'list',
-    PLACEHOLDER: '请输入邮箱',
-    dynamicCreate: true,
-    defaultFirstOption: true,
-  }],
-  ['estimate', {
-    URL: '/api/renewalestimate',
-    DATA_KEY: 'data.data',
-    PLACEHOLDER: '请选择年费评估单',
-    handleData: _=>{
-      return _.map(_=>({ id: _.id, name: _.number }));
-    }
-  }]
-]);
+const map = new Map(config);
 
 export default {
   name: 'remoteSelect',
   props: {
-    'value': [Number, String, Array, Object],
+    'value': {
+      type: null,
+    },
     'disabled': {
       type: Boolean,
       default: false,

@@ -10,17 +10,17 @@ import Strainer from '@/components/page_extension/NoticeCommon_strainer'
 
 const config = [
 	['patent', {
-		URL: '/api/patents/notices',
+		URL: '/patents/notices',
 		import_type: 'patent_notice',
 		upload_type: 'patent_notice',
 	}],
 	['copyright', {
-		URL: '/api/copyrights/notices',
+		URL: '/copyrights/notices',
 		import_type: false,
 		upload_type: 'copyright_notice',
 	}],
 	['trademark', {
-		URL: '/api/trademarks/notices',
+		URL: '/trademarks/notices',
 		import_type: false,
 		upload_type: 'trademark_notice',
 	}]

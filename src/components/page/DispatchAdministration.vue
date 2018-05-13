@@ -18,7 +18,7 @@ import TableComponent from '@/components/common/TableComponent'
 import Pop from '@/components/page_extension/DispatchAdministration_pop'
 import AxiosMixins from '@/mixins/axios-mixins'
 
-const URL = '/api/expresses'
+const URL = '/expresses'
 
 export default {
   name: 'dispatchAdministration',

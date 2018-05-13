@@ -1,4 +1,4 @@
-let url = '/api/branches';
+let url = '/branches';
 const state = {
 	data: [],
 	lastUpdate: '',

@@ -1,10 +1,16 @@
-let url = '/api/classifications';
+let url = '/classifications';
 const state = {
 	data: [],
 }
 
 const getters = {
 	classificationData: state=>state.data,
+	classificationOptions: (state, getters)=>{
+		const map = getters.classificationMap;
+		const arr = [...map.values()];
+
+		return arr;
+	},
 	classificationMap: state=>{
 		const map = new Map();
 		a(state.data);

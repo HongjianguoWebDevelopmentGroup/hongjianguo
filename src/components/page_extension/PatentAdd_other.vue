@@ -32,15 +32,7 @@ export default {
   },
   methods: {
     setForm (data) {
-      for(let k in this.form) {
-        const d = data[k];
-        if(d == undefined) continue;
-          if( k == 'progress' ) {
-            this.form[k] = d['id'];
-          }else{
-            this.form[k] = d;
-          }
-      }
+      this.$tool.coverObj(this.form, data, {obj: ['progress']});
     },
     submitForm () {
       return this.form;

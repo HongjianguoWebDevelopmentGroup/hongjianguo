@@ -36,8 +36,12 @@ export default {
   },
   methods: {
   	setForm (data) {
-      this.$tool.coverObj(this.form, data, {obj: ['agency_type']}); 
-  	},
+      const form = this.form;
+      this.$tool.coverObj(form, data, {obj: ['agency_type']});   
+  	  if(form.agency_type) {
+        form.agency_type = form.agency_type - 0; 
+      }
+    },
     submitForm () {
       console.log(this.form);
       return this.form;

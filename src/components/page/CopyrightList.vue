@@ -1,6 +1,6 @@
 <template>
   <div class="main">
-    <strainer v-model="filter" @refresh="refresh"></strainer>
+    <list-filter type="copyright" :visible.sync="filterVisible" :refresh="refresh" ></list-filter>
     <table-component :tableOption="tableOption" :data="tableData" @refreshTableData="refreshTableData" ref="table"></table-component>
     
       <common-detail
@@ -17,11 +17,11 @@
 <script>
 import AxiosMixins from '@/mixins/axios-mixins'
 import TableComponent from '@/components/common/TableComponent'
-import Strainer from '@/components/page_extension/CopyrightList_strainer'
+import ListFilter from '@/components/common/AppListFilter' 
 import AppShrink from '@/components/common/AppShrink'
 import CommonDetail from '@/components/page_extension/Common_detail'
 import { mapActions } from 'vuex'
-const URL = '/api/copyrights';
+const URL = '/copyrights';
 
 export default {
   name: 'copyrightList',
@@ -36,7 +36,7 @@ export default {
         'height': 'default',
         'highlightCurrentRow': true, 
         'rowClick': this.handleRowClick,
-        'is_filter': true,
+        // 'is_filter': true,
         'import_type': 'copyright',
         'upload_type': 'copyright',
         'header_btn': [
@@ -47,6 +47,7 @@ export default {
           { type: 'batch_upload' },
           { type: 'report', click: _=>{this.$router.push('/copyright/report')} },
           { type: 'control', label: '字段' },
+          { type: 'filter', click: () => {this.filterVisible = true;} },
         ],
         'columns': [
           { type: 'selection' },
@@ -79,7 +80,7 @@ export default {
         ] 
       },
       tableData: [],
-      filter: {},
+      filterVisible: false,
     };
   },
   methods: {
@@ -91,7 +92,7 @@ export default {
     },
     refreshTableData (option) {
       const url = URL;
-      const data = Object.assign({}, option, this.filter);
+      const data = Object.assign({}, option);
       const success = d=>{
         if(data['format'] == 'excel') {
           window.location.href = d.copyrights.downloadUrl;
@@ -131,7 +132,7 @@ export default {
   },
   components: { 
     TableComponent, 
-    Strainer, 
+    ListFilter, 
     AppShrink, 
     CommonDetail 
   }

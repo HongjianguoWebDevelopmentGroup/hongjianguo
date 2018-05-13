@@ -1,5 +1,5 @@
 <template>
-  <div class="user-group" v-loading="loading">
+  <div class="user-group" v-loading="groupLoading">
 	  <div class="app-collapse-header" style="line-height: 35px;">
 			<span style="font-size: 14px;">用户组</span>
 			<div style="float: right;">
@@ -10,7 +10,7 @@
 	  </div>
 	  
 		<el-tree
-		  :data="groupOptions"
+		  :data="groupTreeData"
 		  node-key="id"
 		  :props="props"
 		  highlight-current
@@ -51,6 +51,8 @@
 <script>
 import AxiosMixins from '@/mixins/axios-mixins'
 import AppSwitch from '@/components/form/AppSwitch'
+import {mapGetters} from 'vuex'
+import {mapActions} from 'vuex'
 
 const URL = 'api/groups';
 const allUser = {name: '全部用户', description: '该用户组用于存放所有的用户，不可编辑，不可删除', id: 0};
@@ -81,13 +83,16 @@ export default {
 			'setCurrent': '',
       'dialogVisible': false,
       'dialogPowerVisible': false,
-      'loading': false,
       'powerLoading': false,
       'powerTitle': '',
       'group_rules': [],
 		}
   },
   computed: {
+    ...mapGetters([
+      'groupLoading',
+      'groupOptions', //user-group
+    ]),
   	dialogTitle () {
   		return this.popType == 'add' ? '新建用户组' : '编辑用户组';
   	},
@@ -97,18 +102,9 @@ export default {
   	deleteDisabled () {
   		return this.value && this.value.id != 0 &&  this.value.id != 1 && this.value.id != 24 && this.value.isRemovable ? false : true;
   	},
-    groupOptions () {
-      let g = this.$store.getters.groupOptions;
-      
-      if(g == undefined) {
-        this.loading = true
-        this.$store.commit('setGroup',[]);
-        this.$store.dispatch('refreshGroup', _=>{ this.loading = false });
-        g = [];
-      }
-
+    groupTreeData () {
+      let g = this.groupOptions;
       g = [{name: '全部用户', description: '该用户组用于存放所有的用户，不可编辑，不可删除', id: 0}, ...g];
-
       return g;
     },
     groupMap () {
@@ -118,6 +114,9 @@ export default {
     },
   },
   methods: {
+    ...mapActions([
+      'refreshGroup',
+    ]),
     saveRules() {
       const url =  `${URL}/${this.value.id}`;
       const data = {rules: this.group_rules};
@@ -143,14 +142,14 @@ export default {
     renderContent(h,{node, store, data}) {
 
       return (
-          <span style="white-space: normal;">
-            <span>
-              <span style="font-size: 12px">{ node.label }</span>
-            </span>
-            <span style="float: right; margin-right: 20px;">
-              {data.id !== 0 && data.id !== 1 && data.id !==24? <el-button size="mini" on-click={ () => this.powerPop(store, data) }>权限</el-button> : <i></i>}
-            </span>
-          </span>);
+        <span style="white-space: normal;">
+          <span>
+            <span style="font-size: 12px">{ node.label }</span>
+          </span>
+          <span style="float: right; margin-right: 20px;">
+            {data.id !== 0 && data.id !== 1 && data.id !==24? <el-button size="mini" on-click={ () => this.powerPop(store, data) }>权限</el-button> : <i></i>}
+          </span>
+        </span>);
     },
   	handleCurrentChange (data) {
     
@@ -162,20 +161,17 @@ export default {
   		this.$emit('input', data);
   	},
   	refreshData () {
-      
-      const callback = _=>{
-        this.loading = false
-        const def = {name: '全部用户', description: '该用户组用于存放所有的用户，不可编辑，不可删除', id: 0};
-        this.$nextTick(()=>{  
-          if(this.value == '') {
-            this.handleCurrentChange(0);
-          }else {
-            this.handleCurrentChange(this.value.id);
-          }
-        })
-      }
-
-      this.$store.dispatch('refreshGroup', callback);  		
+      this.refreshGroup(true).then(response => {
+        if(response.data.status) {
+          this.$nextTick(() => {  
+            if(this.value == '') {
+              this.handleCurrentChange(0);
+            }else {
+              this.handleCurrentChange(this.value.id);
+            }
+          });
+        }
+      });  		
     },	
   	addPop () {
   		this.popType = 'add';
@@ -247,6 +243,9 @@ export default {
   			})
   			.catch(_=>{})
   	}
+  },
+  created () {
+    this.refreshGroup();
   },
   components: { AppSwitch },
 

@@ -1,6 +1,6 @@
 <template>
   <div class="main">
-  	<strainer v-model="filter" @refresh="refresh"></strainer>
+  	<list-filter type="trademark" :visible.sync="filterVisible" :refresh="refresh" ></list-filter>
 		<table-component :tableOption="tableOption" :data="tableData" ref="table" @refreshTableData="refreshTableData"></table-component>
 		<common-detail
       :title="currentRow.title"
@@ -18,6 +18,7 @@ import TableComponent from '@/components/common/TableComponent'
 import AppDatePicker from '@/components/common/AppDatePicker'
 import CommonDetail from '@/components/page_extension/Common_detail'
 import Strainer from '@/components/page_extension/TrademarkList_strainer'
+import ListFilter from '@/components/common/AppListFilter'
 import { mapActions } from 'vuex'
 
 const URL = '/api/trademarks'
@@ -29,7 +30,6 @@ export default {
 			tableOption: {
 				'name': 'trademark',
 				'url': URL,
-				'is_filter' : true,
 				'header_btn': [{
 					'type': 'add',
 					click: _=>{
@@ -42,11 +42,12 @@ export default {
 				{ type: 'batch_upload',},
 				{ type: 'report', click: _=>{this.$router.push('/trademark/report')} },
 				{ type: 'control', label: '字段'},
+				{ type: 'filter', click: () => { this.filterVisible = true; } },
 				],
 				'import_type': 'trademark',
 				'upload_type': 'trademark',
 				'highlightCurrentRow': true, 
-	      		'rowClick': this.handleRowClick,
+	      'rowClick': this.handleRowClick,
 				'height': 'default',
 				'columns': [{
 					'show': true,
@@ -85,7 +86,7 @@ export default {
 			tableData: '',
 			currentRow: '',
 			shrinkVisible: false,
-			filter: {},
+			filterVisible: false,
 		};
   },
   methods: {
@@ -103,7 +104,7 @@ export default {
   		}
   		this.$axiosGet({
   			url: URL,
-  			data: Object.assign({}, this.filter, option),
+  			data: Object.assign({}, option),
   			success,
   		})
   	},
@@ -141,7 +142,7 @@ export default {
   	TableComponent, 
   	AppDatePicker,
   	CommonDetail,
-  	Strainer,
+  	ListFilter,
   },
   watch: {
 

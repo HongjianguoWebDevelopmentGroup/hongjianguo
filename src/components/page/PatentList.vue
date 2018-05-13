@@ -1,6 +1,6 @@
 <template>
   <div class="main">
-    <strainer v-model="filter" @refresh="refresh"></strainer>
+    <list-filter type="patent" :visible.sync="filterVisible" :refresh="refresh"></list-filter>
     
     <table-component :tableOption="tableOption" :data="tableData" @refreshTableData="refreshTableData" ref="table" :refresh-proxy="refreshProxy">
       <el-button v-if="!!(menusMap && !menusMap.get('/patent/download') )" slot="download" :loading="downloadLoading" icon="share" @click="downloadPop" type="primary" style="margin-left: 5px; ">批量下载</el-button>
@@ -26,10 +26,28 @@
       </el-form>
     </el-dialog>
 
-      <el-dialog title="附件下载" :visible.sync="dialogVisible" >
+    <el-dialog title="附件下载" :visible.sync="dialogVisible" >
       <template>
         <table-component :tableOption="option2" :data="tableData2.attachments"></table-component>
       </template>
+    </el-dialog>
+
+    <el-dialog title="批量替换" class="dialog-small" :visible.sync="replaceVisible" @close="$refs.replaceForm.resetFields()">
+      <el-form label-position="top" :model="replaceForm" ref="replaceForm" :rules="replaceFormRules">
+        <el-form-item label="更新字段" prop="key">
+          <static-select v-model="replaceForm.key" :type="replaceSelectType"></static-select>
+        </el-form-item>
+        <el-form-item label="查找目标" prop="old_field">
+          <el-input v-model="replaceForm.old_field"></el-input>
+        </el-form-item>
+        <el-form-item label="替换为" prop="new_field">
+          <el-input v-model="replaceForm.new_field"></el-input>
+        </el-form-item>
+        <el-form-item style="margin-bottom: 0px;">
+          <el-button type="primary" @click="replace" :loading="replaceLoading">{{ replaceLoading ? '替换中...' : '替换' }}</el-button>
+          <el-button @click="replaceVisible = false" :disabled="replaceLoading">取消</el-button>
+        </el-form-item>
+      </el-form>
     </el-dialog>
   </div>
 </template>
@@ -40,14 +58,15 @@ import AppFilter from '@/components/common/AppFilter'
 import TableComponent from '@/components/common/TableComponent'
 import AppTree from '@/components/common/AppTree'
 import AppDatePicker from '@/components/common/AppDatePicker'
-import Strainer from '@/components/page_extension/PatentList_strainer'
 import AppShrink from '@/components/common/AppShrink'
 import CommonDetail from '@/components/page_extension/Common_detail'
 import StaticSelect from '@/components/form/StaticSelect'
+import ListFilter from '@/components/common/AppListFilter'
 import { mapGetters } from 'vuex'
 import { mapActions } from 'vuex'
 
-const URL = '/api/patents';
+const URL = '/patents';
+const REPLACE_URL = '/batchreplacepatent';
 const PATENT_TYPE = ['发明专利', '实用新型', '外观设计']; 
 
 export default {
@@ -74,10 +93,9 @@ export default {
         'highlightCurrentRow': true,
         'rowClick': this.handleRowClick,
         'cellClick': this.handleCellClick,
-        'is_filter': true,
-
         'header_btn': [
           { type: 'add', click: this.add, map_if: '/patent/add', },
+          { type: 'edit', label: '批量替换', click: () => { this.replaceVisible = true; }  },
           { type: 'delete', map_if: '/patent/delete' }, 
           { type: 'export2', map_if: '/patent/export' },
           { type: 'import', map_if: '/patent/import' },
@@ -85,6 +103,7 @@ export default {
           // { type: 'batch_update' },
           { type: 'control', label: '字段' },
           { type: 'report', click: _=>{this.$router.push('/patent/report')} },
+          { type: 'filter', click: () => {this.filterVisible = true} },
         ],
         'export_type': 'patent',
         'import_type': 'patent',
@@ -239,7 +258,32 @@ export default {
       },
       tableData: [],
       tableData2: [],
-      filter: {},
+      filterVisible: false,
+      replaceVisible: false,
+      replaceLoading: false,
+      replaceForm: {
+        key: '',
+        old_field: '',
+        new_field: '',
+      },
+      replaceFormRules: {
+        key: { required: true, message: '更新字段不能为空', trigger: 'change' },
+        old_field: { required: true, message: '查找目标不能为空', trigger: 'blur' },
+        new_field: { required: true, message: '替换文本不能为空', trigger: 'blur' },
+      },
+      replaceSelectType: {
+        placeholder: '请选择批量替换字段',
+        options: [
+          { name: '产品分类', id: 'products' },
+          { name: '技术分类', id: 'classification' },
+          { name: '标签',     id: 'tag' },
+          { name: '项目名称', id: 'project_name' },
+          { name: '项目代号', id: 'project_serial' },
+          { name: '群组号',   id: 'group_number' },
+          { name: '专利族号', id: 'family_number' },
+          { name: '部门',     id: 'branch' },
+        ],
+      } 
     };
   },
   computed: {
@@ -270,9 +314,29 @@ export default {
         this.$router.push('/patent/add');
       }
     },
+    async replace () {
+      const flag = await new Promise((reject) => {
+        this.$refs.replaceForm.validate(reject);
+      });
+      if(flag) {
+        this.replaceLoading = true;
+        await this.$axiosGet({
+          url: REPLACE_URL,
+          data: this.replaceForm,
+          success: () => {
+            this.$message({type: 'success', message: '批量修改成功'});
+            this.replaceVisible = false;
+            this.refresh();
+          }
+        }); 
+        this.replaceLoading = false;
+      }else {
+        this.$message({type: 'warning', message: '请正确填写批量修改字段'});
+      }
+    },
     refreshTableData (option) {
       const url = URL;
-      const data = Object.assign({}, this.query, option, this.filter);
+      const data = Object.assign({}, this.query, option);
       console.log(data);
       const success = d=>{
         if(data['format'] == 'excel') {
@@ -397,11 +461,11 @@ export default {
     AppFilter, 
     TableComponent, 
     AppTree, 
-    AppDatePicker, 
-    Strainer, 
+    AppDatePicker,
     AppShrink, 
     CommonDetail,
     StaticSelect,
+    ListFilter
   },
 }
 </script>

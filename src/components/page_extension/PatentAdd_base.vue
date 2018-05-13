@@ -62,6 +62,7 @@ import RemoteSelect from '@/components/form/RemoteSelect'
 import Priorities from '@/components/form/Priorities'
 import Inventors from '@/components/form/Inventors'
 import Upload from '@/components/form/Upload'
+import {mapGetters} from 'vuex'
 import { checkInventors } from '@/const/validator.js'
 
 const extensionHash = [
@@ -114,6 +115,10 @@ export default {
     };
   },
   computed: {
+    ...mapGetters([
+      'userid',
+      'userrole',
+    ]),
     extensionSet () {
       const area = this.type == 'add' ? this.form.area.join(',') : this.form.area;
       const type = this.form.type;
@@ -138,9 +143,6 @@ export default {
     },
     serial () {
       return this.form.serial ? this.form.serial : '暂无案号信息';
-    },
-    userId () {
-      return this.$store.getters.userid;
     },
     uploadPara () {
       const obj = {};
@@ -200,7 +202,7 @@ export default {
     },
   },
   created () {
-    this.userId ? this.form.ipr = this.userId : this.form.ipr = ''; 
+    this.userrole == 3 && this.userid ? this.form.ipr = this.userid : this.form.ipr = ''; 
   },
   components: { 
     AppCollapse, 

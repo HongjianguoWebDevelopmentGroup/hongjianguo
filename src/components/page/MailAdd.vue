@@ -41,7 +41,7 @@ import AxiosMixins from '@/mixins/axios-mixins'
 import Upload from '@/components/form/Upload'
 import RemoteSelect from '@/components/form/RemoteSelect'
 
-const URL = '/api/mails';
+const URL = '/mails';
 
 export default {
   name: 'mailAdd',

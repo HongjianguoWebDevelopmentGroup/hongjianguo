@@ -177,7 +177,7 @@ export default {
   		if( flag || this.$refs.psd.check() ) return;
 
   		const url = `${URL}/${this.id}`;
-  		const data = this.$tool.shallowCopy(this.form, {skip: ['group_id', 'groups', 'name', 'password_again']});
+  		const data = this.$tool.shallowCopy(this.form, {skip: ['group_id', 'groups', 'username', 'password_again']});
   		const success = _=>{
   			this.$message({message: '编辑用户成功', type: 'success'});
   			this.dialogVisible = false;

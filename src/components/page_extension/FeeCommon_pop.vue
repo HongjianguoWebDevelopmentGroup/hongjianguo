@@ -1,9 +1,9 @@
 <template>
   <el-dialog :title=title :visible.sync="dialogVisible" class="dialog-small" @close="clear">
-		<el-form :model="form" ref="form" label-width="80px">
+		<el-form :model="form" ref="form" label-width="80px" :rules="rules">
 
 			<el-form-item label="相关案件" prop="project">
-				<remote-select type="patent" v-model="form.project"></remote-select>
+				<remote-select type="patent" v-model="form.project" :disabled="popType == 'edit'"></remote-select>
 			</el-form-item>
 			<el-form-item label="费用对象" prop="target" >
 				<remote-select type="member" v-model="form.target" ></remote-select>
@@ -11,12 +11,7 @@
 			<el-form-item label="费用代码" prop="code">
 				<static-select  type="fee_code" v-model="form.code" ref="fee_code" :disabled="popType == 'edit'"></static-select>
 			</el-form-item>
-			<!-- <el-form-item label="费用状态" prop="status">
-				<el-select type="fee_status" v-model="form.status" :disabled="popType == 'edit'">
-					<el-optio>
-				</el-select>
-			</el-form-item> -->
-			<el-form-item label="费用金额" prop="money">
+			<el-form-item label="费用金额" prop="money" class="is-required">
 				<el-row>
 					
 					<el-col :span="16" style="padding-right: 5px;">
@@ -111,8 +106,8 @@ export default {
 		  	project: '',
 		  	target: '',
 		  	code: '',
-		  	status: 0,
 		  	dealine: '',
+		  	status: 1,
 		  	money: {
 		  		amount: '',
 		  		currency: '',
@@ -120,9 +115,14 @@ export default {
 		  	},
 		  	due_time: '',
 		  	deadline: '',
-		  	// pay_time: '',
 		  	invoice_entity_id: '',
 		  	remark: '',
+		  },
+		  rules: {
+		  	project: { required: true, type: 'number', trigger: 'change', message: '请选择相关案件' },
+		  	target: { required: true, type: 'number', trigger: 'change', message: '请选择费用对象' },
+		  	code: { required: true, type: 'number', trigger: 'change', message: '请选择费用代码' },
+		  	due_time: { required: true, type: 'date', trigger: 'change', message: '请选择费用期限' },
 		  },
 		  options: {
 		  	currencyType: [
@@ -173,12 +173,12 @@ export default {
   		},
   		set (val) {
   			this.id = val.id;
-  			this.$tool.coverObj(this.form, val, { obj: ['code', 'status'] } );
+  			this.$tool.coverObj(this.form, val, { obj: ['code', 'status'], date: ['due_time'] } );
 
   			//code被监听 为了覆盖监听事件的currency,amount数据 延后执行
   			this.$nextTick(_=>{
 	  			this.form.money['currency'] = val['currency'];
-	  			this.form.money['ammount'] = val['amount'];
+	  			this.form.money['amount'] = val['amount'];
 	  			//currency被监听 为了覆盖监听事件的roe数据 延后执行
 	  			this.$nextTick(_=>{ this.form.money['roe'] = val['roe'] });
   			})
@@ -211,7 +211,7 @@ export default {
   			this.dialogVisible = false; 
   			this.$emit('refresh') 
   		};
-  		const complete = _=>{ this.laoding = false };
+  		const complete = _=>{ this.loading = false };
 
   		this.loading = true;
   		this.$axiosPost({url, data, success, complete});
@@ -224,7 +224,7 @@ export default {
   			this.dialogVisible = false;
   			this.$emit('refresh') 
   		};
-  		const complete = _=>{ this.laoding = false };
+  		const complete = _=>{ this.loading = false };
 
   		this.loading = true;
   		this.$axiosPut({url, data, success, complete});
@@ -244,7 +244,6 @@ export default {
 			handler (v) {
 				const val = this.$refs.fee_code.getSelected(v)[0];
 				if(val) {
-					this.form.money.currency = 'CNY';
 					this.$tool.coverObj(this.form.money, val);
 				}			
 			}
@@ -253,7 +252,7 @@ export default {
 			handler (v) {
 				const val = this.roeData[v];
 				if(val) {
-					this.form.money.roe = val;
+					this.form.money.roe = val == 'CNY' ? 1 : val;
 				}
 			}
 		}

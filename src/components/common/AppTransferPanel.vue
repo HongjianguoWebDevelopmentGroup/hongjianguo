@@ -10,9 +10,9 @@
           class="app-transfer-panel__filter"
         >
         </el-input>
-        <el-checkbox-group :value="value" @input="handleInput" class="el-transfer-panel__list">
+        <el-checkbox-group :style="listStyle" :value="value" @input="handleInput" class="el-transfer-panel__list">
         	<template v-for="(item, index) in dataShow">
-	        	<div class="app-transfer-panel__drag1" :data-index="index" :key="item.key" draggable="true" @dragstart="drag" @drop="drop" @dragover="allowDrop" @dragend="indexCache = ''">
+	        	<div class="app-transfer-panel__drag1" :data-index="index" :key="item.key" :draggable="isMove" @dragstart="drag" @drop="drop" @dragover="allowDrop" @dragend="indexCache = ''">
 		          <el-checkbox 
 		          	class="app-transfer-panel__item" 
 		          	:label="item.value"
@@ -31,8 +31,31 @@
 <script>
 export default {
 	name: 'appTransferPanel',
-	props: ['title', 'placeholder', 'value', 'data'],
-	data () {
+	props: {
+    title: {
+      type: String,
+      default: '面板',
+    },
+    placeholder: {
+      type: String,
+      default: '查询...',
+    },
+    value: {
+      type: null
+    },
+    data: {
+      type: null
+    },
+    listStyle: {
+      type: String,
+      default: '',
+    },
+    isMove: {
+      type: Boolean,
+      default: true,
+    }
+  },
+  data () {
 		return {
 			search: '',
 			indexCache: '',
@@ -99,6 +122,7 @@ export default {
 			this.$emit('update:data', d);
 		},
 		allowDrop (e) {
+      if(!this.isMove) return;
 			if(this.search) return;
       const target = $(e.target).parents('div.app-transfer-panel__drag1')[0];
 
@@ -142,7 +166,6 @@ $width: 200px;
   }
   .app-transfer-panel__body {
     padding-bottom: 36px;
-    height: 246px;
   }
   .app-transfer-panel__footer {
     height: 36px;

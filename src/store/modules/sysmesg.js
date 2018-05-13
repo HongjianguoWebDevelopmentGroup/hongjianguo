@@ -1,4 +1,4 @@
-let url = '/api/mails';
+let url = '/mails';
 const state = {
 	data: undefined,
 }

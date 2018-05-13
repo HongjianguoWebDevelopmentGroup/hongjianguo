@@ -3,11 +3,12 @@
   <div class="hjg-table">
     
   	<div class="table-header" v-if="tableOption.is_header === undefined ? true : tableOption.is_header">
+      
       <el-popover
         placement="right"
         width="800"
         trigger="click"
-        v-model="filterVisible"
+        :value="screenVisible"
         :open-delay="300"
         v-if="tableOption.is_filter ? true : false"
       >
@@ -61,12 +62,16 @@
           <el-button class="table-header-btn" type="primary" icon="plus" @click="handleCommand(btn.click, $event)">{{ btn.label ? btn.label : '添加' }}</el-button>
         </template>
 
+        <template v-else-if="btn.type == 'edit'">
+          <el-button class="table-header-btn" type="primary" icon="edit" @click="handleCommand(btn.click, $event)">{{ btn.label ? btn.label : '编辑' }}</el-button>
+        </template>
+
         <template v-else-if="btn.type == 'delete'">
           <el-button class="table-header-btn" type="primary" icon="delete" @click="handleDelete(btn.click, $event, btn.callback)">{{ btn.label ? btn.label : '删除' }}</el-button>
         </template>
 
         <template v-else-if="btn.type == 'filter'">
-          <el-button class="table-header-btn" type="primary" icon="document" @click="handleCommand(btn.click, $event)">筛选</el-button>
+          <el-button class="table-header-btn" type="primary" icon="" @click="handleCommand(btn.click, $event)">{{ btn.label ? btn.label : '筛选' }}</el-button>
         </template>
 
         <template v-else-if="btn.type == 'export'">
@@ -181,84 +186,17 @@ import AppTransfer from '@/components/common/AppTransfer'
 import BatchUpdate from '@/components/common/BatchUpdate'
 import AppTable from '@/components/common/AppTable'
 import AppExport from '@/components/common/AppExport'
+import {fieldExceptMap} from '@/const/fieldConfig'
 import { mapGetters } from 'vuex'
 import { mapMutations } from 'vuex'
+import { mapActions } from 'vuex'
 
 export default {
   name: 'tableComponent',
   mixins: [ AxiosMixins ],
   props: ['tableOption', 'data', 'tableStyle', 'refreshProxy', 'filter'],
   data () {
-    const d = this;
-    const cols = d.tableOption.columns;
-    let tableCookie = JSON.parse(this.$tool.getLocal(this.tableOption.name));
     
-    //获取控制器
-    let control = [[],[]];
-
-    for(let c of cols) {
-      let show = c.show == undefined ? true : c.show;
-      let show_option = c.show_option !== undefined ? c.show_option : true;
-      if(show_option && (c.type == 'text' || c.type == 'array') ) {
-        const item = { key: c.prop, value: c.prop, label: c.label };
-        if(show) {
-          control[1].push(item);
-        }else {
-          control[0].push(item);
-        }
-      }
-    }
-
-    //控制器合并获得fields集合
-    let fields = [...control[0], ...control[1]];
-    
-    //检测缓存中是否存在控制器
-    if(tableCookie) {
-      const cookieO = {};
-      const localO = {};  
-      
-      //一些本地缓存的异常检测
-      const error = (_=>{
-        //老版本缓存
-        if(!(tableCookie[0] instanceof Array)) {
-          return true;
-        }
-
-        //字段统一性验证
-        
-        tableCookie.forEach(_=>{
-          _.forEach(d=>{
-            cookieO[d.key] = false;
-          })
-        })
-
-        fields.forEach(d=>{
-          localO[d.key] = d;
-        })
-        
-        const cache = Object.assign({}, localO, cookieO);
-        if(this.$tool.getObjLength(localO) != this.$tool.getObjLength(cache)) return true;
-        for(let key in cache) {
-          if(cache[key]) {
-            return true;
-          }
-        }
-      })();
-
-      //若存在错误,则将本地缓存清空,无错误则替换原有控制器
-      if(error) {
-        this.$tool.deleteLocal(this.tableOption.name);
-      }else {
-        tableCookie.forEach(_=>{
-          _.forEach(d=>{
-            d.label = localO[d.key]['label'];
-          })
-        });
-        control = tableCookie;
-      }
-    }
-    
-    const transferValue = control;
     
     const data = {
       pageData: [],
@@ -275,14 +213,14 @@ export default {
       sort: {field: null, order: null},
       dialogImportVisible: false,
       dialogUpdateVisible: false,
-      filterVisible: false,
       exportLoading: false,
       dialogControl: false,
-      control,
-      transferValue,
+      control: '',
+      transferValue: '',
       refreshRender: true,
       dialogExport: false,
-      fields,
+      fields: '',
+      optionColumns: '',
       selected: [],
     };
 
@@ -290,10 +228,12 @@ export default {
   },
   computed: {
     ...mapGetters([
-      'screen_obj',
+      'filterLock',
+      'screenVisible',
+      'filterForm',
       'pagesize',
       'menusMap',
-      'filterLock',
+      'filterForm',
     ]),
     default_choose () {
       return this.control[1].map(_=>_.key);
@@ -375,7 +315,7 @@ export default {
       return flag;
     },
     import_columns () {
-      const c = this.tableOption.columns;
+      const c = this.optionColumns;
       const a = c.filter(_=>_.is_import);
       if(this.tableOption.import_columns) {
         a.push(...this.tableOption.import_columns);
@@ -385,7 +325,7 @@ export default {
     },
     //计算列表项 
     columns () {
-      let cols = this.tableOption.columns; 
+      let cols = this.optionColumns; 
       if(cols) {
         const c = this.control[1];//字段控制器
         const o = {};//hash映射
@@ -427,10 +367,100 @@ export default {
     ...mapMutations([
       'setPageSize',
     ]),
+    ...mapActions([
+      'clearFilter',
+    ]),
+    initOptionColumns () {
+      let columns = this.tableOption.columns;
+      if(this.tableOption.name) {
+        const exceptName = fieldExceptMap.get(this.tableOption.name);
+        if(exceptName) {
+          const except = this.$store.getters[exceptName];
+          const exceptMap = new Map();
+          except.forEach(v => {exceptMap.set(v, true)});
+          columns = columns.filter(v => !exceptMap.get(v.prop));
+        }
+      }
+      this.optionColumns = columns;
+    },
+    initControl () {
+      const d = this;
+      const cols = this.optionColumns;
+      let tableCookie = JSON.parse(this.$tool.getLocal(this.tableOption.name));
+      
+      //获取控制器
+      let control = [[],[]];
+
+      for(let c of cols) {
+        let show = c.show == undefined ? true : c.show;
+        let show_option = c.show_option !== undefined ? c.show_option : true;
+        if(show_option && (c.type == 'text' || c.type == 'array') ) {
+          const item = { key: c.prop, value: c.prop, label: c.label };
+          if(show) {
+            control[1].push(item);
+          }else {
+            control[0].push(item);
+          }
+        }
+      }
+
+      //控制器合并获得fields集合
+      let fields = [...control[0], ...control[1]];
+      
+      //检测缓存中是否存在控制器
+      if(tableCookie) {
+        const cookieO = {};
+        const localO = {};  
+        
+        //一些本地缓存的异常检测
+        const error = (_=>{
+          //老版本缓存
+          if(!(tableCookie[0] instanceof Array)) {
+            return true;
+          }
+
+          //字段统一性验证
+          
+          tableCookie.forEach(_=>{
+            _.forEach(d=>{
+              cookieO[d.key] = false;
+            })
+          })
+
+          fields.forEach(d=>{
+            localO[d.key] = d;
+          })
+          
+          const cache = Object.assign({}, localO, cookieO);
+          if(this.$tool.getObjLength(localO) != this.$tool.getObjLength(cache)) return true;
+          for(let key in cache) {
+            if(cache[key]) {
+              return true;
+            }
+          }
+        })();
+
+        //若存在错误,则将本地缓存清空,无错误则替换原有控制器
+        if(error) {
+          this.$tool.deleteLocal(this.tableOption.name);
+        }else {
+          tableCookie.forEach(_=>{
+            _.forEach(d=>{
+              d.label = localO[d.key]['label'];
+            })
+          });
+          control = tableCookie;
+        }
+      }
+      
+      this.fields = fields;
+      this.control = control;
+      this.transferValue = control;
+    },
     getPageData (c) {
       const d = this,
-          start = (c - 1) * d.pageSize,
-          end = c * d.pageSize;
+      start = (c - 1) * d.pageSize,
+      end = c * d.pageSize;
     
       return d.tableData.slice(start, end);
     },
@@ -612,7 +642,7 @@ export default {
       return this.$refs.table.getSelected(flag);
     },
     update () {
-      this.$emit('refreshTableData', Object.assign({}, this.getRequestOption(), this.screen_obj) );
+      this.$emit('refreshTableData', Object.assign({}, this.getRequestOption(), this.filterForm) );
     },
     search (val) {
       this.page = 1;
@@ -649,15 +679,24 @@ export default {
     }
   },
   watch: {
-    'requesOption': {
+    requesOption: {
       handler: function () {},
       deep: true,
     },
-    screen_obj (val) {
+    filterForm (val) {
       if(this.filterLock) return;
-      this.filterVisible = false;
       this.refresh();    
     }
+  },
+  beforeDestroy () {
+    // console.log('beforeDestroy');
+    this.clearFilter();
+  },
+  created () {
+    this.initOptionColumns();
+    this.initControl();
+  },
+  mounted () {
   },
   components: {
     'TableRender': {
@@ -686,8 +725,6 @@ export default {
     BatchUpdate,
     AppTable,
     AppExport,
-  },
-  mounted () {
   },
 }
 </script>

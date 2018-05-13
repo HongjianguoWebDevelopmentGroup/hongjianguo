@@ -1,4 +1,4 @@
-let url = '/api/userinfo'
+let url = '/userinfo'
 
 const state = {
 	data: null,
@@ -41,6 +41,18 @@ const getters = {
 		const i = user ? user.identity : '';
 		return i;
 	},
+	usergroups: state => {
+		const user = state.data;
+		let groups = [];
+		if(user && user.groups) {
+			groups = user.groups.map(v => v.id);
+		}
+		return groups;
+	},
+	userPatentFieldExcept: state => {
+		const user = state.data;
+		return user && user.patent_except ? user.patent_except : [];  
+	},
 	pendingTaskCount: state=>{
 		const user = state.data;
 		const count = user ? user.pendingTaskCount : 0;
@@ -75,7 +87,6 @@ const mutations = {
 
 const actions = {
 	refreshUser ({commit, rootState, state}) {
-		url = rootState.status ? url.replace(/\/api/, '') : url;
 		const params = {};
 		commit('setUserLoading', true);
 		rootState.axios

@@ -4,11 +4,11 @@
 	    <el-form label-width="70px" label-position="left" class="form-information">
 	    	<el-row :gutter="20">
 	    		<el-col :span="12">
-	    			<el-form-item label="节点名称"><span class="form-item-text">{{ row.node_name }}</span></el-form-item>
+	    			<el-form-item label="节点名称"><span class="form-item-text">{{ row.flownode ? row.flownode.name : ''  }}</span></el-form-item>
 	    			<el-form-item label="法定期限"><span class="form-item-text">{{ row.deadline }}</span></el-form-item>
 	    		</el-col>
 	    		<el-col :span="12">
-	    			<el-form-item label="承办人"><span class="form-item-text">{{ row.person_in_charge_name }}</span></el-form-item>
+	    			<el-form-item label="承办人"><span class="form-item-text">{{ row.person_in_charge ? row.person_in_charge.name : '' }}</span></el-form-item>
 	    			<el-form-item label="承办期限"><span class="form-item-text">{{ row.due_time }}</span></el-form-item>
 	    		</el-col>
 	    	</el-row>
@@ -289,9 +289,11 @@ export default {
       'refreshDetailData',
     ]),
     refresh: async function (flag = false) {
-      if(this.action != 'information' && !flag) return;
       
+      if( !flag && this.action != 'information' ) return;
+
       const c = this.row.category;
+      console.log(c);
       //refreshDetailoData为全局的详情函数 请求专利、版权、商标详情
       if( c == 0 ) {
         this.loading = true;
@@ -334,7 +336,7 @@ export default {
       this.requested = false;
   		this.refresh();
   	},
-    action () {
+    action (val) {
       if(this.requested) return;
       this.refresh();
     }

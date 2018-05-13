@@ -54,7 +54,10 @@ import StaticSelect from '@/components/form/StaticSelect'
 
 export default {
   name: 'patentAddReview',
-  props: ['type'],
+  props: {
+    type: String,
+    default: '',
+  },
   data () {
 		return {
       progress: '',
@@ -85,7 +88,7 @@ export default {
       for (let k in this.form) {
         if(data[k] == undefined) continue;
         if(data[k] instanceof Object){
-          this.form[k] = data[k]['id'] - 0;
+          this.form[k] = data[k]['id'] ? data[k]['id'] - 0 : data[k]['id'];
         }else{
           this.form[k] = data[k];
         }

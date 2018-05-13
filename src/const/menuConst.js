@@ -257,6 +257,12 @@ menu.data = [
 			type: 'item'
 		},
 		{
+			text: '字段权限管理',
+			path: '/setting/field',
+			icon: 'iconfont el-icon-my-set-copy',
+			type: 'item',
+		},	
+		{
 			text: '用户管理',
 			path: '/userList',
 			icon: 'iconfont el-icon-my-users',

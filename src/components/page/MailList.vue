@@ -15,7 +15,7 @@ import Strainer from '@/components/page_extension/MailList_strainer'
 import AxiosMixins from '@/mixins/axios-mixins'
 import Detail from '@/components/page_extension/Email_detail'
 
-const URL = '/api/mails';
+const URL = '/mails';
 
 export default {
   name: 'mailList',

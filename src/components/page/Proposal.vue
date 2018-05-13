@@ -83,7 +83,7 @@ import AxiosMixins from '@/mixins/axios-mixins'
 
 import {mapGetters} from 'vuex'
 
-const URL = '/api/proposals';
+const URL = '/proposals';
 const url = 'http://www.zhiq.wang/proposal/lists';
 const delete_url = 'http://www.zhiq.wang/proposal/lists';
 const tag_url = 'http://www.zhiq.wang/tag/lists';
@@ -166,7 +166,7 @@ export default {
       this.$refs.table.refresh();
     },
     refreshTableData (option) {
-      const url = '/api/proposals';
+      const url = URL;
       const data = Object.assign({}, option, this.filter, this.screen_value, this.inParams);
       const success = _=>{
         if(data.format == 'excel') {

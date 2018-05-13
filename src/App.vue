@@ -58,16 +58,16 @@
               <el-breadcrumb-item v-for="item in select_arr" :to="item.path" :key="item.path">
                 <i :class="item.icon"></i>{{ item.text }}
               </el-breadcrumb-item>
-              <el-breadcrumb-item v-if="screen_label.length != 0" class="container-nav-screen">
+              <el-breadcrumb-item v-if="navLabel.length != 0" class="container-nav-screen">
                 <el-tag 
-                  v-for="(tag, index) in screen_label"
+                  v-for="(item, index) in navLabel"
                   :closable="true"
-                  :key="tag" 
+                  :key="index"
                   type="primary"
                   :close-transition="false"
-                  @close="handleClose(index)"
+                  @close="handleClose(item)"
                 >
-                  {{ tag }}
+                  {{ item.label }}
                 </el-tag>
               </el-breadcrumb-item>
             </el-breadcrumb>
@@ -98,7 +98,7 @@ export default {
   mixins: [ AxiosMixins ],
   computed: {
     ...mapGetters([
-      'screen_label',
+      'navLabel',
       'innerHeight',
       'loading',
       'loadingText',
@@ -169,17 +169,18 @@ export default {
       'refreshArea',
       'refreshCity',
       'refreshRouter',
-      'clearScreen',
+      'clearFilter',
+      'closeTag', //filter-cache
     ]),
     //处理同路径不刷新界面的问题
     handleMenuSelect (index) {
       if(this.path === index) {
-        this.clearScreen();
+        this.clearFilter();
         this.refreshRouter();
       }
     },
-    handleClose (index) {
-      this.$store.commit('removeScreen', index);
+    handleClose (item) {
+      this.closeTag(item);
     },
     handleCommond (commond) {
       if(commond == 'login_out') {

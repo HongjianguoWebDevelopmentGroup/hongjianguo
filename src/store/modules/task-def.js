@@ -1,4 +1,4 @@
-let url = '/api/taskDefs';
+let url = '/taskDefs';
 const state = {
 	data: null,
 }

@@ -85,7 +85,7 @@ import StaticSelect from '@/components/form/StaticSelect'
 
 import {mapActions} from 'vuex'
 
-const URL = '/api/copyrights'
+const URL = '/copyrights'
 
 export default {
   name: 'copyrightAdd',
@@ -177,7 +177,7 @@ export default {
   		};
   		const complete = _=>{ this.btn_disabled = false };
 
-  		this.axiosPut({url, data, success, complete})
+  		return this.axiosPut({url, data, success, complete})
   	},
   	checkForm () {
   		let flag = false;

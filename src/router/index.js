@@ -54,6 +54,7 @@ const SettingRule              = () => import('@/components/page/SettingRule')
 const SettingTemplate          = () => import('@/components/page/SettingTemplate')
 const SettingTemplateEdit      = () => import('@/components/page/SettingTemplateEdit')
 const SettingUser              = () => import('@/components/page/SettingUser')
+const SettingField             = () => import('@/components/page/FieldVisible')
 
 //#################
 const SettingIndividual        = () => import('@/components/page/SettingIndividual')
@@ -468,6 +469,7 @@ const router = new Router({
     { path: '/setting/individual', name: 'SettingIndividual', component: SettingIndividual },
     { path: '/setting/jurisdiction', name: 'SettingJurisdiction', component: SettingJurisdiction },
     { path: '/setting/rule', name: 'SettingRule', component: SettingRule },
+    { path: '/setting/field', name: 'SettingField', component: SettingField },
     { 
       path: '/setting/system',
       name: 'SettingSystem',
@@ -479,11 +481,5 @@ const router = new Router({
     { path: '/news/interact', name: 'InteractEmail', component: InteractEmail},
   ]
 });
-router.beforeEach((to, from, next)=>{
-  const store = this.a.app.$store;
-  if(store) {
-    store.dispatch('clearScreen');
-  }
-  next();
-});
+
 export default router

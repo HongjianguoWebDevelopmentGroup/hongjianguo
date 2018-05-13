@@ -3,9 +3,9 @@
     <el-select
       :value="value"
       @input="handleInput"
-    	:multiple="multiple"
+      :multiple="multiple"
       :multiple-limit="multipleLimit"
-    	:disabled="disabled"
+      :disabled="disabled"
       :placeholder="config.placeholder"
       filterable
       :size="size"
@@ -15,13 +15,13 @@
       clearable
       @change="handleChange"
     >
-    	<el-option
-    		v-for="item in optionsIn"
-    		:key="item.id"
-    		:label="item.name"
-    		:value="item.id"
-    	>
-    	</el-option>
+      <el-option
+        v-for="item in optionsIn"
+        :key="item.id"
+        :label="item.name"
+        :value="item.id"
+      >
+      </el-option>
     </el-select>
   </div>
 </template>
@@ -61,6 +61,12 @@ export default {
     'multipleLimit': {
       type: Number,
       default: 0,
+    },
+    'skip': {
+      type: Array,
+      default () {
+        return [];
+      }
     }
   },
   data () {    
@@ -76,10 +82,10 @@ export default {
     cacheData () {
       return this.staticSelectorCache[this.type];
     },
-  	config () {
-  		const config = this.staticSelectorMap.get(this.type);
-  		return config ? config : this.type;
-  	},
+    config () {
+      const config = this.staticSelectorMap.get(this.type);
+      return config ? config : this.type;
+    },
     map () {
       const map = new Map ();
       this.options.forEach(_=>{map.set(_.id, _)});
@@ -95,9 +101,18 @@ export default {
       return op;
     },
     optionsIn () {
+      const s = this.skip;
       const f = this.filterOptions;
+      let options = this.options;
+      
+      if(s.length != 0) {
+        options = options.filter(v => {
+          return s.indexOf(v.id) < 0;
+        })
+      }
+
       if(f.length != 0) {
-        return this.options.filter(_=>{
+        options = options.filter(_=>{
           for(let i = 0; i < f.length; i++) {
             const item = f[i];
 
@@ -107,9 +122,9 @@ export default {
           }
           return true;
         })
-      }else {
-        return this.options;
       }
+
+      return options;
     }
   },
   watch: {
@@ -137,7 +152,6 @@ export default {
       
       cv.forEach(_=>{
         const val = this.map.get(_);
-        console.log(this.map,val);
         if(val) {
           arr.push(val);
         }else if(_ != '') {
@@ -183,6 +197,9 @@ export default {
     this.setOptions();
   },
   watch: {
+    config () {
+      this.setOptions();
+    },
     cacheData (val) {
       if(val) {
         this.options = val;  

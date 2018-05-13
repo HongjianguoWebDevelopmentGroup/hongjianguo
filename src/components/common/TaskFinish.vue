@@ -120,6 +120,9 @@
     </el-form-item>
   </el-form>
   <confirm-pop :visible.sync="praseVisible" :table-data="praseData" ref='pop' @inform="inform" @more="(val)=>{$emit('more',val)}" @check-out="handleSuccessCheck"></confirm-pop>
+  <el-dialog title="发送邮件" :modal="false" :visible.sync="mailVisible" class="dialog-medium" :show-close="false" :close-on-click-modal="false">
+    <mail-edit ref="mailEdit" @sendSuccess="mailCallBack" @cancelSending="mailCallBack"></mail-edit>
+  </el-dialog>
 </div>
 </template>
 
@@ -132,11 +135,12 @@ import StaticSelect from '@/components/form/StaticSelect'
 import AppSwitch from '@/components/form/AppSwitch'
 import AppTable from '@/components/common/AppTable'
 import ConfirmPop from '@/components/page_extension/TaskConfirmForm_pop'
+import MailEdit from '@/components/common/MailEditForm'
 
 import {mapMutations} from 'vuex'
 import {mapActions} from 'vuex'
 
-const URL = `/api/tasks`;
+const URL = `/tasks`;
 export default {
   name: 'taskFinish',
   props: {
@@ -149,6 +153,7 @@ export default {
   mixins: [axiosMixins],
   data () {
     return {
+      mailVisible: false,
       'no_finish': false,
       'all_equal': false,
       'requested': false, //当前ID下,是否已经请求过数据
@@ -225,6 +230,10 @@ export default {
     ...mapActions([
       'refreshUser',
     ]),
+    mailCallBack () {
+      this.$emit('submitSuccess');
+      this.refreshUser();
+    },
     refreshData () {
       
       if(this.action != 'finish') return;
@@ -248,7 +257,7 @@ export default {
       this.axiosGet({url, success, complete});
     },
     submitFunc () {
-      if(this.no_finish) return this.$message({message: '请上传专利申请文件确认表', type: 'warning'});
+      // if(this.no_finish) return this.$message({message: '请上传专利申请文件确认表', type: 'warning'});
       this.$refs.form.validate(_=>{
         if(_) {
           this.btn_disabled = true;
@@ -257,11 +266,6 @@ export default {
             Object.assign({}, {'flow_node_id': this.next}, this.form), 
             {'date': true},//时间处理
           );
-
-          //评分处理
-          // if(data.rank) {
-          //   data.rank *= 20
-          // };
 
           //评估单处理
           if(this.fields.estimate) {
@@ -280,11 +284,19 @@ export default {
             } 
           }
           
-          const success = ()=>{ 
-            this.$emit('submitSuccess') 
-            this.refreshUser();
+          const success = (data) => {
+            this.$message({type: 'success', message: '完成任务成功'});
+            if(data.is_send_mail) {
+              this.mailVisible = true;
+              this.$nextTick( () => {
+                this.$refs.mailEdit.initForm(data.mail_id);
+              });
+            }else {
+              this.$emit('submitSuccess');
+              this.refreshUser(); 
+            } 
           };
-          const complete = _=>{ this.btn_disabled=false }; 
+          const complete = _=>{ this.btn_disabled = false }; 
           this.$axiosPost({url, data, success, complete});
           
         }else {
@@ -309,7 +321,6 @@ export default {
       
     },
     handleUploadSuccess (d,f,fl) {
-        console.log(fl);
       const list = d.data.list;
       if(list.is_disclosure == 1) {
         this.praseVisible = true;
@@ -437,6 +448,7 @@ export default {
     AppSwitch,
     AppTable,
     ConfirmPop,
+    MailEdit,
   }
 }
 </script>
