@@ -62,9 +62,10 @@ export default {
           }
         }
       }
-      
-      v.forEach((_,i)=>{
+      console.log(arr, v);
+      v = v.map((_,i)=>{
         _.share = arr[i];
+        return _;
       })
     },
     handleInput ({val, index}) {
