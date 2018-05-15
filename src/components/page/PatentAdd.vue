@@ -2,12 +2,12 @@
   <div class="main">
     
     <pa-base ref="base" :type="pageType" @uploadSuccess="handleUploadSuccess"></pa-base>
+    <review ref="review" :type="pageType"></review>
     <person ref="person" :type="pageType"></person>
     <classification ref="classification"></classification>
     <agent ref="agent"></agent>
     <case ref="case"></case>
     <other ref="other" :type="pageType" ></other>
-    <review ref="review" :type="pageType"></review>
     <div style="margin-bottom: 20px;">
       <el-button @click="add" type="primary" v-if="pageType == 'add'" :disabled="btn_disabled">添加</el-button>
       <!-- <el-button @click="edit" type="primary" v-if="type == 'edit'" :disabled="btn_disabled">编辑</el-button> -->

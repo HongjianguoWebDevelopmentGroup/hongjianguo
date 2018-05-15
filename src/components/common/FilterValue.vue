@@ -1,6 +1,6 @@
 <template>
 <div>
-	<span v-if="type == ''" class="form-description">请选择需要筛选的属性</span>
+	<span v-if="type == ''" class="form-description">请选择需要筛选的字段再输入筛选条件</span>
 	
 	<keep-alive>
 	

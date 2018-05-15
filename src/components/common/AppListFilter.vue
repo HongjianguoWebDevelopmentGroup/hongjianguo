@@ -34,10 +34,10 @@
 
 		<el-dialog :title="selectedKey ? '编辑筛选条件' : '新增筛选条件'" :visible.sync="dialogVisible" class="dialog-small" @close="clear">
 			<el-form label-position="top">
-				<el-form-item label="属性" prop="key">
+				<el-form-item label="字段" prop="key">
 					<static-select :type="selectType" v-model="key" ref="key" :skip="selectSkip"></static-select>
 				</el-form-item>
-				<el-form-item label="值" prop="value">
+				<el-form-item label="筛选条件" prop="value">
 					<filter-value :source="source" v-model="value" ref="value"></filter-value>
 				</el-form-item>
 				<el-form-item style="margin-bottom: 0px;">

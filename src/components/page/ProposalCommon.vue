@@ -4,18 +4,18 @@
         <el-col :span="18">
           <el-form label-width="92px" :rules="formRules" :model="formData" ref="form">
             
-            <el-form-item label="提案人">{{ proposer_name }}</el-form-item>
+            <el-form-item label="交底书撰写人">{{ proposer_name }}</el-form-item>
             
-            <el-form-item label="案件名称" prop="title">
-              <el-input v-model="formData.title" placeholder="请输入案件名称"></el-input>
+            <el-form-item label="提案名称" prop="title">
+              <el-input v-model="formData.title" placeholder="请填写提案名称"></el-input>
             </el-form-item>
 
             <el-form-item label="提案简介" prop="abstract" class="is-required">
               
-              <el-input type="textarea" v-model="formData.abstract" placeholder="请输入案件摘要"></el-input>
+              <el-input type="textarea" v-model="formData.abstract" placeholder="请填写提案简介"></el-input>
             </el-form-item>
 
-            <el-form-item label="发明人" prop="inventors" class="is-required">
+            <el-form-item label="发明人" prop="inventors">
               <inventors v-model="formData.inventors" ref="inventors" @addInventor="$refs.form.validateField('inventors')" @deleteInventor="$refs.form.validateField('inventors')" :propType="propType">
               <el-button type='text' @click="handleAdd"  slot="addInventor">添加发明人</el-button> 
               </inventors>   
@@ -40,15 +40,14 @@
             <el-form-item label="标签" prop="tags">
               <static-select type='tag' v-model="formData.tags" multiple></static-select>
             </el-form-item>
+            <el-form-item label="评审结论" prop="remark">
+              <el-input type="textarea" v-model="formData.remark"></el-input>
+            </el-form-item>
             <el-form-item label="附件" prop="attachments">
                <upload v-model="formData.attachments" :file-list="attachments" ref="upload" :data="{action: 'parseDisclosure'}"></upload>
             </el-form-item>
-            <el-form-item label="评审结果" prop="remark">
-              <el-input type="textarea" v-model="formData.remark"></el-input>
-            </el-form-item>
-
             <el-form-item>
-               <el-button @click="submit" type="primary" :disabled="btn_disabled">提交</el-button>
+               <!-- <el-button @click="submit" type="primary" :disabled="btn_disabled">提交</el-button> -->
                <el-button @click="save()" :disabled="btn_disabled">暂存</el-button>
                <el-button @click="cancel" :disabled="btn_disabled">取消</el-button>
             </el-form-item>
@@ -59,9 +58,9 @@
 
             <h3 style="margin-top: 40px;">提案模板</h3>
             <ul class="proposal-model">
-              <li><i class="iconfont icon-docx"></i><a href="/files/1">交底书模板-结构.doc</a></li>
-              <li><i class="iconfont icon-docx"></i><a href="/files/2">交底书模板-硬件.doc</a></li>
-              <li><i class="iconfont icon-docx"></i><a href="/files/3">交底书-软件类.doc</a></li>
+              <li><i class="iconfont icon-docx"></i><a href="/static/templates/交底书模板-结构.doc">交底书模板-结构.doc</a></li>
+              <li><i class="iconfont icon-docx"></i><a href="/static/templates/交底书模板-硬件.doc">交底书模板-硬件.doc</a></li>
+              <li><i class="iconfont icon-docx"></i><a href="/static/templates/交底书模板-软件.doc">交底书模板-软件.doc</a></li>
               <!-- <li><i class="iconfont icon-docx"></i><a href="javascript:void(0)">技术交底书范例(软件类).doc</a></li>
               <li><i class="iconfont icon-ppt"></i><a href="javascript:void(0)">15分钟如何写一个专利底稿.pptx</a></li> -->
             </ul>
@@ -199,10 +198,10 @@ export default {
               this.$message({message: '请填写提案简介', type: 'warning'});
               return;
             }
-            if(this.formData.inventors.length == 0) {
-              this.$message({message: '请填写发明人', type: 'warning'});
-              return;
-            }
+            // if(this.formData.inventors.length == 0) {
+            //   this.$message({message: '请填写发明人', type: 'warning'});
+            //   return;
+            // }
             // if(this.formData.identity == 0) {
             //   this.$message({message: '请填写第一发明人的证件号码', type: 'warning'});
             //   return;
@@ -343,7 +342,7 @@ export default {
           trigger: 'change', 
           validator: (a,b,c)=>{
 
-            //这里没有使用插件的传入值,是因为在监测输入框输入事件时,值未正常更新
+            //这里没有使用插件的传入值,是因为在监测填写框填写事件时,值未正常更新
             //WTF 不知道什么鬼,手动传入咯
             this.$nextTick(_=>{
               checkInventors(a, this.formData.inventors, c);

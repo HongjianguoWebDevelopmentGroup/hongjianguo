@@ -17,6 +17,7 @@ import DetailFundings from '@/components/page_extension/CommonDetail_fundings'
 import DetailOfficial from '@/components/page_extension/CommonDetail_OfficialFee'
 import DetailAgency from '@/components/page_extension/CommonDetail_AgencyFee'
 import DetailAnnual from '@/components/page_extension/CommonDetail_AnnualFee'
+import DetailInventorBonus from '@/components/page_extension/CommonDetail_InventorBonus'
 import { mapGetters } from 'vuex'
 
 export default {

@@ -37,10 +37,10 @@ export default {
 					}
 				},
 				{ type: 'delete',},
-				{ type: 'import',},
+				// { type: 'import',},
 				{ type: 'export',},
-				{ type: 'batch_upload',},
-				{ type: 'report', click: _=>{this.$router.push('/trademark/report')} },
+				// { type: 'batch_upload',},
+				// { type: 'report', click: _=>{this.$router.push('/trademark/report')} },
 				{ type: 'control', label: '字段'},
 				{ type: 'filter', click: () => { this.filterVisible = true; } },
 				],

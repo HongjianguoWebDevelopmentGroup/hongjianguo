@@ -34,10 +34,10 @@
 
     <el-dialog title="批量替换" class="dialog-small" :visible.sync="replaceVisible" @close="$refs.replaceForm.resetFields()">
       <el-form label-position="top" :model="replaceForm" ref="replaceForm" :rules="replaceFormRules">
-        <el-form-item label="更新字段" prop="key">
+        <el-form-item label="请选择更新字段" prop="key">
           <static-select v-model="replaceForm.key" :type="replaceSelectType"></static-select>
         </el-form-item>
-        <el-form-item label="查找目标" prop="old_field">
+        <el-form-item label="查找条件" prop="old_field">
           <el-input v-model="replaceForm.old_field"></el-input>
         </el-form-item>
         <el-form-item label="替换为" prop="new_field">
@@ -95,15 +95,15 @@ export default {
         'cellClick': this.handleCellClick,
         'header_btn': [
           { type: 'add', click: this.add, map_if: '/patent/add', },
-          { type: 'edit', label: '批量替换', click: () => { this.replaceVisible = true; }  },
           { type: 'delete', map_if: '/patent/delete' }, 
+          // { type: 'import', map_if: '/patent/import' },
           { type: 'export2', map_if: '/patent/export' },
-          { type: 'import', map_if: '/patent/import' },
-          { type: 'batch_upload', map_if: '/patent/upload' },
+          // { type: 'batch_upload', map_if: '/patent/upload' },
           // { type: 'batch_update' },
+          // { type: 'report', click: _=>{this.$router.push('/patent/report')} },
           { type: 'control', label: '字段' },
-          { type: 'report', click: _=>{this.$router.push('/patent/report')} },
           { type: 'filter', click: () => {this.filterVisible = true} },
+          { type: 'edit', label: '批量修改', click: () => { this.replaceVisible = true; }  },
         ],
         'export_type': 'patent',
         'import_type': 'patent',
@@ -113,35 +113,48 @@ export default {
         'columns': [
           { type: 'selection' },
           // { type: 'text', label: '专利状态', prop: 'status', render: (h,item)=>h('span', item ? '正常' : '暂停处理') },
-          { type: 'text', label: '案号', prop: 'serial', sortable: true, width: '200' },
-          { type: 'text', label: '群组号', prop: 'group_number', width: '200', show: false },
-          { type: 'text', label: '专利族号', prop: 'family_number', width: '200', show: false },
-          { type: 'text', label: '事务所案号', prop: 'agency_serial', sortable: true,width: '200' },
-          { type: 'array',label: '申请人',prop: 'applicants', width: '300',is_import: true, render: _=>{return _.map(_=>_.name);}},
-          { type: 'text', label: '申请号', prop: 'apn', sortable: true, is_import: true, width: '263'},
-          { type: 'text', label: '申请日', prop: 'apd', sortable: true, is_import: true, width: '145'},
-          { type: 'text', label: '专利标题', prop: 'title', sortable: true, is_import: true, width: '160' },
-          { type: 'text', label: '地区', prop: 'area', render_simple: 'name', sortable: true, is_import: true, width: '100' },
+          { type: 'text', label: '案号', prop: 'serial', sortable: true, width: '150' },
+          { type: 'text', label: '事务所案号', prop: 'agency_serial', sortable: true,width: '150' },
+          { type: 'text', label: '专利标题', prop: 'title', sortable: true, is_import: true, width: '200' },
+          { type: 'text', label: '地区', prop: 'area', render_simple: 'name', sortable: true, is_import: true, width: '90' },
+          { type: 'text', label: '专利类型', prop: 'type', render_simple: 'name', sortable: true, is_import: true, width: '120',  },
+          { type: 'text', label: '申请号', prop: 'apn', sortable: true, is_import: true, width: '140'},
+          { type: 'text', label: '申请日', prop: 'apd', sortable: true, is_import: true, width: '130'},
+          { type: 'text', label: 'IPR', prop: 'ipr', render_simple: 'name', sortable: true, is_import: true, width: '110' },
           { type: 'text', label: '当前状态', prop: 'progress', render_simple: 'name',  sortable: true, width: '180' },
-          { type: 'text', label: 'IPR', prop: 'ipr', render_simple: 'name', sortable: true, is_import: true, width: '145' },
-          { type: 'text', label: '提案号', prop: 'proposal_serial', sortable: true,width: '200' },
-          { type: 'text', label: '专利类型', prop: 'type', render_simple: 'name', sortable: true, is_import: true, width: '142',  },
-          { type: 'text', label: '专利摘要', prop: 'abstract', sortable: true, width: '280'},
-          { type: 'text', label: '公开日', prop: 'public_date', sortable: true, is_import: true, width: '145', show: false },
-          { type: 'text', label: '公开号', prop: 'public_number', sortable: true, is_import: true, width: '263', show: false },
-          { type: 'text', label: '初审合格日', prop: 'pre_exam_ok_date', sortable: true, width: '175', show: false },
-          { type: 'text', label: '进入实审日', prop: 'sub_exam_start_date', sortable: true, width: '175', show: false },
-          { type: 'text', label: '公告日', prop: 'issue_date', sortable: true, is_import: true, width: '145', show: false },
-          { type: 'text', label: '公告号', prop: 'issue_number', sortable: true, is_import: true, width: '263', show: false },
-          { type: 'text', label: '主国际分类号', prop: 'main_ipc', sortable: true, width: '263', show: false },
-          { type: 'text', label: '国际申请日', prop: 'pct_apd', sortable: true, width: '175', show: false },
-          { type: 'text', label: '国际申请号', prop: 'pct_no', sortable: true, width: '263', show: false },
-          { type: 'text', label: '国际优先权日', prop: 'pct_priority_date', sortable: true, width: '175', show: false },
-          { type: 'text', label: '国际公开日', prop: 'pct_public_date', sortable: true, width: '175', show: false },
-          { type: 'text', label: '国际公开语言', prop: 'pct_public_language', sortable: true, width: '263', show: false },
-          { type: 'text', label: '国际公开号', prop: 'pct_public_no', sortable: true, width: '263', show: false },
-          { type: 'text', label: '复审委内编号', prop: 'board_number', sortable: true, width: '263', show: false },
-          { type: 'text', label: '说明书字数', prop: 'words', sortable: true, width: '145', show: false },
+          { type: 'text', label: '案件等级', prop: 'level', width: '130' ,sortable: true,},
+          { type: 'text', label: '群组号', prop: 'group_number', width: '130'},
+          { type: 'text', label: '专利族号', prop: 'family_number', width: '130'},
+          { type: 'array',label: '申请人',prop: 'applicants', width: '300',is_import: true, render: _=>{return _.map(_=>_.name);}},
+          { type: 'array',label: '发明人', width: '238', prop: 'inventors', is_import: true, render: _=>_.map(_=>_.name),},
+          { type: 'text', label: '代理机构', prop: 'agency', sortable: true, width: '140', is_import: true, render_simple: 'name'},
+          { type: 'text', label: '代理人', prop: 'agent', sortable: true, width: '140', is_import: true, render_simple: 'name'},
+          { type: 'text', label: '奖励等级', prop: 'bonus_level', width: '145' ,render_simple: 'name'},
+          { type: 'text', label: '提案号', prop: 'proposal_serial', sortable: true,width: '150' },
+          { type: 'text', label: '项目名称', prop: 'project_name', width: '178'},
+          { type: 'text', label: '项目代号', prop: 'project_serial', width: '178'},
+          { type: 'text', label: '部门名称', prop: 'branch', sortable: true, render:  (h,item)=>h('span', item.name), width: '142' },
+          { type: 'array',label: '产品名称', width: '140', prop: 'products', sortable: true, render: _=>_.map(_=>_.name),},
+          { type: 'text', label: '技术分类', width: '140' , prop: 'classification', sortable: true, is_import: true, render_simple: 'name',},
+          { type: 'array',label: '标签', prop: 'tags', is_import: true, width: '140',},
+          { type: 'array',label: '优先权', prop: 'priorities', width: '140', render: _=>_.map(_=>_.number),},
+          { type: 'array', label: '相关案件', prop: 'relative_projects', width: '200', render: _=>_.map(_=>`${_.title}-${_.serial}`),},
+
+          { type: 'text', label: '公开日', prop: 'public_date', sortable: true, is_import: true, width: '140', show: false },
+          { type: 'text', label: '公开号', prop: 'public_number', sortable: true, is_import: true, width: '130', show: false },
+          { type: 'text', label: '初审合格日', prop: 'pre_exam_ok_date', sortable: true, width: '130', show: false },
+          { type: 'text', label: '进入实审日', prop: 'sub_exam_start_date', sortable: true, width: '130', show: false },
+          { type: 'text', label: '公告号', prop: 'issue_number', sortable: true, is_import: true, width: '140', show: false },
+          { type: 'text', label: '公告日', prop: 'issue_date', sortable: true, is_import: true, width: '130', show: false },
+          { type: 'text', label: '主国际分类号', prop: 'main_ipc', sortable: true, width: '140', show: false },
+          { type: 'text', label: '国际申请日', prop: 'pct_apd', sortable: true, width: '130', show: false },
+          { type: 'text', label: '国际申请号', prop: 'pct_no', sortable: true, width: '150', show: false },
+          { type: 'text', label: '国际优先权日', prop: 'pct_priority_date', sortable: true, width: '130', show: false },
+          { type: 'text', label: '国际公开日', prop: 'pct_public_date', sortable: true, width: '130', show: false },
+          { type: 'text', label: '国际公开语言', prop: 'pct_public_language', sortable: true, width: '100', show: false },
+          { type: 'text', label: '国际公开号', prop: 'pct_public_no', sortable: true, width: '150', show: false },
+          { type: 'text', label: '复审委内编号', prop: 'board_number', sortable: true, width: '100', show: false },
+          { type: 'text', label: '说明书字数', prop: 'words', sortable: true, width: '100', show: false },
           {  type: 'text', label: '费用', prop: 'fees', sortable: true, width: '130',
             render_text (item) {
               if(!(item instanceof Array)) {
@@ -154,16 +167,25 @@ export default {
               })
               return rmb;
             },
+            show:false
           },
           // { type: 'text', label: '提案人', prop: 'proposer', sortable: true, width: '123', is_import: true, render_simple: 'name',},
-          { type: 'text', label: '代理机构', prop: 'agency', sortable: true, width: '168', is_import: true, render_simple: 'name'},
-          { type: 'array', label: '发明人', width: '238', prop: 'inventors', is_import: true, render: _=>_.map(_=>_.name),},
-          { type: 'array', label: '标签', prop: 'tags', is_import: true, width: '160',},
-          { type: 'text', label: '部门名称', prop: 'branch', sortable: true, render:  (h,item)=>h('span', item.name), width: '142' },
-          { type: 'text', label: '技术分类', width: '142' , prop: 'classification', sortable: true, is_import: true, render_simple: 'name',},
-          { type: 'array', label: '优先权', prop: 'priorities', width: '145', render: _=>_.map(_=>_.number),},
-          { type: 'array', label: '产品名称', width: '180', prop: 'products', sortable: true, render: _=>_.map(_=>_.name),},
-          { type: 'array', label: '相关案件', prop: 'relative_projects', width: '200', render: _=>_.map(_=>`${_.title}-${_.serial}`),},
+          { type: 'text', label: '申请策略', render_simple: 'name', prop: 'application_strategy', width: '200', show: false },
+          { type: 'text', label: '实审时机', render_simple: 'name', prop: 'subexam_timing', width: '200', show: false },
+          { type: 'text', label: '创新点描述', prop: 'innovation_introduction', width: '200', show: false },
+          { type: 'text', label: '新申请的申请策略', prop: 'core_concepts', width: '200', show: false },
+          { type: 'text', label: '决定要申请专利的原因', prop: 'decision_reason', width: '200', show: false },
+          { type: 'text', label: '技术重要性', render_simple: 'name', prop: 'importance', width: '200', show: false },
+          { type: 'text', label: '是否容易回避', render_simple: 'name', prop: 'avoidability', width: '200', show: false },
+          { type: 'text', label: '是否容易获取侵权证据', render_simple: 'name', prop: 'evidence_discovery', width: '200', show: false },
+          { type: 'text', label: '对产品盈利的贡献度', render_simple: 'name', prop: 'profitability', width: '200', show: false },
+          { type: 'text', label: '卖点相关性', render_simple: 'name', prop: 'selling_point', width: '200', show: false },
+          { type: 'text', label: '卖点相关的技术', prop: 'selling_point_technique', width: '200', show: false },
+          { type: 'text', label: '对手使用情况', prop: 'competitor_usage', width: '200', show: false },
+          { type: 'text', label: '专利实施情况', prop: 'application', width: '200', show: false },
+          { type: 'text', label: '市场推广或宣传上的价值', render_simple: 'name', prop: 'marketing_value', width: '200', show: false },
+          
+          { type: 'text', label: '立案时间', prop: 'create_time', width: '200',show: false,},
           { type: 'text', label: '委案时间', prop: 'entrusting_time', is_import: true, width: '145',         
             render: (h,item)=>{
             let t = item;
@@ -171,8 +193,35 @@ export default {
                  t = this.$tool.getDate(new Date(t));
               }
               return h('span', t);
-            }
+            },
+            show:false,
           },
+          { type: 'text', label: '返发明人稿时间', prop: 'first_edition_to_inventor_time', is_import: true, width: '130', show: false,},
+          { type: 'text', label: '发明人审核时间', prop: 'inventor_review_time', is_import: true, width: '130', show: false,},
+          { type: 'text', label: '发明人审核次数', prop: 'inventor_review_times', is_import: true, width: '130', show: false,},
+          { type: 'text', label: '发明人评分', prop: 'inventor_rank', is_import: true, width: '150', show: false,},
+          { type: 'text', label: '返IPR稿时间', prop: 'first_edition_to_ipr_time', is_import: true, width: '130', show: false,},
+          { type: 'text', label: 'IPR定稿时间', prop: 'ipr_final_edition_time', is_import: true, width: '130', show: false,},
+          { type: 'text', label: 'IPR审核次数', prop: 'ipr_review-times', is_import: true, width: '130', show: false,},
+          { type: 'text', label: 'IPR首次评分', prop: 'first_ipr_rank', is_import: true, width: '150',show: false,},
+          { type: 'text', label: 'IPR终稿评分', prop: 'final_ipr_rank', is_import: true, width: '150', show: false,},
+          { type: 'text', label: '代理人撰稿耗时', prop: 'agent_drafting_period', is_import: true, width: '130', show: false,},
+          { type: 'text', label: '发明人审核耗时', prop: 'inventor_review_period', is_import: true, width: '130', show: false,},
+          { type: 'text', label: 'IPR审核耗时', prop: 'ipr_review_period', is_import: true, width: '130', show: false,},
+          { type: 'text', label: '代理人修改耗时', prop: 'amending_period', is_import: true, width: '130',show: false,},
+
+          { type: 'text', label: '是否申请资助', prop: 'is_support', width: '158', is_import:true, render: this.renderBoolean,show: false,},
+          { type: 'text', label: '是否生物相关', prop: 'is_biological', width: '158', is_import:true, render: this.renderBoolean,show: false,},
+          { type: 'text', label: '是否分案申请', prop: 'is_division', width: '158', is_import:true, render: this.renderBoolean,show: false,},
+          { type: 'text', label: '是否提出实审请求', prop: 'is_exam_request', width: '178', is_import:true, render: this.renderBoolean,show: false,},
+          { type: 'text', label: '是否遗传资源相关', prop: 'is_genetic', width: '178', is_import:true, render: this.renderBoolean,show: false,},
+          { type: 'text', label: '是否有泄漏', prop: 'is_leakage', width: '158', is_import:true, render: this.renderBoolean,show: false,},
+          { type: 'text', label: '是否提前公开', prop: 'is_pre_public', width: '158', is_import:true, render: this.renderBoolean,show: false,},
+          { type: 'text', label: '是否要求优先权', prop: 'is_priority', width: '178', is_import:true, render: this.renderBoolean,show: false,},
+          { type: 'text', label: '是否保密审查', prop: 'is_secure_check', width: '158', is_import:true, render: this.renderBoolean,show: false,},
+          { type: 'text', label: '是否有序列表', prop: 'is_sequence', width: '158', is_import:true, render: this.renderBoolean,show: false,},
+          { type: 'text', label: '是否发明/新型同日申请', prop: 'is_utility', width: '198', is_import:true, render: this.renderBoolean,show: false,},
+          { type: 'text', label: '专利摘要', prop: 'abstract', sortable: true, width: '200',show: false,},
           { type: 'text', label: '附件', prop: 'attachments', width: '240',   
             render (h,item) {
               return h(
@@ -189,52 +238,9 @@ export default {
                     },g.name)
                 })
               )
-            } 
+            },show: false,
           },
-          { type: 'text', label: '创建时间', prop: 'create_time', width: '200'},
-          { type: 'text', label: '奖励等级', prop: 'bonus_level', width: '145' ,render_simple: 'name'},
-          { type: 'text', label: '案件等级', prop: 'level', width: '145' ,sortable: true,},
-          { type: 'text', label: '返发明人稿时间', prop: 'first_edition_to_inventor_time', is_import: true, width: '175', show: false,},
-          { type: 'text', label: '发明人审核时间', prop: 'inventor_review_time', is_import: true, width: '175', show: false,},
-          { type: 'text', label: '发明人审核次数', prop: 'inventor_review_times', is_import: true, width: '175', show: false,},
-          { type: 'text', label: '发明人评分', prop: 'inventor_rank', is_import: true, width: '150', show: false,},
-          { type: 'text', label: '返IPR稿时间', prop: 'first_edition_to_ipr_time', is_import: true, width: '175', show: false,},
-          { type: 'text', label: 'IPR定稿时间', prop: 'ipr_final_edition_time', is_import: true, width: '175', show: false,},
-          { type: 'text', label: 'IPR审核次数', prop: 'ipr_review-times', is_import: true, width: '175', show: false,},
-          { type: 'text', label: 'IPR首次评分', prop: 'first_ipr_rank', is_import: true, width: '150',show: false,},
-          { type: 'text', label: 'IPR终稿评分', prop: 'final_ipr_rank', is_import: true, width: '150', show: false,},
-          { type: 'text', label: '代理人撰稿耗时', prop: 'agent_drafting_period', is_import: true, width: '175', show: false,},
-          { type: 'text', label: '发明人审核耗时', prop: 'inventor_review_period', is_import: true, width: '175', show: false,},
-          { type: 'text', label: 'IPR审核耗时', prop: 'ipr_review_period', is_import: true, width: '175', show: false,},
-          { type: 'text', label: '代理人修改耗时', prop: 'amending_period', is_import: true, width: '175',show: false,},
           { type: 'text', label: '备注', prop: 'remark', sortable: true, width: '280', show: false},
-          { type: 'text', render_simple: 'name', label: '申请策略', prop: 'application_strategy', width: '200', show: false },
-          { type: 'text', render_simple: 'name', label: '实审时机', prop: 'subexam_timing', width: '200', show: false },
-          { type: 'text', label: '创新点描述', prop: 'innovation_introduction', width: '200', show: false },
-          { type: 'text', label: '新申请的申请策略', prop: 'core_concepts', width: '200', show: false },
-          { type: 'text', label: '决定要申请专利的原因', prop: 'decision_reason', width: '200', show: false },
-          { type: 'text', render_simple: 'name', label: '技术重要性', prop: 'importance', width: '200', show: false },
-          { type: 'text', render_simple: 'name', label: '是否容易回避', prop: 'avoidability', width: '200', show: false },
-          { type: 'text', render_simple: 'name', label: '是否容易获取侵权证据', prop: 'evidence_discovery', width: '200', show: false },
-          { type: 'text', render_simple: 'name', label: '对产品盈利的贡献度', prop: 'profitability', width: '200', show: false },
-          { type: 'text', render_simple: 'name', label: '卖点相关性', prop: 'selling_point', width: '200', show: false },
-          { type: 'text', label: '卖点相关的技术', prop: 'selling_point_technique', width: '200', show: false },
-          { type: 'text', label: '对手使用情况', prop: 'competitor_usage', width: '200', show: false },
-          { type: 'text', label: '专利实施情况', prop: 'application', width: '200', show: false },
-          { type: 'text', render_simple: 'name', label: '市场推广或宣传上的价值', prop: 'marketing_value', width: '200', show: false },
-          { type: 'text', label: '项目名称', prop: 'project_name', width: '178', show: false },
-          { type: 'text', label: '项目代号', prop: 'project_serial', width: '178', show: false },
-          { type: 'text', label: '是否申请资助', prop: 'is_support', width: '158', is_import:true, render: this.renderBoolean},
-          { type: 'text', label: '是否生物相关', prop: 'is_biological', width: '158', is_import:true, render: this.renderBoolean},
-          { type: 'text', label: '是否分案申请', prop: 'is_division', width: '158', is_import:true, render: this.renderBoolean},
-          { type: 'text', label: '是否提出实审请求', prop: 'is_exam_request', width: '178', is_import:true, render: this.renderBoolean},
-          { type: 'text', label: '是否遗传资源相关', prop: 'is_genetic', width: '178', is_import:true, render: this.renderBoolean},
-          { type: 'text', label: '是否有泄漏', prop: 'is_leakage', width: '158', is_import:true, render: this.renderBoolean},
-          { type: 'text', label: '是否提前公开', prop: 'is_pre_public', width: '158', is_import:true, render: this.renderBoolean},
-          { type: 'text', label: '是否要求优先权', prop: 'is_priority', width: '178', is_import:true, render: this.renderBoolean},
-          { type: 'text', label: '是否保密审查', prop: 'is_secure_check', width: '158', is_import:true, render: this.renderBoolean},
-          { type: 'text', label: '是否有序列表', prop: 'is_sequence', width: '158', is_import:true, render: this.renderBoolean},
-          { type: 'text', label: '是否发明/新型同日申请', prop: 'is_utility', width: '198', is_import:true, render: this.renderBoolean},
         ] 
       },
       option2: {
@@ -267,12 +273,12 @@ export default {
         new_field: '',
       },
       replaceFormRules: {
-        key: { required: true, message: '更新字段不能为空', trigger: 'change' },
-        old_field: { required: true, message: '查找目标不能为空', trigger: 'blur' },
-        new_field: { required: true, message: '替换文本不能为空', trigger: 'blur' },
+        key: { required: true, message: '批量更新字段不能为空', trigger: 'change' },
+        old_field: { required: true, message: '查找条件不能为空', trigger: 'blur' },
+        new_field: { required: true, message: '替换内容不能为空', trigger: 'blur' },
       },
       replaceSelectType: {
-        placeholder: '请选择批量替换字段',
+        placeholder: '请选择批量更新的字段',
         options: [
           { name: '产品分类', id: 'products' },
           { name: '技术分类', id: 'classification' },
@@ -324,7 +330,7 @@ export default {
           url: REPLACE_URL,
           data: this.replaceForm,
           success: () => {
-            this.$message({type: 'success', message: '批量修改成功'});
+            this.$message({type: 'success', message: '批量更新成功'});
             this.replaceVisible = false;
             this.refresh();
           }

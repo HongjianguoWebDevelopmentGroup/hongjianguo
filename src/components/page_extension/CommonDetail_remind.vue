@@ -3,7 +3,7 @@
 		<table-component :tableOption="tableOption" :data="detailReminders"></table-component>
 		<el-dialog :visible.sync="dialogVisible" title="提醒设置" @close="$refs.form.resetFields()" :modal="false" class="dialog-small">
 			<el-form :model="form" ref="form" label-width="80px">
-				<el-form-item label="监控类型" prop="keyword" v-if="popType == 'add'" :rules="{  required: true, message: '监控类型不能为空', trigger: 'change' }">
+				<el-form-item label="提醒类型" prop="keyword" v-if="popType == 'add'" :rules="{  required: true, message: '监控类型不能为空', trigger: 'change' }">
 					<static-select type="reminder" v-model="form.keyword"></static-select>
 				</el-form-item>
 				<el-form-item label="期限" prop="deadline" :rules="{ type: 'date', required: true, message: '期限不能为空', trigger: 'change' }">
