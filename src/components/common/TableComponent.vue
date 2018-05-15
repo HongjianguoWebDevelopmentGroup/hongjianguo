@@ -194,7 +194,7 @@ import { mapActions } from 'vuex'
 export default {
   name: 'tableComponent',
   mixins: [ AxiosMixins ],
-  props: ['tableOption', 'data', 'tableStyle', 'refreshProxy', 'filter'],
+  props: ['tableOption', 'data', 'tableStyle', 'refreshProxy', 'filter', 'refreshTableData'],
   data () {
     
     
@@ -642,6 +642,10 @@ export default {
       return this.$refs.table.getSelected(flag);
     },
     update () {
+      if(this.refreshTableData) {
+        this.refreshTableData(Object.assign({}, this.getRequestOption(), this.filterForm));
+      }
+
       this.$emit('refreshTableData', Object.assign({}, this.getRequestOption(), this.filterForm) );
     },
     search (val) {

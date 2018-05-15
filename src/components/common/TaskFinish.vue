@@ -308,7 +308,6 @@ export default {
       this.$emit('cancel');
     },
     clear () {
-      this.no_finish = false;
       this.$refs.form.resetFields();
     },
     proposalFinish ({remark, attachments}) {
@@ -366,6 +365,7 @@ export default {
   watch: {
     id () {
       this.requested = false;
+      this.no_finish = false;
       this.clear();
       this.refreshData();
     },
@@ -377,7 +377,9 @@ export default {
     },
     'next': {
       handler: function (val) {
-        if(val == 20) { this.no_finish = true; }
+        //开启文件上传校验
+        if(val == 14 && data.area == 'CN') { this.no_finish = true; }
+
         if(val == "") return;
         for (let d of this.data.next) {
           if(d.id == val) {
@@ -403,7 +405,6 @@ export default {
               //附件同步
               const atta = d.attachments; 
               if(this.attachments && atta && atta.length != 0 ) {
-                console.log('4897789789');
                 this.form.attachments = atta.map(_=>_.id);
                 this.attachments = atta;
               }

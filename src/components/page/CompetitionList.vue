@@ -1,23 +1,25 @@
 <template>
-	<div>
+	<div class="main">
 		<table-component :data="tableData" :tableOption="tableOptions" :refreshTableData="refreshTableData" ref="table"></table-component>
 		<app-pop 
-			ref="form"
-			:modal="false"
+			ref="form" 
 			:model="form" 
 			:type="formType" 
 			:rules="rules"
 			label-width="90px" 
-			title="评审" 
+			title="竞争对手" 
 			:save="handleSave">
-			<el-form-item prop="review_type" label="评审类型">
-				<static-select type="judge_type" v-model="form.review_type"></static-select>
+			<el-form-item prop="title" label="项目名称">
+				<el-input v-model="form.title"></el-input>
 			</el-form-item>
-			<el-form-item prop="member_id" label="评审人">
-				<remote-select type="member" v-model="form.member_id"></remote-select>
+			<el-form-item prop="deadline" label="项目期限">
+				<el-date-picker type="date" v-model="form.deadline" style="width: 100%;"></el-date-picker>
 			</el-form-item>
-			<el-form-item prop="content" label="评审内容">
-				<el-input type="textarea" v-model="form.content"></el-input>
+			<el-form-item prop="ipr" label="承办人">
+				<remote-select type="member" v-model="form.ipr"></remote-select>
+			</el-form-item>
+			<el-form-item prop="remark" label="备注">
+				<el-input type="textarea" v-model="form.remark"></el-input>
 			</el-form-item>
 		</app-pop>
 	</div>
@@ -27,13 +29,10 @@
 import TableComponent from '@/components/common/TableComponent'
 import AppPop from '@/components/common/AppPop'
 import RemoteSelect from '@/components/form/RemoteSelect'
-import StaticSelect from '@/components/form/StaticSelect'
 
-const URL = '/judge';
-
+const URL = '/competition';
 export default {
 	name: 'competitionList',
-	props: ['id'],
 	data () {
 		return {
 			tableData: [],
@@ -41,8 +40,7 @@ export default {
 				header_btn: [
 					{type: 'add', click: this.addPop},
 				],
-				is_search: false,
-				is_pagination: false,
+				height: 'default',
 				columns: [
 					{type: 'text', prop: 'title', label: '项目名称', width: '150'},
 					{type: 'text', prop: 'deadline', label: '项目期限', width: '150'},
@@ -60,14 +58,14 @@ export default {
 				]
 			},
 			form: {				
-				review_type: '',
-				member_id: '',
-				content: '',
+				title: '',
+				deadline: '',
+				ipr: '',
+				remark: '',
 			},
 			rules: {
-				review_type: {type: 'number', required: true, message: '评审类型不能为空', trigger: 'change'},
-				member_id: {type: 'number', required: true, message: '评审人不能为空', trigger: 'change'},
-				content: {required: true, message: '评审内容不能为空', trigger: 'blur'},
+				title: {required: true, message: '项目名称必填', trigger: 'blur'},
+				ipr: {type: 'number', required: true, message: '承办人必选', trigger: 'change'},
 			},
 			formType: '',
 			currentId: '',
@@ -90,12 +88,12 @@ export default {
 			})
 		},
 		fillForm (form) {
-			this.$tool.coverObj(this.form, form, {obj: ['review_type']});
+			this.$tool.coverObj(this.form, form, {date: ['deadline']});
 		},
-		refreshTableData () {
+		refreshTableData (option) {
 			return this.$axiosGet({
 				url: URL,
-				data: {project_id: this.id},
+				data: option,
 				success: (response) => {
 					this.tableData = response.data;
 				}  
@@ -111,9 +109,9 @@ export default {
 		add () {
 			return this.$axiosPost({
 				url: URL,
-				data: Object.assign({}, this.form, {project_id: this.id}),
+				data: this.$tool.shallowCopy(this.form, {date: true}),
 				success: () => {
-					this.$message({type: 'success', message: '添加评审成功'});
+					this.$message({type: 'success', message: '添加成功'});
 				}
 			})
 		},
@@ -122,7 +120,7 @@ export default {
 				url: `${url}/${this.currentId}`,
 				data: this.$tool.shallowCopy(this.form, {date: true}),
 				success: () => {
-					this.$message({type: 'success', message: '编辑评审成功'});
+					this.$message({type: 'success', message: '编辑成功'});
 				}
 			})
 		},
@@ -133,16 +131,10 @@ export default {
 	mounted () {
 		this.refresh();
 	},
-	watch: {
-		id () {
-			this.refresh();
-		}
-	},
 	components: {
 		TableComponent,
 		AppPop,
 		RemoteSelect,
-		StaticSelect,
 	}
 }
 </script>

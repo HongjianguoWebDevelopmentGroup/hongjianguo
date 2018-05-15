@@ -120,6 +120,18 @@ menu.data = [
 				path: '/patent/notice',
 				icon: 'iconfont el-icon-my-notice',
 				type: 'item',
+			},
+			{
+				text: '专利监控',
+				path: '/patent/moniter',
+				icon: '',
+				type: 'item',
+			},
+			{
+				text: '竞争对手',
+				path: '/patent/competition',
+				icon: '',
+				type: 'item',
 			}
 		]
 	},

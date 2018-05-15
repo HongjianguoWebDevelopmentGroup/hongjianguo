@@ -68,7 +68,7 @@
           <remind></remind>
         </el-tab-pane> 
         <el-tab-pane label="评审" name="judge" v-if="type == 'patent'">
-          <judge></judge>
+          <judge :id="id"></judge>
         </el-tab-pane>
       </el-tabs>
     </div>

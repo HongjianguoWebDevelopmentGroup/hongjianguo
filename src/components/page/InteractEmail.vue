@@ -47,6 +47,24 @@
 		<remote-select type="project" v-model="projectId" style="margin-bottom: 10px;" multiple></remote-select>
 		<el-button type="primary" @click="associateMail" :loading="loading">{{ loading ? '关联中...' : '确认关联' }}</el-button>
 	</el-dialog>
+
+	<el-dialog title="邮件导入" :visible.sync="feedbackVisible" class="dialog-small" @close="$refs.feedbackForm.resetFields()">
+		<el-form label-position="top" :model="feedbackForm" :rules="feedbackRules" ref="feedbackForm">
+			<el-form-item prop="project" label="关联案件">
+				<remote-select type="project" v-model="feedbackForm.project"></remote-select>
+			</el-form-item>
+			<el-form-item prop="agency_serial" label="代理机构案号">
+				<el-input v-model="feedbackForm.agency_serial"></el-input>
+			</el-form-item>
+			<el-form-item prop="agency_agent" label="代理人">
+				<remote-select type="agent" v-model="feedbackForm.agency_agent"></remote-select>
+			</el-form-item>
+			<el-form-item style="margin-bottom: 0px;">
+				<el-button type="primary" :loading="feedbackLoading" @click="feedbackSave">{{ feedbackLoading ? '导入中...' : '确认导入' }}</el-button>
+				<el-button @click="feebackVisible = false" :disabled="feedbackLoading">取消</el-button>
+			</el-form-item>
+		</el-form>
+	</el-dialog>
 </div>
 </template>
 
@@ -119,6 +137,19 @@ export default {
 			currentId: '',
 			projectId: [],
 			analysisLoading: false,
+			
+			feedbackVisible: false,
+			feedbackLoading: false,
+			feedbackForm: {
+				project: '',
+				agency_serial: '',
+				agency_agent: '',
+			},
+			feedbackRules: {
+				project: { type: 'number', required: true, message: '关联案件不能为空', trigger: 'change' },
+				agency_serial: { type: 'string', required: true, message: '代理所案号不能为空', trigger: 'blur' },
+				agency_agent: { type: 'number', required: true, message: '代理人不能为空', trigger: 'change' },
+			}
 		}
 	},
 	computed: {
@@ -136,8 +167,30 @@ export default {
         </span>       
       );
   	},
+  	async feedbackSave () {
+  		const flag = new Promise((reject) => {
+  			this.$refs.feedbackForm.validate(reject);
+  		})
+  		if (flag) {
+  			this.feedbackLoading = true;
+  			try {
+  				await this.$axiosPut({
+  					url: `/patents/${this.feedbackForm.project}`,
+  					data: this.$tool.shallowCopy(this.feedbackForm, {skip: ['project']}),
+  					success: () => {
+  						this.$message({type: 'success', message: '导入成功'});
+  						this.feebackVisible = false;
+  						this.importSuccess();
+  					}
+  				})
+  			}catch(e) {}
+  			this.feedbackLoading = false;
+  		}else {
+  			this.$message({type: 'warning', message: '请正确填写表单'});
+  		}
+  	},
   	importEmail({id}) {
-  		const url = `/api/mailanalysis/${id}`;
+  		const url = `/mailanalysis/${id}`;
   		const success = _=>{
   			this.currentId = id;//记录当前ID；
   			
@@ -172,6 +225,11 @@ export default {
   				this.$nextTick(v=>{
   					this.$refs.notice.tableData = _.data;	
   				});
+  			}else if(_.type == 'feedback') {
+  				this.feedbackVisible = true;
+  				this.$nextTick(() => {
+  					this.feedbackForm = _.data; 
+  				})
   			}
   		};
 
@@ -185,7 +243,7 @@ export default {
   		this.dialogSimple = this.dialogCustom = this.dialogNotice = this.dialogFee = false;
   		//将导入成功邮件标记为已导入
   		this.$axiosGet({
-  			url: `/api/mailimported/${this.currentId}`,
+  			url: `/mailimported/${this.currentId}`,
   			success: _=>{
   				this.update();//刷新当前页面
   			}
@@ -198,7 +256,7 @@ export default {
   			return;
   		}
   		this.$axiosPut({
-  			url: `api/mails/${this.currentId}/projects`,
+  			url: `/mails/${this.currentId}/projects`,
   			data: {
   				ids: this.projectId, 
   			},

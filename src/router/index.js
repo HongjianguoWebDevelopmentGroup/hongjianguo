@@ -9,6 +9,8 @@ const CheckProposal            = () => import('@/components/page/CheckProposal')
 const TaskCommon               = () => import('@/components/page/TaskCommon')
 const TaskExpiring             = () => import('@/components/page/TaskExpiring')
 const PatentList               = () => import('@/components/page/PatentList')
+const Moniter                  = () => import('@/components/page/MoniterList')
+const Competition              = () => import('@/components/page/CompetitionList')
 const ApplyingPatent           = () => import('@/components/page/ApplyingPatent')
 const PatentAdd                = () => import('@/components/page/PatentAdd')
 const NoticeCommon             = () => import('@/components/page/NoticeCommon')
@@ -124,6 +126,16 @@ const router = new Router({
       name: 'ProposalReportAdd',
       component: ReportAdd,
       meta: {'type': 'proposal'},
+    },
+    {
+      path: '/patent/moniter',
+      name: 'PatentMoniter',
+      component: Moniter,
+    },
+    {
+      path: '/patent/competition',
+      name: 'PatentCompetition',
+      component: Competition,
     },
     {
       path: '/patent/report',
