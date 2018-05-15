@@ -79,7 +79,6 @@ export default {
         branch: '',
         issue_date: '',
         issue_number: '',
-        abstract: '',
         date: '',
         apn: '',
 
@@ -96,8 +95,6 @@ export default {
         pct_public_language: '',
         pct_public_no: '',
         board_number: '',
-        group_number: '',
-        family_number: '',
         is_support: 0,
         application: '',
       },

@@ -75,7 +75,7 @@
       <app-table :columns="estimateColumns" :data="data.estimate" :maxHeight="300" ref="estimate"></app-table>
       <span style="color: rgb(132, 146, 166);">请选择评估通过的年费</span>
     </el-form-item>
-    <el-form-item prop="bonus_level" label="奖励等级" v-if="fields.bonus_level" :rules="{required: true, message: '奖励等级不能为空'}">
+    <el-form-item prop="bonus_level" label="奖励等级" v-if="fields.bonus_level" :rules="{required: true, message: '请选择奖励等级'}">
       <el-radio-group v-model="form.bonus_level">
         <el-radio-button label="无奖励"></el-radio-button>
         <el-radio-button label="一般"></el-radio-button>
@@ -84,7 +84,7 @@
         <el-radio-button label="优+"></el-radio-button>
       </el-radio-group>
     </el-form-item>
-    <el-form-item prop="rank" label="评分" v-if="fields.rank" :rules="{required: true, message: '评分不能为空'}">
+    <el-form-item prop="rank" label="评分" v-if="fields.rank" :rules="{required: true, message: '请选择评分'}">
       <el-slider 
         v-model="form.rank"
         show-input
@@ -92,10 +92,10 @@
       </el-slider>
     </el-form-item>
     <template v-if="fields.defence">
-      <el-form-item prop="points" label="审查要点" :rules="{required: true, message: '审查要点不能为空'}">
+      <el-form-item prop="points" label="审查要点" :rules="{required: true, message: '请填写审查要点'}">
         <el-input type="textarea" placeholder="请填写审查要点" v-model="form.points"></el-input>
       </el-form-item>
-      <el-form-item prop="defence" label="修改/答辩" :rules="{required: true, message: '修改/答辩不能为空'}">
+      <el-form-item prop="defence" label="修改/答辩" :rules="{required: true, message: '请填写修改/答辩内容'}">
         <el-input type="textarea" placeholder="请填写修改/答辩信息" v-model="form.defence"></el-input>
       </el-form-item>
     </template>
@@ -448,7 +448,7 @@ export default {
       return this.data.next && this.data.next.length != 0 ? true : false;
     },
     ifTitle () {
-      return this.data.flow_node_id == 14;
+      return false;//this.data.flow_node_id == 14;
     },
   },
   components: { 

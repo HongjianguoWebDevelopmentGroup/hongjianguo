@@ -27,12 +27,12 @@ export default {
   data () {
     return {
       columns: [
-        { type: 'text', label: '管制事项', prop: 'name' },
-        { type: 'text', label: '承办人', prop: 'person_in_charge_name' },
+        { type: 'text', label: '管制事项', prop: 'flow', render_simple: 'name'},
+        { type: 'text', label: '承办人', prop: 'flownode', render_simple: 'name'},
         { type: 'text', label: '开始时间', prop: 'start_time' },
         { type: 'text', label: '指定期限', prop: 'due_time' },
-        { type: 'text', label: '代理机构', prop: 'agency' },
-        { type: 'text', label: '代理人', prop: 'agent' },
+        // { type: 'text', label: '代理机构', prop: 'agency' },
+        // { type: 'text', label: '代理人', prop: 'agent' },
         { 
           type: 'action', 
           label: '操作',
@@ -40,10 +40,10 @@ export default {
         },
       ],
       columns2: [
-        { type: 'text', label: '子任务名称', prop: 'flow_node' },
+        { type: 'text', label: '子节点名称', prop: 'flownode', render_simple: 'name' },
+        { type: 'text', label: '承办人', prop: 'person_in_charge', render_simple: 'name' },
         { type: 'text', label: '开始时间', prop: 'start_time' },
         { type: 'text', label: '完成时间', prop: 'end_time' },
-        { type: 'text', label: '承办人', prop: 'person_in_charge_name' },
         { 
           type: 'text', label: '附件', prop: 'attachments',
           render (h,item) {
@@ -68,8 +68,8 @@ export default {
       ],      
       columns3:[
         { type: 'text', label: '文件名称', prop: 'name', min_width: '120'},
-        { type: 'text', label: '上传日期', prop: 'create_time', min_width: '120'},
         { type: 'text', label: '上传人', prop: 'uploader', min_width: '100'},
+        { type: 'text', label: '上传日期', prop: 'create_time', min_width: '120'},
         { type: 'text', label: '大小', prop: 'size', min_width: '80'},
         { 
           type: 'action',

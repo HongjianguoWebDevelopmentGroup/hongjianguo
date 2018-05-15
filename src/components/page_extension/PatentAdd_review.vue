@@ -108,7 +108,6 @@ export default {
         if(data[k] == undefined) continue;
         if(data[k] instanceof Object){
           this.form[k] = data[k]['id'] ? data[k]['id'] - 0 : data[k]['id'];
-          console.log(k);
         }else{
           this.form[k] = data[k];
         }

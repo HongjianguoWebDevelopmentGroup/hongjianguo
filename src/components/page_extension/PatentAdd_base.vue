@@ -179,7 +179,7 @@ export default {
     //setForm 的Type用于区分正常填充 或者 是文件解析后的填充
     setForm (form, upload=false, disclosureType='') {
       this.$tool.coverObj(this.form, form, {
-        obj: [ 'attachments', 'area', 'type', 'ipr', 'case_level', 'progress'], 
+        obj: [ 'attachments', 'area', 'type', 'ipr', 'case_level'], 
         skip:[ 'extension', 'title' ],
       });
 
@@ -208,7 +208,6 @@ export default {
       }      
     },    
     submitForm () {
-      console.log(this.$tool.shallowCopy(this.form, { 'date': true }));
       return this.$tool.shallowCopy(this.form, { 'date': true });
     },
     handleUploadSuccess (a, b, c) {
