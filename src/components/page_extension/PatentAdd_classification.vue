@@ -1,6 +1,10 @@
 <template>
-  <app-collapse col-title="提案信息">
+  <app-collapse col-title="分类信息">
       <el-form label-width="120px">
+        <el-form-item label="部门">
+          <branch v-model="form.branch" count-type="patent" ></branch>
+          <!-- <span v-else>{{ branchName ? branchName : '暂未归属某个部门' }}</span> -->
+        </el-form-item>
 				<el-form-item label="产品分类">
 					<product v-model="form.products" count-type="patent" multiple></product>
 				</el-form-item>
@@ -25,6 +29,7 @@
 
 <script>
 import AppCollapse from '@/components/common/AppCollapse'
+import Branch from '@/components/form/Branch'
 import Product from '@/components/form/Product'
 import Classification from '@/components/form/Classification'
 import StaticSelect from '@/components/form/StaticSelect'
@@ -34,6 +39,7 @@ export default {
   data () {
 		return {
 			form: {
+        branch: '',
 				products: [],
 				classification: '',
 				tags: [],
@@ -45,16 +51,7 @@ export default {
   },
   methods: {
   	setForm (data) {
-      for(let k in this.form) {
-        if(data[k] == undefined) continue;
-        if(k == 'products') {
-          this.form[k] = data[k].map(_=>_.id);
-        }else if(k == 'classification') {
-          this.form[k] = data[k].id;
-        }else {
-          this.form[k] = data[k];
-        }
-      }
+      this.$tool.coverObj(this.form, data, {obj: ['branch', 'products', 'classification']});
   	},
     submitForm () {
       return this.form;
@@ -63,7 +60,7 @@ export default {
       callback(true);
     },
   },
-  components: { AppCollapse, Product, Classification, StaticSelect }
+  components: { AppCollapse,Branch, Product, Classification, StaticSelect }
 }
 </script>
 

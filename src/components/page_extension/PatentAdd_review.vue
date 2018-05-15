@@ -4,6 +4,16 @@
         <el-form-item label="是否申请" prop="proposal" v-if="type == 'add'">
           <static-select type="patent_in" v-model="progress"></static-select>
         </el-form-item>
+        <el-form-item label="申请方式">
+          <el-select v-model="form.manner" value-key="id">
+            <el-option
+              v-for="item in options.manner"
+              :key="item.id"
+              :label="item.name"
+              :value="item.id"
+            ></el-option>
+          </el-select>
+        </el-form-item>
         <el-form-item label="申请策略" prop="application_strategy">
           <static-select type="strategy" v-model="form.application_strategy"></static-select>
         </el-form-item>
@@ -16,16 +26,16 @@
         <el-form-item label="是否容易回避" prop="avoidability">
           <static-select type="patent_avoidability" v-model="form.avoidability"></static-select>
         </el-form-item>
-        <el-form-item label="是否容易获取侵权证据" prop="evidence_discovery">
+        <el-form-item label="容易获取证据?" prop="evidence_discovery">
           <static-select type="patent_evidence" v-model="form.evidence_discovery"></static-select>
         </el-form-item>
-        <el-form-item label="对产品盈利的贡献度" prop="profitability">
+        <el-form-item label="产品盈利贡献度" prop="profitability">
           <static-select type="patent_profitability" v-model="form.profitability"></static-select>
         </el-form-item>
         <el-form-item label="卖点相关性" prop="selling_point">
           <static-select type="patent_selling" v-model="form.selling_point"></static-select>
         </el-form-item>
-        <el-form-item label="市场推广或宣传上的价值" prop="marketing_value">
+        <el-form-item label="市场推广价值" prop="marketing_value">
           <static-select type="patent_marketing" v-model="form.marketing_value"></static-select>
         </el-form-item>        
         <el-form-item label="创新点描述" prop="innovation_introduction">
@@ -34,10 +44,10 @@
         <el-form-item label="关键保护点" prop="core_concepts">
           <el-input type="textarea" v-model="form.core_concepts"></el-input>
         </el-form-item>
-        <el-form-item label="决定要申请专利的原因" prop="decision_reason">
+        <el-form-item label="决定申请原因" prop="decision_reason">
           <el-input type="textarea" v-model="form.decision_reason"></el-input>
         </el-form-item>
-        <el-form-item label="卖点相关的技术" prop="selling_point_technique">
+        <el-form-item label="卖点相关技术" prop="selling_point_technique">
           <el-input type="textarea" v-model="form.selling_point_technique"></el-input>
         </el-form-item>
         <el-form-item label="对手使用情况" prop="competitor_usage">
@@ -75,11 +85,20 @@ export default {
         selling_point_technique: '',
         competitor_usage: '',
         marketing_value: '',
+        manner:'',
 			},
       rules: {
         'selling_point_technique': { max: 50, message: '长度不能超过50个字符' },
         'competitor_usage': { max: 50, message: '长度不能超过50个字符' },
-      }
+      },
+      options:{
+        manner: [
+          {name:"直接申请",id:1},
+          {name:"巴黎公约",id:2},
+          {name:"PCT进入国家阶段",id:3},
+          {name:"外部转入", id: 4}
+        ],
+      },
 		}
   },
   methods: {

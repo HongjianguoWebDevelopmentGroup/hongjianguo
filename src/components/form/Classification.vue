@@ -11,7 +11,7 @@
 	    action
 	    :count-type="countType"
 	    ref="tree"
-      url="/api/classifications"
+      url="/classifications"
       @refresh="refresh"
 	  >
 	  </pop-tree>
@@ -23,7 +23,7 @@ import PopTree from '@/components/common/PopTree'
 import FormTree from '@/mixins/form-tree'
 
 export default {
-  name: 'product',
+  name: 'classification',
   mixins: [ FormTree ],
   DATA_KEY: 'classificationData',
   MAP_KEY: 'classificationMap',

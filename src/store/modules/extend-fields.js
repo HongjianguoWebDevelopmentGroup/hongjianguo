@@ -19,7 +19,7 @@ const getters = {
 	configsExtends1: (state, getters)=>state.data ? getters.extendsMap['EXTEND_ONE'] : '',
 	configsExtends2: (state, getters)=>state.data ? getters.extendsMap['EXTEND_TWO'] : '',
 	configsExtends3: (state, getters)=>state.data ? getters.extendsMap['EXTEND_THREE'] : '',
-	hideProposal: (state, getters)=>state.data ? getters.extendsMap['HIDE_PROPOSAL'] : 1,
+	hideProposal: (state, getters)=>state.data ? getters.extendsMap['HIDE_PROPOSAL'] : 0,
 }
 
 const mutations = {

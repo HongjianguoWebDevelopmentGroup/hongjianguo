@@ -44,7 +44,19 @@
           >{{ item.text }}</el-checkbox>
         </el-checkbox-group>
         <span v-else>暂无可选项</span>
-      </el-form-item>  
+      </el-form-item>
+      <el-form-item label="群组号">
+          <el-input v-model="form.group_number" placeholder="请填写群组号"></el-input>
+      </el-form-item>
+      <el-form-item label="专利族号">
+        <el-input v-model="form.family_number" placeholder="请填写专利族号"></el-input>
+      </el-form-item>
+      <el-form-item label="状态" v-if="type == 'edit'">
+          <static-select type="patents_status" v-model="form.progress"></static-select>
+      </el-form-item>
+      <el-form-item label="摘要">
+        <el-input type="textarea" v-model="form.abstract" placeholder="请填写专利摘要" :rows="6" class="custom-textarea"></el-input>
+      </el-form-item>
       <el-form-item label="附件" prop="attachments">
           <upload action="/api/files" :data="uploadPara" @uploadSuccess="handleUploadSuccess" v-model="form.attachments" :file-list="attachments"></upload>
       </el-form-item>   
@@ -95,7 +107,11 @@ export default {
         priorities: [],
         extension: [], 
         attachments: [],
-        proposer:[],    
+        proposer:[],
+        group_number:'',
+        family_number:'',
+        abstract:'',
+        progress:'',
       },
       titleLock: false, //标题锁 当评审表被上传且标题自动填充后 不再自动填充 
       attachments: [],
@@ -163,7 +179,7 @@ export default {
     //setForm 的Type用于区分正常填充 或者 是文件解析后的填充
     setForm (form, upload=false, disclosureType='') {
       this.$tool.coverObj(this.form, form, {
-        obj: [ 'attachments', 'area', 'type', 'ipr', 'case_level' ], 
+        obj: [ 'attachments', 'area', 'type', 'ipr', 'case_level', 'progress'], 
         skip:[ 'extension', 'title' ],
       });
 

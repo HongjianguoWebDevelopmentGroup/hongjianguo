@@ -115,6 +115,16 @@ const config = [
       {id:6,name:"分析"}
     ]
   }],
+  ['bonus_level', {
+    placeholder: '请选择奖励等级',
+    options: [
+      {id:0, name:"无奖励"},
+      {id:1, name:"一般"},
+      {id:2, name:"良"},
+      {id:3, name:"优"},
+      {id:4, name:"优+"},
+    ]
+  }],
   ['table_type', {
     placeholder: '请选择列表类型',
     options: [

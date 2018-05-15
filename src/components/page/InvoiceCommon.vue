@@ -71,10 +71,10 @@ export default {
         'highlightCurrentRow': true, 
         'rowClick': this.handleRowClick,
         'header_btn': [
-          { type: 'export' },
           { type: 'delete' },
+          { type: 'export' },
           {},
-          { type: 'report', click: this.handleReport },
+          // { type: 'report', click: this.handleReport },
           { type: 'control' },
           { type: 'filter', click: () => {this.filterVisible = true;} },
         ],

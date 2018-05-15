@@ -1,5 +1,5 @@
 <template>
-   <app-collapse :col-title="`政府资助及专利奖(总计：${detailFundings.sum?detailFundings.sum:'0'}CNY)`">
+   <app-collapse :col-title="`发明人奖励(总计：${detailFundings.sum?detailFundings.sum:'0'}CNY)`">
      <!-- <table-component :tableOption="tableOption" :data="detailFundings.list"></table-component> -->
      <app-table :columns="columns" :data="fundingsData"></app-table>
    </app-collapse> 
@@ -9,7 +9,7 @@ import AppTable from '@/components/common/AppTable'
 import AppCollapse from '@/components/common/AppCollapse'
 import { mapGetters } from 'vuex'
   export default {
-    name: 'commonDetailFundings',
+    name: 'commonDetailInventorBonus',
     data () {
       return {
 

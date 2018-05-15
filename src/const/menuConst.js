@@ -7,32 +7,6 @@ menu.data = [
 		icon: 'iconfont el-icon-my-statistics',
 		type: 'item'
 	},
-	{
-		text: '邮件',
-		path: '/news',
-		icon: 'iconfont el-icon-my-email',
-		type: 'submenu',
-		children: [
-			{
-				text: '邮件',
-				path: '/news/mailList',
-				icon: 'iconfont el-icon-my-email',
-				type: 'item',
-			},
-			{
-				text: '交互',
-				path: '/news/interact',
-				icon: 'iconfont el-icon-my-interact',
-				type: 'item',
-			},
-			// {
-			// 	text: '系统消息',
-			// 	path: '/news/systemMessage',
-			// 	icon: 'iconfont el-icon-my-newlabel',
-			// 	type: 'item',
-			// }
-		]
-	},
 	// {
 	// 	text: '邮件',
 	// 	path: '/mailList',
@@ -152,12 +126,6 @@ menu.data = [
 				path: '/trademark/list',
 				type: 'item',
 			},
-			{
-				text: '通知书管理',
-				icon: 'iconfont el-icon-my-notice',
-				type: 'item',
-				path: '/trademark/notice',
-			}
 		]
 	},
 	{
@@ -178,12 +146,6 @@ menu.data = [
 				icon: 'iconfont	 el-icon-my-copyright',
 				type: 'item'
 			},
-			{
-				text: '通知书管理',
-				path: '/copyright/notice',
-				icon: 'iconfont el-icon-my-notice',
-				type: 'item',
-			},
 		]
 	},
 	{
@@ -192,22 +154,24 @@ menu.data = [
 		icon: 'iconfont el-icon-my-fee',
 		type: 'submenu',
 		children: [{
-			text: '应收明细',
+			text: '收入(资助)',
 			path: '/fee/income',
 			icon: 'iconfont el-icon-my-deal',
 			type: 'item',
 		},{
-			text: '应付明细',
+			text: '支出明细',
 			path: '/fee/pay',
 			icon: 'iconfont el-icon-my-receipt',
 			type: 'item',
-		},{
-			text: '请款单',
-			path: '/fee/bill',
-			icon: 'iconfont el-icon-my-deal',
-			type: 'item',
-		},{
-			text: '付款单', 
+		},
+		// {
+		// 	text: '请款单',
+		// 	path: '/fee/bill',
+		// 	icon: 'iconfont el-icon-my-deal',
+		// 	type: 'item',
+		// },
+		{
+			text: '代理所账单', 
 			path: '/fee/payment',
 			icon: 'iconfont el-icon-my-pay',
 			type: 'item',
@@ -233,18 +197,18 @@ menu.data = [
 			},
 		]
 	},
-	{
-		text: '发文',
-		path: '/dispatch',
-		icon: 'iconfont el-icon-my-email',
-		type: 'submenu',
-		children: [{
-			text: '发文管理',
-			path: '/dispatch/administration',
-			icon: 'iconfont el-icon-my-dispatch',
-			type: 'item'
-		}]
-	},
+	// {
+	// 	text: '发文',
+	// 	path: '/dispatch',
+	// 	icon: 'iconfont el-icon-my-email',
+	// 	type: 'submenu',
+	// 	children: [{
+	// 		text: '发文管理',
+	// 		path: '/dispatch/administration',
+	// 		icon: 'iconfont el-icon-my-dispatch',
+	// 		type: 'item'
+	// 	}]
+	// },
 	// {
 	// 	text: '交互',
 	// 	path: '/interact',
@@ -257,6 +221,100 @@ menu.data = [
 	// 		type: 'item',
 	// 	}]
 	// },
+	{
+		text: '交互',
+		path: '/news',
+		icon: 'iconfont el-icon-my-interact',
+		type: 'submenu',
+		children: [
+			{
+				text: '所有通知邮件',
+				path: '/news/mailList',
+				icon: 'iconfont el-icon-my-email',
+				type: 'item',
+			},
+			{
+				text: '交互邮件',
+				path: '/news/interact',
+				icon: 'iconfont el-icon-my-interact',
+				type: 'item',
+			},
+			{
+				text: '专利通知书',
+				path: '/patent/notice',
+				icon: 'iconfont el-icon-my-patent',
+				type: 'item',
+			},
+			{
+				text: '商标通知书',
+				icon: 'iconfont el-icon-my-trademark',
+				type: 'item',
+				path: '/trademark/notice',
+			},
+			{
+				text: '版权通知书',
+				path: '/copyright/notice',
+				icon: 'iconfont el-icon-my-copyright',
+				type: 'item',
+			},
+			// {
+			// 	text: '系统消息',
+			// 	path: '/news/systemMessage',
+			// 	icon: 'iconfont el-icon-my-newlabel',
+			// 	type: 'item',
+			// }
+		]
+	},
+	{
+		text: '报表',
+		path: '/reports',
+		icon: 'iconfont el-icon-my-report',
+		type: 'submenu',
+		children: [
+			{
+				text: '提案',
+				path: '/report/proposal',
+				icon: 'iconfont el-icon-my-proposal',
+				type: 'item',
+			},
+			{
+				text: '专利',
+				path: '/report/patent',
+				icon: 'iconfont el-icon-my-patent',
+				type: 'item',
+			},
+			{
+				text: '商标',
+				path: '/report/trademark',
+				icon: 'iconfont el-icon-my-trademark',
+				type: 'item',
+			},
+			{
+				text: '版权',
+				icon: 'iconfont el-icon-my-copyright',
+				type: 'item',
+				path: '/report/copyright',
+			},
+			{
+				text: '资助',
+				path: '/fee/income/report',
+				icon: 'iconfont el-icon-my-deal',
+				type: 'item',
+			},
+			{
+				text: '支出',
+				path: '/fee/pay/report',
+				icon: 'iconfont el-icon-my-receipt',
+				type: 'item',
+			},
+			{
+				text: '账单',
+				path: '/fee/payment/report',
+				icon: 'iconfont el-icon-my-pay',
+				type: 'item',
+			},
+		]
+	},
 	{
 		text: '设置',
 		path: '/setting',

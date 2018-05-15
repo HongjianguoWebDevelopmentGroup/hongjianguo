@@ -1,5 +1,5 @@
 <template>
-   <app-collapse :col-title="`代理费及奖金(总计：${detailAgency.sum?detailAgency.sum:'0'}CNY)`">
+   <app-collapse :col-title="`代理费及撰写奖励(总计：${detailAgency.sum?detailAgency.sum:'0'}CNY)`">
      <app-table :columns="columns" :data="agencyData"></app-table>
    </app-collapse> 
 </template>

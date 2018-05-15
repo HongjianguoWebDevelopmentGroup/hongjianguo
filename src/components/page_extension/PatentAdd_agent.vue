@@ -13,6 +13,9 @@
         <el-form-item label="代理类型">
           <static-select v-model="form.agency_type" type="agency_type"></static-select>
         </el-form-item>
+        <el-form-item label="奖励等级">
+          <static-select v-model="form.bonus_level" type="bonus_level"></static-select>
+        </el-form-item>
       </el-form>
     </app-collapse>
 </template>
@@ -30,20 +33,21 @@ export default {
 				agency: '',
 				agency_serial: '',
 				agency_type: '',
-				agent: [],
+        agent: [],
+        bonus_level:'',
 			}
     }
   },
   methods: {
   	setForm (data) {
       const form = this.form;
-      this.$tool.coverObj(form, data, {obj: ['agency_type']});   
-  	  if(form.agency_type) {
-        form.agency_type = form.agency_type - 0; 
+      console.log(data.bonus_level);
+      this.$tool.coverObj(form, data, {obj: ['agency_type', 'bonus_level']});
+      if(this.form.agency_type) {
+        this.form.agency_type -= 0;
       }
     },
     submitForm () {
-      console.log(this.form);
       return this.form;
     },
     checkForm (callback) {
@@ -62,7 +66,7 @@ export default {
   	},
   	agency () {
   		return this.form.agent ? this.form.agent.name : '暂无代理人信息';
-  	}
+    }
   },
   components: { 
    AppCollapse,
