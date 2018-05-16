@@ -7,6 +7,7 @@
 </template>
 <script>
 import DataView from '@/components/common/DataView'
+import {columns, configs} from '@/const/reportConfig'
 import {mapGetters} from 'vuex'
 
 const pieOptions = {
@@ -134,15 +135,13 @@ export default {
 		...mapGetters([
 			'innerHeight',
 			'innerWidth',
-			'tableColumnsCache',
-			'tableConfigsCache',
 		]),
 		config () {
-			return this.tableConfigsCache[this.para.table_type];
+			return configs[this.para.table_type];
 		},
 		columnsMap () {
 			const columnsMap = new Map();
-			this.tableColumnsCache[this.para.table_type].forEach(_=>{columnsMap.set(_.id, _.name)});
+			columns[this.para.table_type].forEach(_=>{columnsMap.set(_.id, _.name)});
 			return columnsMap;
 		}
 	},

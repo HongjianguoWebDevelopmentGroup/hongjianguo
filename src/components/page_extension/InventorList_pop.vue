@@ -33,7 +33,7 @@
 				<el-input v-model="form.family_name" placeholder="请输入英文姓"></el-input>
 			</el-form-item>
 
-			<el-form-item>
+			<el-form-item style="margin-bottom: 0px;">
 				<el-button type="primary" @click="add" v-if="type === 'add'" :disabled="btn_disabled">添加</el-button>
 				<el-button type="primary" @click="edit" v-if="type === 'edit'" :disabled="btn_disabled">编辑</el-button>
 			</el-form-item>
@@ -75,7 +75,7 @@ export default {
       
       const success = _=>{
         this.$message({message: `添加${tex}成功`, type: 'success'});
-        this.inventor= _.inventor;
+        this.inventor=  {id: _.inventor_id, name: this.form.name};
         this.dialogVisible = false;
         this.$emit('refresh', ['add',this.inventor]);
       }

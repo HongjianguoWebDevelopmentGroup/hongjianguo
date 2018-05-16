@@ -13,9 +13,9 @@
 import TableComponent from '@/components/common/TableComponent'
 import AppShrink from '@/components/common/AppShrink'
 import ReportDetail from '@/components/page_extension/Report_detail'
-import {mapGetters} from 'vuex'
+import {configs} from '@/const/reportConfig'
 
-const url = '/api/reports';
+const url = '/reports';
 export default {
 	name: 'report',
 	data () {
@@ -42,14 +42,11 @@ export default {
 		};
 	},
 	computed: {
-		...mapGetters([
-			'tableConfigsCache',
-		]),
 		type () {
-			return this.$route.meta.type;
+			return this.$route.params.type;
 		},
 		config () {
-			return this.tableConfigsCache[this.type];
+			return configs[this.type];
 		}
 	},
 	methods: {

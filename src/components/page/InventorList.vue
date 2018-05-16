@@ -36,7 +36,7 @@ export default {
 		  		{ type: 'text', label: '手机', prop: 'mobile', sortable: true, width: '175' },
 		  		{ type: 'text', label: '邮箱', prop: 'email', sortable: true, min_width: '200' },
 		  		{ type: 'text', label: '不公开姓名', prop: 'not_disclose_name', sortable: true, width: '200' },
-		  		{ type: 'text', label: '英文姓名', prop: 'name_en', render: (h,item, row)=>h('span', `${row.given_name}${row.family_name}`), width: '200' },
+		  		{ type: 'text', label: '英文姓名', prop: 'name_en', render: (h,item, row)=>h('span', `${row.given_name} ${row.family_name}`), width: '200' },
 		  		{ 
 		  			type: 'action',
             width: '160',

@@ -65,7 +65,7 @@ export default {
 					{type: 'text', prop: 'issue_date', label: '授权日', width: '150'},
 					{type: 'text', prop: 'progress', label: '状态', render_simple: 'name', width: '150'},
 					{type: 'text', prop: 'remark', label: '备注', width: '150'},
-					{type: 'text', prop: 'uid', label: '创建人', width: '150'},
+					{type: 'text', prop: 'create_user', label: '创建人', width: '150'},
 					{type: 'text', prop: 'create_time', label: '创建时间', width: '150'},
 					{
 						type: 'action',

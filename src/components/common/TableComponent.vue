@@ -71,7 +71,7 @@
         </template>
 
         <template v-else-if="btn.type == 'filter'">
-          <el-button class="table-header-btn" type="primary" icon="" @click="handleCommand(btn.click, $event)">{{ btn.label ? btn.label : '筛选' }}</el-button>
+          <el-button class="table-header-btn" type="primary" icon="search" @click="handleCommand(btn.click, $event)">{{ btn.label ? btn.label : '筛选' }}</el-button>
         </template>
 
         <template v-else-if="btn.type == 'export'">

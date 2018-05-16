@@ -2,9 +2,11 @@
     <div class="main">
       <el-row>
         <el-col :span="18">
-          <el-form label-width="92px" :rules="formRules" :model="formData" ref="form">
+          <el-form label-width="110px" :rules="formRules" :model="formData" ref="form">
             
-            <el-form-item label="交底书撰写人">{{ proposer_name }}</el-form-item>
+            <el-form-item label="交底书撰写人" prop="proposer">
+              <remote-select type="member" v-model="formData.proposer"></remote-select>
+            </el-form-item>
             
             <el-form-item label="提案名称" prop="title">
               <el-input v-model="formData.title" placeholder="请填写提案名称"></el-input>
@@ -44,7 +46,7 @@
               <el-input type="textarea" v-model="formData.remark"></el-input>
             </el-form-item>
             <el-form-item label="附件" prop="attachments">
-               <upload v-model="formData.attachments" :file-list="attachments" ref="upload" :data="{action: 'parseDisclosure'}"></upload>
+               <upload v-model="formData.attachments" :file-list="attachments" ref="upload" :data="{action: 'parseDisclosure'}" @uploadSuccess="handleUploadSuccess"></upload>
             </el-form-item>
             <el-form-item>
                <!-- <el-button @click="submit" type="primary" :disabled="btn_disabled">提交</el-button> -->
@@ -142,16 +144,23 @@ export default {
       })
     },
     handleUploadSuccess (d) {
-      if( d.data && d.data.list ) {
-        const l = d.data.list;
-        
-        //处理发明人的贡献率
-        if(l.inventors && l.inventors.length != 0) {
+      if( !d.data || !d.data.list ) {
+        return;
+      }
+      
+      if (d.data.list.is_disclosure == 1) {
+
+        this.$tool.coverObj(this.formData, d.data.list, {obj: ['products', 'classification']});
+        this.formData.abstract = d.data.list.core_concepts;
+        this.formData.remark = d.data.list.decision_reason;
+        if(this.formData.inventors && this.formData.inventors.length != 0) {
           //复用组件内置的方法...
-          this.$refs.inventors.handleShare(l.inventors);
+          this.$refs.inventors.handleShare(this.formData.inventors);
         }
 
-        this.$tool.coverObj(this.formData, l);
+
+      }else if(d.data.list.is_disclosure == 2) {
+        this.$message({type: 'warning', message: '文件识别失败'});
       }
     },
     handleSubmitSuccess () {
@@ -163,7 +172,6 @@ export default {
       this.refreshUser();
     },
     tansmitData(data){
-      // console.log(data);
       if(data[1] !== undefined) {
         const obj = Object.assign(data[1],{share: ''});
         this.formData.inventors.push(obj);
@@ -180,10 +188,6 @@ export default {
     save ( callback=_=>{this.$message({message: '保存成功', type: 'success'});}, required=false, showWarning=true ) {
       
       if(!this.$refs.form) return;
-
-      if(this.pageType == 'add' && !this.formData.proposer) {
-        this.formData.proposer = this.userid;
-      }
 
       this.$refs.form.validate(valid=>{
         
@@ -266,11 +270,9 @@ export default {
         this.$axios.get(`${URL}/${id}`).then(response=>{
           this.$store.commit('cancelLoading');
           const data = response.data.proposal;
-          const { inventors, proposer, classification, products, attachments } = data;
+          const { inventors, classification, products, attachments } = data;
            
           data.inventors = inventors.map((d)=>{return {id: d.id, share: d.share, name: d.name}});
-          data.proposer = proposer.id;
-          this.proposer_name = proposer.name;
           
           if(classification) {
             data.classification = classification.id;
@@ -291,7 +293,6 @@ export default {
           this.$tool.coverObj(this.formData, data);
         });
       }else {
-        this.proposer_name = this.username;
         if(this.userid && this.username && this.userrole ==  4) {
           this.formData.inventors = [{ id: this.userid, name: this.username, share: '100', identity: this.useridentity }];  
         }        
@@ -327,8 +328,8 @@ export default {
       attachments: [],
       create_time: '',
       update_time: '',
-      proposer_name: '',
       formRules: {
+        'proposer': {type: 'number', required: true, message: '交底书撰写人必填', trigger: 'change'},
         'title': [
           {required: true, message: '案件名称不能为空'},
           {pattern: /^[^~!@#$%^&*]+$/, message: '案件名不能包含非法字符', trigger: 'blur'},

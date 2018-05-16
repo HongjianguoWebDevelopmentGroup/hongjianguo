@@ -43,7 +43,7 @@
           <detail-fee></detail-fee>
         </el-tab-pane>
         <el-tab-pane label="邮件" name="fee">
-          <detail-email></detail-email>
+          <detail-email @sendMail="handleSendEmail"></detail-email>
         </el-tab-pane>
 <!--         <el-tab-pane label="文档" name="documents">
           <detail-documents></detail-documents>
@@ -189,6 +189,9 @@ export default {
     ...mapActions([
       'refreshDetailData',
     ]),
+    handleSendEmail (id) {
+      this.$emit('sendEmail', id);
+    },
     refreshDetail () {
       if(!this.type) return;
       if(!this.refreshSwitch) return;

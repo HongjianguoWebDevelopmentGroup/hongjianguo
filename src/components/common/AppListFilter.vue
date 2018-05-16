@@ -21,8 +21,8 @@
 					</div>
 				</div>
 			
-				<div class="filter-editor-condition-add">
-					<el-button @click="addPop"  style="padding: 0px;" icon="plus" type="text">新增筛选条件</el-button>
+				<div @click="addPop" class="filter-editor-condition-add">
+					<el-button style="padding: 0px;" icon="plus" type="text">新增筛选条件</el-button>
 				</div>
 			</div>
 

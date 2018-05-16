@@ -44,12 +44,9 @@ export default {
 				is_search: false,
 				is_pagination: false,
 				columns: [
-					{type: 'text', prop: 'title', label: '项目名称', width: '150'},
-					{type: 'text', prop: 'deadline', label: '项目期限', width: '150'},
-					{type: 'text', prop: 'ipr', label: '承办人', width: '150'},
-					{type: 'text', prop: 'remark', label: '备注', width: '150'},
-					{type: 'text', prop: 'uid', label: '创建人', width: '150'},
-					{type: 'text', prop: 'create_time', label: '创建时间', width: '150'},
+					{type: 'text', prop: 'review_type', label: '评审类型'},
+					{type: 'text', prop: 'member_id', label: '评审人', render_simple: 'name'},
+					{type: 'text', prop: 'content', label: '评审内容'},
 					{
 						type: 'action',
 						btns: [
@@ -94,8 +91,7 @@ export default {
 		},
 		refreshTableData () {
 			return this.$axiosGet({
-				url: URL,
-				data: {project_id: this.id},
+				url: `${URL}/${this.id}`,
 				success: (response) => {
 					this.tableData = response.data;
 				}  
@@ -114,6 +110,7 @@ export default {
 				data: Object.assign({}, this.form, {project_id: this.id}),
 				success: () => {
 					this.$message({type: 'success', message: '添加评审成功'});
+					this.refresh();
 				}
 			})
 		},
@@ -123,6 +120,7 @@ export default {
 				data: this.$tool.shallowCopy(this.form, {date: true}),
 				success: () => {
 					this.$message({type: 'success', message: '编辑评审成功'});
+					this.refresh();
 				}
 			})
 		},
