@@ -205,7 +205,7 @@ export default {
           {},
           {},
           { type: 'export' },
-          { type: 'report', click: this.handleReport },
+          // { type: 'report', click: this.handleReport },
           // { type: 'custom', label: '转出', icon: '', click: ()=>{ this.dialogTurnoutVisible = true; } },
           { type: 'control', label: '字段'},
           { type: 'filter', click: () => {this.filterVisible = true} },

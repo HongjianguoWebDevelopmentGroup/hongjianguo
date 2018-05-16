@@ -1,9 +1,9 @@
 <template>
   <div class="main">  
 		<table-component :tableOption="tableOption" :data="tableData" @refreshTableData="refreshTableData" ref="table" >
-      <el-select v-model="mailbox" slot="mailbox" style="width: 150px">
+      <!-- <el-select v-model="mailbox" slot="mailbox" style="width: 150px">
         <el-option v-for="item in options.mailbox" :label="item.label" :value="item.value" :key="item.value"></el-option>
-      </el-select>
+      </el-select> -->
     </table-component>
     <Detail ref="mail_detail"></Detail>
   </div>
@@ -48,7 +48,7 @@ export default {
         'name': 'mailList',
         'url': URL,
 		  	'header_btn': [
-		  		{ type: 'custom', label: '写邮件', icon: 'edit', click: this.add },
+		  		// { type: 'custom', label: '写邮件', icon: 'edit', click: this.add },
 		  		{ type: 'delete' },
 		  	],
         'height': 'default2',
@@ -56,7 +56,7 @@ export default {
 		  	// 'is_search': false,
 		  	'columns': [
 		  		{ type: 'selection', width: '50' },
-		  		{ type: 'text', label: '发件人邮箱', prop: 'from', render_simple: 'label', sortable: true, overflow: true, width: '280' },
+		  		// { type: 'text', label: '发件人邮箱', prop: 'from', render_simple: 'label', sortable: true, overflow: true, width: '280' },
 		  		{ type: 'array', label: '收件人邮箱', prop: 'to', sortable: true, overflow: true, width: '280',
             render: _=>{
               if(_ instanceof Array) {
@@ -72,8 +72,8 @@ export default {
 		  			type: 'action',
             width: '150',
 		  			btns: [
-              { type: 'edit', click: this.edit, btn_if: ({mailbox})=>mailbox === 0 ? true : false, },
 		  				{ type: 'delete', click: this.mailDelete },
+              // { type: 'edit', click: this.edit, btn_if: ({status})=>status === 0 ? true : false, },
 		  			],  
 		  		}
 		  	],
