@@ -1,17 +1,8 @@
 <template>
   <div class="main" id="task_common">
     <list-filter type="task" :visible.sync="filterVisible" :refresh="refresh"></list-filter>
-<<<<<<< HEAD
-    <table-component :tableOption="tableOption" :data="tableData" @refreshTableData="refreshTableData" :refresh-proxy="refreshProxy" ref="table">
-      <!-- <el-select v-if="menusMap && !menusMap.get('/tasks/all')" slot="toggle" class="expand" v-model="task_toggle" style="width: 110px; margin-left: 5px;">
-        <el-option key="mine" label="我的任务" value="personal"></el-option>
-        <el-option key="all" label="所有任务" value="all"></el-option>
-      </el-select> -->
-    </table-component>
-=======
     
     <table-component :tableOption="tableOption" :data="tableData" @refreshTableData="refreshTableData" :refresh-proxy="refreshProxy" ref="table"></table-component>
->>>>>>> 2738989502548d39f81e363922ef70acfd437ca7
  
     <el-dialog title="申请委案" :visible.sync="dialogAgenVisible" class="dialog-small">
       <el-form :form="agen" ref="agen" label-width="120px" :model="agen">
