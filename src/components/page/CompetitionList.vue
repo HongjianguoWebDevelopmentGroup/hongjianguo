@@ -15,8 +15,8 @@
 			<el-form-item prop="deadline" label="项目期限">
 				<el-date-picker type="date" v-model="form.deadline" style="width: 100%;"></el-date-picker>
 			</el-form-item>
-			<el-form-item prop="ipr" label="承办人">
-				<remote-select type="member" v-model="form.ipr"></remote-select>
+			<el-form-item prop="ipr_id" label="承办人">
+				<remote-select type="member" v-model="form.ipr_id"></remote-select>
 			</el-form-item>
 			<el-form-item prop="remark" label="备注">
 				<el-input type="textarea" v-model="form.remark"></el-input>
@@ -42,12 +42,12 @@ export default {
 				],
 				height: 'default',
 				columns: [
-					{type: 'text', prop: 'title', label: '项目名称', width: '150'},
-					{type: 'text', prop: 'deadline', label: '项目期限', width: '150'},
-					{type: 'text', prop: 'ipr', label: '承办人', width: '150'},
-					{type: 'text', prop: 'remark', label: '备注', width: '150'},
-					{type: 'text', prop: 'uid', label: '创建人', width: '150'},
-					{type: 'text', prop: 'create_time', label: '创建时间', width: '150'},
+					{type: 'text', prop: 'title', label: '项目名称'},
+					{type: 'text', prop: 'deadline', label: '项目期限'},
+					{type: 'text', prop: 'ipr_id', label: '承办人'},
+					{type: 'text', prop: 'remark', label: '备注'},
+					{type: 'text', prop: 'creat_user', label: '创建人'},
+					{type: 'text', prop: 'create_time', label: '创建时间'},
 					{
 						type: 'action',
 						btns: [
@@ -60,7 +60,7 @@ export default {
 			form: {				
 				title: '',
 				deadline: '',
-				ipr: '',
+				ipr_id: '',
 				remark: '',
 			},
 			rules: {

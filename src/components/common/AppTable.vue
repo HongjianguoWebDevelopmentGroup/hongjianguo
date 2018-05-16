@@ -9,6 +9,7 @@
   :highlight-current-row="highlightCurrentRow"
   :height="tableHeight"
   :max-height="maxHeight"
+  class="app-table"
 
   @selection-change="handleSelectionChange" 
   @sort-change="_=>{$emit('sort-change', _)}"
@@ -18,17 +19,8 @@
   <template v-for="(col, index) in columns">
     
     <template v-if="col.type == 'selection'">
-      <el-table-column type="selection" :fixed="col.fixed === false ? false : 'left'"></el-table-column>
+      <el-table-column type="selection" align="center" :fixed="col.fixed === false ? false : 'left'"></el-table-column>
     </template>
-
-<!--         <template v-else-if="col.type == 'expand'">
-      <el-table-column type="expand">
-        <template scope="scope">
-          <slot name="expand" :row="scope.row">
-          </slot>
-        </template>
-      </el-table-column>
-    </template> -->
 
     <template v-else-if="col.type == 'text'" >
       
@@ -75,7 +67,7 @@
     </template>
 
     <template v-else-if="col.type == 'action'">
-      <el-table-column type="action" :label="col.label ? col.label : '操作'" :align="col.align ? col.align : 'left'" :width="col.width ? col.width : ''" :min-width="col.min_width ? col.min_width : ''" header-align="center" :fixed="col.fixed === false ? false : 'right'">
+      <el-table-column type="action" :label="col.label ? col.label : '操作'" :align="col.align ? col.align : 'center'" :width="col.width ? col.width : ''" :min-width="col.min_width ? col.min_width : ''" header-align="center" :fixed="col.fixed === false ? false : 'right'">
         <template slot-scope="scope">
           <template v-if="col.btns_render ? true : false">
             <slot name="row_action" :row="scope.row">
@@ -277,3 +269,9 @@ export default {
   }
 }
 </script>
+
+<style>
+.app-table .cell, .app-table th>div {
+  padding: 0 5px;
+}
+</style>

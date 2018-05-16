@@ -120,9 +120,6 @@
     </el-form-item>
   </el-form>
   <confirm-pop :visible.sync="praseVisible" :table-data="praseData" ref='pop' @inform="inform" @more="(val)=>{$emit('more',val)}" @check-out="handleSuccessCheck"></confirm-pop>
-  <el-dialog title="发送邮件" :modal="false" :visible.sync="mailVisible" class="dialog-medium" :show-close="false" :close-on-click-modal="false">
-    <mail-edit ref="mailEdit" @sendSuccess="mailCallBack" @cancelSending="mailCallBack"></mail-edit>
-  </el-dialog>
 </div>
 </template>
 
@@ -135,7 +132,6 @@ import StaticSelect from '@/components/form/StaticSelect'
 import AppSwitch from '@/components/form/AppSwitch'
 import AppTable from '@/components/common/AppTable'
 import ConfirmPop from '@/components/page_extension/TaskConfirmForm_pop'
-import MailEdit from '@/components/common/MailEditForm'
 
 import {mapMutations} from 'vuex'
 import {mapActions} from 'vuex'
@@ -153,7 +149,6 @@ export default {
   mixins: [axiosMixins],
   data () {
     return {
-      mailVisible: false,
       'no_finish': false,
       'all_equal': false,
       'requested': false, //当前ID下,是否已经请求过数据
@@ -230,10 +225,6 @@ export default {
     ...mapActions([
       'refreshUser',
     ]),
-    mailCallBack () {
-      this.$emit('submitSuccess');
-      this.refreshUser();
-    },
     refreshData () {
       
       if(this.action != 'finish') return;
@@ -286,15 +277,8 @@ export default {
           
           const success = (data) => {
             this.$message({type: 'success', message: '完成任务成功'});
-            if(data.is_send_mail) {
-              this.mailVisible = true;
-              this.$nextTick( () => {
-                this.$refs.mailEdit.initForm(data.mail_id);
-              });
-            }else {
-              this.$emit('submitSuccess');
-              this.refreshUser(); 
-            } 
+            this.refreshUser();            
+            this.$emit('submitSuccess', data);
           };
           const complete = _=>{ this.btn_disabled = false }; 
           this.$axiosPost({url, data, success, complete});
@@ -459,7 +443,6 @@ export default {
     AppSwitch,
     AppTable,
     ConfirmPop,
-    MailEdit,
   }
 }
 </script>

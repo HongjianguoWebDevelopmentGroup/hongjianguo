@@ -80,8 +80,12 @@ export default {
 			this.sendLoading = false;
 		},
 		cancelSending () {
-			this.clear();
-			this.$emit('cancelSending');
+			this.$confirm('此操作将取消邮件发送, 是否继续?', '提示', {
+          type: 'warning'
+        }).then(() => {
+      		this.clear();
+					this.$emit('cancelSending');    
+        }).catch(() => {});
 		},
 		clear () {
 			this.id = '';

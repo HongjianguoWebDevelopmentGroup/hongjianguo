@@ -24,15 +24,35 @@ export default {
           width: '260', 
 	  		},
 	  		{ type: 'text', label: '邮件标题', prop: 'subject', render: this.attachmentRender},
-	  		{ type: 'text', label: '发送时间', prop: 'mail_date', width: '200'},
+	  		{ 
+          type: 'text', 
+          label: '发送时间', 
+          prop: 'mail_date',
+          render_text: (val) => val ? val : '暂未发送',
+          width: '200',
+        },
+        { 
+          type: 'action',
+          fixed: false,
+          width: '100',
+          btns:  [
+            { 
+              label: '发送邮件',
+              btn_type: 'text',
+              click: this.sendMail,
+            }
+          ],
+        }
 	  	],
 	  };
   },
   methods: {
   	handleRowClick ({id}) {
-  		console.log('aaaaaaa')
   		this.$refs.email_detail.show(id);
   	},
+    sendMail ({id}) {
+      this.$emit('sendMail', id);
+    },
     attachmentRender (h,item,row) {
       return (
        <span>

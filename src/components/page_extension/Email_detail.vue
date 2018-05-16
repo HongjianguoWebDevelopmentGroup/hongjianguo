@@ -69,7 +69,7 @@ export default {
       this.dialogVisible = true;
       this.loading = true;
 
-      const url = `/api/mails/${id}`;
+      const url = `/mails/${id}`;
       const success = _=>{
         // console.log(_);
         this.$tool.coverObj(this.form, _.mail);

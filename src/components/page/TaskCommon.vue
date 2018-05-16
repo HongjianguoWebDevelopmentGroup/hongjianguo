@@ -1,12 +1,17 @@
 <template>
   <div class="main" id="task_common">
     <list-filter type="task" :visible.sync="filterVisible" :refresh="refresh"></list-filter>
+<<<<<<< HEAD
     <table-component :tableOption="tableOption" :data="tableData" @refreshTableData="refreshTableData" :refresh-proxy="refreshProxy" ref="table">
       <!-- <el-select v-if="menusMap && !menusMap.get('/tasks/all')" slot="toggle" class="expand" v-model="task_toggle" style="width: 110px; margin-left: 5px;">
         <el-option key="mine" label="我的任务" value="personal"></el-option>
         <el-option key="all" label="所有任务" value="all"></el-option>
       </el-select> -->
     </table-component>
+=======
+    
+    <table-component :tableOption="tableOption" :data="tableData" @refreshTableData="refreshTableData" :refresh-proxy="refreshProxy" ref="table"></table-component>
+>>>>>>> 2738989502548d39f81e363922ef70acfd437ca7
  
     <el-dialog title="申请委案" :visible.sync="dialogAgenVisible" class="dialog-small">
       <el-form :form="agen" ref="agen" label-width="120px" :model="agen">
@@ -109,7 +114,6 @@
         </el-tab-pane>
       </el-tabs>
     </app-shrink>
-
     
     <common-detail 
       :type="categoryType" 
@@ -119,7 +123,13 @@
       @editSuccess="editProjectSuccess"
       :refresh-switch="false"
       ref="detail">
-    </common-detail>   
+    </common-detail>
+
+    <app-shrink :visible.sync="mailVisible" :modal="true" :modal-click="false" :is-close="false" title="发送邮件">
+      <mail-edit style="margin-top: 10px; " ref="mailEdit" @sendSuccess="mailCallBack" @cancelSending="mailCallBack"></mail-edit>
+    </app-shrink>
+
+    
 
   </div>
 </template>
@@ -142,13 +152,14 @@ import TaskFinish from '@/components/common/TaskFinish'
 import ListFilter from '@/components/common/AppListFilter'
 import AppShrink from '@/components/common/AppShrink'
 import CommonDetail from '@/components/page_extension/Common_detail'
+import MailEdit from '@/components/common/MailEditForm'
 
 import { mapMutations } from 'vuex'
 import { mapGetters } from 'vuex'
 import { mapActions } from 'vuex'
 // import $ from 'jquery'
 
-const URL = '/api/tasks';
+const URL = '/tasks';
 const colorMap = new Map([
   [-2, '#339'],
   [-1, '#09C'],
@@ -272,7 +283,6 @@ export default {
         ],
       },
       tableData: [],
-      task_toggle: 'personal',
       agen: {
         agency_id: '',
         agency_agent: '',
@@ -285,6 +295,7 @@ export default {
       dialogAgenVisible: false,
       btn_disabled: false,
       install: '',
+      mailVisible: false,
     };
   },
   computed: {
@@ -295,6 +306,9 @@ export default {
     ]),
     task_status () {
       return this.$route.meta.status;
+    },
+    task_scope () {
+      return this.$route.meta.scope;
     },
     query () {
       return this.$route.query;
@@ -326,6 +340,9 @@ export default {
     ...mapActions([
       'refreshUser',
     ]),
+    mailCallBack () {
+      this.mailVisible = false;
+    },
     handleReport () {
       const url = {0: '/task/pending/report', '-1': '/task/pause/report', 1: '/task/finish/report'}[this.task_status];
       if(url) {
@@ -438,7 +455,7 @@ export default {
     },
     refreshTableData (option) {
       const url = URL;
-      const data = Object.assign({}, this.query, this.filter, option, this.screen_value, {status: this.task_status}, {scope: this.task_toggle} );
+      const data = Object.assign({}, this.query, this.filter, option, this.screen_value, {status: this.task_status}, {scope: this.task_scope} );
       const success = d=>{
         if( data['format'] == 'excel' ) {
           window.location.href = d.tasks.downloadUrl;
@@ -532,9 +549,15 @@ export default {
     patentEdit ({id}) {
       // console.log('patentEdit')
     },
-    finishSuccess () {
+    finishSuccess (data) {
       this.dialogShrinkVisible = false;
       this.refresh();
+      if(data.is_send_mail) {
+        this.mailVisible = true;
+        this.$nextTick( () => {
+          this.$refs.mailEdit.initForm(data.mail_id);
+        });
+      }
     },
     titleRender (h,item,data) {
       const color = colorMap.get(data['color']);
@@ -605,9 +628,6 @@ export default {
     filter () {
       this.refresh();
     },
-    task_toggle () {
-      this.refresh();
-    },
     'agen.agency_id': {
       handler (val) {
         if(val !== '') {
@@ -659,6 +679,7 @@ export default {
     Information,
     CommonDetail,
     Detail,
+    MailEdit,
   },
 } 
 </script>

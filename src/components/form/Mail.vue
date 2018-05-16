@@ -17,7 +17,7 @@
 <script>
 import AxiosMixins from '@/mixins/axios-mixins'
 
-const URL = '/api/mailAddress';
+const URL = '/mailAddress';
 let options = undefined;
 
 export default {

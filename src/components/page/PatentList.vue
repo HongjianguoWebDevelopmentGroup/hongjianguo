@@ -12,8 +12,13 @@
       type="patent" 
       :id="currentRow.id" 
       ref="detail"
-      @editSuccess="refresh">
-    </common-detail>    
+      @editSuccess="refresh"
+      @sendEmail="handleSendMail">
+    </common-detail>
+
+    <app-shrink :visible.sync="mailVisible" :modal="true" :modal-click="false" :is-close="false" title="发送邮件">
+      <mail-edit style="margin-top: 10px; " ref="mailEdit" @sendSuccess="mailCallBack" @cancelSending="mailCallBack"></mail-edit>
+    </app-shrink>  
 
     <el-dialog title="批量下载" :visible.sync="downloadVisible">
       <el-form>
@@ -62,6 +67,7 @@ import AppShrink from '@/components/common/AppShrink'
 import CommonDetail from '@/components/page_extension/Common_detail'
 import StaticSelect from '@/components/form/StaticSelect'
 import ListFilter from '@/components/common/AppListFilter'
+import MailEdit from '@/components/common/MailEditForm'
 import { mapGetters } from 'vuex'
 import { mapActions } from 'vuex'
 
@@ -79,6 +85,7 @@ export default {
       currentRow: '',
       shrinkVisible: false,
       dialogVisible: false,
+      mailVisible: false,
       
       downloadVisible: false,
       downloadIds: [],
@@ -313,8 +320,19 @@ export default {
     ...mapActions([
       'refreshFlows',
       'refreshTaskDefs',
-      'initializeSelectorCache'
+      'initializeSelectorCache',
+      'refreDetailData',
     ]),
+    handleSendMail (id) {
+      this.mailVisible = true;
+      this.$nextTick(() => {
+        this.$refs.mailEdit.initForm(id);
+      });
+    },
+    mailCallBack() {
+      this.mailVisible = false;
+      this.refreDetailData();
+    },
     add () {
       const s = this.$refs.table.getSelection();
       if (s.length != 0) {
@@ -475,7 +493,8 @@ export default {
     AppShrink, 
     CommonDetail,
     StaticSelect,
-    ListFilter
+    ListFilter,
+    MailEdit,
   },
 }
 </script>
