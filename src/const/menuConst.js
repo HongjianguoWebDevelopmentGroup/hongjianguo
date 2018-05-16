@@ -20,8 +20,14 @@ menu.data = [
 		type: 'submenu',
 		children: [
 			{
-				text: '未完成',
+				text: '我的待办',
 				path: '/task/pending',
+				icon: 'iconfont el-icon-my-task-pending',
+				type: 'item',
+			},
+			{
+				text: '我的关注',
+				path: '/task/regardful',
 				icon: 'iconfont el-icon-my-task-pending',
 				type: 'item',
 			},
@@ -89,12 +95,12 @@ menu.data = [
 			// 	icon: '',
 			// 	type: 'item',
 			// },
-			{
-				text: '通知书管理',
-				path: '/patent/notice',
-				icon: 'iconfont el-icon-my-notice',
-				type: 'item',
-			},
+			// {
+			// 	text: '通知书管理',
+			// 	path: '/patent/notice',
+			// 	icon: 'iconfont el-icon-my-notice',
+			// 	type: 'item',
+			// },
 			{
 				text: '专利监控',
 				path: '/patent/moniter',
