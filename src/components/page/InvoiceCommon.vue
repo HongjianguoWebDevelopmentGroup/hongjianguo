@@ -1,6 +1,5 @@
 <template>
   <div class="main">
-    <list-filter type="invoice" :visible.sync="filterVisible" :refresh="refresh"></list-filter>
     <table-component @refreshTableData="refreshTableData" :tableOption="option" :data="tableData" ref="table">
       <el-tag v-if="curTotal !== ''" slot="cur_total" style="margin-left: 15px;">当前页费用：{{ curTotal }}</el-tag>
       <el-tag v-if="allTotal !== ''" slot="all_total" style="margin-left: 10px;">所有费用：{{ allTotal }}</el-tag>
@@ -51,7 +50,6 @@
 
 <script>
 import TableComponent from '@/components/common/TableComponent'
-import ListFilter from '@/components/common/AppListFilter'
 import Pop from '@/components/page_extension/InvoiceCommon_pop'
 import AppShrink from '@/components/common/AppShrink'
 import InvoiceDetail from '@/components/page_extension/InvoiceCommon_detail'
@@ -67,6 +65,8 @@ export default {
       option: {
         'name': 'invoice',
         'url': URL,
+        'is_list_filter': true,
+        'list_type': 'invoice',
         'height': 'default',
         'highlightCurrentRow': true, 
         'rowClick': this.handleRowClick,
@@ -76,7 +76,6 @@ export default {
           {},
           // { type: 'report', click: this.handleReport },
           { type: 'control' },
-          { type: 'filter', click: () => {this.filterVisible = true;} },
         ],
         'header_slot': ['cur_total', 'all_total'],
         'columns': [
@@ -318,7 +317,6 @@ export default {
   },
   components: { 
     TableComponent, 
-    ListFilter,
     Pop,
     AppShrink,
     InvoiceDetail,

@@ -1,6 +1,5 @@
 <template>
   <div class="main">
-    <list-filter type="copyright" :visible.sync="filterVisible" :refresh="refresh" ></list-filter>
     <table-component :tableOption="tableOption" :data="tableData" @refreshTableData="refreshTableData" ref="table"></table-component>
     
       <common-detail
@@ -17,7 +16,6 @@
 <script>
 import AxiosMixins from '@/mixins/axios-mixins'
 import TableComponent from '@/components/common/TableComponent'
-import ListFilter from '@/components/common/AppListFilter' 
 import AppShrink from '@/components/common/AppShrink'
 import CommonDetail from '@/components/page_extension/Common_detail'
 import { mapActions } from 'vuex'
@@ -33,6 +31,8 @@ export default {
       tableOption: {
         'name': 'copyrightList',
         'url': URL,
+        'is_list_filter': true,
+        'list_type': 'copyright',
         'height': 'default',
         'highlightCurrentRow': true, 
         'rowClick': this.handleRowClick,
@@ -132,7 +132,6 @@ export default {
   },
   components: { 
     TableComponent, 
-    ListFilter, 
     AppShrink, 
     CommonDetail 
   }

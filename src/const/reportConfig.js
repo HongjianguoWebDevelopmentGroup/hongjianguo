@@ -127,27 +127,28 @@ const columns = {
     { id: 'is_sequence',                   name: '是否有序列表'},
     { id: 'is_utility',                    name: '是否同日申请了同样的实用新型/发明'},
     { id: 'words',                         name: '说明书字数'},
-    { id: 'first_edition_to_inventstring', name: '返发明人初稿时间', date: true }, //返发明人初稿时间
-    { id: 'inventor_review_time',          name: '发明人完成技术审核时间', date: true },//发明人完成技术审核时间
-    { id: 'inventor_review_times',         name: '发明人审核次数'},//发明人审核次数
-    { id: 'inventor_rank',                 name: '发明人技术评分'},//发明人技术评分
-    { id: 'first_edition_to_ipr_tig',      name: '返IPR初稿时间', date: true },//返IPR初稿时间
+    // { id: 'first_edition_to_inventstring', name: '返发明人初稿时间', date: true }, //返发明人初稿时间
+    // { id: 'inventor_review_time',          name: '发明人完成技术审核时间', date: true },//发明人完成技术审核时间
+    // { id: 'inventor_review_times',         name: '发明人审核次数'},//发明人审核次数
+    // { id: 'inventor_rank',                 name: '发明人技术评分'},//发明人技术评分
+    // { id: 'first_edition_to_ipr_tig',      name: '返IPR初稿时间', date: true },//返IPR初稿时间
     { id: 'ipr_final_edition_time',        name: 'IPR定稿时间', date: true }, //IPR定稿时间
-    { id: 'ipr_review_times',              name: 'IPR审核次数'}, //IPR审核次数
-    { id: 'first_ipr_rank',                name: 'IPR初稿评分'},//IPR初稿评分
+    // { id: 'ipr_review_times',              name: 'IPR审核次数'}, //IPR审核次数
+    // { id: 'first_ipr_rank',                name: 'IPR初稿评分'},//IPR初稿评分
     { id: 'final_ipr_rank',                name: 'IPR定稿评分'},//IPR定稿评分
-    { id: 'agent_drafting_period',         name: '代理撰稿时间', date: true },//代理撰稿时间
-    { id: 'inventor_review_period',        name: '发明人审核时间', date: true },//发明人审核时间
-    { id: 'ipr_review_period',             name: 'IPR审核时间', date: true },//IPR审核时间
-    { id: 'agent_amending_period',         name: '代理人修改时间', date: true },//代理人修改时间
+    // { id: 'agent_drafting_period',         name: '代理撰稿时间', date: true },//代理撰稿时间
+    // { id: 'inventor_review_period',        name: '发明人审核时间', date: true },//发明人审核时间
+    // { id: 'ipr_review_period',             name: 'IPR审核时间', date: true },//IPR审核时间
+    // { id: 'agent_amending_period',         name: '代理人修改时间', date: true },//代理人修改时间
     { id: 'group_number',                  name: '群组号码'},//群组号码
     { id: 'family_number',                 name: '专利族号码'},//专利族号码
     { id: 'extends1',                      name: '自定义字段1'},//自定义字段1
     { id: 'extends2',                      name: '自定义字段2'},//自定义字段2
     { id: 'extends3',                      name: '自定义字段3'},//自定义字段3
-    { id: 'application_strategy',          name: '申请类型'},//申请类型
-    { id: 'subexam_timing',                name: '实审时间', date: true },//实审时间
-    { id: 'core_concepts',                 name: '新申请申请策略'},//新申请申请策略
+    { id: 'manner',                        name: '申请方式' },
+    { id: 'application_strategy',          name: '申请策略'},//申请类型
+    { id: 'subexam_timing',                name: '实审时机', date: true },//实审时间
+    { id: 'core_concepts',                 name: '关键保护点'},//新申请申请策略
     { id: 'decision_reason',               name: '决定原因'},//决定原因
     { id: 'innovation_introduction',       name: '创新点简述'},//创新点简述
     { id: 'importance',                    name: '重要性'},//重要性

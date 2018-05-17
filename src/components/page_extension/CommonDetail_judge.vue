@@ -28,6 +28,7 @@ import TableComponent from '@/components/common/TableComponent'
 import AppPop from '@/components/common/AppPop'
 import RemoteSelect from '@/components/form/RemoteSelect'
 import StaticSelect from '@/components/form/StaticSelect'
+import {mapGetters} from 'vuex'
 
 const URL = '/judge';
 
@@ -44,9 +45,10 @@ export default {
 				is_search: false,
 				is_pagination: false,
 				columns: [
-					{type: 'text', prop: 'review_type', label: '评审类型'},
-					{type: 'text', prop: 'member_id', label: '评审人', render_simple: 'name'},
+					{type: 'text', prop: 'review_type', label: '评审类型', render_text: v => this.typeMap.get(v)},
+					{type: 'text', prop: 'reviewer', label: '评审人', render_simple: 'name'},
 					{type: 'text', prop: 'content', label: '评审内容'},
+					{type: 'text', prop: 'create_time', label: '创建时间'},
 					{
 						type: 'action',
 						btns: [
@@ -70,6 +72,16 @@ export default {
 			currentId: '',
 		};
 	},
+	computed: {
+		...mapGetters([
+			'staticSelectorMap',
+		]),
+		typeMap () {
+			const map = new Map()
+			this.staticSelectorMap.get('judge_type').options.forEach(v => map.set(v.id, v.name));
+			return map;
+		}
+	},
 	methods: {
 		refresh () {
 			this.$refs.table.refresh();
@@ -88,6 +100,7 @@ export default {
 		},
 		fillForm (form) {
 			this.$tool.coverObj(this.form, form, {obj: ['review_type']});
+			this.form.member_id = form.reviewer;
 		},
 		refreshTableData () {
 			return this.$axiosGet({
@@ -116,7 +129,7 @@ export default {
 		},
 		edit () {
 			return this.$axiosPut({
-				url: `${url}/${this.currentId}`,
+				url: `${URL}/${this.currentId}`,
 				data: this.$tool.shallowCopy(this.form, {date: true}),
 				success: () => {
 					this.$message({type: 'success', message: '编辑评审成功'});
@@ -124,8 +137,18 @@ export default {
 				}
 			})
 		},
-		handleDelete () {
-
+		handleDelete ({id}) {
+			this.$confirm('此操作将删除当前数据, 是否继续?', '提示', {
+          type: 'warning'
+        }).then(() => {
+      		this.$axiosDelete({
+      			url: `${URL}/${id}`,
+      			success: () => {
+      				this.$message({type: 'success', message: '删除成功'});
+      				this.update();
+      			}
+      		})
+        }).catch(() => {});
 		}
 	},
 	mounted () {

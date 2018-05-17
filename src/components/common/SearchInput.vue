@@ -1,6 +1,6 @@
 <template>
 	<div style="position: relative">
-		<input type="text" :placeholder="placeholder" @input="handleInput" :value="value" class="el-input__inner search-content" style="padding-right: 35px; font-size: 14px;" @keyup.enter="handleEnter"></input>
+		<input :style="inputStyle" type="text" :placeholder="placeholder" @input="handleInput" :value="value" class="el-input__inner search-content" style="padding-right: 35px; font-size: 14px;" @keyup.enter="handleEnter"></input>
 		<i class="el-icon-search" title="点击搜索" style="position: absolute; top: 10px; right: 10px; cursor: pointer; opacity: .5;" @click="handleClick"></i>
 	</div>
 </template>
@@ -13,7 +13,11 @@ export default {
   	'placeholder': {
   		type: String,
   		default: '',
-  	}
+  	},
+    'inputStyle': {
+      type: String,
+      default: '',
+    }
   },
   methods: {
   	handleInput (event) {

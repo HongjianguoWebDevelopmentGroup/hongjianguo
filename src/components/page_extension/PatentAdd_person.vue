@@ -26,37 +26,29 @@
         <el-form-item label="进入实审日">
           <el-date-picker v-model="form.sub_exam_start_date" type="date" placeholder="请选择实审日"></el-date-picker>
         </el-form-item>
-        <template v-if="form.manner.id == 3">
-          <el-form-item label="国际申请日">
-            <el-date-picker v-model="form.pct_apd" type="date" placeholder="请选择国际申请日"></el-date-picker>
-          </el-form-item>
-          <el-form-item label="国际申请号">
-            <el-input v-model="form.pct_no" placeholder="请填写国际申请号"></el-input>
-          </el-form-item>
-          <el-form-item label="国际优先权日">
-            <el-date-picker v-model="form.pct_priority_date" type="date" placeholder="请选择国际优先权日"></el-date-picker>
-          </el-form-item>
-          <el-form-item label="国际公开日">
-            <el-date-picker v-model="form.pct_public_date" type="date" placeholder="请选择国际国际公开日"></el-date-picker>
-          </el-form-item>
-          <el-form-item label="国际公开语言">
-            <el-select v-model="form.pct_public_language" placeholder="请选择语言">
-              <el-option
-                v-for="item in options.language"
-                :key="item.value"
-                :label="item.label"
-                :value="item.value"
-              >
-              </el-option>
-            </el-select>
-          </el-form-item>
-          <el-form-item label="国际公开号">
-            <el-input v-model="form.pct_public_no" placeholder="请填写国际公开号"></el-input>
-          </el-form-item>
-          <el-form-item label="复审委内编号">
-            <el-input v-model="form.board_number" placeholder="请填写复审委内编号"></el-input>
-          </el-form-item>
-        </template>
+
+        <el-form-item label="国际申请日">
+          <el-date-picker v-model="form.pct_apd" type="date" placeholder="请选择国际申请日"></el-date-picker>
+        </el-form-item>
+        <el-form-item label="国际申请号">
+          <el-input v-model="form.pct_no" placeholder="请填写国际申请号"></el-input>
+        </el-form-item>
+        <el-form-item label="国际优先权日">
+          <el-date-picker v-model="form.pct_priority_date" type="date" placeholder="请选择国际优先权日"></el-date-picker>
+        </el-form-item>
+        <el-form-item label="国际公开日">
+          <el-date-picker v-model="form.pct_public_date" type="date" placeholder="请选择国际国际公开日"></el-date-picker>
+        </el-form-item>
+        <el-form-item label="国际公开语言">
+          <static-select type="language" v-model="form.pct_public_language"></static-select>
+        </el-form-item>
+        <el-form-item label="国际公开号">
+          <el-input v-model="form.pct_public_no" placeholder="请填写国际公开号"></el-input>
+        </el-form-item>
+        <el-form-item label="复审委内编号">
+          <el-input v-model="form.board_number" placeholder="请填写复审委内编号"></el-input>
+        </el-form-item>
+
       </el-form>
     </app-collapse>
 </template>
@@ -87,7 +79,6 @@ export default {
         pre_exam_ok_date: '',
         sub_exam_start_date: '',
 
-        manner: {name:"直接申请",id:1},
         pct_apd: '',
         pct_no: '',
         pct_priority_date: '',
@@ -108,7 +99,7 @@ export default {
           {name:"德文-Germany",id:"GE"},
           {name:"日文-Japanese",id:"JP"},
           {name:"俄文-Russian",id:"RU"},
-          {name:"西班牙-Spanish",id:"ES"}
+          {name:"西班牙-Spanish",id:"ES"},
         ]
       },
     }

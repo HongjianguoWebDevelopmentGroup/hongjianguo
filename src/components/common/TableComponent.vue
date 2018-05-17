@@ -111,9 +111,17 @@
         class="table-search"
         @click="handleSearch"
         @enter="handleSearch"
+        :input-style="searchRadius"
         v-if="tableOption.is_search == undefined ? true : tableOption.is_search"
 	    ></search-input>
         
+      <el-button 
+        v-if="tableOption.is_list_filter && tableOption.list_type" 
+        title="高级筛选"
+        type="primary" 
+        icon="my-filter" 
+        :style="`float: right; height: 37px; ${filterRadius}`" 
+        @click="filterVisible = true">
       </el-button>
     </div>
     
@@ -174,6 +182,8 @@
     <el-dialog v-if="exportType" :title="exportType.title" :visible.sync="dialogExport" class="dialog-small">
       <app-export :url="tableOption.url" :fields="fields" :default="default_choose" :response-key="exportType.key" @success="dialogExport = false" :filter="filter" :selected="selected"></app-export>
     </el-dialog>
+
+    <list-filter v-if="tableOption.is_list_filter && tableOption.list_type" :type="tableOption.list_type" :visible.sync="filterVisible" :refresh="refresh" ref="listFilter"></list-filter>
   </div>
 </template>
 
@@ -189,6 +199,7 @@ import AppTransfer from '@/components/common/AppTransfer'
 import BatchUpdate from '@/components/common/BatchUpdate'
 import AppTable from '@/components/common/AppTable'
 import AppExport from '@/components/common/AppExport'
+import ListFilter from '@/components/common/AppListFilter'
 import {fieldExceptMap} from '@/const/fieldConfig'
 import { mapGetters } from 'vuex'
 import { mapMutations } from 'vuex'
@@ -225,6 +236,7 @@ export default {
       fields: '',
       optionColumns: '',
       selected: [],
+      filterVisible: false,
     };
 
     return data;
@@ -364,7 +376,15 @@ export default {
       }else {
         return [];
       }
-    }
+    },
+    searchRadius () {
+      const filter = this.tableOption.is_list_filter === undefined ? false : this.tableOption.is_list_filter; 
+      return filter ? 'border-radius: 0 4px 4px 0;' : 'border-radius: 4px;';
+    },
+    filterRadius () {
+      const search = this.tableOption.is_search === undefined ? true : this.tableOption.is_search;
+      return search ? 'border-radius: 4px 0 0 4px;' : 'border-radius: 4px;';
+    },
   },
   methods: {
     ...mapMutations([
@@ -732,6 +752,7 @@ export default {
     BatchUpdate,
     AppTable,
     AppExport,
+    ListFilter,
   },
 }
 </script>

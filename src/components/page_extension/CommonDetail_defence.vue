@@ -10,8 +10,8 @@ export default {
 		return {
 			columns: [
 				{type: 'text', label: '审查节点', prop: 'flow'},
-				{type: 'text', label: '审查人', prop: 'person'},
-				{type: 'text', label: '审查时间', prop: 'end_time'},
+				{type: 'text', label: '记录人', prop: 'person'},
+				{type: 'text', label: '记录时间', prop: 'end_time'},
 				{type: 'text', label: '审查要点', prop: 'points'},
 				{type: 'text', label: '修改/答辩', prop: 'defence'},
 			]	

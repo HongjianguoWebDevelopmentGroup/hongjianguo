@@ -129,8 +129,18 @@ export default {
 				}
 			})
 		},
-		handleDelete () {
-
+		handleDelete ({id}) {
+			this.$confirm('此操作将删除当前数据, 是否继续?', '提示', {
+          type: 'warning'
+        }).then(() => {
+      		this.$axiosDelete({
+      			url: `${URL}/${id}`,
+      			success: () => {
+      				this.$message({type: 'success', message: '删除成功'});
+      				this.update();
+      			}
+      		})
+        }).catch(() => {});
 		}
 	},
 	mounted () {

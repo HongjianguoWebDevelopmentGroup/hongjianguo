@@ -256,10 +256,6 @@ const config = [
     placeholder: '请选择当前进度',
     url: '/progress',
   }],
-  ['branch', {
-    placeholder: '请选择部门',
-    options: 'branchOptions',
-  }],
   ['strategy', {
     placeholder: '请选择申请策略',
     options: [
@@ -373,7 +369,35 @@ const config = [
       { id: 3, name: 'PCT评审' },
       { id: 4, name: '自定义评审' },
     ]
-  }]
+  }],
+  ['bool', {
+    placeholder: '',
+    options: [
+      { id: 1, name: '是' },
+      { id: 2, name: '否' },
+    ]
+  }],
+  ['language', {
+    placeholder: '请选择语言类型',
+    options: [
+      {name:"中文-Chinese",id:"CN"},
+      {name:"英文-English",id:"EN"},
+      {name:"法文-Franch",id:"FR"},
+      {name:"德文-Germany",id:"GE"},
+      {name:"日文-Japanese",id:"JP"},
+      {name:"俄文-Russian",id:"RU"},
+      {name:"西班牙-Spanish",id:"ES"},
+    ]
+  }],
+  ['manner', {
+    placeholder: '请选择申请方式',
+    options: [
+      {name:"直接申请",id:1},
+      {name:"巴黎公约",id:2},
+      {name:"PCT进入国家阶段",id:3},
+      {name:"外部转入", id: 4}
+    ]
+  }],
 ];
 
 export default config;

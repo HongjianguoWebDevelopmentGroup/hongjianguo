@@ -1,6 +1,5 @@
 <template>
   <div class="main">
-  	<list-filter type="trademark" :visible.sync="filterVisible" :refresh="refresh" ></list-filter>
 		<table-component :tableOption="tableOption" :data="tableData" ref="table" @refreshTableData="refreshTableData"></table-component>
 		<common-detail
       :title="currentRow.title"
@@ -18,7 +17,6 @@ import TableComponent from '@/components/common/TableComponent'
 import AppDatePicker from '@/components/common/AppDatePicker'
 import CommonDetail from '@/components/page_extension/Common_detail'
 import Strainer from '@/components/page_extension/TrademarkList_strainer'
-import ListFilter from '@/components/common/AppListFilter'
 import { mapActions } from 'vuex'
 
 const URL = '/api/trademarks'
@@ -30,6 +28,8 @@ export default {
 			tableOption: {
 				'name': 'trademark',
 				'url': URL,
+				'is_list_filter': true,
+        'list_type': 'trademark',
 				'header_btn': [{
 					'type': 'add',
 					click: _=>{
@@ -42,7 +42,6 @@ export default {
 				// { type: 'batch_upload',},
 				// { type: 'report', click: _=>{this.$router.push('/trademark/report')} },
 				{ type: 'control', label: '字段'},
-				{ type: 'filter', click: () => { this.filterVisible = true; } },
 				],
 				'import_type': 'trademark',
 				'upload_type': 'trademark',
@@ -142,7 +141,6 @@ export default {
   	TableComponent, 
   	AppDatePicker,
   	CommonDetail,
-  	ListFilter,
   },
   watch: {
 

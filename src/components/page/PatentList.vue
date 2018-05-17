@@ -1,6 +1,5 @@
 <template>
   <div class="main">
-    <list-filter type="patent" :visible.sync="filterVisible" :refresh="refresh"></list-filter>
     
     <table-component :tableOption="tableOption" :data="tableData" @refreshTableData="refreshTableData" ref="table" :refresh-proxy="refreshProxy">
 
@@ -66,7 +65,6 @@ import AppDatePicker from '@/components/common/AppDatePicker'
 import AppShrink from '@/components/common/AppShrink'
 import CommonDetail from '@/components/page_extension/Common_detail'
 import StaticSelect from '@/components/form/StaticSelect'
-import ListFilter from '@/components/common/AppListFilter'
 import MailEdit from '@/components/common/MailEditForm'
 import { mapGetters } from 'vuex'
 import { mapActions } from 'vuex'
@@ -94,9 +92,9 @@ export default {
       
       tableOption: {
         'name': 'patentList',
-        'list_type': 'patent',
         'url': URL,
         'is_list_filter': true,
+        'list_type': 'patent',
         'height': 'default',
         'search_placeholder': '搜索案号、标题、申请号', 
         'highlightCurrentRow': true,
@@ -495,7 +493,6 @@ export default {
     AppShrink, 
     CommonDetail,
     StaticSelect,
-    ListFilter,
     MailEdit,
   },
 }

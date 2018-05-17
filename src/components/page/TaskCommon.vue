@@ -1,6 +1,5 @@
 <template>
   <div class="main" id="task_common">
-    <list-filter type="task" :visible.sync="filterVisible" :refresh="refresh"></list-filter>
     
     <table-component :tableOption="tableOption" :data="tableData" @refreshTableData="refreshTableData" :refresh-proxy="refreshProxy" ref="table"></table-component>
  
@@ -140,7 +139,6 @@ import Edit from '@/components/page_extension/TaskCommon_edit'
 import Information from '@/components/page_extension/TaskCommon_information'
 
 import TaskFinish from '@/components/common/TaskFinish'
-import ListFilter from '@/components/common/AppListFilter'
 import AppShrink from '@/components/common/AppShrink'
 import CommonDetail from '@/components/page_extension/Common_detail'
 import MailEdit from '@/components/common/MailEditForm'
@@ -195,6 +193,8 @@ export default {
         'name': 'taskList',
         'url': URL,
         'height': 'default',
+        'is_list_filter': true,
+        'list_type': 'task',
         'search_placeholder': '搜索案号、标题、申请号、代理人、备注',
         // 'is_filter': true,
         'row_class': ({due_time}, index)=> {
@@ -209,7 +209,6 @@ export default {
           // { type: 'report', click: this.handleReport },
           // { type: 'custom', label: '转出', icon: '', click: ()=>{ this.dialogTurnoutVisible = true; } },
           { type: 'control', label: '字段'},
-          { type: 'filter', click: () => {this.filterVisible = true} },
           // { type: 'custom', label: '设定', icon: '', click: ()=>{ this.dialogSettingVisible = true; } }
         ],
         'header_slot': [ 'toggle' ],
@@ -662,8 +661,7 @@ export default {
     AppFilter, 
     TableComponent, 
     AppDatePicker, 
-    Edit, 
-    ListFilter, 
+    Edit,  
     AppCollapse, 
     TaskFinish, 
     AppShrink, 

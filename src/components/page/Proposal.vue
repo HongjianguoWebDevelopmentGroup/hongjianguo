@@ -1,6 +1,5 @@
 <template>
   <div class="main">
-    <list-filter type="proposal" :visible.sync="filterVisible" :refresh="refresh"></list-filter>
     
     <table-component :tableOption="tableOption" :data="tableData" ref="table" @refreshTableData="refreshTableData" :refresh-proxy="refreshProxy">
       <!-- <el-button v-if="menusMap && !menusMap.get('/proposals/proposer')" type="primary" icon="d-arrow-right" class="table-header-btn" @click="transferPop" slot="transfer" style="margin-left: 5px;">移交</el-button> -->
@@ -36,7 +35,6 @@ import Product from '@/components/form/Product'
 import Branch from '@/components/form/Branch'
 import AppShrink from '@/components/common/AppShrink'
 import ProposalDetail from '@/components/page_extension/Proposal_detail'
-import ListFilter from '@/components/common/AppListFilter'
 
 import RemoteSelect from '@/components/form/RemoteSelect'
 import StaticSelect from '@/components/form/StaticSelect'
@@ -57,6 +55,8 @@ export default {
       tableOption: {
         'name': 'proposalList',
         'url': URL,
+        'is_list_filter': true,
+        'list_type': 'proposal',
         'is_filter': false,
         'height': 'default',
         'search_placeholder': '搜索提案号、名称、标签、发明人',
@@ -68,7 +68,6 @@ export default {
           { type: 'export' },
           // { type: 'report', click: _=>{this.$router.push('/proposal/report')} },
           { type: 'control' },
-          { type: 'filter', click: () => {this.filterVisible = true} },
         ],
         'header_slot': ['transfer','mergePropsal'],
         'columns': [
@@ -251,7 +250,6 @@ export default {
     ProposalDetail, 
     StaticSelect,
     Branch,
-    ListFilter,
   }, 
 }
 </script>

@@ -1,6 +1,5 @@
 <template>
   <div class="main">
-    <list-filter type="fee" :visible.sync="filterVisible" :refresh="refresh"></list-filter>
     <table-component @refreshTableData="refreshTableData" :tableOption="option" :data="tableData" ref="table">
       <fee-status slot="status" v-model="fee_status" style="width: 150px; margin-left: 5px;" :feeType="feeType"></fee-status>
       <remote-select v-if="fee_invoice_if" slot='invoice' v-model="fee_invoice" style="width: 220px; margin-left: 10px; display: inline-block;" class="pay_search" :type="feeType ? 'bill' : 'pay'"></remote-select>
@@ -23,7 +22,6 @@
 
 <script>
 import TableComponent from '@/components/common/TableComponent' 
-import ListFilter from '@/components/common/AppListFilter'
 import Pop from '@/components/page_extension/feeCommon_pop'
 import FeeStatus from '@/components/form/FeeStatus'
 import RemoteSelect from '@/components/form/RemoteSelect'
@@ -41,6 +39,8 @@ export default {
         option: {
         'name': 'fees',
         'url': URL,
+        'is_list_filter': true,
+        'list_type': 'fee',
         'height': 'default',
         'header_btn': [
           { type: 'add', click: this.addPop },
@@ -57,7 +57,6 @@ export default {
           // { type: 'report', click: this.handleReport },
           // { type: 'import' },
           { type: 'control' },
-          { type: 'filter', click: () => {this.filterVisible = true} },
         ],
         'import_type': '',
         'header_slot': [ 'status', 'invoice' ],
@@ -350,7 +349,6 @@ export default {
   
   components: { 
     TableComponent, 
-    ListFilter, 
     Pop, 
     FeeStatus, 
     RemoteSelect 
