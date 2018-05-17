@@ -3,7 +3,7 @@
     <list-filter type="patent" :visible.sync="filterVisible" :refresh="refresh"></list-filter>
     
     <table-component :tableOption="tableOption" :data="tableData" @refreshTableData="refreshTableData" ref="table" :refresh-proxy="refreshProxy">
-      <el-button v-if="!!(menusMap && !menusMap.get('/patent/download') )" slot="download" :loading="downloadLoading" icon="share" @click="downloadPop" type="primary" style="margin-left: 5px; ">批量下载</el-button>
+<!--       <el-button v-if="!!(menusMap && !menusMap.get('/patent/download') )" slot="download" :loading="downloadLoading" icon="share" @click="downloadPop" type="primary" style="margin-left: 5px; ">批量下载</el-button> -->
     </table-component>
     
     <common-detail
@@ -94,13 +94,16 @@ export default {
       
       tableOption: {
         'name': 'patentList',
+        'list_type': 'patent',
         'url': URL,
+        'is_list_filter': true,
         'height': 'default',
         'search_placeholder': '搜索案号、标题、申请号', 
         'highlightCurrentRow': true,
         'rowClick': this.handleRowClick,
         'cellClick': this.handleCellClick,
         'header_btn': [
+          { type: 'filter', click: () => {this.filterVisible = true} },
           { type: 'add', click: this.add, map_if: '/patent/add', },
           { type: 'delete', map_if: '/patent/delete' }, 
           // { type: 'import', map_if: '/patent/import' },
@@ -109,7 +112,6 @@ export default {
           // { type: 'batch_update' },
           // { type: 'report', click: _=>{this.$router.push('/patent/report')} },
           { type: 'control', label: '字段' },
-          { type: 'filter', click: () => {this.filterVisible = true} },
           { type: 'edit', label: '批量修改', click: () => { this.replaceVisible = true; }  },
         ],
         'export_type': 'patent',

@@ -31,7 +31,7 @@
       <el-form-item label="国际检索摘要" prop="pct_search_result" v-if="!!tableData[0]['show_pct_search_result']&&config.pct_search_result">
         <el-input v-model="form.pct_search_result"></el-input>
       </el-form-item>      
-      <el-form-item>
+      <el-form-item style="margin-bottom: 0px;">
         <el-button type="primary" @click="importData" :loading="loading">{{ loading ? '上传中...' : '确认上传' }}</el-button>
       </el-form-item>
     </el-form>
@@ -224,7 +224,7 @@ export default {
         o.file_id = _.file_id;
         o.project = this.detailId;
         o.name = _.name;
-        if(_.type) {
+        if(_.type && _.type.id == this.form.type) {
           o.type = _.type;
         }else {
           o.type = this.form.type;

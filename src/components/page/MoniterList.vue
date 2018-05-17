@@ -65,7 +65,7 @@ export default {
 					{type: 'text', prop: 'issue_date', label: '授权日', width: '150'},
 					{type: 'text', prop: 'progress', label: '状态', render_simple: 'name', width: '150'},
 					{type: 'text', prop: 'remark', label: '备注', width: '150'},
-					{type: 'text', prop: 'create_user', label: '创建人', width: '150'},
+					{type: 'text', prop: 'create_user', label: '创建人', width: '150', render_simple: 'name'},
 					{type: 'text', prop: 'create_time', label: '创建时间', width: '150'},
 					{
 						type: 'action',
@@ -88,6 +88,7 @@ export default {
 			rules: {
 				apn: {required: true, message: '申请号必填', trigger: 'blur'},
 				title: {required: true, message: '标题必填', trigger: 'blur'},
+				applicant: { required: true, message: '申请人必填', trigger: 'blur'},
 			},
 			formType: '',
 			currentId: '',
@@ -96,6 +97,9 @@ export default {
 	methods: {
 		refresh () {
 			this.$refs.table.refresh();
+		},
+		update () {
+			this.$refs.table.update();
 		},
 		addPop () {
 			this.formType = 'add';
@@ -134,15 +138,17 @@ export default {
 				data: this.$tool.shallowCopy(this.form, {date: true}),
 				success: () => {
 					this.$message({type: 'success', message: '添加成功'});
+					this.refresh();
 				}
 			})
 		},
 		edit () {
 			return this.$axiosPut({
-				url: `${url}/${this.currentId}`,
+				url: `${URL}/${this.currentId}`,
 				data: this.$tool.shallowCopy(this.form, {date: true}),
 				success: () => {
 					this.$message({type: 'success', message: '编辑成功'});
+					this.update();
 				}
 			})
 		}

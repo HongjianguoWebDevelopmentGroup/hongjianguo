@@ -72,7 +72,6 @@ export default {
             label: '外币金额', 
             prop: 'amount', 
             width: '100',
-            align: 'right',
             render:(h,item,row)=>{
               if( row.roe == 1 ){
                 return h('span','N/A');
@@ -86,7 +85,6 @@ export default {
             label: '汇率', 
             prop: 'roe', 
             width: '80',
-            align: 'right',
             render:(h,item)=>{
               if( item == 1 ){
                 return h('span','N/A');
@@ -100,7 +98,6 @@ export default {
             label: '人民币金额', 
             prop: 'rmb', 
             width: '120',
-            align: 'right',
             render:(h,item)=>{
               return h('span',`${item}CNY`)
             }
@@ -169,8 +166,9 @@ export default {
       const path = this.$route.path;
       const type = /income/.test(path) ? 1 : 0;
 
-      const k = type ? '请款单' : '付款单';
+      const k = '账单';
       const o = this.option.header_btn[1];
+      if(type == 1) { o.type = '' };
       o.label = k;
       o.items.forEach(d=>{d.text = d.text.replace('{key}', k)});
 

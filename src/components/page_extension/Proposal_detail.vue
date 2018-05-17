@@ -35,7 +35,7 @@
 	    	</el-row>
 	    </el-form>
     </el-tab-pane>
-    <el-tab-pane label="提案流程" name="second" >
+    <!-- <el-tab-pane label="提案流程" name="second" >
     	<div v-loading="loading" style="padding: 0 20px;">
 			<el-steps :space="100" direction="vertical">
 			  <el-step 
@@ -48,10 +48,7 @@
 			  ></el-step>
 			</el-steps>
 			</div>
-			<!-- <el-steps :space="100" direction="vertical" v-loading="loading" element-loading-text="加载提案流程中...">
-        <el-step v-for="(item, index) in row.tasks" :key="item.id" :icon="item.status ? '' : 'loading'" :status="item.status ? 'success' : 'finish'" :title="item.node_name" :description="`承办人：${item.person_in_charge_name}；开始时间：${item.start_time}；完成时间：${item.end_time}；备注：${item.remark}`"></el-step>
-			</el-steps> -->
-    </el-tab-pane>
+    </el-tab-pane> -->
   </el-tabs>
 	    
 </template>

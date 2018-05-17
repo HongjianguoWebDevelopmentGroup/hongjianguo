@@ -16,7 +16,7 @@ import { mapGetters } from 'vuex'
           columns:[
             { type: 'text', label: '费用名称', prop: 'name', min_width: '145'},
             { type: 'text', label: '费用对象', prop: 'target', render_simple: 'name',},
-            { type: 'text', label: '外币金额',  prop: 'amount', width: '100', align: 'right',
+            { type: 'text', label: '外币金额',  prop: 'amount', width: '100',
               render:(h,item,row)=>{
                 if( row.roe == 1 ){
                    return h('span','N/A');
@@ -25,7 +25,7 @@ import { mapGetters } from 'vuex'
                 }
               } 
             },
-            { type: 'text', label: '汇率', prop: 'roe', width: '70', align: 'right',
+            { type: 'text', label: '汇率', prop: 'roe', width: '70', 
               render:(h,item)=>{
                 if( item == 1 ){
                   return h('span','N/A');
@@ -34,7 +34,7 @@ import { mapGetters } from 'vuex'
                 } 
               }
             },
-            { type: 'text', label: '人民币金额', prop: 'rmb', width: '120', align: 'right',
+            { type: 'text', label: '人民币金额', prop: 'rmb', width: '120', 
               render:(h,item)=>{
                 return h('span',`${item}CNY`)
                 }

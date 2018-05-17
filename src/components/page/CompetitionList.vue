@@ -44,9 +44,9 @@ export default {
 				columns: [
 					{type: 'text', prop: 'title', label: '项目名称'},
 					{type: 'text', prop: 'deadline', label: '项目期限'},
-					{type: 'text', prop: 'ipr_id', label: '承办人'},
+					{type: 'text', prop: 'ipr_id', label: '承办人', render_simple: 'name'},
 					{type: 'text', prop: 'remark', label: '备注'},
-					{type: 'text', prop: 'creat_user', label: '创建人'},
+					{type: 'text', prop: 'create_user', label: '创建人', render_simple: 'name'},
 					{type: 'text', prop: 'create_time', label: '创建时间'},
 					{
 						type: 'action',
@@ -65,7 +65,7 @@ export default {
 			},
 			rules: {
 				title: {required: true, message: '项目名称必填', trigger: 'blur'},
-				ipr: {type: 'number', required: true, message: '承办人必选', trigger: 'change'},
+				ipr_id: {type: 'number', required: true, message: '承办人必选', trigger: 'change'},
 			},
 			formType: '',
 			currentId: '',
@@ -74,6 +74,9 @@ export default {
 	methods: {
 		refresh () {
 			this.$refs.table.refresh();
+		},
+		update () {
+			this.$refs.table.update();
 		},
 		addPop () {
 			this.formType = 'add';
@@ -112,15 +115,17 @@ export default {
 				data: this.$tool.shallowCopy(this.form, {date: true}),
 				success: () => {
 					this.$message({type: 'success', message: '添加成功'});
+					this.refresh();
 				}
 			})
 		},
 		edit () {
 			return this.$axiosPut({
-				url: `${url}/${this.currentId}`,
+				url: `${URL}/${this.currentId}`,
 				data: this.$tool.shallowCopy(this.form, {date: true}),
 				success: () => {
 					this.$message({type: 'success', message: '编辑成功'});
+					this.update();
 				}
 			})
 		},

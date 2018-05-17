@@ -27,8 +27,8 @@ menu.data = [
 			},
 			{
 				text: '我的关注',
-				path: '/task/regardful',
-				icon: 'iconfont el-icon-my-task-pending',
+				path: '/task/follow',
+				icon: 'iconfont el-icon-my-people',
 				type: 'item',
 			},
 			{
@@ -41,12 +41,6 @@ menu.data = [
 				text: '已完成',
 				path: '/task/finish',
 				icon: 'iconfont el-icon-my-task-finish',
-				type: 'item',
-			},
-			{
-				text: '我的关注',
-				path: '/task/follow',
-				icon: 'iconfont el-icon-my-people',
 				type: 'item',
 			},
 			{
@@ -101,12 +95,12 @@ menu.data = [
 			// 	icon: '',
 			// 	type: 'item',
 			// },
-			{
-				text: '通知书管理',
-				path: '/patent/notice',
-				icon: 'iconfont el-icon-my-notice',
-				type: 'item',
-			},
+			// {
+			// 	text: '通知书管理',
+			// 	path: '/patent/notice',
+			// 	icon: 'iconfont el-icon-my-notice',
+			// 	type: 'item',
+			// },
 		]
 	},
 	{
@@ -171,7 +165,7 @@ menu.data = [
 		// 	type: 'item',
 		// },
 		{
-			text: '代理所账单', 
+			text: '账单', 
 			path: '/fee/payment',
 			icon: 'iconfont el-icon-my-pay',
 			type: 'item',

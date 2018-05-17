@@ -83,7 +83,7 @@
        <el-form-item label="费用">
          <span><el-tag v-if="patentForm.fees.length!==0" v-for="(item,i) in patentForm.fees" :key="i" style="margin-left:5px;">{{ `${item.name}：${item.fee}` }}</el-tag><span v-if="patentForm.fees.length==0">无</span></span>
        </el-form-item>
-       <el-form-item>
+       <el-form-item style="margin-bottom: 0px;">
          <el-button type="primary" @click="importData" :loading='loading'>{{loading?'上传中...':'确认上传'}}</el-button>
          <el-button @click="clearAll">取消</el-button>
        </el-form-item>
@@ -321,18 +321,22 @@ export default {
     },
     importData () {
       const url = '/notices/import';
-      console.log(this.tableData3);
+
       if(this.tableData3.length==0) {
         this.$message({message: '上传数据不能为空', type: 'warning'});
         return false;
       }
-      if(this.title){
-        this.tableData3[0].project = {id:this.detailId,name:this.title};
-      }
-      if(this.detail_serial) {
-        this.tableData3[0].serial = this.detail_serial;
-      }
-      const data = this.tableData3;
+      // if(this.title){
+      //   this.tableData3[0].project = {id:this.detailId,name:this.title};
+      // }
+      // if(this.detail_serial) {
+      //   this.tableData3[0].serial = this.detail_serial;
+      // }
+      
+      let data = this.tableData3[0];
+      data.project = this.detailId;
+      data = [data];
+
       const success = _=>{
         this.tableData3 = [];
         this.refreshDetailData();

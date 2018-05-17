@@ -2,13 +2,7 @@
 	<el-form label-position="top" :rules="rules" :model="form" ref="form">
 		
 		<el-form-item label="导出字段" prop="fields">
-			<el-checkbox-group 
-    		v-model="form.fields"
-   	 		:min="1"
-   	 		style="max-height: 300px; overflow: auto;"
-   		>
-    		<el-checkbox v-for="(item, index) in fields" :label="item.value" :key="item.value" :style="index == 0 ? 'margin-left: 15px' : ''">{{item.label}}</el-checkbox>
-  		</el-checkbox-group>
+			<app-transfer-panel v-model="form.fields" :data="fields" title="导出字段控制" :is-move="false" style="width: 100%;"></app-transfer-panel>
 		</el-form-item>
 		<el-form-item label="文件类型" prop="documents">
 			<static-select type="file_type" v-model="form.documents" multiple></static-select>
@@ -20,6 +14,7 @@
 </template>
 <script>
 import StaticSelect from '@/components/form/StaticSelect'
+import AppTransferPanel from '@/components/common/AppTransferPanel'
 import {mapGetters} from 'vuex'
 
 export default {
@@ -104,6 +99,7 @@ export default {
 	},
 	components: {
 		StaticSelect,
+		AppTransferPanel,
 	}
 }
 </script>

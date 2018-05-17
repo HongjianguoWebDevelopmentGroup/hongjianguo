@@ -104,6 +104,7 @@
       <template v-if="tableOption.header_slot ? true : false">
         <slot v-for="item in tableOption.header_slot" :name="item"></slot>
       </template>
+      
 	  	<search-input
         v-model="search_value"
         :placeholder="tableOption.search_placeholder == undefined ? '搜索...' : tableOption.search_placeholder"
@@ -112,6 +113,8 @@
         @enter="handleSearch"
         v-if="tableOption.is_search == undefined ? true : tableOption.is_search"
 	    ></search-input>
+        
+      </el-button>
     </div>
     
     <app-table
@@ -405,7 +408,7 @@ export default {
       }
 
       //控制器合并获得fields集合
-      let fields = [...control[0], ...control[1]];
+      let fields = [ ...control[1], ...control[0] ];
       
       //检测缓存中是否存在控制器
       if(tableCookie) {

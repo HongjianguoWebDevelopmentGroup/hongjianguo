@@ -36,26 +36,31 @@ export default {
   },
   computed: {
   	options () {
-  		const arr = [
+  		let arr = [
         {value: '', label: '全部'},
   			{value: 0, label: '未付款'},
   			{value: 100, label: '已付款'},
   		];
   		const arrType = [
   			{value: 1, label: '请款单'},
-  			{value: 2, label: '付款单'},
+  			{value: 2, label: '账单'},
   		];
+      const invoiceType = [
+        {value: '', label: '全部'},
+        {value: 1, label: '待审核'}, 
+        {value: 2, label: '已审核待付款'},  
+        {value: 3, label: '已拒绝'},
+        {value: 4, label: '已付款待上传凭证',}, 
+        {value: 5, label: '已上传凭证'},
+      ]
   		const arrAnnual = [
   			{value: 10, label: '年费监控中'},
   			{value: 11, label: '年费评估单'},
   			{value: 12, label: '年费不再缴纳'},
         {value: 13, label: '年费评估通过待缴纳'},
   		];
-      if(this.feeType == 1) {
-        arr.push(arrType[0]);
-      }else if(this.feeType == 0) {
-        arr.push(arrType[1])
-      }
+
+      arr = this.feeType == 1 ? arr : invoiceType;
   		
   		this.feeAnnual ? arr.push(...arrAnnual) : '';
 

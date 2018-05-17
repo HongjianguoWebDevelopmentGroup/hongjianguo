@@ -68,7 +68,13 @@ export default {
 			try {
 				await this.$axiosPut({
 					url: `${URL}/${id}/send`,
-					data: Object.assign({}, this.form, {body: this.$el.querySelector('#mail-edit-form-body').innerHTML}),
+					data: {
+						to: this.$refs.to.getSelected().map(v => ({label: v['name'], value: v['id']})),
+						cc: this.$refs.cc.getSelected().map(v => ({label: v['name'], value: v['id']})),
+						subject: this.form.subject,
+						attachments: this.form.attachments,
+						body: this.$el.querySelector('#mail-edit-form-body').innerHTML,
+					},
 					success: (data) => {
 						this.$message({type: 'success', message: '发送邮件成功'});
 						this.clear();

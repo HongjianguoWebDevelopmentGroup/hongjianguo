@@ -8,6 +8,7 @@
     <agent ref="agent"></agent>
     <case ref="case"></case>
     <other ref="other" :type="pageType" ></other>
+    <custom ref="custom" :type="pageType"></custom>
     <div style="margin-bottom: 20px;">
       <el-button @click="add" type="primary" v-if="pageType == 'add'" :disabled="btn_disabled">添加</el-button>
       <!-- <el-button @click="edit" type="primary" v-if="type == 'edit'" :disabled="btn_disabled">编辑</el-button> -->
@@ -24,11 +25,12 @@ const map = new Map([
   ['classification', '请正确填写分类信息'],
   ['case', '请正确填写相关案件信息'],
   ['other', '请正确填写其他信息'],
-  ['review', '请正确填写评审结果']
+  ['review', '请正确填写评审结果'],
+  ['custom', '请正确填写自定义字段'],
 ]);
 
-const getKeys = ['base', 'person', 'classification', 'agent', 'case', 'other', 'review'];
-const setKeys = ['base', 'person', 'classification', 'agent', 'case', 'other', 'review'];
+const getKeys = ['base', 'person', 'classification', 'agent', 'case', 'other', 'review', 'custom'];
+const setKeys = ['base', 'person', 'classification', 'agent', 'case', 'other', 'review', 'custom'];
 
 const URL = '/patents';
 
@@ -41,6 +43,7 @@ import Agent from '@/components/page_extension/PatentAdd_agent'
 import Case from '@/components/page_extension/PatentAdd_case'
 import Other from '@/components/page_extension/PatentAdd_other'
 import Review from '@/components/page_extension/PatentAdd_review'
+import Custom from '@/components/page_extension/PatentAdd_custom'
 import {mapActions} from 'vuex'
 export default {
   name: 'patentAdd',
@@ -236,7 +239,8 @@ export default {
     Case, 
     Other, 
     AppCollapse,
-    Review, 
+    Review,
+    Custom,
   }
 }
 </script>
