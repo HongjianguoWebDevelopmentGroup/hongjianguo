@@ -7,7 +7,8 @@
     <el-dialog title="申请委案" :visible.sync="dialogAgenVisible" class="dialog-small">
       <el-form :form="agen" ref="agen" label-width="120px" :model="agen">
         <el-form-item label="代理机构" prop="agency_id" :rules="{required: true, type: 'number', message: '代理机构必填', trigger: 'change' }">
-          <remote-select type="agency" v-model="agen.agency_id"></remote-select><el-button size="mini" type="text" @click="showAgencyLoad">负载</el-button>
+          <remote-select type="agency" v-model="agen.agency_id"></remote-select>
+          <!-- <el-button size="mini" type="text" @click="showAgencyLoad">负载</el-button> -->
         </el-form-item>
         <el-form-item label="代理人" prop="agency_agent" v-show="agen.agency_id !== '' ? true : false">
           <remote-select type="agent" v-model="agen.agency_agent" :para="{'agency': agen.agency_id}" ref="agent"></remote-select>
@@ -15,17 +16,17 @@
         <el-form-item label="代理类型" prop="agency_type" :rules="{ required: true, type: 'number', message: '代理类型必填', trigger: 'change' }">
           <static-select type="agency_type" v-model="agen.agency_type"></static-select>
         </el-form-item>
-        <el-form-item label="权利要求返稿期限" prop="dib_date">
-          <el-date-picker v-model="agen.dib_date" type="date" placeholder="权力要求返稿期限" style="width: 100%;"></el-date-picker>
+        <el-form-item label="权利要求期限" prop="dib_date">
+          <el-date-picker v-model="agen.dib_date" type="date" placeholder="请输入权利要求返稿期限" style="width: 100%;"></el-date-picker>
         </el-form-item>
-        <el-form-item label="说明书返稿期限" prop="manual_date">
-          <el-date-picker v-model="agen.manual_date" type="date" placeholder="说明书返稿期限" style="width: 100%;"></el-date-picker>
+        <el-form-item label="说明书期限" prop="manual_date">
+          <el-date-picker v-model="agen.manual_date" type="date" placeholder="请输入说明书返稿期限" style="width: 100%;"></el-date-picker>
         </el-form-item>
         <el-form-item label="定稿期限" prop="fv_date">
-          <el-date-picker v-model="agen.fv_date" type="date" placeholder="定稿期限" style="width: 100%;"></el-date-picker>
+          <el-date-picker v-model="agen.fv_date" type="date" placeholder="请输入定稿期限" style="width: 100%;"></el-date-picker>
         </el-form-item>
         <el-form-item label="备注" prop="remark">
-          <el-input v-model="agen.remark" type="textarea"></el-input>
+          <el-input v-model="agen.remark" type="textarea" placeholder="请输入备注"></el-input>
         </el-form-item>
         <el-form-item style="margin-bottom: 0px"><el-button @click="agenSubmit" type="primary" :disabled="btn_disabled">申请委案</el-button></el-form-item>
       </el-form>
@@ -227,27 +228,27 @@ export default {
         'columns': [
           // { type: 'expand' },
           { type: 'selection' },
-          { type: 'text', label: '案号', prop: 'serial', sortable: true, width: '210', show_option: true, render: this.titleRender },
-          { type: 'text', label: '事务所案号', prop: 'agency_serial', sortable: true, width: '200', show_option: true},
-          { type: 'text', label: '案件类型', prop: 'project_category', sortable: true, width: '145', show_option: true,render_simple: 'name',},
+          { type: 'text', label: '案号', prop: 'serial', sortable: true, width: '140', show_option: true, render: this.titleRender },
+          { type: 'text', label: '事务所案号', prop: 'agency_serial', sortable: true, width: '140', show_option: true},
+          { type: 'text', label: '案件类型', prop: 'project_category', sortable: true, width: '120', show_option: true,render_simple: 'name',},
           { type: 'text', label: '案件名称', prop: 'title', sortable: true, width: '200', overflow: true },
-          { type: 'text', label: '管制事项', prop: 'flow', sortable: true, width: '134',render_simple: 'name', },
-          { type: 'text', label: '流程节点', prop: 'flownode', show:true, sortable: true, width: '159',render_simple: 'name',},
-          { type: 'text', label: '任务来源', prop: 'sender', show: true,sortable: true, width: '118',render_simple: 'name',},
-          { type: 'text', label: 'IPR', prop: 'ipr', sortable: true, width: '118',render_simple: 'name',},
+          { type: 'text', label: '管制事项', prop: 'flow', sortable: true, width: '120',render_simple: 'name', },
+          { type: 'text', label: '流程节点', prop: 'flownode', show:true, sortable: true, width: '120',render_simple: 'name',},
+          { type: 'text', label: '承办人', prop: 'person_in_charge', show: true, sortable: true, width: '118',render_simple: 'name',},
+          { type: 'text', label: '任务来源', prop: 'sender', show: true,sortable: true, width: '120',render_simple: 'name',},
+          { type: 'text', label: 'IPR', prop: 'ipr', sortable: true, width: '120',render_simple: 'name',},
           { type: 'text', label: '部门', prop: 'branch',render_simple: 'name', sortable: true, width: '160'},
-          { type: 'text', label: '提案人', prop: 'proposer', render_simple: 'name', sortable: true, width: '160'},
-          { type: 'text', label: '承办人', prop: 'person_in_charge', show: false, sortable: true, width: '118',render_simple: 'name',},
+          { type: 'text', label: '交底书撰写人', prop: 'proposer', render_simple: 'name', sortable: true, width: '160'},
           { type: 'text', label: '代理机构', prop: 'agency', show: false, sortable: true, width: '130'},
           { type: 'text', label: '代理人', prop: 'agent', sortable: true, width: '118'},
-          { type: 'text', label: '申请日', prop: 'apd', sortable: true, width: '190'},
+          { type: 'text', label: '申请日', prop: 'apd', sortable: true, width: '130'},
           { type: 'text', label: '申请号', prop: 'apn', sortable: true, width: '130'},
-          { type: 'text', label: '开始时间', prop: 'start_time', show: false, sortable: true, width: '190'},
-          { type: 'text', label: '完成时间', prop: 'end_time', sortable: true, width: '190'},
-          { type: 'text', label: '指定期限', prop: 'due_time', show: false, sortable: true, width: '190'},
-          { type: 'text', label: '定稿期限', prop: 'review_dealine', show: false, sortable: true, width: '190'},
-          { type: 'text', label: '管控期限', prop: 'inner_dealine', show: false, sortable: true, width: '190'},
-          { type: 'text', label: '法定期限', prop: 'deadline', show: false, sortable: true, width: '190'},
+          { type: 'text', label: '开始时间', prop: 'start_time', show: false, sortable: true, width: '130'},
+          { type: 'text', label: '完成时间', prop: 'end_time', sortable: true, width: '130'},
+          { type: 'text', label: '指定期限', prop: 'due_time', show: false, sortable: true, width: '130'},
+          { type: 'text', label: '定稿期限', prop: 'review_dealine', show: false, sortable: true, width: '130'},
+          { type: 'text', label: '管控期限', prop: 'inner_dealine', show: false, sortable: true, width: '130'},
+          { type: 'text', label: '法定期限', prop: 'deadline', show: false, sortable: true, width: '130'},
           { type: 'text', label: '备注', prop: 'remark', sortable: true, width: '250',overflow: true},
           { 
             type: 'action',
