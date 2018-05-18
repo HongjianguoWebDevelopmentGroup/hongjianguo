@@ -143,16 +143,16 @@ export default {
     edit () {
       
       if(this.$refs.patent) {
-        this.btnDisabled = true;
         this.$refs.patent.edit({
-          complete: _=>{ this.btnDisabled = false; }
+          beaforeFunc: _=>{ this.btnDisabled = true; },
+          complete: _=>{ this.btnDisabled = false; },
         });
       }
 
       if(this.$refs.copyright) {
-        this.btnDisabled = true;
         this.$refs.copyright.edit({
-          complete: _=>{ this.btnDisabled = false; }
+          beaforeFunc: _=>{ this.btnDisabled = true; },
+          complete: _=>{ this.btnDisabled = false; },
         });
       }
     },

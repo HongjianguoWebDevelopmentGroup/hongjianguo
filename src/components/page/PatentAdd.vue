@@ -75,8 +75,11 @@ export default {
       })
       
     },
-    edit ({complete}={}) {
+    edit ({beaforeFunc, complete}={}) {
       this.formCheck(_=>{
+        if(beaforeFunc) {
+          beaforeFunc();
+        }
         const url = `${URL}/${this.id}`;
         const data = Object.assign( ...setKeys.map(d=>this.$refs[d].submitForm()) );
         const success = _=>{ 

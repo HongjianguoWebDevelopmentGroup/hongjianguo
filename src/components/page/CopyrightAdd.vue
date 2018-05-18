@@ -137,9 +137,11 @@ export default {
 
   		this.axiosPost({url, data, success, complete});
   	},
-  	edit ({complete}={}) {
+  	edit ({beaforeFunc, complete}={}) {
   		if(this.checkForm()) return;
-
+      if(beaforeFunc) {
+        beaforeFunc();
+      }
   		this.btn_disabled = true;
   		const url = `${URL}/${this.id}`;
   		const data = this.$tool.shallowCopy(this.form, {'date': true});
