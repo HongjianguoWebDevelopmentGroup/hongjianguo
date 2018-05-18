@@ -4,7 +4,7 @@
       <fee-status slot="status" v-model="fee_status" style="width: 150px; margin-left: 5px;" :feeType="feeType"></fee-status>
       <remote-select v-if="fee_invoice_if" slot='invoice' v-model="fee_invoice" style="width: 220px; margin-left: 10px; display: inline-block;" class="pay_search" :type="feeType ? 'bill' : 'pay'"></remote-select>
     </table-component>
-    <pop ref="pop" :feeType="feeType" @refresh="refresh"></pop>
+    <pop ref="pop" :feeType="feeType" @refresh="handleRefresh"></pop>
 
     <el-dialog :title="dialogTitle" :visible.sync="dialogVisible" class="dialog-small">
       <div style="margin-bottom: 10px; color: #8492A6; font-size: 14px;">
@@ -62,9 +62,9 @@ export default {
         'header_slot': [ 'status', 'invoice' ],
         'columns': [
           { type: 'selection' },
-          { type: 'text', label: '案号', prop: 'serial', width: '200' },
-          { type: 'text', label: '费用对象', prop: 'target', render_simple: 'name', width: '190' },
-          { type: 'text', label: '费用名称', prop: 'code', render_simple: 'name', width: '190' },
+          { type: 'text', label: '案号', prop: 'serial', width: '200', sortable: true },
+          { type: 'text', label: '费用对象', prop: 'target', render_simple: 'name', width: '190', sortable: true },
+          { type: 'text', label: '费用名称', prop: 'code', render_simple: 'name', width: '190', sortable: true },
           //{ type: 'text', label: '费用类型', prop: 'type_name', width: '190' },
           { 
             type: 'text', 
@@ -77,7 +77,8 @@ export default {
               }else{
                 return h('span',`${item}${row.currency}`);
               }
-            } 
+            },
+            sortable: true, 
           },
           { 
             type: 'text', 
@@ -90,7 +91,8 @@ export default {
               }else{
                 return h('span',item);
               } 
-            }
+            },
+            sortable: true,
           },
           { 
             type: 'text', 
@@ -101,17 +103,18 @@ export default {
               return h('span',`${item}CNY`)
             }
           },
-          { type: 'text', label: '费用状态', prop: 'status', render_simple: 'name', width: '180'},
-          { type: 'text', label: '案件类型', prop: 'category', width: '145' },
-          { type: 'text', label: '专利类型', prop: 'patent_type', width: '145' },
-          { type: 'text', label: '案件名称', prop: 'title', width: '189' },
-          { type: 'text', label: '申请号', prop: 'apn', width: '200' },
+          { type: 'text', label: '费用状态', prop: 'status', render_simple: 'name', width: '180', sortable: true},
+          { type: 'text', label: '案件类型', prop: 'category', width: '145', sortable: true },
+          { type: 'text', label: '专利类型', prop: 'patent_type', width: '145', sortable: true },
+          { type: 'text', label: '案件名称', prop: 'title', width: '189', sortable: true },
+          { type: 'text', label: '申请号', prop: 'apn', width: '200', sortable: true },
           { 
             type: 'text', 
             label: '申请日', 
             prop: 'apd',  
             width: '175',
             render_text: item=>item ? this.$tool.getDate(new Date(item*1000)) : '',
+            sortable: true,
           },
           { 
             type: 'text', 
@@ -120,22 +123,23 @@ export default {
             render_text: item=>{
               return item.id ? this.areaMap.get(item.id) : '';
             }, 
-            width: '210' 
+            width: '210',
+            sortable: true, 
           },
-          { type: 'text', label: '发文日', prop: 'mail_date', width: '175' },
-          { type: 'text', label: '创建日期', prop: 'create_time', width: '175' },
-          { type: 'text', label: '费用期限', prop: 'due_time', is_import: true, width: '175' },
-          { type: 'text', label: '官方绝限', prop: 'deadline', width: '175' },
-          { type: 'text', label: '付款时间', prop: 'pay_time', width: '175' },
-          { type: 'text', label: '请款单', prop: 'invoice_id', width: '150' },
-          { type: 'text', label: '企业意见', prop: 'remark_enterprise', width: '160' },
-          { type: 'text', label: '备注', prop: 'remark', is_import: true, width: '160' },
+          { type: 'text', label: '发文日', prop: 'mail_date', width: '175', sortable: true },
+          { type: 'text', label: '创建日期', prop: 'create_time', width: '175', sortable: true },
+          { type: 'text', label: '费用期限', prop: 'due_time', is_import: true, width: '175', sortable: true },
+          { type: 'text', label: '官方绝限', prop: 'deadline', width: '175', sortable: true },
+          { type: 'text', label: '付款时间', prop: 'pay_time', width: '175', sortable: true },
+          { type: 'text', label: '请款单', prop: 'invoice_id', width: '150', sortable: true },
+          { type: 'text', label: '企业意见', prop: 'remark_enterprise', width: '160', sortable: true },
+          { type: 'text', label: '备注', prop: 'remark', is_import: true, width: '160', sortable: true },
           { 
             type: 'action',
             width: '80',
             align: 'center',
             btns: [
-              { type: 'edit', click:  this.editPop, btn_disabled: row=>row.status.name != '未付款' },
+              { type: 'edit', click:  this.editPop },
             ]
           }
         ],
@@ -235,8 +239,18 @@ export default {
         })
         .catch(()=>{});     
     },
+    handleRefresh (type) {
+      if(type == 'add') {
+        this.refresh();
+      }else if(type == 'edit') {
+        this.update();
+      }
+    },
     refresh () {
       this.$refs.table.refresh();
+    },
+    update () {
+      this.$refs.table.update();
     },
     invoicePop (type) {
       
@@ -245,15 +259,15 @@ export default {
       if(!s) return;
 
       //选择项若不符合条件 弹出警告并结束当前函数
-      const o = {};
-      for(let i = 0; i < s.length; i++) {
-        const row = s[i];
-        // if(row.status.id != 0) return this.$message({type: 'warning', message: '请不要选择未付款状态以外的费用'});
-        o[row.target.id] = true;
-      }
-      if(this.$tool.getObjLength(o) != 1) {
-        return this.$message({type: 'warning', message: '请选择具有相同费用对象的费用'});
-      }
+      // const o = {};
+      // for(let i = 0; i < s.length; i++) {
+      //   const row = s[i];
+      //   if(row.status.id != 0) return this.$message({type: 'warning', message: '请不要选择未付款状态以外的费用'});
+      //   o[row.target.id] = true;
+      // }
+      // if(this.$tool.getObjLength(o) != 1) {
+      //   return this.$message({type: 'warning', message: '请选择具有相同费用对象的费用'});
+      // }
       
       this.invoicePopType = type;
       this.invoiceSelected = s;

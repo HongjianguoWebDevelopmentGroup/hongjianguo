@@ -22,7 +22,7 @@
 			<static-select type="tag" v-model="form.tags" multiple></static-select>
 		</el-form-item>
 		<el-form-item label="IPR" prop="ipr">
-			<span class="form-item-text" v-if="type == 'add'">{{ user ? user.name : '暂未读取到当前用户数据' }}</span>
+			<span class="form-item-text" v-if="pageType == 'add'">{{ user ? user.name : '暂未读取到当前用户数据' }}</span>
 			<remote-select type="member" v-model="form.ipr" v-else></remote-select>
 		</el-form-item>
 <!-- 		<el-form-item label="提案人" prop="proposer">

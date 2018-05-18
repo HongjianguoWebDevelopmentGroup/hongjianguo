@@ -45,7 +45,7 @@ export default {
 				is_search: false,
 				is_pagination: false,
 				columns: [
-					{type: 'text', prop: 'review_type', label: '评审类型', render_text: v => this.typeMap.get(v)},
+					{type: 'text', prop: 'review_type', label: '评审类型', render_simple: 'name'},
 					{type: 'text', prop: 'reviewer', label: '评审人', render_simple: 'name'},
 					{type: 'text', prop: 'content', label: '评审内容'},
 					{type: 'text', prop: 'create_time', label: '创建时间'},
@@ -76,11 +76,6 @@ export default {
 		...mapGetters([
 			'staticSelectorMap',
 		]),
-		typeMap () {
-			const map = new Map()
-			this.staticSelectorMap.get('judge_type').options.forEach(v => map.set(v.id, v.name));
-			return map;
-		}
 	},
 	methods: {
 		refresh () {
@@ -104,7 +99,10 @@ export default {
 		},
 		refreshTableData () {
 			return this.$axiosGet({
-				url: `${URL}/${this.id}`,
+				url: `${URL}`,
+				data: {
+					project_id: this.id,
+				},
 				success: (response) => {
 					this.tableData = response.data;
 				}  
@@ -145,7 +143,7 @@ export default {
       			url: `${URL}/${id}`,
       			success: () => {
       				this.$message({type: 'success', message: '删除成功'});
-      				this.update();
+      				this.refresh();
       			}
       		})
         }).catch(() => {});

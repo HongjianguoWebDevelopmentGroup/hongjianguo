@@ -323,7 +323,7 @@ menu.data = [
 			},
 			{
 				text: '账单',
-				path: '/report/payment',
+				path: '/report/invoice',
 				icon: 'iconfont el-icon-my-pay',
 				type: 'item',
 			},
@@ -438,7 +438,7 @@ menu.map = {
 	'/report/task/add': {text: '新建报表', icon: '', path: '/report/task/add'},
 	'/report/pay/add': {text: '新建报表', icon: '', path: '/report/pay/add'},
 	'/report/income/add': {text: '新建报表', icon: '', path: '/report/income/add'},
-	'/report/payment/add': {text: '新建报表', icon: '', path: '/report/payment/add'},
+	'/report/invoice/add': {text: '新建报表', icon: '', path: '/report/invoice/add'},
 
 };
 tailRecursion(menu.data);

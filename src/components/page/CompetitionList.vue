@@ -18,10 +18,14 @@
 			<el-form-item prop="ipr_id" label="承办人">
 				<remote-select type="member" v-model="form.ipr_id"></remote-select>
 			</el-form-item>
+			<el-form-item prop="attachments" label="附件">
+				<upload v-model="form.attachments" :file-list="attachments"></upload>
+			</el-form-item>
 			<el-form-item prop="remark" label="备注">
 				<el-input type="textarea" v-model="form.remark"></el-input>
 			</el-form-item>
 		</app-pop>
+		<attachments-detail ref="attachmentsDetail"></attachments-detail>
 	</div>
 </template>
 
@@ -29,6 +33,8 @@
 import TableComponent from '@/components/common/TableComponent'
 import AppPop from '@/components/common/AppPop'
 import RemoteSelect from '@/components/form/RemoteSelect'
+import Upload from '@/components/form/Upload'
+import AttachmentsDetail from '@/components/common/AttachmentsDetail'
 
 const URL = '/competition';
 export default {
@@ -36,6 +42,7 @@ export default {
 	data () {
 		return {
 			tableData: [],
+			attachments: [],
 			tableOptions: {
 				header_btn: [
 					{type: 'add', click: this.addPop},
@@ -45,14 +52,16 @@ export default {
 					{type: 'text', prop: 'title', label: '项目名称'},
 					{type: 'text', prop: 'deadline', label: '项目期限'},
 					{type: 'text', prop: 'ipr_id', label: '承办人', render_simple: 'name'},
-					{type: 'text', prop: 'remark', label: '备注'},
 					{type: 'text', prop: 'create_user', label: '创建人', render_simple: 'name'},
 					{type: 'text', prop: 'create_time', label: '创建时间'},
+					
+					{type: 'text', prop: 'remark', label: '备注'},
 					{
 						type: 'action',
 						btns: [
 							{type: 'edit', click: this.editPop},
 							{type: 'delete', click: this.handleDelete},
+							{type: 'custom', label: '附件', click: this.showAttachments},
 						]
 					}
 				]
@@ -62,6 +71,7 @@ export default {
 				deadline: '',
 				ipr_id: '',
 				remark: '',
+				attachments: [],
 			},
 			rules: {
 				title: {required: true, message: '项目名称必填', trigger: 'blur'},
@@ -72,6 +82,11 @@ export default {
 		};
 	},
 	methods: {
+		showAttachments ({attachments}) {
+			if(attachments) {
+				this.$refs.attachmentsDetail.show(attachments);
+			}
+		},
 		refresh () {
 			this.$refs.table.refresh();
 		},
@@ -91,7 +106,8 @@ export default {
 			})
 		},
 		fillForm (form) {
-			this.$tool.coverObj(this.form, form, {date: ['deadline']});
+			this.$tool.coverObj(this.form, form, {date: ['deadline', 'attachments']});
+			this.attachments = form.attachments;
 		},
 		refreshTableData (option) {
 			return this.$axiosGet({
@@ -150,6 +166,8 @@ export default {
 		TableComponent,
 		AppPop,
 		RemoteSelect,
+		Upload,
+		AttachmentsDetail,
 	}
 }
 </script>

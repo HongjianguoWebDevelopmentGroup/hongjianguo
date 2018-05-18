@@ -209,7 +209,7 @@ export default {
   		const success = _=>{ 
   			this.$message({type: 'success', message: _.info});
   			this.dialogVisible = false; 
-  			this.$emit('refresh') 
+  			this.$emit('refresh', 'add') 
   		};
   		const complete = _=>{ this.loading = false };
 
@@ -222,7 +222,7 @@ export default {
   		const success = ()=>{ 
   			this.$message({message: '编辑成功', type: 'success'});
   			this.dialogVisible = false;
-  			this.$emit('refresh') 
+  			this.$emit('refresh', 'edit') 
   		};
   		const complete = _=>{ this.loading = false };
 

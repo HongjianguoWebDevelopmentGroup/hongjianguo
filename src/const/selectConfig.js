@@ -398,6 +398,16 @@ const config = [
       {name:"外部转入", id: 4}
     ]
   }],
+  ['invoice_type', {
+    placeholder: '请选择账单状态',
+    options: [
+      {id: 1, name: '待审核'}, 
+      {id: 2, name: '已审核待付款'},  
+      {id: 3, name: '已拒绝'},
+      {id: 4, name: '已付款待上传凭证',}, 
+      {id: 5, name: '已上传凭证'},
+    ]
+  }]
 ];
 
 export default config;

@@ -94,7 +94,7 @@ export default {
 					{ type: 'selection' },
 					{ type: 'text', label: '案号', prop: 'serial', render_key: 'project', render_simple: 'serial', width: '200'},
 					{ type: 'text', label: '案件名称', prop: 'title',  render_key: 'project', render_simple: 'title', width: '200'},
-					{ type: 'text', label: '年费类型', prop: 'code', render_simple: 'name', width: '200'},
+					{ type: 'text', label: '年费类型', prop: 'fee_code', render_simple: 'name', width: '200'},
 					{ 
 						type: 'text', 
 						label: '外币金额', 

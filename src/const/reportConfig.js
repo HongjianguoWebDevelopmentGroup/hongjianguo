@@ -147,7 +147,7 @@ const columns = {
     { id: 'extends3',                      name: '自定义字段3'},//自定义字段3
     { id: 'manner',                        name: '申请方式' },
     { id: 'application_strategy',          name: '申请策略'},//申请类型
-    { id: 'subexam_timing',                name: '实审时机', date: true },//实审时间
+    { id: 'subexam_timing',                name: '实审时机' },//实审时间
     { id: 'core_concepts',                 name: '关键保护点'},//新申请申请策略
     { id: 'decision_reason',               name: '决定原因'},//决定原因
     { id: 'innovation_introduction',       name: '创新点简述'},//创新点简述

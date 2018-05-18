@@ -101,7 +101,6 @@ export default {
         'rowClick': this.handleRowClick,
         'cellClick': this.handleCellClick,
         'header_btn': [
-          { type: 'filter', click: () => {this.filterVisible = true} },
           { type: 'add', click: this.add, map_if: '/patent/add', },
           { type: 'delete', map_if: '/patent/delete' }, 
           // { type: 'import', map_if: '/patent/import' },

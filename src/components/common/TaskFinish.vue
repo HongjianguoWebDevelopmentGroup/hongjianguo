@@ -68,9 +68,9 @@
     <el-form-item prop="type" label="专利类型" v-if="fields.type" :rules="{type: 'number', required: true, message: '专利类型不能为空', trigger: 'blur'}">
       <static-select type="patent_type" v-model="form.type" key="patent_type"></static-select>
     </el-form-item>
-     <el-form-item prop="title" label="专利标题" v-if="fields.title" :rules="{required: true, message: '专利标题不能为空'}">
+<!--      <el-form-item prop="title" label="专利标题" v-if="fields.title" :rules="{required: true, message: '专利标题不能为空'}">
       <el-input v-model="form.title" placeholder="请填写正式递交的标题"></el-input>
-    </el-form-item>   
+    </el-form-item> -->   
     <el-form-item prop="estimate" label="年费评估" v-if="fields.estimate" style="margin-bottom: 0px;">
       <app-table :columns="estimateColumns" :data="data.estimate" :maxHeight="300" ref="estimate"></app-table>
       <span style="color: rgb(132, 146, 166);">请选择评估通过的年费</span>
@@ -102,6 +102,19 @@
     <el-form-item prop="is_supplement" label="补充" v-if="fields.is_supplement" >
       <app-switch type="is" v-model="form.is_supplement"></app-switch>
     </el-form-item>
+    <el-form-item prop="references" label="对比文件" v-if="fields.references">
+      <span>{{form.references.join(',')}}</span>
+    </el-form-item>
+    <el-form-item prop="pct_areas" label="PCT国家" v-if="fields.pct_areas">
+      <static-select type="area" v-model="form.pct_areas"></static-select>
+    </el-form-item>
+    <el-form-item prop="is_division" label="是否分享" v-if="fields.is_division">
+      <app-switch type="is" v-model="form.is_division"></app-switch>
+    </el-form-item>
+    <el-form-item prop="is_mend_inventor" label="是否变更发明人" v-if="fields.is_mend_inventor">
+      <app-switch type="is" v-model="form.is_mend_inventor"></app-switch>
+    </el-form-item>
+
     <el-form-item prop="attachments" label="附件" v-if="fields.attachments && !hide_r_a">
       <upload v-if="next == '20'" v-model="form.attachments" :action="`/api/files?action=parseConfirmationList&id=${id}`" @uploadSuccess="handleUploadSuccess"></upload>
       <upload v-else v-model="form.attachments" :file-list="attachments"></upload>
@@ -188,9 +201,13 @@ export default {
         points: '',
         defence: '',
         due_time: '',
-        title: '',
+        // title: '',
         deadline: '',
         pay_time: '',
+        references: [],
+        pct_areas: [],
+        is_division: 0,
+        is_mend_inventor: 0,
       },
       'defaultVal': '',
       'agencyMap': [],
@@ -373,6 +390,7 @@ export default {
             const person_in_charge = this.data[this.defaultVal] ? this.data[this.defaultVal] : '';
                         
             this.$nextTick(_=>{
+              if(this.fields.references) this.form.references = this.data.references;
               if(this.fields.agency_type) this.form.agency_type = 1;
               if(this.fields.area) this.form.area.push('CN');
               if(this.fields.agency && this.data.agency) {

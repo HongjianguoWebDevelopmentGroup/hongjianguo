@@ -24,7 +24,7 @@ const map = new Map([
     { components: 'date',          id: 'create_time', name: '提案时间' },
 	]],
 	['patent', [
-		{ components: 'input',         id: 'serial',                        name: '案号'},
+	  { components: 'input',         id: 'serial',                        name: '案号'},
     { components: 'input',         id: 'agency_serial',                 name: '事务所案号'},
     { components: 'remote_select', id: 'applicants',                    name: '申请人', type: 'applicant'},
     { components: 'input',         id: 'apn',                           name: '申请号'},
