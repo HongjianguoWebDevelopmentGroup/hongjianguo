@@ -105,19 +105,25 @@
     <el-form-item prop="references" label="对比文件" v-if="fields.references">
       <span>{{form.references.join(',')}}</span>
     </el-form-item>
-    <el-form-item prop="pct_areas" label="PCT国家" v-if="fields.pct_areas">
-      <static-select type="area" v-model="form.pct_areas"></static-select>
+    <el-form-item prop="pct_areas" label="PCT国家" v-if="fields.pct_areas"  :rules="{required: true, message: '请选择PCT要进入的国家'}">
+      <static-select type="area" v-model="form.pct_areas" :multiple=true></static-select>
     </el-form-item>
-    <el-form-item prop="is_division" label="是否分享" v-if="fields.is_division">
+    <el-form-item prop="is_division" label="是否分案" v-if="fields.is_division">
       <app-switch type="is" v-model="form.is_division"></app-switch>
     </el-form-item>
-    <el-form-item prop="is_mend_inventor" label="是否变更发明人" v-if="fields.is_mend_inventor">
-      <app-switch type="is" v-model="form.is_mend_inventor"></app-switch>
+    <el-form-item prop="is_amend_inventor" label="是否提出变更" v-if="fields.is_amend_inventor">
+      <app-switch type="is" v-model="form.is_amend_inventor"></app-switch>
     </el-form-item>
 
     <el-form-item prop="attachments" label="附件" v-if="fields.attachments && !hide_r_a">
       <upload v-if="next == '20'" v-model="form.attachments" :action="`/api/files?action=parseConfirmationList&id=${id}`" @uploadSuccess="handleUploadSuccess"></upload>
       <upload v-else v-model="form.attachments" :file-list="attachments"></upload>
+    </el-form-item>
+    <el-form-item prop="pct_review" label="PCT国家阶段评审意见" v-if="fields.pct_review" :rules="{required: true, message: '请填写PCT进入国家阶段评审意见'}">
+      <el-input type="textarea" v-model="form.pct_review"></el-input>
+    </el-form-item>
+    <el-form-item prop="issue_review" label="授权前评估意见" v-if="fields.issue_review" :rules="{required: true, message: '请填写授权前评估意见'}">
+      <el-input type="textarea" v-model="form.issue_review"></el-input>
     </el-form-item>
     <el-form-item prop="remark" label="任务备注" v-if="fields.remark && !hide_r_a">
       <el-input type="textarea" v-model="form.remark"></el-input>
@@ -207,7 +213,9 @@ export default {
         references: [],
         pct_areas: [],
         is_division: 0,
-        is_mend_inventor: 0,
+        is_amend_inventor: 0,
+        pct_review:'',
+        issue_review:'',
       },
       'defaultVal': '',
       'agencyMap': [],
