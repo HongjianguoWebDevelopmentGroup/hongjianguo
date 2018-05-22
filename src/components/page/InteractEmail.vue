@@ -175,7 +175,7 @@ export default {
   			this.feedbackLoading = true;
   			try {
   				await this.$axiosPut({
-  					url: `/patents/${this.feedbackForm.project}`,
+  					url: `/mailFeedback/${this.feedbackForm.project}`,
   					data: this.$tool.shallowCopy(this.feedbackForm, {skip: ['project']}),
   					success: () => {
   						this.$message({type: 'success', message: '导入成功'});
