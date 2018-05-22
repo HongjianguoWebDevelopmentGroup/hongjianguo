@@ -57,6 +57,7 @@ const SettingTemplate          = () => import('@/components/page/SettingTemplate
 const SettingTemplateEdit      = () => import('@/components/page/SettingTemplateEdit')
 const SettingUser              = () => import('@/components/page/SettingUser')
 const SettingField             = () => import('@/components/page/FieldVisible')
+const OfferList                = () => import('@/components/page/OfferList')
 
 //#################
 const SettingIndividual        = () => import('@/components/page/SettingIndividual')
@@ -89,6 +90,11 @@ const router = new Router({
     { path: '/setting', redirect: '/setting/individual'},
     { path: '/renewal', redirect: '/renawel/fee' },
     //###重定向###
+    {
+      path: '/setting/offer',
+      name: 'OfferList',
+      component: OfferList,
+    },
     {
       path: '/statistics',
       name: 'Home',

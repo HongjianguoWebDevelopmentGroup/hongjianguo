@@ -39,7 +39,8 @@ export default {
           fixed: false,
           min_width: '120',
           btns: [
-            { type: 'download', click: ({downloadUrl})=>{window.open(downloadUrl)}},  
+            { type: 'download', click: ({downloadUrl})=>{window.open(downloadUrl)}},
+            { type: 'view', click: ({viewUrl})=>{window.open(viewUrl)} }, 
           ]
         }
 			],
@@ -153,14 +154,28 @@ export default {
 				body = '';
 			}else if(item.length == 1) {
 				const obj = {
-					attrs: { href: item[0]['downloadUrl'] },
+					on: {
+						click: () => {window.open(item[0]['viewUrl'])}
+					},
+					style: {
+						cursor: 'pointer',
+					}
 				};
 				body = [h('a', obj, item[0].name )];
 			}else if(item.length > 1) {
 				body = [];
 				const obj = {
-					attrs: { href: item[0]['downloadUrl'] },
-					style: { width: '120px', display: 'inline-block' },
+					on: {
+						click: () => {window.open(item[0]['viewUrl'])}
+					},
+					style: {
+						width: '120px',
+				    display: 'inline-block',
+				    overflow: 'hidden',
+				    whiteSpace: 'nowrap',
+				    textOverflow: 'ellipsis',
+				    cursor: 'pointer',
+					}
 				};
 
 				body.push(h('a', obj, item[0].name ));

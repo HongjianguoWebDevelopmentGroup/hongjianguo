@@ -381,11 +381,18 @@ menu.data = [
 			path: '/branch',
 			icon: 'iconfont el-icon-my-department',
 			type: 'item',
-		},{
+		},
+		{
 			text: '代理机构管理',
 			path: '/setting/agency',
 			icon: 'iconfont el-icon-my-organization',
 			type: 'item'
+		},
+		{
+			text: '报价管理',
+			path: '/setting/offer',
+			icon: 'iconfont el-icon-my-organization',
+			type: 'item',
 		},
 		// {
 		// 	text: '案件类型管理',
