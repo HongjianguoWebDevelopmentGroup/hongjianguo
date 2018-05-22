@@ -25,7 +25,7 @@
 				></el-option>
 			</el-select>
 			<template slot="row_action" slot-scope="scope">
-        <el-button type="text" icon="upload2" size="mini" @click="importEmail(scope.row)" :disabled="scope.row.import ? true : false">导入</el-button>
+        <el-button type="text" icon="upload2" size="mini" @click="importEmail(scope.row)" :disabled="scope.row.imported ? true : false">导入</el-button>
       </template>
 		</table-component>
 	</div>
@@ -61,7 +61,7 @@
 			</el-form-item>
 			<el-form-item style="margin-bottom: 0px;">
 				<el-button type="primary" :loading="feedbackLoading" @click="feedbackSave">{{ feedbackLoading ? '导入中...' : '确认导入' }}</el-button>
-				<el-button @click="feebackVisible = false" :disabled="feedbackLoading">取消</el-button>
+				<el-button @click="feedbackVisible = false" :disabled="feedbackLoading">取消</el-button>
 			</el-form-item>
 		</el-form>
 	</el-dialog>
@@ -175,11 +175,11 @@ export default {
   			this.feedbackLoading = true;
   			try {
   				await this.$axiosPut({
-  					url: `/mailFeedback/${this.feedbackForm.project}`,
+  					url: `/mailFeedback/${this.feedbackForm. }`,
   					data: this.$tool.shallowCopy(this.feedbackForm, {skip: ['project']}),
   					success: () => {
   						this.$message({type: 'success', message: '导入成功'});
-  						this.feebackVisible = false;
+  						this.feedbackVisible = false;
   						this.importSuccess();
   					}
   				})
@@ -272,7 +272,7 @@ export default {
   	refreshTableData (options) {
   		if(this.time == null) return;
   		const url = '/api/mails';
-  		const imported = this.imported ? {imported: this.imported} : '';
+  		const imported = this.imported === '' ? {imported: this.imported} : '';
   		const data = 	Object.assign({}, options, this.time, {'mailbox': 1}, imported,{'interact': 1 });
   		const success = _=>{ this.tableData = _.mails };
 
