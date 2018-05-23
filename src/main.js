@@ -9,7 +9,7 @@ import VueQuillEditor from 'vue-quill-editor'
 import MyAxios from '@/const/MyAxios'
 import 'element-ui/lib/theme-default/index.css'
 import './fonts/iconfont.css'
-import axios from 'axios'
+import axios from '@/const/axios'
 import tool from './const/tool'
 
 

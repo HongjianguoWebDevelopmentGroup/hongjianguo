@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
-import axios from 'axios'
+import axios from '@/const/axios'
 import filter from '@/store/modules/filter-label.js'
 import detail from '@/store/modules/common-detail.js'
 import tags from '@/store/modules/tags.js'
