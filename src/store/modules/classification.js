@@ -28,7 +28,7 @@ const mutations = {
 }
 
 const actions = {
-	refreshClassification ({commit, rootState, state}) {
+	refreshClassification ({commit, rootState, state},{success}={}) {
 		url = rootState.status ? url.replace(/\/api/, '') : url;
 		rootState.axios
 			.get(url)
@@ -36,6 +36,7 @@ const actions = {
 				const d = response.data;
 				if(d.status){
 					commit('setClassification', d.classifications);
+					if(success){ success(d); }
 				}else {
 					// alert('请求技术分类数据失败');
 				}

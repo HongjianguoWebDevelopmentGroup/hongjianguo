@@ -29,7 +29,7 @@
             </el-form-item>
             <el-form-item label="提案时间">
               <!-- <el-date-picker type="daterange" placeholder="请选择提案时间" v-model="create_time"></el-date-picker> -->
-              <date-strainer v-model="create_time" ref="datePicker"></date-strainer>
+              <date-strainer v-model="create_time"></date-strainer>
             </el-form-item>
           </el-col>
         </el-row>
@@ -160,7 +160,6 @@ export default {
       strainerArr.forEach(d=>{this[d] = [];
         console.log(this[d]);
       });
-      this.$refs.datePicker.clearDate();
       this.filter = {};
       this.$refs.table.refresh();
     },

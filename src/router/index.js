@@ -255,6 +255,21 @@ const router = new Router({
       name: 'TaskPending',
       component: TaskCommon,
       meta: { 'status': 0 },
+    },{
+      path: '/task/pendingPatent',
+      name: 'TaskPending',
+      component: TaskCommon,
+      meta: { 'status': 0, 'category': 1, },
+    },{
+      path: '/task/pendingTrademark',
+      name: 'TaskPending',
+      component: TaskCommon,
+      meta: { 'status': 0 , 'category': 2},
+    },{
+      path: '/task/pendingCopyright',
+      name: 'TaskPending',
+      component: TaskCommon,
+      meta: { 'status': 0 , 'category': 3},
     },
     {
       path: '/task/pause',
@@ -530,7 +545,7 @@ router.beforeEach((to, from, next)=>{
   // console.log(to, from);
   const store = this.a.app.$store;
   if(store) {
-    store.commit('clearScreen');
+    store.dispatch('clearScreen');
   }
   next();
 });

@@ -40,8 +40,26 @@ menu.data = [
 		type: 'submenu',
 		children: [
 			{
-				text: '未完成',
+				text: '所有待办',
 				path: '/task/pending',
+				icon: 'iconfont el-icon-my-task-pending',
+				type: 'item',
+			},
+			{
+				text: '专利待办',
+				path: '/task/pendingPatent',
+				icon: 'iconfont el-icon-my-task-pending',
+				type: 'item',
+			},
+			{
+				text: '商标待办',
+				path: '/task/pendingTrademark',
+				icon: 'iconfont el-icon-my-task-pending',
+				type: 'item',
+			},
+			{
+				text: '版权待办',
+				path: '/task/pendingCopyright',
 				icon: 'iconfont el-icon-my-task-pending',
 				type: 'item',
 			},

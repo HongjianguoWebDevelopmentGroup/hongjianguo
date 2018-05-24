@@ -1,5 +1,6 @@
 const state = {
 	screen: [],
+	lock: false,
 }
 
 const getters = {
@@ -44,7 +45,8 @@ const getters = {
 		}
 
 		return o;
-	}
+	},
+	filterLock: state => state.lock,
 }
 
 const mutations = {
@@ -56,11 +58,28 @@ const mutations = {
 	},
 	removeScreen: (state, index)=>{
 		state.screen.splice(index,1);
-	}
+	},
+	setFilterLock: (state, bool) => {
+		state.lock = bool;
+	} 	
 }
 
 const actions = {
-	
+	//清空筛选项
+	//flag用于控制清空筛选项时,是否刷新列表(默认不刷新)
+	clearScreen ({commit, state, rootState}, flag=false) {
+		if(!flag) {
+			commit('setFilterLock', true);
+		}
+
+		commit('clearScreen');
+
+		if (state.lock) {
+			rootState.Vue.nextTick(() => {
+				commit('setFilterLock', false);
+			});
+		}		
+	},
 }
 
 export default {

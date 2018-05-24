@@ -59,9 +59,11 @@ export default {
       this.$refs.pop.show();
     },
     tansmitData(data){
-      // console.log(data);
+      console.log('------------------')
+      console.log(data);
       if(data[1] !== undefined) {
-        this.inventors = data[1];
+        // this.inventors = data[1];
+        this.inventorForm.newValue = { 'id': data[1].id, 'name': data[1].name };
         // if(this.formData.inventors && this.formData.inventors.length != 0) {
         //     //复用组件内置的方法...
         //   this.$refs.inventors.handleShare(this.formData.inventors);

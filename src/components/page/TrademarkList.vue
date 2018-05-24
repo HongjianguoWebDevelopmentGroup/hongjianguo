@@ -100,12 +100,12 @@ export default {
 					render:(h,item)=>{
 						return h('img',{
 							attrs:{
-								src:item.viewUrl,
-								minWidth: '150px',	
-								maxHeight: '150px',	
+								src:item.viewUrl?item.viewUrl:'',
 							},
 							style:{
 								marginTop:'5px',
+								maxWidth: '150px',	
+								maxHeight: '80px',	
 							}
 						})
 					},
@@ -175,7 +175,8 @@ export default {
 					'type': 'text',
 					'label': '代理机构',
 					'prop': 'agency',
-					'width': '168',
+					'render_simple': 'name',
+					'width': '240',
 					sortable : true,
 			    },
 				{

@@ -49,16 +49,16 @@
 						<static-select type="tag" v-model="form.tags" multiple></static-select>
 					</el-form-item>	
 					<el-form-item label="申请日" prop="apd">
-						<date-strainer v-model="form.apd" ref="datePicker"></date-strainer>
+						<date-strainer v-model="form.apd"></date-strainer>
 					</el-form-item>
 					<el-form-item label="立案日" prop="create_time">
-						<date-strainer v-model="form.create_time" ref="datePicker"></date-strainer>				
+						<date-strainer v-model="form.create_time"></date-strainer>				
 					</el-form-item>
 					<el-form-item label="授权日" prop="issue_date">
-						<date-strainer v-model="form.issue_date" ref="datePicker"></date-strainer>					
+						<date-strainer v-model="form.issue_date"></date-strainer>					
 					</el-form-item>
 					<el-form-item label="公开日" prop="public_date">
-						<date-strainer v-model="form.public_date" ref="datePickerr"></date-strainer>
+						<date-strainer v-model="form.public_date"></date-strainer>
 					</el-form-item>
 					
 				</el-col>
@@ -136,6 +136,7 @@ export default {
 	  				}
 	  			}		
   			}else {
+  				
   				if(d != "") filter[k] = d;
   			}
   		}
@@ -143,7 +144,6 @@ export default {
   		this.$emit('refresh');
   	},
   	clear (f,form) {
-  		// this.$refs.datePicker.clearDate();
   		form.resetFields();
   		this.$emit('input', {});
   		this.$emit('refresh');

@@ -107,14 +107,6 @@ export default {
       }
     }
   },
-  watch: {
-    options_vuex (val) {
-      this.options = val;
-    },
-    value (val) {
-      this.$refs.select.visible = false;
-    }
-  },
   methods: {
     ...mapActions([
       'initializeSelectorCache'
@@ -177,6 +169,12 @@ export default {
     this.setOptions();
   },
   watch: {
+    options_vuex (val) {
+      this.options = val;
+    },
+    value (val) {
+      this.$refs.select.visible = false;
+    },
     cacheData (val) {
       if(val) {
         this.options = val;  

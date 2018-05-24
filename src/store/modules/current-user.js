@@ -56,6 +56,11 @@ const getters = {
 		const pendingTask = user && user.pendingTask ? user.pendingTask : null;
 		return pendingTask;
 	},
+	userVersion: state =>{
+		const user = state.data;
+		const userVersion = user && user.db ? user.db : '';
+		return userVersion;
+	},
 	userLoading: state=>state.loading,
 }
 
@@ -65,7 +70,10 @@ const mutations = {
 	},
 	setUserLoading (state, boolean) {
 		state.loading = boolean;
-	}
+	},
+	setUserValue (state, {type, value}) {
+		state.data[type] = value;
+	},
 }
 
 const actions = {
@@ -86,6 +94,11 @@ const actions = {
 				commit('setUserLoading', false);
 			})
 			.catch(error=>{console.log(error)});
+	},
+	setUserVersion ({state, commit}, val) {
+		if(state.data && state.data.db) {
+			commit('setUserValue', {type: 'db', value: val});
+		}
 	}
 }
 

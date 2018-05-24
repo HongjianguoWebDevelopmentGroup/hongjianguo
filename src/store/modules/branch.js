@@ -9,6 +9,7 @@ const getters = {
 	branchMap: state=>{
 		const map = new Map();
 		a(state.data);
+		console.log(map);
 		return map;
 
 		function a(arr) {

@@ -562,6 +562,7 @@ export default {
       'innerHeight',
       'pagesize',
       'menusMap',
+      'filterLock',
     ]),
     tableData () {
       const d = this.data;
@@ -715,6 +716,7 @@ export default {
       deep: true,
     },
     screen_obj (val) {
+      if(this.filterLock) return;
       this.filterVisible = false;
       this.refresh();    
     }

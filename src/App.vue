@@ -22,11 +22,20 @@
     <nav>
         <img src="/static/static_img/hjg_logo.png" style="vertical-align: middle; height: 27px;">
         <!-- <span class="logo_name">知识产权管理系统</span> -->
+        <el-dropdown  trigger="click" style=" margin-left: 15px;" @command="handleToggle">
+          <span class="el-dropdown-link" style="color: #20a0ff; cursor: pointer;">
+            版本{{ versionText }}<i class="el-icon-caret-bottom el-icon--right"></i>
+          </span>
+          <el-dropdown-menu slot="dropdown" class="app-dropdown-menu">
+            <el-dropdown-item command="网心">网心</el-dropdown-item>
+            <el-dropdown-item command="迅雷">迅雷</el-dropdown-item>
+          </el-dropdown-menu>
+        </el-dropdown>        
         <el-dropdown  trigger="click" style="float: right; margin-right: 40px;" @command="handleCommond">
           <span class="el-dropdown-link" style="color: #20a0ff; cursor: pointer;">
             {{ username }}<i class="el-icon-caret-bottom el-icon--right"></i>
           </span>
-          <el-dropdown-menu slot="dropdown" >
+          <el-dropdown-menu slot="dropdown" class="app-dropdown-menu">
             <el-dropdown-item command="login_out">登出</el-dropdown-item>
           </el-dropdown-menu>
         </el-dropdown>
@@ -44,7 +53,7 @@
       <span class="nav-left-btn" @click="navToggle"><span class="nav-left-btn-arrow el-icon-arrow-left"></span></span>
       <div class="nav-left" :style="`height: ${innerHeight}px`">
         
-        <el-menu v-if="menusMap != null" theme="dark" router unique-opened :default-active="select.path">
+        <el-menu @select="handleMenuSelect" v-if="menusMap != null" theme="dark" router unique-opened :default-active="select.path">
           <app-menu-item v-for="item in menu_data" :dd="item" :key="item.path"></app-menu-item>
         </el-menu>
 
@@ -71,7 +80,7 @@
         </el-breadcrumb>
       </div>
       
-      <router-view :key="$route.path.split('__')[0]" ></router-view>
+      <router-view :key="$route.path.split('__')[0]" v-if="routerIf"></router-view>
     </div>
 
     <agency-load :visible="agencyLoadVisible"></agency-load>
@@ -87,11 +96,19 @@ import AgencyLoad from '@/components/form/AgencyLoad'
 import menu from '@/const/menuConst'
 import AppMenuItem from '@/components/common/AppMenuItem'
 import { mapGetters } from 'vuex'
+import { mapActions } from 'vuex' 
+const map = new Map([
+  ['网心', 1],
+  ['迅雷', 2],
+  ]);
 
 export default {
   name: 'app',
   mixins: [ AxiosMixins ],
   computed: {
+    path () {
+      return this.$route.path;
+    },
     select () {
       const d = this;
       let path = d.$route.path;
@@ -136,7 +153,12 @@ export default {
       'agencyLoadVisible',
       'menusMap',
       'pendingTaskCount',
+      'userVersion',
+      'routerIf',
     ]),
+    versionText () {
+      return {1: '网心', 2: '迅雷', '': ''}[this.userVersion];
+    }
   },
   data () {
     return {      
@@ -148,8 +170,36 @@ export default {
     };
   },
   methods: {
+    ...mapActions([
+      'setUserVersion',
+      'refreshRouter',
+      'clearScreen',
+    ]),
+      //处理同路径不刷新界面的问题
+    handleMenuSelect (index) {
+      if(this.path === index) {
+        this.clearScreen();
+        this.refreshRouter();
+      }
+    },
     handleClose (index) {
       this.$store.commit('removeScreen', index);
+    },
+    handleToggle (command) {
+      const url =  `/api/version`;
+      const data= {
+        db:map.get(command),
+      };
+      const success = _=>{
+        // this.setUserVersion(map.get(command));
+        this.$message({ message: `系统已成功切换为${command}数据`, type: 'success'});
+        setTimeout(_=>{
+          window.location.reload();
+        },300)
+      };
+      const complete = _=>{
+      };
+      this.$axiosGet({url,data,success,complete});
     },
     handleCommond (commond) {
       if(commond == 'login_out') {
@@ -192,7 +242,6 @@ export default {
     }
   },
   created () {
-  
     const success = _=>{
       this.userinfoLoading = false;
       this.$store.commit('setUser', window.appCache.userinfo);
@@ -434,8 +483,13 @@ nav {
   // font-weight: bold;
   display: inline-block;
 }
+.app-dropdown-menu {
+    font-size: 14px;
+  }
 /*这里放入重写element-ui样式的内容*/
 #app {
+  
+
   .el-tree-node__expand-icon.expanded {
     -ms-transform: rotate(90deg);
     transform: rotate(90deg);
@@ -481,7 +535,7 @@ nav {
   }
   .el-dropdown-menu__item {
     line-height: 25px;
-    font-size: 14px;
+    font-size: 12px !important;
     font-family: "microsoft yahei", Helvetica, Tahoma, Arial, sans-serif;
     padding: 0 20px;
   }
@@ -556,7 +610,13 @@ nav {
     display: table;
     content: "";
   }
-  .app-upload {
+ .el-dialog--small  .el-upload--text {
+      display: inline-block;
+      text-align: center;
+      cursor: pointer;
+      position: static; 
+    }
+   .app-upload {
     .el-upload-list {
       padding: 0;
       list-style: none;
@@ -572,13 +632,6 @@ nav {
       left: 0px;
     }
   }
- .el-dialog--small  .el-upload--text {
-      display: inline-block;
-      text-align: center;
-      cursor: pointer;
-      position: static; 
-    }
- 
   /*icon库扩展*/
   [class^="el-icon-my"], [class*=" el-icon-my"] {
     font-family:"iconfont" !important;

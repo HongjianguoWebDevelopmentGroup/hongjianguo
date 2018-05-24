@@ -15,7 +15,8 @@
               <el-input type="textarea" v-model="formData.abstract" placeholder="请输入案件摘要"></el-input>
             </el-form-item>
 
-            <el-form-item label="发明人" prop="inventors" class="is-required">
+            <el-form-item label="发明人" prop="inventors" class="required">
+              <i style="margin-left: -66px;float: left;color:#ff4949;">*</i>
               <inventors v-model="formData.inventors" ref="inventors" @addInventor="$refs.form.validateField('inventors')" @deleteInventor="$refs.form.validateField('inventors')" :propType="propType" @inventors="changeInventors">
               <!-- <el-button type='text' @click="handleAdd"  slot="addInventor">添加发明人</el-button>  -->
               </inventors>   
@@ -293,7 +294,8 @@ export default {
         ],
         'inventors': { 
           type: 'array',
-          trigger: 'change', 
+          trigger: 'change',
+          // required: true, 
           validator: (a,b,c)=>{
 
             //这里没有使用插件的传入值,是因为在监测输入框输入事件时,值未正常更新

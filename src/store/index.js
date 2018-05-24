@@ -27,6 +27,7 @@ Vue.use(Vuex);
 const store = new Vuex.Store({
   strict: true,
   state: {
+    Vue,
     dragId: null,
     axios,
     tool,
@@ -40,6 +41,7 @@ const store = new Vuex.Store({
     leftNavVisible: true,
     agencyLoadVisible: false,
     importLoading: false,
+    routerIf: true,
   },
   modules: {
     filter,
@@ -76,6 +78,7 @@ const store = new Vuex.Store({
     leftVisible: state=>state.leftNavVisible,
     agencyLoadVisible: state=>state.agencyLoadVisible,
     importLoading: state=>state.importLoading,
+    routerIf: state => state.routerIf,
   },
   mutations: {
     setDragId (state, id) {
@@ -114,6 +117,9 @@ const store = new Vuex.Store({
     },
     setImportLoading(state, boolean) {
       state.importLoading = boolean;
+    },
+    setRouterIf(state, bool) {
+      state.routerIf = bool;
     }
   },
   actions: {
@@ -128,7 +134,13 @@ const store = new Vuex.Store({
       commit('setShrinkLoading', false);
       // state.shrinkLoadingText = '';
       // state.shrinkLoading = false;
-    }
+    },
+    refreshRouter({state, commit}) {
+      commit('setRouterIf', false);
+      Vue.nextTick(() => {
+        commit('setRouterIf', true);
+      })
+    }    
   }
 });
 

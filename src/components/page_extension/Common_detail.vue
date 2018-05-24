@@ -65,7 +65,7 @@
       <change-form :id="id" @success="dialogChange=false;refreshDetailData();" ref="changeForm"></change-form>
     </el-dialog>
   <el-dialog title="分案请求" :visible.sync="dialogDivide"  @close="$refs.divideForm.clear();">
-    <divide-form :id="id" @success="dialogChange=false;refreshDetailData();" ref="divideForm"></divide-form>
+    <divide-form :id="id" @success="dialogDivide=false;$emit('editSuccess');$emit('update:visible', false);" ref="divideForm"></divide-form>
   </el-dialog>
   <el-dialog title="新增任务" :visible.sync="dialogTask">
     <task-edit type="add" :id="id" ref="taskEdit" @addSuccess="addSuccess"></task-edit>

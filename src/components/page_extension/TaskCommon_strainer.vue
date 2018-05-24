@@ -28,19 +28,19 @@
       </el-col>
       <el-col :span="12">
         <el-form-item label="申请日" prop="apd">
-         <date-strainer v-model="form.apd" ref="datePicker"></date-strainer>        
+         <date-strainer v-model="form.apd"></date-strainer>        
         </el-form-item>
         <el-form-item label="完成时间" prop="end_time">
-          <date-strainer v-model="form.end_time" ref="datePicker"></date-strainer>
+          <date-strainer v-model="form.end_time"></date-strainer>
         </el-form-item>
         <el-form-item label="指定期限" prop="due_time">
-          <date-strainer v-model="form.due_time" ref="datePicker"></date-strainer>
+          <date-strainer v-model="form.due_time"></date-strainer>
         </el-form-item>  
         <el-form-item label="管控期限" prop="inner_deadline">
-          <date-strainer v-model="form.inner_deadline" ref="datePicker"></date-strainer>
+          <date-strainer v-model="form.inner_deadline"></date-strainer>
         </el-form-item>
         <el-form-item label="法定期限" prop="deadline">
-          <date-strainer v-model="form.deadline" ref="datePicker"></date-strainer>              
+          <date-strainer v-model="form.deadline"></date-strainer>              
         </el-form-item> 
         <el-form-item label="任务阶段" prop="stage">
           <static-select type="task_stage" v-model="form.stage" multiple></static-select>
@@ -117,7 +117,6 @@ export default {
   	},
   	clear () {
   		this.$refs.form.resetFields();
-      this.$refs.datePicker.clearDate();
   		this.$emit('clear');
   	}
   },

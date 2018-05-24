@@ -46,13 +46,13 @@
       <el-row>
         <el-col :span="12">
           <el-form-item label="申请日" prop="apd">
-            <date-strainer v-model="form.apd" ref="datePicker"></date-strainer>            
+            <date-strainer v-model="form.apd"></date-strainer>            
             <!-- <el-date-picker type="daterange" v-model="form.apd" placeholder="请选择申请日"></el-date-picker> -->
           </el-form-item>
         </el-col>
         <el-col :span="12">
           <el-form-item label="公告日" prop="issue_date">
-            <date-strainer v-model="form.issue_date" ref="datePicker"></date-strainer>     
+            <date-strainer v-model="form.issue_date"></date-strainer>     
             <!-- <el-date-picker type="daterange" v-model="form.issue_date" placeholder="请选择公告日"></el-date-picker> -->
           </el-form-item>
         </el-col>

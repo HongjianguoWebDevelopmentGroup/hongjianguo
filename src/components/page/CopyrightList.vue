@@ -80,7 +80,7 @@ export default {
           { type: 'array', label: '著作权人', prop: 'applicants', is_import: true, render: _=>_.map(_=>_.name), width: '220' ,sortable : true,},
           { type: 'text', label: '提案人', prop: 'proposer', is_import: true, render_simple: 'name', width: '145',sortable : true, },
           { type: 'text', label: 'IPR', prop: 'ipr', render_simple: 'name', is_import: true, width: '140',sortable : true, },
-          { type: 'text', label: '代理机构名称', prop: 'agency', render_simple: 'name', width: '143',sortable : true, },
+          { type: 'text', label: '代理机构名称', prop: 'agency', render_simple: 'name', width: '240',sortable : true, },
           { type: 'text', label: '事务所案号', prop: 'agency_serial', width: '168',sortable : true, },
           { type: 'array', label: '产品名称', prop: 'products', sortable: true, is_import: true, render: _=>_.map(_=>_.name), width: '150' },
           { type: 'array', label: '标签', prop: 'tags', is_import: true, width: '160',sortable : true, },
