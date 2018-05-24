@@ -1,5 +1,6 @@
 const state = {
 	screen: [],
+	lock: false,
 }
 
 const getters = {
@@ -44,7 +45,8 @@ const getters = {
 		}
 
 		return o;
-	}
+	},
+	filterLock: state => state.lock,
 }
 
 const mutations = {
@@ -56,11 +58,27 @@ const mutations = {
 	},
 	removeScreen: (state, index)=>{
 		state.screen.splice(index,1);
-	}
+	},
+	setFilterLock (state, bool) {
+		state.lock = bool;
+	},
 }
 
 const actions = {
-	
+	clearFilter ({commit, state}, flag=false) {
+		console.log('---------clearFilter---------');
+		if(!flag) {
+			commit('setFilterLock', true);
+		}
+
+		commit('clearScreen');
+
+		if (state.lock) {
+			window.setTimeout(() => {
+				commit('setFilterLock', false);
+			}, 0);
+		}		
+	},
 }
 
 export default {

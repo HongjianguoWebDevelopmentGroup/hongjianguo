@@ -57,10 +57,10 @@ import StaticSelect from '@/components/form/StaticSelect'
 import ReportForm from '@/components/page_extension/Report_form'
 import ReportView from '@/components/page_extension/Report_view'
 import MailDate from '@/components/form/MailDate'
-
+import {configs} from '@/const/reportSetting'
 import {mapGetters} from 'vuex' 
 
-const url = '/api/reports';
+const url = '/reports';
 export default {
 	name: 'reportAdd',
 	data () {
@@ -83,13 +83,12 @@ export default {
 	computed: {
 		...mapGetters([
 			'innerHeight',
-			'tableConfigsCache',
 		]),
 		type () {
-			return this.$route.meta.type;
+			return this.$route.params.type;
 		},
 		config () {
-			return this.tableConfigsCache[this.type];
+			return configs[this.type];
 		},
 	},
 	methods: {

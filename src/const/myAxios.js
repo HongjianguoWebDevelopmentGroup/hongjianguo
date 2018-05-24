@@ -1,14 +1,13 @@
 export default {
-	install (Vue, options) {
-		Vue.prototype.$axiosGet = axiosGet;
+  install (Vue, options) {
+    Vue.prototype.$axiosGet = axiosGet;
     Vue.prototype.$axiosDelete = axiosDelete;
     Vue.prototype.$axiosPost = axiosPost;
     Vue.prototype.$axiosPut = axiosPut;
-	}
+  }
 }
 
 //------------------默认配置项start-------------------------
-const status = false;
 
 const URLDEFAULT = '';
 
@@ -33,7 +32,7 @@ const completeFunc = function (d, t) {}
 //------------------默认配置项end-------------------------
 
 function axiosGet ({url=URLDEFAULT, data=dd, success=_=>{successFunc(_, this)}, error=_=>{errorFunc(_, this)}, catchFunc=_=>{catchFunct(_, this)}, complete=_=>{completeFunc(_, this)} }) {
-  url = status ? url.replace(/\/api/, '') : url;
+  
   
   const res = this.$axios.get(url, { params: data });
   res
@@ -45,7 +44,7 @@ function axiosGet ({url=URLDEFAULT, data=dd, success=_=>{successFunc(_, this)}, 
         // console.log(url);
       }
       d.status > 0 ? success(d) : error(d);
-  
+      
       complete(d);
 
     })
@@ -57,7 +56,7 @@ function axiosGet ({url=URLDEFAULT, data=dd, success=_=>{successFunc(_, this)}, 
   return res;
 }
 function axiosDelete({ url=URLDEFAULT, data=dd, success=_=>{successFunc(_, this)}, error=_=>{errorFunc(_, this)}, catchFunc=_=>{catchFunct(_, this)}, complete=_=>{completeFunc(_, this)} }) {
-  url = status ? url.replace(/\/api/, '') : url;
+
 
   const res = this.$axios.delete(url, { params: data });
   res
@@ -76,7 +75,7 @@ function axiosDelete({ url=URLDEFAULT, data=dd, success=_=>{successFunc(_, this)
 }
 
 function axiosPost ({ url=URLDEFAULT, data=dd, success=_=>{successFunc(_, this)}, error=_=>{errorFunc(_, this)}, catchFunc=_=>{catchFunct(_, this)}, complete=_=>{completeFunc(_, this)} }) {
-  url = status ? url.replace(/\/api/, '') : url;
+
   
   const res = this.$axios.post(url, data);
   res
@@ -95,7 +94,7 @@ function axiosPost ({ url=URLDEFAULT, data=dd, success=_=>{successFunc(_, this)}
 }
 
 function axiosPut ({ url=URLDEFAULT, data=dd, success=_=>{successFunc(_, this)}, error=_=>{errorFunc(_, this)}, catchFunc=_=>{catchFunct(_, this)}, complete=_=>{completeFunc(_, this)} }) {
-  url = status ? url.replace(/\/api/, '') : url;
+
   
   const res = this.$axios.put(url, data);
   res

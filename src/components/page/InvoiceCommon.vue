@@ -74,7 +74,6 @@ export default {
           { type: 'export' },
           { type: 'delete' },
           {},
-          { type: 'report', click: this.handleReport },
           { type: 'control' },
         ],
         'header_slot': ['cur_total', 'all_total'],
@@ -89,8 +88,7 @@ export default {
             type: 'text', 
             label: '外币金额', 
             prop: 'amount', 
-            width: '100',
-            align: 'right',
+            width: '150',
             render:(h,item,row)=>{
               if( row.roe == 1 ){
                 return h('span','N/A');
@@ -103,8 +101,7 @@ export default {
             type: 'text', 
             label: '汇率', 
             prop: 'roe', 
-            width: '80',
-            align: 'right',
+            width: '150',
             render:(h,item)=>{
               if( item == 1 ){
                 return h('span','N/A');
@@ -117,8 +114,7 @@ export default {
             type: 'text', 
             label: '人民币金额', 
             prop: 'rmb', 
-            width: '120',
-            align: 'right',
+            width: '150',
             render:(h,item)=>{
               return h('span',`${item}CNY`)
             }
@@ -132,39 +128,6 @@ export default {
         align: 'center',
         width: '240',
         btns_render: true,
-        // btns: [
-        //   {
-        //     btn_type: 'text',
-        //     label: '审核账单',
-        //     btn_disabled: ({status}) => status.id !== 1,
-        //     click: ({id}) => {
-        //       this.checkVisible = true;
-        //       this.$nextTick(() => {
-        //         this.$refs.checkInvoice.render(id);
-        //       });
-        //     }
-        //   },
-        //   {
-        //     btn_type: 'text',
-        //     label: '确认付款',
-        //     btn_disabled: ({status}) => status.id !== 2,
-        //     click: ({id}) => {
-        //       this.payId = id;
-        //       this.payVisible = true;
-        //     }
-        //   },
-        //   {
-        //     btn_type: 'text',
-        //     label: '上传凭证',
-        //     btn_disabled: ({status}) => status.id !== 4,
-        //     click: ({id}) => {
-        //       this.uploadVisible = true;
-        //       this.$nextTick(() => {
-        //         this.$refs.uploadInvoice.render(id);
-        //       })
-        //     }
-        //   }
-        // ]
       },
       tableData: [],
       filter: {},

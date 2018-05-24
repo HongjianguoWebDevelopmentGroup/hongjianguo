@@ -26,10 +26,7 @@
 
         <el-col :span="12">
           <el-form-item label="账单状态" prop="status">
-            <el-select v-model="form.status">
-              <el-option label="未付款" value="0"></el-option>
-              <el-option label="已付款" value="1"></el-option>
-            </el-select>
+            <static-select type="invoice_type" v-model="form.status"></static-select>
           </el-form-item>
           <el-form-item label="账单对象" prop="target">
             <remote-select type="member" multiple v-model="form.target"></remote-select>

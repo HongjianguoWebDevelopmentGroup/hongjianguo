@@ -2,7 +2,7 @@
 <template>
   <div class="hjg-table">
     
-  	<div class="table-header" v-if="tableOption.is_header === undefined ? true : tableOption.is_header">
+    <div class="table-header" v-if="tableOption.is_header === undefined ? true : tableOption.is_header">
       <el-popover
         placement="right"
         width="800"
@@ -12,19 +12,12 @@
         v-if="tableOption.is_filter ? true : false"
       >
         <app-filter :data="filters" v-if="tableOption.is_filter === undefined ? true : tableOption.is_filter"></app-filter>
-        <el-button slot="reference" type="primary" style="margin-right: 5px;">快速筛选</el-button>
+        <el-button slot="reference" type="primary" class="table-header-btn" style="margin-right: 5px;">快速筛选</el-button>
       </el-popover>
-      <search-input
-        v-model="search_value"
-        :placeholder="tableOption.search_placeholder == undefined ? '搜索...' : tableOption.search_placeholder"
-        style="width: 250px;"
-        class="table-search"
-        @click="handleSearch"
-        @enter="handleSearch"
-        v-if="tableOption.is_search == undefined ? true : tableOption.is_search"
-      ></search-input>
+
       <template v-for="btn in tableOption.header_btn">
-        <template v-if="headerBtnIf(btn)">
+      <template v-if="headerBtnIf(btn)">
+
         <template v-if="btn.type == 'custom'">
           <el-button class="table-header-btn" type="primary" :icon="btn.icon ? btn.icon : ''" @click="handleCommand(btn.click, $event)">{{ btn.label }}</el-button>
         </template>
@@ -41,7 +34,7 @@
             </el-dropdown-menu>
           </el-dropdown> -->
         </template>
-        <!-- 这段是做什么的 -->
+        <!-- 下拉列表配置 -->
         <template v-else-if="btn.type == 'dropdown'">
           <el-dropdown trigger="click" menu-align="start">
             <el-button class="table-header-btn" type="primary" :icon="btn.icon ? btn.icon : ''">
@@ -80,6 +73,10 @@
           <el-button class="table-header-btn" type="primary" icon="upload2" :loading="exportLoading" @click="handelExport(btn.click, $event)">{{ exportLoading ? '导出中...' : '导出' }}</el-button>
         </template>
 
+        <template v-else-if="btn.type == 'export2'">
+          <el-button class="table-header-btn" type="primary" icon="upload2" @click="dialogExport = true">导出</el-button>
+        </template>
+
         <template v-else-if="btn.type == 'import'">
           <el-button class="table-header-btn" type="primary" icon="document"  @click="handleImport(btn.click, $event)">{{ btn.label ? btn.label : '导入' }}</el-button>
         </template>
@@ -88,164 +85,73 @@
           <el-button class="table-header-btn" type="primary" icon="upload" @click="handleBatchUpload(btn.click, $event)">{{ btn.label ? btn.label : '文件上传' }}</el-button>
         </template>
 
+        <template v-else-if="btn.type == 'batch_update'">
+          <el-button class="table-header-btn" type="primary" icon="edit" @click="handleBatchUpdate(btn.click, $event)">批量更新</el-button>
+        </template>
+
         <template v-else-if="btn.type == 'report'">
           <el-button class="table-header-btn" type="primary" icon="my-report" @click="handleBatchUpdate(btn.click, $event)">报表</el-button>
         </template>
 
-        <template v-else-if="btn.type == 'serial_search'">
-          <el-button class="table-header-btn" style="float: right;margin-right: 10px;" type="primary"   @click="handleSerialSearch(btn.click, $event)" >编号检索</el-button>
-        </template>
-        </template>
+      </template>
       </template>
         
       <template v-if="tableOption.header_slot ? true : false">
         <slot v-for="item in tableOption.header_slot" :name="item"></slot>
       </template>
-	  	
+      <search-input
+        v-model="search_value"
+        :placeholder="tableOption.search_placeholder == undefined ? '搜索...' : tableOption.search_placeholder"
+        class="table-search"
+        @click="handleSearch"
+        @enter="handleSearch"
+        v-if="tableOption.is_search == undefined ? true : tableOption.is_search"
+      ></search-input>
     </div>
     
-  	<el-table
+    <app-table
       v-if="refreshRender"
-      :data="tableData"
-      stripe
-      :border="tableOption.is_border != undefined ? tableOption.is_border : true" 
-      @selection-change="handleselectionChange" 
-      :row-key="getRowKeys" 
-      :default-sort="tableOption.default_sort ? tableOption.default_sort : {}"
-      @sort-change="handleSortChange"
-      :expand-row-keys="expands"
-      @expand="handleExpand"
-      :style="tableStyle"
-      :row-class-name="handleRowClassName"
-      @row-click="handleRowClick"
-      :highlight-current-row="tableOption.highlightCurrentRow !== undefined ? tableOption.highlightCurrentRow : false"
-      :height="tableHeight"
-      :max-height="tableOption.maxHeight"
       :class="tableOption.empty_text_position == 'topLeft' ? 'empty-top-left' : ''"
+      :style="tableStyle"
+      :data="tableData"
+      :border="tableOption.is_border != undefined ? tableOption.is_border : true"
+      :default-sort="tableOption.default_sort ? tableOption.default_sort : {}"
+      :height="tableOption.height"
+      :highlight-current-row="tableOption.highlightCurrentRow !== undefined ? tableOption.highlightCurrentRow : false"
+      :columns="columns"
+      :table-selected.sync="selected"
+      @sort-change="handleSortChange"
+      @row-click="handleRowClick"
+      @cell-click="handleCellClick"
       ref="table"
     >
-      <template v-for="(col, index) in columns">
-        
-        <template v-if="col.type == 'selection'">
-          <el-table-column type="selection" :fixed="col.fixed === false ? false : 'left'"></el-table-column>
-        </template>
-
-<!--         <template v-else-if="col.type == 'expand'">
-          <el-table-column type="expand">
-            <template scope="scope">
-              <slot name="expand" :row="scope.row">
-              </slot>
-            </template>
-          </el-table-column>
-        </template> -->
-
-        <template v-else-if="col.type == 'text'" >
-          
-          <template v-if="col.render ? true : false">
-            <el-table-column :label="col.label" :prop="col.prop" :width="col.width ? col.width : ''" :min-width="col.min_width ? col.min_width : ''" :sortable="col.sortable ? 'custom' : false" :show-overflow-tooltip="col.overflow !== undefined ? col.overflow : true" :align="col.align !== undefined ? col.align :'left'" :header-align="col.header_align !== undefined ? col.header_align :'left'">
-              <template slot-scope="scope">
-                <table-render :render="col.render" :scope="scope" :prop="col.prop"></table-render>
-              </template>
-            </el-table-column>
-          </template>
-
-          <template v-else-if="col.render_text ? true : false ">
-            <el-table-column :label="col.label" :prop="col.prop" :width="col.width ? col.width : ''" :min-width="col.min_width ? col.min_width : ''" :sortable="col.sortable ? 'custom' : false" :show-overflow-tooltip="col.overflow !== undefined ? col.overflow : true">
-              <template slot-scope="scope">
-                <span class="table-column-render">{{ col.render_text(scope.row[col.prop]) }}</span>
-              </template>
-            </el-table-column>
-          </template>
-
-          <template v-else-if="col.render_simple ? true : false ">
-            <el-table-column :label="col.label" :prop="col.prop" :width="col.width ? col.width : ''" :min-width="col.min_width ? col.min_width : ''" :sortable="col.sortable ? 'custom' : false" :show-overflow-tooltip="col.overflow !== undefined ? col.overflow : true">
-              <template slot-scope="scope">
-                <span class="table-column-render">{{ handleSimple(scope.row, col) }}</span>
-              </template>
-            </el-table-column>
-          </template>
-
-          <template v-else>
-            <el-table-column :label="col.label" :prop="col.prop" :width="col.width ? col.width : ''" :min-width="col.min_width ? col.min_width : ''" :sortable="col.sortable ? 'custom' : false" :show-overflow-tooltip="col.overflow !== undefined ? col.overflow : true">
-              <!-- <template v-if="col.default !== undefined" scope="scope">{{ scope.row[col.prop] ? scope.row[col.prop] : col.default }}</template> -->
-            </el-table-column>
-          </template>
-
-        </template>
-
-        <template v-else-if="col.type == 'date'">
-          <el-table-column :label="col.label" :prop="col.prop">
-          </el-table-column>
-        </template>
-
-        <template v-else-if="col.type == 'array'">
-          <el-table-column :label="col.label" :prop="col.render ? `${col.prop}__render` : col.prop" :width="col.width ? col.width : ''" :min-width="col.min_width ? col.min_width : ''"  :sortable="col.sortable ? 'custom' : false" :show-overflow-tooltip="col.overflow !== undefined ? col.overflow : true">
-            <template slot-scope="scope">
-
-              <el-tag v-for="(item, i) in scope.row[scope.column.property]" style="margin-left: 5px;" close-transition :key="i">{{ item }}</el-tag>
-
-            </template>
-          </el-table-column>
-        </template>
-
-        <template v-else-if="col.type == 'action'">
-          <el-table-column :label="col.label ? col.label : '操作'" :align="col.align ? col.align : 'left'" :width="col.width ? col.width : ''" :min-width="col.min_width ? col.min_width : ''" header-align="center" :fixed="col.fixed === false ? false : 'right'">
-            <template slot-scope="scope">
-              <template v-if="col.btns_render ? true : false">
-                <slot :name="col.btns_render" :row="scope.row">
-                </slot>
-              </template>
-              <template v-else v-for="(btn, index) in col.btns" v-if="btn.btn_if ? btn.btn_if(scope.row) : true">
-
-                <el-dropdown v-if="btn.type == 'dropdown'" :key="index" trigger="click" menu-align="start">
-                  <el-button class="table-header-btn" :type="btn.btn_type ? btn.btn_type : ''" :size="btn.size ? btn.size : 'mini'" :icon="btn.icon ? btn.icon : ''">
-                    {{ btn.label }}<i class="el-icon-caret-bottom el-icon--right"></i>            
-                  </el-button>
-                  <el-dropdown-menu v-if="btn.items">
-                    <el-dropdown-item v-for="(item,index2) in btn.items" :key="index2" :divided="item.divided"><div @click="handleCommand(item.click, $event)" style="margin: 0 -10px; padding: 0 10px;">{{ item.text }}</div></el-dropdown-item>
-                  </el-dropdown-menu>
-                </el-dropdown>
-
-                <el-button v-else-if="btn.type == 'confirm'" :type="btn.btn_type ? btn.btn_type : 'text'" :key="index" :size="btn.size ? btn.size : 'mini'" icon="edit" @click="handleActionCommand(btn.click, scope, $event)">确认</el-button>
-
-                <el-button v-else-if="btn.type == 'edit'" :type="btn.btn_type ? btn.btn_type : 'text'" :key="index" :size="btn.size ? btn.size : 'mini'" icon="edit" @click="handleActionCommand(btn.click, scope, $event)">编辑</el-button>
-
-                <el-button v-else-if="btn.type == 'detail'" :type="btn.btn_type ? btn.btn_type : 'text'" :key="index" :size="btn.size ? btn.size : 'mini'" icon="information" @click="handleActionCommand(btn.click, scope, $event)" >详情</el-button>
-
-                <el-button v-else-if="btn.type == 'delete'" :type="btn.btn_type ? btn.btn_type : 'text'" :key="index" :size="btn.size ? btn.size : 'mini'" icon="delete" @click="handleActionCommand(btn.click, scope, $event)" >删除</el-button>
-
-                <el-button v-else-if="btn.type == 'download'" :type="btn.btn_type ? btn.btn_type : 'text'" :key="index" :size="btn.size ? btn.size : 'mini'" icon="share" @click="handleActionCommand(btn.click, scope, $event)" >下载</el-button>
-
-                <el-button v-else-if="btn.type == 'view' && scope.row.isView" :type="btn.btn_type ? btn.btn_type : 'text'" :key="index" :size="btn.size ? btn.size : 'mini'" icon="view" @click="handleActionCommand(btn.click, scope, $event)" >查看</el-button>
-
-                <el-button v-else-if="btn.type == undefined || btn.type == 'custom'" :type="btn.btn_type ? btn.btn_type : ''" :key="index" :size="btn.size ? btn.size : 'mini'" :icon="btn.icon" @click="handleActionCommand(btn.click, scope, $event)">{{ btn.label }}</el-button>
-
-              </template>
-            </template>
-          </el-table-column>
-        </template>
-
+      <template slot="row_action" slot-scope="scope">
+        <slot name="row_action" :row="scope.row"></slot>
       </template>
-  	</el-table>
+    </app-table>
+    
     <!--v-if="totalNumber > pageSize"-->
-  	<el-pagination
+    <el-pagination
       v-if="tableOption.is_pagination == undefined ? true : tableOption.is_pagination"
-    	@current-change="handleCurrentChange"
+      @current-change="handleCurrentChange"
       @size-change="handleSizeChange"
-    	:current-page.sync="page"
-    	:page-size="pagesize"
+      :current-page.sync="page"
+      :page-size="pagesize"
       :page-sizes="pagesizes"
-    	layout="sizes, prev, pager, next, jumper, total"
-    	:total="totalNumber"
+      layout="sizes, prev, pager, next, jumper, total"
+      :total="totalNumber"
     >
     </el-pagination>
   
     
-      <app-import v-if="tableOption.import_type" :visible.sync="dialogImportVisible" :columns="import_columns" :type="tableOption.import_type" @import-success="handleImportSuccess"></app-import>
+    <app-import v-if="!!tableOption.import_type" :visible.sync="dialogImportVisible" :columns="import_columns" :type="tableOption.import_type" @import-success="handleImportSuccess"></app-import>
+
+    <el-dialog class="dialog-small" v-if="tableOption.update_type !== undefined" :visible.sync="dialogUpdateVisible" title="批量更新">
+      <batch-update :type="tableOption.update_type" @success="handleBatchUpdateSuccess"></batch-update>
+    </el-dialog>
     
-
-    <file-upload v-if="tableOption.upload_type !== undefined" :type="tableOption.upload_type" @uploadSuccess="update" ref="file_upload"></file-upload>
-
+    <file-upload v-if="tableOption.upload_type !== undefined" :type="tableOption.upload_type" @uploadSuccess="refresh" ref="file_upload"></file-upload>
+  
     <el-dialog class="dialog-control" :visible.sync="dialogControl" title="字段控制" @close="transferValue = control; $refs.transfer.clear();">
         <div style="margin-bottom: 10px;
     padding-left: 50px;
@@ -256,22 +162,15 @@
           <el-button type="danger" @click="dialogControl = false">取消</el-button>
         </div>
     </el-dialog>
-    <el-dialog title="编号检索" :visible.sync="dialogSerialSearch" size="tiny" @close="clear">
-      <el-form :model="serialForm" ref="serialForm">
-        <el-form-item prop="numbers">
-          <el-input type="textarea" v-model="serialForm.numbers" placeholder="请填写编号,多个编号请回车换行"></el-input>
-        </el-form-item>
-        <el-form-item>
-          <el-button type="primary" @click="submitSearch">确认</el-button>
-          <el-button @click="close">取消</el-button>
-        </el-form-item>
-      </el-form>
+
+    <el-dialog v-if="exportType" :title="exportType.title" :visible.sync="dialogExport" class="dialog-small">
+      <app-export :url="tableOption.url" :fields="fields" :default="default_choose" :response-key="exportType.key" @success="dialogExport = false" :filter="filter" :selected="selected"></app-export>
     </el-dialog>
   </div>
 </template>
 
 <script>
-import tableConst from '@/const/tableConst'
+
 import AppDatePicker from '@/components/common/AppDatePicker'
 import AxiosMixins from '@/mixins/axios-mixins'
 import AppFilter from '@/components/common/AppFilter'
@@ -279,290 +178,150 @@ import AppImport from '@/components/common/AppImport'
 import FileUpload from '@/components/common/FileUpload'
 import SearchInput from '@/components/common/SearchInput'
 import AppTransfer from '@/components/common/AppTransfer'
-
+import BatchUpdate from '@/components/common/BatchUpdate'
+import AppTable from '@/components/common/AppTable'
+import AppExport from '@/components/common/AppExport'
 import { mapGetters } from 'vuex'
-const methods = Object.assign({}, tableConst.methods, {
-  getPageData (c) {
-    const d = this,
-        start = (c - 1) * d.pageSize,
-        end = c * d.pageSize;
-  
-    return d.tableData.slice(start, end);
-  },
-  getSelection () {
-    return this.tableSelect;
-  },
-  handleCurrentChange(c) {
-    const d = this;
+import { mapMutations } from 'vuex'
+import { mapActions } from 'vuex'
 
-    d.currentPage = c;
-    d.pageData = d.getPageData(c);
-  },
-  handleselectionChange(selection) {
-    const d = this;
-    d.tableSelect = selection;
-  },
-  headerBtnIf (_) {
-    if( _.map_if ) {
-      if(this.menusMap && !this.menusMap.get(_.map_if)) {
-        return true;
-      }else {
-        return false;
-      }
-    }else {
-      return true;
-    }
-  },
-  handleRowClick (a,b,c) {
-    // if(c.fixed) return false;
-    b.stopPropagation();
-
-    if(c.type == 'selection') return false;
-    
-    const func = this.tableOption.rowClick;
-    if(func) func(a,b,c);
-  },
-  handelExport(func, e) {
-    const fields = this.control[1].map(_=>_.value);
-
-    if(func) {
-      func(e)
-    }else {
-      //合并获得导出请求的请求参数
-      this.$emit('refreshTableData', Object.assign({}, this.getRequestOption(), {format: 'excel'}, {'fields': JSON.stringify(fields) } ) );
-      //Vue Api.
-      this.$nextTick(_=>{
-        if(this.refreshProxy) {
-          this.exportLoading = true;
-          this.refreshProxy.then(
-            _=>{
-              window.setTimeout(_=>{this.exportLoading = false;}, 500);
-            }
-          );  
-        }
-      })
-      
-      
-      // if(a) { a.then(_=>{console.log('exportExcess')}) };
-    }
-  },
-  handleImport(func, e) {
-    if(func) {
-      func(e)
-    }else {
-      // this.$message({message: '导入接口开发中', type: 'warning'})
-      this.dialogImportVisible = true;
-    }
-  },
-  handleSimple (row, col) {
-      const key = col.render_key ? col.render_key : col.prop;
-      const obj = row[key];
-
-      return row[key] ? row[key][col.render_simple] : '';
-
-    },
-  handleBatchUpload(func, e) {
-    if(func) {
-      func(e)
-    }else {
-      this.$refs.file_upload.show();
-    }
-  },
-  handleSerialSearch(func, e) {
-    if(func) {
-      func(e)
-    }else {
-      this.dialogSerialSearch = true;
-    }
-  },
-  handleExpand (a, b) {
-    const fun = this.tableOption.expandFun;
-    if( fun ){
-      fun(a, b);
-    }
-  },
-  handleDelete (func, e, callback) {
-    if(func) {
-      func(e)
-    }else {
-      const s = this.tableSelect;
-      if(s.length == 0) {
-        this.$message({message: '请选择需要删除的列表项', type: 'warning'});
-      }else {
-        this.$confirm('删除后不可恢复，确认删除？', '删除确认', {type: 'warning'})
-          .then(_=>{
-            const url = this.url;
-            const data = { id: this.$tool.splitObj(s, 'id') }; // 见/const/tool.js splitObj函数的注释
-            const success = _=>{ 
-              this.$message({type: 'success', message: '删除成功'});
-              this.update();
-
-              if(callback) {
-                callback(_);
-              }
-            };
-            this.axiosDelete({ url, data, success });
-          })
-          .catch(_=>{console.log(_)});
-      }     
-    }
-  },
-  handleCommand (func, event) {
-    if(func) {
-      func(event);
-    }
-  },
-  handleActionCommand (func, scope, event) {
-    event.stopPropagation();
-    if(func) {
-      func(scope.row, event);
-    }
-  },
-  arrayRender (row, col) {
-    const arr = row[col.prop];
-    return col.render ? col.render(arr) : arr;
-  },  
-  handleCurrentChange (currentPage) {
-    const func = this.tableOption.currentChange;
-    if(func) {
-      func(currentPage);
-    }
-
-    this.update();
-  },
-  handleSizeChange (size) {
-    this.$store.commit('setPageSize', size);
-    const func = this.tableOption.sizeChange;
-    if(func) {
-      func(size);
-    }
-
-    this.reset();
-  },
-    handleBatchUpdate(func, e) {
-      if(func) {
-        func(e)
-      }else {
-        this.dialogUpdateVisible = true;
-      }
-    },  
-  handleSortChange ({column, prop, order}) {
-    this.sort.field = prop;
-    this.sort.order = order;
-    const func = this.tableOption.sortChange;
-    if(func) {
-      func(column, prop, order);
-    }
-
-    this.reset();
-  },
-  handleSearch () {
-    const func = this.tableOption.handleSearch;
-    if(func) {
-      func(this.search_value);
-    }
-
-    this.reset();
-  },
-  submitSearch () {
-    if(this.serialForm.numbers){
-      const searchVaule = this.serialForm.numbers.split('\n');
-      console.log(searchVaule);
-      this.$emit('refreshTableData', Object.assign({}, this.getRequestOption(), this.screen_obj,{numbers: searchVaule}));
-      this.dialogSerialSearch = false;
-    }
-  },
-  timeSearch ({search}) {
-    if(search) {
-      search();
-    }
-
-    this.reset()
-  },
-  timeClear ({clear}) {
-    if(clear) {
-      clear();
-    }
-
-    this.date = [];
-    this.reset();
-  },
-  //获取列表参数,包括page,listRows,查询关键字,排序参数
-  getRequestOption () {
-    const copy = this.$tool.deepCopy(this.requesOption);
-    return copy;
-  },
-  getSelect (flag=false) {
-    const s = this.tableSelect;
-    
-    if(!flag) {
-      if(s.length == 0) {
-        this.$message({ message: '请至少选择一项！', type: 'warning' });
-        return false;
-      }  
-    }
-
-    return s;
-  },
-  update () {
-    this.$emit('refreshTableData', Object.assign({}, this.getRequestOption(), this.screen_obj) );
-  },
-  reset () {
-    this.page = 1;
-    this.update();
-  },
-  refresh () {
-    this.page = 1;
-    this.search_value = "";
-    this.update();
-  },
-  handleRowClassName (row, index) {
-
-    const func = this.tableOption.row_class;
-    if(func) {
-      return func(row, index);
-    }else {
-      return '';
-    }
-  },
-  handleImportSuccess () {
-    this.$message({message: '导入成功', type: 'success'});
-    this.dialogImportVisible = false;
-    this.refresh();
-  },
-  setCurrentRow (row) {
-    this.$refs.table.setCurrentRow(row);
-  },
-  clear () {
-    this.$refs.serialForm.resetFields();
-  },
-  close () {
-    this.dialogSerialSearch = false;
-  },
-  controlSave () {
-    this.refreshRender = false;
-    this.control = this.transferValue;
-    this.dialogControl = false;
-
-    //存入cookie
-    this.$tool.setLocal(this.tableOption.name, JSON.stringify(this.control));
-
-    //element-ui的table插件因为一些缓存的设计在这里会发生错误,使用vue的v-if特性强制重新渲染table 
-    this.$nextTick(_=>{this.refreshRender = true});
-  },
-});
 export default {
   name: 'tableComponent',
-  methods,
   mixins: [ AxiosMixins ],
-  props: ['tableOption', 'data', 'tableStyle', 'refreshProxy'],
+  props: {
+    tableOption: {
+      type: Object,
+      required: true,
+    },
+    data: {
+      type: null,
+      required: true,
+    },
+    tableStyle: {
+      type: String,
+      default: '',
+    },
+    refreshProxy: {
+      type: null,
+    },
+    filter: {
+      type: null,
+    },
+    refreshTableData: {
+      type: Function,  
+    }
+  },
+  data () {
+    const d = this;
+    const cols = d.tableOption.columns;
+    let tableCookie = JSON.parse(this.$tool.getLocal(this.tableOption.name));
+    
+    //获取控制器
+    let control = [[],[]];
+
+    for(let c of cols) {
+      let show = c.show == undefined ? true : c.show;
+      let show_option = c.show_option !== undefined ? c.show_option : true;
+      if(show_option && (c.type == 'text' || c.type == 'array') ) {
+        const item = { key: c.prop, value: c.prop, label: c.label };
+        if(show) {
+          control[1].push(item);
+        }else {
+          control[0].push(item);
+        }
+      }
+    }
+
+    //控制器合并获得fields集合
+    let fields = [...control[0], ...control[1]];
+    
+    //检测缓存中是否存在控制器
+    if(tableCookie) {
+      const cookieO = {};
+      const localO = {};  
+      
+      //一些本地缓存的异常检测
+      const error = (_=>{
+        //老版本缓存
+        if(!(tableCookie[0] instanceof Array)) {
+          return true;
+        }
+
+        //字段统一性验证
+        
+        tableCookie.forEach(_=>{
+          _.forEach(d=>{
+            cookieO[d.key] = false;
+          })
+        })
+
+        fields.forEach(d=>{
+          localO[d.key] = d;
+        })
+        
+        const cache = Object.assign({}, localO, cookieO);
+        if(this.$tool.getObjLength(localO) != this.$tool.getObjLength(cache)) return true;
+        for(let key in cache) {
+          if(cache[key]) {
+            return true;
+          }
+        }
+      })();
+
+      //若存在错误,则将本地缓存清空,无错误则替换原有控制器
+      if(error) {
+        this.$tool.deleteLocal(this.tableOption.name);
+      }else {
+        tableCookie.forEach(_=>{
+          _.forEach(d=>{
+            d.label = localO[d.key]['label'];
+          })
+        });
+        control = tableCookie;
+      }
+    }
+    
+    const transferValue = control;
+    
+    const data = {
+      pageData: [],
+      pageSize: 5,
+      pagesizes: [10, 20, 40, 100, 10000],
+      currentPage: 1,
+      //tableSelect 当前列表如果有checkbox,已选择的行数据
+      tableSelect: [],
+      expands: [],
+      searchClass: 'table-search',
+      date: [],
+      search_value: '',
+      page: 1,
+      sort: {field: null, order: null},
+      dialogImportVisible: false,
+      dialogUpdateVisible: false,
+      exportLoading: false,
+      dialogControl: false,
+      control,
+      transferValue,
+      refreshRender: true,
+      dialogExport: false,
+      fields,
+      selected: [],
+      filterVisible: false,
+    };
+
+    return data;
+  },
   computed: {
     ...mapGetters([
-      'screen_obj',
-      'innerHeight',
+      'filterLock',
+      'screenVisible',
       'pagesize',
       'menusMap',
+      'screen_obj',
     ]),
+    default_choose () {
+      return this.control[1].map(_=>_.key);
+    },
     tableData () {
       const d = this.data;
       let r;
@@ -574,20 +333,22 @@ export default {
       }else {
         r = d.data ? d.data : [];
       }
-
-      //这里对得到的数据进行一些额外的处理,element-ui中难以操控:
-      
-      //  .暂时将array类型的render处理放到这里,因为如果放到v-for里面会被多次重复执行
-      this.tableOption.columns.forEach(_=>{
-        if(_.type == 'array' && _.render) {
-          r.forEach(d_c=>{
-            const p = _.prop;
-            d_c[`${p}__render`] = _.render(d_c[p]);
-          })
-        }
-      })
       
       return r;
+    },
+    exportType () {
+      const e = this.tableOption.import_type;
+      if(!e) return '';
+
+      const map = new Map([
+        ['patent', {
+          key: 'patents',
+          title: '导出专利',
+        }]
+      ])
+
+      const o = map.get(e);
+      return o ? o : e;      
     },
     totalNumber () {
       const d = this.data;
@@ -638,7 +399,7 @@ export default {
       return flag;
     },
     import_columns () {
-      const c =this.tableOption.columns;
+      const c = this.tableOption.columns;
       const a = c.filter(_=>_.is_import);
       if(this.tableOption.import_columns) {
         a.push(...this.tableOption.import_columns);
@@ -646,33 +407,10 @@ export default {
 
       return a;
     },
-    tableHeight () {
-      let height = '';
-      const hk = this.tableOption.height;
-
-      if(hk !== undefined) {
-        if(hk == 'default') {
-          height = this.innerHeight - 200;
-          height = height < 300 ? 300 : height;
-        }else if(hk == 'default2') {
-          height = this.innerHeight - 150;
-          height = height < 300 ? 300 : height;
-        }else if(hk === 'default3') {
-          height = this.innerHeight - 100;
-          height = height < 300 ? 300 : height;
-        }else if(hk === 'default4') {
-          height = this.innerHeight - 55;
-          height = height < 300 ? 300 : height;
-        }else {
-          height = hk;
-        }
-      }
-
-      return height;
-    },
+    //计算列表项 
     columns () {
       let cols = this.tableOption.columns; 
-      if(cols && cols instanceof Array) {
+      if(cols) {
         const c = this.control[1];//字段控制器
         const o = {};//hash映射
         let s = '';//暂存selection项
@@ -700,128 +438,260 @@ export default {
 
         //无论论如何调整 selection总在最前 action总在最后 
         //static_arr代表配置限制不可调整顺序的字段(通过show_option控制)
-        if(a) { arr.push(a) };
+        if(a) {arr.push(a)};
         if(static_arr.length != 0) {arr = [...static_arr, ...arr]};
         if(s) {arr.unshift(s)};
         return arr;
       }else {
-        return [];//columns值的错误处理
+        return [];
+      }
+    }
+  },
+  methods: {
+    ...mapMutations([
+      'setPageSize',
+    ]),
+    ...mapActions([
+      'clearFilter',
+    ]),
+    getPageData (c) {
+      const d = this,
+          start = (c - 1) * d.pageSize,
+          end = c * d.pageSize;
+    
+      return d.tableData.slice(start, end);
+    },
+    getSelection () {
+      return this.$refs.table.selected;
+    },
+    headerBtnIf (_) {
+      if( _.map_if ) {
+        if(this.menusMap && !this.menusMap.get(_.map_if)) {
+          return true;
+        }else {
+          return false;
+        }
+      }else {
+        return true;
       }
     },
+    handleRowClick (row, event, column) {
+      // if(c.fixed) return false;
+      const func = this.tableOption.rowClick;
+      if(func) func(row, event, column);
+    },
+    handleCellClick (row, column, cell, event) {
+       const func = this.tableOption.cellClick;
+      if(func) func(row, column, cell, event);
+    },
+    handelExport(func, e) {
+      // const fields = this.tableControl.filter(_=>{
+      //   if(_.show && _.prop) {
+      //     return true;  
+      //   }
+      // }).map(_=>_.prop);
+
+      if(func) {
+        func(e)
+      }else {
+        //合并获得导出请求的请求参数
+        if(this.refreshTableData) {
+          this.refreshTableData(Object.assign({}, this.getRequestOption(), {format: 'excel'}));
+        }
+        this.$emit('refreshTableData', Object.assign({}, this.getRequestOption(), {format: 'excel'} ) );
+        //Vue Api.
+        this.$nextTick(_=>{
+          if(this.refreshProxy) {
+            this.exportLoading = true;
+            this.refreshProxy.then(
+              _=>{
+                window.setTimeout(_=>{this.exportLoading = false;}, 500);
+              }
+            );  
+          }
+        })
+        
+        
+        // if(a) { a.then(_=>{console.log('exportExcess')}) };
+      }
+    },
+    handleImport(func, e) {
+      if(func) {
+        func(e)
+      }else {
+        // this.$message({message: '导入接口开发中', type: 'warning'})
+        this.dialogImportVisible = true;
+      }
+    },
+    handleBatchUpload(func, e) {
+      if(func) {
+        func(e)
+      }else {
+        this.$refs.file_upload.show();
+      }
+    },
+    handleBatchUpdate(func, e) {
+      if(func) {
+        func(e)
+      }else {
+        this.dialogUpdateVisible = true;
+      }
+    },
+    handleBatchUpdateSuccess () {
+      this.dialogUpdateVisible = false;
+      this.update();
+    },
+    handleDelete (func, e, callback) {
+      if(func) {
+        func(e)
+      }else {
+        const s = this.getSelect(true);
+    
+        if(s.length == 0) {
+          this.$message({message: '请选择需要删除的列表项', type: 'warning'});
+        }else {
+          this.$confirm('删除后不可恢复，确认删除？', '删除确认', {type: 'warning'})
+            .then(_=>{
+              const url = this.url;
+              const data = { id: this.$tool.splitObj(s, 'id') }; // 见/const/tool.js splitObj函数的注释
+              const success = _=>{ 
+                this.$message({type: 'success', message: '删除成功'});
+                this.update();
+
+                if(callback) {
+                  callback(_);
+                }
+              };
+              this.axiosDelete({ url, data, success });
+            })
+            .catch(_=>{console.log(_)});
+        }     
+      }
+    },
+    handleCommand (func, event) {
+      if(func) {
+        func(event);
+      }
+    },
+    
+    arrayRender (row, col) {
+      const arr = row[col.prop];
+      return col.render ? col.render(arr) : arr;
+    },  
+    handleCurrentChange (currentPage) {
+      const func = this.tableOption.currentChange;
+      if(func) {
+        func(currentPage);
+      }
+
+      this.update();
+    },
+    handleSizeChange (size) {
+      this.setPageSize(size);
+      const func = this.tableOption.sizeChange;
+      if(func) {
+        func(size);
+      }
+
+      this.reset();
+    },
+    handleSortChange ({column, prop, order}) {
+      this.sort.field = prop;
+      this.sort.order = order;
+      const func = this.tableOption.sortChange;
+      if(func) {
+        func(column, prop, order);
+      }
+
+      this.reset();
+    },
+    handleSearch () {
+      const func = this.tableOption.handleSearch;
+      
+      if(func && this.search_value) {
+        func(this.search_value);
+      }else {
+        this.reset();
+      }
+
+    },
+    timeSearch ({search}) {
+      if(search) {
+        search();
+      }
+
+      this.reset()
+    },
+    timeClear ({clear}) {
+      if(clear) {
+        clear();
+      }
+
+      this.date = [];
+      this.reset();
+    },
+    //获取列表参数,包括page,listRows,查询关键字,排序参数
+    getRequestOption () {
+      const copy = this.$tool.deepCopy(this.requesOption);
+      return copy;
+    },
+    getSelect (flag=false) {
+      return this.$refs.table.getSelected(flag);
+    },
+    getSelected (flag=false) {
+      return this.$refs.table.getSelected(flag);
+    },
+    update () {
+      if(this.refreshTableData) {
+        this.refreshTableData(Object.assign({}, this.getRequestOption(), this.screen_obj));
+      }
+      this.$emit('refreshTableData', Object.assign({}, this.getRequestOption(), this.screen_obj) );
+    },
+    search (val) {
+      this.page = 1;
+      this.search_value = val;
+      this.update();
+    },
+    reset () {
+      this.page = 1;
+      this.update();
+    },
+    refresh () {
+      console.log('-------------refresh--------------');
+      this.page = 1;
+      this.search_value = "";
+      this.update();
+    },
+    handleImportSuccess () {
+      this.$message({message: '导入成功', type: 'success'});
+      this.dialogImportVisible = false;
+      this.refresh();
+    },
+    setCurrentRow (row) {
+      this.$refs.table.setCurrentRow(row);
+    },
+    controlSave () {
+      this.refreshRender = false;
+      this.control = this.transferValue;
+      this.dialogControl = false;
+
+      //存入cookie
+      this.$tool.setLocal(this.tableOption.name, JSON.stringify(this.control));
+
+      //element-ui的table插件因为一些缓存的设计在这里会发生错误,使用vue的v-if特性强制重新渲染table 
+      this.$nextTick(_=>{this.refreshRender = true});
+    }
   },
   watch: {
     'requesOption': {
-      handler: function () {  },
+      handler: function () {},
       deep: true,
     },
     screen_obj (val) {
+      if(this.filterLock) return;
       this.filterVisible = false;
       this.refresh();    
     }
-  },
-  data () {
-
-    const d = this;
-    const cols = d.tableOption.columns;
-    let tableCookie = JSON.parse(this.$tool.getLocal(this.tableOption.name));
-    
-    //获取控制器
-    let control = [[],[]];
-
-    for(let c of cols) {
-      let show = c.show == undefined ? true : c.show;
-      let show_option = c.show_option !== undefined ? c.show_option : true;
-      if(show_option && (c.type == 'text' || c.type == 'array') ) {
-        const item = { key: c.prop, value: c.prop, label: c.label };
-        if(show) {
-          control[1].push(item);
-        }else {
-          control[0].push(item);
-        }
-      }
-    }
-
-    //控制器合并获得fields集合
-    let fields = [...control[0], ...control[1]];
-    
-    //检测缓存中是否存在控制器
-    if(tableCookie) {
-      const cookieO = {};
-      const localO = {};  
-      
-      //一些本地缓存的异常检测
-      const error = (_=>{
-        //老版本缓存
-        if(!(tableCookie[0] instanceof Array)) {
-          return true;
-        }
-
-        //字段统一性验证  
-        tableCookie.forEach(_=>{
-          _.forEach(d=>{
-            cookieO[d.key] = false;
-          })
-        })
-
-        fields.forEach(d=>{
-          localO[d.key] = d;
-        })
-        
-        const cache = Object.assign({}, localO, cookieO);
-        if(this.$tool.getObjLength(localO) != this.$tool.getObjLength(cache)) return true;
-        for(let key in cache) {
-          if(cache[key]) {
-            return true;
-          }
-        }
-      })();
-
-      //若存在错误,则将本地缓存清空,无错误则替换原有控制器
-      if(error) {
-        this.$tool.deleteLocal(this.tableOption.name);
-      }else {
-        tableCookie.forEach(_=>{
-          _.forEach(d=>{
-            d.label = localO[d.key]['label'];
-          })
-        });
-        control = tableCookie;
-      }
-    }
-    
-    const transferValue = control;
-
-
-    const data = {
-      control,
-      transferValue,
-      pageData: [],
-      pageSize: 5,
-      pagesizes: [10, 20, 40, 100, 10000],
-      currentPage: 1,
-      //tableSelect 当前列表如果有checkbox,已选择的行数据
-      tableSelect: [],
-      expands: [],
-      getRowKeys (row) {
-        return row.id;
-      },
-      searchClass: 'table-search',
-      date: [],
-      search_value: '',
-      page: 1,
-      sort: {field: null, order: null},
-      dialogImportVisible: false,
-      dialogSerialSearch: false,
-      filterVisible: false,
-      exportLoading: false,
-      dialogControl: false,
-      refreshRender: true,
-      serialForm:{
-        numbers: '',
-      },
-    };
-
-    return Object.assign({}, tableConst.data, data);
   },
   components: {
     'TableRender': {
@@ -847,6 +717,13 @@ export default {
     FileUpload,
     SearchInput,
     AppTransfer,
+    BatchUpdate,
+    AppTable,
+    AppExport,
+  },
+  beforeDestroy () {
+    // console.log('beforeDestroy');
+    this.clearFilter();
   },
   mounted () {},
 }
@@ -857,13 +734,7 @@ export default {
 .table-header i.el-icon-menu {
   font-size: 13px;
 }
-#app .dialog-control>.el-dialog {
-  width: 600px;
-  position: static;
-  transform: initial;
-  margin: 0 auto;
-  margin-top: 80px;
-}
+
 /*.el-table__expand-column {
   display: none;
 }*/
@@ -880,7 +751,9 @@ export default {
 }*/
 </style>
 <style scoped lang="scss">
-
+.table-search {
+  width: 250px;
+}
 .el-button+.el-dropdown {
   margin-left: 10px;
 }
@@ -890,4 +763,5 @@ export default {
 .el-dropdown+.el-dropdown {
   margin-left: 10px;
 }
+
 </style>

@@ -158,279 +158,6 @@ const typeMap = new Map([
 export default {
   name: 'taskList',
   mixins: [ AxiosMixins ],
-  methods: {
-    ...mapMutations([
-      'showAgencyLoad',
-      'addScreen',
-    ]),
-    ...mapActions([
-      'refreshUser',
-    ]),
-    handleReport () {
-      const url = {0: '/task/pending/report', '-1': '/task/pause/report', 1: '/task/finish/report'}[this.task_status];
-      if(url) {
-        this.$router.push(url);
-      }
-    },
-    handleReject () {
-      this.$confirm('此操作将退回当前任务，是否继续？', '提示', { 
-        type: 'warning'
-      }).then(_=>{
-        const url = `/tasks/${this.currentRow.id}/reject`;
-        const success = _=>{
-          this.$message('退回任务成功', {type: 'success'});
-          this.dialogShrinkVisible = false;
-          this.update();
-        };
-
-        this.$axiosPost({url, success});
-      }).catch(_=>{});
-    },
-    handleMore (type) {
-      this.moreVisible = true;
-    },
-    handleShrinkClose () {
-      this.$refs.table.setCurrentRow();
-    },
-    addPop () {
-      if(this.$refs.add) {
-        this.$refs.add.clear();
-      }
-      this.dialogAddVisible = true;
-    },
-    agenPop () {
-      const s = this.$refs.table.getSelect();
-      let confirm = false;
-
-      if(s) {
-        for(let d of s) {
-          if(d.agency !== "") {
-            confirm = true;
-            break;
-          }
-        }
-        
-        const pop = ()=>{
-          if(this.$refs.agen) this.$refs.agen.resetFields();
-          this.dialogAgenVisible = true;
-        }
-
-        if(confirm) {
-          this.$confirm('你选择的任务中包含已委案的任务，确认继续委案？','提示',{ type: 'warning'} )
-            .then(pop)
-            .catch(_=>{});
-        }else {
-          pop();
-        }
-      }
-    }, 
-    agenSubmit () {
-      this.$refs.agen.validate(_=>{
-        if(_) {
-          const ids = this.$refs.table.getSelect().map(_=>_.id);
-          const url = '/api/tasks/agency';
-          const data = Object.assign({}, this.agen, { ids });
-          const success = _=>{
-            this.dialogAgenVisible = false; 
-            this.$message({type: 'success', message: '申请委案成功'});
-            this.update();
-          };
-          const complete = _=>{this.btn_disabled = false};
-
-          this.btn_disabled = true;
-          this.axiosPost({url, data, success, complete});
-        }else {
-          this.$message({message: '请认真填写申请委案字段', type: 'warning'});
-        }
-      })
-      
-    },
-    // dropGenerator(str) {
-    //   return (row, element)=>{       
-    //     this.expandType = str;
-    //     $(element.target).parents("tr").find(".el-table__expand-icon").click();  
-    //   }
-    // },
-    taskDelete ({title, id}) {
-      this.$confirm(`此操作将永久删除任务‘${title}’, 是否继续？`)
-        .then(()=>{
-          const url = `${URL}/${id}`;
-          const success = _=>{ this.update() };
-
-          this.axiosDelete({url, success});
-        })
-        .catch(()=>{});
-    },
-    strainerQuery (form) {
-      this.filter = form;
-    },
-    strainerClear () {
-      this.filter = {};
-    },
-    refreshTableData (option) {
-      const url = URL;
-      const data = Object.assign({}, this.filter, option, this.screen_value, {status: this.task_status}, {scope: this.task_toggle}, this.urlParams);
-      const success = d=>{
-        if( data['format'] == 'excel' ) {
-          window.location.href = d.tasks.downloadUrl;
-        }else {
-          this.tableData = d.tasks;
-          this.filters = d.tasks.filters; 
-        }
-
-        //初始化接口
-        //PS:如果以后多个地方有这样的需求,可将filter改为与query全局相关,而不是用存储内部值的方式,这样不需要特别处理这样的需求
-        if(this.install) {
-          //找出对应的对象,然后插入
-          const s1 = this.filters.filter(_=>_.key == 'flow_node_id')[0];
-          const s2 = s1['items'].filter(_=>_.value == this.install);
-          console.log(s1, s2);
-          this.addScreen({name: s1.label, key: s1.key, items: s2 });
-          //只触发一次
-          this.install = '';
-        }     
-      };
-
-      this.refreshProxy = this.axiosGet({url, data, success}); 
-    },
-    refresh () {
-      this.$refs.table.refresh();
-    },
-    update () {
-      this.$refs.table.update();
-    },
-    transferTask () {
-      const url = `${URL}/${this.currentRow.id}/transfer`
-      const data = {'person_in_charge': this.transfer_person};
-      const success = _=>{
-        this.dialogTranserVisible = false;
-        this.dialogShrinkVisible = false;
-        this.$message({message: '移交成功', type: 'success'});
-        this.refreshUser();
-
-        this.update();        
-      }
-
-      this.$axiosPost({url, data, success});
-    },
-    addSuccess () {
-      this.dialogAddVisible = false;
-      this.$message({message: '添加成功', type: 'success'});
-      this.refresh();
-    },
-    editSuccess () {
-      this.dialogEditVisible = false;
-      this.dialogShrinkVisible = false;
-      this.$message({message: '编辑成功', type: 'success'});
-
-      this.update();
-    },
-    editProjectSuccess () {
-      this.update();
-    },
-    refreshOption () {
-      const t = this.task_status;
-      const h = this.tableOption;
-      const menusMap = this.menusMap;
-
-      if( t === 0 ) {
-        h.header_btn.splice(3,1,{type: 'custom', label: '暂停处理', click: _=>{ this.handleTask('/api/tasks/pause') }});
-      }else if( t === -1 ) {
-        h.header_btn.splice(3,1,{type: 'custom', label: '恢复处理', click: _=>{ this.handleTask('/api/tasks/resume') }});
-      }
-      menusMap && !menusMap.get('/tasks/add_btn') ? h.header_btn.splice(0,1,{ type: 'add', click: this.addPop }) : h.header_btn.splice(0,1,{}); 
-      menusMap && !menusMap.get('/tasks/delete_btn') ? h.header_btn.splice(1,1,{ type: 'delete', callback: this.refreshUser }) : h.header_btn.splice(1,1,{});
-      menusMap && !menusMap.get('/tasks/agency_btn') && t != 1 ? h.header_btn.splice(2,1,{type: 'custom', label: '申请委案', click: this.agenPop}) : h.header_btn.splice(2,1,{});
-
-      this.$forceUpdate();
-    },
-    handleTask(url) {
-      const s = this.$refs.table.getSelect();
-      if(s) {
-        const data = { ids: this.$tool.splitObj(s, 'id') };
-        const success = _=>{ 
-          this.$message({type: 'success', message: '操作成功'});
-          this.update();
-          this.refreshUser();
-        };
-
-        this.axiosPut({ url, data, success });
-      }
-    },
-    proposalEdit ({project_id}) {
-      this.$router.push({path: '/proposal/edit', query: {id: project_id}});
-    },
-    patentEdit ({id}) {
-      // console.log('patentEdit')
-    },
-    finishSuccess () {
-      this.$message({message: '完成任务成功', type: 'success'});
-      this.dialogShrinkVisible = false;
-      this.refresh();
-    },
-    titleRender (h,item,data) {
-      const color = colorMap.get(data['color']);
-      let tipContent = '';
-      if(color === "#3c3"){
-        // console.log('绿色');
-        tipContent = "正常";
-      }else if(color === "#f90"){
-        // console.log('橙色');
-        tipContent = "即将到期";
-      }else if(color === "#c03"){
-        // console.log('红色');
-        tipContent = "已过期";
-      }else if(color === "#339"){
-        tipContent = "暂停处理";
-      }else if( color === "#09C"){
-        tipContent = "已完成";
-      }
-
-      let str = '';
-      if(data.flag == 1) {
-        str += '(代)';
-      }else if(data.flag == 2) {
-        str += '(移)';
-      }else if(data.flag == 3) {
-        str += '@';
-      }
-      str += item;
-
-      return ( 
-        
-        <span>
-          <el-tooltip effect="dark" content={`${tipContent}`} placement="top">
-            <i class="table-flag" style={`background-color: ${color}; margin-right: 10px;`}></i>  
-          </el-tooltip>  
-            <span>{ str }</span>
-        </span>
-       
-      );
-    },
-    categoryRender (h,item,data) {
-      const typeNum = typeMap.get(data['category']);
-      return (
-        <span>{ typeNum }</span>
-      );
-    },
-    titleClick (data) {
-      if(data.category == 0) {
-        this.$router.push(`/proposal/detail?id=${data.project_id}`);
-      }else if(data.category == 1) {
-        this.$router.push(`/patent/list/detail/${data.project_id}`);
-      }else if(data.category == 3) {
-        this.$router.push(`/copyright/list/detail/${data.project_id}`);
-      }
-    },
-    handleRowClick (row) {
-      this.shrinkTitle = row.title; 
-      this.currentRow = row;
-      if( !this.dialogShrinkVisible ) this.dialogShrinkVisible = true;
-    },
-    save () {
-      this.$refs.detail.edit();
-    }
-  },
   data () {
 
     return {
@@ -469,7 +196,6 @@ export default {
           {},
           { type: 'export' },
           // { type: 'custom', label: '转出', icon: '', click: ()=>{ this.dialogTurnoutVisible = true; } },
-          { type: 'report', click: this.handleReport },
           { type: 'control', label: '字段'},
           { type: 'serial_search'},
           // { type: 'custom', label: '设定', icon: '', click: ()=>{ this.dialogSettingVisible = true; } }
@@ -547,6 +273,279 @@ export default {
       btn_disabled: false,
       install: '',
     };
+  },
+  methods: {
+    ...mapMutations([
+      'showAgencyLoad',
+      'addScreen',
+    ]),
+    ...mapActions([
+      'refreshUser',
+    ]),
+    handleReport () {
+      const url = {0: '/task/pending/report', '-1': '/task/pause/report', 1: '/task/finish/report'}[this.task_status];
+      if(url) {
+        this.$router.push(url);
+      }
+    },
+    handleReject () {
+      this.$confirm('此操作将退回当前任务，是否继续？', '提示', { 
+        type: 'warning'
+      }).then(_=>{
+        const url = `/tasks/${this.currentRow.id}/reject`;
+        const success = _=>{
+          this.$message('退回任务成功', {type: 'success'});
+          this.dialogShrinkVisible = false;
+          this.update();
+        };
+
+        this.$axiosPost({url, success});
+      }).catch(_=>{});
+    },
+    handleMore (type) {
+      this.moreVisible = true;
+    },
+    handleShrinkClose () {
+      this.$refs.table.setCurrentRow();
+    },
+    addPop () {
+      if(this.$refs.add) {
+        this.$refs.add.clear();
+      }
+      this.dialogAddVisible = true;
+    },
+    agenPop () {
+      const s = this.$refs.table.getSelect();
+      let confirm = false;
+
+      if(s) {
+        for(let d of s) {
+          if(d.agency) {
+            confirm = true;
+            break;
+          }
+        }
+        
+        const pop = ()=>{
+          if(this.$refs.agen) this.$refs.agen.resetFields();
+          this.dialogAgenVisible = true;
+        }
+
+        if(confirm) {
+          this.$confirm('你选择的任务中包含已委案的任务，确认继续委案？','提示',{ type: 'warning'} )
+            .then(pop)
+            .catch(_=>{});
+        }else {
+          pop();
+        }
+      }
+    }, 
+    agenSubmit () {
+      this.$refs.agen.validate(_=>{
+        if(_) {
+          const ids = this.$refs.table.getSelect().map(_=>_.id);
+          const url = '/tasks/agency';
+          const data = Object.assign({}, this.agen, { ids });
+          const success = _=>{
+            this.dialogAgenVisible = false; 
+            this.$message({type: 'success', message: '申请委案成功'});
+            this.update();
+          };
+          const complete = _=>{this.btn_disabled = false};
+
+          this.btn_disabled = true;
+          this.$axiosPost({url, data, success, complete});
+        }else {
+          this.$message({message: '请认真填写申请委案字段', type: 'warning'});
+        }
+      })
+      
+    },
+    // dropGenerator(str) {
+    //   return (row, element)=>{       
+    //     this.expandType = str;
+    //     $(element.target).parents("tr").find(".el-table__expand-icon").click();  
+    //   }
+    // },
+    taskDelete ({title, id}) {
+      this.$confirm(`此操作将永久删除任务‘${title}’, 是否继续？`)
+        .then(()=>{
+          const url = `${URL}/${id}`;
+          const success = _=>{ this.update() };
+
+          this.$axiosDelete({url, success});
+        })
+        .catch(()=>{});
+    },
+    strainerQuery (form) {
+      this.filter = form;
+    },
+    strainerClear () {
+      this.filter = {};
+    },
+    refreshTableData (option) {
+      const url = URL;
+      const data = Object.assign({}, this.filter, option, this.screen_value, {status: this.task_status}, {scope: this.task_toggle}, this.urlParams);
+      const success = d=>{
+        if( data['format'] == 'excel' ) {
+          window.location.href = d.tasks.downloadUrl;
+        }else {
+          this.tableData = d.tasks;
+          this.filters = d.tasks.filters; 
+        }
+
+        //初始化接口
+        //PS:如果以后多个地方有这样的需求,可将filter改为与query全局相关,而不是用存储内部值的方式,这样不需要特别处理这样的需求
+        if(this.install) {
+          //找出对应的对象,然后插入
+          const s1 = this.filters.filter(_=>_.key == 'flow_node_id')[0];
+          const s2 = s1['items'].filter(_=>_.value == this.install);
+          console.log(s1, s2);
+          this.addScreen({name: s1.label, key: s1.key, items: s2 });
+          //只触发一次
+          this.install = '';
+        }     
+      };
+
+      this.refreshProxy = this.$axiosGet({url, data, success}); 
+    },
+    refresh () {
+      this.$refs.table.refresh();
+    },
+    update () {
+      this.$refs.table.update();
+    },
+    transferTask () {
+      const url = `${URL}/${this.currentRow.id}/transfer`
+      const data = {'person_in_charge': this.transfer_person};
+      const success = _=>{
+        this.dialogTranserVisible = false;
+        this.dialogShrinkVisible = false;
+        this.$message({message: '移交成功', type: 'success'});
+        this.refreshUser();
+
+        this.update();        
+      }
+
+      this.$axiosPost({url, data, success});
+    },
+    addSuccess () {
+      this.dialogAddVisible = false;
+      this.$message({message: '添加成功', type: 'success'});
+      this.refresh();
+    },
+    editSuccess () {
+      this.dialogEditVisible = false;
+      this.dialogShrinkVisible = false;
+      this.$message({message: '编辑成功', type: 'success'});
+
+      this.update();
+    },
+    editProjectSuccess () {
+      this.update();
+    },
+    refreshOption () {
+      const t = this.task_status;
+      const h = this.tableOption;
+      const menusMap = this.menusMap;
+
+      if( t === 0 ) {
+        h.header_btn.splice(3,1,{type: 'custom', label: '暂停处理', click: _=>{ this.handleTask('/api/tasks/pause') }});
+      }else if( t === -1 ) {
+        h.header_btn.splice(3,1,{type: 'custom', label: '恢复处理', click: _=>{ this.handleTask('/api/tasks/resume') }});
+      }
+      menusMap && !menusMap.get('/tasks/add_btn') ? h.header_btn.splice(0,1,{ type: 'add', click: this.addPop }) : h.header_btn.splice(0,1,{}); 
+      menusMap && !menusMap.get('/tasks/delete_btn') ? h.header_btn.splice(1,1,{ type: 'delete', callback: this.refreshUser }) : h.header_btn.splice(1,1,{});
+      menusMap && !menusMap.get('/tasks/agency_btn') && t != 1 ? h.header_btn.splice(2,1,{type: 'custom', label: '申请委案', click: this.agenPop}) : h.header_btn.splice(2,1,{});
+
+      this.$forceUpdate();
+    },
+    handleTask(url) {
+      const s = this.$refs.table.getSelect();
+      if(s) {
+        const data = { ids: this.$tool.splitObj(s, 'id') };
+        const success = _=>{ 
+          this.$message({type: 'success', message: '操作成功'});
+          this.update();
+          this.refreshUser();
+        };
+
+        this.$axiosPut({ url, data, success });
+      }
+    },
+    proposalEdit ({project_id}) {
+      this.$router.push({path: '/proposal/edit', query: {id: project_id}});
+    },
+    patentEdit ({id}) {
+      // console.log('patentEdit')
+    },
+    finishSuccess () {
+      this.$message({message: '完成任务成功', type: 'success'});
+      this.dialogShrinkVisible = false;
+      this.refresh();
+    },
+    titleRender (h,item,data) {
+      const color = colorMap.get(data['color']);
+      let tipContent = '';
+      if(color === "#3c3"){
+        // console.log('绿色');
+        tipContent = "正常";
+      }else if(color === "#f90"){
+        // console.log('橙色');
+        tipContent = "即将到期";
+      }else if(color === "#c03"){
+        // console.log('红色');
+        tipContent = "已过期";
+      }else if(color === "#339"){
+        tipContent = "暂停处理";
+      }else if( color === "#09C"){
+        tipContent = "已完成";
+      }
+
+      let str = '';
+      if(data.flag == 1) {
+        str += '(代)';
+      }else if(data.flag == 2) {
+        str += '(移)';
+      }else if(data.flag == 3) {
+        str += '@';
+      }
+      str += item;
+
+      return ( 
+        
+        <span>
+          <el-tooltip effect="dark" content={`${tipContent}`} placement="top">
+            <i class="table-flag" style={`background-color: ${color}; margin-right: 10px;`}></i>  
+          </el-tooltip>  
+            <span>{ str }</span>
+        </span>
+       
+      );
+    },
+    categoryRender (h,item,data) {
+      const typeNum = typeMap.get(data['category']);
+      return (
+        <span>{ typeNum }</span>
+      );
+    },
+    titleClick (data) {
+      if(data.category == 0) {
+        this.$router.push(`/proposal/detail?id=${data.project_id}`);
+      }else if(data.category == 1) {
+        this.$router.push(`/patent/list/detail/${data.project_id}`);
+      }else if(data.category == 3) {
+        this.$router.push(`/copyright/list/detail/${data.project_id}`);
+      }
+    },
+    handleRowClick (row) {
+      this.shrinkTitle = row.title; 
+      this.currentRow = row;
+      if( !this.dialogShrinkVisible ) this.dialogShrinkVisible = true;
+    },
+    save () {
+      this.$refs.detail.edit();
+    }
   },
   computed: {
     ...mapGetters([

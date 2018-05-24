@@ -43,7 +43,7 @@
 		<table-component :tableOption="tableOption" :data="tableData" ref="table" @refreshTableData="refreshTableData" :refresh-proxy="refreshProxy">
       <el-button v-if="menusMap && !menusMap.get('/proposals/proposer')" type="primary" icon="d-arrow-right" @click="transferPop" slot="transfer" style="margin-left: 5px;">移交</el-button>
       
-      <template slot="action" slot-scope="scope">
+      <template slot="row_action" slot-scope="scope">
         <el-button type="text" icon="edit" size="mini" @click="edit(scope.row)" :disabled="scope.row.status ? true : false" >编辑</el-button>
       </template>
     </table-component>
@@ -80,7 +80,7 @@ import DateStrainer from '@/components/form/DateStrainer'
 
 import {mapGetters} from 'vuex'
 
-const URL = '/api/proposals';
+const URL = '/proposals';
 const url = 'http://www.zhiq.wang/proposal/lists';
 const delete_url = 'http://www.zhiq.wang/proposal/lists';
 const tag_url = 'http://www.zhiq.wang/tag/lists';
@@ -228,7 +228,6 @@ export default {
           { type: 'add', click: this.add },
           { type: 'delete' },
           { type: 'export' },
-          { type: 'report', click: _=>{this.$router.push('/proposal/report')}},
           { type: 'control' },
           { type: 'serial_search'},
         ],

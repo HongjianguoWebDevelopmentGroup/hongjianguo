@@ -32,7 +32,7 @@ import StaticSelect from '@/components/form/StaticSelect'
 import AppTransfer from '@/components/common/AppTransfer'
 import StrainerForm from '@/components/common/StrainerForm'
 
-import {mapGetters} from 'vuex'
+import {columns} from '@/const/reportSetting'
 
 export default {
 	name: 'reportForm',
@@ -61,14 +61,11 @@ export default {
 		}
 	},
 	computed: {
-		...mapGetters([
-			'tableColumnsCache'
-		]),
 		multiple () {
 			return this.reportType == 'view';
 		},
 		option () {
-			return this.tableColumnsCache[this.tableType];
+			return columns[this.tableType];
 		},
 		optionMap () {
 			const map = new Map();

@@ -436,6 +436,13 @@ nav {
 }
 /*这里放入重写element-ui样式的内容*/
 #app {
+  .dialog-control>.el-dialog {
+    width: 600px;
+    position: static;
+    transform: initial;
+    margin: 0 auto;
+    margin-top: 80px;
+  }
   .el-tree-node__expand-icon.expanded {
     -ms-transform: rotate(90deg);
     transform: rotate(90deg);

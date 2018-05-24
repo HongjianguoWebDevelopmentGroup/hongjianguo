@@ -241,6 +241,21 @@ menu.data = [
 		]
 	},
 	{
+		text: '报表',
+		path: '/report',
+		icon: 'el-icon-my-report',
+		type: 'submenu',
+		children: [
+			{ type: 'item', text: '任务报表', path: '/report/task', icon: 'el-icon-my-report' },
+			{ type: 'item', text: '提案报表', path: '/report/proposal', icon: 'el-icon-my-report' },
+			{ type: 'item', text: '专利报表', path: '/report/patent', icon: 'el-icon-my-report' },
+			{ type: 'item', text: '商标报表', path: '/report/trademark', icon: 'el-icon-my-report' },
+			{ type: 'item', text: '版权报表', path: '/report/copyright', icon: 'el-icon-my-report' },
+			{ type: 'item', text: '费用报表', path: '/report/fee', icon: 'el-icon-my-report' },
+			{ type: 'item', text: '账单报表', path: '/report/invoice', icon: 'el-icon-my-report' },
+		]
+	},
+	{
 		text: '交互',
 		path: '/news',
 		icon: 'iconfont el-icon-my-interact',
@@ -392,37 +407,15 @@ menu.map = {
 	'/setting/template/edit': {text: '编辑模板', icon: 'el-icon-edit', path: '/setting/template/edit'},
 	'/news/systemMessage/detail': {text: '消息详情', icon: '', path: '/news/systemMessage/detail'},
 	'/proposal/report': {text: '报表', icon: 'el-icon-my-report', path: '/proposal/report'},
-	'/proposal/report/add': {text: '新建报表', icon: '', path: '/proposal/report/add'},	
-	
-	'/patent/report': {text: '报表', icon: 'el-icon-my-report', path: '/patent/report'},
-	'/patent/report/add': {text: '新建报表', icon: '', path: '/patent/report/add'},	
-	
-	'/trademark/report': {text: '报表', icon: 'el-icon-my-report', path: '/trademark/report'},
-	'/trademark/report/add': {text: '新建报表', icon: '', path: '/trademark/report/add'},	
-	
-	'/copyright/report': {text: '报表', icon: 'el-icon-my-report', path: '/copyright/report'},
-	'/copyright/report/add': {text: '新建报表', icon: '', path: '/copyright/report/add'},
+	'/proposal/report/add': {text: '新建报表', icon: '', path: '/proposal/report/add'},
 
-	'/task/pending/report': {text: '报表', icon: 'el-icon-my-report', path: '/task/pending/report'},
-	'/task/pending/report/add': {text: '新建报表', icon: '', path: '/task/pending/report/add'},
-
-	'/task/finish/report': {text: '报表', icon: 'el-icon-my-report', path: '/task/finish/report'},
-	'/task/finish/report/add': {text: '新建报表', icon: '', path: '/task/finish/report/add'},
-
-	'/task/pause/report': {text: '报表', icon: 'el-icon-my-report', path: '/task/pause/report'},
-	'/task/pause/report/add': {text: '新建报表', icon: '', path: '/task/pause/report/add'},
-
-	'/fee/income/report': {text: '报表', icon: 'el-icon-my-report', path: '/fee/income/report'},
-	'/fee/income/report/add': {text: '新建报表', icon: '', path: '/fee/income/report/add'},
-
-	'/fee/pay/report': {text: '报表', icon: 'el-icon-my-report', path: '/fee/pay/report'},
-	'/fee/pay/report/add': {text: '新建报表', icon: '', path: '/fee/pay/report/add'},
-
-	'/fee/bill/report': {text: '报表', icon: 'el-icon-my-report', path: '/fee/bill/report'},
-	'/fee/bill/report/add': {text: '新建报表', icon: '', path: '/fee/bill/report/add'},
-
-	'/fee/payment/report': {text: '报表', icon: 'el-icon-my-report', path: '/fee/payment/report'},
-	'/fee/payment/report/add': {text: '新建报表', icon: '', path: '/fee/payment/report/add'},
+	'/report/task/add': {text: '新建报表', icon: '', path: '/report/task/add'},	
+	'/report/proposal/add': {text: '新建报表', icon: '', path: '/report/proposal/add'},	
+	'/report/patent/add': {text: '新建报表', icon: '', path: '/report/patent/add'},	
+	'/report/trademark/add': {text: '新建报表', icon: '', path: '/report/trademark/add'},	
+	'/report/copyright/add': {text: '新建报表', icon: '', path: '/report/copyright/add'},
+	'/report/fee/add': {text: '新建报表', icon: '', path: '/report/fee/add'},
+	'/report/invoice/add': {text: '新建报表', icon: '', path: '/report/invoice/add'},
 };
 tailRecursion(menu.data);
 

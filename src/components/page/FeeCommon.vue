@@ -62,7 +62,6 @@ export default {
           },
           { type: 'delete' },
           { type: 'export' },
-          { type: 'report', click: this.handleReport },
           { type: 'import' },
           { type: 'control' },
         ],
