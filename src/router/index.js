@@ -53,6 +53,7 @@ const SettingRule              = () => import('@/components/page/SettingRule')
 const SettingTemplate          = () => import('@/components/page/SettingTemplate')
 const SettingTemplateEdit      = () => import('@/components/page/SettingTemplateEdit')
 const SettingUser              = () => import('@/components/page/SettingUser')
+const OfferList                = () => import('@/components/page/OfferList')
 
 //#################
 const SettingIndividual        = () => import('@/components/page/SettingIndividual')
@@ -467,13 +468,21 @@ const router = new Router({
       path: '/fee/official',
       name: 'FeeOfficial',
       component: FeeCommon,
-      meta: { fee_type: 3 },
+      props: { 
+        inParams: {
+          fee_type: 3,
+        }
+      }
     },
     {
       path: '/fee/agency',
       name: 'FeeAgency',
       component: FeeCommon,
-      meta: { fee_type: 2 },
+      props: {
+        inParams: {
+          fee_type: 2,
+        }
+      },
     },
     {
       path: '/fee/bill',
@@ -531,6 +540,11 @@ const router = new Router({
     { path: '/setting/individual', name: 'SettingIndividual', component: SettingIndividual },
     { path: '/setting/jurisdiction', name: 'SettingJurisdiction', component: SettingJurisdiction },
     { path: '/setting/rule', name: 'SettingRule', component: SettingRule },
+    {
+      path: '/setting/offer',
+      name: 'OfferList',
+      component: OfferList,
+    },
     { 
       path: '/setting/system',
       name: 'SettingSystem',

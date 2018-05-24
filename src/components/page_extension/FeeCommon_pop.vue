@@ -1,23 +1,17 @@
 <template>
-  <el-dialog :title=title :visible.sync="dialogVisible" class="dialog-small" @close="$refs.form.resetFields();">
-		<el-form :model="form" ref="form" label-width="80px">
+  <el-dialog :title=title :visible.sync="dialogVisible" class="dialog-small" @close="clear">
+		<el-form :model="form" ref="form" label-width="80px" :rules="rules">
+
 			<el-form-item label="相关案件" prop="project">
-				<remote-select type="patent" v-model="form.project" ref="project"></remote-select>
+				<remote-select type="patent" v-model="form.project" :disabled="popType == 'edit'"></remote-select>
 			</el-form-item>
-			<el-form-item label="费用对象" prop="target">
-				<remote-select type="member" v-model="form.target"></remote-select>
+			<el-form-item label="费用对象" prop="target" >
+				<remote-select type="member" v-model="form.target" ></remote-select>
 			</el-form-item>
-			<el-row>
-				<el-col :span="24">
-					<el-form-item label="费用代码" prop="code">
-						<static-select  type="fee_code" v-model="form.code" ref="fee_code" :filter-options="areaFilter"></static-select>
-					</el-form-item>
-				</el-col>
-			</el-row>			
-			<el-form-item label="费用状态" prop="status" v-if="type == 'add'">
-				<fee-status v-model="form.status" :feeAnnual="feeAnnual"></fee-status>
+			<el-form-item label="费用代码" prop="code">
+				<static-select  type="fee_code" v-model="form.code" ref="fee_code" :disabled="popType == 'edit'"></static-select>
 			</el-form-item>
-			<el-form-item label="费用金额" prop="money">
+			<el-form-item label="费用金额" prop="money" class="is-required">
 				<el-row>
 					
 					<el-col :span="16" style="padding-right: 5px;">
@@ -41,23 +35,32 @@
 
 				</el-row>
 			</el-form-item>
-
+			
 			<el-row>
 				<el-col :span="12">
+					
+					
 					<el-form-item label="费用期限" prop="due_time">
 						<el-date-picker v-model="form.due_time" type="date" placeholder="请选择费用期限"></el-date-picker>
 					</el-form-item>
 				</el-col>
 				<el-col :span="12">
-					<el-form-item label="官方绝限" prop="dealine">
+					<el-form-item label="官方绝限" prop="deadline">
 						<el-date-picker v-model="form.deadline" type="date" placeholder="请选择官方期限"></el-date-picker>
 					</el-form-item>	
 				</el-col>
 			</el-row>
-			
-			<el-form-item label="支付时间" prop="pay_time">
+
+			<el-row>
+				<el-col :span="12">
+					
+				</el-col>
+				<el-col :span="12">
+<!-- 					<el-form-item label="支付时间" prop="pay_time">
 						<el-date-picker v-model="form.pay_time" type="date" placeholder="请选择支付时间"></el-date-picker>
-			</el-form-item>
+					</el-form-item> -->
+				</el-col>
+			</el-row>
 			
 			
 
@@ -68,8 +71,7 @@
 				<el-input type="textarea" placeholder="请填写备注" v-model="form.remark"></el-input>
 			</el-form-item>
 			<el-form-item style="margin-bottom: 0px">
-				<el-button type="primary" @click="add" v-if="type == 'add'">添加</el-button>
-				<el-button type="primary" @click="edit" v-else-if="type == 'edit'">编辑</el-button>
+				<el-button type="primary" @click="save" :loading="loading">{{ loading ? '保存中...' : '保存' }}</el-button>
 				<el-button @click="cancel">取消</el-button>
 			</el-form-item>
 		</el-form>
@@ -77,36 +79,35 @@
 </template>
 
 <script>
-import AxiosMixins from '@/mixins/axios-mixins'
+
 
 import Patent from '@/components/form/Patent'
 import Member from '@/components/form/Member'
 import FeeStatus from '@/components/form/FeeStatus'
 import RemoteSelect from '@/components/form/RemoteSelect'
 import StaticSelect from '@/components/form/StaticSelect'
+import {mapGetters} from 'vuex'
 
 const URL = '/api/fees'
 
 export default {
   name: 'FeeCommonPop',
-  mixins: [ AxiosMixins ],
   props: {
   	feeType: Number,
   },
   data () {
 		return {
 		  id: '',
-		  type: '',
-		  area: '',
+		  popType: '',
 		  dialogVisible: false,
 		  feeAnnual: false,
-		  beforeEdit: false,
+		  loading: false,
 		  form: {
 		  	project: '',
 		  	target: '',
 		  	code: '',
-		  	status: 0,
 		  	dealine: '',
+		  	status: 1,
 		  	money: {
 		  		amount: '',
 		  		currency: '',
@@ -114,9 +115,14 @@ export default {
 		  	},
 		  	due_time: '',
 		  	deadline: '',
-		  	pay_time: '',
 		  	invoice_entity_id: '',
 		  	remark: '',
+		  },
+		  rules: {
+		  	project: { required: true, type: 'number', trigger: 'change', message: '请选择相关案件' },
+		  	target: { required: true, type: 'number', trigger: 'change', message: '请选择费用对象' },
+		  	code: { required: true, type: 'number', trigger: 'change', message: '请选择费用代码' },
+		  	due_time: { required: true, type: 'date', trigger: 'change', message: '请选择费用期限' },
 		  },
 		  options: {
 		  	currencyType: [
@@ -138,19 +144,14 @@ export default {
 		}
   },
   computed: {
+  	...mapGetters([
+  		'roeData',
+  	]),
   	title () {
-  		const key1 = this.type == 'add' ? '新增' : '编辑';
+  		const key1 = this.popType == 'add' ? '新增' : '编辑';
   		const key2 = this.feeType == 1 ? '应收' : '应付';
   		return `${key1}${key2}费用`;
   	},
-  	areaFilter () {
-      const value = this.area;
-      if(value) {
-        return [{key: 'area', value}];
-      }else {
-        return [{key: 'area', value: ''}];
-      }
-    },
   	submitForm: {
   		get () {
   			const form = this.form;
@@ -171,53 +172,49 @@ export default {
   			return o;
   		},
   		set (val) {
-
-  			const arr = ['amount', 'currency', 'roe'] 
-  			this.beforeEdit = true;
   			this.id = val.id;
-  			this.$tool.coverObj(this.form, val, {skip: ['code']});
-  			this.form.status = this.form.status.id;
-  			this.area = val['area']['id'];
-  			this.$nextTick(() => {
-					
-					this.form.code = val.code.id;
-	  			
-	  			this.$nextTick(() => {
-	  				arr.forEach( d=>{this.form.money[d] = val[d] });
-	  				this.beforeEdit = false;	
-	  			})
+  			this.$tool.coverObj(this.form, val, { obj: ['code', 'status'], date: ['due_time'] } );
 
+  			//code被监听 为了覆盖监听事件的currency,amount数据 延后执行
+  			this.$nextTick(_=>{
+	  			this.form.money['currency'] = val['currency'];
+	  			this.form.money['amount'] = val['amount'];
+	  			//currency被监听 为了覆盖监听事件的roe数据 延后执行
+	  			this.$nextTick(_=>{ this.form.money['roe'] = val['roe'] });
   			})
-  			
   		}
   	}
   },
   methods: {
-  	getArea (val) {
-  		if(val.length != 0 ){
-  			if(!val[0].area) {
-  			return	this.area = 'CN'; 
-  			}else {
-	  			this.area = val[0].area;
-  			}
+  	show (type='add', row) {
+  		this.popType = type;		
+  		this.dialogVisible = true;
+  		if(type == 'edit') {
+  			this.$nextTick( _=>{
+	  			this.submitForm = row;
+  			});	
   		}
   	},
-  	show (row, type='add') {
-  		this.type = type;
-  		this.dialogVisible = true;
-  		this.$nextTick(()=>{
-  			if(type == 'edit') {
-	  			this.submitForm = row;
-  			}
-  		});
-  		
+  	save () {
+  		if(this.popType == 'add') {
+  			this.add();
+  		}
+  		if(this.popType == 'edit') {
+  			this.edit();
+  		}
   	},
   	add () {
   		const url = URL;
   		const data = this.submitForm;
-  		const success = ()=>{ this.dialogVisible = false; this.$emit('refresh') };
+  		const success = _=>{ 
+  			this.$message({type: 'success', message: _.info});
+  			this.dialogVisible = false; 
+  			this.$emit('refresh') 
+  		};
+  		const complete = _=>{ this.loading = false };
 
-  		this.axiosPost({url, data, success});
+  		this.loading = true;
+  		this.$axiosPost({url, data, success, complete});
   	},
   	edit () {
   		const url = `${URL}/${this.id}`;
@@ -227,47 +224,46 @@ export default {
   			this.dialogVisible = false;
   			this.$emit('refresh') 
   		};
+  		const complete = _=>{ this.loading = false };
 
-  		this.axiosPut({url, data, success});
+  		this.loading = true;
+  		this.$axiosPut({url, data, success, complete});
   	},
   	cancel () {
   		this.dialogVisible = false;
   	},
-  	codeChange ({amount, name}) {
-  		this.form.money.amount = amount;
-  		this.form.money.currency = 'CNY';
-  		this.form.money.roe = "1";
-
-  		const reg = /年费/;
-  		this.feeAnnual = reg.test(name); 
+  	clear () {
+  		this.$refs.form.resetFields();
+			this.form.money.roe = "";
+			this.form.money.amount = "";
+			this.form.money.currency = "";
   	},
   },
   watch: {
 		'form.code': {
 			handler (v) {
-				if(v) {
-					const val = this.$refs.fee_code.getSelected(v)[0];
-					this.form.money.currency = 'CNY';
+				const val = this.$refs.fee_code.getSelected(v)[0];
+				if(val) {
 					this.$tool.coverObj(this.form.money, val);
-				}
-				
+				}			
 			}
 		},
-		'form.project': {
+		'form.money.currency': {
 			handler (v) {
-				if(this.beforeEdit) return;
-				if(!v) return this.area = '';
-				if(typeof v != 'object') {
-
-					const project = this.$refs.project.map.get(v);
-					this.area = project.area;
-
+				const val = this.roeData[v];
+				if(val) {
+					this.form.money.roe = val == 'CNY' ? 1 : val;
 				}
-				
 			}
 		}
 	},
-  components: { Patent, Member, FeeStatus, RemoteSelect, StaticSelect },
+  components: { 
+  	Patent, 
+  	Member, 
+  	FeeStatus, 
+  	RemoteSelect, 
+  	StaticSelect, 
+  },
 }
 </script>
 
