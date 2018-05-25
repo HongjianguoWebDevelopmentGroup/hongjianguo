@@ -63,6 +63,7 @@ export default {
       
       tableOption: {
         'name': 'patentList',
+        'is_numbers': true,
         'url': URL,
         'height': 'default',
         'search_placeholder': '搜索案号、标题、申请号', 

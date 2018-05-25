@@ -184,6 +184,7 @@ export default {
         'name': 'taskList',
         'url': URL,
         'height': 'default',
+        'is_numbers': true,
         'search_placeholder': '搜索案号、标题、申请号、代理人、备注',
         'is_filter': true,
         'row_class': ({due_time}, index)=> {
@@ -385,7 +386,7 @@ export default {
     },
     refreshTableData (option) {
       const url = URL;
-      const data = Object.assign({}, this.filter, option, this.screen_value, {status: this.task_status}, {scope: this.task_toggle}, this.urlParams);
+      const data = Object.assign({}, option, this.screen_value, {status: this.task_status}, {category: this.task_category}, {scope: this.task_toggle}, this.urlParams, this.filter);
       const success = d=>{
         if( data['format'] == 'excel' ) {
           window.location.href = d.tasks.downloadUrl;
@@ -554,6 +555,9 @@ export default {
     ]),
     task_status () {
       return this.$route.meta.status;
+    },
+    task_category () {
+      return this.$route.meta.category;
     },
     urlParams () {
       return this.$route.query;

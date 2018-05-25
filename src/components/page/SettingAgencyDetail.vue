@@ -32,7 +32,27 @@
 			</el-form-item>
 		</el-form>
 		<div slot="statistics">
-			<app-table :columns="columns" :data="offerData"></app-table>
+			<template v-if="!saveStatus">
+				<el-upload
+					style="margin-bottom: 10px;"
+					class="upload-demo"
+					:before-upload="handleBeforeUpload"
+					:on-success="handleUploadSuccess"
+					action="/api/tempfile?action=getBatchFees"
+					:show-file-list="false">
+					<el-button size="small" type="primary" :loading="importLoading">{{ importLoading ? '导入中...' : '导入报价' }}</el-button>
+				</el-upload>
+				<app-table key="a1" :columns="columns" :data="offerData"></app-table>
+			</template>
+
+			<template v-else>
+				<div style="margin-bottom: 10px;">
+					<el-button :loading="saveLoading" size="small" type="primary" @click="importSave">{{ saveLoading ? '保存中...' : '确认保存'}}</el-button>
+					<el-button :disabled="saveLoading" size="small" type="danger" @click="importCancel">取消</el-button>
+				</div>
+				<app-table key="a2" :columns="importColumns" :data="offerData" :row-class-name="rowClassFunc"></app-table>
+			</template>
+			
 			<app-pop
 				:model="offerForm"
 				type="edit"
@@ -62,6 +82,9 @@ export default {
   data () {
 		return {
 			id: '',
+			saveStatus: false,
+			importLoading: false,
+			saveLoading: false,
 			form: {
 				name: '',
 				contact: '',
@@ -79,7 +102,7 @@ export default {
 			],
 			columns: [
 				{ type: 'text', label: '报价名称', prop: 'name' },
-				{ type: 'text', label: '默认报价', prop: 'amount', render_text: item => `${item}元` },
+				{ type: 'text', label: '默认报价', prop: 'amount', render_text: item => `${item}元`, width: '200' },
 				{ 
 					type: 'action',
 					width: '100px',
@@ -89,6 +112,10 @@ export default {
 						{ type: 'edit', click: this.handleRowClick },
 					],
 				}
+			],
+			importColumns: [
+				{ type: 'text', label: '报价名称', prop: 'name' },
+				{ type: 'text', label: '默认报价', prop: 'amount', render_text: item => `${item}元`, width: '200' },
 			],
 			offerData: [],
 			offerForm: {
@@ -103,6 +130,31 @@ export default {
 		}
 	},
 	methods: {
+		handleBeforeUpload () {
+			this.importLoading = true;
+		},
+		rowClassFunc ({flag}) {
+			if(flag) {
+				return 'agency-fee-red';
+			}else {
+				return '';
+			}
+		},
+		handleUploadSuccess (data) {
+			if(!data.status) return this.$message({message: data.info, type: 'warning'});
+			this.saveStatus = true;
+			this.importLoading = false;
+
+			const map = new Map();
+			data.data.forEach(v => map.set(v.code, v.amount));
+			this.offerData.forEach(v => {
+				const amount = map.get(v.fee_code);
+				if(amount) {
+					v.amount = amount;
+					v.flag = true;
+				}
+			});
+		},
 		save () {
 			const url = `/partnerfee/${this.id}`;
 			const data = this.offerForm;
@@ -116,7 +168,7 @@ export default {
 			this.$refs.pop.show();
 			this.$nextTick(() => {
 				this.id = id;
-				this.offerForm.amount = amount;
+				this.offerForm.amount = amount + '';
 			});
 		},
 		refresh () {
@@ -133,6 +185,29 @@ export default {
 			this.$store.commit('onLoading');
 			this.$axiosGet({url, success, complete});	
 		},
+		async importSave () {
+			this.saveLoading = true;
+			try {
+				await this.$axiosPost({
+					url: '/partnerfee/batchUpdate',
+					data: {
+						agency_id: this.$route.query.id,
+						data: this.offerData.filter(v => v.flag).map(v => ({code: v.fee_code, amount: v.amount})),
+					},
+					success: () => {
+						this.saveStatus = false;
+						this.refresh();
+					}
+				})
+			}catch(e){}
+			this.saveLoading = false;
+			
+		},
+		importCancel () {
+			this.saveStatus = false;
+			this.refresh();
+
+		},
 	},
 	created () {
 		this.refresh();
@@ -146,5 +221,6 @@ export default {
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
-<style scoped lang="scss">
+<style lang="scss">
+.agency-fee-red {color: red;}
 </style>

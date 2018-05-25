@@ -9,7 +9,7 @@
   :highlight-current-row="highlightCurrentRow"
   :height="tableHeight"
   :max-height="maxHeight"
-
+  :row-class-name="handleClassName"
   @selection-change="handleSelectionChange" 
   @sort-change="_=>{$emit('sort-change', _)}"
   @row-click="handleRowClick"
@@ -148,6 +148,9 @@ export default {
       type: Array,
       required: true,
     },
+    rowClassName: {
+      type: null,
+    },
     tableSelected: {
       type: Array,
       default () {
@@ -209,6 +212,11 @@ export default {
     },
   },
   methods: {
+    handleClassName (row, index) {
+      if(this.rowClassName) {
+        return this.rowClassName(row, index);
+      }
+    },
     handleRowClick (row, event, column) {
       event.stopPropagation();
       if(column.type == 'selection' || column.type == 'action') return false;

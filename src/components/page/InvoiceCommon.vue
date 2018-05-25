@@ -67,6 +67,7 @@ export default {
       option: {
         'name': 'invoice',
         'url': URL,
+        'is_numbers': true,
         'height': 'default',
         'highlightCurrentRow': true, 
         'rowClick': this.handleRowClick,

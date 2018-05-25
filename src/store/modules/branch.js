@@ -9,6 +9,7 @@ const getters = {
 	branchMap: state=>{
 		const map = new Map();
 		a(state.data);
+		console.log(map);
 		return map;
 
 		function a(arr) {
@@ -34,7 +35,7 @@ const getters = {
 
 const mutations = {
 	setBranch (state, d) {
-		state.data = d.branches;
+		state.data = d.branches ? d.branches : [];
 		state.lastUpdate = d.last_update;
 	}
 }
@@ -45,7 +46,6 @@ const actions = {
 		rootState.axios
 			.get(url)
 			.then(response=>{
-				console.log(response);
 				const d = response.data;
 				if(d.status){
 					commit('setBranch', d);

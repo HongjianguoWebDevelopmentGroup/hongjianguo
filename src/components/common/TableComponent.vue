@@ -99,6 +99,7 @@
       <template v-if="tableOption.header_slot ? true : false">
         <slot v-for="item in tableOption.header_slot" :name="item"></slot>
       </template>
+
       <search-input
         v-model="search_value"
         :placeholder="tableOption.search_placeholder == undefined ? '搜索...' : tableOption.search_placeholder"
@@ -107,6 +108,7 @@
         @enter="handleSearch"
         v-if="tableOption.is_search == undefined ? true : tableOption.is_search"
       ></search-input>
+      <el-button style="float: right; margin-right: 5px;" type="primary" @click="numbersVisible = true">编号检索</el-button>
     </div>
     
     <app-table
@@ -165,6 +167,14 @@
 
     <el-dialog v-if="exportType" :title="exportType.title" :visible.sync="dialogExport" class="dialog-small">
       <app-export :url="tableOption.url" :fields="fields" :default="default_choose" :response-key="exportType.key" @success="dialogExport = false" :filter="filter" :selected="selected"></app-export>
+    </el-dialog>
+
+    <el-dialog v-if="!!tableOption.is_numbers" title="编号检索" :visible.sync="numbersVisible" class="dialog-small" @close="numbers = ''">
+      <el-input type="textarea" v-model="numbers" placeholder="请填写编号，多个编号请回车换行"></el-input>
+      <div style="margin-top: 10px;">
+        <el-button type="primary" @click="refresh(); numbersVisible = false;">确认</el-button>
+        <el-button @click="numbersVisible = false">取消</el-button>
+      </div>
     </el-dialog>
   </div>
 </template>
@@ -307,6 +317,9 @@ export default {
       fields,
       selected: [],
       filterVisible: false,
+
+      numbers: '',
+      numbersVisible: false,
     };
 
     return data;
@@ -445,6 +458,17 @@ export default {
       }else {
         return [];
       }
+    },
+  },
+  watch: {
+    'requesOption': {
+      handler: function () {  },
+      deep: true,
+    },
+    screen_obj (val) {
+      if(this.filterLock) return;
+      this.filterVisible = false;
+      this.refresh();
     }
   },
   methods: {
@@ -642,10 +666,14 @@ export default {
       return this.$refs.table.getSelected(flag);
     },
     update () {
-      if(this.refreshTableData) {
-        this.refreshTableData(Object.assign({}, this.getRequestOption(), this.screen_obj));
+      const numbers = {};
+      if(this.numbers != '') {
+        numbers.numbers = this.numbers.split('\n');
       }
-      this.$emit('refreshTableData', Object.assign({}, this.getRequestOption(), this.screen_obj) );
+      if(this.refreshTableData) {
+        this.refreshTableData(Object.assign({}, this.getRequestOption(), this.screen_obj, numbers));
+      }
+      this.$emit('refreshTableData', Object.assign({}, this.getRequestOption(), this.screen_obj, numbers) );
     },
     search (val) {
       this.page = 1;

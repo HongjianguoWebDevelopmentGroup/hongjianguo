@@ -22,7 +22,7 @@ const getters = {
 
 const mutations = {
 	setProduct (state, d) {
-		state.data = d;
+		state.data = d ? d : [];
 	}
 }
 

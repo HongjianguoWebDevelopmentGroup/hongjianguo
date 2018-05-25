@@ -1,17 +1,26 @@
 <template>
   <div class="main">
     <el-button type="primary" @click="addPop(0)" style="margin-bottom: 10px;">添加根节点</el-button>
+    <el-input
+      placeholder="输入关键字进行过滤"
+      v-model="filterText"
+      class="input-no-radius"
+      style="border-radius: 0;">
+    </el-input>    
 	  <el-tree 
 	  	:data="options"
 	  	:props="props"
 	  	node-key="id"
+      
 	  	highlight-current
 	  	:expand-on-click-node="false"
 	  	:render-content="renderContent"
 	  	:current-node-key="currentNodeKey"
 	  	@current-change="handleCurrentChange"
       :style="`height: ${innerHeight - 450}px; overflow: auto; font-size: 14px;`"
-
+      :filter-node-method="filterNode"
+      :default-expanded-keys="defaultKeys"
+      ref="tree"
 	  >
 	  </el-tree>
 	  <app-collapse :col-title="colTitle" v-if="currentNodeKey != ''" style="margin-top: 15px; margin-bottom: 0px;">
@@ -48,12 +57,16 @@
 import AppCollapse from '@/components/common/AppCollapse'
 import AxiosMixins from '@/mixins/axios-mixins'
 import { mapGetters } from 'vuex'
+import { mapActions } from 'vuex'
 
 export default {
   name: 'classificationCommon',
   mixins: [ AxiosMixins ],
   data () {
 		return {
+      aId: '',
+      filterText: '',
+      defaultKeys: [],
 		  'currentNodeKey': '',
 		  'props': {
 		  	label: 'name',
@@ -72,6 +85,9 @@ export default {
 		}
   },
   methods: {
+    ...mapActions([
+      'refreshClassification',
+    ]),
   	renderContent (h, {node, data}) {
       // console.log(data);
   		return (
@@ -107,6 +123,11 @@ export default {
   		const url = this.url;
   		const data = Object.assign({}, this.pop_form, {parent: this.add_id});
   		const success = _=>{
+        if(_){
+         this.aId = _.classification.id;
+         this.form.name = _.classification.name;
+         this.form.description = _.classification.description;
+        }
   			this.$message({message: '新建成功', type: 'success'});
         this.dialogVisible = false;
   			this.refresh();
@@ -118,6 +139,7 @@ export default {
   		const url = `${this.url}/${this.currentNodeKey}`;
   		const data = this.form;
   		const success = _=>{
+        this.aId = _.classification.id;
   			this.$message({message: '保存成功', type: 'success'});
         this.dialogVisible = false;
   			this.refresh();
@@ -141,9 +163,27 @@ export default {
   			.catch(_=>{});
   		
   	},
+    filterNode(value, data) {
+      if (!value) return true;
+      return data.name.indexOf(value) !== -1;
+    },
   	refresh () {
   		if(this.pageType == 'classification') {
-  			this.$store.dispatch('refreshClassification');
+  			this.refreshClassification({
+          success: _=>{
+            this.$nextTick(_=>{
+            if(this.aId) {
+              const key = this.aId;
+              this.defaultKeys.splice(0,1,key);
+              // this.currentNode = this.branchMap.get(key);
+              this.currentNodeKey = key;
+              }else{
+                // this.currentNode = '';
+                this.defaultKeys = [];
+              }
+            })
+          }
+        });
   		}else {
   			this.$store.dispatch('refreshProduct');
   		}
@@ -178,6 +218,11 @@ export default {
   		return t == 'classification' ? '技术详情' : '产品详情';
   	}
   },
+   watch: {
+    filterText(val) {
+      this.$refs.tree.filter(val);
+    }
+  }, 
   components: { AppCollapse },
 }
 </script>

@@ -155,6 +155,12 @@
 			<!-- <span class="form-item-text" v-if="type == 'add'">{{ user ? user.name : '暂未读取到当前用户数据' }}</span> -->
 			<static-select type="ipr" v-model="form.ipr"></static-select>
 		</el-form-item>
+		<el-form-item label="代理机构名称">
+          <remote-select type="agency" v-model="form.agency"></remote-select>
+        </el-form-item>
+        <el-form-item label="事务所案号">
+        	<el-input v-model="form.agency_serial" placeholder="请填写事务所案号"></el-input>
+        </el-form-item>
 		<el-form-item label="部门" prop="branch">
 			<branch v-model="form.branch"></branch>
 		</el-form-item>	
@@ -227,6 +233,8 @@ export default {
 		  	products: [],
 		  	tags: [],
 		  	ipr: '',
+		  	agency: '',
+		  	agency_serial: '',
 		  	proposer: '',
 		  	progress: '',
 		  	branch: '',
@@ -388,7 +396,7 @@ export default {
   			for(let k in this.form) {
   				const d = data[k];
   				if( typeof d === 'object'){
-	  				if(k == 'classification' || k == 'branch' || k == 'type' || k == 'progress' || k == 'original_flag' || k == 'develop_mode' || k=='right_acquisition_method' || k == 'right_scope' || k == 'deposition_material' || k == 'numbers_of_document' || k == 'deposition_manner' || k=="ipr") {
+	  				if(k == 'classification' || k == 'branch' || k == 'type' || k == 'progress' || k == 'original_flag' || k == 'develop_mode' || k=='right_acquisition_method' || k == 'right_scope' || k == 'deposition_material' || k == 'numbers_of_document' || k == 'deposition_manner' || k=="ipr" ) {
 	  					this.form[k] = d.id;
 	  				}else if(k == 'attachments' || k == 'products' ) {
 	  					this.form[k] = d.map(_=>_.id);
@@ -396,7 +404,7 @@ export default {
 	  				}else if (k == 'applicants') {
 	  					this.form[k] = d.map(_=>{return {id:_.id,name:_.name}});
 	  				}
-	  				if(k == 'right_checkbox' ||  k == 'proposer' || k == 'tags') {
+	  				if(k == 'right_checkbox' ||  k == 'proposer' || k == 'tags' || k == 'agency') {
 	  					this.form[k] = d;
 	  				}
 	  			}else {

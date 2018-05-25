@@ -50,6 +50,7 @@ export default {
         'name': 'fees',
         'url': URL,
         'height': 'default',
+        'is_numbers': true,
         'header_btn': [
           { type: 'add', click: this.addPop },
           { 

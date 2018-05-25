@@ -21,7 +21,7 @@ export default {
 		this.$emit("input", arr);
     },
     endUpdate (val) {
-    	console.log(val);
+    	// console.log(val);
     	this.endTime = val;
 		const s = this.startTime ? this.startTime : '';
 		const e = this.endTime ? this.endTime : '';
@@ -33,6 +33,15 @@ export default {
     	this.startTime = "";
     	this.endTime = "";
     },
+  },
+  watch: {
+  	'date': {
+  		handler:function(val) {
+  			if(!val[0] && !val[1]) {
+  				this.clearDate();
+  			}
+  		},
+  	}
   },
   computed: {
   	date () {

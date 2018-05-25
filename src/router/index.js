@@ -134,6 +134,21 @@ const router = new Router({
       name: 'TaskPending',
       component: TaskCommon,
       meta: { 'status': 0 },
+    },{
+      path: '/task/pendingPatent',
+      name: 'TaskPending',
+      component: TaskCommon,
+      meta: { 'status': 0, 'category': 1, },
+    },{
+      path: '/task/pendingTrademark',
+      name: 'TaskPending',
+      component: TaskCommon,
+      meta: { 'status': 0 , 'category': 2},
+    },{
+      path: '/task/pendingCopyright',
+      name: 'TaskPending',
+      component: TaskCommon,
+      meta: { 'status': 0 , 'category': 3},
     },
     {
       path: '/task/pause',
@@ -418,12 +433,5 @@ const router = new Router({
     { path: '/setting/user', name: 'SettingUser', component: SettingUser },
   ]
 });
-router.beforeEach((to, from, next)=>{
-  // console.log(to, from);
-  const store = this.a.app.$store;
-  if(store) {
-    store.commit('clearScreen');
-  }
-  next();
-});
+
 export default router
