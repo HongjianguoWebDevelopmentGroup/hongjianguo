@@ -55,13 +55,13 @@
 
 <script>
 import AppCollapse from '@/components/common/AppCollapse'
-import AxiosMixins from '@/mixins/axios-mixins'
+
 import { mapGetters } from 'vuex'
 import { mapActions } from 'vuex'
 
 export default {
   name: 'classificationCommon',
-  mixins: [ AxiosMixins ],
+
   data () {
 		return {
       aId: '',
@@ -133,7 +133,7 @@ export default {
   			this.refresh();
   		}
 
-  		this.axiosPost({url, data, success});
+  		this.$axiosPost({url, data, success});
   	},
   	edit () {
   		const url = `${this.url}/${this.currentNodeKey}`;
@@ -145,7 +145,7 @@ export default {
   			this.refresh();
   		}
 
-  		this.axiosPut({url, data, success});
+  		this.$axiosPut({url, data, success});
   	},
   	treeDelete (id) {
   		const d = this.optionMap.get(id);
@@ -158,7 +158,7 @@ export default {
 		  			this.setCurrentNode('');
 		  		}
 
-		  		this.axiosDelete({url, success});
+		  		this.$axiosDelete({url, success});
   			})
   			.catch(_=>{});
   		
@@ -207,7 +207,7 @@ export default {
   	},
   	url () {
   		const t = this.pageType;
-  		return t == 'classification' ? '/api/classifications' : '/api/products';
+  		return t == 'classification' ? '/classifications' : '/products';
   	},
   	dialogTitle () {
   		const t = this.pageType;

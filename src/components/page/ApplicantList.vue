@@ -7,15 +7,13 @@
 
 <script>
 
-import AxiosMixins from '@/mixins/axios-mixins'
 import TableComponent from '@/components/common/TableComponent'
 import Pop from '@/components/page_extension/ApplicantList_pop'
 
-const URL = '/api/applicants';
+const URL = '/applicants';
 
 export default {
   name: 'applicantList',
-  mixins: [ AxiosMixins ],
   data () {
 		return {
 		  option: {
@@ -96,7 +94,7 @@ export default {
   					this.$message({message: '删除申请人成功', type: 'success'});
   					this.update();
   				}
-  				this.axiosDelete({url, success});
+  				this.$axiosDelete({url, success});
   			})
   			.catch(_=>{});
   	},
@@ -105,7 +103,7 @@ export default {
   		const data = Object.assign({}, option);
   		const success = _=>{ this.tableData = _.applicants };
 
-  		this.axiosGet({url, data, success});
+  		this.$axiosGet({url, data, success});
   	},
     refresh () {
     	this.$refs.table.refresh();

@@ -114,7 +114,7 @@ import AppSwitch from '@/components/form/AppSwitch'
 import {mapMutations} from 'vuex'
 import {mapActions} from 'vuex'
 
-const URL = `/api/tasks`;
+const URL = '/tasks';
 
 export default {
   name: 'taskFinish',

@@ -15,7 +15,7 @@
 </template>
 
 <script>
-import AxiosMixins from '@/mixins/axios-mixins'
+
 import TableComponent from '@/components/common/TableComponent'
 import Strainer from '@/components/page_extension/CopyrightList_strainer'
 import AppShrink from '@/components/common/AppShrink'
@@ -26,7 +26,6 @@ const URL = '/copyrights';
 
 export default {
   name: 'copyrightList',
-  mixins: [ AxiosMixins ],
   data () {
     return {
       currentRow: '',
@@ -116,7 +115,7 @@ export default {
           this.tableData = d.copyrights;  
         }      
       };
-      this.axiosGet({url, data, success});
+      this.$axiosGet({url, data, success});
     },
     refresh () {
       this.$refs.table.refresh();
@@ -129,7 +128,7 @@ export default {
         .then(()=>{
           const url=`${URL}/${id}`;
           const success = _=>{this.$refs.table.update()};
-          this.axiosDelete({url, success});    
+          this.$axiosDelete({url, success});    
         })
         .catch(()=>{});
     },

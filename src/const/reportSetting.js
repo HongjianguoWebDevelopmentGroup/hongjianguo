@@ -214,29 +214,29 @@ const columns = {
 const configs = {
 	'proposal': {
 		url: '/proposals',
-		list_url: '/proposal/report',
-		add_url: '/proposal/report/add',
+		list_url: '/report/proposal',
+		add_url: '/report/proposal/add',
 		data_key: 'proposals',
 		text: '提案数量统计',
 	},
 	'patent': {
 		url: '/patents',
-		list_url: '/patent/report',
-		add_url: '/patent/report/add',
+		list_url: '/report/patent',
+		add_url: '/report/patent/add',
 		data_key: 'patents',
 		text: '专利数量统计',
 	},
   'trademark': {
     url: '/trademarks',
-    list_url: '/trademark/report',
-    add_url: '/trademark/report/add',
+    list_url: '/report/trademark',
+    add_url: '/report/trademark/add',
     data_key: 'trademarks',
     text: '商标数量统计',
   },
   'copyright': {
     url: '/copyrights',
-    list_url: '/copyright/report',
-    add_url: '/copyright/report/add',
+    list_url: '/report/copyright',
+    add_url: '/report/copyright/add',
     data_key: 'copyrights',
     text: '版权数量统计',
   },
@@ -261,55 +261,6 @@ const configs = {
     data_key: 'invoices',
     text: '账单统计',
   },
-  'task_pending': {
-    url: '/api/tasks?status=0',
-    list_url: '/task/pending/report',
-    add_url: '/task/pending/report/add',
-    data_key: 'tasks',
-    text: '未完成任务统计',
-  },
-  'task_pause': {
-    url: '/api/tasks?status=-1',
-    list_url: '/task/pause/report',
-    add_url: '/task/pause/report/add',
-    data_key: 'tasks',
-    text: '暂停任务统计',
-  },
-  'task_finish': {
-    url: '/api/tasks?status=1',
-    list_url: '/task/finish/report',
-    add_url: '/task/finish/report/add',
-    data_key: 'tasks',
-    text: '已完成任务统计',
-  },
-  'fee_income': {
-    url: '/api/fees?debit=1',
-    list_url: '/fee/income/report',
-    add_url: '/fee/income/report/add',
-    data_key: 'fees',
-    text: '应收费用统计',
-  },
-  'fee_pay': {
-    url: '/api/fees?debit=0',
-    list_url: '/fee/pay/report',
-    add_url: '/fee/pay/report/add',
-    data_key: 'fees',
-    text: '应付费用统计',
-  },
-  'fee_bill': {
-    url: '/api/invoices?debit=1',
-    list_url: '/fee/bill/report',
-    add_url: '/fee/bill/report/add',
-    data_key: 'invoices',
-    text: '请款单统计',
-  },
-  'fee_payment': {
-    url: '/api/invoices?debit=0',
-    list_url: '/fee/payment/report',
-    add_url: '/fee/payment/report/add',
-    data_key: 'invoices',
-    text: '付款单统计',
-  }
 };
 
 const taskMap = {

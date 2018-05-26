@@ -37,15 +37,13 @@
 </template>
 
 <script>
-import AxiosMixins from '@/mixins/axios-mixins'
 import Upload from '@/components/form/Upload'
 import RemoteSelect from '@/components/form/RemoteSelect'
 
-const URL = '/api/mails';
+const URL = '/mails';
 
 export default {
   name: 'mailAdd',
-  mixins: [ AxiosMixins ],
   data () {
 		return {
 			'id': '',
@@ -96,7 +94,7 @@ export default {
 			}
 			const complete = _=>{ this.btn_disabled = false };
 
-			this.axiosPost({url, data, success, complete});
+			this.$axiosPost({url, data, success, complete});
 		},
 		save () {
 			const data = Object.assign({}, this.form, {mailbox: 0}, this.getMailForm());
@@ -110,10 +108,10 @@ export default {
 			this.btn_disabled = true;
 			if(this.type == 'add') {
 				const url = URL;
-				this.axiosPost({url, data, success, complete});	
+				this.$axiosPost({url, data, success, complete});	
 			}else {
 				const url = `${URL}/ ${this.id}`;
-				this.axiosPut({url, data, success, complete});
+				this.$axiosPut({url, data, success, complete});
 			}
 		},
 		back () {
@@ -189,7 +187,7 @@ export default {
 			const complete = _=>{ this.$store.commit('cancelLoading') };
 
 			this.$store.commit('onLoading');
-			this.axiosGet({url, success, complete});
+			this.$axiosGet({url, success, complete});
 		}
 	},
 	components: { 

@@ -43,7 +43,7 @@ import StaticSelect from '@/components/form/StaticSelect'
 import { mapGetters } from 'vuex'
 import { mapActions } from 'vuex'
 
-const URL = '/api/patents';
+const URL = '/patents';
 const PATENT_TYPE = ['发明专利', '实用新型', '外观设计']; 
 
 export default {
@@ -75,7 +75,7 @@ export default {
         'header_btn': [
           { type: 'add', click: this.add, map_if: '/patent/add', },
           { type: 'delete', map_if: '/patent/delete' }, 
-          { type: 'export', map_if: '/patent/export' },
+          { type: 'export2', map_if: '/patent/export' },
           { type: 'import', map_if: '/patent/import' },
           { type: 'batch_upload', map_if: '/patent/upload' },
           { type: 'control', label: '字段' },         

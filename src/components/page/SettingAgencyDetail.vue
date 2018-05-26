@@ -41,6 +41,7 @@
 					action="/api/tempfile?action=getBatchFees"
 					:show-file-list="false">
 					<el-button size="small" type="primary" :loading="importLoading">{{ importLoading ? '导入中...' : '导入报价' }}</el-button>
+					<a slot="tip" style="margin-left: 15px; font-size: 12px;" href="/static/template/price_template.xlsx">下载导入模板</a>
 				</el-upload>
 				<app-table key="a1" :columns="columns" :data="offerData"></app-table>
 			</template>

@@ -192,8 +192,6 @@
 </template>
 
 <script>
-import AxiosMixins from '@/mixins/axios-mixins'
-
 import Classification from '@/components/form/Classification'
 import Product from '@/components/form/Product'
 import Branch from '@/components/form/Branch'
@@ -215,11 +213,10 @@ const rightHash = [
   { text: '翻译权', label: 'is_translate_right',},
   { text: '应当由著权权人享有的其他权利', label: 'is_other_right',},
 ] 
-const URL = '/api/copyrights'
+const URL = '/copyrights'
 
 export default {
   name: 'copyrightAdd',
-  mixins: [ AxiosMixins ],
   props: ['pageType'],
   data () {
 		return {
@@ -361,7 +358,7 @@ export default {
   		};
   		const complete = _=>{ this.btn_disabled = false };
 
-  		this.axiosPost({url, data, success, complete});
+  		this.$axiosPost({url, data, success, complete});
   	},
   	edit () {
   		if(this.checkForm()) return;
@@ -375,7 +372,7 @@ export default {
   		};
   		const complete = _=>{ this.btn_disabled = false };
 
-  		this.axiosPut({url, data, success, complete})
+  		this.$axiosPut({url, data, success, complete})
   	},
   	checkForm () {
   		let flag = false;

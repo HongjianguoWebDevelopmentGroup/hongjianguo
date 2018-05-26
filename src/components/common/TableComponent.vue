@@ -108,7 +108,7 @@
         @enter="handleSearch"
         v-if="tableOption.is_search == undefined ? true : tableOption.is_search"
       ></search-input>
-      <el-button style="float: right; margin-right: 5px;" type="primary" @click="numbersVisible = true">编号检索</el-button>
+      <el-button v-if="!!tableOption.is_numbers" style="float: right; margin-right: 5px;" type="primary" @click="numbersVisible = true">编号检索</el-button>
     </div>
     
     <app-table
@@ -314,7 +314,7 @@ export default {
       transferValue,
       refreshRender: true,
       dialogExport: false,
-      fields,
+      fields: [...control[1], ...control[0]],
       selected: [],
       filterVisible: false,
 

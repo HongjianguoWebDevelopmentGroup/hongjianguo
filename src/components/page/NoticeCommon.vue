@@ -8,24 +8,24 @@
 <script>
 import TableComponent from '@/components/common/TableComponent'
 import Strainer from '@/components/page_extension/NoticeCommon_strainer'
-import AxiosMixins from '@/mixins/axios-mixins'
+
 
 const config = [
 	['patent', {
-		URL: '/api/patents/notices',
+		URL: '/patents/notices',
 		import_type: 'patent_notice',
 		upload_type: 'patent_notice',
 
 	}],
 	['copyright', {
-		URL: '/api/copyrights/notices',
-		deleteURL: '/api/notices',
+		URL: '/copyrights/notices',
+		deleteURL: '/notices',
 		import_type: false,
 		upload_type: 'copyright_notice',
 	}],
 	['trademark', {
-		URL: '/api/trademarks/notices',
-		deleteURL: '/api/notices',
+		URL: '/trademarks/notices',
+		deleteURL: '/notices',
 		import_type: false,
 		upload_type: 'trademark_notice',
 	}]
@@ -35,7 +35,6 @@ const map = new Map(config);
 
 export default {
   name: 'noticeCommon',
-  mixins: [AxiosMixins],
   data () {
 	return {
 			tableOption: {
@@ -135,7 +134,7 @@ export default {
 		              this.$message({type: 'success', message: '删除成功'});
 		     		  this.update();
 		            };
-		            this.axiosDelete({ url, data, success });
+		            this.$axiosDelete({ url, data, success });
 		          })
 		          .catch(_=>{console.log(_)});     			
 		 	}

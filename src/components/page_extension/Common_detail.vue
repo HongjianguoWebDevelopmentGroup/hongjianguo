@@ -3,12 +3,12 @@
   <app-shrink :title="title" :visible=visibleAuth @update:visible="handleVisible">
    <span slot="header" style="float: right">
       <el-button size="small" type="primary" class="table-header-btn" @click="edit">保存</el-button>
-        <el-dropdown  @command="handleCommandSend" trigger="click" style="margin-left: 5px;" size="small" v-if="type == 'patent'">
+        <el-dropdown  @command="handleCommandSend" trigger="click" style="margin-left: 5px;" size="small" v-if="type === 'patent' || type === 'trademark'">
           <el-button size="small">
             主动递交<i class="el-icon-caret-bottom el-icon--right"></i>
           </el-button>
           <el-dropdown-menu slot="dropdown" class="app-dropdown-menu">
-            <el-dropdown-item command="revision" :disabled="btnDisabled">主动补正</el-dropdown-item>
+            <el-dropdown-item command="revision" :disabled="btnDisabled" v-if="type === 'patent'">主动补正</el-dropdown-item>
             <el-dropdown-item command="articleChange" :disabled="btnDisabled">著录变更</el-dropdown-item>
             <el-dropdown-item command="divide" :disabled="btnDisabled">分案</el-dropdown-item>
           </el-dropdown-menu>

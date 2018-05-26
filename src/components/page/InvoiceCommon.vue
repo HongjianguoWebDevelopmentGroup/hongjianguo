@@ -264,7 +264,7 @@ export default {
             this.$message({message: '删除账单成功', type: 'success'});
             this.$refs.table.update() 
           };
-          this.axiosDelete({url, success});
+          this.$axiosDelete({url, success});
         })
         .catch(()=>{});
     }

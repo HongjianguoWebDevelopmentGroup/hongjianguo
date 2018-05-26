@@ -10,9 +10,8 @@
 import TableComponent from '@/components/common/TableComponent'
 // import Strainer from '@/components/page_extension/strainer'
 import PopPanel from '@/components/page_extension/InventorList_pop'
-import AxiosMixins from '@/mixins/axios-mixins'
 
-const URL = '/api/inventors'
+const URL = '/inventors'
 
 export default {
   name: 'inventorList',
@@ -67,7 +66,7 @@ export default {
             this.update();
           };
 
-          this.axiosDelete({url, success});
+          this.$axiosDelete({url, success});
         })
         .catch(_=>{});
   	},
@@ -76,7 +75,7 @@ export default {
       const data = Object.assign({}, option);
       const success = _=>{ this.tableData = _.data };
 
-      this.axiosGet({url, data, success});
+      this.$axiosGet({url, data, success});
   	},
     refresh () {
       this.$refs.table.refresh();

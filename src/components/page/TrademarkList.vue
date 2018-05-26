@@ -19,7 +19,7 @@ import CommonDetail from '@/components/page_extension/Common_detail'
 import Strainer from '@/components/page_extension/TrademarkList_strainer'
 import { mapActions } from 'vuex'
 
-const URL = '/api/trademarks'
+const URL = '/trademarks'
 export default {
   name: 'trademarkList', 
   data () {

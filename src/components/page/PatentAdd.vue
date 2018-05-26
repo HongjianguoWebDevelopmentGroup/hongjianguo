@@ -27,9 +27,8 @@ const map = new Map([
 const getKeys = ['base', 'person', 'classification', 'case','agent', 'other'];
 const setKeys = ['base', 'person', 'classification', 'agent', 'case', 'other'];
 
-const URL = '/api/patents';
+const URL = '/patents';
 
-import AxiosMixins from '@/mixins/axios-mixins'
 import AppCollapse from '@/components/common/AppCollapse'
 import PaBase from '@/components/page_extension/PatentAdd_base'
 import Person from '@/components/page_extension/PatentAdd_person'
@@ -50,7 +49,6 @@ export default {
     }
   },
   props: ['pageType'],
-  mixins: [ AxiosMixins ],
   methods: {
     ...mapActions([
       'refreshUser',
@@ -75,7 +73,7 @@ export default {
         }
 
         this.btn_disabled = true;
-        this.axiosPost({url, data, success, complete});  
+        this.$axiosPost({url, data, success, complete});  
       })
       
     },
@@ -93,7 +91,7 @@ export default {
         }
 
         this.btn_disabled = true;
-        this.axiosPut({url, data, success, complete});  
+        this.$axiosPut({url, data, success, complete});  
       })
     },
     formCheck (callback) {

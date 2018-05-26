@@ -16,13 +16,11 @@
 <script>
 import TableComponent from '@/components/common/TableComponent'
 import Pop from '@/components/page_extension/DispatchAdministration_pop'
-import AxiosMixins from '@/mixins/axios-mixins'
 
-const URL = '/api/expresses'
+const URL = '/expresses'
 
 export default {
   name: 'dispatchAdministration',
-  mixins: [ AxiosMixins ],
   data () {
     return {
       isConfirm: '',
@@ -76,7 +74,7 @@ export default {
         this.tableData = _.list;
       };
 
-      this.axiosGet({url, data, success});
+      this.$axiosGet({url, data, success});
     },
     handleRowClick (row) {
       this.tableData2 = row;
@@ -112,7 +110,7 @@ export default {
             this.update();
           }
 
-          this.axiosDelete({url, success});
+          this.$axiosDelete({url, success});
         })
         .catch(_=>{})
     },

@@ -12,14 +12,14 @@
 <script>
 import TableComponent from '@/components/common/TableComponent'
 import Strainer from '@/components/page_extension/MailList_strainer'
-import AxiosMixins from '@/mixins/axios-mixins'
+
 import Detail from '@/components/page_extension/Email_detail'
 
-const URL = '/api/mails';
+const URL = '/mails';
 
 export default {
   name: 'mailList',
-  mixins: [ AxiosMixins ],
+
   data () {
 		return {
 		  options: {
@@ -89,7 +89,7 @@ export default {
       const data = Object.assign({}, this.filter, option, mailbox);
       const success = _=>{this.tableData = _.mails;}
 
-      this.axiosGet({url, data, success});
+      this.$axiosGet({url, data, success});
     },
     refresh () {
       this.$refs.table.refresh();
@@ -117,7 +117,7 @@ export default {
           this.$message({message: '删除邮件成功', type: 'success'}) 
         };
 
-        this.axiosDelete({url, success});
+        this.$axiosDelete({url, success});
         }).catch(()=>{
           this.$message({
             type: 'info',

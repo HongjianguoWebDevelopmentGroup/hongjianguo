@@ -99,7 +99,7 @@ import { mapActions } from 'vuex'
 
 
 const typeMap = new Map([['/proposal/add', 'add'], ['/proposal/edit', 'edit'], ['/proposal/detail', 'detail']]);
-const URL = '/api/proposals';
+const URL = '/proposals';
 
 
 //https://jsonplaceholder.typicode.com/posts/
