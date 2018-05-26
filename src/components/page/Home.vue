@@ -3,6 +3,7 @@
     
       <el-card v-if="pendingTask" style="position: relative;">
         <div style="display: table;">
+        <p>待办任务摘要，点击查看详细任务列表：</p>
         <span v-if="pendingTask.length != 0"  v-for="m in pendingTask" :key="m.label"
           title="点击跳转"
           style="margin: 5px 10px 5px 0; border: 1px solid #ccc; border-radius: 5px; padding: 6px; cursor: pointer;display: table;float: left;" @click="toPending(m.value)">
@@ -19,12 +20,21 @@
         </span>
         </div>
       </el-card>
+
+      <el-card style="position: relative;margin-top:10px;">
+        <div style="display: table;">
+        <p>快捷操作入口：</p>
+        <span style="margin: 5px 10px 5px 0; border: 1px solid #ccc; border-radius: 5px; padding: 6px; cursor: pointer;display: table;float: left;" @click="toPage('/patent/notice')">
+          <span style="font-size: 14px;">上传专利通知书</span>
+        </span>
+        </div>
+      </el-card>
     
-    <el-row v-for="(row, i) in arr" :gutter="20" :key="i">
+    <!-- <el-row v-for="(row, i) in arr" :gutter="20" :key="i">
       <el-col v-for="(item, i2) in row" :span="24/row.length" :key="i2">
         <chart v-if="!!item" :type="item" style="margin: 10px 0px;"></chart>
       </el-col>
-    </el-row>
+    </el-row> -->
 	</div>
 </template>
 <script>
@@ -66,6 +76,10 @@ export default {
   methods: {
     toPending (id) {
       this.$router.push({name: 'TaskPending', params: {id} });
+    },
+    toPage(url) {
+      this.$router.push({name: url });
+      console.log(url);
     }
   },
   // methods: {
