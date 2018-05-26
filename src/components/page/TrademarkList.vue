@@ -39,15 +39,16 @@ export default {
 				{
 					'type': 'delete',
 				},
+				// {
+				// 	'type': 'import',
+				// },
 				{
-					'type': 'import',
+					'type': 'export2',
 				},
-				{
-					'type': 'export',
-				},
-				{
-					'type': 'batch_upload',
-				},				
+				// {
+				// 	'type': 'batch_upload',
+				// },
+				// { type: 'report', click: _=>{this.$router.push('/trademark/report')} },				
 				{
 					'type': 'control',
 					'label': '字段'

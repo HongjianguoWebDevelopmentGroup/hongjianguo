@@ -3,7 +3,7 @@
     <strainer v-model="filter" @refresh="refresh"></strainer>
     
     <table-component :tableOption="tableOption" :data="tableData" @refreshTableData="refreshTableData" ref="table" :refresh-proxy="refreshProxy">
-      <el-button v-if="!!(menusMap && !menusMap.get('/patent/download') )" slot="download" :loading="downloadLoading" icon="share" @click="downloadPop" type="primary" style="margin-left: 5px;">批量下载</el-button>
+      <!-- <el-button v-if="!!(menusMap && !menusMap.get('/patent/download') )" slot="download" :loading="downloadLoading" icon="share" @click="downloadPop" type="primary" style="margin-left: 5px;">批量下载</el-button> -->
     </table-component>
     
     
@@ -76,9 +76,10 @@ export default {
           { type: 'add', click: this.add, map_if: '/patent/add', },
           { type: 'delete', map_if: '/patent/delete' }, 
           { type: 'export2', map_if: '/patent/export' },
-          { type: 'import', map_if: '/patent/import' },
-          { type: 'batch_upload', map_if: '/patent/upload' },
-          { type: 'control', label: '字段' },         
+          // { type: 'import', map_if: '/patent/import' },
+          // { type: 'batch_upload', map_if: '/patent/upload' },
+          { type: 'control', label: '字段' },
+          // { type: 'report', click: _=>{this.$router.push('/patent/report')} },          
           { type: 'serial_search'},
         ],
         'header_slot': ['download'],
