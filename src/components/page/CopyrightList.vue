@@ -108,7 +108,7 @@ export default {
     },
     refreshTableData (option) {
       const url = URL;
-      const data = Object.assign({}, option, this.filter);
+      const data = Object.assign({}, option, this.filter, this.$route.query);
       const success = d=>{
         if(data['format'] == 'excel') {
           window.location.href = d.copyrights.downloadUrl;

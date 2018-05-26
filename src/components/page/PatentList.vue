@@ -2,7 +2,7 @@
   <div class="main">
     <strainer v-model="filter" @refresh="refresh"></strainer>
     
-    <table-component :tableOption="tableOption" :data="tableData" @refreshTableData="refreshTableData" ref="table" :refresh-proxy="refreshProxy">
+    <table-component :tableOption="tableOption" :data="tableData" :refreshTableData="refreshTableData" ref="table">
       <!-- <el-button v-if="!!(menusMap && !menusMap.get('/patent/download') )" slot="download" :loading="downloadLoading" icon="share" @click="downloadPop" type="primary" style="margin-left: 5px;">批量下载</el-button> -->
     </table-component>
     
@@ -52,7 +52,6 @@ export default {
   data () {
     return {
       value6: '',
-      refreshProxy: '',
       currentRow: '',
       shrinkVisible: false,
       patentSelected: '',
@@ -191,18 +190,16 @@ export default {
       }
     },
     refreshTableData (option) {
-      console.log(this.area);
+      
       const url = URL;
-      const data = Object.assign({}, option, this.filter, this.area);
+      const data = Object.assign({}, option, this.filter, this.area, this.$route.query);
       const success = d=>{
-        if(data['format'] == 'excel') {
-          window.location.href = d.patents.downloadUrl;
-        }else {
+        if(data['format'] !== 'excel') {
           this.tableData = d.patents;
-        }
+        }   
       };
 
-      this.refreshProxy = this.axiosGet({url, data, success});
+      return this.$axiosGet({url, data, success});
     },
     refresh () {
       this.$refs.table.refresh();

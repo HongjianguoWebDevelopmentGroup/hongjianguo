@@ -45,6 +45,9 @@ export default {
 			default () {
 				return [];
 			}
+		},
+		'exportFunc': {
+			type: Function,
 		}
 	},
 	data () {
@@ -66,30 +69,32 @@ export default {
 		])
 	},
 	methods: {
-		exportClick () {
-			this.$refs.form.validate(_=>{
-				if(_){
+		async exportClick () {
+			const flag = await new Promise((reject) => {this.$refs.form.validate(reject)});
+			if(flag) {
+				if(this.exportFunc) {
 					this.loading = true;
-					this.$axiosGet({
-						url: this.url,
-						data: {
-							...this.filter,
-							...this.screen_obj,
+					try {
+						const response = await this.exportFunc({
 							format: 'excel',
 							documents: this.form.documents,
 							fields: this.form.fields.join(','),
-							ids: this.selected.map(_=>_.id),
-						},
-						success: d=>{	
-							window.location.href = d[this.responseKey]['downloadUrl'];
-							this.$emit('success', d);
-						},
-						complete: d=>{
-							this.loading = false;
+						});
+
+						const data = response.data;
+						if(data.status) {
+							window.location.href = data[this.responseKey]['downloadUrl'];
+							this.$emit('success', data)
 						}
-					})		
+					}catch(e) {
+						console.log(e);
+					}
+					this.loading = false;
+					// this.loading = false;
 				}
-			})
+			}else {
+				this.$message({type: 'success', message: '请正确填写导出表单'});
+			}
 		}
 	},
 	watch: {

@@ -61,6 +61,16 @@ const getters = {
 		const userVersion = user && user.db ? user.db : '';
 		return userVersion;
 	},
+	userLinks: state => {
+		const user = state.data;
+		const links = user && user.links ? user.links : [];
+		return links;
+	},
+	userReminders: state => {
+		const user = state.data;
+		const reminders = user && user.reminders ? user.reminders : [];
+		return reminders;
+	},
 	userLoading: state=>state.loading,
 }
 

@@ -166,7 +166,7 @@
     </el-dialog>
 
     <el-dialog v-if="exportType" :title="exportType.title" :visible.sync="dialogExport" class="dialog-small">
-      <app-export :url="tableOption.url" :fields="fields" :default="default_choose" :response-key="exportType.key" @success="dialogExport = false" :filter="filter" :selected="selected"></app-export>
+      <app-export :fields="fields" :default="default_choose" :response-key="exportType.key" @success="dialogExport = false" :filter="filter" :export-func="update"></app-export>
     </el-dialog>
 
     <el-dialog v-if="!!tableOption.is_numbers" title="编号检索" :visible.sync="numbersVisible" class="dialog-small" @close="numbers = ''">
@@ -665,15 +665,15 @@ export default {
     getSelected (flag=false) {
       return this.$refs.table.getSelected(flag);
     },
-    update () {
+    update (customForm = {}) {
       const numbers = {};
       if(this.numbers != '') {
         numbers.numbers = this.numbers.split('\n');
       }
       if(this.refreshTableData) {
-        this.refreshTableData(Object.assign({}, this.getRequestOption(), this.screen_obj, numbers));
+        return this.refreshTableData(Object.assign({}, this.getRequestOption(), this.screen_obj, numbers, customForm));
       }
-      this.$emit('refreshTableData', Object.assign({}, this.getRequestOption(), this.screen_obj, numbers) );
+      this.$emit('refreshTableData', Object.assign({}, this.getRequestOption(), this.screen_obj, numbers, customForm) );
     },
     search (val) {
       this.page = 1;
@@ -684,11 +684,11 @@ export default {
       this.page = 1;
       this.update();
     },
-    refresh () {
+    refresh (customForm = {}) {
       console.log('-------------refresh--------------');
       this.page = 1;
       this.search_value = "";
-      this.update();
+      this.update(customForm);
     },
     handleImportSuccess () {
       this.$message({message: '导入成功', type: 'success'});

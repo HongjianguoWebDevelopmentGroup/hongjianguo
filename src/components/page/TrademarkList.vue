@@ -285,7 +285,7 @@ export default {
   		}
   		this.$axiosGet({
   			url: URL,
-  			data: Object.assign({}, this.filter, option, this.area),
+  			data: Object.assign({}, this.filter, option, this.area, this.$route.query),
   			success,
   		})
   	},

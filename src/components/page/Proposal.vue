@@ -164,8 +164,8 @@ export default {
       this.$refs.table.refresh();
     },
     refreshTableData (option) {
-      const url = '/api/proposals';
-      const data = Object.assign({}, option, this.filter, this.screen_value);
+      const url = '/proposals';
+      const data = Object.assign({}, option, this.filter, this.screen_value, this.$route.query);
       const success = _=>{
         if(data.format == 'excel') {
           window.location.href = _.proposals.downloadUrl;

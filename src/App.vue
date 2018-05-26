@@ -48,7 +48,11 @@
         />  -->       
           <el-badge :value="pendingTaskCount" class="task-pending-top">
             <el-button size="mini" icon="warning" type="primary" @click="$router.push('/task/pending')" title="待办任务"></el-button>
-          </el-badge>          
+          </el-badge> 
+
+          <a target="_blank" href="http://help.hongjianguo.com:4000" style="float: right;
+    margin-right: 20px;
+    font-size: 14px;">帮助</a>         
     </nav>
       <span class="nav-left-btn" @click="navToggle"><span class="nav-left-btn-arrow el-icon-arrow-left"></span></span>
       <div class="nav-left" :style="`height: ${innerHeight}px`">
@@ -498,6 +502,10 @@ nav {
   }
 /*这里放入重写element-ui样式的内容*/
 #app {
+  .el-card__header {
+    padding: 10px 20px;
+    font-size: 14px;
+  }
   .dialog-control>.el-dialog {
     width: 600px;
     position: static;
