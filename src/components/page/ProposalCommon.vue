@@ -283,6 +283,24 @@ export default {
 
           },
         },
+        'products': {
+          type: 'array',
+          trigger: 'change',
+          required: true,
+          message: '产品名称不能为空',
+        },
+        'classification': {
+          type: 'number',
+          trigger: 'change',
+          required: true,
+          message: '技术分类不能为空',
+        },
+        'tags': {
+          type: 'array',
+          trigger: 'change',
+          required: true,
+          message: '标签不能为空',
+        }
         // 'identity': {pattern:  /(^\d{15}$)|(^\d{18}$)|(^\d{17}(\d|X|x)$)/, message: '证件号码格式错误'},   	
       },
       tableOption: {

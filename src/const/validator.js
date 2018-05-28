@@ -1,7 +1,7 @@
 export function checkInventors (a, b, c, required=false) {
 	let msg = '';
   let number = 0;
-  const reg = /^[1-9][0-9]*$/;
+  const reg = /^(([1-9][0-9])|0)*$/;
   
   if(b.length == 0) {
     msg = required ? '发明人字段不能为空' : 'success';
@@ -19,11 +19,11 @@ export function checkInventors (a, b, c, required=false) {
 
         }
         if( !d.id || !d.share ) {
-          if(!d.id && !d.share) {
+          if(!d.id && d.share === undefined) {
             msg = '请选择发明人并填写贡献率'; 
           }else if(!d.id) {
             msg = '请选择发明人';
-          }else if(!d.share) {
+          }else if(d.share === undefined) {
             msg = '请填写贡献率';
           }
           
@@ -36,18 +36,19 @@ export function checkInventors (a, b, c, required=false) {
   
   if( !msg ) {
     for(let d of b) {
-      let n;
-      let flag = !!( reg.test(d.share) && (n = Number.parseInt(d.share)) && n >= 10 && n <= 100 && (number += n) );
+      let n = Number.parseInt(d.share);
+      if(n == 0) continue;
+      let flag = !!( reg.test(d.share) && n >= 0 && n <= 100 && (number += n) );
       if( !flag ) { 
-        msg = '贡献率应为10-100的数字';
+        msg = '贡献率应为0-100的数字';
         break;
       }
     }
   }
 
   if( !msg ) {
-    if(number !== 100) {
-      msg = '各发明人的贡献率之和应为100';
+    if(number > 100) {
+      msg = '各发明人的贡献率之和应小于等于100';
     }
   }
 

@@ -75,6 +75,9 @@
       <upload v-model="form.attachments" :file-list="attachments"> 
       </upload>
     </el-form-item>
+    <div v-if="data.inventor_tips" style="margin-left:100px;padding: 0;margin-bottom: 20px; font-size:14px;color:#bbb;">
+      <span>{{ data.inventor_tips }}</span>
+    </div>
     <el-form-item prop="remark" label="任务备注" v-if="fields.remark && !hide_r_a">
       <el-input type="textarea" v-model="form.remark"></el-input>
     </el-form-item>
