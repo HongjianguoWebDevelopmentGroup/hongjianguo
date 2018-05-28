@@ -1,8 +1,6 @@
 <template>
   <div class="main" id="task_common">
     
-    <list-filter type="task" :visible.sync="filterVisible" :refresh="refresh"></list-filter>
-    
     <table-component :tableOption="tableOption" :data="tableData" :refreshTableData="refreshTableData" :refresh-proxy="refreshProxy" ref="table">
     </table-component>
  
@@ -77,7 +75,7 @@
 
     <app-shrink :visible.sync="dialogShrinkVisible" :title="currentRow.title" @close="handleShrinkClose">
       <span slot="header" style="margin-left: 10px;">
-        <el-tag>{{ currentRow.flow_node }}</el-tag>
+        <el-tag v-if="currentRow.flow_node">{{ currentRow.flow_node.name }}</el-tag>
         <el-tag v-if="currentRow.serial">{{ currentRow.serial }}</el-tag>
       </span>
       <span slot="header" style="float: right">
@@ -127,7 +125,6 @@ import Edit from '@/components/page_extension/TaskCommon_edit'
 import Information from '@/components/page_extension/TaskCommon_information'
 
 import TaskFinish from '@/components/common/TaskFinish'
-import ListFilter from '@/components/common/AppListFilter'
 import AppShrink from '@/components/common/AppShrink'
 import CommonDetail from '@/components/page_extension/Common_detail'
 
@@ -159,7 +156,6 @@ export default {
    data () {
 
     return {
-      filterVisible: false,
       dialogScreenVisible: false,
       dialogTurnoutVisible: false,
       dialogAddVisible: false,
@@ -184,6 +180,8 @@ export default {
         'height': 'default',
         'search_placeholder': '搜索案号、标题、申请号、代理人、备注',
         'is_filter': true,
+        'is_list_filter': true,
+        'list_type': 'task',
         'row_class': ({due_time}, index)=> {
           return ;
         },
@@ -193,10 +191,8 @@ export default {
           {},
           {},
           { type: 'export' },
-          { type: 'report', click: this.handleReport },
           // { type: 'custom', label: '转出', icon: '', click: ()=>{ this.dialogTurnoutVisible = true; } },
           { type: 'control', label: '字段'},
-          { type: 'filter', click: () => { this.filterVisible = true; } }
           // { type: 'custom', label: '设定', icon: '', click: ()=>{ this.dialogSettingVisible = true; } }
         ],
         'highlightCurrentRow': true, 
@@ -628,7 +624,6 @@ export default {
     TableComponent, 
     AppDatePicker, 
     Edit, 
-    ListFilter, 
     AppCollapse, 
     TaskFinish, 
     AppShrink, 

@@ -184,7 +184,7 @@ export default {
   },
   methods: {
     ...mapActions([
-      'refreshExtends', //extend-field
+      // 'refreshExtends', //extend-field
       'refreshProduct', //product
       'refreshClassification', //classification
       'refreshBranch', //branch
@@ -265,7 +265,7 @@ export default {
       this.setUser(window.appCache.userinfo);
       
       //获取系统配置数据
-      this.refreshExtends(false);
+      // this.refreshExtends(false);
       // this.$store.dispatch('refreshTags');
       
       //避免每次F5都发送请求的方法：

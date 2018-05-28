@@ -1,4 +1,4 @@
-let url = '/api/iprs';
+let url = '/iprs';
 const state = {
 	data: undefined,
 }

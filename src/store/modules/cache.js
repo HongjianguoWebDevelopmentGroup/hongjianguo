@@ -1,5 +1,4 @@
-
-let url_roeData = '/api/roe'
+let url_roeData = '/roe'
 const state = {
 	roeData: null,
 }

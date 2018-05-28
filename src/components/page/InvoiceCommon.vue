@@ -1,6 +1,5 @@
 <template>
   <div class="main">
-  	<strainer v-model="filter" @refresh="refresh"></strainer>
 		<table-component @refreshTableData="refreshTableData" :tableOption="option" :data="tableData" ref="table">
 			<el-tag v-if="curTotal !== ''" slot="cur_total" style="margin-left: 15px;">当前页费用：{{ curTotal }}</el-tag>
 			<el-tag v-if="allTotal !== ''" slot="all_total" style="margin-left: 10px;">所有费用：{{ allTotal }}</el-tag>
@@ -51,7 +50,6 @@
 
 <script>
 import TableComponent from '@/components/common/TableComponent'
-import Strainer from '@/components/page_extension/InvoiceCommon_strainer'
 import Pop from '@/components/page_extension/InvoiceCommon_pop'
 import AppShrink from '@/components/common/AppShrink'
 import InvoiceDetail from '@/components/page_extension/InvoiceCommon_detail'
@@ -68,7 +66,9 @@ export default {
 		  	'name': 'invoice',
 		  	'url': URL,
 		  	'height': 'default',
-		  	'highlightCurrentRow': true, 
+		  	'highlightCurrentRow': true,
+        'is_list_filter': true,
+        'list_type': 'invoice',
         'rowClick': this.handleRowClick,
 		  	'header_btn': [
 		  		{ type: 'export' },
@@ -167,7 +167,6 @@ export default {
         // ]
       },
 		  tableData: [],
-		  filter: {},
 		  popType: 'edit',
 		  curTotal: '',
 		  allTotal: '',
@@ -261,7 +260,7 @@ export default {
   	refreshTableData (option) {
   		const url = URL;
   		const debit = this.feeType;
-  		const data = Object.assign({}, option, { debit }, this.filter);
+  		const data = Object.assign({}, option, { debit });
   		const success = d=>{ 
   			if(data['format'] == 'excel') {
   				if(d.invoices.downloadUrl) {
@@ -300,7 +299,7 @@ export default {
   					this.$message({message: '删除账单成功', type: 'success'});
   					this.$refs.table.update() 
   				};
-  				this.axiosDelete({url, success});
+  				this.$axiosDelete({url, success});
   			})
   			.catch(()=>{});
   	}
@@ -317,7 +316,6 @@ export default {
   },
   components: { 
   	TableComponent, 
-  	Strainer, 
   	Pop,
   	AppShrink,
     InvoiceDetail,

@@ -8,7 +8,6 @@
       :id="currentRow.id"
       @editSuccess="refresh">
     </common-detail>
-    <list-filter type="trademark" :visible.sync="filterVisible" :refresh="refresh"></list-filter>
     <!-- <el-button @click="customFields()">按钮</el-button> -->
   </div>
 </template>
@@ -17,19 +16,19 @@
 import TableComponent from '@/components/common/TableComponent'
 import AppDatePicker from '@/components/common/AppDatePicker'
 import CommonDetail from '@/components/page_extension/Common_detail'
-import ListFilter from '@/components/common/AppListFilter'
 
 const URL = '/trademarks'
 export default {
   name: 'trademarkList', 
   data () {
 		return {
-			filterVisible: false,
 			dialogScreenVisible: false,
 			tableOption: {
 				'name': 'trademark',
 				'url': URL,
 				'is_filter' : true,
+				'is_list_filter': true,
+				'list_type': 'trademark',
 				'header_btn': [
 					{
 						'type': 'add',
@@ -37,13 +36,11 @@ export default {
 							this.$router.push('/trademark/add');
 						}
 					},
-					{ type: 'delete',},
-					{ type: 'import',},
+					{ type: 'delete' },
+					// { type: 'import'},
 					{ type: 'export',},
-					{ type: 'batch_upload',},
-					{ type: 'report', click: _=>{this.$router.push('/trademark/report')} },
+					// { type: 'batch_upload' },
 					{ type: 'control', label: '字段'},
-					{ type: 'filter', click: () => {this.filterVisible = true} }
 				],
 				'import_type': 'trademark',
 				'upload_type': 'trademark',
@@ -87,7 +84,6 @@ export default {
 			tableData: '',
 			currentRow: '',
 			shrinkVisible: false,
-			filter: {},
 		};
   },
   computed: {
@@ -112,7 +108,7 @@ export default {
   		}
   		this.$axiosGet({
   			url: URL,
-  			data: Object.assign({}, this.filter, option, this.inParams),
+  			data: Object.assign({}, option, this.inParams),
   			success,
   		})
   	},
@@ -151,7 +147,6 @@ export default {
   	TableComponent, 
   	AppDatePicker,
   	CommonDetail,
-  	ListFilter,
   },
   watch: {
 

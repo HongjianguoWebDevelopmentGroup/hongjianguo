@@ -1,4 +1,4 @@
-let url = '/api/classifications';
+let url = '/classifications';
 const state = {
 	data: [],
 }

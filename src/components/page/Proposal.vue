@@ -1,7 +1,5 @@
 <template>
-	<div class="main">
-    <list-filter type="proposal" :visible.sync="filterVisible" :refresh="refresh" ></list-filter>
-    
+	<div class="main">    
 		<table-component :tableOption="tableOption" :data="tableData" ref="table" :refreshTableData="refreshTableData" :refresh-proxy="refreshProxy">
       <el-button v-if="menusMap && !menusMap.get('/proposals/proposer')" type="primary" icon="d-arrow-right" class="table-header-btn" @click="transferPop" slot="transfer" style="margin-left: 5px;">移交</el-button>
       
@@ -27,7 +25,6 @@
 
 <script>
 import TableComponent from '@/components/common/TableComponent'
-import ListFilter from '@/components/common/AppListFilter'
 import AppCollapse from '@/components/common/AppCollapse'
 import Classification from '@/components/form/Classification'
 import Product from '@/components/form/Product'
@@ -37,7 +34,6 @@ import ProposalDetail from '@/components/page_extension/Proposal_detail'
 
 import RemoteSelect from '@/components/form/RemoteSelect'
 import StaticSelect from '@/components/form/StaticSelect'
-import AxiosMixins from '@/mixins/axios-mixins'
 
 import {mapGetters} from 'vuex'
 
@@ -49,7 +45,6 @@ const strainerArr = ['classification', 'product', 'proposer', 'tags', 'inventors
 const map = new Map([['flownodes', 'progress'],['time', 'create_time']]);
 export default {
   name: 'proposalList',
-  mixins: [ AxiosMixins ],
   methods: {
     add () {
       this.$router.push('/proposal/add');
@@ -91,7 +86,7 @@ export default {
             const data = { ids: this.$tool.splitObj(s, 'id') };
             const success = _=>{ this.update() };
 
-            this.axiosDelete({ url, data, success });
+            this.$axiosDelete({ url, data, success });
           })
           .catch(_=>{console.log(_)});
       }
@@ -134,7 +129,7 @@ export default {
         }
       }
       
-      this.refreshProxy = this.axiosGet({url, data, success});
+      this.refreshProxy = this.$axiosGet({url, data, success});
     },
     refresh () {
       this.$refs.table.refresh();
@@ -169,7 +164,7 @@ export default {
       const complete = _=>{this.transferDisabled = false};
 
       this.transferDisabled = true;
-      this.axiosPut({url, data, success, complete});
+      this.$axiosPut({url, data, success, complete});
     }
   },
   data () {
@@ -180,6 +175,8 @@ export default {
         'name': 'proposalList',
         'url': URL,
         'is_filter': true,
+        'is_list_filter': true,
+        'list_type': 'proposal',
         'height': 'default',
         'search_placeholder': '搜索案号、标题、标签、发明人',
         'highlightCurrentRow': true, 
@@ -189,8 +186,6 @@ export default {
           { type: 'delete' },
           { type: 'export' },
           { type: 'control' },
-          { type: 'report', click: _=>{this.$router.push('/proposal/report')} },
-          { type: 'filter', click: () => {this.filterVisible = true;} },
         ],
         'header_slot': ['transfer'],
         'columns': [
@@ -256,8 +251,7 @@ export default {
     }
   },
   components: { 
-    TableComponent, 
-    ListFilter, 
+    TableComponent,
     AppCollapse, 
     Classification, 
     Product, 

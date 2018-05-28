@@ -55,7 +55,7 @@ import AppPop from '@/components/common/AppPop'
 import AppTag from '@/components/common/AppTag'
 
 
-const URL = '/api/agencies';
+const URL = '/agencies';
 
 export default {
   name: 'settingAgencyDetail',
@@ -104,7 +104,7 @@ export default {
 	},
 	methods: {
 		save () {
-			const url = `/api/partnerfee/${this.id}`;
+			const url = `/partnerfee/${this.id}`;
 			const data = this.offerForm;
 			const success = () => {
 				this.$message({type: 'success', message: '编辑报价成功'});

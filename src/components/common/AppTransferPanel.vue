@@ -1,5 +1,5 @@
 <template>
-	<div class="app-transfer-panel">
+  <div class="app-transfer-panel">
       <p class="app-transfer-panel__header">{{ title }}</p>
       <div class="app-transfer-panel__body">
         <el-input
@@ -10,109 +10,133 @@
           class="app-transfer-panel__filter"
         >
         </el-input>
-        <el-checkbox-group :value="value" @input="handleInput" class="el-transfer-panel__list">
-        	<template v-for="(item, index) in dataShow">
-	        	<div class="app-transfer-panel__drag1" :data-index="index" :key="item.key" draggable="true" @dragstart="drag" @drop="drop" @dragover="allowDrop" @dragend="indexCache = ''">
-		          <el-checkbox 
-		          	class="app-transfer-panel__item" 
-		          	:label="item.value"
-		          >{{ item.label }}</el-checkbox>
-		        </div>
-		        <!-- <div class="app-transfer-panel__drag2" :data-index="index + 1"  @dragover="allowDrop"></div> -->
-	      	</template>
+        <el-checkbox-group :style="listStyle" :value="value" @input="handleInput" class="el-transfer-panel__list">
+          <template v-for="(item, index) in dataShow">
+            <div class="app-transfer-panel__drag1" :data-index="index" :key="item.key" :draggable="isMove" @dragstart="drag" @drop="drop" @dragover="allowDrop" @dragend="indexCache = ''">
+              <el-checkbox 
+                class="app-transfer-panel__item" 
+                :label="item.value"
+              >{{ item.label }}</el-checkbox>
+            </div>
+            <!-- <div class="app-transfer-panel__drag2" :data-index="index + 1"  @dragover="allowDrop"></div> -->
+          </template>
         </el-checkbox-group>
       </div>
       <p class="app-transfer-panel__footer">
-      	<el-checkbox v-model="checkAll" :indeterminate="indeterminate" style="padding-left: 20px; color: #8391a5;">{{ `共 ${data.length} 项` }}</el-checkbox>
+        <el-checkbox v-model="checkAll" :indeterminate="indeterminate" style="padding-left: 20px; color: #8391a5;">{{ `共 ${data.length} 项` }}</el-checkbox>
       </p>
     </div>
 </template>
 
 <script>
 export default {
-	name: 'appTransferPanel',
-	props: ['title', 'placeholder', 'value', 'data'],
-	data () {
-		return {
-			search: '',
-			indexCache: '',
-		}
-	},
-	computed: {
-		dataShow () {
-			const s = this.search;
-			if(s) {
-				return this.data.filter(_=>{
-					return _.label.indexOf(s) > -1;
-				})
-			}else {
-				return this.data;
-			}
-		},
-		checkAll: {
-			set (val) {
-				if(val) {
-					this.handleInput(this.data.map(_=>_.value));
-				}else {
-					this.handleInput([]);
-				}
-			},
-			get () {
-				
-				if(this.data.length == 0) {
-					return false;
-				}
+  name: 'appTransferPanel',
+  props: {
+    title: {
+      type: String,
+      default: '面板',
+    },
+    placeholder: {
+      type: String,
+      default: '查询...',
+    },
+    value: {
+      type: null
+    },
+    data: {
+      type: null
+    },
+    listStyle: {
+      type: String,
+      default: '',
+    },
+    isMove: {
+      type: Boolean,
+      default: true,
+    }
+  },
+  data () {
+    return {
+      search: '',
+      indexCache: '',
+    }
+  },
+  computed: {
+    dataShow () {
+      const s = this.search;
+      if(s) {
+        return this.data.filter(_=>{
+          return _.label.indexOf(s) > -1;
+        })
+      }else {
+        return this.data;
+      }
+    },
+    checkAll: {
+      set (val) {
+        if(val) {
+          this.handleInput(this.data.map(_=>_.value));
+        }else {
+          this.handleInput([]);
+        }
+      },
+      get () {
+        
+        if(this.data.length == 0) {
+          return false;
+        }
 
-				if(this.value.length < this.data.length) {
-					return false;
-				}else {
-					return true;
-				}
-			}
-		},
-		indeterminate () {
-			if(this.value.length != 0 && this.value.length != this.data.length) {
-				return true;
-			}else {
-				return false;
-			}
-		}
-	},
-	methods: {
-		drag (e) {
+        if(this.value.length < this.data.length) {
+          return false;
+        }else {
+          return true;
+        }
+      }
+    },
+    indeterminate () {
+      if(this.value.length != 0 && this.value.length != this.data.length) {
+        return true;
+      }else {
+        return false;
+      }
+    }
+  },
+  methods: {
+    drag (e) {
       // var img = new Image();
       // e.dataTransfer.setDragImage(img,0,0);
-			this.indexCache = e.target.dataset.index;
-		},
-		drop (e) {
-			if(this.search) return;
+      this.indexCache = e.target.dataset.index;
+    },
+    drop (e) {
+      if(this.search) return;
       const target = $(e.target).parents('div.app-transfer-panel__drag1')[0];
-			
-      const start = this.indexCache - 0;
-			const end = target.dataset.index - 0;
-			const d = this.$tool.deepCopy(this.data);
-
-			const item = d.splice(start, 1)[0];
-			
-			d.splice(end, 0, item)
-
-			this.$emit('update:data', d);
-		},
-		allowDrop (e) {
-			if(this.search) return;
-      const target = $(e.target).parents('div.app-transfer-panel__drag1')[0];
-
-			const i = target.dataset.index; 
-			const i2 = this.indexCache;
       
-			if(i2 && i != i2 ) {
-				e.preventDefault();
-			}
-		},
-		handleInput (val) {
-			this.$emit("input", val);
-		}
-	},
+      const start = this.indexCache - 0;
+      const end = target.dataset.index - 0;
+      const d = this.$tool.deepCopy(this.data);
+
+      const item = d.splice(start, 1)[0];
+      
+      d.splice(end, 0, item)
+
+      this.$emit('update:data', d);
+    },
+    allowDrop (e) {
+      if(!this.isMove) return;
+      if(this.search) return;
+      const target = $(e.target).parents('div.app-transfer-panel__drag1')[0];
+
+      const i = target.dataset.index; 
+      const i2 = this.indexCache;
+      
+      if(i2 && i != i2 ) {
+        e.preventDefault();
+      }
+    },
+    handleInput (val) {
+      this.$emit("input", val);
+    }
+  },
 } 
 </script>
 
@@ -120,8 +144,8 @@ export default {
 $width: 200px;
 
 .app-transfer-panel {
-	text-align: left;
-	border: 1px solid #d1dbe5;
+  text-align: left;
+  border: 1px solid #d1dbe5;
   box-shadow: 0 2px 4px rgba(0,0,0,.12), 0 0 6px rgba(0,0,0,.04);
   display: inline-block;
   width: $width;
@@ -142,7 +166,6 @@ $width: 200px;
   }
   .app-transfer-panel__body {
     padding-bottom: 36px;
-    height: 246px;
   }
   .app-transfer-panel__footer {
     height: 36px;
@@ -190,7 +213,7 @@ $width: 200px;
   }
   .app-transfer-panel__item:hover {
     background: #e4e8f1;
-	}
+  }
   .app-transfer-panel__item .el-checkbox__input {
     position: absolute;
     top: 9px;
@@ -215,7 +238,7 @@ $width: 200px;
     padding-left: 28px;
   }
   .app-transfer-panel__drag2 {
-  	height: 15px;
+    height: 15px;
   }
 }
 </style>

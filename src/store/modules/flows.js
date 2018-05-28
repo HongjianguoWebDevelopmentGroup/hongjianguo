@@ -1,4 +1,4 @@
-let url = '/api/flows';
+let url = '/flows';
 const state = {
 	data: undefined,
 }

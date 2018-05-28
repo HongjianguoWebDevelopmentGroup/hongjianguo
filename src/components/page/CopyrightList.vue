@@ -10,22 +10,15 @@
       @editSuccess="refresh">
     </common-detail>
 
-    <list-filter
-      type="copyright"
-      :visible.sync="filterVisible"
-      :refresh="refresh"
-    ></list-filter>
-
   </div>
 </template>
 
 <script>
 import TableComponent from '@/components/common/TableComponent'
-import ListFilter from '@/components/common/AppListFilter'
 import AppShrink from '@/components/common/AppShrink'
 import CommonDetail from '@/components/page_extension/Common_detail'
 
-const URL = '/api/copyrights';
+const URL = '/copyrights';
 
 export default {
   name: 'copyrightList',
@@ -40,16 +33,17 @@ export default {
         'highlightCurrentRow': true, 
         'rowClick': this.handleRowClick,
         'is_filter': true,
+        'is_list_filter': true,
+        'list_type': 'copyright',
         'import_type': 'copyright',
         'upload_type': 'copyright',
         'header_btn': [
           { type: 'add', click: this.add },
           { type: 'delete' },
           { type: 'export' },
-          { type: 'import' },
-          { type: 'batch_upload' },
+          // { type: 'import' },
+          // { type: 'batch_upload' },
           { type: 'control', label: '字段' },
-          { type: 'filter', click: () => {this.filterVisible = true} },
         ],
         'columns': [
           { type: 'selection' },
@@ -82,7 +76,6 @@ export default {
         ] 
       },
       tableData: [],
-      filterVisible: false,
     };
   },
   computed: {
@@ -135,7 +128,6 @@ export default {
     TableComponent,
     AppShrink, 
     CommonDetail,
-    ListFilter,
   }
 }
 </script>

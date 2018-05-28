@@ -84,7 +84,7 @@ const router = new Router({
     { path: '/copyright', redirect: '/copyright/list' },
     { path: '/news', redirect: '/news/mailList' },
     { path: '/dispatch', redirect: '/dispatch/administration' },
-    { path: '/fee', redirect: '/fee/income' },
+    { path: '/fee_menu', redirect: '/fee_menu/fee_pay/pay' },
     { path: '/setting', redirect: '/setting/individual' },
     { path: '/renewal', redirect: '/renewal/fee' },
     { path: '/report', redirect: '/report/task' },
@@ -516,7 +516,7 @@ const router = new Router({
       meta: { type: 'add' },
     },
     {
-      path: '/patent/notice',
+      path: '/news/patent_notice',
       name: 'PatentNotice',
       meta: { type: 'patent' },
       component: NoticeCommon,
@@ -640,7 +640,7 @@ const router = new Router({
       component: TrademarkAdd
     },
     {
-      path: '/trademark/notice',
+      path: '/news/trademark_notice',
       name: 'TrademarkNotice',
       meta: { type: 'trademark' },
       component: NoticeCommon,
@@ -730,7 +730,7 @@ const router = new Router({
       ]
     },
     {
-      path: '/copyright/notice',
+      path: '/news/copyright_notice',
       name: 'CopyrightNotice',
       meta: { type: 'copyright' },
       component: NoticeCommon,
@@ -877,7 +877,7 @@ const router = new Router({
       component: Branch,
     },
     {
-      path: '/fee/income',
+      path: '/fee_menu/fee_in/income',
       name: 'FeeIncome',
       component: FeeCommon,
     },
@@ -887,27 +887,27 @@ const router = new Router({
       component: DispatchAdministration,
     },
     {
-      path: '/fee/pay',
+      path: '/fee_menu/fee_pay/pay',
       name: 'FeePay',
       component: FeeCommon,
     },
     {
-      path: '/fee/bill',
+      path: '/fee_menu/fee_in/bill',
       name: 'FeeBill',
       component: InvoiceCommon,
     },
     {
-      path: '/fee/payment',
+      path: '/fee_menu/fee_pay/payment',
       name: 'FeePayment',
       component: InvoiceCommon
     },
     {
-      path: '/renewal/fee',
+      path: '/fee_menu/renewal/fee',
       name: 'RenewalFee',
       component: RenewalFee,
     },
     {
-      path: '/renewal/estimate',
+      path: '/fee_menu/renewal/estimate',
       name: 'RenewalEstimate',
       component: RenewalEstimate,
     },

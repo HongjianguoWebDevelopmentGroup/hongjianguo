@@ -1,4 +1,4 @@
-let url = '/api/configs';//extend
+let url = '/configs';//extend
 const state = {
 	data: null,
 }

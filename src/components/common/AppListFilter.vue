@@ -195,7 +195,7 @@ export default {
 			return this.$axiosPost({url, data, success});
 		},
 		editName () {
-			const url = `${URL}/${this.id}`;
+			const url = `${URL}/${this.customId}`;
 			const data = {
 				data: {
 					name: this.name,

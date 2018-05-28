@@ -1,6 +1,5 @@
 <template>
   <div class="main">
-  	<strainer v-model="filter" @refresh="refresh"></strainer>
 		<table-component @refreshTableData="refreshTableData" :tableOption="option" :data="tableData" ref="table">
 			<fee-status slot="status" v-model="fee_status" style="width: 150px; margin-left: 5px;" :feeType="feeType"></fee-status>
 			<remote-select v-if="fee_invoice_if" slot='invoice' v-model="fee_invoice" style="width: 220px; margin-left: 10px; display: inline-block;" class="pay_search" :type="feeType ? 'bill' : 'pay'"></remote-select>
@@ -23,7 +22,6 @@
 
 <script>
 import TableComponent from '@/components/common/TableComponent' 
-import Strainer from '@/components/page_extension/FeeCommon_strainer'
 import Pop from '@/components/page_extension/feeCommon_pop'
 import FeeStatus from '@/components/form/FeeStatus'
 import RemoteSelect from '@/components/form/RemoteSelect'
@@ -41,6 +39,8 @@ export default {
         option: {
         'name': 'fees',
         'url': URL,
+        'is_list_filter': true,
+        'list_type': 'fee',
         'height': 'default',
         'header_btn': [
           { type: 'add', click: this.addPop },
@@ -54,7 +54,6 @@ export default {
           },
           { type: 'delete' },
           { type: 'export' },
-          { type: 'report', click: this.handleReport },
           { type: 'import' },
           { type: 'control' },
         ],
@@ -144,7 +143,6 @@ export default {
         ],
       },
       tableData: [],
-      filter: {},
       fee_status: '',
       fee_invoice: '',
       fee_invoice_if: false,
@@ -193,12 +191,6 @@ export default {
       'refreshUser',//current-user.js
       'initializeSelectorCache',//selector-cache.js
     ]),
-    handleReport () {
-      const url = {0: '/fee/pay/report', 1: '/fee/income/report'}[this.feeType];
-      if(url) {
-        this.$router.push(url);
-      }
-    },
     refreshTableData (option) {
       if(this.fee_invoice instanceof Object) return;
 
@@ -206,7 +198,7 @@ export default {
       const debit = this.feeType;
       const status = this.fee_status === '' ? {} : {status: this.fee_status};
       const invoice = this.fee_invoice_if && this.fee_invoice != '' ? {fee_invoice: this.fee_invoice} : {};
-      const data = Object.assign({}, option, { debit }, this.filter, invoice, status);
+      const data = Object.assign({}, option, { debit }, invoice, status);
       const success = d=>{ 
         const totalData = d.fees.data;
         if(data['format'] == 'excel') {
@@ -350,11 +342,10 @@ export default {
   },
   
   components: { 
-    TableComponent, 
-    Strainer, 
+    TableComponent,
     Pop, 
     FeeStatus, 
-    RemoteSelect 
+    RemoteSelect,
   }
 }
 </script>

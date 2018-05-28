@@ -32,6 +32,14 @@
 			@input="handleInput">
 		</app-date>
 
+		<el-input
+			ref="input"
+			v-else-if="type == 'input'"
+			:value="value"
+			@input="handleInput"
+		></el-input>
+
+
 	</keep-alive>
 </div>
 
@@ -82,6 +90,8 @@ export default {
 				val = this.multiple ? [] : '';
 			}else if(this.type == 'date' ) {
 				val = ['',''];
+			}else if(this.type == 'input') {
+				val = '';
 			}
 			if (val !== null) {
 				this.handleInput(val);
@@ -110,6 +120,10 @@ export default {
 			
 			if(t == 'date') {
 				return this.$refs.date.getLabel();
+			}
+
+			if(t == 'input') {
+				return this.value;
 			}
 		}
 	},

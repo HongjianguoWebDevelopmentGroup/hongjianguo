@@ -1,9 +1,7 @@
 <template>
-  <div class="main">
-    <list-filter type="patent" :visible.sync="filterVisible" :refresh="refresh"></list-filter>
-    
+  <div class="main">    
     <table-component :tableOption="tableOption" :data="tableData" @refreshTableData="refreshTableData" ref="table" :refresh-proxy="refreshProxy" :filter="filter">
-      <el-button v-if="!!(menusMap && !menusMap.get('/patent/download') )" slot="download" :loading="downloadLoading" icon="share" @click="downloadPop" type="primary" style="margin-left: 5px; ">批量下载</el-button>
+<!--       <el-button v-if="!!(menusMap && !menusMap.get('/patent/download') )" slot="download" :loading="downloadLoading" icon="share" @click="downloadPop" type="primary" style="margin-left: 5px; ">批量下载</el-button> -->
     </table-component>
     
     <common-detail
@@ -36,7 +34,6 @@
 
 <script>
 import TableComponent from '@/components/common/TableComponent'
-import ListFilter from '@/components/common/AppListFilter'
 import CommonDetail from '@/components/page_extension/Common_detail'
 import StaticSelect from '@/components/form/StaticSelect'
 import { mapGetters } from 'vuex'
@@ -54,7 +51,6 @@ export default {
       currentRow: '',
       shrinkVisible: false,
       dialogVisible: false,
-      filterVisible: false,
       
       downloadVisible: false,
       downloadIds: [],
@@ -70,17 +66,17 @@ export default {
         'rowClick': this.handleRowClick,
         'cellClick': this.handleCellClick,
         'is_filter': true,
+        'is_list_filter': true,
+        'list_type': 'patent',
 
         'header_btn': [
           { type: 'add', click: this.add, map_if: '/patent/add', },
           { type: 'delete', map_if: '/patent/delete' }, 
           { type: 'export2', map_if: '/patent/export' },
-          { type: 'import', map_if: '/patent/import' },
-          { type: 'batch_upload', map_if: '/patent/upload' },
+          // { type: 'import', map_if: '/patent/import' },
+          // { type: 'batch_upload', map_if: '/patent/upload' },
           // { type: 'batch_update' },
           { type: 'control', label: '字段' },
-          { type: 'report', click: _=>{this.$router.push('/patent/report')} },
-          { type: 'filter', click: () => {this.filterVisible = true;} }
         ],
         'export_type': 'patent',
         'import_type': 'patent',
@@ -391,8 +387,7 @@ export default {
     }
   },
   components: {  
-    TableComponent, 
-    ListFilter,
+    TableComponent,
     CommonDetail,
     StaticSelect,
   },
