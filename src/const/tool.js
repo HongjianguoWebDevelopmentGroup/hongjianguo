@@ -42,11 +42,41 @@ export default {
 		}
 		
 	},
-	coverObj (obj, obj1) {
-		for (let key in obj) {
-			obj[key] = obj1[key] == undefined ? obj[key] : obj1[key];
+	coverObj (a1, a2, { obj, skip, date } = {}) {
+		
+		const objMap = new Map();
+		const dateMap = new Map();
+		const skipMap = new Map();
+		
+		if(obj) {
+			obj.forEach( _ => { objMap.set(_, true)} );
 		}
-		return obj;
+		if(date) {
+			date.forEach( _ => { dateMap.set(_, true)} );
+		}
+		if(skip) {
+			skip.forEach( _ => { skipMap.set(_, true)} );	
+		}
+
+		for (let key in a1) {
+			const v = a2[key];
+
+			if(v === undefined || skipMap.get(key)) continue;
+
+			if( obj && typeof v == 'object' && objMap.get(key) ) {
+				if( Array.isArray(v) ) {
+					a1[key] = v.map(_=>_.id !== undefined ? _.id : '');
+				}else {
+					a1[key] = v.id !== undefined ? v.id : '';	
+				}
+			}else if(date && dateMap.get(key)) {
+				a1[key] = v ? new Date(v) : v;
+			}else {
+				a1[key] = v;	
+			}
+				
+		}
+		return a1;
 	},
 	searchTree (arr, id) {
 

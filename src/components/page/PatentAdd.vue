@@ -4,7 +4,7 @@
     <pa-base ref="base" :type="type"></pa-base>
     <person ref="person" :type="type"></person>
     <classification ref="classification"></classification>
-    <agent ref="agent" v-if="type == 'edit'"></agent>
+    <agent ref="agent"></agent>
     <case ref="case"></case>
     <other ref="other" :type="type"></other>
     
@@ -26,7 +26,7 @@ const map = new Map([
   ['agent', '请正确填写委案信息！']
 ]);
 
-const getKeys = ['base', 'person', 'classification', 'case', 'other'];
+const getKeys = ['base', 'person', 'classification', 'agent', 'case', 'other'];
 const setKeys = ['base', 'person', 'classification', 'agent', 'case', 'other'];
 
 const URL = '/api/patents';

@@ -52,6 +52,7 @@ const state = {
 	  ['agency_type', {
 	    placeholder: '请选择代理类型',
 	    options: [
+	      {id:'', name: '未委案'},
 	      {id:1, name:"申请及OA阶段"},
 	      {id:2, name:"OA阶段"},
 	      {id:3, name:"复审阶段"},
