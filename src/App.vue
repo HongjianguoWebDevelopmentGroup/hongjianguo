@@ -50,7 +50,7 @@
             <el-button size="mini" icon="warning" type="primary" @click="$router.push('/task/pending')" title="待办任务"></el-button>
           </el-badge> 
 
-          <a target="_blank" href="http://help.hongjianguo.com:4000" style="float: right;
+          <a target="_blank" href="http://help.hongjianguo.com" style="float: right;
     margin-right: 20px;
     font-size: 14px;">帮助</a>         
     </nav>
