@@ -119,6 +119,18 @@ export default {
 		}
 	},
 	methods: {
+		attachmentsRender (h, item) {
+			if(!item || !Array.isArray(item)) return '';
+
+			return h('span', item.map(v => {
+				return h('a', {
+					attrs: {
+						href: v['downloadUrl'],
+						target: '_blank',
+					}
+				}, v.name);
+			}));
+		},
 		invoiceAxios (id) {
 			const url = `/api/invoices/${id}`;
 			const success = _=>{
@@ -155,40 +167,6 @@ export default {
 		id (val) {
 			this.refresh(val);
 		}
-	},
-	attachmentsRender (h, item) {
-		let body;
-		
-		if(item.length == 0) {
-			body = '';
-		}else if(item.length == 1) {
-			const obj = {
-				attrs: { href: item[0]['downloadUrl'] },
-			};
-			body = [h('a', obj, item[0].name )];
-		}else if(item.length > 1) {
-			body = [];
-			const obj = {
-				attrs: { href: item[0]['downloadUrl'] },
-				style: { width: '120px', display: 'inline-block' },
-			};
-
-			body.push(h('a', obj, item[0].name ));
-			body.push(h('el-button', {
-				props: {
-					type: 'text',
-					size: 'mini',
-				},
-				on: {
-					click: () => {
-						this.dialogVisible = true;
-						this.uploadData = item;
-					}
-				}
-			}, '更多'));
-		}
-
-		return h('span', body);
 	},
 	components: {
 		TableComponent,

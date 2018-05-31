@@ -141,6 +141,13 @@ export default {
           { type: 'text', label: '请款单', prop: 'invoice_id', width: '150' },
           { type: 'text', label: '企业意见', prop: 'remark_enterprise', width: '160' },
           { type: 'text', label: '备注', prop: 'remark', is_import: true, width: '160' },
+          {
+            type: 'text',
+            label: '附件',
+            width: '200',
+            prop: 'attachments',
+            render: this.attachmentsRender,
+          },
           { 
             type: 'action',
             width: '80',
@@ -203,6 +210,18 @@ export default {
       'refreshUser',//current-user.js
       'initializeSelectorCache',//selector-cache.js
     ]),
+    attachmentsRender (h, item) {
+      if(!item || !Array.isArray(item)) return '';
+
+      return h('span', item.map(v => {
+        return h('a', {
+          attrs: {
+            href: v['downloadUrl'],
+            target: '_blank',
+          }
+        }, v.name);
+      }));
+    },
     handleReport () {
       const url = {0: '/fee/pay/report', 1: '/fee/income/report'}[this.feeType];
       if(url) {
