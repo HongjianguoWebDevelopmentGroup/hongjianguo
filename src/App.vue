@@ -1,5 +1,5 @@
 <template>
-  <div id="app" v-loading.fullscreen.lock="userinfoLoading" element-loading-text="初始化中...">
+  <div id="app" :style="`padding-left: ${appPaddingLef};`" v-loading.fullscreen.lock="userinfoLoading" element-loading-text="初始化中...">
 <!--     <el-popover
       ref="popover"
       placement="bottom"
@@ -20,17 +20,25 @@
     </el-popover> -->
 
     <nav>
-        <img src="/static/static_img/hjg_logo.png" style="vertical-align: middle; height: 27px;">
+        <div style="display: inline-block;vertical-align: top;">
+          <img src="/static/static_img/hjg_logo.png" style=" height: 27px;vertical-align: middle;">
+        </div>
+        <div style="display: inline-block;vertical-align: top;">
+          <el-dropdown trigger="click" style=" margin-left: 15px;" @command="handleToggle">
+            <span class="el-dropdown-link" style="color: #20a0ff; cursor: pointer;">
+              版本{{ versionText }}<i class="el-icon-caret-bottom el-icon--right"></i>
+            </span>
+            <el-dropdown-menu slot="dropdown" class="app-dropdown-menu">
+              <el-dropdown-item command="网心">网心</el-dropdown-item>
+              <el-dropdown-item command="迅雷">迅雷</el-dropdown-item>
+            </el-dropdown-menu>
+          </el-dropdown> 
+        </div>
         <!-- <span class="logo_name">知识产权管理系统</span> -->
-        <el-dropdown  trigger="click" style=" margin-left: 15px;" @command="handleToggle">
-          <span class="el-dropdown-link" style="color: #20a0ff; cursor: pointer;">
-            版本{{ versionText }}<i class="el-icon-caret-bottom el-icon--right"></i>
-          </span>
-          <el-dropdown-menu slot="dropdown" class="app-dropdown-menu">
-            <el-dropdown-item command="网心">网心</el-dropdown-item>
-            <el-dropdown-item command="迅雷">迅雷</el-dropdown-item>
-          </el-dropdown-menu>
-        </el-dropdown>        
+        <div style="display: inline-block;">
+          <app-nav></app-nav>
+        </div>
+               
         <el-dropdown  trigger="click" style="float: right; margin-right: 40px;" @command="handleCommond">
           <span class="el-dropdown-link" style="color: #20a0ff; cursor: pointer;">
             {{ username }}<i class="el-icon-caret-bottom el-icon--right"></i>
@@ -54,37 +62,42 @@
     margin-right: 20px;
     font-size: 14px;">帮助</a>         
     </nav>
-      <span class="nav-left-btn" @click="navToggle"><span class="nav-left-btn-arrow el-icon-arrow-left"></span></span>
-      <div class="nav-left" :style="`height: ${innerHeight}px`">
-        
-        <el-menu @select="handleMenuSelect" v-if="menusMap != null" theme="dark" router unique-opened :default-active="select.path">
-          <app-menu-item v-for="item in menu_data" :dd="item" :key="item.path"></app-menu-item>
-        </el-menu>
 
-      </div>
-    <div class="container" v-loading="loading" :element-loading-text="loadingText" :style="`min-height: ${innerHeight-10}px; padding: 10px 15px 0; background-color: #F9FAFC;overflow:hidden;`">
-      <!-- <h1 class="container-menu"><i :class="select.icon"></i><span>{{ select.text }}</span></h1> -->
-      <div class="container-nav">
-        <el-breadcrumb separator=">">
-          <el-breadcrumb-item v-for="item in select_arr" :to="item.path" :key="item.path">
-            <i :class="item.icon"></i>{{ item.text }}
-          </el-breadcrumb-item>
-          <el-breadcrumb-item v-if="screen_label.length != 0" class="container-nav-screen">
-            <el-tag 
-              v-for="(tag, index) in screen_label"
-              :closable="true"
-              :key="tag" 
-              type="primary"
-              :close-transition="false"
-              @close="handleClose(index)"
-            >
-              {{ tag }}
-            </el-tag>
-          </el-breadcrumb-item>
-        </el-breadcrumb>
-      </div>
+    <div class="nav-left" :style="`height: ${innerHeight}px; left: ${navLeft}`" v-if="!noMenu">
+      <span class="nav-left-btn" :style="`left: ${navLeftBtn};`" @click="navToggle"><span :class="navLeftBtnClass"></span></span>
+      <el-menu theme="dark" router unique-opened :default-active="leftMenuActive" mode="vertical">
+        <app-menu-item v-for="item in menuSource" :dd="item" :key="item.path"></app-menu-item>
+      </el-menu>
+    </div>
+
+    <div v-loading="loading" :element-loading-text="loadingText" >
+      <div :style="`height: ${innerHeight-10}px; padding: 10px 15px 0; background-color: #F9FAFC;overflow:auto;`">
+        <div class="container">
+          <!-- <h1 class="container-menu"><i :class="select.icon"></i><span>{{ select.text }}</span></h1> -->
+          <div class="container-nav" v-if="!noMenu">
+            <el-breadcrumb separator=">">
+              <el-breadcrumb-item v-for="item in select_arr" :to="item.path" :key="item.path">
+                <i :class="item.icon"></i>{{ item.text }}
+              </el-breadcrumb-item>
+              <el-breadcrumb-item v-if="screen_label.length != 0" class="container-nav-screen">
+                <el-tag 
+                  v-for="(item, index) in screen_label"
+                  :closable="true"
+                  :key="index"
+                  type="primary"
+                  :close-transition="false"
+                  @close="handleClose(item)"
+                >
+                  {{ item.label }}
+                </el-tag>
+              </el-breadcrumb-item>
+            </el-breadcrumb>
+          </div>
+
+          <router-view :key="$route.path.split('__')[0]" ></router-view>
+        </div>
       
-      <router-view :key="$route.path.split('__')[0]" v-if="routerIf"></router-view>
+      </div>
     </div>
 
     <agency-load :visible="agencyLoadVisible"></agency-load>
@@ -99,17 +112,35 @@ import AgencyLoad from '@/components/form/AgencyLoad'
 
 import menu from '@/const/menuConst'
 import AppMenuItem from '@/components/common/AppMenuItem'
+import AppNav from '@/components/common/AppNav'
 import { mapGetters } from 'vuex'
 import { mapActions } from 'vuex' 
+import { mapMutations } from 'vuex'
 const map = new Map([
   ['网心', 1],
   ['迅雷', 2],
-  ]);
+]);
 
 export default {
   name: 'app',
   mixins: [ AxiosMixins ],
   computed: {
+    ...mapGetters([
+      'screen_label',
+      'innerHeight',
+      'loading',
+      'loadingText',
+      'username',
+      'leftVisible',
+      'agencyLoadVisible',
+      'menusMap',
+      'pendingTaskCount',
+      'userVersion',
+      'routerIf',
+      'noMenu',
+      'menuSource',
+      'leftVisible',
+    ]),
     path () {
       return this.$route.path;
     },
@@ -138,31 +169,33 @@ export default {
 
       return arr;
     },
-    sysmesg () {
-      let s = this.$store.getters.sysmesg;
-      if(s === undefined) {
-        s = [];
-        this.$store.dispatch('refreshMesg'); 
-      }
-      if(s.length > 3) s = s.slice(0,3);
-      return s;
-    },
-    ...mapGetters([
-      'screen_label',
-      'innerHeight',
-      'loading',
-      'loadingText',
-      'username',
-      'leftVisible',
-      'agencyLoadVisible',
-      'menusMap',
-      'pendingTaskCount',
-      'userVersion',
-      'routerIf',
-    ]),
+    // sysmesg () {
+    //   let s = this.$store.getters.sysmesg;
+    //   if(s === undefined) {
+    //     s = [];
+    //     this.$store.dispatch('refreshMesg'); 
+    //   }
+    //   if(s.length > 3) s = s.slice(0,3);
+    //   return s;
+    // },
     versionText () {
       return {1: '网心', 2: '迅雷', '': ''}[this.userVersion];
-    }
+    },
+    appPaddingLef () {
+      if(this.noMenu) return '0px';
+      return this.leftVisible ? '200px' : '0px';
+    },
+    navLeft () {
+      return this.leftVisible ? '0px' : '-200px';
+    },
+    navLeftBtn () {
+      return this.leftVisible ? '200px' : '0px';
+    },
+    navLeftBtnClass () {
+      const arr = ['nav-left-btn-arrow', 'el-icon-arrow-left'];
+      this.leftVisible ? arr.push('el-icon-arrow-left') : arr.push('el-icon-arrow-right');
+      return arr.join(' ');   
+    },
   },
   data () {
     return {      
@@ -171,6 +204,7 @@ export default {
       sysPopVisible: false,
       windowLock: false,
       userinfoLoading: true,
+      leftMenuActive: '',
     };
   },
   methods: {
@@ -179,7 +213,13 @@ export default {
       'refreshRouter',
       'clearScreen',
     ]),
-      //处理同路径不刷新界面的问题
+    ...mapMutations([
+      'toggleLeftVisible', //index
+      'setInnerHeight', //index
+      'setInnerWidth', //index
+      'setUser', //current-user
+    ]),
+    //处理同路径不刷新界面的问题
     handleMenuSelect (index) {
       if(this.path === index) {
         this.clearScreen();
@@ -217,32 +257,33 @@ export default {
       }
     },
     navToggle () {
-      let i = 32;
-      let n = this.leftVisible ? 160 : 0;
-      i = this.leftVisible ? -i : i;
+      this.toggleLeftVisible();
+      // let i = 32;
+      // let n = this.leftVisible ? 160 : 0;
+      // i = this.leftVisible ? -i : i;
 
-      this.$store.commit('toggleLeftVisible');
+      // this.$store.commit('toggleLeftVisible');
 
-      const left = $('.nav-left');
-      const app = $('#app');
-      const btn = $('.nav-left-btn');
-      animation();
+      // const left = $('.nav-left');
+      // const app = $('#app');
+      // const btn = $('.nav-left-btn');
+      // animation();
       
-      function animation () {
+      // function animation () {
         
-        n += i;
-        left.css('width', n);
-        app.css('padding-left', n);
-        btn.css('left', n);
+      //   n += i;
+      //   left.css('width', n);
+      //   app.css('padding-left', n);
+      //   btn.css('left', n);
 
-        if(n == 0) {
-          btn.find('.nav-left-btn-arrow').removeClass('el-icon-arrow-left').addClass('el-icon-arrow-right');
-        }else if( n== 160) {
-          btn.find('.nav-left-btn-arrow').removeClass('el-icon-arrow-right').addClass('el-icon-arrow-left');
-        }else {
-          window.requestAnimationFrame(animation);
-        }
-      }     
+      //   if(n == 0) {
+      //     btn.find('.nav-left-btn-arrow').removeClass('el-icon-arrow-left').addClass('el-icon-arrow-right');
+      //   }else if( n== 160) {
+      //     btn.find('.nav-left-btn-arrow').removeClass('el-icon-arrow-right').addClass('el-icon-arrow-left');
+      //   }else {
+      //     window.requestAnimationFrame(animation);
+      //   }
+      // }     
     }
   },
   created () {
@@ -292,9 +333,23 @@ export default {
       }
     }
   },
+  watch: {
+    //路径更改 左侧菜单自东变更active项
+    path (val) {
+      this.leftMenuActive = val; 
+    },
+    //解决菜单切换时 左侧菜单的active项为空
+    menuType () {
+      this.leftMenuActive = '';
+      this.$nextTick(() => {
+        this.leftMenuActive = this.path;
+      });
+    }
+  },
   components: { 
     AppMenuItem,
-    AgencyLoad, 
+    AgencyLoad,
+    AppNav,
   }
 }
 </script>
@@ -303,7 +358,7 @@ $nav_bgColor: #383838;
 $nav_height: 50px;
 
 $navL_bgColor: #324157;
-$navL_width: 160px;
+$navL_width: 200px;
 
 $container_padding: 20px;
 

@@ -89,6 +89,78 @@ const map = new Map([['flownodes', 'progress'],['time', 'create_time']]);
 export default {
   name: 'proposalList',
   mixins: [ AxiosMixins ],
+    data () {
+    return {
+      refreshProxy: '',
+      tableOption: {
+        'name': 'proposalList',
+        'url': URL,
+        'is_filter': true,
+        'is_numbers': true,
+        'height': 'default',
+        'search_placeholder': '搜索案号、标题、标签、发明人',
+        'highlightCurrentRow': true, 
+        'rowClick': this.handleRowClick,
+        'header_btn': [
+          { type: 'add', click: this.add },
+          { type: 'delete' },
+          { type: 'export' },
+          { type: 'control' },
+          { type: 'serial_search'},
+        ],
+        'header_slot': ['transfer'],
+        'columns': [
+          { type: 'selection'},
+          { type: 'text', label: '案号', prop: 'serial', sortable: true, width: '200' },
+          { type: 'text', label: '提案名称', prop: 'title', sortable: true, width: '300' },
+          { type: 'text', label: '提案人', prop: 'proposer', render_simple: 'name', sortable: true, width: '160' },
+          // { type: 'text', label: '代理人', prop: 'agent', sortable: true, width: '160'},
+          { type: 'text', label: 'IPR', prop: 'ipr', render_simple: 'name', sortable: true, width: '160'},
+          { type: 'text', label: '当前节点', prop: 'flow_node', sortable: true, width: '240' },
+          { type: 'text', label: '提案简介', prop: 'abstract', sortable: true, width: '300' },
+          { type: 'text', label: '提案时间', prop: 'create_time', sortable: true, width: '200' },
+          { type: 'text', label: '部门', prop: 'branch', render_simple: 'name', sortable: true, width: '200' },
+          { type: 'text', label: '技术分类', prop: 'classification', render_simple: 'name', sortable: true, width: '200' },
+          { type: 'array', label: '产品分类', prop: 'products', render: _=>_.map(_=>_.name), width: '200' },
+          { type: 'array', label: '发明人', prop: 'inventors', render: _=>_.map(_=>`${_.name}：${_.share}%；`), overflow: true, width: '200' },
+          { type: 'array', label: '标签', prop: 'tags', width: '200' },
+          { type: 'text', label: '备注', prop: 'remark', width: '280' },
+          {
+            type: 'action',
+            label: '操作', 
+            btns_render: 'action',
+            width: '160',
+          },
+        ]
+      },
+      tableData: [],
+      filter: {},
+      title: '',
+      classification: [],
+      product: [],
+      branch: [],
+      create_time: [],
+      proposer: [],
+      tags: [],
+      inventors: [],
+      filters: {},
+      currentRow: '',
+      shrinkVisible: false,
+      transferVisible: false,
+      transferIds: [],
+      transferProposal: '',
+      transferDisabled: false,
+    }
+  },
+  computed: {
+    ...mapGetters([
+      'menusMap',
+    ]),
+    defaultParams () {
+      const params = this.$route.meta.params; 
+      return params ? params : {};
+    }
+  },
   methods: {
     add () {
       this.$router.push('/proposal/add');
@@ -165,7 +237,7 @@ export default {
     },
     refreshTableData (option) {
       const url = '/proposals';
-      const data = Object.assign({}, option, this.filter, this.screen_value, this.$route.query);
+      const data = Object.assign({}, option, this.filter, this.screen_value, this.$route.query, this.defaultParams);
       const success = _=>{
         if(data.format == 'excel') {
           window.location.href = _.proposals.downloadUrl;
@@ -211,74 +283,6 @@ export default {
       this.transferDisabled = true;
       this.axiosPut({url, data, success, complete});
     }
-  },
-  data () {
-    return {
-      refreshProxy: '',
-      tableOption: {
-        'name': 'proposalList',
-        'url': URL,
-        'is_filter': true,
-        'is_numbers': true,
-        'height': 'default',
-        'search_placeholder': '搜索案号、标题、标签、发明人',
-        'highlightCurrentRow': true, 
-        'rowClick': this.handleRowClick,
-        'header_btn': [
-          { type: 'add', click: this.add },
-          { type: 'delete' },
-          { type: 'export' },
-          { type: 'control' },
-          { type: 'serial_search'},
-        ],
-        'header_slot': ['transfer'],
-        'columns': [
-          { type: 'selection'},
-          { type: 'text', label: '案号', prop: 'serial', sortable: true, width: '200' },
-          { type: 'text', label: '提案名称', prop: 'title', sortable: true, width: '300' },
-          { type: 'text', label: '提案人', prop: 'proposer', render_simple: 'name', sortable: true, width: '160' },
-          // { type: 'text', label: '代理人', prop: 'agent', sortable: true, width: '160'},
-          { type: 'text', label: 'IPR', prop: 'ipr', render_simple: 'name', sortable: true, width: '160'},
-          { type: 'text', label: '当前节点', prop: 'flow_node', sortable: true, width: '240' },
-          { type: 'text', label: '提案简介', prop: 'abstract', sortable: true, width: '300' },
-          { type: 'text', label: '提案时间', prop: 'create_time', sortable: true, width: '200' },
-          { type: 'text', label: '部门', prop: 'branch', render_simple: 'name', sortable: true, width: '200' },
-          { type: 'text', label: '技术分类', prop: 'classification', render_simple: 'name', sortable: true, width: '200' },
-          { type: 'array', label: '产品分类', prop: 'products', render: _=>_.map(_=>_.name), width: '200' },
-          { type: 'array', label: '发明人', prop: 'inventors', render: _=>_.map(_=>`${_.name}：${_.share}%；`), overflow: true, width: '200' },
-          { type: 'array', label: '标签', prop: 'tags', width: '200' },
-          { type: 'text', label: '备注', prop: 'remark', width: '280' },
-          {
-            type: 'action',
-            label: '操作', 
-            btns_render: 'action',
-            width: '160',
-          },
-        ]
-      },
-      tableData: [],
-      filter: {},
-      title: '',
-      classification: [],
-      product: [],
-      branch: [],
-      create_time: [],
-      proposer: [],
-      tags: [],
-      inventors: [],
-      filters: {},
-      currentRow: '',
-      shrinkVisible: false,
-      transferVisible: false,
-      transferIds: [],
-      transferProposal: '',
-      transferDisabled: false,
-    }
-  },
-  computed: {
-    ...mapGetters([
-      'menusMap',
-    ])
   },
   mounted () {
     this.refresh();

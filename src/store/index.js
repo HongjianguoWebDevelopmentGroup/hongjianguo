@@ -22,6 +22,7 @@ import currentUser from '@/store/modules/current-user.js'
 import sysmesg from '@/store/modules/sysmesg.js'
 import tool from '@/const/tool.js'
 import tableCache from '@/store/modules/table-cache.js'
+import menuCache from '@/store/modules/menu-cache.js'
 Vue.use(Vuex);
 
 const store = new Vuex.Store({
@@ -42,6 +43,7 @@ const store = new Vuex.Store({
     agencyLoadVisible: false,
     importLoading: false,
     routerIf: true,
+    leftNavVisible: true,
   },
   modules: {
     filter,
@@ -64,6 +66,7 @@ const store = new Vuex.Store({
     sysmesg,
     feeCode,
     tableCache,
+    menuCache,
   },
   getters: {
     getDragId: state=>state.dragId,
@@ -72,6 +75,7 @@ const store = new Vuex.Store({
     shrinkLoading: state=>state.shrinkLoading,
     shrinkLoadingText: state=>state.shrinkLoadingText,
     innerHeight: state=>state.inner_height,
+    windowWidth: state => state.inner_width,
     innerWidth: state=>state.leftNavVisible ? state.inner_width - 160 : state.inner_width,
     shrinkHeight: state=>state.inner_height - 80,
     getInnerWidth: state=>state.leftNavVisible ? state.inner_width - 160 : state.inner_width, 
@@ -79,6 +83,7 @@ const store = new Vuex.Store({
     agencyLoadVisible: state=>state.agencyLoadVisible,
     importLoading: state=>state.importLoading,
     routerIf: state => state.routerIf,
+    leftVisible: state => state.leftNavVisible,
   },
   mutations: {
     setDragId (state, id) {

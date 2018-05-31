@@ -105,16 +105,69 @@ const router = new Router({
       name: 'ApplicantList',
       component: ApplicantList
     },
+
+//################### 提案路由 begin ###################
     {
-    	path: '/proposal/list',
-    	name: 'Proposal',
-    	component: Proposal
-    },{
+      path: '/proposal/list',
+      name: 'Proposal',
+      component: Proposal,
+    },
+    {
+      path: '/proposal/creatTime/month',
+      name: 'ProposalMonth',
+      component: Proposal,
+      meta: {
+        params: { create_time: 'thismonth' },
+      }
+    },
+    {
+      path: '/proposal/creatTime/quarter',
+      name: 'ProposalQuarter',
+      component: Proposal,
+      meta: {
+        params: { create_time: 'thisseason' },
+      }
+    },
+    {
+      path: '/proposal/creatTime/year',
+      name: 'ProposalYear',
+      component: Proposal,
+      meta: {
+        params: { create_time: 'thisyear' },
+      },
+    },
+    {
+      path: '/proposal/novelty/existent',
+      name: 'ProopsalExistent',
+      component: Proposal,
+      meta: {
+        params: {  },
+      },
+    },
+    {
+      path: '/proposal/novelty/non-existent',
+      name: 'ProopsalNonExistent',
+      component: Proposal,
+      meta: {
+        params: {  },
+      },
+    },
+    {
       path: '/proposal/add',
       name: 'ProposalCommon',
       component: ProposalCommon,
       alias: ['/proposal/detail', '/task/pending/proposal_check', '/proposal/edit'],
     },
+    {
+      path: '/proposal/custom/:id',
+      name: 'ProposalCustom',
+      component: Proposal,
+      meta: {
+        custom: true,
+      },
+    },
+//################### 提案路由 end #####################
+
     {
       path: '/report/:type',
       name: 'Report',
@@ -125,42 +178,190 @@ const router = new Router({
       name: 'ReportAdd',
       component: ReportAdd,
     },
+
+//################### 任务路由 begin ###################
     {
-      path: '/task/pending/check',
-      name: 'CheckProposal',
-      component: CheckProposal
-    },{
       path: '/task/pending',
       name: 'TaskPending',
       component: TaskCommon,
-      meta: { 'status': 0 },
-    },{
-      path: '/task/pendingPatent',
-      name: 'TaskPending',
+      meta: { 
+        status: 0,
+        params: { scope: 'personal'  }, 
+      },
+    },
+    {
+      path: '/task/regardful',
+      name: 'TaskRegardful',
       component: TaskCommon,
-      meta: { 'status': 0, 'category': 1, },
-    },{
-      path: '/task/pendingTrademark',
-      name: 'TaskPending',
-      component: TaskCommon,
-      meta: { 'status': 0 , 'category': 2},
-    },{
-      path: '/task/pendingCopyright',
-      name: 'TaskPending',
-      component: TaskCommon,
-      meta: { 'status': 0 , 'category': 3},
+      meta: { 
+        status: 0,
+        params: { scope: 'all'  }, 
+      },
     },
     {
       path: '/task/pause',
       name: 'TaskPause',
       component: TaskCommon,
-      meta: { 'status': -1 },
+      meta: { status: -1 },
     },
     {
       path: '/task/finish',
       name: 'TaskFinish',
       component: TaskCommon,
-      meta: { 'status': 1 },
+      meta: { status: 1 },
+    },
+    {
+      path: '/task/duration/expired',
+      name: 'TaskDurationExpired',
+      component: TaskCommon,
+      meta: { 
+        status: 0,
+        params: { due_time: 'expired' },
+      },
+    },
+    {
+      path: '/task/duration/week',
+      name: 'TaskDurationWeek',
+      component: TaskCommon,
+      meta: { 
+        status: 0,
+        params: { due_time: 'thisweek' },
+      },
+    },
+    {
+      path: '/task/duration/nextWeek',
+      name: 'TaskDurationNextWeek',
+      component: TaskCommon,
+      meta: { 
+        status: 0,
+        params: { due_time: 'nextweek' },
+      },
+    },
+    {
+      path: '/task/duration/month',
+      name: 'TaskDurationMonth',
+      component: TaskCommon,
+      meta: { 
+        status: 0,
+        params: { due_time: 'thismonth' },
+      },
+    },
+    {
+      path: '/task/duration/nextMonth',
+      name: 'TaskDurationNextMonth',
+      component: TaskCommon,
+      meta: { 
+        status: 0,
+        params: { due_time: 'nextmonth' },
+      },
+    },
+    {
+      path: '/task/duration/later',
+      name: 'TaskDurationLater',
+      component: TaskCommon,
+      meta: { 
+        status: 0,
+        params: { due_time: 'later' },
+      },
+    },
+    { 
+      path: '/task/stage/application',
+      name: 'TaskStageApplication',
+      component: TaskCommon,
+      meta: {
+        status: 0,
+        params: { stage: 1 },
+      }
+    },
+    { 
+      path: '/task/stage/oa',
+      name: 'TaskStageOa',
+      component: TaskCommon,
+      meta: {
+        status: 0,
+        params: { stage: 2 },
+      }
+    },
+    { 
+      path: '/task/stage/review',
+      name: 'TaskStageReview',
+      component: TaskCommon,
+      meta: {
+        status: 0,
+        params: { stage: 3 },
+      }
+    },
+    { 
+      path: '/task/stage/authorization',
+      name: 'TaskStageAuthorization',
+      component: TaskCommon,
+      meta: {
+        status: 0,
+        params: { stage: 4 },
+      }
+    },
+    { 
+      path: '/task/stage/invalid',
+      name: 'TaskStageInvalidn',
+      component: TaskCommon,
+      meta: {
+        status: 0,
+        params: { stage: 5 },
+      }
+    },
+    { 
+      path: '/task/stage/annualFee',
+      name: 'TaskStageAnnualFee',
+      component: TaskCommon,
+      meta: {
+        status: 0,
+        params: { stage: 6 },
+      }
+    },
+    { 
+      path: '/task/stage/procedure',
+      name: 'TaskStageProcedure',
+      component: TaskCommon,
+      meta: {
+        status: 0,
+        params: { stage: 7 },
+      }
+    },
+    { 
+      path: '/task/type/proposal',
+      name: 'TaskTypeProposal',
+      component: TaskCommon,
+      meta: {
+        status: 0,
+        params: { category: 0 },
+      }
+    },
+    { 
+      path: '/task/type/patent',
+      name: 'TaskTypePatent',
+      component: TaskCommon,
+      meta: {
+        status: 0,
+        params: { category: 1 },
+      }
+    },
+    { 
+      path: '/task/type/trademark',
+      name: 'TaskTypeTrademark',
+      component: TaskCommon,
+      meta: {
+        status: 0,
+        params: { category: 2 },
+      }
+    },
+    { 
+      path: '/task/type/copyright',
+      name: 'TaskTypeCopyright',
+      component: TaskCommon,
+      meta: {
+        status: 0,
+        params: { category: 3 },
+      }
     },
     {
       path: '/task/expiring',
@@ -168,28 +369,142 @@ const router = new Router({
       component: TaskExpiring,
     },
     {
+      path: '/task/custom/:id',
+      name: 'TaskCustom',
+      component: TaskCommon,
+      meta: {
+        status: 0,
+        custom: true,
+      },
+    },
+//################### 任务路由 end #####################
+
+//################### 专利路由 end #####################
+    {
       path: '/patent/list',
-      name: 'PatentList',
+      name: 'PattentList',
       component: PatentList
     },
-    {
-      path: '/patent/listcn',
-      name: 'PatentListCn',
+    { 
+      path: '/patent/stage/application',
+      name: 'PatentStageApplication',
       component: PatentList,
-      meta: { 'area': 'CN' },
+      meta: {
+        params: { stage: 1 },
+      }
+    },
+    { 
+      path: '/patent/stage/oa',
+      name: 'PatentStageOa',
+      component: PatentList,
+      meta: {
+        params: { stage: 2 },
+      }
+    },
+    { 
+      path: '/patent/stage/review',
+      name: 'PatentStageReview',
+      component: PatentList,
+      meta: {
+        params: { stage: 3 },
+      }
+    },
+    { 
+      path: '/patent/stage/authorization',
+      name: 'PatentStageAuthorization',
+      component: PatentList,
+      meta: {
+        params: { stage: 4 },
+      }
+    },
+    { 
+      path: '/patent/stage/invalid',
+      name: 'PatentStageInvalidn',
+      component: PatentList,
+      meta: {
+        params: { stage: 5 },
+      }
+    },
+    { 
+      path: '/patent/stage/annualFee',
+      name: 'PatentStageAnnualFee',
+      component: PatentList,
+      meta: {
+        params: { stage: 6 },
+      }
+    },
+    { 
+      path: '/patent/stage/procedure',
+      name: 'PatentStageProcedure',
+      component: PatentList,
+      meta: {
+        params: { stage: 7 },
+      }
+    },
+    { 
+      path: '/patent/stage/failure',
+      name: 'PatentStageFailure',
+      component: PatentList,
+      meta: {
+        params: { stage: 8 },
+      }
     },
     {
-      path: '/patent/listpct',
-      name: 'PatentListPct',
+      path: '/patent/area/cn',
+      name: 'PatentAreaCn',
       component: PatentList,
-      meta: { 'area': 'PCT' },
+      meta: {
+        params: { area: 'CN' },
+      }
     },
     {
-      path: '/patent/listother',
-      name: 'PatentListOther',
+      path: '/patent/area/pct',
+      name: 'PatentAreaPct',
       component: PatentList,
-      meta: { 'area': 'other' },
-    },        
+      meta: {
+        params: { area: 'PCT' },
+      }
+    },
+    {
+      path: '/patent/area/other',
+      name: 'PatentAreaOther',
+      component: PatentList,
+      meta: {
+        params: { area: 'Other' },
+      }
+    },
+    {
+      path: '/patent/duration/priority',
+      name: 'PatentDurationProprity',
+      component: PatentList,
+      meta: {
+        params: {  },
+      }
+    },
+    {
+      path: '/patent/duration/modification',
+      name: 'PatentDurationModification',
+      component: PatentList,
+      meta: {
+        params: {  },
+      }
+    },
+    {
+      path: '/patent/duration/pct',
+      name: 'PatentDurationPct',
+      component: PatentList,
+      meta: {
+        params: {  },
+      }
+    },
+    {
+      path: '/patent/duration/pct19',
+      name: 'PatentDurationPct19',
+      component: PatentList,
+      meta: {
+        params: {  },
+      }
+    },
     {
       path: '/patent/applying',
       name: 'ApplyingPatent',
@@ -202,43 +517,133 @@ const router = new Router({
       meta: { type: 'add' },
     },
     {
-      path: '/patent/notice',
+      path: '/news/patent_notice',
       name: 'PatentNotice',
       meta: { type: 'patent' },
       component: NoticeCommon,
     },
     {
+      path: '/patent/custom/:id',
+      name: 'PatentCustom',
+      component: PatentList,
+      meta: {
+        custom: true,
+      },
+    },
+//################### 专利路由 end #####################
+
+//################### 商标路由 begin ###################
+    {
       path: '/trademark/list',
       name: 'TrademarkList',
       component: TrademarkList
-    },    
-    {
-      path: '/trademark/listcn',
-      name: 'TrademarkListCn',
+    },
+    { 
+      path: '/trademark/stage/application',
+      name: 'TrademarkStageApplication',
       component: TrademarkList,
-      meta: { 'area': 'CN' },
-    },    
-    {
-      path: '/trademark/listmadrid',
-      name: 'TrademarkListMadrid',
+      meta: {
+        params: { stage: 1 },
+      }
+    },
+    { 
+      path: '/trademark/stage/oa',
+      name: 'TrademarkStageOa',
       component: TrademarkList,
-      meta: { 'area': 'Madrid' },
-    }, 
-    {
-      path: '/trademark/listother',
-      name: 'TrademarkListOther',
+      meta: {
+        params: { stage: 2 },
+      }
+    },
+    { 
+      path: '/trademark/stage/review',
+      name: 'TrademarkStageReview',
       component: TrademarkList,
-      meta: { 'area': 'other' },
+      meta: {
+        params: { stage: 3 },
+      }
+    },
+    { 
+      path: '/trademark/stage/authorization',
+      name: 'TrademarkStageAuthorization',
+      component: TrademarkList,
+      meta: {
+        params: { stage: 4 },
+      }
+    },
+    { 
+      path: '/trademark/stage/invalid',
+      name: 'TrademarkStageInvalidn',
+      component: TrademarkList,
+      meta: {
+        params: { stage: 5 },
+      }
+    },
+    { 
+      path: '/trademark/stage/annualFee',
+      name: 'TrademarkStageAnnualFee',
+      component: TrademarkList,
+      meta: {
+        params: { stage: 6 },
+      }
+    },
+    { 
+      path: '/trademark/stage/procedure',
+      name: 'TrademarkStageProcedure',
+      component: TrademarkList,
+      meta: {
+        params: { stage: 7 },
+      }
+    },
+    { 
+      path: '/trademark/stage/failure',
+      name: 'TrademarkStageFailure',
+      component: TrademarkList,
+      meta: {
+        params: { stage: 8 },
+      }
+    },
+    {
+      path: '/trademark/area/cn',
+      name: 'TrademarkAreaCn',
+      component: TrademarkList,
+      meta: {
+        params: { area: 'CN' },
+      }
+    },
+    {
+      path: '/trademark/area/madrid',
+      name: 'TrademarkAreaMadrid',
+      component: TrademarkList,
+      meta: {
+        params: { area: 'Madrid' },
+      }
+    },
+    {
+      path: '/trademark/area/other',
+      name: 'TrademarkAreaOther',
+      component: TrademarkList,
+      meta: {
+        params: { area: 'Other' },
+      }
+    },
+    {
+      path: '/trademark/custom/:id',
+      name: 'TrademarkCustom',
+      component: TrademarkList,
+      meta: {
+        custom: true,
+      },
     },
     {
       path: '/trademark/add',
       name: 'TrademarkAdd',
+      meta: { type: 'edit' },
       component: TrademarkAdd
-    }, 
+    },
     {
-      path: '/trademark/notice',
+      path: '/news/trademark_notice',
       name: 'TrademarkNotice',
-      meta: { type: 'trademark'},
+      meta: { type: 'trademark' },
       component: NoticeCommon,
     },
     {
@@ -246,16 +651,67 @@ const router = new Router({
       name: 'TrademarkStatistics',
       component: TrademarkStatistics
     },
+//################### 商标路由 end #####################
+
+//################### 版权路由 begin ###################
+    {
+      path: '/copyright/list',
+      name: 'CopyrightList',
+      component: CopyrightList
+    },
+    {
+      path: '/copyright/stage/application',
+      name: 'CopyrightStageApplication',
+      component: CopyrightList,
+      meta: {
+        params: { stage: 1 },
+      }
+    },
+    {
+      path: '/copyright/stage/oa',
+      name: 'CopyrightStageOa',
+      component: CopyrightList,
+      meta: {
+        params: { stage: 2 },
+      }
+    },
+    {
+      path: '/copyright/stage/authorization',
+      name: 'CopyrightStageAuthorization',
+      component: CopyrightList,
+      meta: {
+        params: { stage: 4 },
+      }
+    },
+    {
+      path: '/copyright/area/cn',
+      name: 'CopyrightAreaCn',
+      component: CopyrightList,
+      meta: {
+        params: { area: 'CN' },
+      }
+    },
+    {
+      path: '/copyright/area/other',
+      name: 'CopyrightAreaOther',
+      component: CopyrightList,
+      meta: {
+        params: { area: 'other' },
+      }
+    },
+    {
+      path: '/copyright/custom/:id',
+      name: 'CopyrightCustom',
+      component: CopyrightList,
+      meta: {
+        custom: true,
+      },
+    },
     {
       path: '/copyright/add',
       name: 'CopyrightAdd',
       meta: { pageType: 'add' },
       component: CopyrightAdd
-    },
-    {
-      path: '/copyright/list',
-      name: 'CopyrightList',
-      component: CopyrightList
     },
     {
       path: '/copyright/list/detail/:id',
@@ -275,11 +731,13 @@ const router = new Router({
       ]
     },
     {
-      path: '/copyright/notice',
+      path: '/news/copyright_notice',
       name: 'CopyrightNotice',
       meta: { type: 'copyright' },
       component: NoticeCommon,
     },
+//################### 版权路由 end #####################
+
     {
       path: '/userList',
       name: 'UserList',

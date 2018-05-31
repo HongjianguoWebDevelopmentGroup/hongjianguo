@@ -172,7 +172,11 @@ export default {
     ...mapGetters([
       'areaMap',
       'menusMap',
-    ])
+    ]),
+    defaultParams () {
+      const params = this.$route.meta.params; 
+      return params ? params : {};
+    }
   },
   methods: {
     ...mapActions([
@@ -192,7 +196,8 @@ export default {
     refreshTableData (option) {
       
       const url = URL;
-      const data = Object.assign({}, option, this.filter, this.area, this.$route.query);
+      const data = Object.assign({}, option, this.filter, this.$route.query, this.defaultParams);
+
       const success = d=>{
         if(data['format'] !== 'excel') {
           this.tableData = d.patents;
@@ -283,10 +288,6 @@ export default {
     this.initializeSelectorCache({type: 'file_type_patent_notice'});
   },
   mounted () {
-    if(this.$route.meta) {
-      console.log(this.$route.meta);
-      this.area = this.$route.meta;
-    }
     this.$refs.table.refresh();
   },
   components: {  

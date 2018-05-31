@@ -99,6 +99,12 @@ export default {
       filter: {},
     };
   },
+  computed: {
+    defaultParams () {
+      const params = this.$route.meta.params; 
+      return params ? params : {};
+    }
+  },
   methods: {
     ...mapActions([
       'initializeSelectorCache',
@@ -108,7 +114,7 @@ export default {
     },
     refreshTableData (option) {
       const url = URL;
-      const data = Object.assign({}, option, this.filter, this.$route.query);
+      const data = Object.assign({}, option, this.filter, this.$route.query, this.defaultParams);
       const success = d=>{
         if(data['format'] == 'excel') {
           window.location.href = d.copyrights.downloadUrl;

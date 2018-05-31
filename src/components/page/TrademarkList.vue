@@ -270,6 +270,12 @@ export default {
 			area: '',
 		};
   },
+  computed: {
+  	defaultParams () {
+      const params = this.$route.meta.params; 
+      return params ? params : {};
+    }
+  },
   methods: {
   	...mapActions([
   		'initializeSelectorCache',
@@ -285,7 +291,7 @@ export default {
   		}
   		this.$axiosGet({
   			url: URL,
-  			data: Object.assign({}, this.filter, option, this.area, this.$route.query),
+  			data: Object.assign({}, this.filter, option, this.$route.query, this.defaultParams),
   			success,
   		})
   	},
@@ -306,9 +312,6 @@ export default {
   	this.initializeSelectorCache({type: 'file_type_trademark_notice'});
   },
   mounted () {
-  	if(this.$route.meta) {
-  		this.area = this.$route.meta;
-  	}
   	this.refresh();
   },
   components: { 

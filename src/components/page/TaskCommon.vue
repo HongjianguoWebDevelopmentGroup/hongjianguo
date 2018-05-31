@@ -2,10 +2,10 @@
   <div class="main" id="task_common">
     <strainer @query="strainerQuery" @clear="strainerClear"></strainer>
     <table-component :tableOption="tableOption" :data="tableData" @refreshTableData="refreshTableData" :refresh-proxy="refreshProxy" ref="table">
-      <el-select v-if="menusMap && !menusMap.get('/tasks/all')" slot="toggle" v-model="task_toggle" style="width: 110px; margin-left: 5px;">
+<!--       <el-select v-if="menusMap && !menusMap.get('/tasks/all')" slot="toggle" v-model="task_toggle" style="width: 110px; margin-left: 5px;">
         <el-option key="mine" label="我的任务" value="personal"></el-option>
         <el-option key="all" label="所有任务" value="all"></el-option>
-      </el-select>
+      </el-select> -->
     </table-component>
  
     <el-dialog title="申请委案" :visible.sync="dialogAgenVisible" class="dialog-small">
@@ -263,7 +263,6 @@ export default {
         ],
       },
       tableData: [],
-      task_toggle: 'personal',
       agen: {
         agency_id: '',
         agency_agent: '',
@@ -386,7 +385,7 @@ export default {
     },
     refreshTableData (option) {
       const url = URL;
-      const data = Object.assign({}, option, this.screen_value, {status: this.task_status}, {category: this.task_category}, {scope: this.task_toggle}, this.urlParams, this.filter);
+      const data = Object.assign({}, option, this.screen_value, {status: this.task_status}, {category: this.task_category}, this.urlParams, this.filter, this.defaultParams);
       const success = d=>{
         if( data['format'] == 'excel' ) {
           window.location.href = d.tasks.downloadUrl;
@@ -579,15 +578,17 @@ export default {
     },
     isCommon () {
       return this.currentRow.category == 1 || this.currentRow.category == 3 || this.currentRow.category == 2;//专利 版权 商标
+    },
+    defaultParams () {
+      const params = this.$route.meta.params; 
+      return params ? params : {};
     }
   },  
   watch: {
     filter () {
       this.refresh();
     },
-    task_toggle () {
-      this.refresh();
-    },
+
     'agen.agency_id': {
       handler (val) {
         if(val !== '') {
