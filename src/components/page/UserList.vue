@@ -7,14 +7,14 @@
 
 			</div>
 			<div class="right">
-				<app-collapse col-title="用户组详情" default-close>
+				<app-collapse col-title="用户组详情" default-open>
 					<ul style="margin: 0; padding-left: 15px; list-style: none; font-size: 14px">
 						<li style="margin-bottom: 20px"><span>用户组名称：</span><span>{{ group_name }}</span></li>
 						<li><span>用户组描述：</span><span>{{ group_description }}</span></li>
 					</ul>
 				</app-collapse>
 				<table-component @refreshTableData="refreshTableData" :tableOption="tableOption" :data="tableData" ref="table">
-					<el-tag v-if="lastUpdate !== ''" slot="last_update" style="margin-left: 15px;">最后更新时间：{{ lastUpdate }}</el-tag>
+					<!-- <el-tag v-if="lastUpdate !== ''" slot="last_update" style="margin-left: 15px;">最后更新时间：{{ lastUpdate }}</el-tag> -->
 					<!-- <user-role v-model="user_role" slot="userRole" default style="width: 200px; margin-left: 5px;"></user-role> -->
 				</table-component>
   		</div>
@@ -70,16 +70,16 @@ export default {
 		  		{ type: 'selection' },
 		  		{ type: 'text', label: '姓名', prop: 'name', width: '145' },
 		  		{ type: 'text', label: '登陆名', prop: 'username', width: '175' },
-		  		{ type: 'text', label: '手机号', prop: 'mobile', width: '200' },
-		  		{ type: 'text', label: '证件号码', prop: 'identity', width: '240'},
+		  		{ type: 'text', label: '邮箱', prop: 'email', width: '240' },
+		  		{ type: 'text', label: '电话/手机', prop: 'mobile', width: '200' },
+		  		{ type: 'text', label: '证件号码', prop: 'identity', width: '200'},
 		  		{ type: 'array', label: '所属用户组', prop: 'groups', width: '200', render: _=>_.map(_=>_.name) },
 		  		// { type: 'text', label: '用户角色', prop: 'role_name', width: '200' },
-		  		{ type: 'text', label: '部门', prop: 'orgname', width: '148'},
-		  		{ type: 'text', label: '入职日期', prop: 'begindate', width: '178'},
-		  		{ type: 'text', label: '离职日期', prop: 'leavedate', width: '178'},
-		  		{ type: 'text', label: '邮箱', prop: 'email', width: '240' },
-		  		{ type: 'text', label: '微信号', prop: 'weixin', width: '200' },
-		  		{ type: 'text', label: 'QQ', prop: 'qq', width: '200' },
+		  		// { type: 'text', label: '部门', prop: 'orgname', width: '148'},
+		  		// { type: 'text', label: '入职日期', prop: 'begindate', width: '178'},
+		  		// { type: 'text', label: '离职日期', prop: 'leavedate', width: '178'},
+		  		// { type: 'text', label: '微信号', prop: 'weixin', width: '200' },
+		  		// { type: 'text', label: 'QQ', prop: 'qq', width: '200' },
 		  		{ 
 		  			type: 'action', label: '操作', width: '150px',
 		  			btns: [

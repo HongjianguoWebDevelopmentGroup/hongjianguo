@@ -7,9 +7,9 @@
       <div slot="row_action" slot-scope="scope" class="invoice-action">
         <el-button :disabled="scope.row.status.id != 1" size="mini" type="text" @click="checkClick(scope.row)">审核账单</el-button>
         <i class="el-icon-arrow-right" style="font-size: 12px;"></i>
-        <el-button :disabled="scope.row.status.id != 2" size="mini" type="text" @click="payClick(scope.row)">确认付款</el-button>
+        <el-button :disabled="scope.row.status.id != 2" size="mini" type="text" @click="uploadClick(scope.row)">上传凭证</el-button>
         <i class="el-icon-arrow-right" style="font-size: 12px;"></i>
-        <el-button :disabled="scope.row.status.id != 4" size="mini" type="text" @click="uploadClick(scope.row)">上传凭证</el-button>
+        <el-button :disabled="scope.row.status.id != 5" size="mini" type="text" @click="payClick(scope.row)">确认付款</el-button>
       </div>
     </table-component>
     
@@ -28,14 +28,7 @@
       </template>
       <check-invoice style="margin-top: 10px;" @callback="checkCallBack" ref="checkInvoice"></check-invoice>
     </app-shrink>
-
-    <el-dialog v-if="feeType == 0" :visible.sync="payVisible" title="确认付款" @close="payTime = ''" class="dialog-mini">
-      <el-date-picker type="date" v-model="payTime" placeholder="请选择付款时间"></el-date-picker>
-      <div style="margin-top: 10px;">
-        <el-button :loading="payLoading" @click="confirmPay" type="primary">{{ payLoading ? '确认中...' : '确认付款' }}</el-button>
-      </div>
-    </el-dialog>
-
+    
     <app-shrink v-if="feeType == 0" :visible.sync="uploadVisible" title="上传凭证" :modal="true">
       <template slot="header">
         <span style="float: right; line-height: 40px;">
@@ -44,6 +37,14 @@
       </template>
       <upload-invoice style="margin-top: 10px;" ref="uploadInvoice"></upload-invoice>
     </app-shrink>
+
+    <el-dialog v-if="feeType == 0" :visible.sync="payVisible" title="确认付款" @close="payTime = ''" class="dialog-mini">
+      <el-date-picker type="date" v-model="payTime" placeholder="请选择付款时间"></el-date-picker>
+      <div style="margin-top: 10px;">
+        <el-button :loading="payLoading" @click="confirmPay" type="primary">{{ payLoading ? '确认中...' : '确认付款' }}</el-button>
+      </div>
+    </el-dialog>
+
 
   </div>
 

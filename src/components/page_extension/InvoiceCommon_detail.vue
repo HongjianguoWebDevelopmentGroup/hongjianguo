@@ -17,8 +17,8 @@
   </el-row>
   <el-row>
     <el-form-item label="费用列表">
-    	<table-component :tableOption="feeOptions" :data="feeData" style="margin: 10px 0;"></table-component>
     </el-form-item>
+    <table-component :tableOption="feeOptions" :data="feeData" style="margin: 10px 0;"></table-component>
   </el-row>
 </el-form>
 </template>
@@ -48,39 +48,40 @@ export default {
 		  	'is_pagination': false,
 		  	'is_border': false,
 		  	'columns': [
-		  		{ type: 'text', label: '案号', prop: 'serial', width: '192' },
-		  		{ type: 'text', label: '费用对象', prop: 'target', render_simple: 'name', width: '190' },
-		  		{ type: 'text', label: '费用名称', prop: 'code', render_simple: 'name', width: '190' },
-		          { 
-		            type: 'text', 
-		            label: '外币金额', 
-		            prop: 'amount', 
-		            width: '100',
-		            is_import: true,
-		            align: 'right',
-		            render:(h,item,row)=>{
-		              if( row.roe == 1 ){
-		                return h('span','N/A');
-		              }else{
-		                return h('span',`${item}${row.currency}`);
-		              }
-		            } 
-		          },
-		          { 
-		            type: 'text', 
-		            label: '汇率', 
-		            prop: 'roe', 
-		            width: '80',
-		            is_import: true,
-		            align: 'right',
-		            render:(h,item)=>{
-		              if( item == 1 ){
-		                return h('span','N/A');
-		              }else{
-		                return h('span',item);
-		              } 
-		            }
-		          },
+		  		{ type: 'text', label: '案号', prop: 'serial', width: '140' },
+		  		// { type: 'text', label: '费用对象', prop: 'target', render_simple: 'name', width: '190' },
+					// { type: 'text', label: '案件名称', prop: 'title', width: '189' },
+		  		{ type: 'text', label: '费用名称', prop: 'code', render_simple: 'name', width: '130' },
+		          // { 
+		          //   type: 'text', 
+		          //   label: '外币金额', 
+		          //   prop: 'amount', 
+		          //   width: '100',
+		          //   is_import: true,
+		          //   align: 'right',
+		          //   render:(h,item,row)=>{
+		          //     if( row.roe == 1 ){
+		          //       return h('span','N/A');
+		          //     }else{
+		          //       return h('span',`${item}${row.currency}`);
+		          //     }
+		          //   } 
+		          // },
+		          // { 
+		          //   type: 'text', 
+		          //   label: '汇率', 
+		          //   prop: 'roe', 
+		          //   width: '80',
+		          //   is_import: true,
+		          //   align: 'right',
+		          //   render:(h,item)=>{
+		          //     if( item == 1 ){
+		          //       return h('span','N/A');
+		          //     }else{
+		          //       return h('span',item);
+		          //     } 
+		          //   }
+		          // },
 		          { 
 		            type: 'text', 
 		            label: '人民币金额', 
@@ -92,21 +93,27 @@ export default {
 		              return h('span',`${item}CNY`)
 		            }
 		          },		  		
-		  		{ type: 'text', label: '状态', prop: 'status', render_simple: 'name', width: '180'},
-        	{ type: 'text', label: '案件类型', prop: 'category', width: '116' },
-        	{ type: 'text', label: '专利类型', prop: 'patent_type', width: '133' },
-        	{ type: 'text', label: '案件名称', prop: 'title', width: '189' },
-        	{ type: 'text', label: '申请号', prop: 'apn', width: '210' },
-        	{ type: 'text', label: '申请日', prop: 'apd',  width: '200' },
-        	{ type: 'text', label: '地区', prop: 'area', render_simple: 'name', width: '210' },
-        	{ type: 'text', label: '发文日', prop: 'mail_date', width: '250' },
-        	{ type: 'text', label: '创建日期', prop: 'create_time', width: '200' },
-        	{ type: 'text', label: '费用期限', prop: 'due_time', is_import: true, width: '200' },
-        	{ type: 'text', label: '官方绝限', prop: 'deadline', width: '200' },
-        	{ type: 'text', label: '付款时间', prop: 'pay_time', width: '200' },
-		  		{ type: 'text', label: '账单号', prop: 'invoice_id', width: '150' },
-		  		{ type: 'text', label: '企业意见', prop: 'remark_enterprise', width: '160' },
-		  		{ type: 'text', label: '备注', prop: 'remark', is_import: true, width: '160' },
+		  		{ type: 'text', label: '状态', prop: 'status', render_simple: 'name', width: '120'},
+        	// { type: 'text', label: '案件类型', prop: 'category', width: '116' },
+        	// { type: 'text', label: '专利类型', prop: 'patent_type', width: '133' },
+        	// { type: 'text', label: '申请号', prop: 'apn', width: '210' },
+        	// { type: 'text', label: '申请日', prop: 'apd',  width: '200' },
+        	// { type: 'text', label: '地区', prop: 'area', render_simple: 'name', width: '210' },
+        	// { type: 'text', label: '发文日', prop: 'mail_date', width: '250' },
+        	{ type: 'text', label: '创建日期', prop: 'create_time', width: '120' },
+        	// { type: 'text', label: '费用期限', prop: 'due_time', is_import: true, width: '200' },
+        	// { type: 'text', label: '官方绝限', prop: 'deadline', width: '200' },
+        	{ type: 'text', label: '付款时间', prop: 'pay_time', width: '120' },
+		  		// { type: 'text', label: '账单号', prop: 'invoice_id', width: '150' },
+		  		{ type: 'text', label: '备注', prop: 'remark', is_import: true, width: '130' },
+					{ type: 'text', label: '企业意见', prop: 'remark_enterprise', width: '130' },
+					{ 
+						type: 'text', 
+						label: '附件',
+						width: '200', 
+						prop: 'attachments',
+						render: this.attachmentsRender,
+					},
 		  	]
 		  },
 		}
@@ -148,6 +155,40 @@ export default {
 		id (val) {
 			this.refresh(val);
 		}
+	},
+	attachmentsRender (h, item) {
+		let body;
+		
+		if(item.length == 0) {
+			body = '';
+		}else if(item.length == 1) {
+			const obj = {
+				attrs: { href: item[0]['downloadUrl'] },
+			};
+			body = [h('a', obj, item[0].name )];
+		}else if(item.length > 1) {
+			body = [];
+			const obj = {
+				attrs: { href: item[0]['downloadUrl'] },
+				style: { width: '120px', display: 'inline-block' },
+			};
+
+			body.push(h('a', obj, item[0].name ));
+			body.push(h('el-button', {
+				props: {
+					type: 'text',
+					size: 'mini',
+				},
+				on: {
+					click: () => {
+						this.dialogVisible = true;
+						this.uploadData = item;
+					}
+				}
+			}, '更多'));
+		}
+
+		return h('span', body);
 	},
 	components: {
 		TableComponent,

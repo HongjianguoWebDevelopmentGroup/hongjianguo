@@ -15,7 +15,6 @@ const URL = '/inventors'
 
 export default {
   name: 'inventorList',
-  mixins: [ AxiosMixins ],
   data () {
 		return {
 		  option: {
