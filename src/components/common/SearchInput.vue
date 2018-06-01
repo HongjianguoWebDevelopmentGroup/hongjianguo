@@ -1,30 +1,34 @@
 <template>
-	<div style="position: relative">
-		<input type="text" :placeholder="placeholder" @input="handleInput" :value="value" class="el-input__inner" style="padding-right: 35px; font-size: 14px;" @keyup.enter="handleEnter"></input>
-		<i class="el-icon-search" title="点击搜索" style="position: absolute; top: 10px; right: 10px; cursor: pointer; opacity: .5;" @click="handleClick"></i>
-	</div>
+  <div style="position: relative">
+    <input :style="inputStyle" type="text" :placeholder="placeholder" @input="handleInput" :value="value" class="el-input__inner search-content" style="padding-right: 35px; font-size: 14px;" @keyup.enter="handleEnter"></input>
+    <i class="el-icon-search" title="点击搜索" style="position: absolute; top: 10px; right: 10px; cursor: pointer; opacity: .5;" @click="handleClick"></i>
+  </div>
 </template>
 
 <script>
 export default {
   name: 'searchInput',
   props: {
-  	'value': [String, Number],
-  	'placeholder': {
-  		type: String,
-  		default: '',
-  	}
+    'value': [String, Number],
+    'placeholder': {
+      type: String,
+      default: '',
+    },
+    'inputStyle': {
+      type: String,
+      default: '',
+    }
   },
   methods: {
-  	handleInput (event) {
-  		this.$emit('input', event.target.value);
-  	},
-  	handleEnter () {
-  		this.$emit('enter', this.value)
-  	},
-  	handleClick () {
-  		this.$emit('click', this.value)
-  	},
+    handleInput (event) {
+      this.$emit('input', event.target.value);
+    },
+    handleEnter () {
+      this.$emit('enter', this.value)
+    },
+    handleClick () {
+      this.$emit('click', this.value)
+    },
   }
 }
 </script>

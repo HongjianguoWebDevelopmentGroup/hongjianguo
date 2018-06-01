@@ -1,51 +1,8 @@
 <template>
 	<div class="main">
-    <app-collapse col-title="提案筛选" :default-close="isClose">   
-      <el-form label-width="140px">
-        <el-row>
-          <el-col :span="12">
-            <el-form-item label="提案标题">
-              <el-input v-model="title" placeholder="请输入需要搜索的提案标题"></el-input>
-            </el-form-item>
-            <el-form-item label="技术分类">
-              <classification v-model="classification" count-type="proposal" multiple></classification>
-            </el-form-item>
-            <el-form-item label="产品分类">
-              <product v-model="product" count-type="proposal" multiple></product>
-            </el-form-item>
-            <el-form-item label="是否已用在产品上">
-              <static-select type="product_relevance" v-model="product_relevance"></static-select>
-            </el-form-item>
-            <el-form-item label="部门">
-              <branch v-model="branch" count-type="proposal" multiple></branch>
-            </el-form-item>
-          </el-col>
-          <el-col :span="12">
-            <el-form-item label="IPR">
-              <static-select type="ipr" v-model="ipr" multiple></static-select>
-            </el-form-item>
-            <el-form-item label="发明人">
-              <remote-select type="inventor" v-model="inventors" multiple></remote-select>
-            </el-form-item>
-            <el-form-item label="提案人">
-              <remote-select type="member" v-model="proposer" multiple></remote-select>
-            </el-form-item>
-            <el-form-item label="标签">
-              <static-select type="tag" v-model="tags" multiple></static-select>
-            </el-form-item>
-            <el-form-item label="提案时间">
-              <el-date-picker type="daterange" placeholder="请选择提案时间" v-model="create_time"></el-date-picker>
-            </el-form-item>
-          </el-col>
-        </el-row>
-        <el-row style="text-align: center">
-          <el-button type="info" size="small" @click="query">查询</el-button>
-          <el-button type="danger" size="small" @click="clear" style="margin-left: 20px">清空</el-button>
-        </el-row>
-      </el-form>
-    </app-collapse>
     
-		<table-component :tableOption="tableOption" :data="tableData" ref="table" @refreshTableData="refreshTableData" :refresh-proxy="refreshProxy">
+    
+		<table-component :tableOption="tableOption" :data="tableData" ref="table" :refreshTableData="refreshTableData">
       <el-button v-if="menusMap && !menusMap.get('/proposals/proposer')" type="primary" icon="d-arrow-right" @click="transferPop" slot="transfer" style="margin-left: 5px;">移交</el-button>
       
       <template slot="action" slot-scope="scope">
@@ -84,11 +41,9 @@ import AxiosMixins from '@/mixins/axios-mixins'
 
 import {mapGetters} from 'vuex'
 
-const URL = '/api/proposals';
-const url = 'http://www.zhiq.wang/proposal/lists';
-const delete_url = 'http://www.zhiq.wang/proposal/lists';
-const tag_url = 'http://www.zhiq.wang/tag/lists';
-const strainerArr = ['classification', 'product', 'proposer', 'tags', 'inventors', 'branch', 'create_time','ipr',];
+const URL = '/proposals';
+
+
 const map = new Map([['flownodes', 'progress'],['time', 'create_time']]);
 export default {
   name: 'proposalList',
@@ -142,35 +97,9 @@ export default {
     detail (row) {
       this.$router.push({path: '/proposal/detail', query: {id: row.id}});
     },
-    query () {
-      const obj = {};
-      
-      obj.title = this.title;
-      obj.product_relevance = this.product_relevance;
-      strainerArr.forEach(d=>{
-        if(d == 'create_time') {
-          obj[d] = this[d].map(_=>this.$tool.getDate(_)).join(',');
-        }else {
-          obj[d] = this[d].join(',')  
-        }
-        
-      });
-
-      this.filter = obj;
-      this.isClose = !this.isClose;
-      this.$refs.table.refresh();
-    },
-    clear () {
-      this.title = "";
-      this.product_relevance = "";
-      strainerArr.forEach(d=>{this[d] = []});
-
-      this.filter = {};
-      this.$refs.table.refresh();
-    },
     refreshTableData (option) {
       const url = '/api/proposals';
-      const data = Object.assign({}, option, this.filter, this.screen_value);
+      const data = Object.assign({}, option, this.defaultParams);
       const success = _=>{
         if(data.format == 'excel') {
           window.location.href = _.proposals.downloadUrl;
@@ -179,7 +108,7 @@ export default {
         }
       }
       
-      this.refreshProxy = this.axiosGet({url, data, success});
+      return this.$axiosGet({url, data, success});
     },
     refresh () {
       this.$refs.table.refresh();
@@ -219,12 +148,13 @@ export default {
   },
   data () {
     return {
-      refreshProxy: '',
       isClose: true,
       tableOption: {
         'name': 'proposalList',
         'url': URL,
         'is_filter': true,
+        'is_list_filter': true,
+        'list_type': 'proposal',
         'height': 'default',
         'search_placeholder': '搜索案号、标题、标签、发明人',
         'highlightCurrentRow': true, 
@@ -232,8 +162,7 @@ export default {
         'header_btn': [
           { type: 'add', click: this.add },
           { type: 'delete' },
-          { type: 'export' },
-          
+          { type: 'export' },          
           { type: 'control' },
         ],
         'header_slot': ['transfer'],
@@ -275,7 +204,6 @@ export default {
       ipr:[],
       product_relevance: '',
       inventors: [],
-      filters: {},
       currentRow: '',
       shrinkVisible: false,
       transferVisible: false,
@@ -287,10 +215,20 @@ export default {
   computed: {
     ...mapGetters([
       'menusMap',
-    ])
+    ]),
+    defaultParams () {
+      const params = this.$route.meta.params;
+      return params ? params : {};
+    },
+    custom () {
+      const custom = this.$route.meta.custom;
+      return custom !== undefined ? custom : false;
+    },
   },
   mounted () {
-    this.refresh();
+    if(!this.custom) {
+      this.refresh();
+    }
   },
   components: { 
     TableComponent, 

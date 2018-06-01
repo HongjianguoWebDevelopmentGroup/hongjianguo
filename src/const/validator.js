@@ -58,3 +58,20 @@ export function checkInventors (a, b, c, required=false) {
     c();
   }
 }
+
+export function checkMoney (a, b, c) {
+  let msg = '';
+  const reg = /^[0-9][0-9.]*$/;
+
+  if(!b.currency) msg = '货币类型不能为空';
+  if(!msg && !b.amount ) msg = '费用金额不能为空';
+  if(!msg && !b.roe) msg = '执行汇率不能为空';
+  if(!msg && !reg.test(b.amount)) msg = '费用金额格式错误'; 
+  if(!msg && !reg.test(b.roe)) msg = '执行汇率格式错误'; 
+
+  if(msg && msg != 'success') {
+    c(msg);              
+  }else {
+    c();
+  } 
+}

@@ -1,11 +1,10 @@
 <template>
   <div class="main" id="task_common">
-    <strainer @query="strainerQuery" @clear="strainerClear"></strainer>
-    <table-component :tableOption="tableOption" :data="tableData" @refreshTableData="refreshTableData" :refresh-proxy="refreshProxy" ref="table">
-      <el-select v-if="menusMap && !menusMap.get('/tasks/all')" slot="toggle" v-model="task_toggle" style="width: 110px; margin-left: 5px;">
+    <table-component :tableOption="tableOption" :data="tableData" :refreshTableData="refreshTableData" ref="table">
+<!--       <el-select v-if="menusMap && !menusMap.get('/tasks/all')" slot="toggle" v-model="task_toggle" style="width: 110px; margin-left: 5px;">
         <el-option key="mine" label="我的任务" value="personal"></el-option>
         <el-option key="all" label="所有任务" value="all"></el-option>
-      </el-select>
+      </el-select> -->
     </table-component>
  
     <el-dialog title="申请委案" :visible.sync="dialogAgenVisible" class="dialog-small">
@@ -158,6 +157,161 @@ const typeMap = new Map([
 export default {
   name: 'taskList',
   mixins: [ AxiosMixins ],
+    data () {
+
+    return {
+      dialogScreenVisible: false,
+      dialogTurnoutVisible: false,
+      dialogAddVisible: false,
+      dialogEditVisible: false,
+      dialogTranserVisible: false,
+      dialogSettingVisible: false,
+      dialogShrinkVisible: false,
+      moreVisible: false,
+      moreType: '',
+      filters: {},
+      activeName: 'finish',
+      shrinkTitle: '',
+      expandOldType: '',
+      expandType: 'edit',
+      checkedTest: [],
+      currentRow: {},
+      transfer_person: '',
+      tableOption: {
+        'name': 'taskList',
+        'url': URL,
+        'height': 'default',
+        'is_list_filter': true,
+        'list_type': 'task',
+        'search_placeholder': '搜索案号、标题、申请号、代理人、备注',
+        'is_filter': true,
+        'row_class': ({due_time}, index)=> {
+          return ;
+        },
+        'header_btn': [
+          {},//部分顶部按钮在refreshOption中渲染
+          {},
+          {},
+          {},
+          { type: 'export' },
+          // { type: 'custom', label: '转出', icon: '', click: ()=>{ this.dialogTurnoutVisible = true; } },
+          { type: 'control', label: '字段'},
+          // { type: 'custom', label: '设定', icon: '', click: ()=>{ this.dialogSettingVisible = true; } }
+        ],
+        'header_slot': [ 'toggle' ],
+        'highlightCurrentRow': true, 
+        'rowClick': this.handleRowClick,
+        // 'expandFun': (row, expanded)=>{ 
+        //   const expands = this.$refs.table.expands;
+        //   const old_id = expands.shift();
+        //   if(old_id != row.id) { 
+        //     expands.push(row.id);
+        //   }else if( this.expandType != this.expandOldType) {
+        //     expands.push(row.id);
+        //   }
+        //   this.expandOldType = this.expandType;
+        // },
+        'columns': [
+          // { type: 'expand' },
+          { type: 'selection' },
+          { type: 'text', label: '案号', prop: 'serial', sortable: true, width: '210',  render: this.titleRender },
+          { type: 'text', label: '事务所案号', prop: 'agency_serial', sortable: true, width: '200' },
+          { type: 'text', label: '案件类型', prop: 'category', sortable: true, width: '145', show_option: true,render:this.categoryRender},
+          { type: 'text', label: '专利类型', prop: 'type_name', sortable: true, width: '145', overflow: true },
+          { type: 'text', label: '案件名称', prop: 'title', sortable: true, width: '200', overflow: true },
+          { type: 'text', label: '管制事项', prop: 'name', sortable: true, width: '134' },
+          { type: 'text', label: '任务来源', prop: 'sender_name', show: true,sortable: true, width: '118'},
+          { type: 'text', label: '流程节点', prop: 'flow_node', show:true, sortable: true, width: '159'},
+          { type: 'text', label: '提案标题', prop: 'proposal_title', sortable: true, width: '200', overflow: true },
+          { type: 'text', label: 'IPR', prop: 'ipr', sortable: true, width: '118'},
+          { type: 'text', label: '部门', prop: 'branch',render_simple: 'name', sortable: true, width: '160'},
+          { type: 'text', label: '提案人', prop: 'proposer', render_simple: 'name', sortable: true, width: '160'},
+          { type: 'text', label: '承办人', prop: 'person_in_charge_name', show: false, sortable: true, width: '118'},
+          { type: 'text', label: '代理机构', prop: 'agency', show: false, sortable: true, width: '130'},
+          { type: 'text', label: '代理人', prop: 'agent', sortable: true, width: '118'},
+          { type: 'text', label: '申请日', prop: 'apd', sortable: true, width: '190'},
+          { type: 'text', label: '申请号', prop: 'apn', sortable: true, width: '220'},
+          { type: 'text', label: '开始时间', prop: 'start_time', show: false, sortable: true, width: '190'},
+          { type: 'text', label: '完成时间', prop: 'end_time', sortable: true, width: '190'},
+          { type: 'text', label: '指定期限', prop: 'due_time', show: false, sortable: true, width: '190'},
+          { type: 'text', label: '定稿期限', prop: 'review_dealine', show: false, sortable: true, width: '190'},
+          { type: 'text', label: '管控期限', prop: 'inner_dealine', sortable: true, width: '190'},
+          { type: 'text', label: '法定期限', prop: 'deadline', show: false, sortable: true, width: '190'},
+          { type: 'text', label: '备注', prop: 'remark', sortable: true, width: '250',overflow: true},
+          { 
+            type: 'action',
+            fixed: false,
+            label: '操作',
+            min_width: '150',
+            align: 'left',
+            btns: [
+              // { 
+              //   type: 'dropdown', 
+              //   label: '发送邮件',
+              //   items: [
+              //     { text: '立案通知' },
+              //     { text: '发明人看稿' },
+              //     { text: 'IPR看稿' },
+              //     { text: '委案处理' },
+              //   ],
+              // },
+              { btn_type: 'text', label: '编辑提案', click: this.proposalEdit, btn_if: _=>_.action == 'proposals/edit' },
+              { btn_type: 'text', label: '编辑专利', click: this.patentEdit, btn_if: _=>_.action == 'patents/edit'},
+            ],
+          }
+        ],
+      },
+      tableData: [],
+      task_toggle: 'personal',
+      agen: {
+        agency_id: '',
+        agency_agent: '',
+        agency_type: '',
+        remark: '',
+      },
+      dialogAgenVisible: false,
+      btn_disabled: false,
+      install: '',
+    };
+  },
+  computed: {
+    ...mapGetters([
+      'detailBase',
+      'menusMap',
+    ]),
+    task_status () {
+      return this.$route.meta.status;
+    },
+    urlParams () {
+      return this.$route.query;
+    },
+    categoryType () {
+      let type = '';
+
+      if(this.currentRow.category == 1) {
+        type = 'patent';
+      }
+      if(this.currentRow.category == 3) {
+        type = 'copyright';
+      }
+      if(this.currentRow.category == 2) {
+        type = 'trademark';
+      }
+
+      return type;
+    },
+    isCommon () {
+      return this.currentRow.category == 1 || this.currentRow.category == 3 || this.currentRow.category == 2;//专利 版权 商标
+    },
+    defaultParams () {
+      const params = this.$route.meta.params;
+      return params ? params : {};
+    },
+    custom () {
+      const custom = this.$route.meta.custom;
+      return custom !== undefined ? custom : false;
+    }
+  },
   methods: {
     ...mapMutations([
       'showAgencyLoad',
@@ -255,15 +409,9 @@ export default {
         })
         .catch(()=>{});
     },
-    strainerQuery (form) {
-      this.filter = form;
-    },
-    strainerClear () {
-      this.filter = {};
-    },
     refreshTableData (option) {
       const url = URL;
-      const data = Object.assign({}, this.filter, option, this.screen_value, {status: this.task_status}, {scope: this.task_toggle}, this.urlParams);
+      const data = Object.assign({}, option, {status: this.task_status}, this.urlParams, this.defaultParams);
       const success = d=>{
         if( data['format'] == 'excel' ) {
           window.location.href = d.tasks.downloadUrl;
@@ -284,8 +432,7 @@ export default {
           this.install = '';
         }     
       };
-
-      this.refreshProxy = this.axiosGet({url, data, success}); 
+      return this.$axiosGet({url, data, success});
     },
     refresh () {
       this.$refs.table.refresh();
@@ -426,153 +573,6 @@ export default {
     save () {
       this.$refs.detail.edit();
     }
-  },
-  data () {
-
-    return {
-      dialogScreenVisible: false,
-      dialogTurnoutVisible: false,
-      dialogAddVisible: false,
-      dialogEditVisible: false,
-      dialogTranserVisible: false,
-      dialogSettingVisible: false,
-      dialogShrinkVisible: false,
-      moreVisible: false,
-      moreType: '',
-      filter: {},
-      filters: {},
-      activeName: 'finish',
-      shrinkTitle: '',
-      expandOldType: '',
-      expandType: 'edit',
-      checkedTest: [],
-      currentRow: {},
-      transfer_person: '',
-      refreshProxy: '',
-      tableOption: {
-        'name': 'taskList',
-        'url': URL,
-        'height': 'default',
-        'search_placeholder': '搜索案号、标题、申请号、代理人、备注',
-        'is_filter': true,
-        'row_class': ({due_time}, index)=> {
-          return ;
-        },
-        'header_btn': [
-          {},//部分顶部按钮在refreshOption中渲染
-          {},
-          {},
-          {},
-          { type: 'export' },
-          // { type: 'custom', label: '转出', icon: '', click: ()=>{ this.dialogTurnoutVisible = true; } },
-          { type: 'control', label: '字段'},
-          // { type: 'custom', label: '设定', icon: '', click: ()=>{ this.dialogSettingVisible = true; } }
-        ],
-        'header_slot': [ 'toggle' ],
-        'highlightCurrentRow': true, 
-        'rowClick': this.handleRowClick,
-        // 'expandFun': (row, expanded)=>{ 
-        //   const expands = this.$refs.table.expands;
-        //   const old_id = expands.shift();
-        //   if(old_id != row.id) { 
-        //     expands.push(row.id);
-        //   }else if( this.expandType != this.expandOldType) {
-        //     expands.push(row.id);
-        //   }
-        //   this.expandOldType = this.expandType;
-        // },
-        'columns': [
-          // { type: 'expand' },
-          { type: 'selection' },
-          { type: 'text', label: '案号', prop: 'serial', sortable: true, width: '210',  render: this.titleRender },
-          { type: 'text', label: '事务所案号', prop: 'agency_serial', sortable: true, width: '200' },
-          { type: 'text', label: '案件类型', prop: 'category', sortable: true, width: '145', show_option: true,render:this.categoryRender},
-          { type: 'text', label: '专利类型', prop: 'type_name', sortable: true, width: '145', overflow: true },
-          { type: 'text', label: '案件名称', prop: 'title', sortable: true, width: '200', overflow: true },
-          { type: 'text', label: '管制事项', prop: 'name', sortable: true, width: '134' },
-          { type: 'text', label: '任务来源', prop: 'sender_name', show: true,sortable: true, width: '118'},
-          { type: 'text', label: '流程节点', prop: 'flow_node', show:true, sortable: true, width: '159'},
-          { type: 'text', label: '提案标题', prop: 'proposal_title', sortable: true, width: '200', overflow: true },
-          { type: 'text', label: 'IPR', prop: 'ipr', sortable: true, width: '118'},
-          { type: 'text', label: '部门', prop: 'branch',render_simple: 'name', sortable: true, width: '160'},
-          { type: 'text', label: '提案人', prop: 'proposer', render_simple: 'name', sortable: true, width: '160'},
-          { type: 'text', label: '承办人', prop: 'person_in_charge_name', show: false, sortable: true, width: '118'},
-          { type: 'text', label: '代理机构', prop: 'agency', show: false, sortable: true, width: '130'},
-          { type: 'text', label: '代理人', prop: 'agent', sortable: true, width: '118'},
-          { type: 'text', label: '申请日', prop: 'apd', sortable: true, width: '190'},
-          { type: 'text', label: '申请号', prop: 'apn', sortable: true, width: '220'},
-          { type: 'text', label: '开始时间', prop: 'start_time', show: false, sortable: true, width: '190'},
-          { type: 'text', label: '完成时间', prop: 'end_time', sortable: true, width: '190'},
-          { type: 'text', label: '指定期限', prop: 'due_time', show: false, sortable: true, width: '190'},
-          { type: 'text', label: '定稿期限', prop: 'review_dealine', show: false, sortable: true, width: '190'},
-          { type: 'text', label: '管控期限', prop: 'inner_dealine', sortable: true, width: '190'},
-          { type: 'text', label: '法定期限', prop: 'deadline', show: false, sortable: true, width: '190'},
-          { type: 'text', label: '备注', prop: 'remark', sortable: true, width: '250',overflow: true},
-          { 
-            type: 'action',
-            fixed: false,
-            label: '操作',
-            min_width: '150',
-            align: 'left',
-            btns: [
-              // { 
-              //   type: 'dropdown', 
-              //   label: '发送邮件',
-              //   items: [
-              //     { text: '立案通知' },
-              //     { text: '发明人看稿' },
-              //     { text: 'IPR看稿' },
-              //     { text: '委案处理' },
-              //   ],
-              // },
-              { btn_type: 'text', label: '编辑提案', click: this.proposalEdit, btn_if: _=>_.action == 'proposals/edit' },
-              { btn_type: 'text', label: '编辑专利', click: this.patentEdit, btn_if: _=>_.action == 'patents/edit'},
-            ],
-          }
-        ],
-      },
-      tableData: [],
-      task_toggle: 'personal',
-      agen: {
-        agency_id: '',
-        agency_agent: '',
-        agency_type: '',
-        remark: '',
-      },
-      dialogAgenVisible: false,
-      btn_disabled: false,
-      install: '',
-    };
-  },
-  computed: {
-    ...mapGetters([
-      'detailBase',
-      'menusMap',
-    ]),
-    task_status () {
-      return this.$route.meta.status;
-    },
-    urlParams () {
-      return this.$route.query;
-    },
-    categoryType () {
-      let type = '';
-
-      if(this.currentRow.category == 1) {
-        type = 'patent';
-      }
-      if(this.currentRow.category == 3) {
-        type = 'copyright';
-      }
-      if(this.currentRow.category == 2) {
-        type = 'trademark';
-      }
-
-      return type;
-    },
-    isCommon () {
-      return this.currentRow.category == 1 || this.currentRow.category == 3 || this.currentRow.category == 2;//专利 版权 商标
-    }
   },  
   watch: {
     filter () {
@@ -602,7 +602,11 @@ export default {
     if(this.$route.params.id) {
       this.install = this.$route.params.id;
     }
-    this.refresh();
+
+    if(!this.custom) {
+
+      this.refresh();
+    }
 
     if(this.$store.getters.flowsData === undefined) {
       this.$store.dispatch('refreshFlows');  
@@ -625,7 +629,6 @@ export default {
     TableComponent, 
     AppDatePicker, 
     Edit, 
-    Strainer, 
     AppCollapse, 
     TaskFinish, 
     AppShrink, 

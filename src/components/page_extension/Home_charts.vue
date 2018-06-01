@@ -25,8 +25,6 @@
 import AppFilter from '@/components/common/AppFilter'
 import AxiosMixins from '@/mixins/axios-mixins'
 import StaticSelect from '@/components/form/StaticSelect'
-import echarts from 'echarts'
-
 
 let data;
 const URL = '/api/stats';

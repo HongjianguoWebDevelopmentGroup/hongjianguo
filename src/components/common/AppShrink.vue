@@ -1,9 +1,10 @@
 <template>
-
+	<div>
+	<div class="app-shrink-modal" v-if="modal" v-show="visible" @click="close"></div>
 	<transition name="slide-fade">
-	<div class="app-shrink" v-show="visible">
+	<div :style="shirnkStyle" class="app-shrink" v-show="visible">
 		<div class="app-shrink-head">
-			<span style="font-size: 18px; font-weight: bold;float: left;max-width: 430px;text-overflow: ellipsis;overflow: hidden;white-space: nowrap;" :title="title">{{ title }}</span>
+			<span style="font-size: 18px; font-weight: bold;float: left;max-width: 430px;text-overflow: ellipsis;overflow: hidden;white-space: nowrap;" :title="title" class="fs">{{ title }}</span>
 			<el-button icon="close" style="float: right; border: 0; height: 40px;" @click="close" title="关闭"></el-button>
 			<slot name="header"></slot>
 		</div>
@@ -14,11 +15,11 @@
 		</div>
 	</div>
 	</transition>
+	</div>
 
 </template>
 
 <script>
-import $ from 'jquery'
 import {mapGetters} from 'vuex'
 
 export default {
@@ -28,9 +29,17 @@ export default {
 			type: Boolean,
 			default: false,
 		},
+		modal: {
+			type: Boolean,
+			default: false,
+		},
 		title: {
 			type: String,
 			default: '标题',
+		},
+		size: {
+			type: String,
+			default: 'large',
 		}
 	},
 	data () {
@@ -43,12 +52,12 @@ export default {
 			this.$emit('update:visible', false);
 			this.$emit('close');
 		},
-		fire (e) {
-			const _con = $('.app-shrink');   // 设置目标区域
-		  if(!_con.is(e.target) && _con.has(e.target).length === 0){ // Mark 1
-		    this.close();
-		  }
-		}
+		// fire (e) {
+		// 	const _con = $('.app-shrink');   // 设置目标区域
+		//   if(!_con.is(e.target) && _con.has(e.target).length === 0){ // Mark 1
+		//     this.close();
+		//   }
+		// }
 	}, 
 	computed: {
 		...mapGetters([
@@ -56,6 +65,13 @@ export default {
       'shrinkLoading',
       'shrinkLoadingText',
     ]),
+    shirnkStyle () {
+    	return {
+    		'large': 'width: 926px;',
+    		'middle': 'width: 600px;',
+    		'small': 'width: 460px;',
+    	}[this.size];
+    }
 	},
 	mounted () {
 		if (this.visible) {
@@ -65,8 +81,7 @@ export default {
 	},
 	watch: {
 		visible (val) {
-			console.log('toggle');
-
+			
 			if( !this.rendered && val) {
 				this.rendered = true;
 			}
@@ -82,8 +97,19 @@ export default {
 	}
 }
 </script>
-
 <style>
+.app-shrink-modal {
+	position: fixed;
+  top: 0;
+  right: 0;
+  left: 0;
+  bottom: 0;
+  background-color: #373737; 
+  background-color: rgba(66, 90, 112, 0.15);
+  height: 100%;
+  z-index: 19;
+  filter: alpha(opacity=50);
+}
 .app-shrink {
 	position: fixed;
 	bottom: 0;
@@ -91,7 +117,7 @@ export default {
 
 	padding: 10px;
 	width: 926px;
-	z-index: 9;
+	z-index: 20;
 
 	background-color: #fff;
 	box-shadow: -4px 0 2px -2px rgba(0,0,0,.0625);

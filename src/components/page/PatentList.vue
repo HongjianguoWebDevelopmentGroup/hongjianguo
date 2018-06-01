@@ -1,6 +1,5 @@
 <template>
   <div class="main">
-    <strainer v-model="filter" @refresh="refresh"></strainer>
     
     <table-component :tableOption="tableOption" :data="tableData" @refreshTableData="refreshTableData" ref="table" :refresh-proxy="refreshProxy">
       <el-button v-if="!!(menusMap && !menusMap.get('/patent/download') )" slot="download" :loading="downloadLoading" icon="share" @click="downloadPop" type="primary" style="margin-left: 5px;">批量下载</el-button>
@@ -31,23 +30,20 @@
 </template>
 
 <script>
-import AxiosMixins from '@/mixins/axios-mixins'
 import AppFilter from '@/components/common/AppFilter'
 import TableComponent from '@/components/common/TableComponent'
 import AppTree from '@/components/common/AppTree'
 import AppDatePicker from '@/components/common/AppDatePicker'
-import Strainer from '@/components/page_extension/PatentList_strainer'
 import AppShrink from '@/components/common/AppShrink'
 import CommonDetail from '@/components/page_extension/Common_detail'
 import StaticSelect from '@/components/form/StaticSelect'
 import { mapGetters } from 'vuex'
 
-const URL = '/api/patents';
+const URL = '/patents';
 const PATENT_TYPE = ['发明专利', '实用新型', '外观设计']; 
 
 export default {
   name: 'patentList',
-  mixins: [ AxiosMixins ],
   data () {
     return {
       value6: '',
@@ -68,6 +64,8 @@ export default {
         'highlightCurrentRow': true,
         'rowClick': this.handleRowClick,
         'is_filter': true,
+        'is_list_filter': true,
+        'list_type': 'patent',
         'import_type': 'patent',
         'upload_type': 'patent',
         'header_btn': [
@@ -157,7 +155,6 @@ export default {
         ] 
       },
       tableData: [],
-      filter: {},
     };
   },
   computed: {
@@ -166,7 +163,15 @@ export default {
       'menusMap',
       'nextUser',
       'userrole',
-    ])
+    ]),
+    defaultParams () {
+      const params = this.$route.meta.params;
+      return params ? params : {};
+    },
+    custom () {
+      const custom = this.$route.meta.custom;
+      return custom !== undefined ? custom : false;
+    }
   },
   methods: {
     add () {
@@ -188,7 +193,7 @@ export default {
     },
     refreshTableData (option) {
       const url = URL;
-      const data = Object.assign({}, option, this.filter);
+      const data = Object.assign({}, option, this.defaultParams);
       const success = d=>{
         if(data['format'] == 'excel') {
           window.location.href = d.patents.downloadUrl;
@@ -207,7 +212,7 @@ export default {
         .then(()=>{
           const url=`${URL}/${id}`;
           const success = _=>{this.$refs.table.update()};
-          this.axiosDelete({url, success});    
+          this.$axiosDelete({url, success});    
         })
         .catch(()=>{});
     },
@@ -247,7 +252,7 @@ export default {
 
       this.downloadVisible = false;
       this.downloadLoading = true;
-      this.axiosPost({url, data, success, complete})
+      this.$axiosPost({url, data, success, complete})
     },
     save () {
       this.$refs.detail.edit();
@@ -278,14 +283,15 @@ export default {
     this.ifAgency();
   },
   mounted () {
-    this.$refs.table.refresh();
+    if(!this.custom) {
+      this.refresh();
+    }
   },
   components: {  
     AppFilter, 
     TableComponent, 
     AppTree, 
-    AppDatePicker, 
-    Strainer, 
+    AppDatePicker,
     AppShrink, 
     CommonDetail,
     StaticSelect,

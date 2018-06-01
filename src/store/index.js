@@ -1,7 +1,6 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
-import axios from 'axios'
-import filter from '@/store/modules/filter-label.js'
+import axios from '@/const/axios'
 import detail from '@/store/modules/common-detail.js'
 import tags from '@/store/modules/tags.js'
 import table from '@/store/modules/table-common.js'
@@ -20,6 +19,8 @@ import sysmesg from '@/store/modules/sysmesg.js'
 import cache from '@/store/modules/cache.js'
 import selectorCache from '@/store/modules/selector-cache.js'
 import tool from '@/const/tool.js'
+import filter from '@/store/modules/filter-cache.js'
+import menuCache from '@/store/modules/menu-cache.js'
 Vue.use(Vuex);
 
 const store = new Vuex.Store({
@@ -41,6 +42,7 @@ const store = new Vuex.Store({
   },
   modules: {
     filter,
+    menuCache,
     detail,
     tags,
     table,
@@ -65,10 +67,12 @@ const store = new Vuex.Store({
     loadingText: state=>state.loadingText,
     shrinkLoading: state=>state.shrinkLoading,
     shrinkLoadingText: state=>state.shrinkLoadingText,
-    innerHeight: state=>state.inner_height,
-    innerWidth: state=>state.leftNavVisible ? state.inner_width - 160 : state.inner_width,
-    shrinkHeight: state=>state.inner_height - 80,
-    getInnerWidth: state=>state.leftNavVisible ? state.inner_width - 160 : state.inner_width, 
+    windowHeight: state => state.inner_height, 
+    windowWidth: state => state.inner_width,
+    innerHeight: state => state.inner_height - 50,
+    innerWidth: state => state.leftNavVisible ? state.inner_width - 200 : state.inner_width,
+    shrinkHeight: state => state.inner_height - 132,
+    getInnerWidth: state => state.leftNavVisible ? state.inner_width - 200 : state.inner_width, 
     leftVisible: state=>state.leftNavVisible,
     agencyLoadVisible: state=>state.agencyLoadVisible,
     importLoading: state=>state.importLoading,

@@ -1,7 +1,6 @@
 <template>
-  <!--v-loading.fullscreen.lock="userLoading" element-loading-text="初始化中..."-->
-  <div id="app">
-    <el-popover
+  <div id="app" :style="`padding-left: ${appPaddingLef};`" v-loading.fullscreen.lock="userinfoLoading" element-loading-text="初始化中...">
+<!--     <el-popover
       ref="popover"
       placement="bottom"
       title="系统消息"
@@ -9,73 +8,81 @@
       trigger="click"
       v-model="sysPopVisible"
     >
-      <div>
-        <template v-if="sysmesg.length != 0">
-        <ul style="list-style-type: decimal;" >
-          <li class="sysmesg-item"  v-for="item in sysmesg" @click="$router.push(`/news/systemMessage/detail?id=${item.id}`)">{{ item.subject }}</li>
-        </ul>
-        <a href="javascript::void(0)" @click="$router.push('/news/systemMessage');sysPopVisible = false">查看更多...</a>
-        </template>
-        <div v-else style="color: #ccc; margin-top: 10px; margin-left: 20px;">暂无系统消息...</div>      
-      </div>
-    </el-popover>
+    <div>
+      <template v-if="sysmesg.length != 0">
+      <ul style="list-style-type: decimal;" >
+        <li class="sysmesg-item"  v-for="item in sysmesg" @click="$router.push(`/news/systemMessage/detail?id=${item.id}`)">{{ item.subject }}</li>
+      </ul>
+      <a href="javascript::void(0)" @click="$router.push('/news/systemMessage');sysPopVisible = false">查看更多...</a>
+      </template>
+      <div v-else style="color: #ccc; margin-top: 10px; margin-left: 20px;">暂无系统消息...</div>      
+    </div>
+    </el-popover> -->
 
     <nav>
-        <img src="/static/static_img/cvte_log.png" style="vertical-align: middle; height: 28px;">
-        <!-- <span class="logo_name">知识产权管理系统aaaaa</span> -->
-        <el-dropdown  trigger="click" style="float: right; margin-right: 40px;">
-          <span class="el-dropdown-link" style="color: #20a0ff; cursor: pointer;">
-            {{ username }}<i class="el-icon-caret-bottom el-icon--right"></i>
-          </span>
-          <el-dropdown-menu slot="dropdown" >
-            <el-dropdown-item command="login_out" style="text-align: center;"><a href="/logout" style="text-decoration: none;color: #000;">登出</a></el-dropdown-item>
-          </el-dropdown-menu>
-        </el-dropdown>
+        <div style="display: inline-block;vertical-align: top;">
+          <img src="/static/static_img/hjg_logo.png" style=" height: 27px;vertical-align: middle;">
+        </div>
+        <!-- <span class="logo_name">知识产权管理系统</span> -->
+        <div style="display: inline-block;">
+          <app-nav></app-nav>
+        </div>
+        <div style="position: absolute;top: 0;right: 0;overflow: hidden;">
+          <el-dropdown  trigger="click" style="float: right; margin-right: 40px;" @command="handleCommond">
+            <span class="el-dropdown-link" style="color: #20a0ff; cursor: pointer;">
+              {{ username }}<i class="el-icon-caret-bottom el-icon--right"></i>
+            </span>
+            <el-dropdown-menu slot="dropdown" >
+              <el-dropdown-item command="login_out">登出</el-dropdown-item>
+            </el-dropdown-menu>
+          </el-dropdown>
         
-        <img 
+<!--         <img 
           v-popover:popover  
           style="cursor: pointer; float: right; margin-right: 20px; margin-top: 12px; font-size: 24px;" 
           title="系统消息"
           :src="sysmesg.length != 0 ? '/static/static_img/news_in.png' : '/static/static_img/news.png'"
-        />
-
-        
+        />   -->      
           <el-badge :value="pendingTaskCount" class="task-pending-top">
-            <el-button size="mini" icon="warning" type="primary" @click="warningClick" title="待办任务"></el-button>
+            <el-button size="mini" icon="warning" type="primary" @click="$router.push('/task/pending')" title="待办任务"></el-button>
           </el-badge>
-          
+        </div>       
     </nav>
-      <span class="nav-left-btn" @click="navToggle"><span class="nav-left-btn-arrow el-icon-arrow-left"></span></span>
-      <div class="nav-left" :style="`height: ${innerHeight}px`">
-        
-        <el-menu @select="handleMenuSelect" v-if="menusMap != null" theme="dark" router unique-opened :default-active="select.path">
-          <app-menu-item v-for="item in menu_data" :dd="item" :key="item.path"></app-menu-item>
-        </el-menu>
+      
+    <div class="nav-left" :style="`height: ${innerHeight}px; left: ${navLeft}`" v-if="!noMenu">
+      <span class="nav-left-btn" :style="`left: ${navLeftBtn};`" @click="navToggle" v-if="!noMenu"><span :class="navLeftBtnClass"></span></span>
+      <el-menu v-if="menusMap != null" theme="dark" router unique-opened :default-active="leftMenuActive" mode="vertical">
+        <app-menu-item v-for="item in menuData" :dd="item" :key="item.path"></app-menu-item>
+      </el-menu>
+    </div>
+    <div v-loading="loading" :element-loading-text="loadingText" >
+      <div :style="`height: ${innerHeight-10}px; padding: 10px 15px 0; background-color: #F9FAFC;overflow:auto;`">
+        <div class="container">
+          <!-- <h1 class="container-menu"><i :class="select.icon"></i><span>{{ select.text }}</span></h1> -->
+          <div class="container-nav" v-if="!noMenu">
+            <el-breadcrumb separator=">">
+              <el-breadcrumb-item v-for="item in select_arr" :to="item.path" :key="item.path">
+                <i :class="item.icon"></i>{{ item.text }}
+              </el-breadcrumb-item>
+              <el-breadcrumb-item v-if="navLabel.length != 0" class="container-nav-screen">
+                <el-tag 
+                  v-for="(item, index) in navLabel"
+                  :closable="true"
+                  :key="index"
+                  type="primary"
+                  :close-transition="false"
+                  @close="handleClose(item)"
+                >
+                  {{ item.label }}
+                </el-tag>
+              </el-breadcrumb-item>
+            </el-breadcrumb>
+          </div>
 
+          <router-view :key="$route.path.split('__')[0]" ></router-view>
+        </div>
+      
       </div>
-    <div class="container" v-loading="loading" :element-loading-text="loadingText" :style="`min-height: ${innerHeight-10}px; padding: 10px 15px 0; background-color: #F9FAFC;overflow:hidden;`">
-      <!-- <h1 class="container-menu"><i :class="select.icon"></i><span>{{ select.text }}</span></h1> -->
-      <div class="container-nav">
-        <el-breadcrumb separator=">">
-          <el-breadcrumb-item v-for="item in select_arr" :to="item.path" :key="item.path">
-            <i :class="item.icon"></i>{{ item.text }}
-          </el-breadcrumb-item>
-          <el-breadcrumb-item v-if="screen_label.length != 0" class="container-nav-screen">
-            <el-tag 
-              v-for="(tag, index) in screen_label"
-              :closable="true"
-              :key="tag" 
-              type="primary"
-              :close-transition="false"
-              @close="handleClose(index)"
-            >
-              {{ tag }}
-            </el-tag>
-          </el-breadcrumb-item>
-        </el-breadcrumb>
-      </div>
-
-      <router-view :key="$route.path.split('__')[0]" ></router-view>
     </div>
 
     <agency-load :visible="agencyLoadVisible"></agency-load>
@@ -84,54 +91,56 @@
 </template>
 
 <script>
-import AxiosMixins from '@/mixins/axios-mixins'
 
 import AgencyLoad from '@/components/form/AgencyLoad'
 
 import menu from '@/const/menuConst'
+import AppNav from '@/components/common/AppNav'
 import AppMenuItem from '@/components/common/AppMenuItem'
+
 import { mapGetters } from 'vuex'
-import { mapActions } from 'vuex'
 import { mapMutations } from 'vuex'
-import $ from 'jquery'
+import { mapActions } from 'vuex'
 
 export default {
   name: 'app',
-  mixins: [ AxiosMixins ],
   computed: {
     ...mapGetters([
-      'screen_label',
+      'navLabel',
       'innerHeight',
       'loading',
       'loadingText',
+      'viewLoading',
+      'viewLoadingText',
       'username',
       'leftVisible',
       'agencyLoadVisible',
       'menusMap',
       'pendingTaskCount',
-      'userLoading',
+      'menuData',
+      'menuDataMap',
+      'menuType',
+      'noMenu',
     ]),
-    select () {
-      const d = this;
-      let path = d.$route.path;
-      const params = d.$route.params;
+    path () {
+      let path = this.$route.path;
       path = path.split("__")[0];
-      
-      return menu.map[path];
+      return path;
     },
     select_arr () {
       const d = this;
       const arr = [];
-      let path = d.$route.path;
+      const path = this.path;
       const params = d.$route.params;
-
-      path = path.split("__")[0];
 
       const arr2 = path.split("/");
 
       for(let i = 0; i < arr2.length; i++) {
         const str = i == 0 ? "/" : arr2.slice(0, i+1 ).join("/");
-        arr.push(menu.map[str]);
+        const item = this.menuDataMap[str];
+        if(item) {
+          arr.push(item);
+        }
       }
 
       return arr;
@@ -145,6 +154,22 @@ export default {
       if(s.length > 3) s = s.slice(0,3);
       return s;
     },
+    appPaddingLef () {
+      if(this.noMenu) return '0px';
+      return this.leftVisible ? '200px' : '0px';
+    },
+    navLeft () {
+      return this.leftVisible ? '0px' : '-200px';
+    },
+    navLeftBtn () {
+      return this.leftVisible ? '200px' : '0px';
+    },
+    navLeftBtnClass () {
+      const arr = ['nav-left-btn-arrow', 'el-icon-arrow-left'];
+      this.leftVisible ? arr.push('el-icon-arrow-left') : arr.push('el-icon-arrow-right');
+      return arr.join(' ');   
+    }
+
   },
   data () {
     return {      
@@ -153,134 +178,71 @@ export default {
       sysPopVisible: false,
       windowLock: false,
       userinfoLoading: true,
+      isCollapse: false,
+      leftMenuActive: '',
     };
   },
   methods: {
     ...mapActions([
-      'refreshUser',
-
+      // 'refreshExtends', //extend-field
+      'refreshProduct', //product
+      'refreshClassification', //classification
+      'refreshBranch', //branch
+      'refreshArea', //area
+      'refreshCity', //city
+      'closeTag', //filter-cache
     ]),
     ...mapMutations([
-      'setUser',
+      'toggleLeftVisible', //index
+      'setInnerHeight', //index
+      'setInnerWidth', //index
+      'setUser', //current-user
     ]),
-    handleMenuSelect (p) {
-      
-      if(p == '/task/pending' && this.$route.path == '/task/pending') {
-        //vue-router没有提供有效的同页面刷新手段 暂时使用跳出 跳入的方法代替
-        this.$nextTick(_=>{
-          this.$router.push('/loading');
-          this.$nextTick(_=>{
-            this.$router.push('/task/pending');
-          })
-        })
-        // window.setTimeout(function () {
-        //   this.$router.push('/task/pending');
-        // }, 5000);
-      }
-    },
-    warningClick () {
-      this.$router.push('/loading');
-      this.$nextTick(_=>{
-        this.$router.push('/task/pending');
-      })
-    },
-    handleClose (index) {
-      this.$store.commit('removeScreen', index);
+    handleClose (item) {
+      this.closeTag(item);
     },
     handleCommond (commond) {
       if(commond == 'login_out') {
-        // const url = '/api/logout';
-        // const success = _=>{
-          // this.$message({message: '登出成功', type: 'success'} );
-          window.location.href = '/logout';
-        // }
+        const url = '/api/logout';
+        const success = _=>{
+          this.$message({message: '登出成功', type: 'success'} );
+          window.location.href = '/login';
+        }
 
-        // this.axiosGet({url, success});
+        this.$axiosGet({url, success});
       }
     },
     navToggle () {
-      let i = 32;
-      let n = this.leftVisible ? 160 : 0;
-      i = this.leftVisible ? -i : i;
+      this.toggleLeftVisible();
 
-      this.$store.commit('toggleLeftVisible');
-
-      const left = $('.nav-left');
-      const app = $('#app');
-      const btn = $('.nav-left-btn');
-      animation();
+      // let i = 32;
+      // let n = this.leftVisible ? 160 : 0;
+      // i = this.leftVisible ? -i : i;
+      // animation();
       
-      function animation () {
-        
-        n += i;
-        left.css('width', n);
-        app.css('padding-left', n);
-        btn.css('left', n);
+      //滑动效果
+      // function animation () {        
+      //   n += i;
+      //   left.css('width', n);
+      //   app.css('padding-left', n);
+      //   btn.css('left', n);
 
-        if(n == 0) {
-          btn.find('.nav-left-btn-arrow').removeClass('el-icon-arrow-left').addClass('el-icon-arrow-right');
-        }else if( n== 160) {
-          btn.find('.nav-left-btn-arrow').removeClass('el-icon-arrow-right').addClass('el-icon-arrow-left');
-        }else {
-          window.requestAnimationFrame(animation);
-        }
-      }     
+      //   if(n == 0) {
+      //     btn.find('.nav-left-btn-arrow').removeClass('el-icon-arrow-left').addClass('el-icon-arrow-right');
+      //   }else if( n== 160) {
+      //     btn.find('.nav-left-btn-arrow').removeClass('el-icon-arrow-right').addClass('el-icon-arrow-left');
+      //   }else {
+      //     window.requestAnimationFrame(animation);
+      //   }
+      // }     
     }
   },
   created () {
-    //模拟登陆
-    // $.ajax({
-    //   url: '/api/login',
-    //   type: 'POST',
-    //   async: false,
-    //   data: {
-    //     username: 'admin', 
-    //     password: 'Z9jgM6FhdKWEqbbpJePv/6qeTO/Yk2b6lx7zF4tiBncRubwf0fz93hkqGXCiWvqXCDIq7x+kAH3TK5zhjDZ53jgt1Gx1vvBPHn3ga7HTqPrnc+VhhuVGeTefHShJBx32rnbhL6LbEqCAMGqtQXaovCtuJGY6uWYAPfecAOGMuadnxTigTTBwKtW2oVP4J/EwAroYKuy4MK4Pd7YGtFoJAhlpKVOponsgsYQ8EKGOSVxcZgcgnOw8LhPy28N+xoFCh0OBkMyjM80Ybjq+H8BO6CacnDzQReZL5wQZqBdTtW7CUBi6S4+JWDPBahqNgz7jD73UhEIeG0ivFLEdCWtlVw==',
-    //   }
-    // });
-    //同步请求用户信息 
-    //这里使用同步请求,异步需要监测数据的变动,过于麻烦
-    const error = _=>{ window.location.href = '/login'; };
-    const success = _=>{
-      if(_.status){
-        this.setUser(_.member);
-      }else {
-        error(_);
-      }
-    };
-    $.ajax({
-      url: '/api/userinfo',
-      type: 'GET',
-      async: false,
-      success,
-      error,
-    })
-      // this.$store.dispatch('refreshTags');
-      
-      //避免每次F5都发送请求的方法：
-      //  1.每次使用相关数据的位置添加一个尝试初始化的函数
-      //  2.localStorage动态关联 
-      this.$store.dispatch('refreshProduct');
-      this.$store.dispatch('refreshClassification');
-      this.$store.dispatch('refreshBranch');
-      
-      // this.$store.dispatch('refreshIpr');
-      
-      //使用localStorage进行本地缓存
-      this.$store.dispatch('refreshArea');
-      this.$store.dispatch('refreshCity');
-      
-      // this.$store.dispatch('refreshFeeCode');
-      // this.$store.dispatch('refreshEntity');
-      // this.$store.dispatch('refreshGroup');
-      // this.$store.dispatch('refreshFlowNodes');
-      // this.$store.dispatch('refreshFileType');
-      // this.$store.dispatch('refreshMail');
-  },
-  beforeCreate () {
+    // this.leftMenuActive = this.path;
+
     const refreshWindow =  _=> {
-      this.$store.commit('setInnerHeight', window.innerHeight - 50);
-      this.$store.commit('setInnerWidth', window.innerWidth);
+      this.setInnerHeight(window.innerHeight);
+      this.setInnerWidth(window.innerWidth);
     }
 
     refreshWindow();
@@ -293,20 +255,71 @@ export default {
           this.windowLock = false;
         },100)
       }
-    }
+    };
+
+
+    const success = _=>{
+      this.userinfoLoading = false;
+      
+      //设置个人信息
+      this.setUser(window.appCache.userinfo);
+      
+      //获取系统配置数据
+      // this.refreshExtends(false);
+      // this.$store.dispatch('refreshTags');
+      
+      //避免每次F5都发送请求的方法：
+      //  1.每次使用相关数据的位置添加一个尝试初始化的函数
+      //  2.localStorage动态关联 
+      this.refreshProduct();
+      this.refreshBranch();
+      this.refreshClassification();
+      
+      // this.$store.dispatch('refreshIpr');
+      
+      //使用localStorage进行本地缓存
+      this.refreshArea();
+      this.refreshCity();
+      
+      // this.$store.dispatch('refreshFeeCode');
+      // this.$store.dispatch('refreshEntity');
+      // this.$store.dispatch('refreshGroup');
+      // this.$store.dispatch('refreshFlowNodes');
+      // this.$store.dispatch('refreshFileType');
+      // this.$store.dispatch('refreshMail');
+    };
+    success();
+
   },
   components: { 
     AppMenuItem,
-    AgencyLoad, 
+    AgencyLoad,
+    AppNav,
+  },
+  watch: {
+    //路径更改 左侧菜单自东变更active项
+    path (val) {
+      this.leftMenuActive = val; 
+    },
+    //解决菜单切换时 左侧菜单的active项为空
+    menuType () {
+      this.leftMenuActive = '';
+      this.$nextTick(() => {
+        this.leftMenuActive = this.path;
+      });
+    }
   }
 }
 </script>
 <style lang="scss">
+/*@media only screen and (max-width: 1338px){
+  @import './style/common';
+}*/
 $nav_bgColor: #383838;
 $nav_height: 50px;
 
 $navL_bgColor: #324157;
-$navL_width: 160px;
+$navL_width: 200px;
 
 $container_padding: 20px;
 
@@ -350,7 +363,7 @@ nav {
 }
 .nav-left-btn {
   position: fixed;
-  left: 160px;
+  left: $navL_width;
   top: 50%;
   margin-top: -50px;
   background-color: #68758a;
@@ -386,7 +399,7 @@ nav {
   margin-right: 10px;
   vertical-align: middle;
   position: relative;
-    top: -8px;
+  top: -8px;
 }
 .container-nav {
   border-radius: 4px;
@@ -437,6 +450,10 @@ nav {
 .left .tree-search>input {
   border-radius: 0;
 }
+
+.el-select {
+  width: 100%;
+}
 .el-input__inner {
   height: 37px;
 }
@@ -483,22 +500,31 @@ nav {
   font-size: 18px;
   height: 28px;
   line-height: 28px;
-  // font-weight: bold;
+  /*font-weight: bold;*/
   display: inline-block;
 }
-.app-dropdown-menu>.el-dropdown-menu__item {
-  font-size: 14px;
-  line-height: 24px;
-  padding: 0 15px;
+.float-block:before {
+  display: table;
+  content: "";
 }
+.float-block:after {
+  display: table;
+  content: "";
+  clear: both;
+} 
 /*这里放入重写element-ui样式的内容*/
 #app {
-
+  .dialog-control>.el-dialog {
+    width: 600px;
+    position: static;
+    transform: initial;
+    margin: 0 auto;
+    margin-top: 80px;
+  }
   .el-tree-node__expand-icon.expanded {
     -ms-transform: rotate(90deg);
     transform: rotate(90deg);
   }
-
   .el-tree-node__expand-icon {
     cursor: pointer;
     height: 0;
@@ -578,9 +604,6 @@ nav {
     font-size: 12px;
     min-height: 36px;
   }
-  .el-select {
-  width: 100%;
-}
   .el-select__tags {
     overflow: auto;
   }
@@ -594,7 +617,7 @@ nav {
     transform: translateY(-50%) translateX(100%) scale(0.8);
   }
   .el-submenu .el-menu-item {
-    margin-left: -15px;
+    /*margin-left: -15px;*/
   }
   .empty-top-left .el-table__empty-text {
     top: 40px;
@@ -612,44 +635,62 @@ nav {
     display: table;
     content: "";
   }
-  .app-upload .el-upload-list {
-    padding: 0;
-    list-style: none;
-    display: block;
-    margin-bottom: 40px;
-  }
-  .app-upload .el-upload {
-    display: inline-block;
-    text-align: center;
-    cursor: pointer;
-    position: absolute;
-    bottom: 4px;
-    left: 0px;
-  }
-/* .el-dialog--small  .el-upload--text {
+  .app-upload {
+    .el-upload-list {
+      padding: 0;
+      list-style: none;
+      display: block;
+      margin-bottom: 40px;
+    }
+    .el-upload {
       display: inline-block;
       text-align: center;
       cursor: pointer;
-      position: static; 
-    }*/
- 
+      position: absolute;
+      bottom: 4px;
+      left: 0px;
+    }
+  }
+ .el-dialog--small  .el-upload--text {
+    display: inline-block;
+    text-align: center;
+    cursor: pointer;
+    /*position: static;*/
+  }
+  .el-tooltip__popper {
+    max-width: 500px;
+  }
+  .el-message-box__message p{
+    margin: 0;
+    line-height: 1.4;
+    word-wrap:break-word;
+  }
+  /*icon库扩展*/
+  [class^="el-icon-my"], [class*=" el-icon-my"] {
+    font-family:"iconfont" !important;
+    font-size:16px;
+    font-style:normal;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+}
 
-}
-.el-tooltip__popper {
-  max-width: 500px;
-}
 .left-tree-header {
   font-size: 14px;
-  height: 40px;
+  height: auto;
   line-height: 40px;
   background-color: #eef1f6;
   border: 1px solid #dfe6ec;
   border-bottom: none;
 }
-.el-message-box__message p{
-  margin: 0;
-  line-height: 1.4;
-  word-wrap:break-word;
+
+.form-description {
+  margin-bottom: 10px;
+  color: rgb(132, 146, 166);
+  font-size: 14px;
 }
+
+
+
   
 </style>

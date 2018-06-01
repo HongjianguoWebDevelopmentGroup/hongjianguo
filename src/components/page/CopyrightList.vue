@@ -1,7 +1,6 @@
 <template>
   <div class="main">
-    <strainer v-model="filter" @refresh="refresh"></strainer>
-    <table-component :tableOption="tableOption" :data="tableData" @refreshTableData="refreshTableData" ref="table"></table-component>
+    <table-component :tableOption="tableOption" :data="tableData" :refreshTableData="refreshTableData" ref="table"></table-component>
     
       <common-detail
         :title="currentRow.title"
@@ -15,18 +14,16 @@
 </template>
 
 <script>
-import AxiosMixins from '@/mixins/axios-mixins'
 import TableComponent from '@/components/common/TableComponent'
 import Strainer from '@/components/page_extension/CopyrightList_strainer'
 import AppShrink from '@/components/common/AppShrink'
 import CommonDetail from '@/components/page_extension/Common_detail'
 import {mapGetters} from 'vuex'
 
-const URL = '/api/copyrights';
+const URL = '/copyrights';
 
 export default {
   name: 'copyrightList',
-  mixins: [ AxiosMixins ],
   data () {
     return {
       currentRow: '',
@@ -38,6 +35,8 @@ export default {
         'highlightCurrentRow': true, 
         'rowClick': this.handleRowClick,
         'is_filter': true,
+        'is_list_filter': true,
+        'list_type': 'copyright',
         'import_type': 'copyright',
         'upload_type': 'copyright',
         'header_btn': [
@@ -86,7 +85,15 @@ export default {
   computed: {
     ...mapGetters([
       'menusMap',
-    ])
+    ]),
+    defaultParams () {
+      const params = this.$route.meta.params;
+      return params ? params : {};
+    },
+    custom () {
+      const custom = this.$route.meta.custom;
+      return custom !== undefined ? custom : false;
+    }
   },
   methods: {
     add () {
@@ -94,7 +101,7 @@ export default {
     },
     refreshTableData (option) {
       const url = URL;
-      const data = Object.assign({}, option, this.filter);
+      const data = Object.assign({}, option, this.defaultParams);
       const success = d=>{
         if(data['format'] == 'excel') {
           window.location.href = d.copyrights.downloadUrl;
@@ -102,7 +109,8 @@ export default {
           this.tableData = d.copyrights;  
         }      
       };
-      this.axiosGet({url, data, success});
+
+      return this.$axiosGet({url, data, success});
     },
     refresh () {
       this.$refs.table.refresh();
@@ -112,7 +120,7 @@ export default {
         .then(()=>{
           const url=`${URL}/${id}`;
           const success = _=>{this.$refs.table.update()};
-          this.axiosDelete({url, success});    
+          this.$axiosDelete({url, success});    
         })
         .catch(()=>{});
     },
@@ -131,11 +139,13 @@ export default {
     }
   },
   mounted () {
+    if(!this.custom) {
+      this.refresh();
+    }
     this.$refs.table.refresh();
   },
   components: { 
     TableComponent, 
-    Strainer, 
     AppShrink, 
     CommonDetail 
   }
