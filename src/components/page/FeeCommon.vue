@@ -3,7 +3,7 @@
     <strainer v-model="filter" @refresh="refresh"></strainer>
     <table-component @refreshTableData="refreshTableData" :tableOption="option" :data="tableData" ref="table">
       <fee-status slot="status" v-model="fee_status" style="width: 150px; margin-left: 5px;" :feeType="feeType"></fee-status>
-      <remote-select v-if="fee_invoice_if" slot='invoice' v-model="fee_invoice" style="width: 220px; margin-left: 10px; display: inline-block;" class="pay_search" :type="feeType ? 'bill' : 'pay'"></remote-select>
+<!--       <remote-select v-if="fee_invoice_if" slot='invoice' v-model="fee_invoice" style="width: 220px; margin-left: 10px; display: inline-block;" class="pay_search" :type="feeType ? 'bill' : 'pay'"></remote-select> -->
     </table-component>
     <pop ref="pop" :feeType="feeType" @refresh="refresh"></pop>
 
@@ -36,7 +36,11 @@ const URL_INVOICE = '/invoices';
 export default {
   name: 'feeCommon',
   props: {
-    inParams: {
+    debit: {
+      type: null,
+      default: 1,
+    },
+    defaultParams: {
       type: Object,
       default () {
         return {};
@@ -52,18 +56,19 @@ export default {
         'height': 'default',
         'is_numbers': true,
         'header_btn': [
-          { type: 'add', click: this.addPop },
-          { 
-            type: 'dropdown',
-            label:  '',
-            items: [
-              {text: '新建{key}', click: ()=>{ this.invoicePop('add') }, icon: 'plus' },
-              {text: '添加到已有{key}', click: ()=>{ this.invoicePop('put') }, icon: 'd-arrow-right'  },
-            ],
-          },
+          // { type: 'add', click: this.addPop },
+          // { 
+          //   type: 'dropdown',
+          //   label:  '',
+          //   items: [
+          //     {text: '新建{key}', click: ()=>{ this.invoicePop('add') }, icon: 'plus' },
+          //     {text: '添加到已有{key}', click: ()=>{ this.invoicePop('put') }, icon: 'd-arrow-right'  },
+          //   ],
+          // },
           { type: 'delete' },
           { type: 'export' },
-          { type: 'import' },
+          // { type: 'import' },
+          { type: 'custom', label: '标记为已付款', click: this.handlePay },
           { type: 'control' },
         ],
         'import_type': '',
@@ -137,8 +142,8 @@ export default {
           { type: 'text', label: '创建日期', prop: 'create_time', width: '175' },
           { type: 'text', label: '费用期限', prop: 'due_time', is_import: true, width: '175' },
           { type: 'text', label: '官方绝限', prop: 'deadline', width: '175' },
-          { type: 'text', label: '付款时间', prop: 'pay_time', width: '175' },
-          { type: 'text', label: '请款单', prop: 'invoice_id', width: '150' },
+          // { type: 'text', label: '付款时间', prop: 'pay_time', width: '175' },
+          // { type: 'text', label: '请款单', prop: 'invoice_id', width: '150' },
           { type: 'text', label: '企业意见', prop: 'remark_enterprise', width: '160' },
           { type: 'text', label: '备注', prop: 'remark', is_import: true, width: '160' },
           {
@@ -148,14 +153,14 @@ export default {
             prop: 'attachments',
             render: this.attachmentsRender,
           },
-          { 
-            type: 'action',
-            width: '80',
-            align: 'center',
-            btns: [
-              { type: 'edit', click:  this.editPop, btn_disabled: row=>row.status.name != '未付款' },
-            ]
-          }
+          // { 
+          //   type: 'action',
+          //   width: '80',
+          //   align: 'center',
+          //   btns: [
+          //     { type: 'edit', click:  this.editPop, btn_disabled: row=>row.status.name != '未付款' },
+          //   ]
+          // }
         ],
       },
       tableData: [],
@@ -182,17 +187,17 @@ export default {
       'areaMap',
     ]),
     feeType () {      
-      const path = this.$route.path;
-      const type = /income/.test(path) ? 1 : 0;
+      const type = this.debit;
 
-      const k = type ? '请款单' : '付款单';
-      const o = this.option.header_btn[1];
-      o.label = k;
-      o.items.forEach(d=>{d.text = d.text.replace('{key}', k)});
+      // const k = type ? '请款单' : '付款单';
+      // const o = this.option.header_btn[1];
+      
+      // o.label = k;
+      // o.items.forEach(d=>{d.text = d.text.replace('{key}', k)});
+      // this.option.header_btn.splice(1, 1, o);
 
       this.option.import_type = type ? 'feesIncome' : 'feesPayable';
     
-      this.option.header_btn.splice(1, 1, o);
       
       return type;  
     },
@@ -210,6 +215,22 @@ export default {
       'refreshUser',//current-user.js
       'initializeSelectorCache',//selector-cache.js
     ]),
+    handlePay () {
+      const selected = this.$refs.table.getSelected();
+      if(selected) {
+        this.$axiosPut({
+          url: URL,
+          data: {
+            id: selected.map(v => v.id),
+            status: 100,
+          },
+          success: () => {
+            this.$message({type: 'success', message: '标记成功'});
+            this.update();
+          }
+        })
+      }
+    },
     attachmentsRender (h, item) {
       if(!item || !Array.isArray(item)) return '';
 
@@ -235,7 +256,7 @@ export default {
       const debit = this.feeType;
       const status = this.fee_status === '' ? {} : {status: this.fee_status};
       const invoice = this.fee_invoice_if && this.fee_invoice != '' ? {fee_invoice: this.fee_invoice} : {};
-      const data = Object.assign({}, option, { debit }, invoice, status, this.filter, this.inParams);
+      const data = Object.assign({}, option, { debit }, invoice, status, this.filter, this.defaultParams);
       const success = d=>{ 
         const totalData = d.fees.data;
         if(data['format'] == 'excel') {
@@ -268,6 +289,9 @@ export default {
     },
     refresh () {
       this.$refs.table.refresh();
+    },
+    update () {
+      this.$refs.table.update();
     },
     invoicePop (type) {
       

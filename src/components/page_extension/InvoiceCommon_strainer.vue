@@ -11,10 +11,6 @@
             <date-strainer v-model="form.create_time"></date-strainer>     
             <!-- <el-date-picker type="daterange" placeholder="请选择账单生成日期" v-model="form.create_time"></el-date-picker> -->
           </el-form-item>
-          <el-form-item label="费用期限" prop="due_time">
-            <date-strainer v-model="form.due_time"></date-strainer>     
-            <!-- <el-date-picker type="daterange" placeholder="请选择费用期限" v-model="form.due_time"></el-date-picker> -->
-          </el-form-item>
           
           <!-- <el-form-item label="费用代码" prop="code">
             <static-select type="fee_code" v-model="form.code" multiple></static-select>
@@ -25,8 +21,9 @@
         </el-col>
 
         <el-col :span="12">
-          <el-form-item label="账单状态" prop="status">
-            <static-select type="invoice_type" v-model="form.status"></static-select>
+          <el-form-item label="费用期限" prop="due_time">
+            <date-strainer v-model="form.due_time"></date-strainer>     
+            <!-- <el-date-picker type="daterange" placeholder="请选择费用期限" v-model="form.due_time"></el-date-picker> -->
           </el-form-item>
           <el-form-item label="账单对象" prop="target">
             <remote-select type="member" multiple v-model="form.target"></remote-select>

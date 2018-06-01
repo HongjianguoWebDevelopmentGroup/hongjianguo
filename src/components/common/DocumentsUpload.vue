@@ -30,8 +30,24 @@
       </el-form-item>
       <el-form-item label="国际检索摘要" prop="pct_search_result" v-if="!!tableData[0]['show_pct_search_result']&&config.pct_search_result">
         <el-input v-model="form.pct_search_result"></el-input>
+      </el-form-item>
+      <el-form-item label="首次年费年度" prop="start_year" v-if="!!tableData[0]['show_start_year']">
+        <el-select v-model="form.start_year" placeholder="请选择">
+          
+          <el-option label="1" value="1"></el-option>
+          <el-option label="2" value="2"></el-option>
+          <el-option label="3" value="3"></el-option>
+          <el-option label="4" value="4"></el-option>
+          <el-option label="5" value="5"></el-option>
+          <el-option label="6" value="6"></el-option>
+          <el-option label="7" value="7"></el-option>
+          <el-option label="8" value="8"></el-option>
+          <el-option label="9" value="9"></el-option>
+          <el-option label="10" value="10"></el-option>
+            
+        </el-select>
       </el-form-item>      
-      <el-form-item>
+      <el-form-item style="margin-bottom: 0px;">
         <el-button type="primary" @click="importData" :loading="loading">{{ loading ? '上传中...' : '确认上传' }}</el-button>
       </el-form-item>
     </el-form>
@@ -134,6 +150,7 @@ export default {
         pct_search_date: '',
         apn: '',
         pct_search_result: '',
+        start_year: '',
       }
     }
   },
@@ -190,6 +207,7 @@ export default {
       copy['show_apn'] = f.apn == 1 && this.config.apn ? true : false;
       copy['show_pct_search_date'] = f.pct_search_date == 1 && this.config.pct_search_date ? true : false;
       copy['show_pct_search_result'] = f.pct_search_result == 1 && this.config.pct_search_result ? true : false;
+      copy['show_start_year'] = f.start_year == 1 ? true : false;
 
       this.tableData.splice(index, 1, copy);
       // console.log(this.tableData);
@@ -224,7 +242,7 @@ export default {
         o.file_id = _.file_id;
         o.project = this.detailId;
         o.name = _.name;
-        if(_.type) {
+        if(_.type && _.type.id == this.form.type) {
           o.type = _.type;
         }else {
           o.type = this.form.type;
@@ -282,6 +300,13 @@ export default {
             o.pct_search_result = this.form.pct_search_result;
           }else {
             return this.$message({type: 'warning', message: '请填写检索结论摘要'}); 
+          }
+        }
+        if(_.show_start_year) {
+          if(this.form.start_year) {
+            o.start_year = this.form.start_year;
+          }else {
+            return this.$message({type: 'warning', message: '请填写首次年费年度'}); 
           }
         }           
         list2.push(o);  

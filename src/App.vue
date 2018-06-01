@@ -139,6 +139,7 @@ export default {
       'routerIf',
       'noMenu',
       'menuSource',
+      'menuType',
       'leftVisible',
     ]),
     path () {
@@ -670,7 +671,7 @@ nav {
     transform: translateY(-50%) translateX(100%) scale(0.8);
   }
   .el-submenu .el-menu-item {
-    margin-left: -15px;
+    /*margin-left: -15px;*/
   }
   .empty-top-left .el-table__empty-text {
     top: 40px;

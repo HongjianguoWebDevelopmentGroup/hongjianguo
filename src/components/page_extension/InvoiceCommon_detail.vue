@@ -8,7 +8,7 @@
     </el-col>
     <el-col :span="12">
       <el-form-item label="创建时间"><span>{{ row.create_time }}</span></el-form-item>
-      <el-form-item label="金额"><span>{{ row.amount }}</span></el-form-item>
+      <el-form-item label="金额"><span>{{ `${row.rmb}元` }}</span></el-form-item>
       <el-form-item label="状态"><span>{{ row.status.name  }}</span></el-form-item>
     </el-col>
   </el-row>
@@ -41,6 +41,7 @@ export default {
 				create_time: '',
 				amount: '',
 				remark: '',
+				rmb: '',
 			},
 			feeData: [],
 			feeOptions: {

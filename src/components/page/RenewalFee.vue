@@ -1,10 +1,10 @@
 <template>
 	<div class="main">
 		<table-component :tableOption="option" :data="tableData" @refreshTableData="refreshTableData" ref="table">
-			<el-select v-model="status" style="width: 150px; margin-left: 5px;" slot="status">
+<!-- 			<el-select v-model="status" style="width: 150px; margin-left: 5px;" slot="status">
 				<el-option label="全部" value=""></el-option>
 				<el-option v-for="item in statusArr" :key="item[0]" :value="item[0]" :label="item[1]"></el-option>
-			</el-select>
+			</el-select> -->
 		</table-component>
 		<pop ref="pop" @refresh="refresh"></pop>
 		<el-dialog title="新建年费评估单" :visible.sync="dialogVisble" @close="remark = '';due_time='';" class="dialog-small">
@@ -34,10 +34,18 @@ import Pop from '@/components/page_extension/RenewalFee_pop'
 import RemoteSelect from '@/components/form/RemoteSelect'
 import {mapActions} from 'vuex'
 
-const URL = '/api/renewalfee'
-const URL2 = '/api/renewalestimate'
+const URL = '/renewalfee'
+const URL2 = '/renewalestimate'
 export default {
 	name: 'renewalFee',
+	props: {
+		defaultParams: {
+			type: Object,
+			default () {
+				return {};
+			}
+		}
+	},
 	data () {
 		const statusArr = [ [0, '年费监控中'], [1, '年费评估中'], [2, '年费评估缴纳'], [3, '年费评估放弃'] ];
 		const statusMap = new Map(statusArr);
@@ -66,16 +74,16 @@ export default {
 				height: 'default2',
 				search_placeholder: '案号、案件名称、创建人',
 				header_btn: [
-					{ type: 'add', click: this.addPop },
-					{ type: 'add', label: '批量添加', click: _=>{ this.dialogVisble4 = true; } },
-					{ 
-            type: 'dropdown',
-            label:  '年费评估单',
-            items: [
-              {text: '新建评估单', click: ()=>{ this.estimatePop('add') }, icon: 'plus' },
-              {text: '添加至已有评估单', click: ()=>{ this.estimatePop('append') }, icon: 'd-arrow-right'  },
-            ],
-          },
+					// { type: 'add', click: this.addPop },
+					// { type: 'add', label: '批量添加', click: _=>{ this.dialogVisble4 = true; } },
+					// { 
+		     //        type: 'dropdown',
+		     //        label:  '年费评估单',
+		     //        items: [
+		     //          {text: '新建评估单', click: ()=>{ this.estimatePop('add') }, icon: 'plus' },
+		     //          {text: '添加至已有评估单', click: ()=>{ this.estimatePop('append') }, icon: 'd-arrow-right'  },
+		     //        ],
+		     //      },
 					{ type: 'delete' },
 					{ type: 'control' },
 					{ 
@@ -157,6 +165,22 @@ export default {
       'refreshUser',
       'refreshRoeData',
     ]),
+    handleStatus (status) {
+    	const selected = this.$refs.table.getSelected();
+    	if(selected) {
+    		this.$axiosPut({
+    			url: URL,
+    			data: {
+    				id: selected.map(v => v.id),
+    				status,
+    			},
+    			success: () => {
+    				this.$message({type: 'success', message: '操作成功'});
+    				this.update();
+    			}
+    		})
+    	}
+    },
     batchAdd () {
     	if( !this.patent ) return this.$message({type: 'warning', message: '专利不能为空'});
     	const serial = this.$refs.patent.getSelected()[0]['name'].split('-')[0].match(/^\[(.*)\]$/)[1];
@@ -179,13 +203,16 @@ export default {
 		refresh () {
 			this.$refs.table.refresh();
 		},
+		update () {
+			this.$refs.table.update();
+		},
 		search (val) {
 			this.$refs.table.search(val);
 		},
 		refreshTableData (option) {
 			this.$axiosGet({
 				url: URL,
-				data: Object.assign({}, option, {status: this.status}, {month: this.month}),
+				data: Object.assign({}, option, {status: this.status}, {month: this.month}, this.defaultParams),
 				success: _=>{this.tableData = _.data},
 			})
 		},
@@ -246,6 +273,29 @@ export default {
 			this.dialogVisble3 = false;
 			this.refresh();
 		},
+	},
+	created () {
+		const status = this.defaultParams.status;
+		if(status !== undefined) {
+			if(status == 0) {
+				this.option.header_btn.unshift({
+					type: 'custom',
+					label: '标记为已缴',
+					click: () => { this.handleStatus(10) },
+				},
+				{
+					type: 'custom',
+					label: '标记为评估放弃',
+					click: () => { this.handleStatus(3) },
+				});
+			}else {
+				this.option.header_btn.unshift({
+					type: 'custom',
+					label: '还原为代缴',
+					click: () => { this.handleStatus(0) },
+				})
+			}
+		}
 	},
 	mounted () {
 		this.refresh();

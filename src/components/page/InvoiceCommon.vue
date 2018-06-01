@@ -7,9 +7,9 @@
       <div slot="row_action" slot-scope="scope" class="invoice-action">
         <el-button :disabled="scope.row.status.id != 1" size="mini" type="text" @click="checkClick(scope.row)">审核账单</el-button>
         <i class="el-icon-arrow-right" style="font-size: 12px;"></i>
-        <el-button :disabled="scope.row.status.id != 2" size="mini" type="text" @click="uploadClick(scope.row)">上传凭证</el-button>
-        <i class="el-icon-arrow-right" style="font-size: 12px;"></i>
         <el-button :disabled="scope.row.status.id != 5" size="mini" type="text" @click="payClick(scope.row)">确认付款</el-button>
+        <i class="el-icon-arrow-right" style="font-size: 12px;"></i>
+        <el-button :disabled="scope.row.voucher == 1" size="mini" type="text" @click="uploadClick(scope.row)">上传凭证</el-button>
       </div>
     </table-component>
     
@@ -63,6 +63,18 @@ const URL = '/invoices';
 
 export default {
   name: 'invoiceCommon',
+  props: {
+    debit: {
+      type: null,
+      default: 0,
+    },
+    defaultParams: {
+      type: Object,
+      default () {
+        return {};
+      }
+    }
+  },
   data () {
     return {
       option: {
@@ -155,8 +167,7 @@ export default {
   },
   computed: {
     feeType () {
-      const path = this.$route.path;
-      return /bill/.test(path) ? 1 : 0; 
+      return this.debit; 
     }
   },
   methods: {
@@ -215,12 +226,6 @@ export default {
       this.payLoading = true;
       this.$axiosPut({url, data, success, complete});
     },
-    handleReport () {
-      const url = {0: '/fee/payment/report', 1: '/fee/bill/report'}[this.feeType];
-      if(url) {
-        this.$router.push(url);
-      }
-    },
     handleEdit (form) {
       this.$message({message: '编辑成功', type: 'success'});
       this.update();
@@ -233,7 +238,7 @@ export default {
     refreshTableData (option) {
       const url = URL;
       const debit = this.feeType;
-      const data = Object.assign({}, option, { debit }, this.filter);
+      const data = Object.assign({}, option, { debit }, this.filter, this.defaultParams);
       const success = d=>{ 
         if(data['format'] == 'excel') {
           if(d.invoices.downloadUrl) {

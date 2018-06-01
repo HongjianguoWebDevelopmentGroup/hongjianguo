@@ -81,9 +81,10 @@ const router = new Router({
     { path: '/copyright', redirect: '/copyright/list' },
     { path: '/news', redirect: '/news/mailList' },
     { path: '/dispatch', redirect: '/dispatch/administration' },
-    { path: '/fee', redirect: '/fee/income'},
+    { path: '/fee', redirect: '/fee/account/check'},
     { path: '/setting', redirect: '/setting/individual'},
     { path: '/renewal', redirect: '/renewal/fee' },
+    { path: '/report', redirect: '/report/task' },
     //###重定向###
     {
       path: '/statistics',
@@ -91,17 +92,17 @@ const router = new Router({
       component: Home
     },
     {
-      path: '/inventorList',
+      path: '/setting/inventorList',
       name: 'InventorList',
       component: InventorList
     },    
     {
-      path: '/contractList',
+      path: '/setting/contractList',
       name: 'ContractList',
       component: ContractList
     },
     {
-      path: '/applicantList',
+      path: '/setting/applicantList',
       name: 'ApplicantList',
       component: ApplicantList
     },
@@ -141,7 +142,7 @@ const router = new Router({
       name: 'ProopsalExistent',
       component: Proposal,
       meta: {
-        params: {  },
+        params: { novelty: 1 },
       },
     },
     {
@@ -149,7 +150,7 @@ const router = new Router({
       name: 'ProopsalNonExistent',
       component: Proposal,
       meta: {
-        params: {  },
+        params: { novelty: 0 },
       },
     },
     {
@@ -478,7 +479,7 @@ const router = new Router({
       name: 'PatentDurationProprity',
       component: PatentList,
       meta: {
-        params: {  },
+        params: { reminder: 'priority_expire_date' },
       }
     },
     {
@@ -486,7 +487,7 @@ const router = new Router({
       name: 'PatentDurationModification',
       component: PatentList,
       meta: {
-        params: {  },
+        params: { reminder: 'active_supplement_expire_date' },
       }
     },
     {
@@ -494,7 +495,7 @@ const router = new Router({
       name: 'PatentDurationPct',
       component: PatentList,
       meta: {
-        params: {  },
+        params: { reminder: 'pct_national_stage_expire_date' },
       }
     },
     {
@@ -502,7 +503,7 @@ const router = new Router({
       name: 'PatentDurationPct19',
       component: PatentList,
       meta: {
-        params: {  },
+        params: { reminder: 'pct_19_expire_date' },
       }
     },
     {
@@ -738,11 +739,166 @@ const router = new Router({
     },
 //################### 版权路由 end #####################
 
+//################### 费用路由 begin ###################
     {
-      path: '/userList',
-      name: 'UserList',
-      component: UserList,
+      path: '/fee/nanshan/patent',
+      name: 'FeeCommonNP',
+      component: FeeCommon,
+      props: {
+        debit: 1,
+        defaultParams: {
+          category: 1,
+          gov: 'dis',
+        }
+      }
     },
+    {
+      path: '/fee/nanshan/trademark',
+      name: 'FeeCommonNT',
+      component: FeeCommon,
+      props: {
+        debit: 1,
+        defaultParams: {
+          category: 2,
+          gov: 'dis',
+        }
+      }
+    },
+    {
+      path: '/fee/nanshan/copyright',
+      name: 'FeeCommonNC',
+      component: FeeCommon,
+      props: {
+        debit: 1,
+        defaultParams: {
+          category: 3,
+          gov: 'dis',
+        }
+      }
+    },
+    {
+      path: '/fee/shenzhen/patent',
+      name: 'FeeCommonSP',
+      component: FeeCommon,
+      props: {
+        debit: 1,
+        defaultParams: {
+          category: 1,
+          gov: 'city',
+        }
+      }
+    },
+    {
+      path: '/fee/shenzhen/trademark',
+      name: 'FeeCommonST',
+      component: FeeCommon,
+      props: {
+        debit: 1,
+        defaultParams: {
+          category: 2,
+          gov: 'city',
+        }
+      }
+    },
+    {
+      path: '/fee/shenzhen/copyright',
+      name: 'FeeCommonSC',
+      component: FeeCommon,
+      props: {
+        debit: 1,
+        defaultParams: {
+          category: 3,
+          gov: 'city',
+        }
+      }
+    },
+    {
+      path: '/fee/account/check',
+      name: 'InvoiceCommonAC',
+      component: InvoiceCommon,
+      props: {
+        debit: 0,
+        defaultParams: {
+          status: 1
+        }
+      }
+    },
+    {
+      path: '/fee/account/upload',
+      name: 'InvoiceCommonAU',
+      component: InvoiceCommon,
+      props: {
+        debit: 0,
+        defaultParams: {
+          voucher: 0
+        }
+      }
+    },
+    {
+      path: '/fee/account/pay',
+      name: 'InvoiceCommonAP',
+      component: InvoiceCommon,
+      props: {
+        debit: 0,
+        defaultParams: {
+          status: 5
+        }
+      }
+    },
+    {
+      path: '/fee/account/paid',
+      name: 'InvoiceCommonAPD',
+      component: InvoiceCommon,
+      props: {
+        debit: 0,
+        defaultParams: {
+          status: 4
+        }
+      }
+    },
+    {
+      path: '/fee/account/refuse',
+      name: 'InvoiceCommonAR',
+      component: InvoiceCommon,
+      props: {
+        debit: 0,
+        defaultParams: {
+          status: 3
+        }
+      }
+    },
+    {
+      path: '/fee/renewal/pay',
+      name: 'RenewalFeeRP',
+      component: RenewalFee,
+      props: {
+        defaultParams: {
+          status: 0,
+        }
+      }
+    },
+    {
+      path: '/fee/renewal/paid',
+      name: 'RenewalFeeRPD',
+      component: RenewalFee,
+      props: {
+        defaultParams: {
+          status: 10,
+        }
+      }
+    },
+    {
+      path: '/fee/renewal/refuse',
+      name: 'RenewalFeeRR',
+      component: RenewalFee,
+      props: {
+        defaultParams: {
+          status: 3,
+        }
+      }
+    },
+//################### 费用路由 end #####################
+
     {
       path: '/news/mailList',
       name: 'MailList',
@@ -771,19 +927,24 @@ const router = new Router({
       component: MailAdd,
     },
     {
-      path: '/classification',
+      path: '/setting/classification',
       name: 'Clssification',
       component: ClassificationCommon,
     },
     {
-      path: '/product',
+      path: '/setting/product',
       name: 'Product',
       component: ClassificationCommon,
     },
     {
-      path: '/branch',
+      path: '/setting/branch',
       name: 'Branch',
       component: Branch,
+    },
+    {
+      path: '/setting/userList',
+      name: 'UserList',
+      component: UserList,
     },
     {
       path: '/fee/income',
