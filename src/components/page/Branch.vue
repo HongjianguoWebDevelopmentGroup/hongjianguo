@@ -40,8 +40,12 @@
 		  			  {{ currentNode ? currentNode.name : '' }}
 		  			</el-form-item>
 		  			
-            <el-form-item label="部门描述">
+            <!-- <el-form-item label="部门描述">
 		  			  {{ currentNode ? currentNode.description ? currentNode.description : '暂无描述' : ''}}
+		  			</el-form-item> -->
+
+            <el-form-item label="部门简称">
+		  			  {{ currentNode ? currentNode.abbr ? currentNode.abbr : '' : ''}}
 		  			</el-form-item>
 		  			
             <el-form-item label="默认IPR">

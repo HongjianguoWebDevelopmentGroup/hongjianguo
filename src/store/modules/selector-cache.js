@@ -94,6 +94,15 @@ const state = {
 	    },
 	    allowCreate: true,
 	    defaultFirstOption: true,
+		}],
+		['abbr', {
+	    placeholder: '请输入或选择部门简称',
+	    url: '/api/abbr',
+	    handle (data) {
+	      return data.data.map(_=>{return {id: _.abbr, name: _.abbr}});
+	    },
+	    allowCreate: true,
+	    defaultFirstOption: true,
 	  }],
 	  ['area', {
 	    placeholder: '请选择地区',

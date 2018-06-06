@@ -54,6 +54,12 @@ const map = new Map([
 		URL: '/api/agencies',
 		DATA_KEY: 'agencies',
 		PLACEHOLDER: '请输入代理机构关键词',
+  }],
+  ['agency_poa', {
+		URL: '/api/agencies',
+		DATA_KEY: 'agencies',
+    PLACEHOLDER: '请输入代理机构关键词',
+    PARAMS: { poa: 1 },
 	}],
 	['project', {
 		URL: '/api/projects',

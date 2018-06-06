@@ -21,12 +21,12 @@
 				<el-rate style="margin-top: 8px;" v-if="form.rank ? true : false" :value="form.rank/20" disabled show-text text-color="#f90" :text-template="form.rank + ''"></el-rate>
 				<span v-else class="detail-item">暂无评分</span>
 			</el-form-item>
-			<el-form-item label="核心伙伴">
+			<!-- <el-form-item label="核心伙伴">
 				<span class="detail-item">{{ form.is_core_partner_name }}</span>
 			</el-form-item>
 			<el-form-item label="业务范围">
 				<el-tag v-for="tag in form.scope" :key="tag" style="margin-right: 20px;">{{ tag }}</el-tag>
-			</el-form-item>
+			</el-form-item> -->
 			<el-form-item label="代理所状态">
 				<span class="detail-item">{{ form.status_name }}</span>
 			</el-form-item>

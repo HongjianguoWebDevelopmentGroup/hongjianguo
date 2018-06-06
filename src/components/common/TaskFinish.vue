@@ -37,7 +37,7 @@
   	</el-form-item>
     <el-form-item prop="agency" label="代理机构" v-if="fields.agency" :rules="{ required: true, type: 'number', message: '代理机构不能为空', trigger: 'change'}">
       <div v-if="fields.agency == 1">
-        <remote-select type="agency" v-model="form.agency" :static-map="agencyMap"></remote-select>
+        <remote-select type="agency_poa" v-model="form.agency" :static-map="agencyMap"></remote-select>
         <el-button size="mini" type="text" @click="showAgencyLoad">负载</el-button>
       </div>
       <span v-else class="form-item-text">{{ agencyMap[0] ? agencyMap[0].name : '' }}</span>

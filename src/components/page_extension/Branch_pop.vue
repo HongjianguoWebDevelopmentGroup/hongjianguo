@@ -4,8 +4,11 @@
 			<el-form-item label="部门名称" prop="name">
 				<div>{{ form.name }}</div>
 			</el-form-item>
-			<el-form-item label="部门描述" prop="description">
+			<!-- <el-form-item label="部门描述" prop="description">
 				<el-input v-model="form.description" type="textarea" placeholder="请填写部门描述"></el-input>
+			</el-form-item> -->
+			<el-form-item label="部门简称" prop="abbr">
+				<el-input v-model="form.abbr" placeholder="请填写部门简称"></el-input>
 			</el-form-item>
 			<el-form-item label="部门默认IPR" prop="ipr">
 				<static-select type="ipr" v-model="form.ipr"></static-select>
@@ -36,6 +39,7 @@ export default {
 			form: {
 				name: '',
 				description: '',
+				abbr:'',
 				ipr: '',
 				board: [],
 			}
