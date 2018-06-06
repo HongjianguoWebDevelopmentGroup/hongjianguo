@@ -75,12 +75,12 @@
       <upload v-model="form.attachments" :file-list="attachments"> 
       </upload>
     </el-form-item>
+    <ul v-if="data.description && data.description.length != 0" style="margin-left:115px;padding: 0;margin-top:-10px; font-size:14px;color:#bbb;">
+      <li v-for="(item, index) in data.description" :key="index">{{ item }}</li>
+    </ul>
     <div v-if="data.inventor_tips" style="margin-left:100px;padding: 0;margin-bottom: 20px; font-size:14px;color:#bbb;">
       <span>{{ data.inventor_tips }}</span>
     </div>
-    <el-form-item prop="remark" label="任务备注" v-if="fields.remark && !hide_r_a">
-      <el-input type="textarea" v-model="form.remark"></el-input>
-    </el-form-item>
     <el-form-item prop="level" label="案件等级" v-if="fields.level" :rules="{required: true, message: '案件等级必选', trigger: 'change'}">
       <el-radio-group v-model="form.level">
         <el-radio-button label="A"></el-radio-button>
@@ -89,7 +89,7 @@
         <el-radio-button label="D"></el-radio-button>
       </el-radio-group>
     </el-form-item>
-    <el-form-item prop="rank" label="评分" v-if="fields.rank">
+    <!-- <el-form-item prop="rank" label="评分" v-if="fields.rank">
       <el-rate 
         v-model="form.rank" 
         style="margin-top: 10px" 
@@ -97,13 +97,47 @@
         show-text 
         :texts="['20','40','60','80','100']"
       ></el-rate>
+    </el-form-item> -->
+    <el-form-item prop="tech_rank" label="技术理解" v-if="fields.tech_rank" :rules="{type: 'number', required: true, message: '技术理解评分必填'}">
+      <el-rate 
+        v-model="form.tech_rank" 
+        style="margin-top: 10px" 
+        :colors="['#99A9BF', '#F7BA2A', '#FF9900']" 
+        show-text 
+        :texts="['20','40','60','80','100']"
+      ></el-rate>
+    </el-form-item>
+    <el-form-item prop="draft_rank" label="撰写质量" v-if="fields.draft_rank" :rules="{type: 'number', required: true, message: '撰写质量评分必填'}">
+      <el-rate 
+        v-model="form.draft_rank" 
+        style="margin-top: 10px" 
+        :colors="['#99A9BF', '#F7BA2A', '#FF9900']" 
+        show-text 
+        :texts="['20','40','60','80','100']"
+      ></el-rate>
+    </el-form-item>
+    <el-form-item prop="service_rank" label="服务状态" v-if="fields.service_rank" :rules="{type: 'number', required: true, message: '服务状态评分必填'}">
+      <el-rate 
+        v-model="form.service_rank" 
+        style="margin-top: 10px" 
+        :colors="['#99A9BF', '#F7BA2A', '#FF9900']" 
+        show-text 
+        :texts="['20','40','60','80','100']"
+      ></el-rate>
+    </el-form-item>
+    <el-form-item prop="negative_flag" label="负面评价" v-if="fields.negative_flag">
+      <app-switch type="is" v-model="form.negative_flag"></app-switch>
+    </el-form-item>
+    <el-form-item prop="negative_comment" label="评价理由" v-if="fields.negative_comment" v-show="form.negative_flag">
+      <el-input type="textarea" v-model="form.negative_comment"></el-input>
     </el-form-item>
     <el-form-item v-if="(next == '20' && level != 'A')  || next == '114'" prop="pconfirm" label="确认" :rules="confirmValidator">
       <el-checkbox v-model="form.pconfirm">已确认送件信息完整</el-checkbox><el-button type="text" size="mini" style="margin-left: 10px;" @click="$emit('more', 'patent')">查看</el-button>
     </el-form-item>
-    <ul v-if="data.description && data.description.length != 0" style="margin-left:115px;padding: 0;margin-top:-10px; font-size:14px;color:#bbb;">
-      <li v-for="(item, index) in data.description" :key="index">{{ item }}</li>
-    </ul>
+    <el-form-item prop="remark" label="任务备注" v-if="fields.remark && !hide_r_a">
+      <el-input type="textarea" v-model="form.remark"></el-input>
+    </el-form-item>
+    
     <el-form-item style="margin-bottom: 0px;">
   		<el-button type="primary" @click="submitFunc" :loading="btn_disabled">{{ btn_disabled ? '提交中...' : '提交' }}</el-button>
   	</el-form-item>
@@ -119,6 +153,7 @@ import Agency from '@/components/form/Agency'
 import Upload from '@/components/form/Upload'
 import RemoteSelect from '@/components/form/RemoteSelect'
 import StaticSelect from '@/components/form/StaticSelect'
+import AppSwitch from '@/components/form/AppSwitch'
 
 import {mapMutations} from 'vuex'
 import {mapActions} from 'vuex'
@@ -151,6 +186,11 @@ export default {
         level: '',
         title: '',
         pay_time: '',
+        tech_rank:0,
+        draft_rank:0,
+        service_rank:0,
+        negative_flag:false,
+        negative_comment:'',
 			},
 			'defaultVal': '',
       'agencyMap': [],
@@ -320,7 +360,7 @@ export default {
       return this.data.flow_node_id == 20
     }
 	},
-	components: { Member, Agent, Agency, Upload, RemoteSelect, StaticSelect }
+	components: { Member, Agent, Agency, Upload, RemoteSelect, StaticSelect, AppSwitch, }
 }
 </script>
 
