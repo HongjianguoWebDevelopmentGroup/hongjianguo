@@ -51,6 +51,9 @@
 					<el-form-item label="部门" prop="branch">
 						<branch v-model="form.branch" count-type="patent" multiple></branch>
 					</el-form-item>
+					<el-form-item label="部门简称" prop="abbr">
+						<static-select type="abbr" v-model="form.abbr" multiple></static-select>
+					</el-form-item>
 					<el-form-item label="标签" prop="tags">
 						<static-select type="tag" v-model="form.tags" multiple></static-select>
 					</el-form-item>	
@@ -111,6 +114,7 @@ export default {
 				applicants: [],
 				inventors: [],
 				entrusting_time: [],
+				abbr:[],
 			},
 			options: {
 				type: [

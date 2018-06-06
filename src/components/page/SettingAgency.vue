@@ -69,8 +69,8 @@ export default {
 		  options: {
 		  	is_core_partner: [
 		  		{l: '全部', v: ''},
-		  		{l: '核心伙伴', v: 1},
-		  		{l: '非核心伙伴', v: 0},
+		  		{l: '正常', v: 1},
+		  		{l: '已禁用', v: 0},
 		  	]
 		  },
 		  is_core_partner: '',
