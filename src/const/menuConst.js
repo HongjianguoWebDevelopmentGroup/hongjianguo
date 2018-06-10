@@ -44,17 +44,17 @@ const taskMenu = [
 		children: [
 			{ type: 'item', text: '提案', path: '/task/type/proposal', icon: '' },
 			{ type: 'item', text: '专利', path: '/task/type/patent', icon: '' },
-			{ type: 'item', text: '商标', path: '/task/type/trademark', icon: '' },
+			// { type: 'item', text: '商标', path: '/task/type/trademark', icon: '' },
 			{ type: 'item', text: '版权', path: '/task/type/copyright', icon: '' },
 		],
 	},
-	{
-		type: 'submenu',
-		text: '我的搜索项',
-		path: '/task/custom',
-		icon: 'iconfont el-icon-my-task',
-		children: [],
-	}
+	// {
+	// 	type: 'submenu',
+	// 	text: '我的搜索项',
+	// 	path: '/task/custom',
+	// 	icon: 'iconfont el-icon-my-task',
+	// 	children: [],
+	// }
 ];
 
 const proposalMenu = [
@@ -80,17 +80,29 @@ const proposalMenu = [
 			{ type: 'item', text: '无新颖性结案', path: '/proposal/novelty/non-existent', icon: '' },
 		]
 	},
-	{
-		type: 'submenu',
-		text: '我的搜索项',
-		path: '/proposal/custom',
-		icon: 'iconfont el-icon-my-proposal',
-		children: [],
-	}
+	// {
+	// 	type: 'submenu',
+	// 	text: '我的搜索项',
+	// 	path: '/proposal/custom',
+	// 	icon: 'iconfont el-icon-my-proposal',
+	// 	children: [],
+	// }
 ]
 
 const patentMenu = [
 	{ type: 'item', text: '全部专利', path: '/patent/list', icon: 'iconfont el-icon-my-patent' },
+	{ 
+		type: 'submenu', 
+		text: '专利（按案件等级）', 
+		path: '/patent/area',
+		icon: 'iconfont el-icon-my-patent',
+		children: [
+			{ type: 'item', text: 'A', path: '/patent/level/a', icon: '' },
+			{ type: 'item', text: 'B', path: '/patent/level/b', icon: '' },
+			{ type: 'item', text: 'C', path: '/patent/level/c', icon: '' },
+			{ type: 'item', text: 'D', path: '/patent/level/d', icon: '' },
+		],
+	},
 	{ 
 		type: 'submenu', 
 		text: '专利（按阶段）', 
@@ -130,13 +142,13 @@ const patentMenu = [
 			{ type: 'item', text: '下月PCT19条修改到期', path: '/patent/duration/pct19', icon: '' },
 		]
 	},
-	{
-		type: 'submenu',
-		text: '我的搜索项',
-		path: '/patent/custom',
-		icon: 'iconfont el-icon-my-patent',
-		children: [],
-	}
+	// {
+	// 	type: 'submenu',
+	// 	text: '我的搜索项',
+	// 	path: '/patent/custom',
+	// 	icon: 'iconfont el-icon-my-patent',
+	// 	children: [],
+	// }
 ];
 
 const trademarkMenu = [
@@ -168,13 +180,13 @@ const trademarkMenu = [
 			{ type: 'item', text: '其他', path: '/trademark/area/other', icon: '' },
 		], 
 	},
-	{
-		type: 'submenu',
-		text: '我的搜索项',
-		path: '/trademark/custom',
-		icon: 'iconfont el-icon-my-trademark',
-		children: [],
-	}
+	// {
+	// 	type: 'submenu',
+	// 	text: '我的搜索项',
+	// 	path: '/trademark/custom',
+	// 	icon: 'iconfont el-icon-my-trademark',
+	// 	children: [],
+	// }
 ];
 
 const copyrightMenu = [
@@ -200,13 +212,13 @@ const copyrightMenu = [
 			{ type: 'item', text: '其他', path: '/copyright/area/other', icon: '' },
 		], 
 	},
-	{
-		type: 'submenu',
-		text: '我的搜索项',
-		path: '/copyright/custom',
-		icon: 'iconfont el-icon-my-copyright',
-		children: [],
-	}
+	// {
+	// 	type: 'submenu',
+	// 	text: '我的搜索项',
+	// 	path: '/copyright/custom',
+	// 	icon: 'iconfont el-icon-my-copyright',
+	// 	children: [],
+	// }
 ];
 
 const feeMenu = [
@@ -265,12 +277,12 @@ const newsMenu = [
 		path: '/news/patent_notice',
 		icon: 'iconfont el-icon-my-patent',
 	},
-	{
-		text: '版权通知书',
-		path: '/news/copyright_notice',
-		icon: 'iconfont el-icon-my-copyright',
-		type: 'item',
-	},
+	// {
+	// 	text: '版权通知书',
+	// 	path: '/news/copyright_notice',
+	// 	icon: 'iconfont el-icon-my-copyright',
+	// 	type: 'item',
+	// },
 ];
 
 const settingMenu = [
@@ -282,7 +294,7 @@ const settingMenu = [
 	{ type: 'item', text: '产品分类管理', path: '/setting/product', icon: 'iconfont el-icon-my-products' },
 	{ type: 'item', text: '部门管理', path: '/setting/branch', icon: 'iconfont el-icon-my-department' },
 	{ type: 'item', text: '代理机构管理', path: '/setting/agency',icon: 'iconfont el-icon-my-organization' },
-	{ type: 'item', text: '报价管理', path: '/setting/offer', icon: 'iconfont el-icon-my-organization' },
+	// { type: 'item', text: '报价管理', path: '/setting/offer', icon: 'iconfont el-icon-my-organization' },
 	{ type: 'item', text: '系统设置', path: '/setting/system', icon: 'iconfont el-icon-my-system' },
 ];
 
@@ -317,20 +329,20 @@ menu.source = [
 		icon: 'iconfont el-icon-my-patent',
 		menu: patentMenu,
 	},
-	{
-		text: '版权',
-		key: 'copyright',
-		path: '/copyright',
-		icon: 'iconfont el-icon-my-copyright',
-		menu: copyrightMenu,
-	},
-	{
-		text: '费用',
-		key: 'fee',
-		path: '/fee_menu',
-		icon: 'iconfont el-icon-my-fee',
-		menu: feeMenu,
-	},
+	// {
+	// 	text: '版权',
+	// 	key: 'copyright',
+	// 	path: '/copyright',
+	// 	icon: 'iconfont el-icon-my-copyright',
+	// 	menu: copyrightMenu,
+	// },
+	// {
+	// 	text: '费用',
+	// 	key: 'fee',
+	// 	path: '/fee_menu',
+	// 	icon: 'iconfont el-icon-my-fee',
+	// 	menu: feeMenu,
+	// },
 	// {
 	// 	text: '年费',
 	// 	key: 'renewal',
@@ -338,13 +350,13 @@ menu.source = [
 	// 	icon: 'iconfont el-icon-my-renewal',
 	// 	menu: renewalMenu,
 	// },
-	{
-		text: '报表',
-		key: 'report',
-		path: '/report',
-		icon: 'el-icon-my-report',
-		menu: reportMenu,
-	},
+	// {
+	// 	text: '报表',
+	// 	key: 'report',
+	// 	path: '/report',
+	// 	icon: 'el-icon-my-report',
+	// 	menu: reportMenu,
+	// },
 	{
 		text: '交互',
 		key: 'news',

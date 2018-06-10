@@ -101,7 +101,17 @@ const map = new Map([
     PLACEHOLDER: '请输入邮箱',
     dynamicCreate: true,
     defaultFirstOption: true,
-  }]
+  }],
+  ['group_number', {
+    URL: '/api/gnumbers',
+    DATA_KEY: 'data',
+    PLACEHOLDER: '请输入群组号',
+  }],
+  ['family_number', {
+    URL: '/api/fnumbers',
+    DATA_KEY: 'data',
+    PLACEHOLDER: '请输入专利族号',
+  }],
 ]);
 
 export default {

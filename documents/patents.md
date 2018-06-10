@@ -43,7 +43,7 @@ request {
     attachments:[1,2],//附件ID数组
 
     priorities:[{area:"CN",apn:"201510422563.4",date:"2017-01-01"}],//优先权信息
-    relative_projects:[{
+    relates:[{
         id:"相关案件ID",
         type:"相关类型",//下拉菜单  1 要求优先权 2 分案申请 3 部分连续案 6 要求同日送件
     }],
@@ -95,7 +95,7 @@ request {
     attachments:[1,2],//附件ID数组
 
     priorities:[{area:"CN",apn:"201510422563.4",date:"2017-01-01"}],//优先权信息
-    relative_projects:[{
+    relates:[{
         id:"相关案件ID",
         type:"相关类型",//下拉菜单  1要求优先权 2 分案申请 3部分连续案 6要求同日送件
     }],
@@ -199,7 +199,7 @@ reponse {
 		/* [相关案件]开始 */
 		proposals:[],
 		priorities:[{area:"CN",apn:"201510422563.4",date:"2017-01-01"}],
-		relative_projects:[{
+		relates:[{
 			id:"相关案件ID",
 			serial:"相关案件案号",
 			title:"相关案件标题",
@@ -404,7 +404,7 @@ response {
 		priorities:[{area:"CN",apn:"201510422563.4",date:"2017-01-01"}],
 		products:[{id:"产品ID",name:"产品名称",description:"产品描述"}],
 		proposer:{id: 1, name: "红坚果", mobile: "18098976299", email: "hongjianguo@hongjianguo.com"},
-		relative_projects:[{
+		relates:[{
 			id:"相关案件ID",
 			serial:"相关案件案号",
 			title:"相关案件标题",

@@ -1,14 +1,14 @@
 <template>
-  <app-collapse col-title="相关案件">
-      <el-form label-width="150px">
+  <!-- <app-collapse col-title="相关案件"> -->
+      <el-form label-width="120px">
         <el-form-item label="相关提案">
           <remote-select type="proposal" v-model="form.proposals" multiple></remote-select>
         </el-form-item>
         <el-form-item label="相关案件">
-          <relative-projects v-model="form.relative_projects"></relative-projects>
+          <relative-projects v-model="form.relates"></relative-projects>
         </el-form-item>
       </el-form>
-    </app-collapse>
+    <!-- </app-collapse> -->
 </template>
 
 <script>
@@ -24,7 +24,7 @@ export default {
     return {
       form: {
         proposals: [],
-        relative_projects: [],
+        relates: [],
       }
     }
   },

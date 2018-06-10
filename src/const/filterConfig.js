@@ -45,7 +45,7 @@ const map = new Map([
     { components: 'static_select', id: 'ipr',                           name: '负责IPR', type: 'ipr'},
     { components: 'remote_select', id: 'proposer',                      name: '提案人', type: 'member'},
     { components: 'input',         id: 'priorities',                    name: '优先权'},
-    { components: 'patent',        id: 'relative_projects',             name: '相关专利'},
+    { components: 'patent',        id: 'relates',             name: '相关专利'},
     { components: 'static_select', id: 'is_support',                    name: '是否已申请资助', type: 'bool', multiple: false}, //是否已申请资助
     { components: 'remote_select', id: 'agency',                        name: '代理机构', type: 'agency'}, //代理机构
     { components: 'remote_select', id: 'agent',                         name: '代理人', type: 'agent'}, //代理人

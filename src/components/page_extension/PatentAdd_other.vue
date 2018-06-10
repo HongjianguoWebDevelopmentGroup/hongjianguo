@@ -1,61 +1,70 @@
 <template>
-  <app-collapse col-title="其他信息及附件">
-      <el-form label-width="150px">
-        <el-form-item label="状态" v-if="type == 'edit'">
-          {{ form.progress }}
+  <!-- <app-collapse col-title="其他信息"> -->
+      <el-form label-width="120px">
+        <!-- <el-form-item label="已申请资助">
+          <app-switch type="is" v-model="form.is_support"></app-switch>
+        </el-form-item> -->
+        <!-- <el-form-item label="专利实施情况">
+          <el-input type="textarea" placeholder="请填写专利实施情况" v-model="form.application"></el-input>
+        </el-form-item> -->
+        <el-form-item label="权利要求/附图数">
+          <el-input v-model="form.claims_count" placeholder="请填写权利要求项数或者附图数量"></el-input>
         </el-form-item>
         <el-form-item label="说明书字数">
           <el-input v-model="form.words" placeholder="请填写说明书字数"></el-input>
         </el-form-item>
+        <el-form-item label="首次年费年度">
+          <el-input v-model="form.start_year" placeholder="请填写首次年费年度"></el-input>
+        </el-form-item>
+        <el-form-item label="案件摘要">
+          <el-input v-model="form.abstract" type="textarea" placeholder="请填写案件摘要"></el-input>
+        </el-form-item>
         <el-form-item label="备注">
           <el-input v-model="form.remark" type="textarea" placeholder="请填写备注信息"></el-input>
         </el-form-item>
-        <el-form-item label="附件">
-          <upload v-model="form.attachments" :file-list="attachments"></upload>
-        </el-form-item>
+        
       </el-form>
-    </app-collapse>
+    <!-- </app-collapse> -->
 </template>
 
 <script>
 import AppCollapse from '@/components/common/AppCollapse'
-import Upload from '@/components/form/Upload'
+import StaticSelect from '@/components/form/StaticSelect'
+import AppSwitch from '@/components/form/AppSwitch'
 
 export default {
   name: 'patentAddOther',
   props: ['type'],
   data () {
-		return {
-			form: {
-        progress: '',
+    return {
+      form: {
+        // progress: '',
         words: '',
         remark: '',
-        attachments: [],
-			},
-      attachments: [],
-		}
+        claims_count: '',
+        // is_supported: '',
+        // application:'',
+        start_year:'',
+        abstract: '',
+      },
+    }
   },
   methods: {
-  	setForm (data) {
-      for(let k in this.form) {
-        const d = data[k];
-        if(k == 'attachments') {
-          this.form[k] = d.map(_=>_.id);
-          this.attachments = d;
-        }else {
-          this.form[k] = d;
-        }
-      }
-  	},
+    setForm (data) {
+      this.$tool.coverObj(this.form, data);
+    },
     submitForm () {
-      const data = this.$tool.shallowCopy(this.form, {skip: ['progress']});
-      return data;
+      return this.form;
     },
     checkForm (callback) {
       callback(true);
     },
   },
-  components: { AppCollapse, Upload }
+  components: { 
+    // AppCollapse, 
+    // StaticSelect,
+    // AppSwitch,
+  }
 }
 </script>
 

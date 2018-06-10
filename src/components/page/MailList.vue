@@ -1,9 +1,9 @@
 <template>
   <div class="main">
   		<table-component :tableOption="tableOption" :data="tableData" @refreshTableData="refreshTableData" ref="table" >
-        <el-select v-model="mailbox" slot="mailbox" style="width: 150px">
+        <!-- <el-select v-model="mailbox" slot="mailbox" style="width: 150px">
           <el-option v-for="item in options.mailbox" :label="item.label" :value="item.value" :key="item.value"></el-option>
-        </el-select>
+        </el-select> -->
       </table-component>
       <Detail ref="mail_detail"></Detail>
   </div>
@@ -38,7 +38,7 @@ export default {
         'name': 'mailList',
         'url': URL,
 		  	'header_btn': [
-		  		{ type: 'custom', label: '写邮件', icon: 'edit', click: this.add },
+		  		// { type: 'custom', label: '写邮件', icon: 'edit', click: this.add },
 		  		{ type: 'delete' },
 		  	],
         'height': 'default2',

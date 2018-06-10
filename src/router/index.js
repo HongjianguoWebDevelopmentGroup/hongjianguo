@@ -495,7 +495,7 @@ const router = new Router({
       path: '/patent/add',
       name: 'PatentAdd',
       component: PatentAdd,
-      meta: { type: 'add' },
+      props: { pageType: 'add' },
     },
     {
       path: '/news/patent_notice',

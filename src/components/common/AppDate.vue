@@ -27,10 +27,10 @@ export default {
 		return {
 			dateType: '',
 			options: [
-				{ value: 'equal', label: '等于' },
-				{ value: 'greater', label: '大于等于' },
-				{ value: 'less', label: '小于等于' },
-				{ value: 'range', label: '介于' },
+				{ value: 'equal', label: '特定日期' },
+				{ value: 'greater', label: '晚于选择的日期' },
+				{ value: 'less', label: '早于选择的日期' },
+				{ value: 'range', label: '日期范围' },
 			],
 			dateValue: '',
 			noRefresh: false,

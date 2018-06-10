@@ -99,7 +99,7 @@ const columns = {
     { id: 'ipr',                           name: '负责IPR'},
     { id: 'proposer',                      name: '提案人'},
     { id: 'priorities',                    name: '优先权'},
-    { id: 'relative_projects',             name: '相关专利'},
+    { id: 'relates',             name: '相关专利'},
     { id: 'fees',                          name: '费用'},//费用
     { id: 'is_support',                    name: '是否已申请资助'}, //是否已申请资助
     { id: 'agency',                        name: '代理机构'}, //代理机构

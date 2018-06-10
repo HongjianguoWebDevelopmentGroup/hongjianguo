@@ -13,19 +13,19 @@
 			<el-form-item label="邮件通知" prop="message_subscribe_mail">
 				<el-checkbox label="是否订阅邮件通知" v-model="form.message_subscribe_mail" :true-label="1" :false-label="0"></el-checkbox>
 			</el-form-item>
-			<el-form-item label="系统内通知" prop="message_subscribe_system">
+			<!-- <el-form-item label="系统内通知" prop="message_subscribe_system">
 				<el-checkbox label="是否订阅系统内通知" v-model="form.message_subscribe_system" :true-label="1" :false-label="0"></el-checkbox>
-			</el-form-item>
+			</el-form-item> -->
 			<el-form-item label="邮箱地址" prop="email">
 				<el-input v-model="form.email"></el-input>
 			</el-form-item>
-			<el-form-item label="邮箱密码" prop="email_password">
+			<!-- <el-form-item label="邮箱密码" prop="email_password">
 				<edit-password v-model="form.email_password" ref="psd"></edit-password>
-			</el-form-item>
+			</el-form-item> -->
 <!-- 			<el-form-item label="邮箱密码" prop="email_password">
 				<el-input v-model="form.email_password" type="password"></el-input>
 			</el-form-item> -->
-			<el-form-item label="POP服务器" prop="pop_server">
+			<!-- <el-form-item label="POP服务器" prop="pop_server">
 				<el-input v-model="form.pop_server"></el-input>
 			</el-form-item>
 			<el-form-item label="POP收信端口" prop="pop_port">
@@ -42,7 +42,7 @@
 			</el-form-item>
 			<el-form-item label="邮件签名" prop="signature">
 				<el-input v-model="form.signature" type="textarea"></el-input>
-			</el-form-item>
+			</el-form-item> -->
 			<el-form-item>
 				<el-button @click="save" type="primary" :disabled="btn_disabled">保存</el-button>
 			</el-form-item>

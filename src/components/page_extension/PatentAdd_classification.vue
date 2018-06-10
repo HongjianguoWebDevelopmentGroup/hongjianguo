@@ -1,27 +1,38 @@
 <template>
-  <app-collapse col-title="分类信息">
-      <el-form label-width="150px">
+  <!-- <app-collapse col-title="分类信息"> -->
+      <el-form label-width="120px">
+        <el-form-item label="部门">
+          <branch v-model="form.branch" count-type="patent" ></branch>
+          <!-- <span v-else>{{ branchName ? branchName : '暂未归属某个部门' }}</span> -->
+        </el-form-item>
 				<el-form-item label="产品分类">
 					<product v-model="form.products" count-type="patent" multiple></product>
 				</el-form-item>
+        <el-form-item label="产品相关性" prop="product_relevance">
+          <static-select type="product_relevance" v-model="form.product_relevance"></static-select>
+        </el-form-item>
 				<el-form-item label="技术分类">
 					<classification v-model="form.classification" count-type="patent"></classification>
 				</el-form-item>
-        <el-form-item label="是否已用在产品上" prop="product_relevance">
-          <static-select type="product_relevance" v-model="form.product_relevance"></static-select>
-        </el-form-item> 
 				<el-form-item label="标签">
           <static-select type="tag" v-model="form.tags" multiple></static-select>
 				</el-form-item>
+        <el-form-item label="项目名称" prop="project_name">
+          <el-input v-model="form.project_name" placeholder="请填写项目名称"></el-input>
+        </el-form-item>
+        <el-form-item label="项目代号" prop="project_serial">
+          <el-input v-model="form.project_serial" placeholder="请填写项目编号"></el-input>
+        </el-form-item>
 				<el-form-item label="主国际分类号">
 					<el-input v-model="form.main_ipc" placeholder="请填写主国际分类号"></el-input>
 				</el-form-item>
       </el-form>
-    </app-collapse>
+    <!-- </app-collapse> -->
 </template>
 
 <script>
 import AppCollapse from '@/components/common/AppCollapse'
+import Branch from '@/components/form/Branch'
 import Product from '@/components/form/Product'
 import Classification from '@/components/form/Classification'
 import StaticSelect from '@/components/form/StaticSelect'
@@ -31,25 +42,20 @@ export default {
   data () {
 		return {
 			form: {
+        branch: '',
 				products: [],
 				classification: '',
-        product_relevance: '',
 				tags: [],
 				main_ipc: '',
+        project_name: '',
+        project_serial: '',
+        product_relevance: '',
 			}
     }
   },
   methods: {
   	setForm (data) {
-      for(let k in this.form) {
-        if(k == 'products') {
-          this.form[k] = data[k].map(_=>_.id);
-        }else if(k == 'classification' || k == 'product_relevance') {
-          this.form[k] = data[k].id;
-        }else {
-          this.form[k] = data[k];
-        }
-      }
+      this.$tool.coverObj(this.form, data, {obj: ['branch', 'products', 'classification','product_relevance','tags']});
   	},
     submitForm () {
       return this.form;
@@ -58,7 +64,7 @@ export default {
       callback(true);
     },
   },
-  components: { AppCollapse, Product, Classification, StaticSelect }
+  components: { AppCollapse,Branch, Product, Classification, StaticSelect }
 }
 </script>
 

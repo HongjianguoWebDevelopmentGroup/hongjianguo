@@ -3,8 +3,8 @@
     <el-select
       :value="value"
       @input="handleInput"
-    	:multiple="multiple"
-    	:disabled="disabled"
+      :multiple="multiple"
+      :disabled="disabled"
       :placeholder="config.placeholder"
       filterable
       :size="size"
@@ -12,33 +12,21 @@
       :default-first-option="config.defaultFirstOption !== undefined ? config.defaultFirstOption : false"
       ref="select"
       clearable
+      @change="handleChange"
     >
-    	<el-option
-    		v-for="item in options"
-    		:key="item.id"
-    		:label="item.name"
-    		:value="item.id"
-    	>
-    	</el-option>
+      <el-option
+        v-for="item in optionsIn"
+        :key="item.id"
+        :label="item.name"
+        :value="item.id"
+      >
+      </el-option>
     </el-select>
   </div>
 </template>
+
+
 <script>
-
-
-//远程请求的静态代码需要在这里注册一个储存器
-const dataMap = new Map([
-  ['mail', {data: null}],
-  ['fee_target_income', {data: null}],
-  ['fee_target_expenditure', {data: null}],
-  ['file_type', {data: null}],
-  ['file_type_patent', {data: null}],
-  ['file_type_copyright', {data: null}],
-  ['fee_code', {data: null}],
-  ['tag', {data: null}],
-  ['flow_node', {data: null}],
-  ['progress',{data: null}]
-]);
 
 //-----------------------------配置数据分界线-----------------------------------------------
 
@@ -63,6 +51,12 @@ export default {
       type: String,
     },
     'type': null,
+    'filterOptions': {
+      type: Array,
+      default () {
+        return [];
+      },
+    },
   },
   data () {    
     return {
@@ -70,13 +64,17 @@ export default {
     }
   },
   computed: {
-    ...mapGetters ([
-      'staticSelectorMap',//位于selector-cache.js
+    ...mapGetters([
+      'staticSelectorMap',
+      'staticSelectorCache',
     ]),
-  	config () {
-  		const config = this.staticSelectorMap.get(this.type);
-  		return config ? config : this.type;
-  	},
+    cacheData () {
+      return this.staticSelectorCache[this.type];
+    },
+    config () {
+      const config = this.staticSelectorMap.get(this.type);
+      return config ? config : this.type;
+    },
     map () {
       const map = new Map ();
       this.options.forEach(_=>{map.set(_.id, _)});
@@ -90,14 +88,23 @@ export default {
       }
 
       return op;
-    }
-  },
-  watch: {
-    options_vuex (val) {
-      this.options = val;
     },
-    value (val) {
-      this.$refs.select.visible = false;
+    optionsIn () {
+      const f = this.filterOptions;
+      if(f.length != 0) {
+        return this.options.filter(_=>{
+          for(let i = 0; i < f.length; i++) {
+            const item = f[i];
+
+            if(_[item['key']] != item['value']) {
+              return false;
+            }
+          }
+          return true;
+        })
+      }else {
+        return this.options;
+      }
     }
   },
   methods: {
@@ -107,16 +114,19 @@ export default {
     handleInput (val) {
       this.$emit('input', val);
     },
-    getSelected () {
+    handleChange (val) {
+      this.$emit('change', this.map.get(val));
+    },
+    getSelected (value) {
       const arr = [];
-    
-      let cv = this.multiple ? this.value : [ this.value ];
+      let v = value != undefined ? value : this.value;
+      let cv = this.multiple ? v : [ v ];
       
       cv.forEach(_=>{
         const val = this.map.get(_);
         if(val) {
           arr.push(val);
-        }else {
+        }else if(_ != '') {
           arr.push({id: _, name: _});
         }
       })
@@ -125,7 +135,6 @@ export default {
     },
     setOptions () {
       let op = this.config.options;
-      
 
       if(op instanceof Array) {
         
@@ -134,6 +143,7 @@ export default {
 
       }else if(typeof op === 'string') {
         op = this.options_vuex;
+
         //存储在vuex中的数据,op代表getters的名字,
         //当数据不止在Select而是在全局中有多处被使用,或者数据在使用过程中需要保持动态更新,使用vuex存储
         if(op === undefined) {
@@ -145,14 +155,38 @@ export default {
         }
 
       }else if(op === undefined && this.config.url !== undefined) {
-        //初始化静态数据 并放入存储器
-        this.initializeSelectorCache({ type: this.type, func: _=>{this.options = _} });
+        
+        //尝试初始化静态数据 
+        this.initializeSelectorCache({ type: this.type });
+        if(this.cacheData) this.options = this.cacheData;
+        
       }
 
     }
   },
   created () {
     this.setOptions();
+  },
+  watch: {
+    options_vuex (val) {
+      this.options = val;
+    },
+    value (val) {
+      this.$refs.select.visible = false;
+    },
+    cacheData (val) {
+      if(val) {
+        this.options = val;  
+      }
+    },
+    filterOptions () {
+
+      if(this.multiple) {
+        this.$emit('input', []);
+      }else {
+        this.$emit('input', '');
+      }
+    }
   }
 }
 </script>
@@ -161,11 +195,11 @@ export default {
 <style scoped lang="scss">
 </style>
 <style>
-  #static_select .el-tag {
-    min-height: 24px; 
-    white-space: pre-wrap;
-    padding: 0 20px 0 5px;
-  }
+#static_select .el-tag {
+  min-height: 24px; 
+  white-space: pre-wrap;
+  padding: 0 20px 0 5px;
+}
 #static_select .el-select .el-tag{
   height: auto;
   min-height: 24px;

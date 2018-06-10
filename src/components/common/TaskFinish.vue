@@ -125,10 +125,14 @@
         :texts="['20','40','60','80','100']"
       ></el-rate>
     </el-form-item>
-    <el-form-item prop="negative_flag" label="负面评价" v-if="fields.negative_flag">
-      <app-switch type="is" v-model="form.negative_flag"></app-switch>
+    <el-form-item prop="negative_flag" label="特别评价" v-if="fields.negative_flag">
+      <el-radio-group v-model="form.negative_flag">
+        <el-radio-button label="无"></el-radio-button>
+        <el-radio-button label="好评"></el-radio-button>
+        <el-radio-button label="差评"></el-radio-button>
+      </el-radio-group>
     </el-form-item>
-    <el-form-item prop="negative_comment" label="评价理由" v-if="fields.negative_comment" v-show="form.negative_flag">
+    <el-form-item prop="negative_comment" label="评价理由" v-if="fields.negative_comment" v-show="form.negative_flag !== '无'">
       <el-input type="textarea" v-model="form.negative_comment"></el-input>
     </el-form-item>
     <el-form-item v-if="(next == '20' && level != 'A')  || next == '114'" prop="pconfirm" label="确认" :rules="confirmValidator">
