@@ -22,7 +22,7 @@
             <el-form-item label="证件号码(第一发明人)" prop="identity" class="is-required">
               <el-input v-model="formData.identity" placeholder="请填写第一发明人证件号码"></el-input>
             </el-form-item>
-            <el-form-item label="是否已用在产品上" prop="product_relevance">
+            <el-form-item label="产品相关性" prop="product_relevance">
               <static-select type='product_relevance' v-model="formData.product_relevance"></static-select>
             </el-form-item>
             <el-form-item label="产品名称" prop="products">

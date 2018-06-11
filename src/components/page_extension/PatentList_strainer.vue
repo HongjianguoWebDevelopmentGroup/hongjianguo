@@ -45,7 +45,7 @@
 					<el-form-item label="产品分类" prop="product">
 						<product v-model="form.product" count-type="patent" multiple></product>
 					</el-form-item>
-					<el-form-item label="是否已用在产品上" prop="product_relevance">
+					<el-form-item label="产品相关性" prop="product_relevance">
 						<static-select type="product_relevance" v-model="form.product_relevance"></static-select>
 					</el-form-item>
 					<el-form-item label="部门" prop="branch">

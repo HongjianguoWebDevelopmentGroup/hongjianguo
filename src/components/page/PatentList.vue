@@ -119,7 +119,7 @@ export default {
           { type: 'text', label: '国际公开号', prop: 'pct_public_no', sortable: true, width: '140', show: false},
           { type: 'text', label: '复审委内编号', prop: 'board_number', sortable: true, width: '160', show: false},
           { type: 'text', label: '说明书字数', prop: 'words', sortable: true, width: '140', show: false},
-          { type: 'array', label: '标签', prop: 'tags', is_import: true, width: '123',},
+          { type: 'array', label: '标签', prop: 'tags', render: _=>_.map(_=>_.name), is_import: true, width: '123',},
           { type: 'text', label: '案件等级', prop: 'level',width: '100',},
           { type: 'text', label: '部门全名', prop: 'branch', sortable: true, render:  (h,item)=>h('span', item.name), width: '123' },
           { type: 'text', label: '部门简称', prop: 'abbr', sortable: true, render_simple: 'abbr', width:'123'},
@@ -143,8 +143,8 @@ export default {
           { type: 'text', label: '返IPR稿时间', prop: 'first_edition_to_ipr_time', is_import: true, width: '160', show: false},
           { type: 'text', label: 'IPR定稿时间', prop: 'ipr_final_edition_time', is_import: true, width: '160', show: false},
           { type: 'text', label: 'IPR审核次数', prop: 'ipr_review-times', is_import: true, width: '160', show: false},
-          { type: 'text', label: 'IPR首次评分', prop: 'first_ipr_rank', is_import: true, render: this.rateRender, width: '160', show: false},
-          { type: 'text', label: 'IPR终稿评分', prop: 'final_ipr_rank', is_import: true, render: this.rateRender, width: '160', show: false},
+          // { type: 'text', label: 'IPR首次评分', prop: 'first_ipr_rank', is_import: true, render: this.rateRender, width: '160', show: false},
+          // { type: 'text', label: 'IPR终稿评分', prop: 'final_ipr_rank', is_import: true, render: this.rateRender, width: '160', show: false},
           { type: 'text', label: '代理人撰稿耗时', prop: 'agent_drafting_period', is_import: true, width: '160', show: false},
           { type: 'text', label: '发明人审核耗时', prop: 'inventor_review_period', is_import: true, width: '160', show: false},
           { type: 'text', label: 'IPR审核耗时', prop: 'ipr_review_period', is_import: true, width: '160', show: false},
@@ -276,9 +276,9 @@ export default {
       // );
       return h('el-rate', {
         attrs: {
-          value: item/20,
+          value: item,
           disabled: true,
-          showText: true,
+          // showText: true,
           textColor: '#f90',
           textTemplate: item +'',
         }

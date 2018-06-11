@@ -94,7 +94,7 @@ const patentMenu = [
 	{ 
 		type: 'submenu', 
 		text: '专利（按案件等级）', 
-		path: '/patent/area',
+		path: '/patent/level',
 		icon: 'iconfont el-icon-my-patent',
 		children: [
 			{ type: 'item', text: 'A', path: '/patent/level/a', icon: '' },
