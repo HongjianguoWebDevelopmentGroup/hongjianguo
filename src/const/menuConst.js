@@ -216,8 +216,8 @@ const feeMenu = [
 		path: '/fee/renewal',
 		icon: 'iconfont el-icon-my-renewal-fee',
 		children: [
-			{ type: 'item', text: '所有代缴', path: '/fee/renewal/pay' },
-			{ type: 'item', text: '已缴', path: '/fee/renewal/paid' },
+			{ type: 'item', text: '待缴纳', path: '/fee/renewal/pay' },
+			{ type: 'item', text: '已缴纳', path: '/fee/renewal/paid' },
 			{ type: 'item', text: '评估放弃', path: '/fee/renewal/refuse' },
 		]
 	},

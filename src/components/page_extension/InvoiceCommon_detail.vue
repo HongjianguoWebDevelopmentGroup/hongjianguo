@@ -126,7 +126,7 @@ export default {
 			return h('span', item.map(v => {
 				return h('a', {
 					attrs: {
-						href: v['downloadUrl'],
+						href: v['viewUrl'],
 						target: '_blank',
 					}
 				}, v.name);

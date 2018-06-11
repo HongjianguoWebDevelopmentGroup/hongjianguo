@@ -280,7 +280,7 @@ export default {
 			if(status == 0) {
 				this.option.header_btn.unshift({
 					type: 'custom',
-					label: '标记为已缴',
+					label: '标记为已缴纳',
 					click: () => { this.handleStatus(10) },
 				},
 				{
@@ -291,7 +291,7 @@ export default {
 			}else {
 				this.option.header_btn.unshift({
 					type: 'custom',
-					label: '还原为代缴',
+					label: '还原为待缴',
 					click: () => { this.handleStatus(0) },
 				})
 			}

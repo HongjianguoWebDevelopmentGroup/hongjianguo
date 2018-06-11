@@ -19,9 +19,12 @@
       <el-form-item label="申请日" prop="apd" v-if="config.apd&&(!!tableData[0]['show_apd'])">
         <el-date-picker type="date" v-model="form.apd"></el-date-picker>
       </el-form-item>      
-      <el-form-item label="授权日期" prop="issue_date" v-if="!!tableData[0]['show_issue_date']&&config.issue_date">
+      <el-form-item label="授权公告日" prop="issue_date" v-if="!!tableData[0]['show_issue_date']&&config.issue_date">
         <el-date-picker type="date" v-model="form.issue_date" ></el-date-picker>
-      </el-form-item>  
+      </el-form-item>
+      <el-form-item label="授权公告号" prop="issue_number" v-if="!!tableData[0]['show_issue_number']&&config.issue_number">
+        <el-input v-model="form.issue_number" ></el-input>
+      </el-form-item>
       <el-form-item label="申请号" prop="apn" v-if="!!tableData[0]['show_apn']&&config.apn">
         <el-input v-model="form.apn"></el-input>
       </el-form-item>    
@@ -88,6 +91,7 @@ const config = [
     time: true,
     legal_time: true,
     issue_date: true,
+    issue_number:true,
     apd: true,
     apn: true,
     pct_search_date: true,
@@ -102,10 +106,11 @@ const config = [
     time: true,
     legal_time: true,
     issue_date: true,
+     issue_number:true,
     apd: true,
     apn: true,
-    pct_search_date: true,
-    pct_search_result: true,
+    pct_search_date: false,
+    pct_search_result: false,
     no_zip: true,
   }],  
   ['trademark_notice', {
@@ -116,10 +121,11 @@ const config = [
     time: true,
     legal_time: true,
     issue_date: true,
+     issue_number:true,
     apd: true,
     apn: true,
-    pct_search_date: true,
-    pct_search_result: true,
+    pct_search_date: false,
+    pct_search_result: false,
     no_zip: true,
   }],
 ]
@@ -147,6 +153,7 @@ export default {
         legal_time: '',
         apd: '',
         issue_date: '',
+        issue_number:'',
         pct_search_date: '',
         apn: '',
         pct_search_result: '',
@@ -204,6 +211,7 @@ export default {
       copy['show_deadline'] = f.deadline == 1 && this.config.legal_time ? true : false;
       copy['show_apd'] = f.apd == 1 && this.config.apd ? true : false;
       copy['show_issue_date'] = f.issue_date == 1 && this.config.issue_date ? true : false;
+      copy['show_issue_number'] = f.issue_number == 1 && this.config.issue_number ? true : false;
       copy['show_apn'] = f.apn == 1 && this.config.apn ? true : false;
       copy['show_pct_search_date'] = f.pct_search_date == 1 && this.config.pct_search_date ? true : false;
       copy['show_pct_search_result'] = f.pct_search_result == 1 && this.config.pct_search_result ? true : false;
@@ -278,7 +286,14 @@ export default {
           if(this.form.issue_date) {
             o.issue_date = this.$tool.getDate( new Date(this.form.issue_date) );
           }else {
-            return this.$message({type: 'warning', message: '请填写授权日期'}); 
+            return this.$message({type: 'warning', message: '请填写授权公告日'}); 
+          }
+        }
+        if(_.show_issue_number) {
+          if(this.form.issue_number) {
+            o.issue_number = this.form.issue_number;
+          }else {
+            return this.$message({type: 'warning', message: '请填写授权公告号'}); 
           }
         }
         if(_.show_apn) {

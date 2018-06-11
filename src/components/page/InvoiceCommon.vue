@@ -8,7 +8,7 @@
         <el-button :disabled="scope.row.status.id != 1" size="mini" type="text" @click="checkClick(scope.row)">审核账单</el-button>
         <i class="el-icon-arrow-right" style="font-size: 12px;"></i>
         <el-button :disabled="scope.row.status.id != 5" size="mini" type="text" @click="payClick(scope.row)">确认付款</el-button>
-        <i class="el-icon-arrow-right" style="font-size: 12px;"></i>
+        <i style="font-size: 12px;">|</i>
         <el-button :disabled="scope.row.voucher == 1" size="mini" type="text" @click="uploadClick(scope.row)">上传凭证</el-button>
       </div>
     </table-component>

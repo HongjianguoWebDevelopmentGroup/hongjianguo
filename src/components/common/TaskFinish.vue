@@ -35,12 +35,15 @@
       <remote-select type="member" v-model="form.person_in_charge" :static-map="staticMap" v-else></remote-select>
   		<!-- <span v-else>{{ data[defaultVal]['name'] }}</span> -->
   	</el-form-item>
-    <el-form-item prop="agency" label="代理机构" v-if="fields.agency"   :rules="{ required: true, type: 'number', message: '代理机构不能为空', trigger: 'change'}">
+    <el-form-item prop="agency" label="代理机构" v-if="fields.agency"  v-show="fields.agency"   :rules="{ required: false, type: 'number', message: '代理机构不能为空', trigger: 'change'}">
       <div v-if="fields.agency == 1">
         <remote-select type="agency" v-model="form.agency" :static-map="agencyMap"></remote-select>
         <el-button size="mini" type="text" @click="showAgencyLoad">负载</el-button>
       </div>
       <span v-else class="form-item-text">{{ agencyMap[0] ? agencyMap[0].name : '' }}</span>
+    </el-form-item>
+    <el-form-item prop="is_division" label="是否分案" v-if="fields.is_division">
+      <app-switch type="is" v-model="form.is_division"></app-switch>
     </el-form-item>
     <el-form-item prop="agency_serial" label="事务所案号" v-if="fields.agency_serial" :rules="{required: true, message: '事务所案号不能为空'}">
       <el-input placeholder="请填写事务所案号" v-model="form.agency_serial"></el-input>
@@ -53,6 +56,7 @@
     >
       <static-select type="agency_type" key="patent_type" v-model="form.agency_type"></static-select>
     </el-form-item>
+
   	<el-form-item prop="due_time" label="承办期限" v-if="fields.due_time">
 			<el-date-picker v-model="form.due_time" type="date" placeholder="选择承办期限"></el-date-picker>
   	</el-form-item>
@@ -71,9 +75,24 @@
     <el-form-item prop="title" label="专利标题" v-if="ifTitle" :rules="{required: true, message: '专利标题不能为空'}">
       <el-input v-model="form.title" placeholder="请填写正式递交的标题"></el-input>
     </el-form-item>    
+    <el-form-item prop="pct_areas" label="PCT国家" v-if="fields.pct_areas"  :rules="{required: true, message: '请选择PCT要进入的国家'}">
+      <static-select type="area" v-model="form.pct_areas" :multiple=true></static-select>
+    </el-form-item>
+    <el-form-item prop="is_amend" label="是否提出变更" v-if="fields.is_amend">
+      <app-switch type="is" v-model="form.is_amend"></app-switch>
+    </el-form-item>
+    <el-form-item prop="categories" label="分案类别" v-if="fields.categories" v-show="form.is_division" :rules="{required: false, message: '请填写分案类别'}">
+      <el-input type="textarea" v-model="form.categories"></el-input>
+    </el-form-item>
     <el-form-item prop="attachments" label="附件" v-if="fields.attachments && !hide_r_a">
       <upload v-model="form.attachments" :file-list="attachments"> 
       </upload>
+    </el-form-item>
+    <el-form-item prop="pct_review" label="PCT国家阶段评审意见" v-if="fields.pct_review" :rules="{required: true, message: '请填写PCT进入国家阶段评审意见'}">
+      <el-input type="textarea" v-model="form.pct_review"></el-input>
+    </el-form-item>
+    <el-form-item prop="issue_review" label="授权前评估意见" v-if="fields.issue_review" :rules="{required: true, message: '请填写授权前评估意见'}">
+      <el-input type="textarea" v-model="form.issue_review"></el-input>
     </el-form-item>
     <el-form-item prop="remark" label="任务备注" v-if="fields.remark && !hide_r_a">
       <el-input type="textarea" v-model="form.remark"></el-input>
@@ -142,6 +161,10 @@ export default {
         type: '',
         pconfirm: false,
         is_supplement: 0,
+        pct_areas:[],
+        is_division:0,
+        is_amend:0,
+        categories:'',
 			},
 			'defaultVal': '',
       'agencyMap': [],

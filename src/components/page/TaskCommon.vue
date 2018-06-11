@@ -79,7 +79,7 @@
 
     <app-shrink :visible.sync="dialogShrinkVisible" :title="isCommon ? detailBase.title : shrinkTitle" @close="handleShrinkClose">
       <span slot="header" style="margin-left: 10px;">
-        <el-tag>{{ currentRow.flow_node }}</el-tag>
+        <el-tag v-if="currentRow.flownode">{{ currentRow.flownode.name }}</el-tag>
         <el-tag v-if="currentRow.serial">{{ currentRow.serial }}</el-tag>
       </span>
       <span slot="header" style="float: right">
@@ -221,15 +221,15 @@ export default {
           { type: 'text', label: '事务所案号', prop: 'agency_serial', sortable: true, width: '200', show_option: true},
           { type: 'text', label: '案件类型', prop: 'category', sortable: true, width: '145', show_option: true,render:this.categoryRender},
           { type: 'text', label: '案件名称', prop: 'title', sortable: true, width: '200', overflow: true },
-          { type: 'text', label: '管制事项', prop: 'name', sortable: true, width: '134' },
-          { type: 'text', label: '流程节点', prop: 'flow_node', show:true, sortable: true, width: '159'},
-          { type: 'text', label: '任务来源', prop: 'sender_name', show: true,sortable: true, width: '118'},
-          { type: 'text', label: 'IPR', prop: 'ipr', sortable: true, width: '118'},
-          { type: 'text', label: '部门', prop: 'branch',render_simple: 'name', sortable: true, width: '160'},
-          { type: 'text', label: '提案人', prop: 'proposer', render_simple: 'name', sortable: true, width: '160'},
-          { type: 'text', label: '承办人', prop: 'person_in_charge_name', show: false, sortable: true, width: '118'},
-          { type: 'text', label: '代理机构', prop: 'agency', show: false, sortable: true, width: '130'},
-          { type: 'text', label: '代理人', prop: 'agent', sortable: true, width: '118'},
+          { type: 'text', label: '管制事项', prop: 'flow', sortable: true,render_simple: 'name', width: '134' },
+          { type: 'text', label: '流程节点', prop: 'flownode',render_simple: 'name', show:true, sortable: true, width: '159'},
+          { type: 'text', label: '承办人', prop: 'person_in_charge',render_simple: 'name', show: true, sortable: true, width: '118'},
+          { type: 'text', label: '任务来源', prop: 'sender',render_simple: 'name', show: true,sortable: true, width: '118'},
+          { type: 'text', label: 'IPR', prop: 'ipr',render_simple: 'name', sortable: true, width: '118'},
+          // { type: 'text', label: '部门', prop: 'branch',render_simple: 'name', sortable: true, width: '160'},
+          { type: 'text', label: '提案人', prop: 'proposer',render_simple: 'name', render_simple: 'name', sortable: true, width: '160'},
+          { type: 'text', label: '代理机构', prop: 'agency',render_simple: 'name', show: false, sortable: true, width: '130'},
+          { type: 'text', label: '代理人', prop: 'agent',render_simple: 'name', sortable: true, width: '118'},
           { type: 'text', label: '申请日', prop: 'apd', sortable: true, width: '190'},
           { type: 'text', label: '申请号', prop: 'apn', sortable: true, width: '130'},
           { type: 'text', label: '开始时间', prop: 'start_time', show: false, sortable: true, width: '190'},

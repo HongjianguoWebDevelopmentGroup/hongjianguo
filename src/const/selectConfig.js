@@ -176,12 +176,12 @@ const config = [
   ['copyrights_status', {
   	url: '/progress',
   	placeholder: '请输入状态关键词',
-  	params: { category: 2 },
+  	params: { category: 3 },
 	  }], 
   ['trademarks_status', {
   	url: '/progress',
   	placeholder: '请输入状态关键词',
-  	params: { category: 3 },
+  	params: { category: 2 },
 	}], 	  
   ['group', {
     placeholder: '请选择用户组',

@@ -29,9 +29,9 @@ export default {
 		  	'is_search': false,
 		  	'is_pagination': false,
 		  	'columns': [
-		  		{ type: 'text', label: '管制事项', prop: 'name' },
-		  		{ type: 'text', label: '当前节点', prop: 'node_name' },
-		  		{ type: 'text', label: '承办人', prop: 'person_in_charge_name' },
+		  		{ type: 'text', label: '管制事项', prop: 'flow',render_simple:'name' },
+		  		{ type: 'text', label: '当前节点', prop: 'flownode',render_simple:'name' },
+		  		{ type: 'text', label: '承办人', prop: 'person_in_charge',render_simple:'name' },
 		  		{ type: 'text', label: '开始时间', prop: 'start_time' },
 		  		{ type: 'text', label: '指定期限', prop: 'due_time' },
 		  		{ type: 'text', label: '代理机构', prop: 'agency' },
@@ -48,10 +48,10 @@ export default {
 		  	'is_pagination': false,
 		  	'rowClick': this.handleRowClick,
 		  	'columns': [
-		  	 	{ type: 'text', label: '子任务名称', prop: 'flow_node' },
+		  	 	{ type: 'text', label: '子任务名称', prop: 'flownode',render_simple:'name' },
 		  	 	{ type: 'text', label: '开始时间', prop: 'start_time' },
 		  	 	{ type: 'text', label: '完成时间', prop: 'end_time' },
-		  	 	{ type: 'text', label: '承办人', prop: 'person_in_charge_name' },
+		  	 	{ type: 'text', label: '承办人', prop: 'person_in_charge',render_simple:'name' },
 		  	 	{ 
 		  	 		type: 'text', label: '附件', prop: 'attachments',
 		  	 		render (h,item) {
