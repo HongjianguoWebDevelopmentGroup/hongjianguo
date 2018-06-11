@@ -71,7 +71,7 @@ export default {
         'header_btn': [
           { type: 'add', click: this.add, map_if: '/patent/add', },
           { type: 'delete', map_if: '/patent/delete' }, 
-          { type: 'export', map_if: '/patent/export' },
+          { type: 'export2', map_if: '/patent/export' },
           { type: 'import', map_if: '/patent/import' },
           { type: 'batch_upload', map_if: '/patent/upload' },
           { type: 'control', label: '字段' },
