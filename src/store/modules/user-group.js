@@ -1,4 +1,4 @@
-let url = '/api/groups';
+let url = '/groups';
 const state = {
 	data: undefined,
 }

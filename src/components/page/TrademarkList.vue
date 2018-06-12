@@ -1,7 +1,6 @@
 <template>
   <div class="main">
-  	<strainer v-model="filter" @refresh="refresh"></strainer>
-		<table-component :tableOption="tableOption" :data="tableData" ref="table" @refreshTableData="refreshTableData"></table-component>
+		<table-component :tableOption="tableOption" :data="tableData" ref="table" :refreshTableData="refreshTableData"></table-component>
 		<common-detail
       :title="currentRow.title"
       :visible.sync="shrinkVisible" 
@@ -17,7 +16,6 @@
 import TableComponent from '@/components/common/TableComponent'
 import AppDatePicker from '@/components/common/AppDatePicker'
 import CommonDetail from '@/components/page_extension/Common_detail'
-import Strainer from '@/components/page_extension/TrademarkList_strainer'
 
 const URL = '/trademarks'
 export default {
@@ -29,18 +27,20 @@ export default {
 				'name': 'trademark',
 				'url': URL,
 				'is_filter' : true,
-				'header_btn': [{
-					'type': 'add',
-					click: _=>{
-						this.$router.push('/trademark/add');
-					}
-				},
-				{ type: 'delete',},
-				{ type: 'import',},
-				{ type: 'export',},
-				{ type: 'batch_upload',},
-				{ type: 'report', click: _=>{this.$router.push('/trademark/report')} },
-				{ type: 'control', label: '字段'},
+				'is_list_filter': true,
+				'list_type': 'trademark',
+				'header_btn': [
+					{
+						'type': 'add',
+						click: _=>{
+							this.$router.push('/trademark/add');
+						}
+					},
+					{ type: 'delete' },
+					// { type: 'import'},
+					{ type: 'export',},
+					// { type: 'batch_upload' },
+					{ type: 'control', label: '字段'},
 				],
 				'import_type': 'trademark',
 				'upload_type': 'trademark',
@@ -84,7 +84,6 @@ export default {
 			tableData: '',
 			currentRow: '',
 			shrinkVisible: false,
-			filter: {},
 		};
   },
   computed: {
@@ -92,6 +91,10 @@ export default {
       const p = this.$route.meta.params; 
       return p ? p : {};
     },
+    custom () {
+    	const custom = this.$route.meta.custom;
+    	return custom !== undefined ? custom : false;
+    }
   },
   methods: {
   	refreshTableData(option) {
@@ -105,7 +108,7 @@ export default {
   		}
   		this.$axiosGet({
   			url: URL,
-  			data: Object.assign({}, this.filter, option, this.inParams),
+  			data: Object.assign({}, option, this.inParams),
   			success,
   		})
   	},
@@ -136,13 +139,14 @@ export default {
   	}
   },
   mounted () {
-  	this.refresh();
+  	if(!this.custom) {
+  		this.refresh();
+  	}
   },
   components: { 
   	TableComponent, 
   	AppDatePicker,
   	CommonDetail,
-  	Strainer,
   },
   watch: {
 

@@ -1,4 +1,4 @@
-let url = '/api/userinfo'
+let url = '/userinfo'
 
 const state = {
 	data: null,
@@ -60,6 +60,16 @@ const getters = {
 		const user = state.data;
 		const pendingTask = user && user.pendingTask ? user.pendingTask : null;
 		return pendingTask;
+	},
+	userLinks: state => {
+		const user = state.data;
+		const links = user && user.links ? user.links : [];
+		return links;
+	},
+	userReminders: state => {
+		const user = state.data;
+		const reminders = user && user.reminders ? user.reminders : [];
+		return reminders;
 	},
 	userLoading: state=>state.loading,
 }

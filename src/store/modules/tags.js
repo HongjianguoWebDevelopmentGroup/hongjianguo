@@ -1,4 +1,4 @@
-let url = '/api/tags';
+let url = '/tags';
 const state = {
   data: undefined,
 }

@@ -106,8 +106,8 @@ export default {
 		  	project: '',
 		  	target: '',
 		  	code: '',
-		  	status: 0,
 		  	dealine: '',
+		  	status: 1,
 		  	money: {
 		  		amount: '',
 		  		currency: '',
@@ -173,7 +173,7 @@ export default {
   		},
   		set (val) {
   			this.id = val.id;
-  			this.$tool.coverObj(this.form, val, { obj: ['code'], date: ['due_time'] } );
+  			this.$tool.coverObj(this.form, val, { obj: ['code', 'status'], date: ['due_time'] } );
 
   			//code被监听 为了覆盖监听事件的currency,amount数据 延后执行
   			this.$nextTick(_=>{

@@ -52,7 +52,7 @@
     <div class="nav-left" :style="`height: ${innerHeight}px; left: ${navLeft}`" v-if="!noMenu">
       <span class="nav-left-btn" :style="`left: ${navLeftBtn};`" @click="navToggle" v-if="!noMenu"><span :class="navLeftBtnClass"></span></span>
       <el-menu v-if="menusMap != null" theme="dark" router unique-opened :default-active="leftMenuActive" mode="vertical">
-        <app-menu-item v-for="item in menuSource" :dd="item" :key="item.path"></app-menu-item>
+        <app-menu-item v-for="item in menuData" :dd="item" :key="item.path"></app-menu-item>
       </el-menu>
     </div>
     <div v-loading="loading" :element-loading-text="loadingText" >
@@ -64,16 +64,16 @@
               <el-breadcrumb-item v-for="item in select_arr" :to="item.path" :key="item.path">
                 <i :class="item.icon"></i>{{ item.text }}
               </el-breadcrumb-item>
-              <el-breadcrumb-item v-if="screen_label.length != 0" class="container-nav-screen">
+              <el-breadcrumb-item v-if="navLabel.length != 0" class="container-nav-screen">
                 <el-tag 
-                  v-for="(tag, index) in screen_label"
+                  v-for="(item, index) in navLabel"
                   :closable="true"
-                  :key="tag"
+                  :key="index"
                   type="primary"
                   :close-transition="false"
-                  @close="handleClose(index)"
+                  @close="handleClose(item)"
                 >
-                  {{ tag }}
+                  {{ item.label }}
                 </el-tag>
               </el-breadcrumb-item>
             </el-breadcrumb>
@@ -106,7 +106,7 @@ export default {
   name: 'app',
   computed: {
     ...mapGetters([
-      'screen_label',
+      'navLabel',
       'innerHeight',
       'loading',
       'loadingText',
@@ -117,7 +117,8 @@ export default {
       'agencyLoadVisible',
       'menusMap',
       'pendingTaskCount',
-      'menuSource',
+      'menuData',
+      'menuDataMap',
       'menuType',
       'noMenu',
     ]),
@@ -136,7 +137,10 @@ export default {
 
       for(let i = 0; i < arr2.length; i++) {
         const str = i == 0 ? "/" : arr2.slice(0, i+1 ).join("/");
-        arr.push(menu.map[str]);
+        const item = this.menuDataMap[str];
+        if(item) {
+          arr.push(item);
+        }
       }
 
       return arr;
@@ -180,22 +184,22 @@ export default {
   },
   methods: {
     ...mapActions([
-      'refreshExtends',
-      'refreshProduct',
-      'refreshClassification',
-      'refreshBranch',
-      'refreshArea',
-      'refreshCity',
+      // 'refreshExtends', //extend-field
+      'refreshProduct', //product
+      'refreshClassification', //classification
+      'refreshBranch', //branch
+      'refreshArea', //area
+      'refreshCity', //city
+      'closeTag', //filter-cache
     ]),
     ...mapMutations([
-      'removeScreen',
-      'toggleLeftVisible',
-      'setInnerHeight',
-      'setInnerWidth',
-      'setUser',
+      'toggleLeftVisible', //index
+      'setInnerHeight', //index
+      'setInnerWidth', //index
+      'setUser', //current-user
     ]),
-    handleClose (index) {
-      this.removeScreen(index);
+    handleClose (item) {
+      this.closeTag(item);
     },
     handleCommond (commond) {
       if(commond == 'login_out') {
@@ -261,7 +265,7 @@ export default {
       this.setUser(window.appCache.userinfo);
       
       //获取系统配置数据
-      this.refreshExtends(false);
+      // this.refreshExtends(false);
       // this.$store.dispatch('refreshTags');
       
       //避免每次F5都发送请求的方法：

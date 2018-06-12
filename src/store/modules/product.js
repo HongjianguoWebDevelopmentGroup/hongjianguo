@@ -1,4 +1,4 @@
-let url = '/api/products';
+let url = '/products';
 const state = {
 	data: [],
 }

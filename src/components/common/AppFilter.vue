@@ -3,7 +3,7 @@
   <div>
   <div v-if="!show" style="padding: 5px; padding-left: 20px; font-size: 12px; color: #ccc;">暂时没有快速筛选项...</div>
   <div class="app-filter" v-show="show">
-  	<div :class="index === multipled_index ? 'app-filter-row app-filter-row-multipled' : 'app-filter-row'" v-for="(row, index) in filterList" :key="row.key" v-if=" !control.get(row.key) && row.items.length != 0 ">
+  	<div :class="index === multipled_index ? 'app-filter-row app-filter-row-multipled' : 'app-filter-row'" v-for="(row, index) in filterList" :key="row.key" v-if=" !screenControl.get(row.key) && row.items.length != 0 ">
   		<div class="app-filter-label">
   			{{ row.label }}
   		</div>
@@ -11,10 +11,14 @@
 	  		<div class="app-filter-items">
 	  			<template v-if="row.tidy && row.tidy.length != 0">
 	  				<template v-if="more[row.key]">
-	  					<a class="app-filter-item" v-for="(item, ind) in row.items" :key="ind" @click="handleClick(row, item)">{{ item }}</a>
+	  					<template v-for="(item, ind) in row.items">
+                <el-button type="text" :key="ind" style="margin-left: 15px; margin-top: 10px;" @click="handleClick(row, item)" size="small">{{ `${item.label}(${item.count})` }}</el-button>
+              </template>
 	  				</template>
 	  				<template v-else>
-	  					<a class="app-filter-item" v-for="(item, ind) in row.tidy" :key="ind" @click="handleClick(row, item)">{{ item }}</a>
+	  					<template v-for="(item, ind) in row.tidy">
+                <el-button type="text" :key="ind" style="margin-left: 15px; margin-top: 10px;" @click="handleClick(row, item)" size="small">{{ `${item.label}(${item.count})` }}</el-button>
+              </template>
 	  				</template>
 	  			</template>
 	  			<template v-else>
@@ -50,34 +54,70 @@
 </template>
 
 <script>
+//###数据格式 begin###
+/*data = [
+  {
+    label: '行头', //左侧表头
+    key: 'key', //后台关键词
+    tidy: [], //同items格式相同,用于显示缩略项
+    items: [
+      {
+        label: '数据1', //右侧数据项
+        value: 'value', //数据项的值
+        count: 1, //当前数量
+      },
+      {
+        label: '数据2',
+        value: 'value2',
+        count: 2,
+      }
+    ],
+    multipled: true, //是否多选, 默认false
+
+  }
+]*/
+//###数据格式 end#####
+import {mapGetters} from 'vuex'
+import {mapActions} from 'vuex'
+
 export default {
   name: 'appFilter',
   props: ['data'],
   data () {
-  	const d = this;
-  	const more = {};
-
-  	for(let a of d.data) {
-  		if(a["key"] && a["tidy"] && a["tidy"]["length"] != 0) {
-  			more[a["key"]] = false;
-  		}
-  	}
-
   	return {
   	  multipled_index: -1,
-      checkList: [], 
-  	  more,
+      checkList: [],
+      more: {},
   	}
   },
   methods: {
+    ...mapActions([
+      'addScreen',
+      'setScreenVisible',
+    ]),
+    init () {
+      const list = this.filterList;
+      const more = {};
+  
+      for(let a of list) {
+        if(a["key"] && a["tidy"] && a["tidy"]["length"] != 0) {
+          more[a["key"]] = false;
+        }
+      }
+      this.more = more;
+    },
   	handleClick (row, item) {
 
   		const name = row.label;
   		const key = row.key;
   		const items = [item];
 
-  		this.$store.commit('addScreen', {name, key, items});
-
+  		this.addScreen({name, key, items});
+      this.setScreenVisible(true);
+      this.$nextTick(() => {
+        this.setScreenVisible(false);
+      });
+      
   	},
   	handleMultipled (index) {
   		const d = this;
@@ -99,8 +139,9 @@ export default {
   		const key = row.key;
   		const items = row.items.filter((item, index)=>set.has(index));
 
-  		this.$store.commit('addScreen', {name, key, items});
-  		d.multipled_index = -1;
+      this.addScreen({name, key, items});
+
+      d.multipled_index = -1;
   		d.checkList.length = 0;
   	},
   	handleMore (key, flag) {
@@ -109,13 +150,13 @@ export default {
   	}
   },
   computed: {
-  	control () {
-      return this.$store.getters.screen_control;
-  	},
+    ...mapGetters([
+      'screenControl', //filter-cache
+    ]),
   	show () {
   		let flag = false;
   		for(let d of this.data) {
-  			if( !this.control.get(d["key"]) && d.items && d.items.length != 0 ) {
+  			if( !this.screenControl.get(d["key"]) && d.items && d.items.length != 0 ) {
   				flag = true;
   				break;
   			}
@@ -129,13 +170,9 @@ export default {
         const arr = [];
         for(let t of a.items) {
           arr.push({
-            label: t.label != undefined ? t.label : t, 
-            value: t.value != undefined 
-                    ? t.value 
-                    : t.label != undefined
-                      ? t.label 
-                      : t,
-            count: t.count ? t.count : 0,
+            label: t.label !== undefined ? t.label : '', 
+            value: t.value !== undefined ? t.value : '',
+            count: t.count !== undefined ? t.count : 0,
           });
         }
         filterList.push(Object.assign({}, a, {items: arr}));
@@ -143,6 +180,14 @@ export default {
 
       return filterList;
     },
+  },
+  created () {
+    this.init();
+  },
+  watch: {
+    filterList () {
+      this.init();
+    }
   }
 }
 </script>

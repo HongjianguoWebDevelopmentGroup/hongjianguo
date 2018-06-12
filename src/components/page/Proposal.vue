@@ -1,48 +1,6 @@
 <template>
-	<div class="main">
-    <app-collapse col-title="提案筛选" default-close ref="collapse">   
-      <el-form label-width="80px">
-        <el-row>
-          <el-col :span="12">
-            <el-form-item label="提案标题">
-              <el-input v-model="title" placeholder="请输入需要搜索的提案标题"></el-input>
-            </el-form-item>
-            <el-form-item label="技术分类">
-              <classification v-model="classification" count-type="proposal" multiple></classification>
-            </el-form-item>
-            <el-form-item label="产品分类">
-              <product v-model="product" count-type="proposal" multiple></product>
-            </el-form-item>
-            <el-form-item label="部门">
-              <branch v-model="branch" count-type="proposal" multiple></branch>
-            </el-form-item>
-            <el-form-item label="IPR">
-              <static-select type="ipr" v-model="ipr" multiple></static-select>
-            </el-form-item>
-          </el-col>
-          <el-col :span="12">
-            <el-form-item label="发明人">
-              <remote-select type="inventor" v-model="inventors" multiple></remote-select>
-            </el-form-item>
-            <el-form-item label="提案人">
-              <remote-select type="member" v-model="proposer" multiple></remote-select>
-            </el-form-item>
-            <el-form-item label="标签">
-              <static-select type="tag" v-model="tags" multiple></static-select>
-            </el-form-item>
-            <el-form-item label="提案时间">
-              <el-date-picker type="daterange" placeholder="请选择提案时间" v-model="create_time"></el-date-picker>
-            </el-form-item>
-          </el-col>
-        </el-row>
-        <el-row style="text-align: center">
-          <el-button type="info" size="small" @click="query">查询</el-button>
-          <el-button type="danger" size="small" @click="clear" style="margin-left: 20px">清空</el-button>
-        </el-row>
-      </el-form>
-    </app-collapse>
-    
-		<table-component :tableOption="tableOption" :data="tableData" ref="table" @refreshTableData="refreshTableData" :refresh-proxy="refreshProxy">
+	<div class="main">    
+		<table-component :tableOption="tableOption" :data="tableData" ref="table" :refreshTableData="refreshTableData" :refresh-proxy="refreshProxy">
       <el-button v-if="menusMap && !menusMap.get('/proposals/proposer')" type="primary" icon="d-arrow-right" class="table-header-btn" @click="transferPop" slot="transfer" style="margin-left: 5px;">移交</el-button>
       
       <template slot="row_action" slot-scope="scope">
@@ -67,7 +25,6 @@
 
 <script>
 import TableComponent from '@/components/common/TableComponent'
-import AppFilter from '@/components/common/AppFilter'
 import AppCollapse from '@/components/common/AppCollapse'
 import Classification from '@/components/form/Classification'
 import Product from '@/components/form/Product'
@@ -77,7 +34,6 @@ import ProposalDetail from '@/components/page_extension/Proposal_detail'
 
 import RemoteSelect from '@/components/form/RemoteSelect'
 import StaticSelect from '@/components/form/StaticSelect'
-import AxiosMixins from '@/mixins/axios-mixins'
 
 import {mapGetters} from 'vuex'
 
@@ -89,7 +45,6 @@ const strainerArr = ['classification', 'product', 'proposer', 'tags', 'inventors
 const map = new Map([['flownodes', 'progress'],['time', 'create_time']]);
 export default {
   name: 'proposalList',
-  mixins: [ AxiosMixins ],
   methods: {
     add () {
       this.$router.push('/proposal/add');
@@ -131,7 +86,7 @@ export default {
             const data = { ids: this.$tool.splitObj(s, 'id') };
             const success = _=>{ this.update() };
 
-            this.axiosDelete({ url, data, success });
+            this.$axiosDelete({ url, data, success });
           })
           .catch(_=>{console.log(_)});
       }
@@ -165,7 +120,7 @@ export default {
     },
     refreshTableData (option) {
       const url = '/api/proposals';
-      const data = Object.assign({}, option, this.filter, this.screen_value, this.inParams);
+      const data = Object.assign({}, option, this.inParams);
       const success = _=>{
         if(data.format == 'excel') {
           window.location.href = _.proposals.downloadUrl;
@@ -174,7 +129,7 @@ export default {
         }
       }
       
-      this.refreshProxy = this.axiosGet({url, data, success});
+      this.refreshProxy = this.$axiosGet({url, data, success});
     },
     refresh () {
       this.$refs.table.refresh();
@@ -209,16 +164,19 @@ export default {
       const complete = _=>{this.transferDisabled = false};
 
       this.transferDisabled = true;
-      this.axiosPut({url, data, success, complete});
+      this.$axiosPut({url, data, success, complete});
     }
   },
   data () {
     return {
+      filterVisible: false,
       refreshProxy: '',
       tableOption: {
         'name': 'proposalList',
         'url': URL,
         'is_filter': true,
+        'is_list_filter': true,
+        'list_type': 'proposal',
         'height': 'default',
         'search_placeholder': '搜索案号、标题、标签、发明人',
         'highlightCurrentRow': true, 
@@ -228,7 +186,6 @@ export default {
           { type: 'delete' },
           { type: 'export' },
           { type: 'control' },
-          { type: 'report', click: _=>{this.$router.push('/proposal/report')} },
         ],
         'header_slot': ['transfer'],
         'columns': [
@@ -283,13 +240,18 @@ export default {
       const p = this.$route.meta.params; 
       return p ? p : {};
     },
+    custom () {
+      const custom = this.$route.meta.custom;
+      return custom !== undefined ? custom : false;
+    },
   },
   mounted () {
-    this.refresh();
+    if(!this.custom) {
+      this.refresh();
+    }
   },
   components: { 
-    TableComponent, 
-    AppFilter, 
+    TableComponent,
     AppCollapse, 
     Classification, 
     Product, 

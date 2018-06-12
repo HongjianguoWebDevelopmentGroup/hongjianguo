@@ -1,4 +1,4 @@
-let url = '/api/invoiceEntities';
+let url = '/invoiceEntities';
 const state = {
 	data: [],
 }

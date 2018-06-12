@@ -1,17 +1,13 @@
-
-let url_roeData = '/api/roe'
+let url_roeData = '/roe'
 const state = {
-
 	roeData: null,
 }
 
 const getters = {
-
 	roeData: state=> state.roeData == null ? {} : state.roeData, 
 }
 
 const mutations = {
-
 	setRoeData (state, d) {
 		state.roeData = d;
 	}

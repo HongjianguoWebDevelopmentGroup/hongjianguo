@@ -48,6 +48,13 @@ const taskMenu = [
 			{ type: 'item', text: '版权', path: '/task/type/copyright', icon: '' },
 		],
 	},
+	{
+		type: 'submenu',
+		text: '我的搜索项',
+		path: '/task/custom',
+		icon: 'iconfont el-icon-my-task',
+		children: [],
+	}
 ];
 
 const proposalMenu = [
@@ -72,6 +79,13 @@ const proposalMenu = [
 			{ type: 'item', text: '有新颖性', path: '/proposal/novelty/existent', icon: '' },
 			{ type: 'item', text: '无新颖性结案', path: '/proposal/novelty/non-existent', icon: '' },
 		]
+	},
+	{
+		type: 'submenu',
+		text: '我的搜索项',
+		path: '/proposal/custom',
+		icon: 'iconfont el-icon-my-proposal',
+		children: [],
 	}
 ]
 
@@ -116,6 +130,13 @@ const patentMenu = [
 			{ type: 'item', text: '下月PCT19条修改到期', path: '/patent/duration/pct19', icon: '' },
 		]
 	},
+	{
+		type: 'submenu',
+		text: '我的搜索项',
+		path: '/patent/custom',
+		icon: 'iconfont el-icon-my-patent',
+		children: [],
+	}
 ];
 
 const trademarkMenu = [
@@ -147,6 +168,13 @@ const trademarkMenu = [
 			{ type: 'item', text: '其他', path: '/trademark/area/other', icon: '' },
 		], 
 	},
+	{
+		type: 'submenu',
+		text: '我的搜索项',
+		path: '/trademark/custom',
+		icon: 'iconfont el-icon-my-trademark',
+		children: [],
+	}
 ];
 
 const copyrightMenu = [
@@ -172,18 +200,51 @@ const copyrightMenu = [
 			{ type: 'item', text: '其他', path: '/copyright/area/other', icon: '' },
 		], 
 	},
+	{
+		type: 'submenu',
+		text: '我的搜索项',
+		path: '/copyright/custom',
+		icon: 'iconfont el-icon-my-copyright',
+		children: [],
+	}
 ];
 
 const feeMenu = [
-	{ type: 'item', text: '应收明细', path: '/fee/income', icon: 'iconfont el-icon-my-deal' },
-	{ type: 'item', text: '应付明细', path: '/fee/pay', icon: 'iconfont el-icon-my-receipt' },
-	{ type: 'item', text: '请款单', path: '/fee/bill', icon: 'iconfont el-icon-my-deal' },
-	{ type: 'item', text: '付款单', path: '/fee/payment',icon: 'iconfont el-icon-my-pay' },
+	{	
+		type: 'submenu',
+		text: '应付',
+		path: '/fee_menu/fee_pay',
+		icon: 'iconfont el-icon-my-receipt',
+		children: [
+			{ type: 'item', text: '应付明细', path: '/fee_menu/fee_pay/pay', icon: 'iconfont el-icon-my-receipt' },
+			{ type: 'item', text: '账单', path: '/fee_menu/fee_pay/payment',icon: 'iconfont el-icon-my-pay' },
+		]
+	},
+	{
+		type: 'submenu',
+		text: '应收',
+		path: '/fee_menu/fee_in',
+		icon: 'iconfont el-icon-my-deal',
+		children: [
+			{ type: 'item', text: '政府资助', path: '/fee_menu/fee_in/income', icon: 'iconfont el-icon-my-deal' },
+			{ type: 'item', text: '资助申请单', path: '/fee_menu/fee_in/bill', icon: 'iconfont el-icon-my-deal' },
+		]
+	},
+	{ 
+		type: 'submenu',
+		text: '年费',
+		path: '/fee_menu/renewal',
+		icon: 'iconfont el-icon-my-renewal-fee',
+		children: [
+			{ type: 'item', text: '年费明细', path: '/fee_menu/renewal/fee', icon: 'iconfont el-icon-my-renewal-fee' },
+			{ type: 'item', text: '年费评估单', path: '/fee_menu/renewal/estimate', icon: 'iconfont el-icon-my-renewal-estimate' },
+		]
+	}
+	
 ];
 
 const renewalMenu = [
-	{ type: 'item', text: '年费明细', path: '/renewal/fee', icon: 'iconfont el-icon-my-renewal-fee' },
-	{ type: 'item', text: '年费评估单', path: '/renewal/estimate', icon: 'iconfont el-icon-my-renewal-estimate' },
+	
 ];
 
 const reportMenu = [
@@ -197,8 +258,26 @@ const reportMenu = [
 ]
 
 const newsMenu = [
-	{ type: 'item', text: '邮件', path: '/news/mailList', icon: 'iconfont el-icon-my-email' },
-	{ type: 'item', text: '交互', path: '/news/interact', icon: 'iconfont el-icon-my-interact' },
+	{ type: 'item', text: '通知邮件', path: '/news/mailList', icon: 'iconfont el-icon-my-email' },
+	{ type: 'item', text: '交互邮件', path: '/news/interact', icon: 'iconfont el-icon-my-interact' },
+	{
+		type: 'item',
+		text: '专利通知书',
+		path: '/news/patent_notice',
+		icon: 'iconfont el-icon-my-patent',
+	},
+	{
+		type: 'item',
+		text: '商标通知书',
+		path: '/news/trademark_notice',
+		icon: 'iconfont el-icon-my-trademark',
+	},
+	{
+		text: '版权通知书',
+		path: '/news/copyright_notice',
+		icon: 'iconfont el-icon-my-copyright',
+		type: 'item',
+	},
 ];
 
 const settingMenu = [
@@ -210,7 +289,7 @@ const settingMenu = [
 	{ type: 'item', text: '产品分类管理', path: '/setting/product', icon: 'iconfont el-icon-my-products' },
 	{ type: 'item', text: '部门管理', path: '/setting/branch', icon: 'iconfont el-icon-my-department' },
 	{ type: 'item', text: '代理机构管理', path: '/setting/agency',icon: 'iconfont el-icon-my-organization' },
-	{ type: 'item', text: '报价管理', path: '/setting/offer', icon: '' },
+	{ type: 'item', text: '报价管理', path: '/setting/offer', icon: 'iconfont el-icon-my-organization' },
 	{ type: 'item', text: '系统设置', path: '/setting/system', icon: 'iconfont el-icon-my-system' },
 ];
 
@@ -249,30 +328,30 @@ menu.source = [
 		text: '商标',
 		key: 'trademark',
 		path: '/trademark',
-		icon: 'iconfont	 el-icon-my-task',
+		icon: 'iconfont el-icon-my-trademark',
 		menu: trademarkMenu,
 	},
 	{
 		text: '版权',
 		key: 'copyright',
 		path: '/copyright',
-		icon: 'iconfont	 el-icon-my-copyright',
+		icon: 'iconfont el-icon-my-copyright',
 		menu: copyrightMenu,
 	},
 	{
 		text: '费用',
 		key: 'fee',
-		path: '/fee',
+		path: '/fee_menu',
 		icon: 'iconfont el-icon-my-fee',
 		menu: feeMenu,
 	},
-	{
-		text: '年费',
-		key: 'renewal',
-		path: '/renewal',
-		icon: 'iconfont el-icon-my-renewal',
-		menu: renewalMenu,
-	},
+	// {
+	// 	text: '年费',
+	// 	key: 'renewal',
+	// 	path: '/renewal',
+	// 	icon: 'iconfont el-icon-my-renewal',
+	// 	menu: renewalMenu,
+	// },
 	{
 		text: '报表',
 		key: 'report',
@@ -281,7 +360,7 @@ menu.source = [
 		menu: reportMenu,
 	},
 	{
-		text: '邮件',
+		text: '交互',
 		key: 'news',
 		path: '/news',
 		icon: 'iconfont el-icon-my-email',
@@ -294,13 +373,13 @@ menu.source = [
 		icon: 'iconfont el-icon-my-setting',
 		menu: settingMenu,
 	},
-	{
-		text: '测试',
-		key: 'test',
-		path: '/test',
-		icon: '',
-		menu: testMenu,
-	}
+	// {
+	// 	text: '测试',
+	// 	key: 'test',
+	// 	path: '/test',
+	// 	icon: '',
+	// 	menu: testMenu,
+	// }
 ]
 
 menu.map = {
@@ -322,7 +401,6 @@ menu.map = {
 	'/patent/add': {text: '新建专利', icon: '', path: '/patent/add'},
 	'/trademark/add': {text: '新建商标', icon: '', path: '/trademark/add'},
 	'/copyright/add': {text: '新建版权', icon: '', path: '/copyright/add'},
-
 
 	'/report/task/add': {text: '新建报表', icon: '', path: '/report/task/add'},	
 	'/report/proposal/add': {text: '新建报表', icon: '', path: '/report/proposal/add'},	
@@ -350,7 +428,7 @@ for(let k in menu.source) {
 	const text = item["text"] ? item["text"] : '';
 	const icon = item["icon"] ? item["icon"] : '';
 	const path = item["path"]; 
-	const parent = '';
+	const parent = '/';
 	menu["map"][item["path"]] = { text, icon, path, parent };
 	if(item['menu'] && item['menu']['length'] != 0) {
 		tailRecursion(item['menu']);		
