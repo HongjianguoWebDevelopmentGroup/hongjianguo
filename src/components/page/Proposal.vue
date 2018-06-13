@@ -2,7 +2,7 @@
 	<div class="main">
     
     
-		<table-component :tableOption="tableOption" :data="tableData" ref="table" :refreshTableData="refreshTableData">
+		<table-component :tableOption="tableOption" :data="tableData" ref="table" :refreshTableData="refreshTableData" :refresh-proxy="refreshProxy">
       <el-button v-if="menusMap && !menusMap.get('/proposals/proposer')" type="primary" icon="d-arrow-right" @click="transferPop" slot="transfer" style="margin-left: 5px;">移交</el-button>
       
       <template slot="action" slot-scope="scope">
@@ -108,7 +108,7 @@ export default {
         }
       }
       
-      return this.$axiosGet({url, data, success});
+      return this.refreshProxy = this.$axiosGet({url, data, success});
     },
     refresh () {
       this.$refs.table.refresh();
@@ -148,6 +148,7 @@ export default {
   },
   data () {
     return {
+      refreshProxy: '',
       isClose: true,
       tableOption: {
         'name': 'proposalList',
@@ -162,7 +163,7 @@ export default {
         'header_btn': [
           { type: 'add', click: this.add },
           { type: 'delete' },
-          { type: 'export' },          
+          { type: 'export'},          
           { type: 'control' },
         ],
         'header_slot': ['transfer'],

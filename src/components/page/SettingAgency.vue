@@ -1,9 +1,12 @@
 <template>
   <div class="main">
 		<table-component :tableOption="option" :data="tableData" @refreshTableData="refreshTableData" ref="table">
+			<template slot-scope="scope" slot="forbidden">
+				<el-button  class="table-header-btn" type="primary" icon="my-forbidden" style="margin-left: 6px;" @click="handleForbidden">禁用</el-button>
+			</template>
 			<template slot-scope="scope" slot="is_core_partner"> 
 				<el-select v-model="is_core_partner" style="width: 130px;">
-					<el-option v-for="(item, index) in options.is_core_partner" :label="item.l" :value="item.v" :key=index></el-option>
+					<el-option v-for="(item, index) in options.is_core_partner" :label="item.l" :value="item.v" :key="index"></el-option>
 				</el-select>
 			</template>
 		</table-component>
@@ -29,7 +32,7 @@ export default {
 		  		{'type': 'add', click: this.add},
 		  		{'type': 'control'}
 				],
-				'header_slot': [ 'is_core_partner' ],
+				'header_slot': [ 'is_core_partner', 'forbidden' ],
 				'columns': [
 					{ type: 'selection' },
 					{ type: 'text', label: '机构名称', prop: 'name', width: '150' },
@@ -54,6 +57,11 @@ export default {
 					  	})
 					  }
 					},
+					{ type: 'text', label: '负面评价数量', prop: 'negative_amount', width: '145'},
+					{ type: 'text', label: '代理所等级', prop: 'level', width: '145'},
+					{ type: 'text', label: '案件配额', prop: 'distributed_amount', width: '145'},
+					{ type: 'text', label: '新申请平均返稿天数', prop: 'new_application_daytime', width: '168'},
+					{ type: 'text', label: 'OA平均返稿天数', prop: 'oa_daytime', width: '168'},
 					{
 						type: 'action',
 						width: '200',
@@ -104,6 +112,18 @@ export default {
   		const success = _=>{ this.tableData = _.agencies };
 
   		this.axiosGet({url, data, success});
+  	},
+  	handleForbidden ({id}) {
+  		const s = this.$refs.table.getSelected();
+  		if(s) {
+  			const url = '/api/agencies';
+  			const data ={id: s};
+  			const success = _=>{	
+  				this.update();
+  			};
+  			this.axiosPut({url, data, success});	
+  		}
+
   	},
   	refresh () {
   		this.$refs.table.refresh();	
