@@ -46,9 +46,9 @@ const getters = {
   detailDocuments: state=>state.data ? state.data.documents : [],
   detailGroup: state=>state.data && state.data.group ? state.data.group : [],
   detailFamily: state=>state.data && state.data.family ? state.data.family : [],
-  detailDefence: state=>state.data && state.data.defence ? state.data.defence : [],
+  detailDefence: state=>state.data && state.data.responses ? state.data.responses : [],
   detailQuote: state=>state.data && state.data.quote ? state.data.quote : null,
-  detailReview: state=>state.data && state.data.review ? state.data.review : [],
+  detailReview: state=>state.data && state.data.reviews ? state.data.reviews : [],
   detailFundings: state=>state.data && state.data.fees.funding ? state.data.fees.funding : '',
   detailOfficial: state=>state.data && state.data.fees.official ? state.data.fees.official : '',
   detailAgency: state=>state.data && state.data.fees.agency ? state.data.fees.agency : '',
@@ -58,6 +58,7 @@ const getters = {
   detailReminders: state=>state.data && state.data.reminders ? state.data.reminders : [],
   detailJudge: state=>state.data && state.data.judge ? state.data.judge : [],
   detailLoading: state=>state.loading,
+  detailAgencies: state=>state.data && state.data.agencies ? state.data.agencies : [],
 }
 
 const mutations = {

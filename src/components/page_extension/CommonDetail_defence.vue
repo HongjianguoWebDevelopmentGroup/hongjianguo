@@ -9,11 +9,11 @@ export default {
 	data () {
 		return {
 			columns: [
-				{type: 'text', label: '审查节点', prop: 'flow'},
-				{type: 'text', label: '记录人', prop: 'person'},
-				{type: 'text', label: '记录时间', prop: 'end_time'},
-				{type: 'text', label: '审查要点', prop: 'points'},
-				{type: 'text', label: '修改/答辩', prop: 'defence'},
+				{type: 'text', label: '审查节点', prop: 'taskdef',render_simple: 'name'},
+				{type: 'text', label: '记录人', prop: 'operator',render_simple: 'name'},
+				{type: 'text', label: '记录时间', prop: 'create_time'},
+				{type: 'text', label: '审查要点', prop: 'opinion'},
+				{type: 'text', label: '修改/答辩', prop: 'response'},
 			]	
 		}
 	},
