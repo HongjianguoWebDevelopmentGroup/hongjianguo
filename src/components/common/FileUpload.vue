@@ -32,17 +32,22 @@
           <el-date-picker type="date" v-model="scope.row.apd" style="width: 100%;" v-show="!!tableData[scope.$index]['show_apd']"></el-date-picker>
         </template>
       </el-table-column>      
-      <el-table-column label="授权日期" prop="issue_date" v-if="config.issue_date" width="200">
-        <template slot-scope="scope">
-          <el-date-picker type="date" v-model="scope.row.issue_date" style="width: 100%;" v-show="!!tableData[scope.$index]['show_issue_date']"></el-date-picker>
-        </template>
-      </el-table-column>
       <el-table-column label="申请号" prop="apn" v-if="config.apn" width="200">
         <template slot-scope="scope">
           <el-input v-model="scope.row.apn" style="width: 100%;" v-show="!!tableData[scope.$index]['show_apn']"></el-input>
         </template>
       </el-table-column>       
-      <el-table-column label="国际检索日期" prop="pct_search_date" v-if="config.pct_search_date" width="200">
+      <el-table-column label="授权日" prop="issue_date" v-if="config.issue_date" width="200">
+        <template slot-scope="scope">
+          <el-date-picker type="date" v-model="scope.row.issue_date" style="width: 100%;" v-show="!!tableData[scope.$index]['show_issue_date']"></el-date-picker>
+        </template>
+      </el-table-column>
+      <el-table-column label="授权号" prop="issue_number" v-if="config.issue_number" width="200">
+        <template slot-scope="scope">
+          <el-input v-model="scope.row.issue_number" style="width: 100%;" v-show="!!tableData[scope.$index]['show_issue_number']"></el-input>
+        </template>
+      </el-table-column>
+      <!-- <el-table-column label="国际检索日期" prop="pct_search_date" v-if="config.pct_search_date" width="200">
         <template slot-scope="scope">
           <el-date-picker type="date" v-model="scope.row.pct_search_date" style="width: 100%;" v-show="!!tableData[scope.$index]['show_pct_search_date']"></el-date-picker>
         </template>
@@ -51,7 +56,7 @@
         <template slot-scope="scope">
           <el-input v-model="scope.row.pct_search_result" style="width: 100%;" v-show="!!tableData[scope.$index]['show_pct_search_result']"></el-input>
         </template>
-      </el-table-column>
+      </el-table-column> -->
       <el-table-column label="操作">
         <template slot-scope="scope">
           <el-button icon="delete" size="mini" type="text" @click="handleDelete(scope.$index)">删除</el-button>
@@ -229,6 +234,7 @@ export default {
       copy['show_deadline'] = f.deadline == 1 && this.config.legal_time ? true : false;
       copy['show_apd'] = f.apd == 1 && this.config.apd ? true : false;
       copy['show_issue_date'] = f.issue_date == 1 && this.config.issue_date ? true : false;
+      copy['show_issue_number'] = f.issue_number == 1 && this.config.issue_number ? true : false;
       copy['show_apn'] = f.apn == 1 && this.config.apn ? true : false;
       copy['show_pct_search_date'] = f.pct_search_date == 1 && this.config.pct_search_date ? true : false;
       copy['show_pct_search_result'] = f.pct_search_result == 1 && this.config.pct_search_result ? true : false;
@@ -307,7 +313,7 @@ export default {
           if(_.issue_date) {
             o.issue_date = this.$tool.getDate( new Date(_.issue_date) );
           }else {
-            return this.$message({type: 'warning', message: '请填写授权日期'}); 
+            return this.$message({type: 'warning', message: '请填写授权日'}); 
           }
         }
         if(_.show_apn) {
@@ -315,6 +321,13 @@ export default {
             o.apn = _.apn;
           }else {
             return this.$message({type: 'warning', message: '请填写申请号'}); 
+          }
+        }
+        if(_.show_issue_number) {
+          if(_.issue_number) {
+            o.issue_number = _.issue_number;
+          }else {
+            return this.$message({type: 'warning', message: '请填写授权号'}); 
           }
         }
         if(_.show_pct_search_date) {
