@@ -76,7 +76,7 @@
       <el-input v-model="form.title" placeholder="请填写正式递交的标题"></el-input>
     </el-form-item>    
     <el-form-item prop="pct_areas" label="PCT国家" v-if="fields.pct_areas"  :rules="{required: true, message: '请选择PCT要进入的国家'}">
-      <static-select type="area" v-model="form.pct_areas" :multiple=true></static-select>
+      <static-select type="area" v-model="form.pct_areas" :multiple="true"></static-select>
     </el-form-item>
     <el-form-item prop="is_amend" label="是否提出变更" v-if="fields.is_amend">
       <app-switch type="is" v-model="form.is_amend"></app-switch>
