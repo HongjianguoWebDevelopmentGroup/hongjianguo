@@ -36,9 +36,9 @@ import RemoteSelect from '@/components/form/RemoteSelect'
 import StaticSelect from '@/components/form/StaticSelect'
 const URL = '/api/getcountdata';
 const config = [
-	['new_apply', 1],
-	['oa', 2],
-	['review',3],
+	['new_apply', 12],
+	['oa', 23],
+	['review',33],
 	['others','4,5,6'],
 	['over_duetime',1],
 	['over_deadline',1],
@@ -78,21 +78,24 @@ export default {
 	},
 	methods:{
 		handleCellClick (row, column, cell, event) {
-			console.log(column);
-			const url = URL;
-			let option = {
-				agent: row.member.id,
-			};
-			if(column.property == 'over_deadline' || column.property == 'over_duetime' || column.property == 'expiring'){
-				option[column.property] = map.get(column.property);
-			}else{
-				option['stage'] = map.get(column.property);
-			}
-			const data = Object.assign({},option,this.filterObj(this.form));
-			const success = _=>{
-				this.$router.push({name: 'TaskPending',params:{taskExpisingdata:_.data}},);
-			};
-			this.$axiosPost({url, data, success});
+			// console.log(column);
+			// const url = URL;
+			// let option = {
+			// 	agent: row.member.id,
+			// };
+			// if(column.property == 'over_deadline' || column.property == 'over_duetime' || column.property == 'expiring'){
+			// 	option[column.property] = map.get(column.property);
+			// }else{
+			// 	option['stage'] = map.get(column.property);
+			// }
+			// const data = Object.assign({},option,this.filterObj(this.form));
+			// const success = _=>{
+			// 	this.$router.push({name: 'TaskPending',params:{taskExpisingdata:_.data}},);
+			// };
+			// this.$axiosPost({url, data, success});
+
+			const id = map.get(column.property);
+			this.$router.push({name: 'TaskPending', params: {id}})
 		},
 		refreshTaskExpiring (option) {
 			const url = URL;
@@ -104,45 +107,24 @@ export default {
 			this.$axiosGet({url, data, success});
 		},
 		filterObj (obj) {
+			const form = {};
 			for( let k in obj){
-				if(obj[k]==''){
-					delete obj[k];
+				if(obj[k] !== ''){
+					form[k] = obj[k]
 				}
 			}
-			return obj;
+			return form;
 		},
 	},
 	created () {
 		this.refreshTaskExpiring();
 	},
 	watch: {
-		'form.role': {
-			handler (val) { 
-				if (val) {
-					this.refreshTaskExpiring();
-				}
-			}
-		},
-		'form.agency': {
-			handler(val) {
-				if (val) {
-					this.refreshTaskExpiring();
-				}
+		'form': {
+			handler (val) { 				
+				this.refreshTaskExpiring();				
 			},
-		},
-		'form.nstage': {
-			handler (val) { 
-				if (val) {
-					this.refreshTaskExpiring();
-				}
-			}
-		},
-		'form.level': {
-			handler (val) {
-				if (val) {
-					this.refreshTaskExpiring();
-				}
-			}
+			deep: true
 		},
 	},
 	components: {

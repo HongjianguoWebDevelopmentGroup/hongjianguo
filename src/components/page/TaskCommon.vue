@@ -125,7 +125,11 @@
       @editSuccess="editProjectSuccess"
       :refresh-switch="false"
       ref="detail">
-    </common-detail>   
+    </common-detail>
+
+    <app-shrink :visible.sync="mailVisible" :modal="true" :modal-click="false" :is-close="false" title="发送邮件">
+      <mail-edit style="margin-top: 10px; " ref="mailEdit" @sendSuccess="mailCallBack" @cancelSending="mailCallBack"></mail-edit>
+    </app-shrink> 
 
   </div>
 </template>
@@ -149,6 +153,8 @@ import Strainer from '@/components/page_extension/TaskCommon_strainer'
 import AppShrink from '@/components/common/AppShrink'
 import CommonDetail from '@/components/page_extension/Common_detail'
 import Delay from '@/components/page_extension/TaskCommon_delay'
+
+import MailEdit from '@/components/common/MailEditForm'
 
 import { mapMutations } from 'vuex'
 import { mapGetters } from 'vuex'
@@ -292,6 +298,7 @@ export default {
       dialogAgenVisible: false,
       btn_disabled: false,
       install: '',
+      mailVisible: false,
     };
   },
   computed: {
@@ -342,6 +349,9 @@ export default {
       'refreshUser',
       'refreshTaskDelay',
     ]),
+    mailCallBack () {
+      this.mailVisible = false;
+    },
     handleReject () {
       this.$confirm('此操作将退回当前任务，是否继续？', '提示', { 
         type: 'warning'
@@ -537,10 +547,15 @@ export default {
     patentEdit ({id}) {
       // console.log('patentEdit')
     },
-    finishSuccess () {
-      this.$message({message: '完成任务成功', type: 'success'});
+    finishSuccess (data) {
       this.dialogShrinkVisible = false;
       this.refresh();
+      if(data.is_send_mail) {
+        this.mailVisible = true;
+        this.$nextTick( () => {
+          this.$refs.mailEdit.initForm(data.mail_id);
+        });
+      }
     },
     titleRender (h,item,data) {
       const color = colorMap.get(data['color']);
@@ -670,6 +685,7 @@ export default {
     CommonDetail,
     Detail,
     Delay,
+    MailEdit,
   },
 } 
 </script>

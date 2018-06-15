@@ -165,7 +165,7 @@ import AppSwitch from '@/components/form/AppSwitch'
 import {mapMutations} from 'vuex'
 import {mapActions} from 'vuex'
 
-const URL = `/api/tasks`;
+const URL = `/tasks`;
 
 export default {
   name: 'taskFinish',
@@ -261,10 +261,13 @@ export default {
           const url = `${URL}/${this.id}/nexttask`;
           const data = Object.assign({}, {'flow_node_id': this.next}, this.form);
           if(data.rank) {data.rank *= 20};
+
           const success = ()=>{ 
-            this.$emit('submitSuccess') 
-            this.refreshUser();
+            this.$message({type: 'success', message: '完成任务成功'});
+            this.refreshUser();            
+            this.$emit('submitSuccess', data);
           };
+
           const complete = _=>{ this.btn_disabled=false }; 
           this.$axiosPost({url, data, success, complete}); 
         }else {
