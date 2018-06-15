@@ -46,7 +46,10 @@
           <el-badge :value="pendingTaskCount" class="task-pending-top">
             <el-button size="mini" icon="warning" type="primary" @click="$router.push('/task/pending')" title="待办任务"></el-button>
           </el-badge>
-        </div>       
+        </div>   
+        <a target="_blank" href="http://help.hongjianguo.com" style="float: right;
+    margin-right: 180px;
+    font-size: 14px;">帮助</a>       
     </nav>
       
     <div class="nav-left" :style="`height: ${innerHeight}px; left: ${navLeft}`" v-if="!noMenu">
@@ -512,6 +515,9 @@ nav {
   content: "";
   clear: both;
 } 
+.input-min-width {
+  width: 150px !important;
+}
 /*这里放入重写element-ui样式的内容*/
 #app {
   .dialog-control>.el-dialog {

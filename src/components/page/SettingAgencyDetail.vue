@@ -125,19 +125,25 @@ export default {
 				{ type: 'text', label: '默认报价', prop: 'amount', render_text: item => `${item}元`, width: '200' },
 			],
 			statisticsColumns: [
-				{ type: 'text', label: '月份', prop:'time' },
-				{ type: 'text', label: '新申请委案量', prop:'increase_project_amount' },
-				{ type: 'text', label: 'OA新增数量', prop:'oa_increase_amount' },
-				{ type: 'text', label: '新申请定稿数', prop:'new_application_final_amount' },
-				{ type: 'text', label: 'OA定稿数', prop: 'oa_final_amount'},
-				{ type: 'text', label: '新申请平均评分', prop:'new_application_rank' },
-				{ type: 'text', label: 'OA平均评分', prop:'oa_rank' },
-				{ type: 'text', label: '正面评价数量', prop:'positive_amount' },
-				{ type: 'text', label: '负面评价数量', prop:'negative_amount' },
-				{ type: 'text', label: '新申请平均返稿天数', prop:'new_application_daytime' },
-				{ type: 'text', label: 'OA平均返稿天数', prop:'oa_daytime' },
-				{ type: 'text', label: '新申请返稿及时率', prop: 'new_application_ontime_rate' },
-				{ type: 'text', label: 'OA返稿及时率', prop: 'oa_ontime_rate'},
+				{ type: 'text', label: '月份', prop:'time', width: '145'},
+				{ type: 'text', label: '新申请委案量', prop:'increase_project_amount', width: '145' },
+				{ type: 'text', label: 'OA新增数量', prop:'oa_increase_amount', width: '145' },
+				{ type: 'text', label: '新申请定稿数', prop:'new_application_final_amount', width: '145' },
+				{ type: 'text', label: 'OA定稿数', prop: 'oa_final_amount', width: '145'},
+				{ type: 'text', label: '新申请平均评分', prop:'new_application_rank', width: '145' },
+				{ type: 'text', label: 'OA平均评分', prop:'oa_rank' , width: '145'},
+				{ type: 'text', label: '正面评价数量', prop:'positive_amount', width: '145' },
+				{ type: 'text', label: '负面评价数量', prop:'negative_amount', width: '145' },
+				{ type: 'text', label: '新申请平均返稿天数', prop:'new_application_daytime', width: '178' },
+				{ type: 'text', label: 'OA平均返稿天数', prop:'oa_daytime', width: '168' },
+				{ type: 'text', label: '新申请返稿及时率', prop: 'new_application_ontime_rate',  width: '178',render:(h,item)=>{
+					item == -1? item = '-': item;
+					return h('span',item); 
+				}},
+				{ type: 'text', label: 'OA返稿及时率', prop: 'oa_ontime_rate', width: '178', render:(h,item)=>{
+					item == -1? item = '-': item;
+					return h('span',item); 
+				}},
 			],
 			offerData: [],
 			statisticsData: [],
@@ -200,7 +206,7 @@ export default {
 			const success = _=>{
 				this.form = _.agency;
 				this.offerData = _.agency.partner_fee;
-				this.statisticsData =_.agency.angecy_statistics;
+				this.statisticsData =_.agency.agency_statistics;
 			}
 			const complete = _=>{
 				this.$store.commit('cancelLoading');

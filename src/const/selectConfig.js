@@ -1,4 +1,11 @@
 const config = [
+  ['role',{
+    placeholder: '请选择统计类型',
+    options:[
+      {id: 3, name: 'IPR统计' },
+      {id: 6, name: '代理人统计'},
+    ]
+  }],
 	['case_level',{
 		placeholder: '请选择案件等级',
 		options: [
@@ -140,6 +147,13 @@ const config = [
       { id: 2, name: '商标' },
       { id: 3, name: '版权' },
     ]
+  }],
+  ['get_stage',{
+    placeholder: '请选择案件状态',
+    url: '/api/getstage',
+     handle (data) {
+      return data.data.map(_=>{return {id: _.id, name: _.title}});
+    },
   }],
   ['file_type', {
     placeholder: '请选择文件类型',

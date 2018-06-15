@@ -45,6 +45,19 @@
     <el-dialog title="新增任务" :visible.sync="dialogAddVisible" class="dialog-medium">
       <edit type="add" @addSuccess="addSuccess" ref="add"></edit>
     </el-dialog>
+    <el-dialog title="延期任务" :visible.sync="dialogDelayVisible" class="dialog-medium">
+      <el-form label-width="80px">
+        <el-form-item label="备注" prop="remark">
+          <el-input type="textarea" v-model="remark" placeholder="请填写备注"></el-input>
+          <ul style="padding: 0">
+            <li style="color:rgba(187,187,187,1);">延期的任务将会自动延期5个工作日</li>
+          </ul>
+        </el-form-item>
+        <el-form-item>
+          <el-button type="primary" @click="delayTask">提交</el-button>
+        </el-form-item>
+      </el-form>
+    </el-dialog>
     <el-dialog title="编辑任务" :visible.sync="dialogEditVisible" class="dialog-medium">
       <edit type="edit" :row="currentRow" @editSuccess="editSuccess"></edit>
     </el-dialog>
@@ -82,7 +95,8 @@
         <el-tag v-if="currentRow.serial">{{ currentRow.serial }}</el-tag>
       </span>
       <span slot="header" style="float: right">
-        <el-button size="small" type="primary" @click="dialogEditVisible = true" v-if="menusMap && !menusMap.get('/tasks/update')">编辑</el-button>
+        <el-button size="small" @click="dialogDelayVisible= true">延期</el-button>
+        <el-button size="small" type="primary" @click="dialogEditVisible = true" v-if="menusMap && !menusMap.get('/tasks/update')" style="margin-left: 0px;">编辑</el-button>
         <el-button size="small" style="margin-left: 0px;" v-if="menusMap && !menusMap.get('/tasks/transfer')" @click="dialogTranserVisible = true; transfer_person = {id: currentRow.person_in_charge, name: currentRow.person_in_charge_name }">移交</el-button>
         <el-button size="small" @click="handleReject" style="margin-left: 0px;" type="danger" v-if="menusMap && !menusMap.get('/tasks/reject')">退回</el-button>
       </span>
@@ -95,6 +109,9 @@
         </el-tab-pane>
         <el-tab-pane label="相关任务" name="cccc">          
           <detail :row="currentRow" style="margin: 10px 0;"></detail>          
+        </el-tab-pane>
+        <el-tab-pane label="延期历史" name="delay">
+          <delay :row="currentRow"></delay>
         </el-tab-pane>
       </el-tabs>
     </app-shrink>
@@ -131,6 +148,7 @@ import TaskFinish from '@/components/common/TaskFinish'
 import Strainer from '@/components/page_extension/TaskCommon_strainer'
 import AppShrink from '@/components/common/AppShrink'
 import CommonDetail from '@/components/page_extension/Common_detail'
+import Delay from '@/components/page_extension/TaskCommon_delay'
 
 import { mapMutations } from 'vuex'
 import { mapGetters } from 'vuex'
@@ -167,6 +185,7 @@ export default {
       dialogTranserVisible: false,
       dialogSettingVisible: false,
       dialogShrinkVisible: false,
+      dialogDelayVisible: false,
       moreVisible: false,
       moreType: '',
       filters: {},
@@ -177,6 +196,7 @@ export default {
       checkedTest: [],
       currentRow: {},
       transfer_person: '',
+      remark: '',
       tableOption: {
         'name': 'taskList',
         'url': URL,
@@ -278,6 +298,7 @@ export default {
     ...mapGetters([
       'detailBase',
       'menusMap',
+      'userid',
     ]),
     task_status () {
       return this.$route.meta.status;
@@ -310,7 +331,7 @@ export default {
     custom () {
       const custom = this.$route.meta.custom;
       return custom !== undefined ? custom : false;
-    }
+    },
   },
   methods: {
     ...mapMutations([
@@ -319,6 +340,7 @@ export default {
     ]),
     ...mapActions([
       'refreshUser',
+      'refreshTaskDelay',
     ]),
     handleReject () {
       this.$confirm('此操作将退回当前任务，是否继续？', '提示', { 
@@ -453,6 +475,17 @@ export default {
       }
 
       this.$axiosPost({url, data, success});
+    },
+    delayTask() {
+      const url = "/api/delayrecord";
+      const data = Object.assign({},{'task_id': this.currentRow.id,'project_id': this.currentRow.project_id, 'create_user': this.userid,'remark': this.remark});
+      const success = _=>{
+        this.dialogDelayVisible = false;
+        this.$message({ message: '延期成功', type: 'success'});
+        this.update();
+        this.refreshTaskDelay(this.currentRow.id);
+      };
+      this.$axiosPost({url, data, success });
     },
     addSuccess () {
       this.dialogAddVisible = false;
@@ -594,7 +627,7 @@ export default {
     },
     menusMap () {
       this.refreshOption();
-    }
+    },
   },
   mounted () {
 
@@ -602,6 +635,7 @@ export default {
     if(this.$route.params.id) {
       this.install = this.$route.params.id;
     }
+
 
     if(!this.custom) {
 
@@ -635,6 +669,7 @@ export default {
     Information,
     CommonDetail,
     Detail,
+    Delay,
   },
 } 
 </script>

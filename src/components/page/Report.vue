@@ -43,7 +43,7 @@ export default {
 	},
 	computed: {
 		type () {
-			return this.$route.params.type;
+			return this.$route.meta.type;
 		},
 		config () {
 			return configs[this.type];

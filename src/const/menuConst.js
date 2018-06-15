@@ -7,6 +7,7 @@ const taskMenu = [
 	{ type: 'item', text: '我的关注', path: '/task/regardful', icon: 'iconfont el-icon-my-task' },
 	{ type: 'item', text: '暂停处理', path: '/task/pause', icon: 'iconfont el-icon-my-task' },
 	{ type: 'item', text: '已完成', path: '/task/finish', icon: 'iconfont el-icon-my-task' },
+	{ type: 'item', text: '期限管控', path: '/task/expiringControl', icon: 'iconfont el-icon-my-task' },
 	{ 
 		type: 'submenu', 
 		text: '按任务期限', 
@@ -263,8 +264,8 @@ const reportMenu = [
 	{ type: 'item', text: '任务报表', path: '/report/task', icon: 'el-icon-my-report' },
 	{ type: 'item', text: '提案报表', path: '/report/proposal', icon: 'el-icon-my-report' },
 	{ type: 'item', text: '专利报表', path: '/report/patent', icon: 'el-icon-my-report' },
-	{ type: 'item', text: '商标报表', path: '/report/trademark', icon: 'el-icon-my-report' },
-	{ type: 'item', text: '版权报表', path: '/report/copyright', icon: 'el-icon-my-report' },
+	// { type: 'item', text: '商标报表', path: '/report/trademark', icon: 'el-icon-my-report' },
+	// { type: 'item', text: '版权报表', path: '/report/copyright', icon: 'el-icon-my-report' },
 	{ type: 'item', text: '费用报表', path: '/report/fee', icon: 'el-icon-my-report' },
 	{ type: 'item', text: '账单报表', path: '/report/invoice', icon: 'el-icon-my-report' },
 ]
@@ -293,6 +294,7 @@ const settingMenu = [
 	{ type: 'item', text: '技术分类管理', path: '/setting/classification', icon: 'iconfont el-icon-my-techonology' },
 	{ type: 'item', text: '产品分类管理', path: '/setting/product', icon: 'iconfont el-icon-my-products' },
 	{ type: 'item', text: '部门管理', path: '/setting/branch', icon: 'iconfont el-icon-my-department' },
+	{ type: 'item', text: '代理人管理', path: '/setting/agent', icon: 'iconfont el-icon-my-proposer'},
 	{ type: 'item', text: '代理机构管理', path: '/setting/agency',icon: 'iconfont el-icon-my-organization' },
 	// { type: 'item', text: '报价管理', path: '/setting/offer', icon: 'iconfont el-icon-my-organization' },
 	{ type: 'item', text: '系统设置', path: '/setting/system', icon: 'iconfont el-icon-my-system' },
@@ -336,13 +338,13 @@ menu.source = [
 	// 	icon: 'iconfont el-icon-my-copyright',
 	// 	menu: copyrightMenu,
 	// },
-	// {
-	// 	text: '费用',
-	// 	key: 'fee',
-	// 	path: '/fee_menu',
-	// 	icon: 'iconfont el-icon-my-fee',
-	// 	menu: feeMenu,
-	// },
+	{
+		text: '费用',
+		key: 'fee',
+		path: '/fee_menu',
+		icon: 'iconfont el-icon-my-fee',
+		menu: feeMenu,
+	},
 	// {
 	// 	text: '年费',
 	// 	key: 'renewal',
@@ -350,13 +352,13 @@ menu.source = [
 	// 	icon: 'iconfont el-icon-my-renewal',
 	// 	menu: renewalMenu,
 	// },
-	// {
-	// 	text: '报表',
-	// 	key: 'report',
-	// 	path: '/report',
-	// 	icon: 'el-icon-my-report',
-	// 	menu: reportMenu,
-	// },
+	{
+		text: '报表',
+		key: 'report',
+		path: '/report',
+		icon: 'el-icon-my-report',
+		menu: reportMenu,
+	},
 	{
 		text: '交互',
 		key: 'news',

@@ -4,194 +4,194 @@
         <el-row>
           <el-col :span="8">
             <el-form-item label="立案日">
-              <el-date-picker size="small" v-model="form.create_time" placeholder="立案日"></el-date-picker>
+              <el-date-picker size="small" v-model="form.create_time" placeholder="立案日" class="input-min-width"></el-date-picker>
             </el-form-item>
           </el-col>
           <el-col :span="8">
             <el-form-item label="委案日">
-              <el-date-picker size="small"  v-model="form.public_date" type="date" placeholder="委案日"></el-date-picker>
+              <el-date-picker size="small"  v-model="form.public_date" type="date" placeholder="委案日" class="input-min-width"></el-date-picker>
             </el-form-item>
           </el-col>
           <el-col :span="8">
             <el-form-item label="DAS码">
-              <el-input size="small"  v-model="form.das" placeholder="DAS码"></el-input>
+              <el-input size="small"  v-model="form.das" placeholder="DAS码" class="input-min-width"></el-input>
             </el-form-item>
           </el-col>
         </el-row>
         <el-row>
           <el-col :span="8">
             <el-form-item label="申请号">
-              <el-input size="small"  v-model="form.apn" placeholder="申请号"></el-input>
+              <el-input size="small"  v-model="form.apn" placeholder="申请号" class="input-min-width"></el-input>
             </el-form-item>
           </el-col>
           <el-col :span="8">
             <el-form-item label="申请日">
-              <el-date-picker size="small"  v-model="form.apd" type="date" placeholder="申请日"></el-date-picker>
+              <el-date-picker size="small"  v-model="form.apd" type="date" placeholder="申请日" class="input-min-width"></el-date-picker>
             </el-form-item>
           </el-col>
           <el-col :span="8">
             <el-form-item label="初审合格日">
-              <el-date-picker size="small"  v-model="form.pre_exam_ok_date" type="date" placeholder="初审合格日"></el-date-picker>
+              <el-date-picker size="small"  v-model="form.pre_exam_ok_date" type="date" placeholder="初审合格日" class="input-min-width"></el-date-picker>
             </el-form-item>
           </el-col>
         </el-row>
         <el-row>
           <el-col :span="8">
             <el-form-item label="公开号">
-              <el-input size="small"  v-model="form.public_number" placeholder="公开号"></el-input>
+              <el-input size="small"  v-model="form.public_number" placeholder="公开号" class="input-min-width"></el-input>
             </el-form-item>
           </el-col>
           <el-col :span="8">
             <el-form-item label="公开日">
-              <el-date-picker size="small"  v-model="form.public_date" type="date" placeholder="公开日"></el-date-picker>
+              <el-date-picker size="small"  v-model="form.public_date" type="date" placeholder="公开日" class="input-min-width"></el-date-picker>
             </el-form-item>
           </el-col>
           <el-col :span="8">
             <el-form-item label="进入实审日">
-              <el-date-picker size="small"  v-model="form.sub_exam_start_date" type="date" placeholder="进入实审日"></el-date-picker>
+              <el-date-picker size="small"  v-model="form.sub_exam_start_date" type="date" placeholder="进入实审日" class="input-min-width"></el-date-picker>
             </el-form-item>
           </el-col>
         </el-row>
         <el-row>
           <el-col :span="8">
             <el-form-item label="公告号">
-              <el-input size="small"  v-model="form.issue_number" placeholder="公告号"></el-input>
+              <el-input size="small"  v-model="form.issue_number" placeholder="公告号" class="input-min-width"></el-input>
             </el-form-item>
           </el-col>
           <el-col :span="8">
             <el-form-item label="公告日">
-              <el-date-picker size="small"  v-model="form.issue_date" type="date" placeholder="公告日"></el-date-picker>
+              <el-date-picker size="small"  v-model="form.issue_date" type="date" placeholder="公告日" class="input-min-width"></el-date-picker>
             </el-form-item>
           </el-col>
           <el-col :span="8">
             <el-form-item label="复审委内编号">
-              <el-input size="small"  v-model="form.board_number" placeholder="复审委内编号"></el-input>
+              <el-input size="small"  v-model="form.board_number" placeholder="复审委内编号" class="input-min-width"></el-input>
             </el-form-item>
           </el-col>
         </el-row>
         <el-row>
           <el-col :span="8">
             <el-form-item label="国际申请号">
-              <el-input size="small"  v-model="form.pct_no" placeholder="国际申请号"></el-input>
+              <el-input size="small"  v-model="form.pct_no" placeholder="国际申请号" class="input-min-width"></el-input>
             </el-form-item>
           </el-col>
           <el-col :span="8">
             <el-form-item label="国际申请日">
-              <el-date-picker size="small" v-model="form.pct_apd" type="date" placeholder="国际申请日"></el-date-picker>
+              <el-date-picker size="small" v-model="form.pct_apd" type="date" placeholder="国际申请日" class="input-min-width"></el-date-picker>
             </el-form-item>
           </el-col>
           <el-col :span="8">
             <el-form-item label="国际优先权日">
-              <el-date-picker size="small"  v-model="form.pct_priority_date" type="date" placeholder="国际优先权日"></el-date-picker>
+              <el-date-picker size="small"  v-model="form.pct_priority_date" type="date" placeholder="国际优先权日" class="input-min-width"></el-date-picker>
             </el-form-item>
           </el-col>
         </el-row>
         <el-row>
           <el-col :span="8">
             <el-form-item label="国际公开号">
-              <el-input size="small"  v-model="form.pct_public_no" placeholder="国际公开号"></el-input>
+              <el-input size="small"  v-model="form.pct_public_no" placeholder="国际公开号" class="input-min-width"></el-input>
             </el-form-item>
           </el-col>
           <el-col :span="8">
             <el-form-item label="国际公开日">
-              <el-date-picker size="small"  v-model="form.pct_public_date" type="date" placeholder="国际公开日"></el-date-picker>
+              <el-date-picker size="small"  v-model="form.pct_public_date" type="date" placeholder="国际公开日" class="input-min-width"></el-date-picker>
             </el-form-item>
           </el-col>
           <el-col :span="8">
             <el-form-item label="国际公开语言">
-              <static-select size="small"  type="language" v-model="form.pct_public_language"></static-select>
+              <static-select size="small"  type="language" v-model="form.pct_public_language" class="input-min-width"> </static-select>
             </el-form-item>
           </el-col>
         </el-row>
         <el-row>
           <el-col :span="8">
             <el-form-item label="PCT国家阶段">
-              <el-date-picker size="small"  v-model="form.pct_national_stage_expire_date" type="date" placeholder="PCT国家阶段" :disabled="true"></el-date-picker>
+              <el-date-picker size="small"  v-model="form.pct_national_stage_expire_date" type="date" placeholder="PCT国家阶段" :disabled="true" class="input-min-width"></el-date-picker>
             </el-form-item>
           </el-col>
           <el-col :span="8">
             <el-form-item label="PCT19条期限">
-              <el-date-picker size="small"  v-model="form.pct_19_expire_date" type="date" placeholder="PCT19条期限" :disabled="true"></el-date-picker>
+              <el-date-picker size="small"  v-model="form.pct_19_expire_date" type="date" placeholder="PCT19条期限" :disabled="true" class="input-min-width"></el-date-picker>
             </el-form-item>
           </el-col>
           <el-col :span="8">
             <el-form-item label="PCT初审期限">
-              <el-date-picker size="small"  v-model="form.pct_pre_exam_expire_date" type="date" placeholder="PCT初审期限" :disabled="true"></el-date-picker>
+              <el-date-picker size="small"  v-model="form.pct_pre_exam_expire_date" type="date" placeholder="PCT初审期限" :disabled="true" class="input-min-width"></el-date-picker>
             </el-form-item>
           </el-col>
         </el-row>
         <el-row>
           <el-col :span="8">
             <el-form-item label="PCT检索日">
-              <el-date-picker size="small"  v-model="form.pct_search_date" placeholder="PCT检索日"></el-date-picker>
+              <el-date-picker size="small"  v-model="form.pct_search_date" placeholder="PCT检索日" class="input-min-width"></el-date-picker>
             </el-form-item>
           </el-col>
           <el-col :span="8">
             <el-form-item label="优先权期限">
-              <el-date-picker size="small"  v-model="form.priority_expire_date" type="date" placeholder="优先权期限" :disabled="true"></el-date-picker>
+              <el-date-picker size="small"  v-model="form.priority_expire_date" type="date" placeholder="优先权期限" :disabled="true" class="input-min-width"></el-date-picker>
             </el-form-item>
           </el-col>
           <el-col :span="8">
             <el-form-item label="主动修改期限">
-              <el-date-picker size="small"  v-model="form.active_supplement_expire_date" type="date" placeholder="主动修改期限" :disabled="true"></el-date-picker>
+              <el-date-picker size="small"  v-model="form.active_supplement_expire_date" type="date" placeholder="主动修改期限" :disabled="true" class="input-min-width"></el-date-picker>
             </el-form-item>
           </el-col>
         </el-row>
         <el-row>
           <el-col :span="8">
             <el-form-item label="返稿日">
-              <el-date-picker size="small"  v-model="form.first_edition_to_inventor_time" placeholder="返稿日" :disabled="true"></el-date-picker>
+              <el-date-picker size="small"  v-model="form.first_edition_to_inventor_time" placeholder="返稿日" :disabled="true" class="input-min-width"></el-date-picker>
             </el-form-item>
           </el-col>
           <el-col :span="8">
             <el-form-item label="发明人审核日">
-              <el-date-picker  size="small" v-model="form.inventor_review_time" type="date" placeholder="发明人审核日" :disabled="true"></el-date-picker>
+              <el-date-picker  size="small" v-model="form.inventor_review_time" type="date" placeholder="发明人审核日" :disabled="true" class="input-min-width"></el-date-picker>
             </el-form-item>
           </el-col>
           <el-col :span="8">
             <el-form-item label="返IPR稿日">
-              <el-date-picker size="small"  v-model="form.first_edition_to_ipr_time" type="date" placeholder="返IPR稿日" :disabled="true"></el-date-picker>
+              <el-date-picker size="small"  v-model="form.first_edition_to_ipr_time" type="date" placeholder="返IPR稿日" :disabled="true" class="input-min-width"></el-date-picker>
             </el-form-item>
           </el-col>
         </el-row>
         <el-row>
           <el-col :span="8">
             <el-form-item label="定稿日">
-              <el-date-picker size="small"  v-model="form.ipr_final_edition_time" placeholder="定稿日" :disabled="true"></el-date-picker>
+              <el-date-picker size="small"  v-model="form.ipr_final_edition_time" placeholder="定稿日" :disabled="true" class="input-min-width"></el-date-picker>
             </el-form-item>
           </el-col>
           <el-col :span="8">
             <el-form-item label="发明人审核次数">
-              <el-input  size="small" v-model="form.inventor_review_times"  placeholder="发明人审核次数" :disabled="true"></el-input>
+              <el-input  size="small" v-model="form.inventor_review_times"  placeholder="发明人审核次数" :disabled="true" class="input-min-width"></el-input>
             </el-form-item>
           </el-col>
           <el-col :span="8">
             <el-form-item label="撰稿天数">
-              <el-date-picker size="small"  v-model="form.agent_drafting_period"  placeholder="撰稿天数" :disabled="true"></el-date-picker>
+              <el-date-picker size="small"  v-model="form.agent_drafting_period"  placeholder="撰稿天数" :disabled="true" class="input-min-width"></el-date-picker>
             </el-form-item>
           </el-col>
         </el-row>
         <el-row>
           <el-col :span="8">
             <el-form-item label="发明人审核天数">
-              <el-date-picker size="small"  v-model="form.inventor_review_period" placeholder="发明人审核天数" :disabled="true"></el-date-picker>
+              <el-date-picker size="small"  v-model="form.inventor_review_period" placeholder="发明人审核天数" :disabled="true" class="input-min-width"></el-date-picker>
             </el-form-item>
           </el-col>
           <el-col :span="8">
             <el-form-item label="IPR审核天数">
-              <el-input  size="small" v-model="form.ipr_review_period"  placeholder="IPR审核天数" :disabled="true"></el-input>
+              <el-input  size="small" v-model="form.ipr_review_period"  placeholder="IPR审核天数" :disabled="true" class="input-min-width"></el-input>
             </el-form-item>
           </el-col>
           <el-col :span="8">
             <el-form-item label="代理人改稿时间">
-              <el-date-picker  size="small" v-model="form.agent_amending_period" placeholder="代理人改稿时间" :disabled="true"></el-date-picker>
+              <el-date-picker  size="small" v-model="form.agent_amending_period" placeholder="代理人改稿时间" :disabled="true" class="input-min-width"></el-date-picker>
             </el-form-item>
           </el-col>
         </el-row>
         <el-row>
           <el-col :span="8">
             <el-form-item label="IPR审核次数">
-              <el-date-picker  size="small" v-model="form.ipr_review_times" placeholder="IPR审核次数" :disabled="true"></el-date-picker>
+              <el-date-picker  size="small" v-model="form.ipr_review_times" placeholder="IPR审核次数" :disabled="true" class="input-min-width"></el-date-picker>
             </el-form-item>
           </el-col>
           <el-col :span="8">
