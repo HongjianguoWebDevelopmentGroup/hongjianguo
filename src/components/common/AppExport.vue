@@ -62,7 +62,7 @@ export default {
 	},
 	computed: {
 		...mapGetters([
-			'screen_obj',
+			'screenValue',
 		])
 	},
 	methods: {
@@ -74,7 +74,7 @@ export default {
 						url: this.url,
 						data: {
 							...this.filter,
-							...this.screen_obj,
+							...this.screenValue,
 							format: 'excel',
 							documents: this.form.documents,
 							fields: this.form.fields.join(','),

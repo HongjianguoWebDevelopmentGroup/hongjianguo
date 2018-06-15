@@ -21,7 +21,17 @@
 			<el-form-item label="邮箱" prop="email">
 				<el-input v-model="form.email" placeholder="请填写公司邮箱"></el-input>
 			</el-form-item>
-
+      <el-form-item label="代理所等级" prop= "level">
+        <el-radio-group v-model="form.level">
+          <el-radio-button label="A"></el-radio-button>
+          <el-radio-button label="B"></el-radio-button>
+          <el-radio-button label="C"></el-radio-button>
+          <el-radio-button label="D"></el-radio-button>
+        </el-radio-group>
+      </el-form-item>
+      <el-form-item label="案件配额" prop="distributed_amount">
+        <el-input v-model="form.distributed_amount"></el-input>
+      </el-form-item>
 			<el-form-item label="状态" prop="status">
         <app-switch type="status" v-model="form.status"></app-switch>
 			</el-form-item>
@@ -58,6 +68,8 @@ export default {
         contact: '',
         address: '',
         telephone: '',
+        level: 'B',
+        distributed_amount: '',
         email: '',
         scope: [],
         status: 1,
