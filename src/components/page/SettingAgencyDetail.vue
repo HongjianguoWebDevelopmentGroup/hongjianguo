@@ -68,6 +68,7 @@
 		</div>
 		<div slot="monthly_status_statistics">
 			<template>
+				<el-button type="primary" size="samll" icon="upload2" style="margin-bottom:10px;" @click="handleExport">导出</el-button>
 				<app-table :columns="statisticsColumns" :data="statisticsData" key="a3"></app-table>
 			</template>
 		</div>
@@ -199,6 +200,15 @@ export default {
 				this.id = id;
 				this.offerForm.amount = amount + '';
 			});
+		},
+		handleExport() {
+			const url = URL;
+			const data = Object.assign({},{format: 'excel'});
+			const success = _=>{
+				this.$message({ message: '导出成功', type: 'success'});
+				window.location.href = _.agency.downloadUrl;
+			};
+			this.$axiosPost({url, data, success});
 		},
 		refresh () {
 			const id = this.$route.query.id;

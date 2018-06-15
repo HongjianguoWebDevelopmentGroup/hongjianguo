@@ -27,6 +27,7 @@
 		</el-form>
 		<div slot="monthly_status_statistics">
 			<template>
+				<el-button type="primary" size="samll" icon="upload2" style="margin-bottom:10px;" @click="handleExport">导出</el-button>
 				<app-table :columns="statisticsColumns" :data="statisticsData" key="a3"></app-table>
 			</template>
 		</div>
@@ -43,7 +44,7 @@ import AppTag from '@/components/common/AppTag'
 const URL = '/agents';
 
 export default {
-  name: 'settingAgencyDetail',
+  name: 'settingAgentDetail',
   data () {
 		return {
 			id: '',
@@ -75,8 +76,14 @@ export default {
 				{ type: 'text', label: '负面评价数量', prop:'negative_amount' },
 				{ type: 'text', label: '新申请平均返稿天数', prop:'new_application_daytime' },
 				{ type: 'text', label: 'OA平均返稿天数', prop:'oa_daytime' },
-				{ type: 'text', label: '新申请返稿及时率', prop: 'new_application_ontime_rate' },
-				{ type: 'text', label: 'OA返稿及时率', prop: 'oa_ontime_rate'},
+				{ type: 'text', label: '新申请返稿及时率', prop: 'new_application_ontime_rate',render:(h,item)=>{
+					item == -1? item = '-': item;
+					return h('span',item); 
+				}},
+				{ type: 'text', label: 'OA返稿及时率', prop: 'oa_ontime_rate',render:(h,item)=>{
+					item == -1? item = '-': item;
+					return h('span',item); 
+				}},
 			],
 			offerData: [],
 			statisticsData: [],
@@ -132,6 +139,15 @@ export default {
 				this.id = id;
 				this.offerForm.amount = amount + '';
 			});
+		},
+		handleExport() {
+			const url = URL;
+			const data = Object.assign({},{format: 'excel'});
+			const success = _=>{
+				this.$message({ message: '导出成功', type: 'success'});
+				window.location.href = _.agency.downloadUrl;
+			};
+			this.$axiosPost({url, data, success});
 		},
 		refresh () {
 			const id = this.$route.query.id;

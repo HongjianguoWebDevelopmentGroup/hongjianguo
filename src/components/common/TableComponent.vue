@@ -516,6 +516,9 @@ export default {
         func(e)
       }else {
         //合并获得导出请求的请求参数
+        if(this.refreshTableData) {
+          this.refreshTableData(Object.assign({}, this.getRequestOption(), {format: 'excel'}));
+        }
         this.$emit('refreshTableData', Object.assign({}, this.getRequestOption(), {format: 'excel'} ) );
         //Vue Api.
         this.$nextTick(_=>{
