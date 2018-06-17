@@ -26,48 +26,48 @@
     </span>
     <div  v-loading="detailLoading && visibleAuth" :element-loading-text="config.loadingText" :style="divStyle">
       <el-tabs v-model="activeName">
-        <el-tab-pane label="基本信息" name="base">
+        <el-tab-pane label="基本信息" name="base" >
           <div :style="`height: ${innerHeight - 150}px; overflow: auto;`">
             <detail-patent style="height: 100%;" page-type="edit" v-if="type == 'patent'" @editSuccess="editSuccess" ref="patent"></detail-patent>
             <detail-trademark style="height: 100%;" page-type="edit" v-if="type == 'trademark'" @editSuccess="editSuccess" ref="trademark"></detail-trademark>
             <detail-copyright style="height: 100%;" page-type="edit" v-if="type == 'copyright'" @editSuccess="editSuccess" ref="copyright"></detail-copyright>
           </div>
         </el-tab-pane>
-        <el-tab-pane label="流程" name="control">
+        <el-tab-pane label="流程" name="control" v-if="">
           <detail-control></detail-control>
         </el-tab-pane>
         <el-tab-pane label="官文&附件" name="notice">
           <detail-notice :type="type" @uploadSuccess="edit"></detail-notice>
         </el-tab-pane>
-        <el-tab-pane label="费用" name="fourth">
+        <el-tab-pane label="费用" name="fourth" v-if="!menusMap.get('/iprs')">
           <detail-fee></detail-fee>
         </el-tab-pane>
-        <el-tab-pane label="邮件" name="fee">
+        <el-tab-pane label="邮件" name="fee" v-if="!menusMap.get('/iprs')">
           <detail-email @sendMail="handleSendEmail"></detail-email>
         </el-tab-pane>
 <!--         <el-tab-pane label="文档" name="documents">
           <detail-documents></detail-documents>
         </el-tab-pane> -->
-        <el-tab-pane label="群组/专利族" name="group_family" v-if="type == 'patent'">
+        <el-tab-pane label="群组/专利族" name="group_family" v-if="type == 'patent'&& !menusMap.get('/iprs')">
           <group-family></group-family>
         </el-tab-pane>
-        <!-- <el-tab-pane label="引用" name="quote" v-if="type == 'patent'">
+        <el-tab-pane label="引用" name="quote" v-if="type == 'patent'&& !menusMap.get('/iprs')">
           <quote></quote>
         </el-tab-pane> -->
 <!--         <el-tab-pane label="评审记录" name="review" v-if="type == 'patent'">
           <review></review>
         </el-tab-pane> -->
-        <el-tab-pane label="审查" name="review_records">
+        <el-tab-pane label="审查" name="review_records" v-if="!menusMap.get('/iprs')">
           <defence></defence>
         </el-tab-pane>
 
-        <el-tab-pane label="动态" name="work_change">
+        <el-tab-pane label="动态" name="work_change" v-if="!menusMap.get('/iprs')">
           <detail-amendments></detail-amendments>
         </el-tab-pane>
-        <el-tab-pane label="提醒" name="remind" v-if="type == 'patent'">
+        <el-tab-pane label="提醒" name="remind" v-if="type == 'patent' && !menusMap.get('/iprs')">
           <remind></remind>
         </el-tab-pane> 
-        <el-tab-pane label="评审" name="judge" v-if="type == 'patent'">
+        <el-tab-pane label="评审" name="judge" v-if="type == 'patent' && !menusMap.get('/iprs')">
           <judge :id="id"></judge>
         </el-tab-pane>
         <el-tab-pane label="委案记录" name="history">
@@ -82,9 +82,9 @@
     <el-dialog title="委案变更" :visible.sync="dialogChange" @close="$refs.changeForm.clear();">
       <change-form :id="id" @success="dialogChange=false;refreshDetailData();" ref="changeForm"></change-form>
     </el-dialog>
-  <el-dialog title="分案请求" :visible.sync="dialogDivide"  @close="$refs.divideForm.clear();">
+<!--   <el-dialog title="分案请求" :visible.sync="dialogDivide"  @close="$refs.divideForm.clear();">
     <divide-form :id="id" @success="dialogDivide=false;$emit('editSuccess');$emit('update:visible', false);" ref="divideForm"></divide-form>
-  </el-dialog>
+  </el-dialog> -->
   <el-dialog title="新增任务" :visible.sync="dialogTask">
     <task-edit type="add" :id="id" ref="taskEdit" @addSuccess="addSuccess"></task-edit>
   </el-dialog>    
@@ -263,10 +263,7 @@ export default {
           });
       }
       if(command == 'divide') {
-        this.dialogDivide = true;
-          this.$nextTick(_=>{
-            this.$refs.taskEdit.fill({id: this.id,name: this.title, category: 1},16,'90');
-          });
+          this.divideSubmit();
       }      
     },
     addSuccess (val) {
@@ -289,6 +286,21 @@ export default {
           })
         }).catch(_=>{});
       
+    },
+    divideSubmit () {
+      this.$confirm('此操作将对当前专利进行分案操作, 是否继续?', '提示', {type: 'warning'})
+      .then(_=>{
+        this.$axiosPost({
+          url: `/api/patents/${this.id}/divide`,
+          data: {},
+          success: _=>{
+            this.$message({type: 'success', message: _.info});
+            this.$emit('success', _);
+          },
+          complete: _=>{
+          }
+        })
+      }).catch(_=>{});
     },
   },
   watch: {

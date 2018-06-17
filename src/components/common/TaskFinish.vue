@@ -67,6 +67,9 @@
     </el-form-item>
     <el-form-item prop="type" label="专利类型" v-if="fields.type" :rules="{type: 'number', required: true, message: '专利类型不能为空', trigger: 'blur'}">
       <static-select type="patent_type" v-model="form.type" key="patent_type"></static-select>
+    </el-form-item>   
+     <el-form-item prop="original_inventors" label="原发明人" v-if="fields.original_inventors" >
+      <remote-select type="inventor" v-model="form.original_inventors"></remote-select>
     </el-form-item>
     <el-form-item prop="title" label="专利标题"  v-if="ifTitle" :rules="{required: true, message: '专利标题不能为空'}">
       <el-input v-model="form.title" placeholder="请填写正式递交的标题"></el-input>
@@ -162,7 +165,7 @@ import AppSwitch from '@/components/form/AppSwitch'
 import {mapMutations} from 'vuex'
 import {mapActions} from 'vuex'
 
-const URL = `/api/tasks`;
+const URL = `/tasks`;
 
 export default {
   name: 'taskFinish',
@@ -186,6 +189,7 @@ export default {
         rank: 5,
         area: [],
         type: '',
+        original_inventors: '',
         pconfirm: false,
         level: '',
         title: '',
@@ -257,10 +261,13 @@ export default {
           const url = `${URL}/${this.id}/nexttask`;
           const data = Object.assign({}, {'flow_node_id': this.next}, this.form);
           if(data.rank) {data.rank *= 20};
+
           const success = ()=>{ 
-            this.$emit('submitSuccess') 
-            this.refreshUser();
+            this.$message({type: 'success', message: '完成任务成功'});
+            this.refreshUser();            
+            this.$emit('submitSuccess', data);
           };
+
           const complete = _=>{ this.btn_disabled=false }; 
           this.$axiosPost({url, data, success, complete}); 
         }else {

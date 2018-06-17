@@ -8,6 +8,7 @@ const ProposalCommon           = () => import('@/components/page/ProposalCommon'
 const CheckProposal            = () => import('@/components/page/CheckProposal')
 const TaskCommon               = () => import('@/components/page/TaskCommon')
 const TaskExpiring             = () => import('@/components/page/TaskExpiring')
+const TaskExpiringControl      = () => import('@/components/page/TaskExpiringControl')
 const PatentList               = () => import('@/components/page/PatentList')
 const ApplyingPatent           = () => import('@/components/page/ApplyingPatent')
 const PatentAdd                = () => import('@/components/page/PatentAdd')
@@ -43,6 +44,8 @@ const Documents                = () => import('@/components/page_extension/Commo
 //#################
 
 //-------------------设置 begin-----------------
+const SettingAgent            = () => import('@/components/page/SettingAgent')
+const SettingAgentDetail      = () => import('@/components/page/SettingAgentDetail')           
 const SettingAgency            = () => import('@/components/page/SettingAgency')
 const SettingAgencyDetail      = () => import('@/components/page/SettingAgencyDetail')
 const SettingCase              = () => import('@/components/page/SettingCase')
@@ -286,6 +289,11 @@ const router = new Router({
       path: '/task/expiring',
       name: 'TaskExpiring',
       component: TaskExpiring,
+    },
+    {
+      path: '/task/expiringControl',
+      name: 'TaskExpiringControl',
+      component: TaskExpiringControl,
     },
     {
       path: '/task/custom/:id',
@@ -822,6 +830,8 @@ const router = new Router({
         { path: 'documents', component: Documents },
       ],
     },
+    { path: '/setting/agent', name: 'SettingAgent', component: SettingAgent },
+    { path: '/setting/agent/detail', name: 'SettingAgentDetail', component: SettingAgentDetail },
     { path: '/setting/agency', name: 'SettingAgency', component: SettingAgency },
     { path: '/setting/agency/detail', name: 'SettingAgencyDetail', component: SettingAgencyDetail },
     { path: '/setting/case', name: 'SettingCase', component: SettingAgency },

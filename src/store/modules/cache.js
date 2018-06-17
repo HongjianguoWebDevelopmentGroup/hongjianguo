@@ -1,30 +1,31 @@
-let url_feecodes = '/api/feeCodes';
+let url_roeData = '/roe'
 const state = {
-	feeCodes: null,
+	roeData: null,
 }
 
 const getters = {
-	feeCodes: state=>state.feeCodes ? state.feeCodes : [],
+	roeData: state=> state.roeData == null ? {} : state.roeData, 
 }
 
 const mutations = {
-	setFeeCodes (state, d) {
-		state.feeCodes = d;
+	setRoeData (state, d) {
+		state.roeData = d;
 	}
 }
 
 const actions = {
-	refreshFeeCodes ({commit, rootState, state}) {
-		if(state.feeCodes == null) {
-			let url = rootState.status ? url_feecodes.replace(/\/api/, '') : url_feecodes;
-			rootState
-				.axios
-				.get(url)
-				.then(response=>{
-					response.data.codes.forEach(_=>{_.id = _.id - 0})
-					commit('setFeeCodes', response.data.codes);
-				});
-		}
+
+	refreshRoeData({commit, rootState, state}) {
+		if(state.roeData != null) return;
+
+		let url = rootState.status ? url_roeData.replace(/\/api/, '') : url_roeData;
+		rootState.axios.get(url)
+			.then(({data})=>{
+				if(data.status) {
+					commit('setRoeData', data.list);
+				}
+			})
+			.catch(error=>{console.log(error)});
 	}
 }
 
