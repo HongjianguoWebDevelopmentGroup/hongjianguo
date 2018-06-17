@@ -8,7 +8,7 @@
 						<static-select type="role" v-model="form.role"></static-select>
 					</el-form-item>
 					
-					<el-form-item label="代理机构" prop="agency">
+					<el-form-item label="代理机构" prop="agency" v-show="form.role == '1'">
 						<remote-select type="agency" v-model="form.agency" multiple></remote-select>
 					</el-form-item>
 					
@@ -20,8 +20,6 @@
 					<el-form-item label="案件等级" prop="level">
 						<static-select type="case_level" v-model="form.level"></static-select>
 					</el-form-item>
-					
-					
 				</el-col>
   		</el-row>
   		<el-row style="text-align: center;">
@@ -46,7 +44,7 @@ export default {
 			form: {
 				role: '',
 				agency: [],
-				nstage '',
+				nstage: '',
 				level: '',
 			},
 		}

@@ -34,34 +34,35 @@ export default {
 					{ type: 'selection' },
 					{ type: 'text', label: '机构名称', prop: 'name', width: '150' },
 					{ type: 'text', label: '联系人', prop: 'contact', width: '84' },
-					{ type: 'text', label: '地址', prop: 'address', width: '341' },
-					{ type: 'text', label: '联系电话', prop: 'telephone', width: '179' },
-					{ type: 'text', label: '邮箱', prop: 'email', width: '204' },
+					{ type: 'text', label: '地址', prop: 'address', width: '120' },
+					{ type: 'text', label: '联系电话', prop: 'telephone', width: '145' },
+					{ type: 'text', label: '邮箱', prop: 'email', width: '120' },
 					{ type: 'text', label: '状态', prop: 'status_name', width: '80' },
-					{ type: 'text', label: '核心合作伙伴', prop: 'is_core_partner_name', width: '133' },
-					{ type: 'array', label: '业务范围', prop: 'scope', width: '250' },
-					{ type: 'text', label: '评分', prop: 'rank', width: '180',
-					  render: (h,item)=>{
-					  	const rank = item/20;
-					  	return h('el-rate', {
-					  		attrs: {
-					  			'value': rank,
-					  			'disabled': true,
-					  			'show-text': true,
-					  			'text-color': '#f90',
-					  			'text-template': `${item}`,
-					  		}
-					  	})
-					  }
-					},
-					{ type: 'text', label: '新申请平均评分', prop: 'new_application_rank', width: '145'},
-					{ type: 'text', label: 'OA平均评分', prop: 'oa_rank', width: '145'},
-					{ type: 'text', label: '正面评价数量', prop: 'positive_amount', width: '145'},
-					{ type: 'text', label: '负面评价数量', prop: 'negative_amount', width: '145'},
-					{ type: 'text', label: '代理所等级', prop: 'level', width: '145'},
-					{ type: 'text', label: '案件配额', prop: 'distributed_amount', width: '145'},
-					{ type: 'text', label: '新申请平均返稿天数', prop: 'new_application_daytime', width: '168'},
-					{ type: 'text', label: 'OA平均返稿天数', prop: 'oa_daytime', width: '168'},
+					{ type: 'text', label: '等级', prop: 'level', width: '80' },
+					// { type: 'text', label: '核心合作伙伴', prop: 'is_core_partner_name', width: '133' },
+					// { type: 'array', label: '业务范围', prop: 'scope', width: '250' },
+					// { type: 'text', label: '评分', prop: 'rank', width: '180',
+					//   render: (h,item)=>{
+					//   	const rank = item/20;
+					//   	return h('el-rate', {
+					//   		attrs: {
+					//   			'value': rank,
+					//   			'disabled': true,
+					//   			'show-text': true,
+					//   			'text-color': '#f90',
+					//   			'text-template': `${item}`,
+					//   		}
+					//   	})
+					//   }
+					// },
+					{ type: 'text', label: '新申请平均返稿天数', prop: 'new_application_daytime', width: '110'},
+					{ type: 'text', label: 'OA平均返稿天数', prop: 'oa_daytime', width: '100'},
+					{ type: 'text', label: '新申请平均评分', prop: 'new_application_rank', width: '100'},
+					{ type: 'text', label: 'OA平均评分', prop: 'oa_rank', width: '100'},
+					{ type: 'text', label: '案件配额', prop: 'distributed_amount', width: '100'},
+					{ type: 'text', label: '好评', prop: 'positive_amount', width: '80'},
+					{ type: 'text', label: '差评', prop: 'negative_amount', width: '80'},
+					// { type: 'text', label: '等级', prop: 'level', width: '80'},
 					{
 						type: 'action',
 						width: '200',

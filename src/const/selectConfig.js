@@ -9,6 +9,7 @@ const config = [
 	['case_level',{
 		placeholder: '请选择案件等级',
 		options: [
+      {id: '', name: '全部'},
 			{id: 'A', name: 'A'},
 			{id: 'B', name: 'B'},
       {id: 'C', name: 'C'},
@@ -150,10 +151,23 @@ const config = [
   }],
   ['get_stage',{
     placeholder: '请选择案件状态',
-    url: '/api/getstage',
-     handle (data) {
-      return data.data.map(_=>{return {id: _.id, name: _.title}});
-    },
+    // url: '/getstage',
+    //  handle (data) {
+    //   return data.data.map(_=>{return {id: _.id, name: _.title}});
+    // },
+    options:[
+      { id: '', name: '全部' },
+      { id: 0, name: '提案阶段' },
+      { id: 1, name: '委案阶段' },
+      { id: 2, name: '撰稿中' },
+      { id: 3, name: '发明人审核中' },
+      { id: 4, name: 'IPR审核中' },
+      { id: 5, name: '重点案件审核中' },
+      { id: 6, name: '代理人修改中' },
+      { id: 7, name: '已定稿待递交' },
+      { id: 8, name: '已递交' },
+      { id: 10, name: '其它' },
+    ]
   }],
   ['file_type', {
     placeholder: '请选择文件类型',

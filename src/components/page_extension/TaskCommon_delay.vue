@@ -13,8 +13,10 @@ export default {
 			delayData: [],
 			loading:false,
 			columns: [
-				{type: 'text', label: '延期时间', prop: 'delay_time', },
-				{type: 'text', label: '操作人', prop: 'createuser',render_simple: 'name',},
+				{type: 'text', label: '操作时间', prop: 'create_time', },
+				{type: 'text', label: '操作人', prop: 'operator',render_simple: 'name',},
+				{type: 'text', label: '延期天数', prop: 'days', },
+				{type: 'text', label: '延期后期限', prop: 'delay_time', },
 				{type: 'text', label: '备注', prop: 'remark', min_width: '200'},
 			],
 		}

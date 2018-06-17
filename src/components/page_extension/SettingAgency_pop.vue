@@ -2,7 +2,7 @@
   <el-dialog :title="title" :visible.sync="dialogVisible" >
   	<el-form label-width="100px" ref="form" :model="form" :rules="rules">
   		
-  		<el-form-item label="名称" prop="name">
+  		<el-form-item label="机构名称" prop="name">
   			<el-input v-model="form.name" placeholder="请填写代理机构名称"></el-input>
   		</el-form-item>
 
@@ -10,8 +10,8 @@
 				<el-input v-model="form.contact" placeholder="请填写联系人姓名"></el-input>
 			</el-form-item>
 
-			<el-form-item label="详细地址" prop="address">
-				<el-input v-model="form.address" placeholder="请填写公司的详细地址"></el-input>
+			<el-form-item label="地址" prop="address">
+				<el-input v-model="form.address" placeholder="请填写代理机构的详细地址"></el-input>
 			</el-form-item>
 
 			<el-form-item label="联系电话" prop="telephone">
@@ -19,7 +19,7 @@
 			</el-form-item>
 
 			<el-form-item label="邮箱" prop="email">
-				<el-input v-model="form.email" placeholder="请填写公司邮箱"></el-input>
+				<el-input v-model="form.email" placeholder="请填写代理机构邮箱"></el-input>
 			</el-form-item>
       <el-form-item label="代理所等级" prop= "level">
         <el-radio-group v-model="form.level">
@@ -36,12 +36,12 @@
         <app-switch type="status" v-model="form.status"></app-switch>
 			</el-form-item>
 
-			<el-form-item label="业务范围" prop="scope">
+			<!-- <el-form-item label="业务范围" prop="scope">
         <static-select type="agency_scope" v-model="form.scope" multiple></static-select>
       </el-form-item>
       <el-form-item label="核心合作伙伴" prop="is_core_partner">
 				<app-switch type="is" v-model="form.is_core_partner"></app-switch>
-			</el-form-item>
+			</el-form-item> -->
 
 			<el-form-item style="margin-bottom: 0px;">
 				<el-button type="primary" @click="add" v-if="type === 'add'" :disabled="btn_disabled">添加</el-button>

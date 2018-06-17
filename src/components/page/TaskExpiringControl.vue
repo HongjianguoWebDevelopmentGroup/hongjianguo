@@ -8,8 +8,8 @@
 							<static-select type="role" v-model="form.role"></static-select>
 						</el-form-item>
 					</el-col>
-					<el-col :span="6">
-						<el-form-item label="代理机构" prop="agency">
+					<el-col :span="6"  v-if="menusMap && !menusMap.get('/iprs')">
+						<el-form-item label="代理机构" prop="agency" v-show="form.role == '6'">
 							<remote-select type="agency" v-model="form.agency"></remote-select>
 						</el-form-item>
 					</el-col>
@@ -18,7 +18,7 @@
 								<static-select type="get_stage"  v-model="form.nstage"></static-select>
 						</el-form-item>
 					</el-col>
-					<el-col :span="6">
+					<el-col :span="6"  v-if="menusMap && !menusMap.get('/iprs')">
 						<el-form-item label="案件等级" prop="level">
 							<static-select type="case_level" v-model="form.level"></static-select>
 						</el-form-item>
@@ -34,7 +34,10 @@
 import AppTable from '@/components/common/AppTable'
 import RemoteSelect from '@/components/form/RemoteSelect'
 import StaticSelect from '@/components/form/StaticSelect'
-const URL = '/api/getcountdata';
+
+import { mapGetters } from 'vuex'
+
+const URL = '/getcountdata';
 const config = [
 	['new_apply', 12],
 	['oa', 23],
@@ -58,7 +61,7 @@ export default {
 				role: 6,
 				agency: '',
 				nstage: '',
-				level: 'A',
+				level: '',
 			},
 			columns: [
 				{ type: 'text', label: '承办人', prop: 'member',render_simple: 'name'},
@@ -74,7 +77,9 @@ export default {
 		}
 	},
 	computed: {
-		
+		...mapGetters([
+			'menusMap',
+		]),
 	},
 	methods:{
 		handleCellClick (row, column, cell, event) {
@@ -93,9 +98,17 @@ export default {
 			// 	this.$router.push({name: 'TaskPending',params:{taskExpisingdata:_.data}},);
 			// };
 			// this.$axiosPost({url, data, success});
-
-			const id = map.get(column.property);
-			this.$router.push({name: 'TaskPending', params: {id}})
+			let option = {
+				control_type:column.property,
+			};
+			if (this.form.role == '6') {
+				option.agent = row.member.id;
+			} else {
+				option.ipr = row.member.id;
+			}
+			console.log(option);
+			// const id = map.get(column.property);
+			this.$router.push({name: 'TaskPending', params: option})
 		},
 		refreshTaskExpiring (option) {
 			const url = URL;
