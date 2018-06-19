@@ -19,18 +19,37 @@
       <el-form-item label="申请日" prop="apd" v-if="config.apd&&(!!tableData[0]['show_apd'])">
         <el-date-picker type="date" v-model="form.apd"></el-date-picker>
       </el-form-item>      
-      <el-form-item label="授权日期" prop="issue_date" v-if="!!tableData[0]['show_issue_date']&&config.issue_date">
-        <el-date-picker type="date" v-model="form.issue_date" ></el-date-picker>
-      </el-form-item>  
       <el-form-item label="申请号" prop="apn" v-if="!!tableData[0]['show_apn']&&config.apn">
         <el-input v-model="form.apn"></el-input>
       </el-form-item>    
+      <el-form-item label="授权公告日" prop="issue_date" v-if="!!tableData[0]['show_issue_date']&&config.issue_date">
+        <el-date-picker type="date" v-model="form.issue_date" ></el-date-picker>
+      </el-form-item>  
+      <el-form-item label="授权公告号" prop="issue_number" v-if="!!tableData[0]['show_issue_number']&&config.issue_number">
+        <el-input v-model="form.issue_number" ></el-input>
+      </el-form-item>
       <el-form-item label="国际检索日期" prop="pct_search_date" v-if="!!tableData[0]['show_pct_search_date']&&config.pct_search_date">
         <el-date-picker type="date" v-model="form.pct_search_date"></el-date-picker>
       </el-form-item>
       <el-form-item label="国际检索摘要" prop="pct_search_result" v-if="!!tableData[0]['show_pct_search_result']&&config.pct_search_result">
         <el-input v-model="form.pct_search_result"></el-input>
-      </el-form-item>      
+      </el-form-item>
+      <el-form-item label="首次年费年度" prop="start_year" v-if="!!tableData[0]['show_start_year']">
+        <el-select v-model="form.start_year" placeholder="请选择">
+          
+          <el-option label="1" value="1"></el-option>
+          <el-option label="2" value="2"></el-option>
+          <el-option label="3" value="3"></el-option>
+          <el-option label="4" value="4"></el-option>
+          <el-option label="5" value="5"></el-option>
+          <el-option label="6" value="6"></el-option>
+          <el-option label="7" value="7"></el-option>
+          <el-option label="8" value="8"></el-option>
+          <el-option label="9" value="9"></el-option>
+          <el-option label="10" value="10"></el-option>
+            
+        </el-select>
+      </el-form-item>
       <el-form-item style="margin-bottom: 0px;">
         <el-button type="primary" @click="importData" :loading="loading">{{ loading ? '上传中...' : '确认上传' }}</el-button>
       </el-form-item>
@@ -72,11 +91,13 @@ const config = [
     time: true,
     legal_time: true,
     issue_date: true,
+    issue_number:true,
     apd: true,
     apn: true,
     pct_search_date: true,
     pct_search_result: true,
     no_zip: true,
+    start_year:true,
   }],
   ['copyright_notice', {
     action: 'getCopyrightNoticesDocuments',
@@ -88,8 +109,6 @@ const config = [
     issue_date: true,
     apd: true,
     apn: true,
-    pct_search_date: true,
-    pct_search_result: true,
     no_zip: true,
   }],  
   ['trademark_notice', {
@@ -102,8 +121,6 @@ const config = [
     issue_date: true,
     apd: true,
     apn: true,
-    pct_search_date: true,
-    pct_search_result: true,
     no_zip: true,
   }],
 ]
@@ -129,11 +146,13 @@ export default {
         type: '',
         time: '',
         legal_time: '',
+        apn: '',
         apd: '',
         issue_date: '',
+        issue_number:'',
         pct_search_date: '',
-        apn: '',
         pct_search_result: '',
+        start_year: '',
       }
     }
   },
@@ -185,11 +204,13 @@ export default {
       const copy = this.$tool.deepCopy(this.tableData[index]);
       copy['show_mail_date'] = f.mail_date == 1 && this.config.time ? true : false;
       copy['show_deadline'] = f.deadline == 1 && this.config.legal_time ? true : false;
+      copy['show_apn'] = f.apn == 1 && this.config.apn ? true : false;
       copy['show_apd'] = f.apd == 1 && this.config.apd ? true : false;
       copy['show_issue_date'] = f.issue_date == 1 && this.config.issue_date ? true : false;
-      copy['show_apn'] = f.apn == 1 && this.config.apn ? true : false;
+      copy['show_issue_number'] = f.issue_number == 1 && this.config.issue_number ? true : false;
       copy['show_pct_search_date'] = f.pct_search_date == 1 && this.config.pct_search_date ? true : false;
       copy['show_pct_search_result'] = f.pct_search_result == 1 && this.config.pct_search_result ? true : false;
+      copy['show_start_year'] = f.start_year == 1 && this.config.start_year ? true : false;
 
       this.tableData.splice(index, 1, copy);
       // console.log(this.tableData);

@@ -1,7 +1,7 @@
 <template>
   <div class="main">
   <app-tag :tags="tags" is_static>
-		<el-form label-width="140px" slot="basic_information">
+		<!-- <el-form label-width="140px" slot="basic_information">
 			<el-form-item label="代理所名称">
 				<span class="detail-item">{{ form.name }}</span>
 			</el-form-item>
@@ -21,16 +21,22 @@
 				<el-rate style="margin-top: 8px;" v-if="form.rank ? true : false" :value="form.rank/20" disabled show-text text-color="#f90" :text-template="form.rank + ''"></el-rate>
 				<span v-else class="detail-item">暂无评分</span>
 			</el-form-item>
-			<!-- <el-form-item label="核心伙伴">
+			<el-form-item label="核心伙伴">
 				<span class="detail-item">{{ form.is_core_partner_name }}</span>
 			</el-form-item>
 			<el-form-item label="业务范围">
 				<el-tag v-for="tag in form.scope" :key="tag" style="margin-right: 20px;">{{ tag }}</el-tag>
-			</el-form-item> -->
+			</el-form-item>
 			<el-form-item label="代理所状态">
 				<span class="detail-item">{{ form.status_name }}</span>
 			</el-form-item>
-		</el-form>
+		</el-form> -->
+		<div slot="monthly_status_statistics">
+			<template>
+				<el-button type="primary" size="samll" icon="upload2" style="margin-bottom:10px;" @click="handleExport">导出</el-button>
+				<app-table :columns="statisticsColumns" :data="statisticsData" key="a3"></app-table>
+			</template>
+		</div>
 		<div slot="statistics">
 			<template v-if="!saveStatus">
 				<el-upload
@@ -66,12 +72,6 @@
 				</el-form-item>
 			</app-pop>
 		</div>
-		<div slot="monthly_status_statistics">
-			<template>
-				<el-button type="primary" size="samll" icon="upload2" style="margin-bottom:10px;" @click="handleExport">导出</el-button>
-				<app-table :columns="statisticsColumns" :data="statisticsData" key="a3"></app-table>
-			</template>
-		</div>
 	</app-tag>
   </div>
 </template>
@@ -98,15 +98,15 @@ export default {
 				email: '',
 				address: '',
 				telephone: '',
-				rank: '',
-				is_core_partner_name: '',
-				scope: [],
+				// rank: '',
+				// is_core_partner_name: '',
+				// scope: [],
 				status_name: '',
 			},
 			tags: [
-				{ text: '基本信息', key: 'basic_information', default: true },
+				{ text: '月度状况统计', key: 'monthly_status_statistics', default: true},
+				// { text: '基本信息', key: 'basic_information', default: true },
 				{ text: '报价信息', key: 'statistics' },
-				{ text: '月度状况统计', key: 'monthly_status_statistics'},
 			],
 			columns: [
 				{ type: 'text', label: '报价名称', prop: 'name' },
@@ -126,22 +126,22 @@ export default {
 				{ type: 'text', label: '默认报价', prop: 'amount', render_text: item => `${item}元`, width: '200' },
 			],
 			statisticsColumns: [
-				{ type: 'text', label: '月份', prop:'time', width: '145'},
-				{ type: 'text', label: '新申请委案量', prop:'increase_project_amount', width: '145' },
-				{ type: 'text', label: 'OA新增数量', prop:'oa_increase_amount', width: '145' },
-				{ type: 'text', label: '新申请定稿数', prop:'new_application_final_amount', width: '145' },
-				{ type: 'text', label: 'OA定稿数', prop: 'oa_final_amount', width: '145'},
-				{ type: 'text', label: '新申请平均评分', prop:'new_application_rank', width: '145' },
-				{ type: 'text', label: 'OA平均评分', prop:'oa_rank' , width: '145'},
-				{ type: 'text', label: '正面评价数量', prop:'positive_amount', width: '145' },
-				{ type: 'text', label: '负面评价数量', prop:'negative_amount', width: '145' },
-				{ type: 'text', label: '新申请平均返稿天数', prop:'new_application_daytime', width: '178' },
-				{ type: 'text', label: 'OA平均返稿天数', prop:'oa_daytime', width: '168' },
-				{ type: 'text', label: '新申请返稿及时率', prop: 'new_application_ontime_rate',  width: '178',render:(h,item)=>{
+				{ type: 'text', label: '月份', prop:'time', width: '100'},
+				{ type: 'text', label: '新申请委案量', prop:'increase_project_amount', width: '100' },
+				{ type: 'text', label: 'OA新增数量', prop:'oa_increase_amount', width: '100' },
+				{ type: 'text', label: '新申请定稿数', prop:'new_application_final_amount', width: '100' },
+				{ type: 'text', label: 'OA定稿数', prop: 'oa_final_amount', width: '100'},
+				{ type: 'text', label: '新申请平均评分', prop:'new_application_rank', width: '100' },
+				{ type: 'text', label: 'OA平均评分', prop:'oa_rank' , width: '100'},
+				{ type: 'text', label: '正面评价数量', prop:'positive_amount', width: '100' },
+				{ type: 'text', label: '负面评价数量', prop:'negative_amount', width: '100' },
+				{ type: 'text', label: '新申请平均返稿天数', prop:'new_application_daytime', width: '100' },
+				{ type: 'text', label: 'OA平均返稿天数', prop:'oa_daytime', width: '100' },
+				{ type: 'text', label: '新申请返稿及时率', prop: 'new_application_ontime_rate',  width: '100',render:(h,item)=>{
 					item == -1? item = '-': item;
 					return h('span',item); 
 				}},
-				{ type: 'text', label: 'OA返稿及时率', prop: 'oa_ontime_rate', width: '178', render:(h,item)=>{
+				{ type: 'text', label: 'OA返稿及时率', prop: 'oa_ontime_rate', width: '100', render:(h,item)=>{
 					item == -1? item = '-': item;
 					return h('span',item); 
 				}},

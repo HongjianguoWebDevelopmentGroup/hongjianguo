@@ -45,13 +45,30 @@
     <el-dialog title="新增任务" :visible.sync="dialogAddVisible" class="dialog-medium">
       <edit type="add" @addSuccess="addSuccess" ref="add"></edit>
     </el-dialog>
-    <el-dialog title="延期任务" :visible.sync="dialogDelayVisible" class="dialog-medium">
+    <el-dialog title="任务延期" :visible.sync="dialogDelayVisible" class="dialog-medium">
       <el-form label-width="80px">
+        <el-form-item label="延期天数">
+          <el-select v-model="days" placeholder="请选择延期天数">
+            <el-option value="1"></el-option>
+            <el-option value="2"></el-option>
+            <el-option value="3"></el-option>
+            <el-option value="4"></el-option>
+            <el-option value="5"></el-option>
+            <el-option value="6"></el-option>
+            <el-option value="7"></el-option>
+            <el-option value="8"></el-option>
+            <el-option value="9"></el-option>
+            <el-option value="10"></el-option>
+          </el-select>
+          <ul style="padding: 0">
+            <li style="color:rgba(187,187,187,1);">备注：延期时间单位为工作日天数，遇假期/周末自动延长</li>
+          </ul>
+        </el-form-item>
         <el-form-item label="备注" prop="remark">
           <el-input type="textarea" v-model="remark" placeholder="请填写备注"></el-input>
-          <ul style="padding: 0">
+          <!-- <ul style="padding: 0">
             <li style="color:rgba(187,187,187,1);">延期的任务将会自动延期5个工作日</li>
-          </ul>
+          </ul> -->
         </el-form-item>
         <el-form-item>
           <el-button type="primary" @click="delayTask">提交</el-button>
@@ -95,7 +112,7 @@
         <el-tag v-if="currentRow.serial">{{ currentRow.serial }}</el-tag>
       </span>
       <span slot="header" style="float: right">
-        <el-button size="small" @click="dialogDelayVisible= true">延期</el-button>
+        <el-button size="small" @click="dialogDelayVisible= true" v-if="menusMap && !menusMap.get('/iprs')">延期</el-button>
         <el-button size="small" type="primary" @click="dialogEditVisible = true" v-if="menusMap && !menusMap.get('/tasks/update')" style="margin-left: 0px;">编辑</el-button>
         <el-button size="small" style="margin-left: 0px;" v-if="menusMap && !menusMap.get('/tasks/transfer')" @click="dialogTranserVisible = true; transfer_person = {id: currentRow.person_in_charge, name: currentRow.person_in_charge_name }">移交</el-button>
         <el-button size="small" @click="handleReject" style="margin-left: 0px;" type="danger" v-if="menusMap && !menusMap.get('/tasks/reject')">退回</el-button>
@@ -203,6 +220,7 @@ export default {
       currentRow: {},
       transfer_person: '',
       remark: '',
+      days:'5',
       tableOption: {
         'name': 'taskList',
         'url': URL,
@@ -488,7 +506,7 @@ export default {
     },
     delayTask() {
       const url = "/api/delayrecord";
-      const data = Object.assign({},{'task_id': this.currentRow.id,'project_id': this.currentRow.project_id, 'create_user': this.userid,'remark': this.remark});
+      const data = Object.assign({},{'task_id': this.currentRow.id,'project_id': this.currentRow.project_id, 'create_user': this.userid,'remark': this.remark,days:this.days});
       const success = _=>{
         this.dialogDelayVisible = false;
         this.$message({ message: '延期成功', type: 'success'});

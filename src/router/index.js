@@ -341,7 +341,7 @@ const router = new Router({
       name: 'ProopsalExistent',
       component: Proposal,
       meta: {
-        params: {  },
+        params: { novelty: 1 },
       },
     },
     {
@@ -349,7 +349,7 @@ const router = new Router({
       name: 'ProopsalNonExistent',
       component: Proposal,
       meta: {
-        params: {  },
+        params: { novelty: 0 },
       },
     },
     {
@@ -368,7 +368,7 @@ const router = new Router({
     },
 //################### 提案路由 end #####################
 
-//################### 专利路由 end #####################
+//################### 专利路由 start #####################
     {
       path: '/patent/list',
       name: 'PattentList',
@@ -439,6 +439,38 @@ const router = new Router({
       }
     },
     {
+      path: '/patent/level/a',
+      name: 'PatentLvelA',
+      component: PatentList,
+      meta: {
+        params: { level: 'A' },
+      }
+    },
+    {
+      path: '/patent/level/b',
+      name: 'PatentLvelB',
+      component: PatentList,
+      meta: {
+        params: { level: 'B' },
+      }
+    },
+    {
+      path: '/patent/level/c',
+      name: 'PatentLvelC',
+      component: PatentList,
+      meta: {
+        params: { level: 'C' },
+      }
+    },
+    {
+      path: '/patent/level/d',
+      name: 'PatentLvelD',
+      component: PatentList,
+      meta: {
+        params: { level: 'd' },
+      }
+    },
+    {
       path: '/patent/area/cn',
       name: 'PatentAreaCn',
       component: PatentList,
@@ -467,7 +499,7 @@ const router = new Router({
       name: 'PatentDurationProprity',
       component: PatentList,
       meta: {
-        params: {  },
+        params: { reminder: 'priority_expire_date' },
       }
     },
     {
@@ -475,7 +507,7 @@ const router = new Router({
       name: 'PatentDurationModification',
       component: PatentList,
       meta: {
-        params: {  },
+        params: { reminder: 'active_supplement_expire_date' },
       }
     },
     {
@@ -483,7 +515,7 @@ const router = new Router({
       name: 'PatentDurationPct',
       component: PatentList,
       meta: {
-        params: {  },
+        params: { reminder: 'pct_national_stage_expire_date' },
       }
     },
     {
@@ -491,7 +523,7 @@ const router = new Router({
       name: 'PatentDurationPct19',
       component: PatentList,
       meta: {
-        params: {  },
+        params: { reminder: 'pct_19_expire_date' },
       }
     },
     {

@@ -1,7 +1,7 @@
 <template>
   <div class="main">
   <app-tag :tags="tags" is_static>
-		<el-form label-width="140px" slot="basic_information">
+		<!-- <el-form label-width="140px" slot="basic_information">
 			<el-form-item label="代理人名称">
 				<span class="detail-item">{{ form.name }}</span>
 			</el-form-item>
@@ -24,7 +24,7 @@
 			<el-form-item label="代理所状态">
 				<span class="detail-item">{{ form.status_name }}</span>
 			</el-form-item>
-		</el-form>
+		</el-form> -->
 		<div slot="monthly_status_statistics">
 			<template>
 				<el-button type="primary" size="samll" icon="upload2" style="margin-bottom:10px;" @click="handleExport">导出</el-button>
@@ -61,26 +61,26 @@ export default {
 				status_name: '',
 			},
 			tags: [
-				{ text: '基本信息', key: 'basic_information', default: true },
-				{ text: '月度状况统计', key: 'monthly_status_statistics'},
+				// { text: '基本信息', key: 'basic_information', default: true },
+				{ text: '月度状况统计', key: 'monthly_status_statistics', default: true},
 			],
 			statisticsColumns: [
-				{ type: 'text', label: '月份', prop:'time' },
-				{ type: 'text', label: '新申请委案量', prop:'increase_project_amount' },
-				{ type: 'text', label: 'OA新增数量', prop:'oa_increase_amount' },
-				{ type: 'text', label: '新申请定稿数', prop:'new_application_final_amount' },
-				{ type: 'text', label: 'OA定稿数', prop: 'oa_final_amount'},
-				{ type: 'text', label: '新申请平均评分', prop:'new_application_rank' },
-				{ type: 'text', label: 'OA平均评分', prop:'oa_rank' },
-				{ type: 'text', label: '正面评价数量', prop:'positive_amount' },
-				{ type: 'text', label: '负面评价数量', prop:'negative_amount' },
-				{ type: 'text', label: '新申请平均返稿天数', prop:'new_application_daytime' },
-				{ type: 'text', label: 'OA平均返稿天数', prop:'oa_daytime' },
-				{ type: 'text', label: '新申请返稿及时率', prop: 'new_application_ontime_rate',render:(h,item)=>{
+				{ type: 'text', label: '月份', prop:'time', width:'80' },
+				{ type: 'text', label: '新申请委案量', prop:'increase_project_amount' , width:'80'},
+				{ type: 'text', label: 'OA新增数量', prop:'oa_increase_amount' , width:80},
+				{ type: 'text', label: '新申请定稿数', prop:'new_application_final_amount' , width:80},
+				{ type: 'text', label: 'OA定稿数', prop: 'oa_final_amount', width:80},
+				{ type: 'text', label: '新申请平均评分', prop:'new_application_rank', width:80 },
+				{ type: 'text', label: 'OA平均评分', prop:'oa_rank', width:80 },
+				{ type: 'text', label: '正面评价数量', prop:'positive_amount' , width:80},
+				{ type: 'text', label: '负面评价数量', prop:'negative_amount', width:80 },
+				{ type: 'text', label: '新申请平均返稿天数', prop:'new_application_daytime', width:80 },
+				{ type: 'text', label: 'OA平均返稿天数', prop:'oa_daytime', width:80 },
+				{ type: 'text', label: '新申请返稿及时率', prop: 'new_application_ontime_rate',width:80, render:(h,item)=>{
 					item == -1? item = '-': item;
 					return h('span',item); 
 				}},
-				{ type: 'text', label: 'OA返稿及时率', prop: 'oa_ontime_rate',render:(h,item)=>{
+				{ type: 'text', label: 'OA返稿及时率', prop: 'oa_ontime_rate', width:80,render:(h,item)=>{
 					item == -1? item = '-': item;
 					return h('span',item); 
 				}},

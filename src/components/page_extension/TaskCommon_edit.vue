@@ -43,13 +43,13 @@
         </el-col>
       </el-row>
 
-      <el-row>
+      <!-- <el-row>
         <el-col :span="12">
           <el-form-item label="管控期限" prop="inner_deadline">
             <el-date-picker type="date" v-model="form.inner_deadline" placeholder="请选择管控期限"></el-date-picker>
           </el-form-item>
         </el-col>
-      </el-row>
+      </el-row> -->
       <el-form-item label="附件" prop="attachments">
         <upload v-model="form.attachments" :file-list="attachments"></upload>
       </el-form-item>

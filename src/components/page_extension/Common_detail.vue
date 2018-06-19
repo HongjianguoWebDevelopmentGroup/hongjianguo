@@ -53,7 +53,7 @@
         </el-tab-pane>
         <el-tab-pane label="引用" name="quote" v-if="type == 'patent'&& !menusMap.get('/iprs')">
           <quote></quote>
-        </el-tab-pane>
+        </el-tab-pane> -->
 <!--         <el-tab-pane label="评审记录" name="review" v-if="type == 'patent'">
           <review></review>
         </el-tab-pane> -->
@@ -69,6 +69,9 @@
         </el-tab-pane> 
         <el-tab-pane label="评审" name="judge" v-if="type == 'patent' && !menusMap.get('/iprs')">
           <judge :id="id"></judge>
+        </el-tab-pane>
+        <el-tab-pane label="委案记录" name="history">
+          <agencies></agencies>
         </el-tab-pane>
       </el-tabs>
     </div>
@@ -109,6 +112,7 @@ import DivideForm from '@/components/page_extension/CommonDetail_divide'
 import TaskEdit from '@/components/page_extension/TaskCommon_edit'
 import Remind from '@/components/page_extension/CommonDetail_remind'
 import Judge from '@/components/page_extension/CommonDetail_judge'
+import Agencies from '@/components/page_extension/CommonDetail_AgencyHistory'
 
 import { mapGetters } from 'vuex'
 import { mapActions } from 'vuex'
@@ -329,6 +333,7 @@ export default {
     TaskEdit,    
     Remind,
     Judge,
+    Agencies,
   }
 }
 </script>

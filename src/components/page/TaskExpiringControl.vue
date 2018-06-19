@@ -8,8 +8,8 @@
 							<static-select type="role" v-model="form.role"></static-select>
 						</el-form-item>
 					</el-col>
-					<el-col :span="6">
-						<el-form-item label="代理机构" prop="agency">
+					<el-col :span="6"  v-if="menusMap && !menusMap.get('/iprs')">
+						<el-form-item label="代理机构" prop="agency" v-show="form.role == '6'">
 							<remote-select type="agency" v-model="form.agency"></remote-select>
 						</el-form-item>
 					</el-col>
@@ -18,7 +18,7 @@
 								<static-select type="get_stage"  v-model="form.nstage"></static-select>
 						</el-form-item>
 					</el-col>
-					<el-col :span="6">
+					<el-col :span="6"  v-if="menusMap && !menusMap.get('/iprs')">
 						<el-form-item label="案件等级" prop="level">
 							<static-select type="case_level" v-model="form.level"></static-select>
 						</el-form-item>
@@ -34,8 +34,8 @@
 import AppTable from '@/components/common/AppTable'
 import RemoteSelect from '@/components/form/RemoteSelect'
 import StaticSelect from '@/components/form/StaticSelect'
+import {mapGetters} from 'vuex'
 import {mapActions} from 'vuex'
-
 const URL = '/getcountdata';
 const config = [
 	['new_apply', 1],
@@ -74,15 +74,15 @@ export default {
 		}
 	},
 	computed: {
-		
+		...mapGetters([
+			'menusMap',
+		]),
 	},
 	methods:{
 		...mapActions([
 			'addListFilter',
 		]),
 		handleCellClick (row, column, cell, event) {
-			console.log(row);
-			console.log(column);
 			if(column.property == 'member') return false;
 				let option = {};
 				if(this.form.role == 6){
