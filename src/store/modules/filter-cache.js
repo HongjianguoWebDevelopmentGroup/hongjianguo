@@ -53,12 +53,15 @@ const getters = {
 	listFilterValue: (state, getters, rootState) => { //自定义筛选项请求参数值
 		// console.log('---------listFilterValue---------');
 		const listFilter = state.custom;
-		const form = {};
+		let form = {};
 		listFilter.forEach(item => {
 			let value = item['value'];
 			if(Array.isArray(value)) {
 				if(value.length == 2 && (value[0] instanceof Date || value[1] instanceof Date )) value = value.map(v => rootState.tool.getDate(v));
 				value = value.join(',');
+			}
+			if(item.hasOwnProperty('extraOption')) {
+				form = item['extraOption']; 
 			}
 			form[item['key']] = value;
 		})
@@ -106,8 +109,9 @@ const mutations = {
 		state.custom = data;
 	},
 	addListFilter (state, item) {
-		// console.log('--------------willSetCustom------------');
+		console.log('--------------willSetCustom------------');
 		state.custom = [...state.custom, item];
+		console.log(state.custom);
 		// state.custom = true;
 		// state.lock = false;
 		// console.log('--------------didSetCustom-------------');

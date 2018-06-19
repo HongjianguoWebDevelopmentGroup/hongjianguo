@@ -14,6 +14,7 @@
   @sort-change="_=>{$emit('sort-change', _)}"
   @row-click="handleRowClick"
   @cell-click="handleCellClick"
+  @cell-mouse-enter="handleMouseEnter"
 >
   <template v-for="(col, index) in columns">
     
@@ -224,6 +225,9 @@ export default {
       event.stopPropagation();
        if(column.type == 'selection' || column.type == 'action') return false;
        this.$emit('cell-click',row, column, cell, event);
+    },
+    handleMouseEnter (row, column, cell, event) {
+      this.$emit('cell-mouse-enter',row, column, cell, event);
     },
     handleSelectionChange(s) { 
       this.selected = s;

@@ -651,7 +651,6 @@ export default {
       this.install = this.$route.params.id;
     }
 
-
     if(!this.custom) {
 
       this.refresh();

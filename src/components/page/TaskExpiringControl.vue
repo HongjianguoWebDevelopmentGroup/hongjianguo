@@ -26,7 +26,7 @@
 				</el-row>
 			</el-form>
 		</el-card>
-		<app-table :columns="columns" :data="taskExpiringData" @cell-click="handleCellClick" ></app-table>
+		<app-table :columns="columns" :data="taskExpiringData" @cell-click="handleCellClick" @cell-mouse-enter="handleMouseEnter" height="default"></app-table>
 	</div>
 </template>
 
@@ -34,11 +34,13 @@
 import AppTable from '@/components/common/AppTable'
 import RemoteSelect from '@/components/form/RemoteSelect'
 import StaticSelect from '@/components/form/StaticSelect'
-const URL = '/api/getcountdata';
+import {mapActions} from 'vuex'
+
+const URL = '/getcountdata';
 const config = [
-	['new_apply', 12],
-	['oa', 23],
-	['review',33],
+	['new_apply', 1],
+	['oa', 2],
+	['review',3],
 	['others','4,5,6'],
 	['over_duetime',1],
 	['over_deadline',1],
@@ -50,15 +52,13 @@ export default {
 	name: 'TaskExpiringControl',
 	data () {
 		return {
-			taskExpiringData: [
-				// {id:1, member: '代理人1', new_apply: '2', oa: '5', review: '4', others: '10', due_time: '2', deadline: '1', expire: '2' },
-				// {id:2, member: '代理人2', new_apply: '1', oa: '3', review: '4', others: '8', due_time: '2', deadline: '1', expire: '2' },
-			],
+			taskExpiringData: [],
+			identity: '',
 			form: {
 				role: 6,
 				agency: '',
 				nstage: '',
-				level: 'A',
+				level: '',
 			},
 			columns: [
 				{ type: 'text', label: '承办人', prop: 'member',render_simple: 'name'},
@@ -66,8 +66,8 @@ export default {
 				{ type: 'text', label: 'OA', prop: 'oa',},
 				{ type: 'text', label: '复审', prop: 'review',},
 				{ type: 'text', label: '其他', prop: 'others',},
-				{ type: 'text', label: '已超指定期限', prop: 'over_duetime',},
-				{ type: 'text', label: '已超官方期限', prop: 'over_deadline',},
+				{ type: 'text', label: '已超指定期限', prop: 'over_duetime', render:this.changeBgColor},
+				{ type: 'text', label: '已超官方期限', prop: 'over_deadline', render: this.changeBgColor},
 				{ type: 'text', label: '重点案件即将到期', prop: 'expiring',},
 			],
 			filter: {},
@@ -77,25 +77,40 @@ export default {
 		
 	},
 	methods:{
+		...mapActions([
+			'addListFilter',
+		]),
 		handleCellClick (row, column, cell, event) {
-			// console.log(column);
-			// const url = URL;
-			// let option = {
-			// 	agent: row.member.id,
-			// };
-			// if(column.property == 'over_deadline' || column.property == 'over_duetime' || column.property == 'expiring'){
-			// 	option[column.property] = map.get(column.property);
-			// }else{
-			// 	option['stage'] = map.get(column.property);
-			// }
-			// const data = Object.assign({},option,this.filterObj(this.form));
-			// const success = _=>{
-			// 	this.$router.push({name: 'TaskPending',params:{taskExpisingdata:_.data}},);
-			// };
-			// this.$axiosPost({url, data, success});
-
-			const id = map.get(column.property);
-			this.$router.push({name: 'TaskPending', params: {id}})
+			console.log(row);
+			console.log(column);
+			if(column.property == 'member') return false;
+				let option = {};
+				if(this.form.role == 6){
+					option['agent'] = row.member.id;
+					this.identity = '代理人';
+				}
+				if (this.form.role == 3)  {
+					option['ipr'] = row.member.id;
+					this.identity = 'IPR';
+				}
+				if(column.property == 'over_deadline' || column.property == 'over_duetime' || column.property == 'expiring'){
+					option[column.property] = map.get(column.property);
+				}else{
+					option['stage'] = map.get(column.property);
+				}
+				const extraOption = Object.assign({},option,this.filterObj(this.form));
+				const name = `期限管控：${this.identity}:${row.member['name']}`;
+				const label = `管控类型：${column.label}`;
+				const key = '';
+				const value = '';
+				const item = {name, label, key, value,extraOption};
+				this.addListFilter(item);
+				this.$router.push({path: '/task/pending'});
+			
+		},
+		handleMouseEnter (row, column, cell, event) {
+			if(column.property == 'member') { return false };
+				cell.style.cursor = 'pointer';
 		},
 		refreshTaskExpiring (option) {
 			const url = URL;
@@ -105,6 +120,15 @@ export default {
 				this.taskExpiringData = _.data;
 			};
 			this.$axiosGet({url, data, success});
+		},
+		changeBgColor (h,item) {
+			return h('span',{
+				style: {
+					backgroundColor: 'yellow',
+					width: '100%',
+					display: 'block',			
+				},
+			},item)
 		},
 		filterObj (obj) {
 			const form = {};
