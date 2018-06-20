@@ -26,7 +26,7 @@
 				</el-row>
 			</el-form>
 		</el-card>
-		<app-table :columns="columns" :data="taskExpiringData" @cell-click="handleCellClick" @cell-mouse-enter="handleMouseEnter" height="default"></app-table>
+		<app-table :columns="columns" :data="taskExpiringData" @cell-click="handleCellClick" @cell-mouse-enter="handleMouseEnter" height="default" border></app-table>
 	</div>
 </template>
 
@@ -66,9 +66,9 @@ export default {
 				{ type: 'text', label: 'OA', prop: 'oa',},
 				{ type: 'text', label: '复审', prop: 'review',},
 				{ type: 'text', label: '其他', prop: 'others',},
-				{ type: 'text', label: '已超指定期限', prop: 'over_duetime', render:this.changeBgColor},
-				{ type: 'text', label: '已超官方期限', prop: 'over_deadline', render: this.changeBgColor},
-				{ type: 'text', label: '重点案件即将到期', prop: 'expiring',},
+				{ type: 'text', label: '已超指定期限（件数）', prop: 'over_duetime', render:this.changeBgColor},
+				{ type: 'text', label: '已超绝限（件数）', prop: 'over_deadline', render: this.changeBgColor},
+				{ type: 'text', label: '重点案件到期（件数）', prop: 'expiring',},
 			],
 			filter: {},
 		}
@@ -109,8 +109,38 @@ export default {
 			
 		},
 		handleMouseEnter (row, column, cell, event) {
-			if(column.property == 'member') { return false };
+			// if(column.property == 'member') { return false };
+				const tbody = cell.parentNode.parentNode;
+
 				cell.style.cursor = 'pointer';
+				const tr=tbody.getElementsByTagName("tr");
+    const td=tbody.getElementsByTagName("td");
+    for(var i=0; i<td.length; i++) {
+        td[i].onmouseleave = function() {
+            for (var j=0;j< td.length; j++)
+                td[j].style.backgroundColor ='';//去除原来影响
+        };
+        td[i].onmouseenter=function() {
+            
+            const row=this.parentNode.getElementsByTagName('td');
+            // console.log(row)
+            for(var j=0;j<row.length;j++)
+                {
+                    row[j].style.backgroundColor ='#f1f1f1';
+                }//行
+            const col=this.cellIndex;
+            // console.log(col)
+            for(var k=0;k<tr.length;k++)
+                {
+                tr[k].getElementsByTagName("td")[col].style.backgroundColor ='#f1f1f1';
+                }//列
+                this.style.backgroundColor ='#fff';
+        }
+    }
+				// this.highLight(tbody);
+
+				// tr.style.backgroundColor = '#f00';
+				// cell.style.backgroundColor = '#f00';
 		},
 		refreshTaskExpiring (option) {
 			const url = URL;
@@ -124,11 +154,15 @@ export default {
 		changeBgColor (h,item) {
 			return h('span',{
 				style: {
-					backgroundColor: 'yellow',
+					color: 'red',
 					width: '100%',
 					display: 'block',			
 				},
 			},item)
+		},
+		highLight(table) {
+
+    
 		},
 		filterObj (obj) {
 			const form = {};
@@ -158,3 +192,5 @@ export default {
 	}
 }
 </script>
+<style lang="scss" scoped>
+</style>

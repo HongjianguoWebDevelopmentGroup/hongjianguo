@@ -1,21 +1,22 @@
 <template>
   <el-dialog :title="title" :visible.sync="dialogVisible" >
   	<el-form label-width="100px" ref="form" :model="form" :rules="rules">
-  		
-  		<el-form-item label="名称" prop="name">
-  			<el-input v-model="form.name" placeholder="请填写代理人名称"></el-input>
-  		</el-form-item>
 
-			<el-form-item label="手机号" prop="telephone">
-				<el-input v-model="form.telephone" placeholder="请填写手机号"></el-input>
-			</el-form-item>
-
-			<el-form-item label="邮箱" prop="email">
-				<el-input v-model="form.email" placeholder="请填写邮箱"></el-input>
+			<el-form-item label="月度案件配额" prop="distributed_month_amount">
+				<el-input v-model="form.distributed_month_amount" placeholder="请填写月度案件配额"></el-input>
 			</el-form-item>
   
-      <el-form-item label="年度/月度案件配额" prop="distributed_amount">
-        <el-input v-model="form.distributed_amount" placeholder="请填写年度/月度案件配额"></el-input>
+      <el-form-item label="年度案件配额" prop="distributed_amount">
+        <el-input v-model="form.distributed_year_amount" placeholder="请填写年度/月度案件配额"></el-input>
+      </el-form-item>
+
+      <el-form-item label="代理人等级" prop= "level">
+        <el-radio-group v-model="form.level">
+          <el-radio-button label="A"></el-radio-button>
+          <el-radio-button label="B"></el-radio-button>
+          <el-radio-button label="C"></el-radio-button>
+          <el-radio-button label="D"></el-radio-button>
+        </el-radio-group>
       </el-form-item>
 
        <el-form-item label="状态" prop="status">
@@ -43,19 +44,18 @@ export default {
   data () {
 		return {
       form: {
-        name: '',
-        telephone: '',
-        email: '',
-        distributed_amount: '',
+        distributed_month_amount: '',
+        distributed_year_amount: '', 
         status: 1,
+        level: 'B',
       },
       rules: {
-      
+        
       }
 		}
   },
   components: { AppSwitch, StaticSelect },
-  URL: '/api/agents',
+  URL: '/api/agencyagent',
   REMINDER_TEXT: '代理人',
 }
 </script>

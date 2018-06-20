@@ -41,7 +41,7 @@ import AppPop from '@/components/common/AppPop'
 import AppTag from '@/components/common/AppTag'
 
 
-const URL = '/agents';
+const URL = '/agencyagent';
 
 export default {
   name: 'settingAgentDetail',
@@ -153,9 +153,9 @@ export default {
 			const id = this.$route.query.id;
 			const url = `${URL}/${id}`;
 			const success = _=>{
-				this.form = _.agency;
-				this.offerData = _.agency.partner_fee;
-				this.statisticsData =_.agency.angecy_statistics;
+				// this.form = _.agency;
+				// this.offerData = _.agency.partner_fee;
+				this.statisticsData =_.agent.agent_statistics;
 			}
 			const complete = _=>{
 				this.$store.commit('cancelLoading');

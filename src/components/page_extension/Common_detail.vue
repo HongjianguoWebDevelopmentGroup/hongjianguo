@@ -33,7 +33,7 @@
             <detail-copyright style="height: 100%;" page-type="edit" v-if="type == 'copyright'" @editSuccess="editSuccess" ref="copyright"></detail-copyright>
           </div>
         </el-tab-pane>
-        <el-tab-pane label="流程" name="control" v-if="">
+        <el-tab-pane label="流程" name="control">
           <detail-control></detail-control>
         </el-tab-pane>
         <el-tab-pane label="官文&附件" name="notice">
@@ -53,7 +53,7 @@
         </el-tab-pane>
         <el-tab-pane label="引用" name="quote" v-if="type == 'patent'&& !menusMap.get('/iprs')">
           <quote></quote>
-        </el-tab-pane> -->
+        </el-tab-pane>
 <!--         <el-tab-pane label="评审记录" name="review" v-if="type == 'patent'">
           <review></review>
         </el-tab-pane> -->
