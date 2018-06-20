@@ -610,8 +610,11 @@ nav {
     font-size: 12px;
     min-height: 36px;
   }
-  .el-select__tags {
-    overflow: auto;
+  // .el-select__tags {
+  //   white-space: nowrap;
+  // }
+  .no_wrap .el-select__tags {
+    white-space: nowrap;
   }
   .task-pending-top{
     float: right;

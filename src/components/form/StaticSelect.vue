@@ -197,7 +197,9 @@ export default {
 <style>
 #static_select .el-tag {
   min-height: 24px; 
-  white-space: pre-wrap;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
   padding: 0 20px 0 5px;
 }
 #static_select .el-select .el-tag{
@@ -207,8 +209,8 @@ export default {
   box-sizing: border-box;
   margin: 3px 0 3px 6px;
   max-width: 100%;
-  word-wrap: break-word;
-  word-break: break-all;
+  /*word-wrap: break-word;*/
+  /*word-break: break-all;*/
   position: relative;
 }
 #static_select .el-tag .el-icon-close {

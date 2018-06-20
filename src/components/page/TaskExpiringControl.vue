@@ -10,7 +10,7 @@
 					</el-col>
 					<el-col :span="6"  v-if="menusMap && !menusMap.get('/iprs')">
 						<el-form-item label="代理机构" prop="agency" v-show="form.role == '6'">
-							<remote-select type="agency" v-model="form.agency"></remote-select>
+							<remote-select type="agency" v-model="form.agency" class="no_wrap"></remote-select>
 						</el-form-item>
 					</el-col>
 					<el-col :span="6">
@@ -41,7 +41,7 @@ const config = [
 	['new_apply', 1],
 	['oa', 2],
 	['review',3],
-	['others','4,5,6'],
+	['others','other'],
 	['over_duetime',1],
 	['over_deadline',1],
 	['expiring',1],
@@ -66,7 +66,7 @@ export default {
 				{ type: 'text', label: 'OA', prop: 'oa',},
 				{ type: 'text', label: '复审', prop: 'review',},
 				{ type: 'text', label: '其他', prop: 'others',},
-				{ type: 'text', label: '已超指定期限（件数）', prop: 'over_duetime', render:this.changeBgColor},
+				{ type: 'text', label: '已超期（件数）', prop: 'over_duetime', render:this.changeBgColor},
 				{ type: 'text', label: '已超绝限（件数）', prop: 'over_deadline', render: this.changeBgColor},
 				{ type: 'text', label: '重点案件到期（件数）', prop: 'expiring',},
 			],
@@ -109,34 +109,34 @@ export default {
 			
 		},
 		handleMouseEnter (row, column, cell, event) {
-			// if(column.property == 'member') { return false };
+			if(column.property == 'member') { return false };
 				const tbody = cell.parentNode.parentNode;
 
 				cell.style.cursor = 'pointer';
 				const tr=tbody.getElementsByTagName("tr");
-    const td=tbody.getElementsByTagName("td");
-    for(var i=0; i<td.length; i++) {
-        td[i].onmouseleave = function() {
-            for (var j=0;j< td.length; j++)
-                td[j].style.backgroundColor ='';//去除原来影响
-        };
-        td[i].onmouseenter=function() {
-            
-            const row=this.parentNode.getElementsByTagName('td');
-            // console.log(row)
-            for(var j=0;j<row.length;j++)
-                {
-                    row[j].style.backgroundColor ='#f1f1f1';
-                }//行
-            const col=this.cellIndex;
-            // console.log(col)
-            for(var k=0;k<tr.length;k++)
-                {
-                tr[k].getElementsByTagName("td")[col].style.backgroundColor ='#f1f1f1';
-                }//列
-                this.style.backgroundColor ='#fff';
-        }
-    }
+    			const td=tbody.getElementsByTagName("td");
+			    for(var i=0; i<td.length; i++) {
+			        td[i].onmouseleave = function() {
+			            for (var j=0;j< td.length; j++)
+			                td[j].style.backgroundColor ='';//去除原来影响
+			        };
+			        td[i].onmouseenter=function() {
+			            
+			            const row=this.parentNode.getElementsByTagName('td');
+			            // console.log(row)
+			            for(var j=0;j<row.length;j++)
+			                {
+			                    row[j].style.backgroundColor ='#f1f1f1';
+			                }//行
+			            const col=this.cellIndex;
+			            // console.log(col)
+			            for(var k=0;k<tr.length;k++)
+			                {
+			                tr[k].getElementsByTagName("td")[col].style.backgroundColor ='#f1f1f1';
+			                }//列
+			                this.style.backgroundColor ='#fff';
+			        }
+			    }
 				// this.highLight(tbody);
 
 				// tr.style.backgroundColor = '#f00';
