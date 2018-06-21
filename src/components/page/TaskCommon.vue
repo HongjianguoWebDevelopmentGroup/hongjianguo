@@ -609,7 +609,7 @@ export default {
       return ( 
         
         <span>
-          {data.icon&&data.icon.length==2?'<i class="el-icon-my-keyPoint"></i><i class="el-icon-my-award"></i>':data.icon&&data.icon.length==1&&data.icon[0]==1?<i class="el-icon-keyPoint"></i>:data.icon&&data.icon.length==1&&data.icon[0]==2?<i class="el-icon-my-award"></i>:<i></i>}
+          {data.icon&&data.icon.length==2?<i class="el-icon-my-keyPoint" style="color: #ff2121"><i class="el-icon-my-award" style="color: #f2be45"></i></i>:data.icon&&data.icon.length==1&&data.icon[0]==1?<i class="el-icon-my-keyPoint" style="color: #ff2121"></i>:data.icon&&data.icon.length==1&&data.icon[0]==2?<i class="el-icon-my-award" style="color: #f2be45"></i>:<i></i>}
           <el-tooltip effect="dark" content={`${tipContent}`} placement="top">
             <i class="table-flag" style={`background-color: ${color}; margin-right: 10px;`}></i>  
           </el-tooltip>  
