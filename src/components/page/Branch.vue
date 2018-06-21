@@ -172,9 +172,6 @@ export default {
             })
           }
         });
-        this.currentNode = '';
-        this.defaultKeys = [];
-        val.id? this.defaultKeys.push(val.id) : [];
       }
     },
     branchDelete () {
