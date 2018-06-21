@@ -160,10 +160,6 @@ export default {
 				},
 			},item)
 		},
-		highLight(table) {
-
-    
-		},
 		filterObj (obj) {
 			const form = {};
 			for( let k in obj){

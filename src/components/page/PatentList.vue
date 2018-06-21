@@ -81,7 +81,7 @@ export default {
 
           { type: 'selection' },
           // { type: 'text', label: '专利状态', prop: 'status', render: (h,item)=>h('span', item ? '正常' : '暂停处理') },
-          { type: 'text', label: '案号', prop: 'serial', is_agency: true, sortable: true, width: '135' },
+          { type: 'text', label: '案号', prop: 'serial', is_agency: true, sortable: true, width: '135',render: this.serialRender},
           { type: 'text', label: '事务所案号', prop: 'agency_serial', is_agency: true, sortable: true, width: '135' },
           // { type: 'array', label: '申请人', prop: 'applicants', width: '300', is_import: true,render: _=>{ return _.map(_=>_.name);}},
           { type: 'text', label: '申请号', prop: 'apn', sortable: true, is_import: true, width: '140', is_agency: true},
@@ -283,6 +283,14 @@ export default {
           textTemplate: item +'',
         }
       })
+    },
+    serialRender (h,item,data) {
+      return(
+        <span>
+           {data.icon&&data.icon.length==2?'<i class="el-icon-my-keyPoint"></i><i class="el-icon-my-award"></i>':data.icon&&data.icon.length==1&&data.icon[0]==1?<i class="el-icon-keyPoint"></i>:data.icon&&data.icon.length==1&&data.icon[0]==2?<i class="el-icon-my-award"></i>:<i></i>}
+           <span>{ item }</span>
+        </span>
+      )
     },
   },
   created () {

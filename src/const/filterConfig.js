@@ -148,7 +148,15 @@ const map = new Map([
     { components: 'date',          id: 'create_time', name: '账单生成日期' },
     { components: 'date',          id: 'due_time', name: '费用期限' },
     { components: 'date',          id: 'pay_time', name: '付款时间' },
-	]]
+	]],
+    ['patent_notice',[
+        { components: 'static_select', id: 'code', name: '通知书名称', type: 'file_type_patent_notice' },
+        { components: 'remote_select', id: 'uploader', name: '上传用户', type: 'member' },
+        { components: 'date',          id: 'create_time', name: '上传日', },
+        { components: 'date',          id: 'apd', name: '申请日', },
+        { components: 'date',          id: 'deadline', name: '法定期限', },
+        { components: 'date',          id: 'mail_date', name: '发文日', },
+    ]]
 ])
 
 const customPathMap = new Map([
@@ -167,6 +175,7 @@ const listPathMap = new Map([
 	['trademark', '/trademark/list'],
 	['copyright', '/copyright/list'],
 	['fee', '/fee/income'],
+    ['patent_notice', '/news/patent_notice'],
 ])
 
 export {map, customPathMap, listPathMap};

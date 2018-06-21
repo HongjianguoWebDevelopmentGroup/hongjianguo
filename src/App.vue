@@ -520,6 +520,10 @@ nav {
 }
 /*这里放入重写element-ui样式的内容*/
 #app {
+  .el-card__header {
+    padding: 10px 20px;
+    font-size: 14px;
+  }
   .dialog-control>.el-dialog {
     width: 600px;
     position: static;

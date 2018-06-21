@@ -28,8 +28,9 @@ export default {
     return {
       columns: [
         { type: 'text', label: '管制事项', prop: 'flow', render_simple: 'name'},
-        { type: 'text', label: '流程节点', prop: 'flownode', render_simple: 'name'},
+        // { type: 'text', label: '流程节点', prop: 'flownode', render_simple: 'name'},
         { type: 'text', label: '指定期限', prop: 'due_time' },
+        { type: 'text', label: '法定期限', prop: 'deadline' },
         { type: 'text', label: '开始时间', prop: 'start_time' },
         { type: 'text', label: '完成时间', prop: 'end_time' },
         { type: 'text', label: '状态', prop: 'status', render_text: v => v ? '已完成' : '未完成' },

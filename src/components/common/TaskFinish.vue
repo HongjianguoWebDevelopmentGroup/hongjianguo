@@ -78,9 +78,9 @@
       <upload v-model="form.attachments" :file-list="attachments"> 
       </upload>
     </el-form-item>
-    <ul v-if="data.description && data.description.length != 0" style="margin-left:115px;padding: 0;margin-top:-10px; font-size:14px;color:#bbb;">
-      <li v-for="(item, index) in data.description" :key="index">{{ item }}</li>
-    </ul>
+    <ul v-if="description&&description.length != 0" style="margin-left:115px;padding: 0;margin-top:-10px; font-size:14px;color:#bbb;">
+      <li v-for="(item, index) in description" :key="index">{{ item }}</li>
+    </ul>    
     <div v-if="data.inventor_tips" style="margin-left:100px;padding: 0;margin-bottom: 20px; font-size:14px;color:#bbb;">
       <span>{{ data.inventor_tips }}</span>
     </div>
@@ -135,7 +135,7 @@
         <el-radio-button label="差评"></el-radio-button>
       </el-radio-group>
     </el-form-item>
-    <el-form-item prop="negative_comment" label="评价理由" v-if="fields.negative_comment" v-show="form.negative_flag !== '无'">
+    <el-form-item prop="negative_comment" label="评价理由" v-if="fields.negative_comment" v-show="form.negative_flag !== '无'&& !form.negative_flag">
       <el-input type="textarea" v-model="form.negative_comment"></el-input>
     </el-form-item>
     <el-form-item v-if="(next == '20' && level != 'A')  || next == '114'" prop="pconfirm" label="确认" :rules="confirmValidator">
@@ -175,6 +175,7 @@ export default {
 		return {
 			'data': {},
 			'next': '',
+      'description': '',
       'level': '',
 			'form': {
         agency_serial: '',
@@ -302,6 +303,12 @@ export default {
             this.fields = d.fields;
             this.defaultVal = d.default == 'agent' && !this.data.agent ? 'ipr' : d.default;
             const person_in_charge = this.data[this.defaultVal] ? this.data[this.defaultVal] : '';
+
+            if(d.description&&d.description.length != 0) {
+              this.description = d.description;
+            }else{
+              this.description = this.data.description;
+            }
                         
             this.$nextTick(_=>{
               if(this.fields.agency_type) this.form.agency_type = 1;

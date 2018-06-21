@@ -42,7 +42,9 @@ export default {
 				'height': 'default2',
 				'url': '',
 				'import_type': '',
-				'upload_type': '',			
+				'upload_type': '',
+				'is_list_filter': true,
+				'list_type': 'patent_notice',			
 				'columns': [
 					{ type: 'selection' },
 					// { type: 'text', label: '通知书案件名称', prop: 'title', width: '200', is_import: true },

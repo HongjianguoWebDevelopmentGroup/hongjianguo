@@ -1,4 +1,4 @@
-import {map as setting} from '@/const/filterSetting'
+import {map as setting} from '@/const/filterConfig'
 
 const state = {
 	shortcut: [],
