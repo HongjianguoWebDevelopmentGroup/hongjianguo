@@ -20,12 +20,13 @@ export default{
 	data () {
 		return {
 			hideMap: new Map(),
-			source: menu.source,
+			source: [],
 		}
 	},
 	computed: {
 		...mapGetters([
 			'windowWidth',
+			'menusMap',
 		]),
 		path () {
 			return this.$route.path;
@@ -50,9 +51,9 @@ export default{
 		moreShow () {
 			return this.hideMap.size == 0 ? false : true;
 		},
-		hideSource () {
-			return [...this.hideMap.keys()].map(_ => this.source[_]);
-		}
+		// hideSource () {
+		// 	return [...this.hideMap.keys()].map(_ => this.source[_]);
+		// }
 	},
 	methods: {
 		...mapActions([
@@ -81,6 +82,9 @@ export default{
 			})
 			this.hideMap = map;
 		},
+	},
+	created () {
+		this.source = menu.source.filter(v => !this.menusMap.get(v.path));
 	},
 	mounted () {
 		this.refreshNav();

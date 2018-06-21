@@ -33,7 +33,7 @@ const store = new Vuex.Store({
     dragId: null,
     axios,
     tool,
-    status: 0, //这里进行地址代理控制, 为1时去掉/api, 为0时保留
+    status: 0,
     loading: false,
     loadingText: '',
     view_loading: false,

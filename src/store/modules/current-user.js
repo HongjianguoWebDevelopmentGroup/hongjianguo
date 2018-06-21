@@ -76,6 +76,7 @@ const getters = {
 
 const mutations = {
 	setUser (state, d) {
+		// console.log('------------setUser------------');
 		state.data = d;
 	},
 	setUserLoading (state, boolean) {

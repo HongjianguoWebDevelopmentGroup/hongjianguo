@@ -150,7 +150,7 @@ export default {
 			'addListFilter',
 			'removeListFilter',
 			'editListFilter',
-			'setFilterType', //filter-cachef
+			'setFilterType', //filter-cache
 
 			'getCustomFilter',
 			'refreshCustomData', //menu-cache

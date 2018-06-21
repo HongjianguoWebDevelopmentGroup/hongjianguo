@@ -3,7 +3,7 @@ import {map as setting} from '@/const/filterSetting'
 const state = {
 	shortcut: [],
 	shortcutVisible: false,
-	custom: [],
+	custom: false,
 	type: '',
 	lock: false,
 }
@@ -64,13 +64,13 @@ const getters = {
 		})
 		return form;
 	},
-	filterLock: state => state.lock, //刷新数据锁,需要在watch函数中使用(TableComponent)
+	filterLock: state => state.lock, //刷新数据锁,在watch函数中使用(TableComponent)
 	navLabel: (state,getters) => { //合并显示
 		// console.log('---------navlabel---------');
 		return [...getters.screenLabel, ...getters.listFilterLabel];
 	},
 	filterForm: (stata, getters) => { //合并上传参数
-		console.log('---------filterForm---------')
+		// console.log('---------filterForm---------')
 		const form = Object.assign({}, getters.screenValue, getters.listFilterValue);
 		console.log(form);
 		return form;
@@ -106,7 +106,11 @@ const mutations = {
 		state.custom = data;
 	},
 	addListFilter (state, item) {
+		// console.log('--------------willSetCustom------------');
 		state.custom = [...state.custom, item];
+		// state.custom = true;
+		// state.lock = false;
+		// console.log('--------------didSetCustom-------------');
 	},
 	editListFilter (state, {index, item}) {
 		state.custom.splice(index, 1, item);
@@ -131,7 +135,7 @@ const actions = {
 	//清空筛选项
 	//flag用于控制清空筛选项时,是否刷新列表(默认不刷新)
 	clearFilter ({commit, state}, flag=false) {
-		console.log('---------clearFilter---------');
+		// console.log('---------clearFilter---------');
 		if(!flag) {
 			commit('setFilterLock', true);
 		}
@@ -160,14 +164,17 @@ const actions = {
 		commit('removeScreen', index);
 	},
 	setListFilter ({commit}, data) {
-		console.log('--------setListFilter-------')
+		// console.log('--------setListFilter-------')
 		if(!Array.isArray(data)) return;
 		commit('setListFilter', data);
 	},
 	//添加列表筛选项
-	addListFilter ({commit}, item) {
+	addListFilter ({rootState, commit}, item) {
 		if(!item) return;
+		console.log(rootState);
+		// console.log('--------willaddListFilter-------------');
 		commit('addListFilter', item);
+		// console.log('---------------------------didaddListFilter-------------------');
 	},
 	//移除列表筛选项
 	removeListFilter ({commit}, index) {

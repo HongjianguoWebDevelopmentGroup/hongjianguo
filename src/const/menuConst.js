@@ -22,7 +22,7 @@ const taskMenu = [
 		]
 	},
 	{ 
-		type: 'submenu', 
+		type: 'submenu',
 		text: '按任务阶段', 
 		path: '/task/stage', 
 		icon: 'iconfont el-icon-my-task',

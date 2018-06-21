@@ -181,7 +181,8 @@ export default {
           })
         }
       })
-
+      console.log('------------------------table-data------------------------');
+      console.log(r);
       return r;
     },
     tableHeight () {

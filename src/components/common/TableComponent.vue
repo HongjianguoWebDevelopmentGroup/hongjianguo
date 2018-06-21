@@ -244,7 +244,6 @@ export default {
       'filterForm',
       'pagesize',
       'menusMap',
-      'filterForm',
     ]),
     default_choose () {
       return this.control[1].map(_=>_.key);
@@ -662,10 +661,10 @@ export default {
     },
     update () {
       if(this.refreshTableData) {
-        this.refreshTableData(Object.assign({}, this.getRequestOption(), this.filterForm));
+        this.refreshTableData(Object.assign({}, this.getRequestOption(), this.filterForm ));
       }
 
-      this.$emit('refreshTableData', Object.assign({}, this.getRequestOption(), this.filterForm) );
+      this.$emit('refreshTableData', Object.assign({}, this.getRequestOption(), this.filterForm ) );
     },
     search (val) {
       this.page = 1;
@@ -712,7 +711,6 @@ export default {
     }
   },
   beforeDestroy () {
-    // console.log('beforeDestroy');
     this.clearFilter();
   },
   created () {
