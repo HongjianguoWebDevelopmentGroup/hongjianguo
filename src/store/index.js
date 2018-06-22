@@ -98,7 +98,6 @@ const store = new Vuex.Store({
     },
     setInnerHeight (state, number) {
       state.inner_height = number;
-      console.log(state.inner_height);
     },
     setInnerWidth (state, number) {
       state.inner_width = number;

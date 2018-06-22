@@ -141,9 +141,9 @@ const config = [
     model_name: '账单模板'
   }],
   ['agentImport', {
-    action: 'importAgent',
+    action: 'getAgentsInfo',
     title: '导入代理人',
-    url: '/agent/import',
+    url: '/agents/import',
     category: '',
     // model: '/static/templates/fee_template.xlsx',
     // model_name: '账单模板'

@@ -198,9 +198,18 @@ const config = [
     url: '/fileTypes?category=3&type=1',
   }],
   ['patents_status', {
-  	url: '/progress',
-  	placeholder: '请输入状态关键词',
-  	params: { category: 1 },
+    url: '/progress',
+    placeholder: '请输入状态关键词',
+    params: { category: 1 },
+    }], 
+    ['legal_status', {
+  	placeholder: '请输入法律状态关键词',
+    options: [
+      {name: '申请', id: 1},{name: '受理', id: 2},{name: '初审合格', id: 3},{name: '公布', id: 4},{name: '实审', id: 5},
+      {name: '补正', id: 6},{name: '  审查意见', id: 7},{name: '复审', id: 8},{name: '授权办登', id: 9},{name: '专利权有效', id: 10},{name: '专利权有效期届满', id: 11},
+      {name: '驳回', id: 12},{name: '  行政诉讼', id: 13},{name: '专利权终止', id: 14},{name: '专利权无效', id: 15},{name: '专利转让', id: 16},
+      {name: '视撤', id: 17},{name: '撤回申请', id: 18},{name: '  结案', id: 19},{name: '  国际检索', id: 20},{name: '进入国家阶段', id: 21},{name: '国际公布', id: 22},
+    ],
 	  }],
   ['copyrights_status', {
   	url: '/progress',

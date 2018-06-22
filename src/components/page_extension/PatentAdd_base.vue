@@ -54,8 +54,11 @@
           </el-form-item>
         </el-col>
         <el-col :span="8">
-          <el-form-item label="状态" v-if="type == 'edit'">
+          <!-- <el-form-item label="状态" v-if="type == 'edit'">
               <static-select type="patents_status" v-model="form.flownode"></static-select>
+          </el-form-item> -->
+          <el-form-item label="法律状态" v-if="type == 'edit'">
+              <static-select type="legal_status" v-model="form.legal_status"></static-select>
           </el-form-item>
         </el-col>
       </el-row>
@@ -69,7 +72,7 @@
       <el-form-item label="优先权">
         <priorities v-model="form.priorities"></priorities>
       </el-form-item>
-      <el-form-item label="额外要求">
+      <el-form-item label="案件标记">
         <el-checkbox-group v-model="form.extension" v-if="extensionSet.length != 0" id="extension">
           <el-checkbox 
             v-for="item in extensionSet" 
@@ -138,7 +141,8 @@ export default {
         group_number:'',
         family_number:'',
         // abstract:'',
-        flownode:'',
+        // flownode:'',
+        legal_status: '',
       },
       titleLock: false, //标题锁 当评审表被上传且标题自动填充后 不再自动填充 
       attachments: [],
@@ -206,7 +210,7 @@ export default {
     //setForm 的Type用于区分正常填充 或者 是文件解析后的填充
     setForm (form, upload=false, disclosureType='') {
       this.$tool.coverObj(this.form, form, {
-        obj: [ 'attachments', 'area', 'type', 'ipr', 'case_level', 'flownode','group_number', 'family_number'], 
+        obj: [ 'attachments', 'area', 'type', 'ipr', 'case_level', 'legal_status','group_number', 'family_number'], 
         skip:[ 'extension', 'title' ],
       });
 

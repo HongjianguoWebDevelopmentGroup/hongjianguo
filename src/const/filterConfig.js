@@ -87,9 +87,9 @@ const map = new Map([
     // { components: 'date',          id: 'agent_amending_period',         name: '代理人修改时间', date: true },//代理人修改时间
     { components: 'input',         id: 'group_number',                  name: '群组号码'},//群组号码
     { components: 'input',         id: 'family_number',                 name: '专利族号码'},//专利族号码
-    { components: 'input',         id: 'extends1',                      name: '自定义字段1'},//自定义字段1
-    { components: 'input',         id: 'extends2',                      name: '自定义字段2'},//自定义字段2
-    { components: 'input',         id: 'extends3',                      name: '自定义字段3'},//自定义字段3
+    // { components: 'input',         id: 'extends1',                      name: '自定义字段1'},//自定义字段1
+    // { components: 'input',         id: 'extends2',                      name: '自定义字段2'},//自定义字段2
+    // { components: 'input',         id: 'extends3',                      name: '自定义字段3'},//自定义字段3
     { components: 'static_select', id: 'manner',                        name: '申请方式', type: 'manner' },
     { components: 'static_select', id: 'application_strategy',          name: '申请策略', type: 'strategy'},//申请类型
     { components: 'static_select', id: 'subexam_timing',                name: '实审时机', type: 'timing'},//实审时间

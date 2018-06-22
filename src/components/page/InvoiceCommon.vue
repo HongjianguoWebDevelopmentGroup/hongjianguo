@@ -60,6 +60,18 @@ const URL = '/invoices';
 
 export default {
   name: 'invoiceCommon',
+  props: {
+    debit: {
+      type: null,
+      default: 0,
+    },
+    defaultParams: {
+      type: Object,
+      default () {
+        return {};
+      }
+    }
+  },  
   data () {
     return {
       option: {
@@ -260,7 +272,7 @@ export default {
     refreshTableData (option) {
       const url = URL;
       const debit = this.feeType;
-      const data = Object.assign({}, option, { debit });
+      const data = Object.assign({}, option, { debit }, this.defaultParams);
       const success = d=>{ 
         if(data['format'] == 'excel') {
           if(d.invoices.downloadUrl) {

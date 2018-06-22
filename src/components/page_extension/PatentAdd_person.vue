@@ -195,7 +195,9 @@
             </el-form-item>
           </el-col>
           <el-col :span="8">
-            
+            <el-form-item label="证书编号">
+              <el-input size="small" v-model="form.certificate_no" placeholder="证书编号" class="input-min-width"></el-input>
+            </el-form-item>
           </el-col>
           <el-col :span="8">
             
@@ -239,6 +241,7 @@ export default {
         pct_public_date: '',
         pct_public_language: '',
         pct_search_date: '',
+        certificate_no: '',
       },
       ipr_name: '',
       branchName: '',

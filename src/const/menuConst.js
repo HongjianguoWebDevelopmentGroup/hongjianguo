@@ -223,37 +223,82 @@ const copyrightMenu = [
 ];
 
 const feeMenu = [
+	// {	
+	// 	type: 'submenu',
+	// 	text: '应付',
+	// 	path: '/fee_menu/fee_pay',
+	// 	icon: 'iconfont el-icon-my-receipt',
+	// 	children: [
+	// 		{ type: 'item', text: '应付明细', path: '/fee_menu/fee_pay/pay', icon: 'iconfont el-icon-my-receipt' },
+	// 		{ type: 'item', text: '账单', path: '/fee_menu/fee_pay/payment',icon: 'iconfont el-icon-my-pay' },
+	// 	]
+	// },
+	// {
+	// 	type: 'submenu',
+	// 	text: '应收',
+	// 	path: '/fee_menu/fee_in',
+	// 	icon: 'iconfont el-icon-my-deal',
+	// 	children: [
+	// 		{ type: 'item', text: '政府资助', path: '/fee_menu/fee_in/income', icon: 'iconfont el-icon-my-deal' },
+	// 		{ type: 'item', text: '资助申请单', path: '/fee_menu/fee_in/bill', icon: 'iconfont el-icon-my-deal' },
+	// 	]
+	// },
+	// { 
+	// 	type: 'submenu',
+	// 	text: '年费',
+	// 	path: '/fee_menu/renewal',
+	// 	icon: 'iconfont el-icon-my-renewal-fee',
+	// 	children: [
+	// 		{ type: 'item', text: '年费明细', path: '/fee_menu/renewal/fee', icon: 'iconfont el-icon-my-renewal-fee' },
+	// 		{ type: 'item', text: '年费评估单', path: '/fee_menu/renewal/estimate', icon: 'iconfont el-icon-my-renewal-estimate' },
+	// 	]
+	// }
 	{	
 		type: 'submenu',
-		text: '应付',
-		path: '/fee_menu/fee_pay',
+		text: '黄埔区资助',
+		path: '/fee/huangpu',
 		icon: 'iconfont el-icon-my-receipt',
 		children: [
-			{ type: 'item', text: '应付明细', path: '/fee_menu/fee_pay/pay', icon: 'iconfont el-icon-my-receipt' },
-			{ type: 'item', text: '账单', path: '/fee_menu/fee_pay/payment',icon: 'iconfont el-icon-my-pay' },
+			{ type: 'item', text: '专利', path: '/fee/huangpu/patent', icon: '' },
+			{ type: 'item', text: '商标', path: '/fee/huangpu/trademark', icon: '' },
+			{ type: 'item', text: '著作权', path: '/fee/huangpu/copyright', icon: '' },
 		]
 	},
 	{
 		type: 'submenu',
-		text: '应收',
-		path: '/fee_menu/fee_in',
-		icon: 'iconfont el-icon-my-deal',
+		text: '广州市资助',
+		path: '/fee/guangzhou',
+		icon: 'iconfont el-icon-my-receipt',
 		children: [
-			{ type: 'item', text: '政府资助', path: '/fee_menu/fee_in/income', icon: 'iconfont el-icon-my-deal' },
-			{ type: 'item', text: '资助申请单', path: '/fee_menu/fee_in/bill', icon: 'iconfont el-icon-my-deal' },
+			{ type: 'item', text: '专利', path: '/fee/guangzhou/patent', icon: '' },
+			{ type: 'item', text: '商标', path: '/fee/guangzhou/trademark', icon: '' },
+			{ type: 'item', text: '著作权', path: '/fee/guangzhou/copyright', icon: '' },
 		]
 	},
-	{ 
+	{
+		type: 'submenu',
+		text: '账单',
+		path: '/fee/account',
+		icon: 'iconfont el-icon-my-receipt',
+		children: [
+			{ type: 'item', text: '待审核', path: '/fee/account/check', icon: '' },
+			{ type: 'item', text: '待上传凭证', path: '/fee/account/upload', icon: '' },
+			{ type: 'item', text: '待付款', path: '/fee/account/pay', icon: '' },
+			{ type: 'item', text: '已付款', path: '/fee/account/paid', icon: '' },
+			{ type: 'item', text: '已退回', path: '/fee/account/refuse', icon: '' },
+		]
+	},
+	{
 		type: 'submenu',
 		text: '年费',
-		path: '/fee_menu/renewal',
+		path: '/fee/renewal',
 		icon: 'iconfont el-icon-my-renewal-fee',
 		children: [
-			{ type: 'item', text: '年费明细', path: '/fee_menu/renewal/fee', icon: 'iconfont el-icon-my-renewal-fee' },
-			{ type: 'item', text: '年费评估单', path: '/fee_menu/renewal/estimate', icon: 'iconfont el-icon-my-renewal-estimate' },
+			{ type: 'item', text: '待缴纳', path: '/fee/renewal/pay' },
+			{ type: 'item', text: '已缴纳', path: '/fee/renewal/paid' },
+			{ type: 'item', text: '评估放弃', path: '/fee/renewal/refuse' },
 		]
-	}
-	
+	},	
 ];
 
 const renewalMenu = [

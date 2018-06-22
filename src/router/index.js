@@ -637,7 +637,165 @@ const router = new Router({
       component: NoticeCommon,
     },
 //################### 版权路由 end #####################
-
+//################### 费用路由 begin ###################
+    {
+      path: '/fee/huangpu/patent',
+      name: 'FeeCommonNP',
+      component: FeeCommon,
+      props: {
+        debit: 1,
+        defaultParams: {
+          category: 1,
+          gov: 'dis',
+        }
+      }
+    },
+    {
+      path: '/fee/huangpu/trademark',
+      name: 'FeeCommonNT',
+      component: FeeCommon,
+      props: {
+        debit: 1,
+        defaultParams: {
+          category: 2,
+          gov: 'dis',
+        }
+      }
+    },
+    {
+      path: '/fee/huangpu/copyright',
+      name: 'FeeCommonNC',
+      component: FeeCommon,
+      props: {
+        debit: 1,
+        defaultParams: {
+          category: 3,
+          gov: 'dis',
+        }
+      }
+    },
+    {
+      path: '/fee/guangzhou/patent',
+      name: 'FeeCommonSP',
+      component: FeeCommon,
+      props: {
+        debit: 1,
+        defaultParams: {
+          category: 1,
+          gov: 'city',
+        }
+      }
+    },
+    {
+      path: '/fee/guangzhou/trademark',
+      name: 'FeeCommonST',
+      component: FeeCommon,
+      props: {
+        debit: 1,
+        defaultParams: {
+          category: 2,
+          gov: 'city',
+        }
+      }
+    },
+    {
+      path: '/fee/guangzhou/copyright',
+      name: 'FeeCommonSC',
+      component: FeeCommon,
+      props: {
+        debit: 1,
+        defaultParams: {
+          category: 3,
+          gov: 'city',
+        }
+      }
+    },
+    {
+      path: '/fee/account/check',
+      name: 'InvoiceCommonAC',
+      component: InvoiceCommon,
+      props: {
+        debit: 0,
+        defaultParams: {
+          status: 1
+        }
+      }
+    },
+    {
+      path: '/fee/account/upload',
+      name: 'InvoiceCommonAU',
+      component: InvoiceCommon,
+      props: {
+        debit: 0,
+        defaultParams: {
+          voucher: 0
+        }
+      }
+    },
+    {
+      path: '/fee/account/pay',
+      name: 'InvoiceCommonAP',
+      component: InvoiceCommon,
+      props: {
+        debit: 0,
+        defaultParams: {
+          status: 5
+        }
+      }
+    },
+    {
+      path: '/fee/account/paid',
+      name: 'InvoiceCommonAPD',
+      component: InvoiceCommon,
+      props: {
+        debit: 0,
+        defaultParams: {
+          status: 4
+        }
+      }
+    },
+    {
+      path: '/fee/account/refuse',
+      name: 'InvoiceCommonAR',
+      component: InvoiceCommon,
+      props: {
+        debit: 0,
+        defaultParams: {
+          status: 3
+        }
+      }
+    },
+    {
+      path: '/fee/renewal/pay',
+      name: 'RenewalFeeRP',
+      component: RenewalFee,
+      props: {
+        defaultParams: {
+          status: 0,
+        }
+      }
+    },
+    {
+      path: '/fee/renewal/paid',
+      name: 'RenewalFeeRPD',
+      component: RenewalFee,
+      props: {
+        defaultParams: {
+          status: 10,
+        }
+      }
+    },
+    {
+      path: '/fee/renewal/refuse',
+      name: 'RenewalFeeRR',
+      component: RenewalFee,
+      props: {
+        defaultParams: {
+          status: 3,
+        }
+      }
+    },
+//################### 费用路由 end #####################
 //################### 报表路由 begin ###################
     {
       path: '/report/task',

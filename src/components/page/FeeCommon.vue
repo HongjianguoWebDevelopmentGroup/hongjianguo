@@ -33,6 +33,18 @@ const URL_INVOICE = '/invoices';
 
 export default {
   name: 'feeCommon',
+  props: {
+    debit: {
+      type: null,
+      default: 1,
+    },
+    defaultParams: {
+      type: Object,
+      default () {
+        return {};
+      }
+    }
+  },  
   data () {
     return {
       popType: '',
@@ -198,7 +210,7 @@ export default {
       const debit = this.feeType;
       const status = this.fee_status === '' ? {} : {status: this.fee_status};
       const invoice = this.fee_invoice_if && this.fee_invoice != '' ? {fee_invoice: this.fee_invoice} : {};
-      const data = Object.assign({}, option, { debit }, invoice, status);
+      const data = Object.assign({}, option, { debit }, invoice, status, this.defaultParams);
       const success = d=>{ 
         const totalData = d.fees.data;
         if(data['format'] == 'excel') {

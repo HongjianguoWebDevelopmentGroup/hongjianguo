@@ -38,6 +38,14 @@ const URL = '/api/renewalfee'
 const URL2 = '/api/renewalestimate'
 export default {
 	name: 'renewalFee',
+	props: {
+		defaultParams: {
+			type: Object,
+			default () {
+				return {};
+			}
+		}
+	},	
 	data () {
 		const statusArr = [ [0, '年费监控中'], [1, '年费评估中'], [2, '年费评估缴纳'], [3, '年费评估放弃'] ];
 		const statusMap = new Map(statusArr);
@@ -185,7 +193,7 @@ export default {
 		refreshTableData (option) {
 			this.$axiosGet({
 				url: URL,
-				data: Object.assign({}, option, {status: this.status}, {month: this.month}),
+				data: Object.assign({}, option, {status: this.status}, {month: this.month}, this.defaultParams),
 				success: _=>{this.tableData = _.data},
 			})
 		},

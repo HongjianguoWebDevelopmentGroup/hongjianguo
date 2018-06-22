@@ -7,6 +7,9 @@
         <!-- <el-form-item label="专利实施情况">
           <el-input type="textarea" placeholder="请填写专利实施情况" v-model="form.application"></el-input>
         </el-form-item> -->
+        <el-form-item label="详细状态" v-if="type == 'edit'">
+          <static-select type="patents_status" v-model="form.flownode"></static-select>
+        </el-form-item>
         <el-form-item label="权利要求/附图数">
           <el-input v-model="form.claims_count" placeholder="请填写权利要求项数或者附图数量"></el-input>
         </el-form-item>
@@ -42,6 +45,7 @@ export default {
         words: '',
         remark: '',
         claims_count: '',
+        flownode: '',
         // is_supported: '',
         // application:'',
         start_year:'',
@@ -62,7 +66,7 @@ export default {
   },
   components: { 
     // AppCollapse, 
-    // StaticSelect,
+    StaticSelect,
     // AppSwitch,
   }
 }

@@ -141,13 +141,12 @@ export default {
 			});
 		},
 		handleExport() {
-			const url = URL;
-			const data = Object.assign({},{format: 'excel'});
+			const url = `/agentexport/${this.$route.query.id}`;
 			const success = _=>{
 				this.$message({ message: '导出成功', type: 'success'});
-				window.location.href = _.agency.downloadUrl;
+				window.location.href = _.agent.downloadUrl;
 			};
-			this.$axiosPost({url, data, success});
+			this.$axiosPost({url, success});
 		},
 		refresh () {
 			const id = this.$route.query.id;
