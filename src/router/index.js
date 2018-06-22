@@ -612,6 +612,94 @@ const router = new Router({
       }
     },
     {
+      path: '/trademark/area/in',
+      name: 'TrademarkAreaIndia',
+      component: TrademarkList,
+      meta: {
+        params: { area: 'IN' },
+      }
+    },
+    {
+      path: '/trademark/area/hk',
+      name: 'TrademarkAreaHK',
+      component: TrademarkList,
+      meta: {
+        params: { area: 'HK' },
+      }
+    },
+    {
+      path: '/trademark/area/us',
+      name: 'TrademarkAreaUS',
+      component: TrademarkList,
+      meta: {
+        params: { area: 'US' },
+      }
+    },
+    {
+      path: '/trademark/area/th',
+      name: 'TrademarkAreaTH',
+      component: TrademarkList,
+      meta: {
+        params: { area: 'TH' },
+      }
+    },
+    {
+      path: '/trademark/area/jp',
+      name: 'TrademarkAreaJapan',
+      component: TrademarkList,
+      meta: {
+        params: { area: 'JP' },
+      }
+    },
+    {
+      path: '/trademark/area/sg',
+      name: 'TrademarkAreaSingpore',
+      component: TrademarkList,
+      meta: {
+        params: { area: 'SG' },
+      }
+    },
+    {
+      path: '/trademark/area/ep',
+      name: 'TrademarkAreaEP',
+      component: TrademarkList,
+      meta: {
+        params: { area: 'EP' },
+      }
+    },
+    {
+      path: '/trademark/area/gb',
+      name: 'TrademarkAreaGB',
+      component: TrademarkList,
+      meta: {
+        params: { area: 'GB' },
+      }
+    },
+    {
+      path: '/trademark/area/vn',
+      name: 'TrademarkAreaVN',
+      component: TrademarkList,
+      meta: {
+        params: { area: 'VN' },
+      }
+    },
+    {
+      path: '/trademark/area/ru',
+      name: 'TrademarkAreaRu',
+      component: TrademarkList,
+      meta: {
+        params: { area: 'RU' },
+      }
+    },
+    {
+      path: '/trademark/area/id',
+      name: 'TrademarkAreaID',
+      component: TrademarkList,
+      meta: {
+        params: { area: 'ID' },
+      }
+    },
+    {
       path: '/trademark/area/madrid',
       name: 'TrademarkAreaMadrid',
       component: TrademarkList,

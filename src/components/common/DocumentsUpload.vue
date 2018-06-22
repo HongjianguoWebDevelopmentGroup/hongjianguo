@@ -151,11 +151,11 @@ export default {
         type: '',
         time: '',
         legal_time: '',
+        apn: '',
         apd: '',
         issue_date: '',
         issue_number:'',
         pct_search_date: '',
-        apn: '',
         pct_search_result: '',
         start_year: '',
       }
