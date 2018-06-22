@@ -78,7 +78,7 @@
       <el-input v-model="form.title" placeholder="请填写正式递交的标题"></el-input>
     </el-form-item>
     <el-form-item prop="pct_areas" label="PCT国家" v-if="fields.pct_areas"  :rules="{required: true, message: '请选择PCT要进入的国家'}">
-      <static-select type="area" v-model="form.pct_areas" :multiple=true></static-select>
+      <static-select type="area" v-model="form.pct_areas" multiple></static-select>
     </el-form-item>
     <el-form-item prop="is_amend" label="是否提出变更" v-if="fields.is_amend">
       <app-switch type="is" v-model="form.is_amend"></app-switch>
@@ -326,10 +326,13 @@ export default {
 		},
 		'next': {
 			handler: function (val) {
-        if(val == "") return;
+        // if(val == "") return;
+        // console.log('----------------start--------------')
+        // console.log(val);
+        // console.log('==============end================')
         for (let d of this.data.next) {
           if(d.id == val) {
-            
+            // console.log('非空')
             this.fields = d.fields;
             this.defaultVal = d.default == 'agent' && !this.data.agent ? 'ipr' : d.default;
             const person_in_charge = this.data[this.defaultVal] ? this.data[this.defaultVal] : '';
@@ -373,7 +376,10 @@ export default {
             })
             
 						break;
-					}
+					}else{
+            // console.log('空数组');
+            this.description = this.data.description;
+          }
 				}
 				this.$refs.form.resetFields();
 			}
@@ -398,7 +404,15 @@ export default {
         }
 
       }
-    }
+    },
+    'defaultDescription': {
+      handler(val) {
+        if(val && this.next.length == 0) {
+          // console.log('next空了且next没变')
+          this.description = val;
+        }
+      }
+    },
 	},
 	computed: {
     ifNext () {
@@ -406,7 +420,10 @@ export default {
     },
     ifTitle () {
       return this.data.flow_node_id == 20
-    }
+    },
+    defaultDescription () {
+      return this.data.description;
+    },
 	},
 	components: { Member, Agent, Agency, Upload, RemoteSelect, StaticSelect, AppSwitch, }
 }
