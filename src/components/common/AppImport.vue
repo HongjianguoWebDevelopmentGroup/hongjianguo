@@ -239,6 +239,7 @@ export default {
   		this.$axiosPost({url, data, success, complete});
   	},
   	handleSuccess (a,b,c) {
+      console.log(a);
   		if(a.status) {
   			this.tableData.push(...a.data.list);
   		}else {
