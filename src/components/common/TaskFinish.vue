@@ -38,9 +38,12 @@
     <el-form-item prop="agency" label="代理机构" v-if="fields.agency" :rules="{ required: true, type: 'number', message: '代理机构不能为空', trigger: 'change'}">
       <div v-if="fields.agency == 1">
         <remote-select type="agency_poa" v-model="form.agency" :static-map="agencyMap"></remote-select>
-        <el-button size="mini" type="text" @click="showAgencyLoad">负载</el-button>
+        <!-- <el-button size="mini" type="text" @click="showAgencyLoad">负载</el-button> -->
       </div>
       <span v-else class="form-item-text">{{ agencyMap[0] ? agencyMap[0].name : '' }}</span>
+    </el-form-item>
+    <el-form-item prop="is_division" label="是否分案" v-if="fields.is_division">
+      <app-switch type="is" v-model="form.is_division"></app-switch>
     </el-form-item>
     <el-form-item prop="agency_serial" label="事务所案号" v-if="fields.agency_serial" :rules="{required: true, message: '事务所案号不能为空'}">
       <el-input placeholder="请填写事务所案号" v-model="form.agency_serial"></el-input>
@@ -73,6 +76,26 @@
     </el-form-item>
     <el-form-item prop="title" label="专利标题"  v-if="ifTitle" :rules="{required: true, message: '专利标题不能为空'}">
       <el-input v-model="form.title" placeholder="请填写正式递交的标题"></el-input>
+    </el-form-item>
+    <el-form-item prop="pct_areas" label="PCT国家" v-if="fields.pct_areas"  :rules="{required: true, message: '请选择PCT要进入的国家'}">
+      <static-select type="area" v-model="form.pct_areas" :multiple=true></static-select>
+    </el-form-item>
+    <el-form-item prop="is_amend" label="是否提出变更" v-if="fields.is_amend">
+      <app-switch type="is" v-model="form.is_amend"></app-switch>
+    </el-form-item>
+    <template v-if="fields.oa">
+      <el-form-item prop="opinion" label="审查要点" :rules="{required: true, message: '请填写审查要点'}">
+        <el-input type="textarea" placeholder="请填写审查要点" v-model="form.opinion"></el-input>
+      </el-form-item>
+      <el-form-item prop="response" label="修改/答辩" :rules="{required: true, message: '请填写修改/答辩内容'}">
+        <el-input type="textarea" placeholder="请填写修改/答辩摘要" v-model="form.response"></el-input>
+      </el-form-item>
+    </template>
+    <el-form-item prop="pct_review" label="PCT国家阶段评审意见" v-if="fields.pct_review" :rules="{required: true, message: '请填写PCT进入国家阶段评审意见'}">
+      <el-input type="textarea" v-model="form.pct_review"></el-input>
+    </el-form-item>
+    <el-form-item prop="issue_review" label="授权前评估意见" v-if="fields.issue_review" :rules="{required: true, message: '请填写授权前评估意见'}">
+      <el-input type="textarea" v-model="form.issue_review"></el-input>
     </el-form-item>
     <el-form-item prop="attachments" label="附件" v-if="fields.attachments && !hide_r_a">
       <upload v-model="form.attachments" :file-list="attachments"> 
@@ -135,7 +158,7 @@
         <el-radio-button label="差评"></el-radio-button>
       </el-radio-group>
     </el-form-item>
-    <el-form-item prop="negative_comment" label="评价理由" v-if="fields.negative_comment" v-show="form.negative_flag !== '无'&& !form.negative_flag">
+    <el-form-item prop="negative_comment" label="评价理由" v-if="fields.negative_comment" v-show="form.negative_flag !== '无'&& form.negative_flag">
       <el-input type="textarea" v-model="form.negative_comment"></el-input>
     </el-form-item>
     <el-form-item v-if="(next == '20' && level != 'A')  || next == '114'" prop="pconfirm" label="确认" :rules="confirmValidator">
@@ -200,6 +223,13 @@ export default {
         service_rank:0,
         negative_flag:false,
         negative_comment:'',
+        pct_areas: [],
+        is_division: 0,
+        is_amend: 0,
+        pct_review:'',
+        issue_review:'',
+        opinion:'',
+        response:'',
 			},
 			'defaultVal': '',
       'agencyMap': [],

@@ -51,10 +51,10 @@
         <el-tab-pane label="群组/专利族" name="group_family" v-if="type == 'patent'&& !menusMap.get('/iprs')">
           <group-family></group-family>
         </el-tab-pane>
-        <el-tab-pane label="引用" name="quote" v-if="type == 'patent'&& !menusMap.get('/iprs')">
+        <!-- <el-tab-pane label="引用" name="quote" v-if="type == 'patent'&& !menusMap.get('/iprs')">
           <quote></quote>
         </el-tab-pane>
-<!--         <el-tab-pane label="评审记录" name="review" v-if="type == 'patent'">
+        <el-tab-pane label="评审记录" name="review" v-if="type == 'patent'">
           <review></review>
         </el-tab-pane> -->
         <el-tab-pane label="审查" name="review_records" v-if="!menusMap.get('/iprs')">
