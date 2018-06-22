@@ -35,7 +35,7 @@
         <el-button type="primary" size="small"> CPC通知书上传</el-button>
       </el-upload>
       </span>
-       <app-table :columns="columns" :data="detailNotices" style="margin-top: 10px;" :border="true" :max-height="500"></app-table>
+       <app-table :columns="columns" :data="detailNotices" style="margin-top: 10px;" :border="true" height="default6"></app-table>
      </div>
      <div class="documents" style="margin-top: 15px;">
       <span>

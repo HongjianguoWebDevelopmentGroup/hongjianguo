@@ -562,9 +562,6 @@ export default {
     proposalEdit ({project_id}) {
       this.$router.push({path: '/proposal/edit', query: {id: project_id}});
     },
-    patentEdit ({id}) {
-      // console.log('patentEdit')
-    },
     finishSuccess (data) {
       this.dialogShrinkVisible = false;
       this.refresh();
@@ -665,7 +662,6 @@ export default {
     },
   },
   mounted () {
-
 
     if(this.$route.params.id) {
       this.install = this.$route.params.id;

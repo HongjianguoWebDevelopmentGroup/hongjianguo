@@ -13,6 +13,7 @@ export default {
 		return {
 		  option: {
 		  	'is_search': false,
+		  	'height' : 'default6',
 		  	'columns': [
 		  		{ type: 'text', label: '文件名称', prop: 'name' },
 		  		{ type: 'text', label: '文件类型', prop: 'type' },
