@@ -34,22 +34,32 @@
           </div>
         </el-tab-pane>
         <el-tab-pane label="流程" name="control">
-          <detail-control></detail-control>
+          <div :style="`height: ${innerHeight - 150}px; overflow: auto;`">
+            <detail-control></detail-control>
+          </div>
         </el-tab-pane>
         <el-tab-pane label="官文&附件" name="notice">
-          <detail-notice :type="type" @uploadSuccess="edit"></detail-notice>
+          <div :style="`height: ${innerHeight - 142}px; overflow: auto;`">
+            <detail-notice :type="type" @uploadSuccess="edit"></detail-notice>
+          </div>
         </el-tab-pane>
         <el-tab-pane label="费用" name="fourth" v-if="!menusMap.get('/iprs')">
-          <detail-fee></detail-fee>
+          <div :style="`height: ${innerHeight - 150}px; overflow: auto;`">
+            <detail-fee></detail-fee>
+          </div>
         </el-tab-pane>
         <el-tab-pane label="邮件" name="fee" v-if="!menusMap.get('/iprs')">
+          <div :style="`height: ${innerHeight - 150}px; overflow: auto;`">
           <detail-email @sendMail="handleSendEmail"></detail-email>
+          </div> 
         </el-tab-pane>
 <!--         <el-tab-pane label="文档" name="documents">
           <detail-documents></detail-documents>
         </el-tab-pane> -->
         <el-tab-pane label="群组/专利族" name="group_family" v-if="type == 'patent'&& !menusMap.get('/iprs')">
-          <group-family></group-family>
+          <div :style="`height: ${innerHeight - 150}px; overflow: auto;`">
+            <group-family></group-family>
+          </div>
         </el-tab-pane>
         <!-- <el-tab-pane label="引用" name="quote" v-if="type == 'patent'&& !menusMap.get('/iprs')">
           <quote></quote>
@@ -58,20 +68,30 @@
           <review></review>
         </el-tab-pane> -->
         <el-tab-pane label="审查" name="review_records" v-if="!menusMap.get('/iprs')">
+          <div :style="`height: ${innerHeight - 150}px; overflow: auto;`">
           <defence></defence>
+        </div>
         </el-tab-pane>
 
         <el-tab-pane label="动态" name="work_change" v-if="!menusMap.get('/iprs')">
+          <div :style="`height: ${innerHeight - 150}px; overflow: auto;`">
           <detail-amendments></detail-amendments>
+        </div>
         </el-tab-pane>
         <el-tab-pane label="提醒" name="remind" v-if="type == 'patent' && !menusMap.get('/iprs')">
+          <div :style="`height: ${innerHeight - 150}px; overflow: auto;`">
           <remind></remind>
+        </div>
         </el-tab-pane> 
         <el-tab-pane label="评审" name="judge" v-if="type == 'patent' && !menusMap.get('/iprs')">
+          <div :style="`height: ${innerHeight - 150}px; overflow: auto;`">
           <judge :id="id"></judge>
+        </div>
         </el-tab-pane>
         <el-tab-pane label="委案记录" name="history">
+          <div :style="`height: ${innerHeight - 150}px; overflow: auto;`">
           <agencies></agencies>
+          </div>
         </el-tab-pane>
       </el-tabs>
     </div>

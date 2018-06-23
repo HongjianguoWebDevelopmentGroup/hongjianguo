@@ -4,12 +4,12 @@
 		<el-tag>群组号：{{  detailBasePatent.group_number }}</el-tag>
 		<a v-if="detailBasePatent.group_number" :href="`#/patent/list?group_number=${detailBasePatent.group_number}`" target="_blank">群组详情</a>
 	</div>
-	<app-table :columns="columns" :data="detailGroup"></app-table>
+	<app-table :columns="columns" :data="detailGroup" height="default7"></app-table>
 	<div v-if="detailBasePatent" style="padding: 10px;">
 		<el-tag>专利族号：{{ detailBasePatent.family_number }}</el-tag>
 		<a v-if="detailBasePatent.family_number" :href="`#/patent/list?family_number=${detailBasePatent.family_number}`" target="_blank">专利族详情</a>
 	</div>
-	<app-table :columns="columns" :data="detailFamily"></app-table>
+	<app-table :columns="columns" :data="detailFamily" height="default7"></app-table>
 </div>
 </template>
 <script>
