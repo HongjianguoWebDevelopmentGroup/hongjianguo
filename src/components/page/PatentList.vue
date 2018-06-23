@@ -89,7 +89,7 @@ export default {
           { type: 'text', label: '提案号', prop: 'proposal_serial', sortable: true, width: '140' },
           { type: 'text', label: '专利类型', prop: 'type', render_simple: 'name', is_agency: true, sortable: true, is_import: true, width: '123',  },
           { type: 'text', label: '地区', prop: 'area', sortable: true, is_import: true, width: '100', is_agency: true },
-          { type: 'text', label: '当前状态', prop: 'flownode', sortable: true, width: '180', is_agency: true, render_simple: 'name'},
+          { type: 'text', label: '详细状态', prop: 'flownode', sortable: true, width: '180', is_agency: true, render_simple: 'name'},
           { type: 'text', label: '法律状态', prop: 'legal_status', sortable: true, width: '180', is_agency: true, render_simple: 'name'},
           { type: 'text', label: 'IPR', prop: 'ipr', render_simple: 'name', sortable: true, is_import: true, width: '123', is_agency: true },
           { type: 'text', label: '案件名称', prop: 'title', sortable: true, is_import: true, width: '200', is_agency: true },

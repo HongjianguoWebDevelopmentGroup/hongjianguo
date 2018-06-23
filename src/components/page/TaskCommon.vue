@@ -8,7 +8,7 @@
     </table-component>
  
     <el-dialog title="申请委案" :visible.sync="dialogAgenVisible" class="dialog-small">
-      <el-form :form="agen" ref="agen" label-width="80px" :model="agen">
+<!--       <el-form :form="agen" ref="agen" label-width="80px" :model="agen">
         <el-form-item label="代理机构" prop="agency_id" :rules="{required: true, type: 'number', message: '代理机构必填', trigger: 'change' }">
           <remote-select type="agency_poa" v-model="agen.agency_id" poa="1"></remote-select><el-button size="mini" type="text" @click="showAgencyLoad">负载</el-button>
         </el-form-item>
@@ -22,7 +22,8 @@
           <el-input v-model="agen.remark" type="textarea"></el-input>
         </el-form-item>
         <el-form-item style="margin-bottom: 0px"><el-button @click="agenSubmit" type="primary" :disabled="btn_disabled">申请委案</el-button></el-form-item>
-      </el-form>
+      </el-form> -->
+      <appoint-case ref="appointCase" @appointSuccess="appointSuccess" :task-ids="taskIds" type="task"></appoint-case>
     </el-dialog>
 
     <el-dialog title="设置任务提醒偏好" :visible.sync="dialogSettingVisible" class="dialog-mini">
@@ -170,6 +171,7 @@ import Strainer from '@/components/page_extension/TaskCommon_strainer'
 import AppShrink from '@/components/common/AppShrink'
 import CommonDetail from '@/components/page_extension/Common_detail'
 import Delay from '@/components/page_extension/TaskCommon_delay'
+import AppointCase from '@/components/page_extension/AppointCase'
 
 import MailEdit from '@/components/common/MailEditForm'
 
@@ -210,6 +212,7 @@ export default {
       dialogShrinkVisible: false,
       dialogDelayVisible: false,
       moreVisible: false,
+      taskIds: '',
       moreType: '',
       filters: {},
       activeName: 'finish',
@@ -307,12 +310,12 @@ export default {
       },
       tableData: [],
       task_toggle: 'personal',
-      agen: {
-        agency_id: '',
-        agency_agent: '',
-        agency_type: '',
-        remark: '',
-      },
+      // agen: {
+      //   agency_id: '',
+      //   agency_agent: '',
+      //   agency_type: '',
+      //   remark: '',
+      // },
       dialogAgenVisible: false,
       btn_disabled: false,
       install: '',
@@ -367,6 +370,10 @@ export default {
       'refreshUser',
       'refreshTaskDelay',
     ]),
+    appointSuccess() {
+      this.dialogAgenVisible = false;
+      this.update();
+    },
     mailCallBack () {
       this.mailVisible = false;
     },
@@ -409,8 +416,9 @@ export default {
         }
         
         const pop = ()=>{
-          if(this.$refs.agen) this.$refs.agen.resetFields();
+          if(this.$refs.appointCase) this.$refs.appointCase.resetFields();
           this.dialogAgenVisible = true;
+          this.taskIds = s.map(_=>_.id);
         }
 
         if(confirm) {
@@ -422,27 +430,27 @@ export default {
         }
       }
     }, 
-    agenSubmit () {
-      this.$refs.agen.validate(_=>{
-        if(_) {
-          const ids = this.$refs.table.getSelect().map(_=>_.id);
-          const url = '/api/tasks/agency';
-          const data = Object.assign({}, this.agen, { ids });
-          const success = _=>{
-            this.dialogAgenVisible = false; 
-            this.$message({type: 'success', message: '申请委案成功'});
-            this.update();
-          };
-          const complete = _=>{this.btn_disabled = false};
+    // agenSubmit () {
+    //   this.$refs.agen.validate(_=>{
+    //     if(_) {
+    //       const ids = this.$refs.table.getSelect().map(_=>_.id);
+    //       const url = '/api/tasks/agency';
+    //       const data = Object.assign({}, this.agen, { ids });
+    //       const success = _=>{
+    //         this.dialogAgenVisible = false; 
+    //         this.$message({type: 'success', message: '申请委案成功'});
+    //         this.update();
+    //       };
+    //       const complete = _=>{this.btn_disabled = false};
 
-          this.btn_disabled = true;
-          this.axiosPost({url, data, success, complete});
-        }else {
-          this.$message({message: '请认真填写申请委案字段', type: 'warning'});
-        }
-      })
+    //       this.btn_disabled = true;
+    //       this.axiosPost({url, data, success, complete});
+    //     }else {
+    //       this.$message({message: '请认真填写申请委案字段', type: 'warning'});
+    //     }
+    //   })
       
-    },
+    // },
     // dropGenerator(str) {
     //   return (row, element)=>{       
     //     this.expandType = str;
@@ -662,7 +670,6 @@ export default {
     },
   },
   mounted () {
-
     if(this.$route.params.id) {
       this.install = this.$route.params.id;
     }
@@ -701,6 +708,7 @@ export default {
     Detail,
     Delay,
     MailEdit,
+    AppointCase,
   },
 } 
 </script>

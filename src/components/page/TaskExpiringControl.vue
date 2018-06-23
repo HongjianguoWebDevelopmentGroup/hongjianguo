@@ -26,7 +26,7 @@
 				</el-row>
 			</el-form>
 		</el-card>
-		<app-table :columns="columns" :data="taskExpiringData" @cell-click="handleCellClick" @cell-mouse-enter="handleMouseEnter" height="default" border></app-table>
+		<app-table :columns="columns" :data="taskExpiringData" @cell-click="handleCellClick" @cell-mouse-enter="handleMouseEnter" height="default2" border></app-table>
 	</div>
 </template>
 

@@ -195,7 +195,7 @@ export default {
           height = this.innerHeight - 150;
           height = height < 300 ? 300 : height;
         }else if(hk == 'default2') {
-          height = this.innerHeight - 150;
+          height = this.innerHeight - 180;
           height = height < 300 ? 300 : height;
         }else if(hk === 'default3') {
           height = this.innerHeight - 100;
@@ -208,6 +208,9 @@ export default {
           height = height < 300 ? 300 : height;
         }else if(hk === 'default6') {
           height = (this.innerHeight - 285)/2;
+          height = height < 300 ? 300 : height;
+        }else if(hk === 'default7') {
+          height = (this.innerHeight - 256)/2;
           height = height < 300 ? 300 : height;
         }else {
           height = hk;

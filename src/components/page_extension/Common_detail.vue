@@ -18,6 +18,7 @@
             委案<i class="el-icon-caret-bottom el-icon--right"></i>
           </el-button>
           <el-dropdown-menu slot="dropdown" class="app-dropdown-menu">
+            <el-dropdown-item command="appiontCase" :disabled="btnDisabled">委案</el-dropdown-item>
             <el-dropdown-item command="cancel" :disabled="btnDisabled">撤回</el-dropdown-item>
             <el-dropdown-item command="change" :disabled="btnDisabled">变更</el-dropdown-item>
           </el-dropdown-menu>
@@ -34,22 +35,32 @@
           </div>
         </el-tab-pane>
         <el-tab-pane label="流程" name="control">
-          <detail-control></detail-control>
+          <div :style="`height: ${innerHeight - 150}px; overflow: auto;`">
+            <detail-control></detail-control>
+          </div>
         </el-tab-pane>
         <el-tab-pane label="官文&附件" name="notice">
-          <detail-notice :type="type" @uploadSuccess="edit"></detail-notice>
+          <div :style="`height: ${innerHeight - 142}px; overflow: auto;`">
+            <detail-notice :type="type" @uploadSuccess="edit"></detail-notice>
+          </div>
         </el-tab-pane>
         <el-tab-pane label="费用" name="fourth" v-if="!menusMap.get('/iprs')">
-          <detail-fee></detail-fee>
+          <div :style="`height: ${innerHeight - 150}px; overflow: auto;`">
+            <detail-fee></detail-fee>
+          </div>
         </el-tab-pane>
         <el-tab-pane label="邮件" name="fee" v-if="!menusMap.get('/iprs')">
+          <div :style="`height: ${innerHeight - 150}px; overflow: auto;`">
           <detail-email @sendMail="handleSendEmail"></detail-email>
+          </div> 
         </el-tab-pane>
 <!--         <el-tab-pane label="文档" name="documents">
           <detail-documents></detail-documents>
         </el-tab-pane> -->
         <el-tab-pane label="群组/专利族" name="group_family" v-if="type == 'patent'&& !menusMap.get('/iprs')">
-          <group-family></group-family>
+          <div :style="`height: ${innerHeight - 150}px; overflow: auto;`">
+            <group-family></group-family>
+          </div>
         </el-tab-pane>
         <!-- <el-tab-pane label="引用" name="quote" v-if="type == 'patent'&& !menusMap.get('/iprs')">
           <quote></quote>
@@ -58,20 +69,30 @@
           <review></review>
         </el-tab-pane> -->
         <el-tab-pane label="审查" name="review_records" v-if="!menusMap.get('/iprs')">
+          <div :style="`height: ${innerHeight - 150}px; overflow: auto;`">
           <defence></defence>
+        </div>
         </el-tab-pane>
 
         <el-tab-pane label="动态" name="work_change" v-if="!menusMap.get('/iprs')">
+          <div :style="`height: ${innerHeight - 150}px; overflow: auto;`">
           <detail-amendments></detail-amendments>
+        </div>
         </el-tab-pane>
         <el-tab-pane label="提醒" name="remind" v-if="type == 'patent' && !menusMap.get('/iprs')">
+          <div :style="`height: ${innerHeight - 150}px; overflow: auto;`">
           <remind></remind>
+        </div>
         </el-tab-pane> 
         <el-tab-pane label="评审" name="judge" v-if="type == 'patent' && !menusMap.get('/iprs')">
+          <div :style="`height: ${innerHeight - 150}px; overflow: auto;`">
           <judge :id="id"></judge>
+        </div>
         </el-tab-pane>
         <el-tab-pane label="委案记录" name="history">
+          <div :style="`height: ${innerHeight - 150}px; overflow: auto;`">
           <agencies></agencies>
+          </div>
         </el-tab-pane>
       </el-tabs>
     </div>
@@ -87,7 +108,10 @@
   </el-dialog> -->
   <el-dialog title="新增任务" :visible.sync="dialogTask">
     <task-edit type="add" :id="id" ref="taskEdit" @addSuccess="addSuccess"></task-edit>
-  </el-dialog>    
+  </el-dialog>  
+  <el-dialog title="申请委案" :visible.sync="dialogAppointVisible">
+    <appoint-case @appiontCase="appiontCase" type="patent" :project-id="id" ref="appiontCase"></appoint-case>
+  </el-dialog>  
 </div>
 </template>
 
@@ -113,6 +137,7 @@ import TaskEdit from '@/components/page_extension/TaskCommon_edit'
 import Remind from '@/components/page_extension/CommonDetail_remind'
 import Judge from '@/components/page_extension/CommonDetail_judge'
 import Agencies from '@/components/page_extension/CommonDetail_AgencyHistory'
+import AppointCase from '@/components/page_extension/AppointCase'
 
 import { mapGetters } from 'vuex'
 import { mapActions } from 'vuex'
@@ -158,6 +183,7 @@ export default {
       dialogDivide: false,
       dialogTask: false,
       saveLoading: false,
+      dialogAppointVisible: false,
     }
   },
   computed: {
@@ -232,6 +258,9 @@ export default {
       this.refreshDetailData();
     },
     handleCommand(command) {
+      if(command == 'appiontCase') {
+        this.dialogAppointVisible = true;
+      }
       if(command == 'cancel') {
         this.commisionCancle(); //委案撤回
       }
@@ -269,6 +298,10 @@ export default {
     addSuccess (val) {
       this.dialogTask = false;
       this.refreshDetail();
+    },
+    appiontCase (val) {
+      this.dialogAppointVisible = false;
+      this.refreshDetailData();
     },       
     commisionCancle () {
       this.$confirm('此操作将对当前专利进行撤回委托的操作, 是否继续?', '提示', {type: 'warning'})
@@ -334,6 +367,7 @@ export default {
     Remind,
     Judge,
     Agencies,
+    AppointCase,
   }
 }
 </script>
