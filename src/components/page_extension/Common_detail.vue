@@ -18,6 +18,7 @@
             委案<i class="el-icon-caret-bottom el-icon--right"></i>
           </el-button>
           <el-dropdown-menu slot="dropdown" class="app-dropdown-menu">
+            <el-dropdown-item command="appiontCase" :disabled="btnDisabled">委案</el-dropdown-item>
             <el-dropdown-item command="cancel" :disabled="btnDisabled">撤回</el-dropdown-item>
             <el-dropdown-item command="change" :disabled="btnDisabled">变更</el-dropdown-item>
           </el-dropdown-menu>
@@ -107,7 +108,10 @@
   </el-dialog> -->
   <el-dialog title="新增任务" :visible.sync="dialogTask">
     <task-edit type="add" :id="id" ref="taskEdit" @addSuccess="addSuccess"></task-edit>
-  </el-dialog>    
+  </el-dialog>  
+  <el-dialog title="申请委案" :visible.sync="dialogAppointVisible">
+    <appoint-case @appiontCase="appiontCase" type="patent" :project-id="id" ref="appiontCase"></appoint-case>
+  </el-dialog>  
 </div>
 </template>
 
@@ -133,6 +137,7 @@ import TaskEdit from '@/components/page_extension/TaskCommon_edit'
 import Remind from '@/components/page_extension/CommonDetail_remind'
 import Judge from '@/components/page_extension/CommonDetail_judge'
 import Agencies from '@/components/page_extension/CommonDetail_AgencyHistory'
+import AppointCase from '@/components/page_extension/AppointCase'
 
 import { mapGetters } from 'vuex'
 import { mapActions } from 'vuex'
@@ -178,6 +183,7 @@ export default {
       dialogDivide: false,
       dialogTask: false,
       saveLoading: false,
+      dialogAppointVisible: false,
     }
   },
   computed: {
@@ -252,6 +258,9 @@ export default {
       this.refreshDetailData();
     },
     handleCommand(command) {
+      if(command == 'appiontCase') {
+        this.dialogAppointVisible = true;
+      }
       if(command == 'cancel') {
         this.commisionCancle(); //委案撤回
       }
@@ -289,6 +298,10 @@ export default {
     addSuccess (val) {
       this.dialogTask = false;
       this.refreshDetail();
+    },
+    appiontCase (val) {
+      this.dialogAppointVisible = false;
+      this.refreshDetailData();
     },       
     commisionCancle () {
       this.$confirm('此操作将对当前专利进行撤回委托的操作, 是否继续?', '提示', {type: 'warning'})
@@ -354,6 +367,7 @@ export default {
     Remind,
     Judge,
     Agencies,
+    AppointCase,
   }
 }
 </script>
