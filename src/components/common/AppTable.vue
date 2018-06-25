@@ -226,7 +226,7 @@ export default {
   methods: {
     handleRowClick (row, event, column) {
       event.stopPropagation();
-      if(column.type == 'selection' || column.type == 'action' || column.property == "attachments") return false;
+      if(column.type == 'selection' || column.type == 'action') return false;
           
       this.$emit('row-click', row, event, column);
     },

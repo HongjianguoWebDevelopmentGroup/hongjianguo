@@ -99,10 +99,10 @@ export default {
           // { type: 'array', label: '发明人', width: '238', prop: 'inventors', is_import: true, is_agency: true, render: _=>_.map(_=>`${_.name}:${_.share}%`),},
           { type: 'text', label: '代理机构', width: '200', prop: 'agency', render_simple: 'name', is_import: true},
           { type: 'text', label: '代理人', width: '80', prop: 'agent', render_simple: 'name', is_import: true},
-          { type: 'text', label: '技术理解评分', prop: 'tech_rank', is_import: true, render: this.rateRender, width: '180', show: true},
-          { type: 'text', label: '撰写质量评分', prop: 'draft_rank', is_import: true, render: this.rateRender, width: '180', show: true},
-          { type: 'text', label: '服务态度评分', prop: 'service_rank', is_import: true, render: this.rateRender, width: '180', show: true},
-          { type: 'text', label: '特别评价?', prop: 'negative_flag', is_import: true, width: '105', show: true},
+          { type: 'text', label: '技术理解评分', prop: 'tech_rank', is_import: true,  width: '145', show: true},
+          { type: 'text', label: '撰写质量评分', prop: 'draft_rank', is_import: true, width: '145', show: true},
+          { type: 'text', label: '服务态度评分', prop: 'service_rank', is_import: true,  width: '145', show: true},
+          { type: 'text', label: '特别评价', prop: 'negative_flag', is_import: true, width: '105', show: true},
           { type: 'text', label: '评价详情', prop: 'negative_comment', is_import: true, width: '135', show: true,},
           { type: 'text', label: '专利摘要', prop: 'abstract', sortable: true, width: '280'},
           { type: 'text', label: '公开日', prop: 'public_date', sortable: true, is_import: true, width: '123', show: false},
@@ -183,7 +183,14 @@ export default {
   },
   methods: {
     add () {
-      this.$router.push('/patent/add');
+      const s = this.$refs.table.getSelection();
+      if (s.length != 0) {
+        console.log('----------start-----------');
+          console.log(s);
+          this.$router.push({ path: '/patent/add', query: {s:s}});
+      }else {
+        this.$router.push('/patent/add');
+      }
     },
     ifAgency () {
       const r = this.userrole;

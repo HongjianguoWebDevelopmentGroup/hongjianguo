@@ -1,6 +1,6 @@
 <template>
   <div class="main">
-    <app-table :columns="columns" :data="detailTasks" height="default6">
+    <app-table :columns="columns" :data="detailTasks" height="default6" style="overflow-y:auto;overflow-x: hidden; ">
     <template slot="row_action" slot-scope="scope">
       <el-button type="text" size='mini' @click='toggle(scope.row)'>{{ show == scope.row.id ? '隐藏详情' : '显示详情'}}</el-button>
     </template>
@@ -26,7 +26,6 @@ export default {
   mixins: [ AxiosMixins ],
   data () {
     return {
-      height:'default6',
       columns: [
         { type: 'text', label: '管制事项', prop: 'taskdef', render: this.taskdefRender},
         // { type: 'text', label: '流程节点', prop: 'flownode', render_simple: 'name'},
@@ -60,7 +59,8 @@ export default {
         { 
           type: 'action', 
           label: '操作',
-          width:'100px',
+          fixed: false,
+          width:'100',
           btns_render: 'action'
         },
       ],

@@ -118,18 +118,26 @@
         <el-button size="small" style="margin-left: 0px;" v-if="menusMap && !menusMap.get('/tasks/transfer')" @click="dialogTranserVisible = true; transfer_person = {id: currentRow.person_in_charge, name: currentRow.person_in_charge_name }">移交</el-button>
         <el-button size="small" @click="handleReject" style="margin-left: 0px;" type="danger" v-if="menusMap && !menusMap.get('/tasks/reject')">退回</el-button>
       </span>
-      <el-tabs v-model="activeName">        
+      <el-tabs v-model="activeName">   
         <el-tab-pane label="前往处理" name="finish" v-if="task_status == 0">
-          <task-finish :id="currentRow.id" @submitSuccess="finishSuccess" @more="handleMore"></task-finish>
+          <div :style="`height: ${innerHeight - 140}px; overflow-y: auto;overflow-x:hidden;`">  
+            <task-finish :id="currentRow.id" @submitSuccess="finishSuccess" @more="handleMore"></task-finish>
+          </div>   
         </el-tab-pane>
-        <el-tab-pane label="详细信息" name="edit">          
-          <information :row="currentRow" @more="handleMore"></information>          
+        <el-tab-pane label="详细信息" name="edit">   
+          <div :style="`height: ${innerHeight - 140}px; overflow-y: auto;overflow-x:hidden;`">         
+            <information :row="currentRow" @more="handleMore"></information> 
+          </div>         
         </el-tab-pane>
-        <el-tab-pane label="相关任务" name="cccc">          
-          <detail :row="currentRow" style="margin: 10px 0;"></detail>          
+        <el-tab-pane label="相关任务" name="cccc"> 
+          <div :style="`height: ${innerHeight - 140}px; overflow-y: auto;overflow-x:hidden;`">           
+            <detail :row="currentRow" style="margin: 10px 0;"></detail> 
+          </div>           
         </el-tab-pane>
         <el-tab-pane label="延期历史" name="delay">
-          <delay :row="currentRow"></delay>
+          <div :style="`height: ${innerHeight - 140}px; overflow-y: auto;overflow-x:hidden;`">  
+            <delay :row="currentRow"></delay>
+          </div> 
         </el-tab-pane>
       </el-tabs>
     </app-shrink>
@@ -326,6 +334,7 @@ export default {
     ...mapGetters([
       'detailBase',
       'menusMap',
+      'innerHeight',
       'userid',
     ]),
     task_status () {
