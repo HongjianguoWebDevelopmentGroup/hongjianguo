@@ -56,7 +56,7 @@ export default {
 		  		{ type: 'text', label: '发文日期', show: false },
 		  		{ type: 'text', label: '上传日期', show: false },
 		  		{ type: 'text', label: '费用期限', show: false },
-		  		{ type: 'text', label: '法定期限' },
+		  		{ type: 'text', label: '官方绝限' },
 		  		{ type: 'text', label: '付款时间', show: false },
 		  		{ type: 'text', label: '费用对象' },
 		  		{ type: 'text', label: '费用名称' },

@@ -2,7 +2,8 @@
   <!-- <app-collapse col-title="委案信息" > -->
       <el-form label-width="150px" :model="form" ref="form">
 				<el-form-item label="代理机构名称" prop="agency">
-					<remote-select type="agency" v-model="form.agency"></remote-select>
+					<remote-select type="agency" v-model="form.agency" disabled></remote-select>
+          <span style="color:#bbb">要变更代理机构，请使用右上角的[委案]菜单中的相关功能</span>
 				</el-form-item>
 				<el-form-item label="代理机构案号" prop="agency_serial" :rules="{pattern: /^[^~!@#$%^&*\s]*$/, message: '代理机构案号不能包含特殊字符或空格', trigger: 'blur'}">
 					<el-input v-model="form.agency_serial" placeholder="请填写代理机构案号"></el-input>

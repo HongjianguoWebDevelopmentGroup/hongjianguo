@@ -47,8 +47,8 @@
         <el-form-item label="管控期限" prop="inner_deadline">
           <el-date-picker type="daterange" placeholder="请选择管控期限" v-model="form.inner_deadline"></el-date-picker>
         </el-form-item>
-        <el-form-item label="法定期限" prop="deadline">
-          <el-date-picker type="daterange" placeholder="请选择法定期限" v-model="form.deadline"></el-date-picker>
+        <el-form-item label="官方绝限" prop="deadline">
+          <el-date-picker type="daterange" placeholder="请选择官方绝限" v-model="form.deadline"></el-date-picker>
         </el-form-item>       
       </el-col>
     </el-row>

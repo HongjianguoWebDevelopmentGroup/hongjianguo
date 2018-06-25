@@ -13,8 +13,8 @@
             </el-form-item>
           </el-col>
           <el-col :span="8">
-            <el-form-item label="DAS码">
-              <el-input size="small"  v-model="form.das" placeholder="DAS码" class="input-min-width"></el-input>
+            <el-form-item label="证书编号">
+              <el-input size="small" v-model="form.certificate_no" placeholder="证书编号" class="input-min-width"></el-input>
             </el-form-item>
           </el-col>
         </el-row>
@@ -195,8 +195,8 @@
             </el-form-item>
           </el-col>
           <el-col :span="8">
-            <el-form-item label="证书编号">
-              <el-input size="small" v-model="form.certificate_no" placeholder="证书编号" class="input-min-width"></el-input>
+            <el-form-item label="DAS码">
+              <el-input size="small"  v-model="form.das" placeholder="DAS码" class="input-min-width"></el-input>
             </el-form-item>
           </el-col>
           <el-col :span="8">

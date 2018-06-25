@@ -7,7 +7,7 @@ const map = new Map([
 		{ components: 'static_select', id: 'flow_node_id', name: '流程节点', type: 'flow_node' },
 		{ components: 'remote_select', id: 'person_in_charge', name: '承办人', type: 'member' },
   	{ components: 'date',          id: 'due_time', name: '指定期限' },
-  	{ components: 'date',          id: 'deadline', name: '法定期限' },
+  	{ components: 'date',          id: 'deadline', name: '官方绝限' },
   	{ components: 'date',          id: 'end_time', name: '完成时间' },
     { components: 'date',          id: 'apd', name: '申请日' },
     { components: 'date',          id: 'inner_deadline', name: '管控期限' },
@@ -154,7 +154,7 @@ const map = new Map([
         { components: 'remote_select', id: 'uploader', name: '上传用户', type: 'member' },
         { components: 'date',          id: 'create_time', name: '上传日', },
         { components: 'date',          id: 'apd', name: '申请日', },
-        { components: 'date',          id: 'deadline', name: '法定期限', },
+        { components: 'date',          id: 'deadline', name: '官方绝限', },
         { components: 'date',          id: 'mail_date', name: '发文日', },
     ]]
 ])

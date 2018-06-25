@@ -22,7 +22,7 @@
           <el-date-picker type="date" v-model="scope.row.time" style="width: 100%;" v-show="!!tableData[scope.$index]['show_mail_date']"></el-date-picker>
         </template>
       </el-table-column>
-      <el-table-column label="法定期限" prop="legal_time" v-if="config.legal_time" width="200">
+      <el-table-column label="官方绝限" prop="legal_time" v-if="config.legal_time" width="200">
         <template slot-scope="scope">
           <el-date-picker type="date" v-model="scope.row.legal_time" style="width: 100%;" v-show="!!tableData[scope.$index]['show_deadline']"></el-date-picker>
         </template>
@@ -296,7 +296,7 @@ export default {
           if(_.legal_time) {
             o.legal_time = this.$tool.getDate( new Date(_.legal_time) );
           }else {
-            return this.$message({type: 'warning', message: '请填写法定期限'}); 
+            return this.$message({type: 'warning', message: '请填写官方绝限'}); 
           }
         }
         if(_.show_apd) {

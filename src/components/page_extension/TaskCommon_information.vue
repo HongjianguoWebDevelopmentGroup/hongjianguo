@@ -5,7 +5,7 @@
 	    	<el-row :gutter="20">
 	    		<el-col :span="12">
 	    			<el-form-item label="节点名称"><span class="form-item-text">{{ row.flownode.name }}</span></el-form-item>
-	    			<el-form-item label="法定期限"><span class="form-item-text">{{ row.deadline }}</span></el-form-item>
+	    			<el-form-item label="官方绝限"><span class="form-item-text">{{ row.deadline }}</span></el-form-item>
 	    		</el-col>
 	    		<el-col :span="12">
 	    			<el-form-item label="承办人"><span class="form-item-text">{{ row.person_in_charge.name }}</span></el-form-item>

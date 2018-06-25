@@ -13,7 +13,7 @@
       <el-form-item label="发文日" prop="time" v-if="config.time&&(!!tableData[0]['show_mail_date'])">
         <el-date-picker type="date" v-model="form.time"></el-date-picker>
       </el-form-item>      
-      <el-form-item label="法定期限" prop="legal_time" v-if="(!!tableData[0]['show_deadline'])&&config.legal_time">
+      <el-form-item label="官方绝限" prop="legal_time" v-if="(!!tableData[0]['show_deadline'])&&config.legal_time">
         <el-date-picker type="date" v-model="form.legal_time"  ></el-date-picker>
       </el-form-item>    
       <el-form-item label="申请日" prop="apd" v-if="config.apd&&(!!tableData[0]['show_apd'])">
@@ -22,6 +22,12 @@
       <el-form-item label="申请号" prop="apn" v-if="!!tableData[0]['show_apn']&&config.apn">
         <el-input v-model="form.apn"></el-input>
       </el-form-item>    
+      <el-form-item label="公开日" prop="public_date" v-if="config.public_date&&(!!tableData[0]['show_public_date'])">
+        <el-date-picker type="date" v-model="form.public_date"></el-date-picker>
+      </el-form-item>      
+      <el-form-item label="公开号" prop="public_number" v-if="!!tableData[0]['show_public_number']&&config.public_number">
+        <el-input v-model="form.public_number"></el-input>
+      </el-form-item>
       <el-form-item label="授权公告日" prop="issue_date" v-if="!!tableData[0]['show_issue_date']&&config.issue_date">
         <el-date-picker type="date" v-model="form.issue_date" ></el-date-picker>
       </el-form-item>  
@@ -94,6 +100,8 @@ const config = [
     issue_number:true,
     apd: true,
     apn: true,
+    public_date:true,
+    public_number:true,
     pct_search_date: true,
     pct_search_result: true,
     no_zip: true,
@@ -148,6 +156,8 @@ export default {
         legal_time: '',
         apn: '',
         apd: '',
+        public_date:'',
+        public_number:'',
         issue_date: '',
         issue_number:'',
         pct_search_date: '',
@@ -206,6 +216,8 @@ export default {
       copy['show_deadline'] = f.deadline == 1 && this.config.legal_time ? true : false;
       copy['show_apn'] = f.apn == 1 && this.config.apn ? true : false;
       copy['show_apd'] = f.apd == 1 && this.config.apd ? true : false;
+      copy['show_public_date'] = f.public_date == 1 && this.config.public_date ? true : false;
+      copy['show_public_number'] = f.public_number == 1 && this.config.public_number ? true : false;
       copy['show_issue_date'] = f.issue_date == 1 && this.config.issue_date ? true : false;
       copy['show_issue_number'] = f.issue_number == 1 && this.config.issue_number ? true : false;
       copy['show_pct_search_date'] = f.pct_search_date == 1 && this.config.pct_search_date ? true : false;
@@ -267,7 +279,7 @@ export default {
           if(this.form.legal_time) {
             o.legal_time = this.$tool.getDate( new Date(this.form.legal_time) );
           }else {
-            return this.$message({type: 'warning', message: '请填写法定期限'}); 
+            return this.$message({type: 'warning', message: '请填写官方绝限'}); 
           }
         }
         if(_.show_apd) {
@@ -277,13 +289,6 @@ export default {
             return this.$message({type: 'warning', message: '请填写申请日'}); 
           }
         }        
-        if(_.show_issue_date) {
-          if(this.form.issue_date) {
-            o.issue_date = this.$tool.getDate( new Date(this.form.issue_date) );
-          }else {
-            return this.$message({type: 'warning', message: '请填写授权日期'}); 
-          }
-        }
         if(_.show_apn) {
           if(this.form.apn) {
             o.apn = this.form.apn;
@@ -291,11 +296,39 @@ export default {
             return this.$message({type: 'warning', message: '请填写申请号'}); 
           }
         }
+        if(_.show_issue_date) {
+          if(this.form.issue_date) {
+            o.issue_date = this.$tool.getDate( new Date(this.form.issue_date) );
+          }else {
+            return this.$message({type: 'warning', message: '请填写授权公告日'}); 
+          }
+        }
+        if(_.show_issue_number) {
+          if(this.form.issue_number) {
+            o.issue_number = this.form.issue_number;
+          }else {
+            return this.$message({type: 'warning', message: '请填写授权公告号'}); 
+          }
+        }
+        if(_.show_public_date) {
+          if(this.form.public_date) {
+            o.public_date = this.$tool.getDate( new Date(this.form.public_date) );
+          }else {
+            return this.$message({type: 'warning', message: '请填写公开日'}); 
+          }
+        }
+        if(_.show_public_number) {
+          if(this.form.public_number) {
+            o.public_number = this.form.public_number;
+          }else {
+            return this.$message({type: 'warning', message: '请填写公开号'}); 
+          }
+        }
         if(_.show_pct_search_date) {
           if(this.form.pct_search_date) {
             o.pct_search_date = this.$tool.getDate( new Date(this.form.pct_search_date) );
           }else {
-            return this.$message({type: 'warning', message: '请填写国际检索日期'}); 
+            return this.$message({type: 'warning', message: '请填写国际检索日'}); 
           }
         }
         if(_.show_pct_search_result) {
@@ -304,7 +337,14 @@ export default {
           }else {
             return this.$message({type: 'warning', message: '请填写检索结论摘要'}); 
           }
-        }           
+        }
+        if(_.show_start_year) {
+          if(this.form.start_year) {
+            o.start_year = this.form.start_year;
+          }else {
+            return this.$message({type: 'warning', message: '请填写首次年费年度'}); 
+          }
+        }
         list2.push(o);  
       }
 

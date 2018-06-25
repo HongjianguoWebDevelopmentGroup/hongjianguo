@@ -55,7 +55,7 @@ export default {
 					{ type: 'text', label: '通知书名称', prop: 'code', render_simple: 'name', width: '200', is_import: true },
 					{ type: 'text', label: '发文日', prop: 'mail_date', width: '200', is_import: true },
 					{ type: 'text', label: '发文序列号', prop: 'notice_serial', width: '200', is_import: true },
-					{ type: 'text', label: '法定期限', prop: 'deadline', width: '200' },
+					{ type: 'text', label: '官方绝限', prop: 'deadline', width: '200' },
 					{ type: 'text', label: '申请日', prop: 'apd', width: '200', is_import: true },
 					{ type: 'text', label: '上传日', prop: 'create_time', width: '200' },
 					{ type: 'text', label: '上传用户', prop: 'uploader', render_simple: 'name', width: '200' },

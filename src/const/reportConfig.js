@@ -19,7 +19,7 @@ const taskOptions = [
   { id: 'end_time',              name: '完成时间', date: true },
   { id: 'due_time',              name: '指定期限', date: true },
   { id: 'review_deadline',       name: '定稿期限', date: true },
-  { id: 'deadline',              name: '法定期限', date: true },
+  { id: 'deadline',              name: '官方绝限', date: true },
   { id: 'remark',                name: '备注' },
 ];
 

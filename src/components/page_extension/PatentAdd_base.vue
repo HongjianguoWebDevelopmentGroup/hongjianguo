@@ -118,6 +118,8 @@ const extensionHash = [
   { text: '是否依赖于遗传资源', label: 'is_genetic', area: 'CN', type: [] },
   { text: '是否不丧失新颖性公开', label: 'is_leakage', area: 'CN', type: [] },
   { text: '是否要求优先权', label: 'is_priority', area: '', type: [] },
+  { text: '是否有变更', label: 'is_amended', area: '', type: [] },
+  { text: '是否有许可备案', label: 'is_licensed', area: '', type: [] },
 ] 
 
 export default {

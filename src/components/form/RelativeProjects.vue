@@ -2,7 +2,7 @@
   <div>
   	<el-row v-for="(item,index) in value" :key="index" style="margin-bottom: 5px">
   		<el-col :span="6" style="padding-right: 5px">
-  			<el-select placeholder="案件类型" :value="item.type" @input="val=>{ handleInput(val, 'type', index) }">
+  			<el-select placeholder="案件类型" :value="item.relevance_type" @input="val=>{ handleInput(val, 'relevance_type', index) }">
 			    <el-option 
 			    	v-for="item in options"
 			    	:key="item.value"

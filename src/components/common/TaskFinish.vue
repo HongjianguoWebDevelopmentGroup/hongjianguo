@@ -159,7 +159,7 @@
       </el-radio-group>
     </el-form-item>
     <el-form-item prop="negative_comment" label="评价理由" v-if="fields.negative_comment" v-show="form.negative_flag !== '无'&& form.negative_flag">
-      <el-input type="textarea" v-model="form.negative_comment"></el-input>
+      <el-input type="text" v-model="form.negative_comment"></el-input>
     </el-form-item>
     <el-form-item v-if="(next == '20' && level != 'A')  || next == '114'" prop="pconfirm" label="确认" :rules="confirmValidator">
       <el-checkbox v-model="form.pconfirm">已确认送件信息完整</el-checkbox><el-button type="text" size="mini" style="margin-left: 10px;" @click="$emit('more', 'patent')">查看</el-button>

@@ -3,7 +3,7 @@
   <el-form :model="form" ref="form" label-width="80px">
     <el-form-item prop="agency" label="代理机构" class="is-required">
       <remote-select type="agency" v-model="form.agency"></remote-select>
-      <el-button size="mini" type="text" @click="showAgencyLoad">负载</el-button>      
+      <!-- <el-button size="mini" type="text" @click="showAgencyLoad">负载</el-button>       -->
     </el-form-item>
     
     <el-form-item prop="agent" label="代理人" v-show="form.agency">

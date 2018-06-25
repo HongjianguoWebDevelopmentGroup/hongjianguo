@@ -111,7 +111,7 @@ export default {
 					{type: 'text', label: '指定期限', prop: 'due_time',width: '200'},
 					{type: 'text', label: '定稿期限', prop: 'review_deadline',width: '200'},
 					{type: 'text', label: '管控期限', prop: 'inner_deadline',width: '200'},
-					{type: 'text', label: '法定期限', prop: 'deadline',width: '200'},
+					{type: 'text', label: '官方绝限', prop: 'deadline',width: '200'},
 					{
 						type: 'action',
 						width: '100',
@@ -154,7 +154,7 @@ export default {
 			dates: [
 				{label: '指定期限', value: 'due_time'},
 				{label: '管控期限', value: 'inner_deadline'},
-				{label: '法定期限', value: 'deadline'},
+				{label: '官方绝限', value: 'deadline'},
 			],
 			activeName: 'finish',
 			dialogShrinkVisible: false,

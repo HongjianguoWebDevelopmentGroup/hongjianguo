@@ -61,7 +61,7 @@
   			<el-date-picker
 		      v-model="issue_date_area"
 		      type="daterange"
-		      placeholder="选择授权日期范围">
+		      placeholder="选择授权日范围">
 		    </el-date-picker>
   		</el-form-item>
   		<el-form-item style="margin-bottom: 0px;">

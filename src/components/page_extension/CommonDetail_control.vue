@@ -1,12 +1,12 @@
 <template>
   <div class="main">
-    <app-table :columns="columns" :data="detailTasks" :max-height="300">
+    <app-table :columns="columns" :data="detailTasks" height="default6">
     <template slot="row_action" slot-scope="scope">
-      <el-button type="text" size='mini' @click='toggle(scope.row)'>{{ show == scope.row.id ? '隐藏任务详情' : '显示任务详情'}}</el-button>
+      <el-button type="text" size='mini' @click='toggle(scope.row)'>{{ show == scope.row.id ? '隐藏详情' : '显示详情'}}</el-button>
     </template>
     </app-table>
     <template v-if="show ? true : false">
-      <app-table :columns="columns2" :data="tableData2" @row-click="handleRowClick" style="margin-top: 20px;"></app-table>
+      <app-table :columns="columns2" :data="tableData2" @row-click="handleRowClick" style="margin-top: 20px;"  height="default8"></app-table>
     </template>
     <el-dialog title="附件下载" :visible.sync="dialogVisible" :modal="false">
       <template>
@@ -26,19 +26,41 @@ export default {
   mixins: [ AxiosMixins ],
   data () {
     return {
+      height:'default6',
       columns: [
-        { type: 'text', label: '管制事项', prop: 'taskdef', render_simple: 'name'},
+        { type: 'text', label: '管制事项', prop: 'taskdef', render: this.taskdefRender},
         // { type: 'text', label: '流程节点', prop: 'flownode', render_simple: 'name'},
         { type: 'text', label: '开始时间', prop: 'start_time' },
         { type: 'text', label: '指定期限', prop: 'due_time' },
-        { type: 'text', label: '法定期限', prop: 'deadline' },
+        { type: 'text', label: '官方绝限', prop: 'deadline' },
         { type: 'text', label: '完成时间', prop: 'end_time' },
-        { type: 'text', label: '状态', prop: 'status', render_text: v => v ? '已完成' : '未完成' },
+        // { type: 'text', label: '状态', prop: 'status', render_text: v => v ? '已完成' : '未完成' },
         // { type: 'text', label: '代理机构', prop: 'agency' },
         // { type: 'text', label: '代理人', prop: 'agent' },
+        // { 
+        //   type: 'text', label: '定稿文件', prop: 'attachments',
+        //   render (h,item) {
+          
+        //     return h(
+        //       'span', 
+        //       item.map(function (g) {
+        //           return h('a', 
+        //           {
+        //             style: {
+        //             marginRight: '2px',
+        //         },
+        //         attrs: {
+        //           href: '#',
+        //         },
+        //           },g.name)
+        //       })
+        //     )
+        //   } 
+        // },
         { 
           type: 'action', 
           label: '操作',
+          width:'100px',
           btns_render: 'action'
         },
       ],
@@ -54,7 +76,7 @@ export default {
             return h(
               'span', 
               item.map(function (g) {
-                  return h('a', 
+                  return h('span', 
                   {
                     style: {
                     marginRight: '2px',
@@ -113,6 +135,14 @@ export default {
     handleRowClick (row) {
       this.tableData3 = row;
       this.dialogVisible = true;
+    },
+    taskdefRender (h,item,data) {
+      return ( 
+        <span>
+          {data.status?<i class="el-icon-check" style="color: #3c3;margin-right:10px;"></i>:<i class="el-icon-loading" style="color: #f90;margin-right:10px;"></i>}
+            <span>{ data.taskdef.name }</span>
+        </span>
+      );
     },
   },
   watch: {
