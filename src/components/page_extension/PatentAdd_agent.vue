@@ -79,7 +79,7 @@ export default {
   },
   methods: {
   	setForm (data) {
-      this.$tool.coverObj(this.form, data, {obj: ['agency_serial']}); 
+      this.$tool.coverObj(this.form, data, {obj: ['agency_serial','agency_type']}); 
       if (data.tech_rank == undefined) {
         this.form.tech_rank = 0;
       }
