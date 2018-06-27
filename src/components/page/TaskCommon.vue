@@ -696,6 +696,10 @@ export default {
       this.$store.dispatch('refreshTaskDefs');
     }
 
+    if(this.$store.getters.flownodeData === undefined) {
+      this.$store.dispatch('refreshFlownodes');
+    }
+
     if(this.task_status == 1 || this.task_status == -1) {
       this.activeName = 'edit';
     }

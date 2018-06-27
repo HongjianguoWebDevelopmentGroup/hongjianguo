@@ -215,8 +215,8 @@ export default {
     setForm (form, upload=false, disclosureType='') {
       const t = this.type;
       this.$tool.coverObj(this.form, form, {
-        obj: [ 'attachments', 'type', 'ipr', 'case_level', 'legal_status','group_number', 'family_number'], 
-        skip:[ 'extension', 'title', 'area' ],
+        obj: [ 'attachments', 'area', 'type', 'ipr', 'case_level', 'legal_status','group_number', 'family_number','agency_type'], 
+        skip:[ 'extension', 'title' ],
       });
 
       if(form['title'] != undefined && !this.titleLock) {

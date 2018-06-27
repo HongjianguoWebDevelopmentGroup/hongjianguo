@@ -124,8 +124,10 @@ export default {
       'refreshDetailData',
     ]),
     toggle ({id}) {
-      // console.log(this.tableData[0].id)
-      // console.log(id);
+      if (id === 0) {
+        this.tableData2 = [];
+        return;
+      }
       if(this.show == null || this.show != id) {
         const url = `/api/tasks/${id}`;
         const success = _=>{

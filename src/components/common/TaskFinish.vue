@@ -48,16 +48,16 @@
     <el-form-item prop="agency_serial" label="事务所案号" v-if="fields.agency_serial" :rules="{required: true, message: '事务所案号不能为空'}">
       <el-input placeholder="请填写事务所案号" v-model="form.agency_serial"></el-input>
     </el-form-item>
-    <el-form-item prop="agent" label="代理人" v-if="fields.agent" v-show="form.agency !== ''" :rules=" next == 102 ? { required: true, type: 'number', message: '代理人不能为空',trigger: 'change'} : []">
-      <remote-select type="agent" v-model="form.agent" :static-map="this.agentMap" :para="agentControl" ref="agent"></remote-select>
+    <el-form-item prop="agent" label="代理人" v-if="fields.agent" :rules=" next == 14 ? { required: true, type: 'number', message: '代理人不能为空',trigger: 'change'} : []">
+      <remote-select type="agent" v-model="form.agent" :static-map="this.agentMap" :para="{'agency': form.agency}" ref="agent"></remote-select>
     </el-form-item>
     <el-form-item prop="agency_type" label="代理类型" v-if="fields.agency_type"
       :rules="{ required: true, message: '代理类型不能为空'}"
     >
       <static-select type="agency_type" key="patent_type" v-model="form.agency_type"></static-select>
     </el-form-item>
-  	<el-form-item prop="due_time" label="承办期限" v-if="fields.due_time">
-			<el-date-picker v-model="form.due_time" type="date" placeholder="选择承办期限"></el-date-picker>
+  	<el-form-item prop="due_time" label="指定期限" v-if="fields.due_time">
+			<el-date-picker v-model="form.due_time" type="date" placeholder="选择指定期限"></el-date-picker>
   	</el-form-item>
     <el-form-item prop="pay_time" label="支付时间" v-if="fields.pay_time">
       <el-date-picker v-model="form.pay_time" type="date" placeholder="选择支付时间"></el-date-picker>
@@ -296,6 +296,7 @@ export default {
           this.next = d.data.next[0].id;
         }else {
           this.next = "";
+          this.form.agent = this.data.agent;
         }
   		};
       const complete = _=>{ 
@@ -398,7 +399,7 @@ export default {
             // console.log('空数组');
             this.description = this.data.description;
           }
-				}
+        }
 				this.$refs.form.resetFields();
 			}
     },

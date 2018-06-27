@@ -2,7 +2,7 @@
   <div class="main">
     
     <table-component :tableOption="tableOption" :data="tableData" @refreshTableData="refreshTableData" ref="table" :refresh-proxy="refreshProxy">
-      <el-button v-if="!!(menusMap && !menusMap.get('/patent/download') )" slot="download" :loading="downloadLoading" icon="share" @click="downloadPop" type="primary" style="margin-left: 5px;">批量下载</el-button>
+      <!-- <el-button v-if="!!(menusMap && !menusMap.get('/patent/download') )" slot="download" :loading="downloadLoading" icon="share" @click="downloadPop" type="primary" style="margin-left: 5px;">批量下载</el-button> -->
     </table-component>
     
     
@@ -71,9 +71,9 @@ export default {
         'header_btn': [
           { type: 'add', click: this.add, map_if: '/patent/add', },
           { type: 'delete', map_if: '/patent/delete' }, 
-          { type: 'export2', map_if: '/patent/export' },
           { type: 'import', map_if: '/patent/import' },
-          { type: 'batch_upload', map_if: '/patent/upload' },
+          { type: 'export2', map_if: '/patent/export' },
+          // { type: 'batch_upload', map_if: '/patent/upload' },
           { type: 'control', label: '字段' },
         ],
         'header_slot': ['download'],
@@ -81,36 +81,35 @@ export default {
 
           { type: 'selection' },
           // { type: 'text', label: '专利状态', prop: 'status', render: (h,item)=>h('span', item ? '正常' : '暂停处理') },
-          { type: 'text', label: '案号', prop: 'serial', is_agency: true, sortable: true, width: '135',render: this.serialRender},
-          { type: 'text', label: '事务所案号', prop: 'agency_serial', is_agency: true, sortable: true, width: '135' },
-          // { type: 'array', label: '申请人', prop: 'applicants', width: '300', is_import: true,render: _=>{ return _.map(_=>_.name);}},
+          { type: 'text', label: '案号', prop: 'serial', is_agency: true, sortable: true, width: '160',render: this.serialRender},
+          { type: 'text', label: '事务所案号', prop: 'agency_serial', is_agency: true, sortable: true, width: '150' },
+          { type: 'text', label: '案件名称', prop: 'title', sortable: true, is_import: true, width: '200', is_agency: true },
+          { type: 'text', label: '专利类型', prop: 'type', render_simple: 'name', is_agency: true, sortable: true, is_import: true, width: '120',  },
+          { type: 'text', label: '申请国家', prop: 'area', sortable: true, is_import: true, width: '120', is_agency: true },
+          { type: 'array', label: '申请人', prop: 'applicants', width: '200', is_import: true,render: _=>{ return _.map(_=>_.name);}},
           { type: 'text', label: '申请号', prop: 'apn', sortable: true, is_import: true, width: '140', is_agency: true},
           { type: 'text', label: '申请日', prop: 'apd', sortable: true, is_import: true, width: '123', is_agency: true},
           { type: 'text', label: '提案号', prop: 'proposal_serial', sortable: true, width: '140' },
-          { type: 'text', label: '专利类型', prop: 'type', render_simple: 'name', is_agency: true, sortable: true, is_import: true, width: '123',  },
-          { type: 'text', label: '地区', prop: 'area', sortable: true, is_import: true, width: '100', is_agency: true },
-          { type: 'text', label: '详细状态', prop: 'flownode', sortable: true, width: '180', is_agency: true, render_simple: 'name'},
           { type: 'text', label: '法律状态', prop: 'legal_status', sortable: true, width: '180', is_agency: true, render_simple: 'name'},
-          { type: 'text', label: 'IPR', prop: 'ipr', render_simple: 'name', sortable: true, is_import: true, width: '123', is_agency: true },
-          { type: 'text', label: '案件名称', prop: 'title', sortable: true, is_import: true, width: '200', is_agency: true },
+          { type: 'text', label: 'IPR', prop: 'ipr', render_simple: 'name', sortable: true, is_import: true, width: '90', is_agency: true },
           // { type: 'array', label: '提案标题', prop: 'proposals', width: '200', render: _=>_.map(_=>_.title),},
-          { type: 'text', label: '产品相关', prop: 'product_relevance', render_simple:'name', width: '123', sortable: true},
-          { type: 'text', label: '提案人', prop: 'proposer', sortable: true, width: '123', is_import: true, is_agency: true, render_simple: 'name',},
-          // { type: 'array', label: '发明人', width: '238', prop: 'inventors', is_import: true, is_agency: true, render: _=>_.map(_=>`${_.name}:${_.share}%`),},
-          { type: 'text', label: '代理机构', width: '200', prop: 'agency', render_simple: 'name', is_import: true},
-          { type: 'text', label: '代理人', width: '80', prop: 'agent', render_simple: 'name', is_import: true},
-          { type: 'text', label: '技术理解评分', prop: 'tech_rank', is_import: true,  width: '145', show: true},
-          { type: 'text', label: '撰写质量评分', prop: 'draft_rank', is_import: true, width: '145', show: true},
-          { type: 'text', label: '服务态度评分', prop: 'service_rank', is_import: true,  width: '145', show: true},
-          { type: 'text', label: '特别评价', prop: 'negative_flag', is_import: true, width: '105', show: true},
-          { type: 'text', label: '评价详情', prop: 'negative_comment', is_import: true, width: '135', show: true,},
-          { type: 'text', label: '专利摘要', prop: 'abstract', sortable: true, width: '280'},
-          { type: 'text', label: '公开日', prop: 'public_date', sortable: true, is_import: true, width: '123', show: false},
-          { type: 'text', label: '公开号', prop: 'public_number', sortable: true, is_import: true, width: '123', show: false},
+          { type: 'text', label: '产品相关', prop: 'product_relevance', render_simple:'name', width: '115', sortable: true},
+          { type: 'text', label: '提案人', prop: 'proposer', sortable: true, width: '100', is_import: true, is_agency: true, render_simple: 'name',},
+          { type: 'array', label: '发明人', width: '238', prop: 'inventors', is_import: true, is_agency: true, render: _=>_.map(_=>`${_.name}:${_.share}%`),},
+          { type: 'text', label: '代理机构', width: '130', prop: 'agency', render_simple: 'name', is_import: true},
+          { type: 'text', label: '代理人', width: '90', prop: 'agent', render_simple: 'name', is_import: true},
+          { type: 'text', label: '技术理解评分', prop: 'tech_rank', is_import: true,  width: '130', show: true},
+          { type: 'text', label: '撰写质量评分', prop: 'draft_rank', is_import: true, width: '130', show: true},
+          { type: 'text', label: '服务态度评分', prop: 'service_rank', is_import: true,  width: '130', show: true},
+          { type: 'text', label: '特别评价', prop: 'negative_flag', is_import: true, width: '110', show: true},
+          { type: 'text', label: '评价详情', prop: 'negative_comment', is_import: true, width: '110', show: true,},
+          { type: 'text', label: '专利摘要', prop: 'abstract', sortable: true, width: '200'},
+          { type: 'text', label: '公开日', prop: 'public_date', sortable: true, is_import: true, width: '110', show: false},
+          { type: 'text', label: '公开号', prop: 'public_number', sortable: true, is_import: true, width: '110', show: false},
           { type: 'text', label: '初审合格日', prop: 'pre_exam_ok_date', sortable: true, width: '140', show: false},
           { type: 'text', label: '进入实审日', prop: 'sub_exam_start_date', sortable: true, width: '140', show: false},
-          { type: 'text', label: '公告日', prop: 'issue_date', sortable: true, is_import: true, width: '123', show: false},
-          { type: 'text', label: '公告号', prop: 'issue_number', sortable: true, is_import: true, width: '123', show: false},
+          { type: 'text', label: '公告日', prop: 'issue_date', sortable: true, is_import: true, width: '110', show: false},
+          { type: 'text', label: '公告号', prop: 'issue_number', sortable: true, is_import: true, width: '110', show: false},
           { type: 'text', label: '主国际分类号', prop: 'main_ipc', sortable: true, width: '160', show: false},
           { type: 'text', label: '国际申请日', prop: 'pct_apd', sortable: true, width: '140', show: false},
           { type: 'text', label: '国际申请号', prop: 'pct_no', sortable: true, width: '140', show: false},
@@ -133,7 +132,7 @@ export default {
             render: (h,item)=>{
               let t = item;
               if(t) {
-                 t = this.$tool.getDate(new Date(t));
+                t = this.$tool.getDate(new Date(t));
               }
               return h('span', t);
             }
@@ -151,6 +150,7 @@ export default {
           { type: 'text', label: '发明人审核耗时', prop: 'inventor_review_period', is_import: true, width: '160', show: false},
           { type: 'text', label: 'IPR审核耗时', prop: 'ipr_review_period', is_import: true, width: '160', show: false},
           { type: 'text', label: '代理人修改耗时', prop: 'amending_period', is_import: true, width: '160', show: false},
+          { type: 'text', label: '详细状态', prop: 'flownode', sortable: true, width: '180', is_agency: true, render_simple: 'name'},
           { type: 'text', label: '备注', prop: 'remark', sortable: true, width: '123' },
           // {
           //   type: 'action',

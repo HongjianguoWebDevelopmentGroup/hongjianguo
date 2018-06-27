@@ -92,6 +92,7 @@ const proposalMenu = [
 
 const patentMenu = [
 	{ type: 'item', text: '全部专利', path: '/patent/list', icon: 'iconfont el-icon-my-patent' },
+	{ type: 'item', text: '获奖专利', path: '/patent/award', icon: 'iconfont el-icon-my-patent' },
 	{ 
 		type: 'submenu', 
 		text: '专利（按案件等级）', 
@@ -141,6 +142,20 @@ const patentMenu = [
 			{ type: 'item', text: '下月主动修改到期', path: '/patent/duration/modification', icon: '' },
 			{ type: 'item', text: '下月PCT进国家到期', path: '/patent/duration/pct', icon: '' },
 			{ type: 'item', text: '下月PCT19条修改到期', path: '/patent/duration/pct19', icon: '' },
+		]
+	},
+	{ 
+		type: 'submenu', 
+		text: '通知书', 
+		path: '/patent/notice',
+		icon: 'iconfont el-icon-my-patent',
+		children: [
+			{ type: 'item', text: '所有通知书', path: '/patent/notice', icon: '' },
+			{ type: 'item', text: '本周上传', path: '/patent/notice/thisweek', icon: '' },
+			{ type: 'item', text: '上周上传', path: '/patent/notice/lastweek', icon: '' },
+			{ type: 'item', text: '本月上传', path: '/patent/notice/thismonth', icon: '' },
+			{ type: 'item', text: '上月上传', path: '/patent/notice/lastmonth', icon: '' },
+			{ type: 'item', text: '更早上传', path: '/patent/notice/earlier', icon: '' },
 		]
 	},
 	// {
@@ -317,12 +332,12 @@ const reportMenu = [
 
 const newsMenu = [
 	{ type: 'item', text: '通知邮件', path: '/news/mailList', icon: 'iconfont el-icon-my-email' },
-	{
-		type: 'item',
-		text: '专利通知书',
-		path: '/news/patent_notice',
-		icon: 'iconfont el-icon-my-patent',
-	},
+	// {
+	// 	type: 'item',
+	// 	text: '专利通知书',
+	// 	path: '/news/patent_notice',
+	// 	icon: 'iconfont el-icon-my-patent',
+	// },
 	// {
 	// 	text: '版权通知书',
 	// 	path: '/news/copyright_notice',

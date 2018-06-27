@@ -14,10 +14,22 @@
           </el-option>
         </el-select>
       </el-form-item>
-      <el-form-item label="任务类型" prop="task_def_id" v-if="type == 'add' && category != ''">
-        <el-select v-model="form.task_def_id" placeholder="请选择任务类型">
+      <el-form-item label="管制事项" prop="task_def_id" v-if="type == 'add' && category != ''">
+        <el-select v-model="form.task_def_id" placeholder="请选择管制事项">
           <el-option
             v-for="item in defOptions"
+            :key="item.value"
+            :label="item.label"
+            :value="item.value"
+          >
+          </el-option>
+        </el-select>
+      </el-form-item>
+
+      <el-form-item label="流程节点" prop="flow_node_id" v-if="type == 'add' && category != ''">
+        <el-select v-model="form.flow_node_id" placeholder="请选择流程节点">
+          <el-option
+            v-for="item in flownodeOptions"
             :key="item.value"
             :label="item.label"
             :value="item.value"
@@ -32,13 +44,13 @@
 
       <el-row> 
         <el-col :span="12"> 
-          <el-form-item label="承办期限" prop="due_time">
-            <el-date-picker type="date" v-model="form.due_time" placeholder="请选择承办期限"></el-date-picker>
+          <el-form-item label="指定期限" prop="due_time">
+            <el-date-picker type="date" v-model="form.due_time" placeholder="请选择指定期限"></el-date-picker>
           </el-form-item>
         </el-col>
         <el-col :span="12">
-          <el-form-item label="法限" prop="deadline">
-            <el-date-picker type="date" v-model="form.deadline" placeholder="请选择法限"></el-date-picker>
+          <el-form-item label="官方绝限" prop="deadline">
+            <el-date-picker type="date" v-model="form.deadline" placeholder="请选择官方绝限"></el-date-picker>
           </el-form-item>
         </el-col>
       </el-row>
@@ -144,6 +156,7 @@ export default {
         inner_deadline: '',
         remark: '',
         attachments: [],
+        flow_node_id:'',
       },
       attachments: [],
       category: '',
@@ -156,6 +169,9 @@ export default {
     },
     taskDefsData () {
       return this.$store.getters.taskDefsData;
+    },
+    flownodeData () {
+      return this.$store.getters.flownodeData;
     },
     flowOptions () {
       const c = this.category;
@@ -177,6 +193,15 @@ export default {
         if(_.flow_id == f) arr.push({label: _.label, value: _.value});
       });
 
+      return arr;
+    },
+    flownodeOptions () {
+      const f = this.form.flow_id;
+      this.form.flow_node_id = '';
+      const arr = [];
+      this.flownodeData.forEach(_=>{
+        if (_.flow_id == f) arr.push({label: _.name, value: _.id});
+      })
       return arr;
     }
   },
