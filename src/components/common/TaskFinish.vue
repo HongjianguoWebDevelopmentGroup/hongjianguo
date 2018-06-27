@@ -49,7 +49,7 @@
       <el-input placeholder="请填写事务所案号" v-model="form.agency_serial"></el-input>
     </el-form-item>
     <el-form-item prop="agent" label="代理人" v-if="fields.agent" v-show="form.agency !== ''" :rules=" next == 102 ? { required: true, type: 'number', message: '代理人不能为空',trigger: 'change'} : []">
-      <remote-select type="agent" v-model="form.agent" :static-map="this.agentMap" :para="{'agency': form.agency}" ref="agent"></remote-select>
+      <remote-select type="agent" v-model="form.agent" :static-map="this.agentMap" :para="agentControl" ref="agent"></remote-select>
     </el-form-item>
     <el-form-item prop="agency_type" label="代理类型" v-if="fields.agency_type"
       :rules="{ required: true, message: '代理类型不能为空'}"
@@ -441,6 +441,9 @@ export default {
     },
     defaultDescription () {
       return this.data.description;
+    },
+    agentControl () {
+      return {'agency': this.form.agency};
     },
 	},
 	components: { Member, Agent, Agency, Upload, RemoteSelect, StaticSelect, AppSwitch, }

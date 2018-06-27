@@ -107,13 +107,13 @@ export default {
   		}
   	},
   	save () {
-  		if(this.checkForm()) return;
+  		// if(this.checkForm()) return;
 
   		const url = `${URL}/${this.id}/config`;
   		const success = _=>{ 
   			this.$message({message: '保存成功', type: 'success'});
   			this.$store.dispatch('refreshUser');
-  			this.$refs.psd.clearEditPsd();
+  			// this.$refs.psd.clearEditPsd();
   		};
   		const data = this.form;
   		const complete = _=>{ this.btn_disabled = false };

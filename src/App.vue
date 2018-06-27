@@ -46,10 +46,9 @@
           <el-badge :value="pendingTaskCount" class="task-pending-top">
             <el-button size="mini" icon="warning" type="primary" @click="$router.push('/task/pending')" title="待办任务"></el-button>
           </el-badge>
-        </div>   
-        <a target="_blank" href="http://help.hongjianguo.com" style="float: right;
-    margin-right: 180px;
+        <a target="_blank" href="http://help.hongjianguo.com" style="margin-right:20px;
     font-size: 14px;">帮助</a>       
+        </div>   
     </nav>
       
     <div class="nav-left" :style="`height: ${innerHeight}px; left: ${navLeft}`" v-if="!noMenu">

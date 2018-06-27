@@ -22,7 +22,7 @@
 <script>
 import TableComponent from '@/components/common/TableComponent'
 import AxiosMixins from '@/mixins/axios-mixins'
-
+import { mapGetters } from 'vuex' 
 export default {
   name: 'taskEdit',
   mixins: [ AxiosMixins ],
@@ -43,6 +43,7 @@ export default {
             btns: [
               {type: 'view', click: ({viewUrl})=>{window.open(viewUrl)}},
               {type: 'download', click: ({downloadUrl})=>{window.location.href = downloadUrl}},
+              {type: 'delete', click: this.handleDelete,btn_if:_=>{return this.menusMap && !this.menusMap.get('/flows')? true :false}},
             ],
           }
         ]
@@ -53,6 +54,9 @@ export default {
   	}
   },
   computed: {
+    ...mapGetters([
+      'menusMap',
+    ]),
     id () {
       return this.row.id;  
     }
@@ -65,7 +69,21 @@ export default {
       const complete = _=>{setTimeout(_=>this.loading = false, 500)};
 
       this.axiosGet({url, success, complete});
-    }
+    },
+    handleDelete ({id}) {
+      this.$confirm('此操作将删除当前附件，是否继续？', '提示',{type: 'warning'})
+      .then(_=>{
+        const url = `/tasks/${this.id}/files/${id}`;
+        const success = _=>{
+          this.$message({type: 'success', message: _.info});
+          this.refreshData();
+        };
+
+        this.axiosDelete({url, success });
+      }).catch(_=>{
+
+      })
+    },    
   },
   created () {
     this.refreshData();

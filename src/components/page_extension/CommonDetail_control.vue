@@ -19,7 +19,7 @@
 <script>
 import AppTable from '@/components/common/AppTable'
 import AxiosMixins from '@/mixins/axios-mixins'
-import {mapGetters} from 'vuex'
+import {mapGetters,mapActions} from 'vuex'
 
 export default {
   name: 'commonDetailControl',
@@ -99,10 +99,11 @@ export default {
         { 
           type: 'action',
           label: '操作',
-          width: '150',
+          width: '198',
           btns: [
             { type: 'view', click: ({viewUrl})=>{window.open(viewUrl)}},
-            { type: 'download', click: ({downloadUrl})=>{window.open(downloadUrl)}},  
+            { type: 'download', click: ({downloadUrl})=>{window.open(downloadUrl)}},
+            { type: 'delete', click:this.handleDelete,btn_if:()=>{return this.menusMap && !this.menusMap.get('/flow')? true :false}},  
           ]
         }
       ],
@@ -115,9 +116,13 @@ export default {
   computed: {
     ...mapGetters([
       'detailTasks',
+      'menusMap',
     ]),
   },
   methods: {
+    ...mapActions([
+      'refreshDetailData',
+    ]),
     toggle ({id}) {
       // console.log(this.tableData[0].id)
       // console.log(id);
@@ -135,6 +140,21 @@ export default {
     handleRowClick (row) {
       this.tableData3 = row;
       this.dialogVisible = true;
+    },
+    handleDelete ({id}) {
+      this.$confirm('此操作将删除当前附件，是否继续？', '提示',{type: 'warning'})
+      .then(_=>{
+        const url = `/tasks/${this.tableData3['id']}/files/${id}`;
+        const success = _=>{
+          this.$message({type: 'success', message: _.info});
+          this.dialogVisible = false;
+          this.refreshDetailData();
+        };
+
+        this.axiosDelete({url, success });
+      }).catch(_=>{
+
+      })
     },
     taskdefRender (h,item,data) {
       return ( 

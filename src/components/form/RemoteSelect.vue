@@ -178,8 +178,8 @@ export default {
       if(this.staticMap.length > 0) {
         this.static_map = this.staticMap;
       }
-      console.log('-------val---------');
-      console.log(val);
+      // console.log('-------val---------');
+      // console.log(val);
       if( val[0] && val[0] instanceof Object ) {
         
         this.static_map = val;
