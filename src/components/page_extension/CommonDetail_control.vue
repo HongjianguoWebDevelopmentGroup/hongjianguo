@@ -119,8 +119,10 @@ export default {
   },
   methods: {
     toggle ({id}) {
-      // console.log(this.tableData[0].id)
-      // console.log(id);
+      if (id === 0) {
+        this.tableData2 = [];
+        return;
+      }
       if(this.show == null || this.show != id) {
         const url = `/api/tasks/${id}`;
         const success = _=>{
@@ -149,7 +151,9 @@ export default {
     detailTasks (val) {
       if(val.length != 0) {
         this.toggle(val[0]);  
-      }   
+      } else {
+        this.toggle(0);
+      }
     },
   },
   components: { 

@@ -212,7 +212,7 @@ export default {
     //setForm 的Type用于区分正常填充 或者 是文件解析后的填充
     setForm (form, upload=false, disclosureType='') {
       this.$tool.coverObj(this.form, form, {
-        obj: [ 'attachments', 'area', 'type', 'ipr', 'case_level', 'legal_status','group_number', 'family_number'], 
+        obj: [ 'attachments', 'area', 'type', 'ipr', 'case_level', 'legal_status','group_number', 'family_number','agency_type'], 
         skip:[ 'extension', 'title' ],
       });
 
