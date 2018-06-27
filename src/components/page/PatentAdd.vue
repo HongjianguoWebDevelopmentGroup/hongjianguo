@@ -160,11 +160,38 @@ export default {
         const copy = this.$tool.deepCopy(val);
         // this.id = copy[0].id;
         const relates = [];
-        val.map(_=>{
-          relates.push({id: _.id, name: _.title, type: 1});
-        })
+        // val.map(_=>{
+        //   relates.push({id: _.id, name: _.title, type: 1});
+        // })
         const form = {};  
-        Object.assign(form, copy[0], {relates} );
+        const data = this.$tool.normalFilter(copy[0],{
+          stay:['serial',
+        'title',
+        'area',
+        'type',
+        'ipr',
+        'level',
+        "applicants",
+        "inventors",
+        'priorities',
+        "extension", 
+        'attachments',
+        'proposer',
+        'group_number',
+        'family_number',
+        'legal_status',
+        'branch',
+        'products',
+        'classification',
+        'tags',
+        'main_ipc',
+        'project_name',
+        'project_serial',
+        "product_relevance"]
+        });
+        console.log('__+++++hahah____+++');
+        console.log(data);
+        Object.assign(form, data, {relates} );
         setKeys.map(_=>{
           if(this.$refs[_]) {
 

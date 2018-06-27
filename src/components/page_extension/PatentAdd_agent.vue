@@ -15,31 +15,43 @@
 					<remote-select type="agent" v-model="form.agent"></remote-select>
 				</el-form-item>
         <el-form-item prop="tech_rank" label="技术理解">
-          <el-rate 
+<!--           <el-rate 
             v-model="form.tech_rank" 
             style="margin-top: 10px" 
             :colors="['#99A9BF', '#F7BA2A', '#FF9900']" 
             disabled
             :texts="['20','40','60','80','100']"
-          ></el-rate>
+          ></el-rate> -->
+            <el-slider 
+              v-model="form.tech_rank"
+              show-input
+            ></el-slider>
         </el-form-item>
         <el-form-item prop="draft_rank" label="撰写质量">
-          <el-rate 
+          <!-- <el-rate 
             v-model="form.draft_rank" 
             style="margin-top: 10px" 
             :colors="['#99A9BF', '#F7BA2A', '#FF9900']" 
             disabled
             :texts="['20','40','60','80','100']"
-          ></el-rate>
+          ></el-rate> -->
+            <el-slider 
+              v-model="form.draft_rank"
+              show-input
+            ></el-slider>
         </el-form-item>
         <el-form-item prop="service_rank" label="服务状态">
-          <el-rate 
+        <!--   <el-rate 
             v-model="form.service_rank" 
             style="margin-top: 10px" 
             :colors="['#99A9BF', '#F7BA2A', '#FF9900']" 
             disabled
             :texts="['20','40','60','80','100']"
-          ></el-rate>
+          ></el-rate> -->
+            <el-slider 
+              v-model="form.service_rank"
+              show-input
+            ></el-slider>
         </el-form-item>
         <el-form-item prop="negative_flag" label="特别评价">
           <el-radio-group v-model="form.negative_flag">

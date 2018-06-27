@@ -24,6 +24,24 @@ export default {
 
     return data;
 	},
+	/**
+	* 正向过滤对象
+	*@param { Object } obj { Array } stay
+	*@return { Object } data 
+	*/
+	normalFilter (obj,{stay} = {}) {
+		const data = {};
+		if(stay === undefined ) stay = [];
+		for (let k in obj) {
+			const d = obj[k];
+			if(stay.length != 0 && obj.hasOwnProperty(k) && stay.indexOf(k) >= 0) {
+				data[k] = d;
+			}else{
+				continue;
+			}
+		}
+		return data;
+	},
 	clearObj (obj) {
 		for(let key in obj) {
 			if(typeof obj[key] === 'object') {

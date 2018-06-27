@@ -20,7 +20,7 @@ import { mapGetters } from 'vuex'
             { type: 'text', label: '代理机构名称', prop: 'agency', render_simple: 'name', width: '198'},
             { type: 'text', label: '代理人', prop: 'agent', render_simple: 'name', width: '145'},
             { type: 'text', label: '委案确认时间', prop: 'agency_confirm_date', min_width: '140'},
-      	    { type: 'text', label: '当前委托?', prop: 'is_current', width: '120'},
+      	    { type: 'text', label: '当前委托', prop: 'is_current', width: '120'},
       	  ],
       	},
       }
