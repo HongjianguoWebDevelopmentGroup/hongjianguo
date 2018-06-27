@@ -76,6 +76,7 @@ const mutations = {
 	setLoading(state, boolean) { state.loading = boolean },
 	setId(state, id) { state.id = id },
 	refreshTrueType(state) { state.true_type = state.type },
+
 }
 
 const actions = {

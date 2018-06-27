@@ -14,6 +14,7 @@ import invoiceEntity from '@/store/modules/invoice-entity.js'
 import userGroup from '@/store/modules/user-group.js'
 import flows from '@/store/modules/flows.js'
 import taskDef from '@/store/modules/task-def.js'
+import flownodes from '@/store/modules/flownodes.js'
 import currentUser from '@/store/modules/current-user.js'
 import sysmesg from '@/store/modules/sysmesg.js'
 import cache from '@/store/modules/cache.js'
@@ -57,6 +58,7 @@ const store = new Vuex.Store({
     userGroup,
     flows,
     taskDef,
+    flownodes,
     currentUser,
     sysmesg,
     cache,

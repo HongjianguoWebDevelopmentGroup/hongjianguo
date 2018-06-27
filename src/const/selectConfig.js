@@ -243,6 +243,15 @@ const config = [
     allowCreate: true,
     defaultFirstOption: true,
   }],
+  ['award', {
+    placeholder: '请输入或选择奖项名称',
+    url: '/award',
+    handle (data) {
+      return data.awards.map(_=>{return {id: _.name, name: _.name}});
+    },
+    allowCreate: true,
+    defaultFirstOption: true,
+  }],
   ['area', {
     placeholder: '请选择地区',
     options: 'areaData',

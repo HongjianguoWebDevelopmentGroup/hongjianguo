@@ -22,6 +22,10 @@
         <el-form-item label="案件摘要">
           <el-input v-model="form.abstract" type="textarea" placeholder="请填写案件摘要"></el-input>
         </el-form-item>
+        <el-form-item label="获奖标签">
+          <static-select type="award" v-model="form.awards" multiple></static-select>
+          <span style="color:#bbb">如果列表里没有奖项，可以直接输入按【回车键】保存</span>
+				</el-form-item>
         <el-form-item label="备注">
           <el-input v-model="form.remark" type="textarea" placeholder="请填写备注信息"></el-input>
         </el-form-item>
@@ -50,12 +54,16 @@ export default {
         // application:'',
         start_year:'',
         abstract: '',
+        awards:[],
       },
     }
   },
   methods: {
     setForm (data) {
-      this.$tool.coverObj(this.form, data);
+      this.$tool.coverObj(this.form, data, {
+        obj: [ 'flownode'], 
+        skip:[ 'claims_count', 'words','start_year','abstract','remark','rewards' ],
+      });
     },
     submitForm () {
       return this.form;

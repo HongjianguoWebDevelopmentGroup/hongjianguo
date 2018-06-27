@@ -151,9 +151,9 @@ export default {
     detailTasks (val) {
       if(val.length != 0) {
         this.toggle(val[0]);  
-      } else {
-        this.toggle(0);
-      }
+      }else {
+        this.tableData2 = [];
+      }   
     },
   },
   components: { 

@@ -6,9 +6,11 @@
 
 <script>
 import TableComponent from '@/components/common/TableComponent' 
-
+import SearchInput from '@/components/common/SearchInput'
+import {mapGetters} from 'vuex'
 export default {
   name: 'commonDetailDocuments',
+  props: ['searchValue'],
   data () {
 		return {
 		  option: {
@@ -34,11 +36,33 @@ export default {
 		}
   },
   computed: {
-  	tableData () {
-  		return this.$store.getters.detailDocuments; 
-  	}
+ 	...mapGetters([
+ 		'detailDocuments',
+ 	]),
+ 	tableData () {
+ 		if(this.searchValue == '') {
+ 			return this.detailDocuments;
+ 		}else{
+ 			return this.search(this.searchValue);
+ 		}
+ 	},
   },
-  components: { TableComponent }
+  methods: {
+     search (keyword) {
+      let newArr = [];
+      if(keyword){
+        this.detailDocuments.filter((val,i,arr)=>{
+          for (let k in arr[i]) {
+            if(typeof arr[i][k] == 'string'&& arr[i][k].indexOf(keyword) != -1 && k == 'type') {
+              newArr.push(arr[i]);
+            }
+          }
+        })
+        return newArr;
+      }
+    },
+  },
+  components: { TableComponent,SearchInput, }
 }
 </script>
 

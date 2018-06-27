@@ -35,7 +35,10 @@
         <el-button type="primary" size="small"> CPC通知书上传</el-button>
       </el-upload>
       </span>
-       <app-table :columns="columns" :data="detailNotices" style="margin-top: 10px;" :border="true" height="default6"></app-table>
+      <span style="display: inline-block;float: right;">
+        <search-input v-model="searchValue" @click="search" placeholder="搜索通知书名称" input-style="width:250px;margin-bottom:10px;"></search-input>
+      </span>
+       <app-table :columns="columns" :data="detailNoticesSearch" style="margin-top: 10px;" :border="true" height="default6"></app-table>
      </div>
      <div class="documents" style="margin-top: 15px;">
       <span>
@@ -49,7 +52,10 @@
       <el-button type="primary" size="small">其他文档上传</el-button>
     </el-upload>
   </span>
-       <documents style="margin-top: 10px;"></documents>
+       <span style="display: inline-block;float: right;">
+        <search-input v-model="searchValue2"  placeholder="搜索文件类型" input-style="width:250px;"></search-input>
+     </span>
+       <documents style="margin-top: 10px;" :search-value="searchValue2"></documents>
      </div>
     <el-dialog :title="this.isNotice?'通知书上传':'其他文档上传'" :visible.sync="dialogVisible" class="dialog-medium" :modal="false"> 
      <documents-upload   :type="types" :tableData="tableDatas" :file="file" @dialogVisible="val=>{dialogVisible=val}" @uploadSuccess="refreshDetailData" ref="docupload"></documents-upload>
@@ -96,6 +102,8 @@
 import AppTable from '@/components/common/AppTable' 
 import Documents from '@/components/page_extension/CommonDetail_documents'
 import DocumentsUpload from '@/components/common/DocumentsUpload'
+import SearchInput from '@/components/common/SearchInput'
+
 import { mapActions } from 'vuex'
 import { mapGetters } from 'vuex'
 
@@ -133,6 +141,8 @@ export default {
       dialogVisible: false,
       dialogPatentVisible: false,
       noticeType: '',
+      searchValue: '',
+      searchValue2: '',
       loading: false,
       isNotice: false,
       tableDatas: [],
@@ -196,6 +206,13 @@ export default {
       'title',
       'detailId',
     ]),
+    detailNoticesSearch () {
+      if(this.searchValue === '') {
+        return this.detailNotices; 
+      }else {
+        return this.search(this.searchValue);
+      }
+    },
     notice_upload_url () {
       this.noticeType = this.type;
       this.noticeType += '_notice';
@@ -233,7 +250,7 @@ export default {
     },
   },
   created(){
-
+    
   },
   methods: {
     ...mapActions([
@@ -348,6 +365,19 @@ export default {
       this.loading = true;
       this.$axiosPost({url, data, success,complete});
     },
+    search (keyword) {
+      let newArr = [];
+      if(keyword){
+        this.detailNotices.filter((val,i,arr)=>{
+          for (let k in arr[i]) {
+            if(typeof arr[i][k] == 'string' && arr[i][k].indexOf(keyword) != -1 && k == 'notice_name') {
+              newArr.push(arr[i]);
+            }
+          }
+        })
+        return newArr;
+      }
+    },
     clearAll () {
        this.tableData3 = [];
        this.$refs['patentForm'].resetFields();
@@ -370,6 +400,7 @@ export default {
     AppTable,
     Documents,
     DocumentsUpload,
+    SearchInput,
   }
 }
 </script>

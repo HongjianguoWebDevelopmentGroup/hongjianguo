@@ -48,19 +48,19 @@ export default {
 				'columns': [
 					{ type: 'selection' },
 					// { type: 'text', label: '通知书案件名称', prop: 'title', width: '200', is_import: true },
-					{ type: 'text', label: '案号', prop: 'serial', width: '200' },
-					{ type: 'text', label: '事务所案号', prop: 'agency_serial', width: '200', is_import: true},
+					{ type: 'text', label: '案号', prop: 'serial', width: '160' },
+					{ type: 'text', label: '事务所案号', prop: 'agency_serial', width: '135', is_import: true},
+					{ type: 'text', label: '通知书名称', prop: 'code', render_simple: 'name', width: '150', is_import: true },
 					{ type: 'text', label: '案件名称', prop: 'title', width: '200', is_import: true },
-					{ type: 'text', label: '申请号', prop: 'apn', width: '200', is_import: true },
-					{ type: 'text', label: '通知书名称', prop: 'code', render_simple: 'name', width: '200', is_import: true },
-					{ type: 'text', label: '发文日', prop: 'mail_date', width: '200', is_import: true },
-					{ type: 'text', label: '发文序列号', prop: 'notice_serial', width: '200', is_import: true },
-					{ type: 'text', label: '官方绝限', prop: 'deadline', width: '200' },
-					{ type: 'text', label: '申请日', prop: 'apd', width: '200', is_import: true },
-					{ type: 'text', label: '上传日', prop: 'create_time', width: '200' },
-					{ type: 'text', label: '上传用户', prop: 'uploader', render_simple: 'name', width: '200' },
-					{ type: 'text', label: '审查员', prop: 'examiner', width: '200' },
-					{ type: 'text', label: '审查部门', prop: 'examiner_dept', width: '200' },
+					{ type: 'text', label: '申请号', prop: 'apn', width: '130', is_import: true },
+					{ type: 'text', label: '发文日', prop: 'mail_date', width: '110', is_import: true },
+					// { type: 'text', label: '发文序列号', prop: 'notice_serial', width: '110', is_import: true },
+					{ type: 'text', label: '官方绝限', prop: 'deadline', width: '110' },
+					{ type: 'text', label: '申请日', prop: 'apd', width: '110', is_import: true },
+					{ type: 'text', label: '上传日', prop: 'create_time', width: '110' },
+					{ type: 'text', label: '上传用户', prop: 'uploader', render_simple: 'name', width: '110' },
+					// { type: 'text', label: '审查员', prop: 'examiner', width: '200' },
+					// { type: 'text', label: '审查部门', prop: 'examiner_dept', width: '200' },
 					// { type: 'text', label: '处理状态', prop: 'status', width: '200' },
 					// { type: 'text', label: '备注', prop: 'remark', width: '200' },
 					{ 
@@ -90,6 +90,10 @@ export default {
 	  }
 	},
 	computed: {
+		defaultParams () {
+			const params = this.$route.meta.params;
+			return params ? params : {};
+		},
 		type () {
 			let type = this.$route.meta.type;
 
@@ -109,7 +113,7 @@ export default {
 		},
 		refreshTableData (option) {
 			const url = this.config.URL;
-			const data = option;
+			const data = Object.assign({}, option, this.defaultParams);
 			const success = _=>{
 				if(option.format == 'excel') {
 

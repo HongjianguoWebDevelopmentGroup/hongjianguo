@@ -169,8 +169,10 @@ export default {
       'userrole',
     ]),
     extensionSet () {
-      const area = this.type == 'add' ? this.form.area.join(',') : this.form.area;
+      let area = this.form.area;
       const type = this.form.type;
+      if(!area || !type) return [];
+      area = typeof area == 'string' ? area : area.join(',');
       const arr = [];
       extensionHash.forEach(d=>{
         const areaReg = new RegExp(d.area);
@@ -211,6 +213,7 @@ export default {
     },
     //setForm 的Type用于区分正常填充 或者 是文件解析后的填充
     setForm (form, upload=false, disclosureType='') {
+      const t = this.type;
       this.$tool.coverObj(this.form, form, {
         obj: [ 'attachments', 'area', 'type', 'ipr', 'case_level', 'legal_status','group_number', 'family_number','agency_type'], 
         skip:[ 'extension', 'title' ],
@@ -219,7 +222,12 @@ export default {
       if(form['title'] != undefined && !this.titleLock) {
         this.form.title = form['title'];
       }
-      
+      if(form['area'] != undefined && t == 'add') {
+        this.form.area = form['area']?[form['area']]:[];
+      }
+      if(form['area'] != undefined && t == 'edit') {
+        this.form.area = form['area'];
+      }
       if(form['extension']) {
         const arr = [];
         for(let d of form['extension']) {

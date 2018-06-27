@@ -150,7 +150,7 @@ const map = new Map([
     { components: 'date',          id: 'pay_time', name: '付款时间' },
 	]],
     ['patent_notice',[
-        { components: 'static_select', id: 'code', name: '通知书名称', type: 'file_type_patent_notice' },
+        { components: 'static_select', id: 'file_type_id', name: '通知书名称', type: 'file_type_patent_notice' },
         { components: 'remote_select', id: 'uploader', name: '上传用户', type: 'member' },
         { components: 'date',          id: 'create_time', name: '上传日', },
         { components: 'date',          id: 'apd', name: '申请日', },

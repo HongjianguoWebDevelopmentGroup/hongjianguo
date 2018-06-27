@@ -10,6 +10,7 @@ const TaskCommon               = () => import('@/components/page/TaskCommon')
 const TaskExpiring             = () => import('@/components/page/TaskExpiring')
 const TaskExpiringControl      = () => import('@/components/page/TaskExpiringControl')
 const PatentList               = () => import('@/components/page/PatentList')
+const PatentAward              = () => import('@/components/page/PatentAward')
 const ApplyingPatent           = () => import('@/components/page/ApplyingPatent')
 const PatentAdd                = () => import('@/components/page/PatentAdd')
 const NoticeCommon             = () => import('@/components/page/NoticeCommon')
@@ -374,6 +375,11 @@ const router = new Router({
       name: 'PattentList',
       component: PatentList
     },
+    {
+      path: '/patent/award',
+      name: 'PattentAward',
+      component: PatentAward
+    },
     { 
       path: '/patent/stage/application',
       name: 'PatentStageApplication',
@@ -538,11 +544,65 @@ const router = new Router({
       props: { pageType: 'add' },
     },
     {
-      path: '/news/patent_notice',
+      path: '/patent/notice',
       name: 'PatentNotice',
-      meta: { type: 'patent' },
       component: NoticeCommon,
+      meta: {
+        params: {  },
+        type: 'patent'
+      }
     },
+    {
+      path: '/patent/notice/thisweek',
+      name: 'PatentNoticeThisweek',
+      component: NoticeCommon,
+      meta: {
+        params: { create_time: 'thisweek' },
+        type: 'patent'
+      }
+    },
+    {
+      path: '/patent/notice/lastweek',
+      name: 'PatentNoticeLastWeek',
+      component: NoticeCommon,
+      meta: {
+        params: { create_time: 'lastweek' },
+        type: 'patent'
+      }
+    },
+    {
+      path: '/patent/notice/thismonth',
+      name: 'PatentNoticeThisMonth',
+      component: NoticeCommon,
+      meta: {
+        params: { create_time: 'thismonth' },
+        type: 'patent'
+      }
+    },
+    {
+      path: '/patent/notice/lastmonth',
+      name: 'PatentNoticeLastMonth',
+      component: NoticeCommon,
+      meta: {
+        params: { create_time: 'lastmonth' },
+        type: 'patent'
+      }
+    },
+    {
+      path: '/patent/notice/earlier',
+      name: 'PatentNoticeEarlier',
+      component: NoticeCommon,
+      meta: {
+        params: { create_time: 'earlier' },
+        type: 'patent'
+      }
+    },
+    // {
+    //   path: '/news/patent_notice',
+    //   name: 'PatentNotice',
+    //   meta: { type: 'patent' },
+    //   component: NoticeCommon,
+    // },
     {
       path: '/patent/custom/:id',
       name: 'PatentCustom',
