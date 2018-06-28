@@ -152,6 +152,7 @@ export default {
           { type: 'text', label: '代理人修改耗时', prop: 'amending_period', is_import: true, width: '160', show: false},
           { type: 'text', label: '详细状态', prop: 'flownode', sortable: true, width: '180', is_agency: true, render_simple: 'name'},
           { type: 'text', label: '备注', prop: 'remark', sortable: true, width: '123' },
+          { type: 'array', label: '项目/奖项名称', prop: 'awards',  render: _=>{ return _.map(_=>_.name);}, width: '200'},
           // {
           //   type: 'action',
           //   width: '145',

@@ -107,7 +107,7 @@ const patentMenu = [
 	},
 	{ 
 		type: 'submenu', 
-		text: '专利（按阶段）', 
+		text: '专利（按法律状态）', 
 		path: '/patent/stage',
 		icon: 'iconfont el-icon-my-patent',
 		children: [

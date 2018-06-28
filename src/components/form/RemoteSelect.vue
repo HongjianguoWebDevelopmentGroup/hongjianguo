@@ -112,6 +112,11 @@ const map = new Map([
     DATA_KEY: 'data',
     PLACEHOLDER: '请输入专利族号',
   }],
+  ['award', {
+    URL: '/api/award',
+    DATA_KEY: 'awards',
+    PLACEHOLDER: '请输入奖项名称',
+  }],
 ]);
 
 export default {

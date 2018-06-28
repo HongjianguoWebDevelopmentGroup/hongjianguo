@@ -378,7 +378,10 @@ const router = new Router({
     {
       path: '/patent/award',
       name: 'PattentAward',
-      component: PatentAward
+      component: PatentList,
+      meta: {
+        params: { awards: 1 },
+      }
     },
     { 
       path: '/patent/stage/application',

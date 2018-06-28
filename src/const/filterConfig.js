@@ -32,11 +32,11 @@ const map = new Map([
     { components: 'static_select', id: 'type',                          name: '专利类型', type: 'patent_type'},
     { components: 'static_select', id: 'area',                          name: '申请地区', type: 'area'},
     { components: 'input',         id: 'title',                         name: '标题'},
-    { components: 'date',          id: 'create_time',                   name: '创建时间'},
+    { components: 'date',          id: 'create_time',                   name: '立案时间'},
     { components: 'input',         id: 'abstract',                      name: '摘要'},
     { components: 'date',          id: 'public_date',                   name: '公开日'},
     { components: 'input',         id: 'public_number',                 name: '公开号'},
-    { components: 'static_select', id: 'progress',                      name: '当前状态', type: 'progress'},
+    { components: 'static_select', id: 'progress',                      name: '详细状态', type: 'progress'},
     { components: 'remote_select', id: 'inventors',                     name: '发明人', type: 'inventor'},
     { components: 'static_select', id: 'tags',                          name: '标签', type: 'tag'},
     { components: 'static_select', id: 'branch',                        name: '部门', type: 'branch'},
@@ -45,7 +45,7 @@ const map = new Map([
     { components: 'static_select', id: 'ipr',                           name: '负责IPR', type: 'ipr'},
     { components: 'remote_select', id: 'proposer',                      name: '提案人', type: 'member'},
     { components: 'input',         id: 'priorities',                    name: '优先权'},
-    { components: 'patent',        id: 'relates',             name: '相关专利'},
+    { components: 'patent',        id: 'relates',                       name: '相关专利'},
     { components: 'static_select', id: 'is_support',                    name: '是否已申请资助', type: 'bool', multiple: false}, //是否已申请资助
     { components: 'remote_select', id: 'agency',                        name: '代理机构', type: 'agency'}, //代理机构
     { components: 'remote_select', id: 'agent',                         name: '代理人', type: 'agent'}, //代理人
@@ -70,8 +70,8 @@ const map = new Map([
     { components: 'static_select', id: 'is_priority',                   name: '是否要求优先权', type: 'bool', multiple: false},
     { components: 'static_select', id: 'is_secure_check',               name: '是否保密审查', type: 'bool', multiple: false},
     { components: 'static_select', id: 'is_sequence',                   name: '是否有序列表', type: 'bool', multiple: false},
-    { components: 'static_select', id: 'is_utility',                    name: '是否同日申请了同样的实用新型/发明', type: 'bool', multiple: false},
-    { components: 'input',         id: 'words',                         name: '说明书字数'},
+    { components: 'static_select', id: 'is_utility',                    name: '是否同实用新型/发明', type: 'bool', multiple: false},
+    // { components: 'input',         id: 'words',                         name: '说明书字数'},
     // { components: 'date',          id: 'first_edition_to_inventstring', name: '返发明人初稿时间', date: true }, //返发明人初稿时间
     // { components: 'date',          id: 'inventor_review_time',          name: '发明人完成技术审核时间', date: true },//发明人完成技术审核时间
     // { components: 'date',          id: 'inventor_review_times',         name: '发明人审核次数'},//发明人审核次数
@@ -90,23 +90,24 @@ const map = new Map([
     // { components: 'input',         id: 'extends1',                      name: '自定义字段1'},//自定义字段1
     // { components: 'input',         id: 'extends2',                      name: '自定义字段2'},//自定义字段2
     // { components: 'input',         id: 'extends3',                      name: '自定义字段3'},//自定义字段3
-    { components: 'static_select', id: 'manner',                        name: '申请方式', type: 'manner' },
-    { components: 'static_select', id: 'application_strategy',          name: '申请策略', type: 'strategy'},//申请类型
-    { components: 'static_select', id: 'subexam_timing',                name: '实审时机', type: 'timing'},//实审时间
-    { components: 'input',         id: 'core_concepts',                 name: '关键保护点'},//新申请申请策略
-    { components: 'input',         id: 'decision_reason',               name: '决定原因'},//决定原因
-    { components: 'input',         id: 'innovation_introduction',       name: '创新点简述'},//创新点简述
-    { components: 'static_select', id: 'importance',                    name: '重要性', type: 'patent_importance'},//重要性
-    { components: 'static_select', id: 'avoidability',                  name: '可回避性', type: 'patent_avoidability'},//可回避性
-    { components: 'static_select', id: 'evidence_discovery',            name: '举证难易度', type: 'patent_evidence'},//举证难易度
-    { components: 'static_select', id: 'profitability',                 name: '利润贡献度', type: 'patent_profitability'},//利润贡献度
-    { components: 'static_select', id: 'marketing_value',               name: '推广价值', type: 'patent_marketing'},//推广价值
-    { components: 'static_select', id: 'selling_point',                 name: '卖点相关性', type: 'patent_selling'},//卖点相关性
-    { components: 'input',         id: 'selling_point_technique',       name: '卖点相关技术'},//卖点相关技术
-    { components: 'input',         id: 'competitor_usage',              name: '竞争对手使用'},//竞争对手使用
-    { components: 'input',         id: 'project_name',                  name: '研发项目名称'},//研发项目名称
-    { components: 'input',         id: 'project_serial',                name: '研发项目编号'},//研发项目编号
+    // { components: 'static_select', id: 'manner',                        name: '申请方式', type: 'manner' },
+    // { components: 'static_select', id: 'application_strategy',          name: '申请策略', type: 'strategy'},//申请类型
+    // { components: 'static_select', id: 'subexam_timing',                name: '实审时机', type: 'timing'},//实审时间
+    // { components: 'input',         id: 'core_concepts',                 name: '关键保护点'},//新申请申请策略
+    // { components: 'input',         id: 'decision_reason',               name: '决定原因'},//决定原因
+    // { components: 'input',         id: 'innovation_introduction',       name: '创新点简述'},//创新点简述
+    // { components: 'static_select', id: 'importance',                    name: '重要性', type: 'patent_importance'},//重要性
+    // { components: 'static_select', id: 'avoidability',                  name: '可回避性', type: 'patent_avoidability'},//可回避性
+    // { components: 'static_select', id: 'evidence_discovery',            name: '举证难易度', type: 'patent_evidence'},//举证难易度
+    // { components: 'static_select', id: 'profitability',                 name: '利润贡献度', type: 'patent_profitability'},//利润贡献度
+    // { components: 'static_select', id: 'marketing_value',               name: '推广价值', type: 'patent_marketing'},//推广价值
+    // { components: 'static_select', id: 'selling_point',                 name: '卖点相关性', type: 'patent_selling'},//卖点相关性
+    // { components: 'input',         id: 'selling_point_technique',       name: '卖点相关技术'},//卖点相关技术
+    // { components: 'input',         id: 'competitor_usage',              name: '竞争对手使用'},//竞争对手使用
+    { components: 'input',         id: 'project_name',                  name: '项目名称'},//研发项目名称
+    { components: 'input',         id: 'project_serial',                name: '项目编号'},//研发项目编号
     { components: 'input',         id: 'remark',                        name: '备注'},
+    { components: 'remote_select', id: 'awards',                        name: '专利奖', type: 'award'},
 	]],
 	['trademark', [
 		{ components: 'static_select', id: 'type', name: '商标类型', type: "trademark_type" },
