@@ -87,6 +87,7 @@ export default {
   methods: {
     ...mapActions([
       'refreshClassification',
+      'refreshProduct',
     ]),
   	renderContent (h, {node, data}) {
       // console.log(data);
@@ -123,10 +124,16 @@ export default {
   		const url = this.url;
   		const data = Object.assign({}, this.pop_form, {parent: this.add_id});
   		const success = _=>{
-        if(_){
+        if(this.pageType == 'classification'){
+
          this.aId = _.classification.id;
          this.form.name = _.classification.name;
          this.form.description = _.classification.description;
+        }
+        if(this.pageType == 'product'){
+          this.aId = _.product.id;
+          this.form.name = _.product.name;
+          this.form.description = _.product.description;
         }
   			this.$message({message: '新建成功', type: 'success'});
         this.dialogVisible = false;
@@ -139,7 +146,12 @@ export default {
   		const url = `${this.url}/${this.currentNodeKey}`;
   		const data = this.form;
   		const success = _=>{
-        this.aId = _.classification.id;
+        if(this.pageType == 'classification'){
+          this.aId = _.classification.id;
+        }
+        if(this.pageType == 'product'){
+           this.aId = _.product.id;
+        }
   			this.$message({message: '保存成功', type: 'success'});
         this.dialogVisible = false;
   			this.refresh();
@@ -185,7 +197,21 @@ export default {
           }
         });
   		}else {
-  			this.$store.dispatch('refreshProduct');
+  			this.refreshProduct({
+          success: _=>{
+            this.$nextTick(_=>{
+            if(this.aId) {
+              const key = this.aId;
+              this.defaultKeys.splice(0,1,key);
+              // this.currentNode = this.branchMap.get(key);
+              this.currentNodeKey = key;
+              }else{
+                // this.currentNode = '';
+                this.defaultKeys = [];
+              }
+            })
+          }
+        })
   		}
   	}
   },
