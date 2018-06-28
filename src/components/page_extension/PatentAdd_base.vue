@@ -69,6 +69,10 @@
       <el-form-item label="发明人" prop="inventors">
         <inventors v-model="form.inventors" ref="inventors" @addInventor="$refs.form.validateField('inventors')" @deleteInventor="$refs.form.validateField('inventors')"></inventors>
       </el-form-item>
+
+      <el-form-item label="送件发明人">
+        <remote-select type="inventor" v-model="form.alias_inventors" multiple></remote-select>
+      </el-form-item>
       <el-form-item label="优先权">
         <priorities v-model="form.priorities"></priorities>
       </el-form-item>
@@ -136,6 +140,7 @@ export default {
         level: '',
         applicants: [],
         inventors: [],
+        alias_inventors: [],
         priorities: [],
         extension: [], 
         attachments: [],
