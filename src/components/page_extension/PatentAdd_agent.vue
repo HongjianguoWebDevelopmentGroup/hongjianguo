@@ -24,6 +24,7 @@
           ></el-rate> -->
             <el-slider 
               v-model="form.tech_rank"
+              disabled
               show-input
             ></el-slider>
         </el-form-item>
@@ -37,6 +38,7 @@
           ></el-rate> -->
             <el-slider 
               v-model="form.draft_rank"
+              disabled
               show-input
             ></el-slider>
         </el-form-item>
@@ -51,6 +53,7 @@
             <el-slider 
               v-model="form.service_rank"
               show-input
+              disabled
             ></el-slider>
         </el-form-item>
         <el-form-item prop="negative_flag" label="特别评价">

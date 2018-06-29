@@ -12,9 +12,13 @@
         type="patent" 
         :id="currentRow.id" 
         ref="detail"
-        @editSuccess="refresh">
+        @editSuccess="refresh"
+         @sendEmail="handleSendMail">
       </common-detail>
     
+    <app-shrink :visible.sync="mailVisible" :modal="true" :modal-click="false" :is-close="false" title="发送邮件">
+      <mail-edit style="margin-top: 10px; " ref="mailEdit" @sendSuccess="mailCallBack" @cancelSending="mailCallBack"></mail-edit>
+    </app-shrink> 
 
     <el-dialog title="批量下载" :visible.sync="downloadVisible">
       <el-form>
@@ -37,7 +41,8 @@ import AppDatePicker from '@/components/common/AppDatePicker'
 import AppShrink from '@/components/common/AppShrink'
 import CommonDetail from '@/components/page_extension/Common_detail'
 import StaticSelect from '@/components/form/StaticSelect'
-import { mapGetters } from 'vuex'
+import MailEdit from '@/components/common/MailEditForm'
+import { mapGetters,mapActions } from 'vuex'
 
 const URL = '/patents';
 const PATENT_TYPE = ['发明专利', '实用新型', '外观设计']; 
@@ -55,6 +60,7 @@ export default {
       downloadIds: [],
       downloadFileType: [],
       downloadLoading: false,
+      mailVisible: false,
       
       tableOption: {
         'name': 'patentList',
@@ -95,7 +101,8 @@ export default {
           // { type: 'array', label: '提案标题', prop: 'proposals', width: '200', render: _=>_.map(_=>_.title),},
           { type: 'text', label: '产品相关', prop: 'product_relevance', render_simple:'name', width: '115', sortable: true},
           { type: 'text', label: '提案人', prop: 'proposer', sortable: true, width: '100', is_import: true, is_agency: true, render_simple: 'name',},
-          { type: 'array', label: '发明人', width: '238', prop: 'inventors', is_import: true, is_agency: true, render: _=>_.map(_=>`${_.name}:${_.share}%`),},
+          { type: 'array', label: '发明人', width: '238', prop: 'inventors', is_import: true, is_agency: true, render: _=>_.map(_=>`${_.name}:${_.share}%`),},          
+          { type: 'array', label: '送件发明人', width: '238', prop: 'alias_inventors', is_import: true, is_agency: true, render: _=>_.map(_=>_.name),},
           { type: 'text', label: '代理机构', width: '130', prop: 'agency', render_simple: 'name', is_import: true},
           { type: 'text', label: '代理人', width: '90', prop: 'agent', render_simple: 'name', is_import: true},
           { type: 'text', label: '技术理解评分', prop: 'tech_rank', is_import: true,  width: '130', show: true},
@@ -183,6 +190,19 @@ export default {
     }
   },
   methods: {
+    ...mapActions([
+      'refreDetailData',
+    ]),
+    handleSendMail (id) {
+      this.mailVisible = true;
+      this.$nextTick(() => {
+        this.$refs.mailEdit.initForm(id);
+      });
+    },
+    mailCallBack() {
+      this.mailVisible = false;
+      this.refreDetailData();
+    },    
     add () {
       const s = this.$refs.table.getSelection();
       if (s.length != 0) {
@@ -319,6 +339,7 @@ export default {
     AppShrink, 
     CommonDetail,
     StaticSelect,
+    MailEdit,
   },
 }
 </script>

@@ -33,6 +33,8 @@ export default {
 		  		{ type: 'text', label: '发明人姓名', prop: 'name', sortable: true, width: '150' },
 		  		{ type: 'text', label: '证件号码', prop: 'identity', sortable: true, width: '240' },
 		  		{ type: 'text', label: '地区', prop: 'citizenship', sortable: true, width: '145' },
+          { type: 'text', label: '部门全名', prop: 'branch', sortable: true, render:  (h,item)=>h('span', item.name), width: '178' },
+          { type: 'text', label: '部门简称', prop: 'abbr', sortable: true, render_simple: 'abbr', width:'123'},
 		  		{ type: 'text', label: '手机', prop: 'mobile', sortable: true, width: '175' },
 		  		{ type: 'text', label: '邮箱', prop: 'email', sortable: true, min_width: '200' },
 		  		{ type: 'text', label: '不公开姓名', prop: 'not_disclose_name', render: (h,item)=>h('span',item ? '不公开' : '公开'), sortable: true, width: '200' },
