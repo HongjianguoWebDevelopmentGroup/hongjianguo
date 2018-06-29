@@ -101,7 +101,7 @@
       <upload v-model="form.attachments" :file-list="attachments"> 
       </upload>
     </el-form-item>
-    <ul v-if="description&&description.length != 0" style="margin-left:115px;padding: 0;margin-top:-10px; font-size:14px;color:#bbb;">
+    <ul v-if="!hide_r_a && fields.attachments && description&&description.length != 0" style="margin-left:115px;padding: 0;margin-top:-10px; font-size:14px;color:#bbb;">
       <li v-for="(item, index) in description" :key="index">{{ item }}</li>
     </ul>    
     <div v-if="data.inventor_tips" style="margin-left:100px;padding: 0;margin-bottom: 20px; font-size:14px;color:#bbb;">
@@ -334,7 +334,6 @@ export default {
     proposalFinish ({remark, attachments}) {
       this.form.remark = remark;
       this.form.attachments = attachments.map(_=>_.id);
-
       this.hide_r_a = true;
     }
 	},
@@ -380,7 +379,7 @@ export default {
 
               //附件同步
               const atta = d.attachments; 
-              if(this.attachments && atta ) {
+              if(!hide_r_a && this.attachments && atta ) {
                 this.form.attachments = atta.map(_=>_.id);
                 this.attachments = atta;
               }

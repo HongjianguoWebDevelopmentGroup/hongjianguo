@@ -5,7 +5,7 @@
 		<table-component :tableOption="tableOption" :data="tableData" ref="table" :refreshTableData="refreshTableData" :refresh-proxy="refreshProxy">
       <el-button v-if="menusMap && !menusMap.get('/proposals/proposer')" type="primary" icon="d-arrow-right" @click="transferPop" slot="transfer" style="margin-left: 5px;">移交</el-button>
       
-      <template slot="action" slot-scope="scope">
+      <template slot="row_action" slot-scope="scope">
         <el-button type="text" icon="edit" size="mini" @click="edit(scope.row)" :disabled="scope.row.status ? true : false" >编辑</el-button>
       </template>
     </table-component>
@@ -189,7 +189,7 @@ export default {
           {
             type: 'action',
             label: '操作', 
-            btns_render: 'action',
+            btns_render: 'row_action',
             width: '160',
           },
         ]

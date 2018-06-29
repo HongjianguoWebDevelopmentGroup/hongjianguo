@@ -84,7 +84,7 @@ const router = new Router({
     { path: '/copyright', redirect: '/copyright/list' },
     { path: '/news', redirect: '/news/mailList' },
     { path: '/dispatch', redirect: '/dispatch/administration' },
-    { path: '/fee_menu', redirect: '/fee_menu/fee_pay/pay' },
+    { path: '/fee', redirect: '/fee/bonus/all' },
     { path: '/setting', redirect: '/setting/individual' },
     { path: '/renewal', redirect: '/renewal/fee' },
     { path: '/report', redirect: '/report/task' },
@@ -384,11 +384,51 @@ const router = new Router({
       }
     },
     { 
-      path: '/patent/stage/application',
-      name: 'PatentStageApplication',
+      path: '/patent/stage/new',
+      name: 'PatentStageNew',
       component: PatentList,
       meta: {
         params: { stage: 1 },
+      }
+    },
+    { 
+      path: '/patent/stage/receipt',
+      name: 'PatentStageReceipt',
+      component: PatentList,
+      meta: {
+        params: { stage: 2 },
+      }
+    },
+    { 
+      path: '/patent/stage/pre_exam_ok',
+      name: 'PatentStagePreExamOk',
+      component: PatentList,
+      meta: {
+        params: { stage: 3 },
+      }
+    },
+    { 
+      path: '/patent/stage/public',
+      name: 'PatentStagePublic',
+      component: PatentList,
+      meta: {
+        params: { stage: 4 },
+      }
+    },
+    { 
+      path: '/patent/stage/subexam',
+      name: 'PatentStageSubexam',
+      component: PatentList,
+      meta: {
+        params: { stage: 5 },
+      }
+    },
+    { 
+      path: '/patent/stage/amendment',
+      name: 'PatentStageAmendment',
+      component: PatentList,
+      meta: {
+        params: { stage: 6 },
       }
     },
     { 
@@ -396,55 +436,95 @@ const router = new Router({
       name: 'PatentStageOa',
       component: PatentList,
       meta: {
-        params: { stage: 2 },
-      }
-    },
-    { 
-      path: '/patent/stage/review',
-      name: 'PatentStageReview',
-      component: PatentList,
-      meta: {
-        params: { stage: 3 },
-      }
-    },
-    { 
-      path: '/patent/stage/authorization',
-      name: 'PatentStageAuthorization',
-      component: PatentList,
-      meta: {
-        params: { stage: 4 },
-      }
-    },
-    { 
-      path: '/patent/stage/invalid',
-      name: 'PatentStageInvalidn',
-      component: PatentList,
-      meta: {
-        params: { stage: 5 },
-      }
-    },
-    { 
-      path: '/patent/stage/annualFee',
-      name: 'PatentStageAnnualFee',
-      component: PatentList,
-      meta: {
-        params: { stage: 6 },
-      }
-    },
-    { 
-      path: '/patent/stage/procedure',
-      name: 'PatentStageProcedure',
-      component: PatentList,
-      meta: {
         params: { stage: 7 },
       }
     },
     { 
-      path: '/patent/stage/failure',
-      name: 'PatentStageFailure',
+      path: '/patent/stage/reexam',
+      name: 'PatentStageReexam',
       component: PatentList,
       meta: {
         params: { stage: 8 },
+      }
+    },
+    { 
+      path: '/patent/stage/grant',
+      name: 'PatentStageGrant',
+      component: PatentList,
+      meta: {
+        params: { stage: 9 },
+      }
+    },
+    { 
+      path: '/patent/stage/valid',
+      name: 'PatentStageValid',
+      component: PatentList,
+      meta: {
+        params: { stage: 10 },
+      }
+    },
+    { 
+      path: '/patent/stage/expired',
+      name: 'PatentStageExpired',
+      component: PatentList,
+      meta: {
+        params: { stage: 11 },
+      }
+    },
+    { 
+      path: '/patent/stage/rejected',
+      name: 'PatentStageRejected',
+      component: PatentList,
+      meta: {
+        params: { stage: 12 },
+      }
+    },
+    { 
+      path: '/patent/stage/invalid',
+      name: 'PatentStageInvalid',
+      component: PatentList,
+      meta: {
+        params: { stage: 15 },
+      }
+    },
+    { 
+      path: '/patent/stage/closed',
+      name: 'PatentStageClosed',
+      component: PatentList,
+      meta: {
+        params: { stage: 19 },
+      }
+    },
+    { 
+      path: '/patent/stage/pct_search',
+      name: 'PatentStagePctSearch',
+      component: PatentList,
+      meta: {
+        params: { stage: 20 },
+      }
+    },
+    { 
+      path: '/patent/stage/pct_national',
+      name: 'PatentStagePctNational',
+      component: PatentList,
+      meta: {
+        params: { stage: 21 },
+      }
+    },
+    { 
+      path: '/patent/stage/pct_public',
+      name: 'PatentStagePctPublic',
+      component: PatentList,
+      meta: {
+        params: { stage: 22 },
+      }
+    },
+    { 
+      path: '/patent/stage/other',
+      name: 'PatentStageOther',
+      component: PatentList,
+      meta: {
+        params: { stage: 0 },
       }
     },
     {
@@ -702,6 +782,83 @@ const router = new Router({
 //################### 版权路由 end #####################
 //################### 费用路由 begin ###################
     {
+      path: '/fee/bonus/all',
+      name: 'FeeCommonNP',
+      component: FeeCommon,
+      props: {
+        debit: 0,
+        defaultParams: {
+          bonus: 1
+        }
+      }
+    },
+    {
+      path: '/fee/bonus/application',
+      name: 'FeeCommonApplication',
+      component: FeeCommon,
+      props: {
+        debit: 0,
+        defaultParams: {
+          bonus: 'application'
+        }
+      }
+    },
+    {
+      path: '/fee/bonus/grant',
+      name: 'FeeCommonGrant',
+      component: FeeCommon,
+      props: {
+        debit: 0,
+        defaultParams: {
+          bonus: 'grant'
+        }
+      }
+    },
+    {
+      path: '/fee/bonus/license',
+      name: 'FeeCommonLicense',
+      component: FeeCommon,
+      props: {
+        debit: 0,
+        defaultParams: {
+          bonus: 'license'
+        }
+      }
+    },
+    {
+      path: '/fee/bonus/year',
+      name: 'FeeCommonYear',
+      component: FeeCommon,
+      props: {
+        debit: 0,
+        defaultParams: {
+          bonus: 'year'
+        }
+      }
+    },
+    {
+      path: '/fee/bonus/special',
+      name: 'FeeCommonSpecial',
+      component: FeeCommon,
+      props: {
+        debit: 0,
+        defaultParams: {
+          bonus: 'specical'
+        }
+      }
+    },
+    {
+      path: '/fee/bonus/utility',
+      name: 'FeeCommonUtility',
+      component: FeeCommon,
+      props: {
+        debit: 0,
+        defaultParams: {
+          bonus: 'utility'
+        }
+      }
+    },
+    {
       path: '/fee/huangpu/patent',
       name: 'FeeCommonNP',
       component: FeeCommon,
@@ -774,7 +931,7 @@ const router = new Router({
       }
     },
     {
-      path: '/fee/account/check',
+      path: '/fee/invoice/to_be_reviewed',
       name: 'InvoiceCommonAC',
       component: InvoiceCommon,
       props: {
@@ -785,7 +942,7 @@ const router = new Router({
       }
     },
     {
-      path: '/fee/account/upload',
+      path: '/fee/invoice/voucher_upload',
       name: 'InvoiceCommonAU',
       component: InvoiceCommon,
       props: {
@@ -796,7 +953,7 @@ const router = new Router({
       }
     },
     {
-      path: '/fee/account/pay',
+      path: '/fee/invoice/paying',
       name: 'InvoiceCommonAP',
       component: InvoiceCommon,
       props: {
@@ -818,7 +975,7 @@ const router = new Router({
       }
     },
     {
-      path: '/fee/account/refuse',
+      path: '/fee/invoice/rejected',
       name: 'InvoiceCommonAR',
       component: InvoiceCommon,
       props: {
@@ -849,7 +1006,7 @@ const router = new Router({
       }
     },
     {
-      path: '/fee/renewal/refuse',
+      path: '/fee/renewal/withdrawn',
       name: 'RenewalFeeRR',
       component: RenewalFee,
       props: {
@@ -987,7 +1144,7 @@ const router = new Router({
       component: Branch,
     },
     {
-      path: '/fee_menu/fee_in/income',
+      path: '/fee/fee_in/income',
       name: 'FeeIncome',
       component: FeeCommon,
     },
@@ -997,27 +1154,27 @@ const router = new Router({
       component: DispatchAdministration,
     },
     {
-      path: '/fee_menu/fee_pay/pay',
+      path: '/fee/fee_pay/pay',
       name: 'FeePay',
       component: FeeCommon,
     },
     {
-      path: '/fee_menu/fee_in/bill',
+      path: '/fee/fee_in/bill',
       name: 'FeeBill',
       component: InvoiceCommon,
     },
     {
-      path: '/fee_menu/fee_pay/payment',
+      path: '/fee/fee_pay/payment',
       name: 'FeePayment',
       component: InvoiceCommon
     },
     {
-      path: '/fee_menu/renewal/fee',
+      path: '/fee/renewal/fee',
       name: 'RenewalFee',
       component: RenewalFee,
     },
     {
-      path: '/fee_menu/renewal/estimate',
+      path: '/fee/renewal/estimate',
       name: 'RenewalEstimate',
       component: RenewalEstimate,
     },
