@@ -179,8 +179,8 @@ export default {
           // //这里调用为提案编写的任务完成接口，主要目的是填充当前备注与附件
           const remark = this.formData.remark;
           const attachments = this.$refs.upload.getFileList();
-          // console.log(remark, attachments);
           this.$nextTick(_=>{
+          // console.log(remark, attachments);
             this.$refs.task.proposalFinish({remark, attachments});  
           });
 

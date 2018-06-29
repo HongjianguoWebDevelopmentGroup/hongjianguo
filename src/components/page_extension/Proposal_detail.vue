@@ -10,7 +10,7 @@
           </el-col>
           <el-col :span="12">
             <el-form-item label="产品名称"><span class="form-item-text">{{ row.products.map(_=>_.name).join(';') }}</span></el-form-item>
-            <el-form-item label="标签"><span class="form-item-text">{{ row.tags.join(';') }}</span></el-form-item>
+            <el-form-item label="标签"><span class="form-item-text">{{ row.tags.map(_=>_.name).join(';') }}</span></el-form-item>
             <el-form-item label="更新时间"><span class="form-item-text">{{ row.update_time }}</span></el-form-item>
           </el-col>
         </el-row>
@@ -44,7 +44,7 @@
 			  	:status="item.status ? 'success' : 'finish'"
 			  	:icon="item.status ? '' : 'loading'"
 			  	:title="item.node_name"
-			  	:description="`承办人：${item.person_in_charge_name}；开始时间：${item.start_time}；完成时间：${item.end_time}；备注：${item.remark}`" 
+			  	:description="`流程节点：${item.flownode.name}；承办人：${item.person_in_charge.name}；开始时间：${item.start_time}；完成时间：${item.end_time}；备注：${item.remark}`" 
 			  ></el-step>
 			</el-steps>
 			</div>

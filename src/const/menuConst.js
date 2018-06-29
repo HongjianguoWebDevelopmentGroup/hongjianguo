@@ -95,7 +95,7 @@ const patentMenu = [
 	{ type: 'item', text: '获奖专利', path: '/patent/award', icon: 'iconfont el-icon-my-patent' },
 	{ 
 		type: 'submenu', 
-		text: '专利（按案件等级）', 
+		text: '专利（案件等级）', 
 		path: '/patent/level',
 		icon: 'iconfont el-icon-my-patent',
 		children: [
@@ -107,23 +107,33 @@ const patentMenu = [
 	},
 	{ 
 		type: 'submenu', 
-		text: '专利（按法律状态）', 
+		text: '专利（法律状态）', 
 		path: '/patent/stage',
 		icon: 'iconfont el-icon-my-patent',
 		children: [
-			{ type: 'item', text: '新申请', path: '/patent/stage/application', icon: '' },
-			{ type: 'item', text: 'OA', path: '/patent/stage/oa', icon: '' },
-			{ type: 'item', text: '复审', path: '/patent/stage/review', icon: '' },
-			{ type: 'item', text: '授权', path: '/patent/stage/authorization', icon: '' },
-			{ type: 'item', text: '无效', path: '/patent/stage/invalid', icon: '' },
-			{ type: 'item', text: '年费续展', path: '/patent/stage/annualFee', icon: '' },
-			{ type: 'item', text: '行政诉讼', path: '/patent/stage/procedure', icon: '' },
-			{ type: 'item', text: '失效', path: '/patent/stage/failure', icon: '' },
+			{ type: 'item', text: '新申请', path: '/patent/stage/new', icon: '' },
+			{ type: 'item', text: '受理', path: '/patent/stage/receipt', icon: '' },
+			{ type: 'item', text: '初审合格', path: '/patent/stage/pre_exam_ok', icon: '' },
+			{ type: 'item', text: '公布', path: '/patent/stage/public', icon: '' },
+			{ type: 'item', text: '实审', path: '/patent/stage/subexam', icon: '' },
+			{ type: 'item', text: '补正', path: '/patent/stage/amendment', icon: '' },
+			{ type: 'item', text: '审查意见', path: '/patent/stage/oa', icon: '' },
+			{ type: 'item', text: '复审', path: '/patent/stage/reexam', icon: '' },
+			{ type: 'item', text: '授权办登', path: '/patent/stage/grant', icon: '' },
+			{ type: 'item', text: '专利权有效', path: '/patent/stage/valid', icon: '' },
+			{ type: 'item', text: '专利权届满', path: '/patent/stage/expired', icon: '' },
+			{ type: 'item', text: '驳回', path: '/patent/stage/rejected', icon: '' },
+			{ type: 'item', text: '专利权无效', path: '/patent/stage/invalid', icon: '' },
+			{ type: 'item', text: '结案', path: '/patent/stage/closed', icon: '' },
+			{ type: 'item', text: '国际检索', path: '/patent/stage/pct_search', icon: '' },
+			{ type: 'item', text: '进入国家阶段', path: '/patent/stage/pct_national', icon: '' },
+			{ type: 'item', text: '国际公布', path: '/patent/stage/pct_public', icon: '' },
+			{ type: 'item', text: '其它', path: '/patent/stage/other', icon: '' },
 		]
 	},
 	{ 
 		type: 'submenu', 
-		text: '专利（按国家）', 
+		text: '专利（国家）', 
 		path: '/patent/area',
 		icon: 'iconfont el-icon-my-patent',
 		children: [
@@ -241,33 +251,48 @@ const feeMenu = [
 	// {	
 	// 	type: 'submenu',
 	// 	text: '应付',
-	// 	path: '/fee_menu/fee_pay',
+	// 	path: '/fee/fee_pay',
 	// 	icon: 'iconfont el-icon-my-receipt',
 	// 	children: [
-	// 		{ type: 'item', text: '应付明细', path: '/fee_menu/fee_pay/pay', icon: 'iconfont el-icon-my-receipt' },
-	// 		{ type: 'item', text: '账单', path: '/fee_menu/fee_pay/payment',icon: 'iconfont el-icon-my-pay' },
+	// 		{ type: 'item', text: '应付明细', path: '/fee/fee_pay/pay', icon: 'iconfont el-icon-my-receipt' },
+	// 		{ type: 'item', text: '账单', path: '/fee/fee_pay/payment',icon: 'iconfont el-icon-my-pay' },
 	// 	]
 	// },
 	// {
 	// 	type: 'submenu',
 	// 	text: '应收',
-	// 	path: '/fee_menu/fee_in',
+	// 	path: '/fee/fee_in',
 	// 	icon: 'iconfont el-icon-my-deal',
 	// 	children: [
-	// 		{ type: 'item', text: '政府资助', path: '/fee_menu/fee_in/income', icon: 'iconfont el-icon-my-deal' },
-	// 		{ type: 'item', text: '资助申请单', path: '/fee_menu/fee_in/bill', icon: 'iconfont el-icon-my-deal' },
+	// 		{ type: 'item', text: '政府资助', path: '/fee/fee_in/income', icon: 'iconfont el-icon-my-deal' },
+	// 		{ type: 'item', text: '资助申请单', path: '/fee/fee_in/bill', icon: 'iconfont el-icon-my-deal' },
 	// 	]
 	// },
 	// { 
 	// 	type: 'submenu',
 	// 	text: '年费',
-	// 	path: '/fee_menu/renewal',
+	// 	path: '/fee/renewal',
 	// 	icon: 'iconfont el-icon-my-renewal-fee',
 	// 	children: [
-	// 		{ type: 'item', text: '年费明细', path: '/fee_menu/renewal/fee', icon: 'iconfont el-icon-my-renewal-fee' },
-	// 		{ type: 'item', text: '年费评估单', path: '/fee_menu/renewal/estimate', icon: 'iconfont el-icon-my-renewal-estimate' },
+	// 		{ type: 'item', text: '年费明细', path: '/fee/renewal/fee', icon: 'iconfont el-icon-my-renewal-fee' },
+	// 		{ type: 'item', text: '年费评估单', path: '/fee/renewal/estimate', icon: 'iconfont el-icon-my-renewal-estimate' },
 	// 	]
 	// }
+	{	
+		type: 'submenu',
+		text: '发明人奖金',
+		path: '/fee/bonus',
+		icon: 'iconfont el-icon-my-receipt',
+		children: [
+			{ type: 'item', text: '所有', path: '/fee/bonus/all', icon: '' },
+			{ type: 'item', text: '申请奖', path: '/fee/bonus/application', icon: '' },
+			{ type: 'item', text: '授权奖', path: '/fee/bonus/grant', icon: '' },
+			{ type: 'item', text: '专利实施许可奖', path: '/fee/bonus/license', icon: '' },
+			{ type: 'item', text: '年度专利奖', path: '/fee/bonus/year', icon: '' },
+			{ type: 'item', text: '特别专利奖', path: '/fee/bonus/special', icon: '' },
+			{ type: 'item', text: '优秀实用新型', path: '/fee/bonus/utility', icon: '' },
+		]
+	},
 	{	
 		type: 'submenu',
 		text: '黄埔区资助',
@@ -275,8 +300,8 @@ const feeMenu = [
 		icon: 'iconfont el-icon-my-receipt',
 		children: [
 			{ type: 'item', text: '专利', path: '/fee/huangpu/patent', icon: '' },
-			{ type: 'item', text: '商标', path: '/fee/huangpu/trademark', icon: '' },
-			{ type: 'item', text: '著作权', path: '/fee/huangpu/copyright', icon: '' },
+			// { type: 'item', text: '商标', path: '/fee/huangpu/trademark', icon: '' },
+			// { type: 'item', text: '著作权', path: '/fee/huangpu/copyright', icon: '' },
 		]
 	},
 	{
@@ -286,21 +311,21 @@ const feeMenu = [
 		icon: 'iconfont el-icon-my-receipt',
 		children: [
 			{ type: 'item', text: '专利', path: '/fee/guangzhou/patent', icon: '' },
-			{ type: 'item', text: '商标', path: '/fee/guangzhou/trademark', icon: '' },
-			{ type: 'item', text: '著作权', path: '/fee/guangzhou/copyright', icon: '' },
+			// { type: 'item', text: '商标', path: '/fee/guangzhou/trademark', icon: '' },
+			// { type: 'item', text: '著作权', path: '/fee/guangzhou/copyright', icon: '' },
 		]
 	},
 	{
 		type: 'submenu',
 		text: '账单',
-		path: '/fee/account',
+		path: '/fee/invoice',
 		icon: 'iconfont el-icon-my-receipt',
 		children: [
-			{ type: 'item', text: '待审核', path: '/fee/account/check', icon: '' },
-			{ type: 'item', text: '待上传凭证', path: '/fee/account/upload', icon: '' },
-			{ type: 'item', text: '待付款', path: '/fee/account/pay', icon: '' },
+			{ type: 'item', text: '待审核', path: '/fee/invoice/to_be_reviewed', icon: '' },
+			{ type: 'item', text: '待上传凭证', path: '/fee/invoice/voucher_upload', icon: '' },
+			{ type: 'item', text: '待付款', path: '/fee/invoice/paying', icon: '' },
 			{ type: 'item', text: '已付款', path: '/fee/account/paid', icon: '' },
-			{ type: 'item', text: '已退回', path: '/fee/account/refuse', icon: '' },
+			{ type: 'item', text: '已退回', path: '/fee/invoice/rejected', icon: '' },
 		]
 	},
 	{
@@ -311,7 +336,7 @@ const feeMenu = [
 		children: [
 			{ type: 'item', text: '待缴纳', path: '/fee/renewal/pay' },
 			{ type: 'item', text: '已缴纳', path: '/fee/renewal/paid' },
-			{ type: 'item', text: '评估放弃', path: '/fee/renewal/refuse' },
+			{ type: 'item', text: '评估放弃', path: '/fee/renewal/withdrawn' },
 		]
 	},	
 ];
@@ -368,7 +393,7 @@ menu.source = [
 	{
 		text: '个人中心',
 		key: 'statistics',
-		path: '/statistics',
+		path: '/home',
 	},
 	{
 		text: '任务',
@@ -401,7 +426,7 @@ menu.source = [
 	{
 		text: '费用',
 		key: 'fee',
-		path: '/fee_menu',
+		path: '/fee',
 		icon: 'iconfont el-icon-my-fee',
 		menu: feeMenu,
 	},
@@ -501,7 +526,7 @@ export default menu;
 // menu.data = [
 // 	{
 // 		text: '个人中心',
-// 		path: '/statistics',
+// 		path: '/home',
 // 		icon: 'iconfont el-icon-my-statistics',
 // 		type: 'item'
 // 	},
@@ -598,7 +623,7 @@ export default menu;
 // 			},
 // 			// {
 // 			// 	text: '专利统计',
-// 			// 	path: '/patent/statistics',
+// 			// 	path: '/patent/home',
 // 			// 	icon: '',
 // 			// 	type: 'item',
 // 			// },

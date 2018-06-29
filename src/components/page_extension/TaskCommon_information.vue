@@ -29,7 +29,7 @@
           </el-col>
           <el-col :span="12">
             <el-form-item label="发明人"><span class="form-item-text">{{ row_p.inventors.length? row_p.inventors.map(_=>_.name).join(';') : ''}}</span></el-form-item>
-            <el-form-item label="标签"><span class="form-item-text">{{ row_p.tags.join(';') }}</span></el-form-item>
+            <el-form-item label="标签"><span class="form-item-text">{{ row_p.tags.map(_=>_.name).join(';') }}</span></el-form-item>
           </el-col>
         </el-row>
         <el-row>
