@@ -52,6 +52,7 @@ const SettingAgencyDetail      = () => import('@/components/page/SettingAgencyDe
 const SettingCase              = () => import('@/components/page/SettingCase')
 const SettingJurisdiction      = () => import('@/components/page/SettingJurisdiction')
 const SettingRule              = () => import('@/components/page/SettingRule')
+const SettingField             = () => import('@/components/page/FieldVisible')
 const SettingTemplate          = () => import('@/components/page/SettingTemplate')
 const SettingTemplateEdit      = () => import('@/components/page/SettingTemplateEdit')
 const OfferList                = () => import('@/components/page/OfferList')
@@ -122,8 +123,8 @@ const router = new Router({
       },
     },
     {
-      path: '/task/regardful',
-      name: 'TaskRegardful',
+      path: '/task/all',
+      name: 'Taskall',
       component: TaskCommon,
       meta: { 
         status: 0,
@@ -131,19 +132,19 @@ const router = new Router({
       },
     },
     {
-      path: '/task/pause',
+      path: '/task/paused',
       name: 'TaskPause',
       component: TaskCommon,
       meta: { status: -1 },
     },
     {
-      path: '/task/finish',
+      path: '/task/finished',
       name: 'TaskFinish',
       component: TaskCommon,
       meta: { status: 1 },
     },
     {
-      path: '/task/duration/expired',
+      path: '/task/duetime/expired',
       name: 'TaskDurationExpired',
       component: TaskCommon,
       meta: { 
@@ -152,7 +153,7 @@ const router = new Router({
       },
     },
     {
-      path: '/task/duration/week',
+      path: '/task/duetime/week',
       name: 'TaskDurationWeek',
       component: TaskCommon,
       meta: { 
@@ -161,7 +162,7 @@ const router = new Router({
       },
     },
     {
-      path: '/task/duration/nextWeek',
+      path: '/task/duetime/nextWeek',
       name: 'TaskDurationNextWeek',
       component: TaskCommon,
       meta: { 
@@ -170,7 +171,7 @@ const router = new Router({
       },
     },
     {
-      path: '/task/duration/month',
+      path: '/task/duetime/month',
       name: 'TaskDurationMonth',
       component: TaskCommon,
       meta: { 
@@ -179,7 +180,7 @@ const router = new Router({
       },
     },
     {
-      path: '/task/duration/nextMonth',
+      path: '/task/duetime/nextMonth',
       name: 'TaskDurationNextMonth',
       component: TaskCommon,
       meta: { 
@@ -188,7 +189,7 @@ const router = new Router({
       },
     },
     {
-      path: '/task/duration/later',
+      path: '/task/duetime/later',
       name: 'TaskDurationLater',
       component: TaskCommon,
       meta: { 
@@ -1216,6 +1217,7 @@ const router = new Router({
     { path: '/setting/individual', name: 'SettingIndividual', component: SettingIndividual },
     { path: '/setting/jurisdiction', name: 'SettingJurisdiction', component: SettingJurisdiction },
     { path: '/setting/rule', name: 'SettingRule', component: SettingRule },
+    { path: '/setting/field', name: 'SettingField', component: SettingField },
     { 
       path: '/setting/system',
       name: 'SettingSystem',
