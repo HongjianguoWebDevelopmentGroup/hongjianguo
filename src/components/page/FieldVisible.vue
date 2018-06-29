@@ -7,12 +7,14 @@
 			  :data="groupOptions"
 			  :props="defaultProps"
 			  highlight-current
+			   :default-checked-keys="[1]"
+			   node-key="id"
 			  @current-change="handleCurrentChange"
 			  ref="tree"
 			>
 			</el-tree>
 			<div class="filter-visible-body-right">
-				<static-select type="table_type" v-model="tableType"></static-select>
+				<static-select type="table_type" v-model="tableType" @change="refreshFields"></static-select>
 				<app-transfer-panel v-loading="listLoading" element-loading-text="加载中..." style="width: 100%; margin-top: 10px;" list-style="height: 400px;" :is-move="false" title="权限控制" placeholder="查询字段..." :data="fields" v-model="checkedFields"></app-transfer-panel>
 				<!-- <app-transfer style="margin-top: 10px;" ref="transfer" title1="有权限" title2="无权限" placeholder="查询字段..." v-model="transferValue"></app-transfer> -->
 				<div style="margin-top: 10px;" v-if="currentId != '' && tableType != ''">
@@ -41,8 +43,9 @@ export default {
 				label: 'name',
 				children: 'children',
 			},
-			tableType: '',		
+			tableType:  'patent',		
 			checkedFields: [],
+			fields: [],
 			cache: {},
 			listLoading: false,
 			currentId: '',
@@ -55,10 +58,10 @@ export default {
 			'groupLoading',
 			'usergroups',
 		]),
-		fields () {
-			const fields = map.get(this.tableType);
-			return fields ? fields : [];
-		},
+		// fields () {
+		// 	const fields = map.get(this.tableType);
+		// 	return fields ? fields : [];
+		// },
 		except: {
 			set (val) {
 				const map = new Map();
@@ -77,6 +80,14 @@ export default {
 			'refreshGroup',
 			'refreshUser',
 		]),
+		async refreshFields () {
+			const url = `${this.tableType}s/fields`;
+			const success = _=>{
+				this.fields = _.fields;
+			};
+			this.$axiosGet({url, success});
+
+		},
 		async handleCurrentChange (data) {
 			this.currentId = data['id'];
 			this.refreshExcept({group_id: data['id'], model: this.tableType});
@@ -132,7 +143,12 @@ export default {
 		},
 	},
 	created () {
+		this.refreshFields();
 		this.refreshGroup().then(() => {
+			if(this.groupOptions && this.groupOptions.length != 0){
+				console.log(this.groupOptions[0].id);
+				this.currentId = this.groupOptions[0].id;
+			}
 			this.groupOptions.forEach(v => {
 				this.cache[v.id] = {};
 			});
