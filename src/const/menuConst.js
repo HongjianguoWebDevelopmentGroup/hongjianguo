@@ -4,22 +4,22 @@ const menu = {};
 const map = {};
 const taskMenu = [
 	{ type: 'item', text: '我的待办', path: '/task/pending', icon: 'iconfont el-icon-my-task' },
-	{ type: 'item', text: '我的关注', path: '/task/regardful', icon: 'iconfont el-icon-my-task' },
-	{ type: 'item', text: '暂停处理', path: '/task/pause', icon: 'iconfont el-icon-my-task' },
-	{ type: 'item', text: '已完成', path: '/task/finish', icon: 'iconfont el-icon-my-task' },
+	{ type: 'item', text: '我的关注', path: '/task/all', icon: 'iconfont el-icon-my-task' },
+	{ type: 'item', text: '暂停处理', path: '/task/paused', icon: 'iconfont el-icon-my-task' },
+	{ type: 'item', text: '已完成', path: '/task/finished', icon: 'iconfont el-icon-my-task' },
 	{ type: 'item', text: '期限管控', path: '/task/expiringControl', icon: 'iconfont el-icon-my-task' },
 	{ 
 		type: 'submenu', 
 		text: '按任务期限', 
-		path: '/task/duration', 
+		path: '/task/duetime', 
 		icon: 'iconfont el-icon-my-task',
 		children: [
-			{ type: 'item', text: '已过期', path: '/task/duration/expired', icon: '' },
-			{ type: 'item', text: '本周过期', path: '/task/duration/week', icon: '' },
-			{ type: 'item', text: '下周过期', path: '/task/duration/nextWeek', icon: '' },
-			{ type: 'item', text: '本月过期', path: '/task/duration/month', icon: '' },
-			{ type: 'item', text: '下月过期', path: '/task/duration/nextMonth', icon: '' },
-			{ type: 'item', text: '更晚', path: '/task/duration/later', icon: '' },
+			{ type: 'item', text: '已过期', path: '/task/duetime/expired', icon: '' },
+			{ type: 'item', text: '本周过期', path: '/task/duetime/week', icon: '' },
+			{ type: 'item', text: '下周过期', path: '/task/duetime/nextWeek', icon: '' },
+			{ type: 'item', text: '本月过期', path: '/task/duetime/month', icon: '' },
+			{ type: 'item', text: '下月过期', path: '/task/duetime/nextMonth', icon: '' },
+			{ type: 'item', text: '更晚', path: '/task/duetime/later', icon: '' },
 		]
 	},
 	{ 
@@ -382,6 +382,12 @@ const settingMenu = [
 	{ type: 'item', text: '代理人管理', path: '/setting/agent', icon: 'iconfont el-icon-my-proposer'},
 	{ type: 'item', text: '代理机构管理', path: '/setting/agency',icon: 'iconfont el-icon-my-organization' },
 	// { type: 'item', text: '报价管理', path: '/setting/offer', icon: 'iconfont el-icon-my-organization' },
+	{
+		text: '字段权限管理',
+		path: '/setting/field',
+		icon: 'iconfont el-icon-my-set-copy',
+		type: 'item',
+	},
 	{ type: 'item', text: '系统设置', path: '/setting/system', icon: 'iconfont el-icon-my-system' },
 ];
 
@@ -565,13 +571,13 @@ export default menu;
 // 			},
 // 			{
 // 				text: '暂停处理',
-// 				path: '/task/pause',
+// 				path: '/task/paused',
 // 				icon: 'iconfont el-icon-my-pause',
 // 				type: 'item',
 // 			},
 // 			{
 // 				text: '已完成',
-// 				path: '/task/finish',
+// 				path: '/task/finished',
 // 				icon: 'iconfont el-icon-my-task-finish',
 // 				type: 'item',
 // 			},

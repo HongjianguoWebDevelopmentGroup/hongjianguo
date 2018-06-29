@@ -22,7 +22,7 @@ export default {
     return {
       map: {
         '/task/pending': 'pendingTaskCount',
-        '/task/pause': 'pausedTaskCount',
+        '/task/paused': 'pausedTaskCount',
         '/task/expiring': 'monitoredTaskCount',
       }
     }

@@ -292,6 +292,7 @@ export default {
           // { type: 'text', label: '定稿期限', prop: 'review_dealine', show: false, sortable: true, width: '190'},
           // { type: 'text', label: '管控期限', prop: 'inner_dealine', sortable: true, width: '190'},
           { type: 'text', label: '官方绝限', prop: 'deadline', show: false, sortable: true, width: '118'},
+          { type: 'text', label: '到期天数', prop: 'duetime_days', show: true, sortable: false, width: '138'},
           { type: 'text', label: '备注', prop: 'remark', sortable: true, width: '150',overflow: true},
           { 
             type: 'action',

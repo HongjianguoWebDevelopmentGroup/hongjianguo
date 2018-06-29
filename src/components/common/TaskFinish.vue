@@ -49,7 +49,7 @@
       <el-input placeholder="请填写事务所案号" v-model="form.agency_serial"></el-input>
     </el-form-item>
     <el-form-item prop="agent" label="代理人" v-if="fields.agent" :rules=" next == 14 ? { required: true, type: 'number', message: '代理人不能为空',trigger: 'change'} : []">
-      <remote-select type="agent" v-model="form.agent" :static-map="this.agentMap" :para="{'agency': form.agency}" ref="agent"></remote-select>
+      <remote-select type="agent" v-model="form.agent" :static-map="this.agentMap" :para=agentControl ref="agent"></remote-select>
     </el-form-item>
     <el-form-item prop="agency_type" label="代理类型" v-if="fields.agency_type"
       :rules="{ required: true, message: '代理类型不能为空'}"
@@ -355,7 +355,7 @@ export default {
             this.defaultVal = d.default == 'agent' && !this.data.agent ? 'ipr' : d.default;
             const person_in_charge = this.data[this.defaultVal] ? this.data[this.defaultVal] : '';
 
-            if(d.description&&d.description.length != 0) {
+            if(d.description) {
               this.description = d.description;
             }else{
               this.description = this.data.description;
@@ -368,6 +368,7 @@ export default {
                 this.agencyMap = [ this.data.agency ];
                 this.form.agency = this.data.agency.id;
               }
+              
               // if(this.ifTitle) this.form.title = this.data.title;
               if(this.fields.type) this.form.type = 1;
               if(this.fields.level) this.form.level = this.data.level ? this.data.level : '';
@@ -379,7 +380,7 @@ export default {
 
               //附件同步
               const atta = d.attachments; 
-              if(!hide_r_a && this.attachments && atta ) {
+              if(!this.hide_r_a && this.attachments && atta ) {
                 this.form.attachments = atta.map(_=>_.id);
                 this.attachments = atta;
               }
@@ -387,8 +388,8 @@ export default {
               this.$nextTick(_=>{
                 //这里agent需要在agency的监听事件完成后再进行填充
                 if(this.fields.agent && this.data.agent) {
+                  this.agentMap = [ this.data.agent ];
                   this.form.agent = this.data.agent.id;
-                  this.agentMap = [this.data.agent];
                 }
               })
             })

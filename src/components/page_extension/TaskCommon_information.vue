@@ -5,11 +5,11 @@
 	    	<el-row :gutter="20">
 	    		<el-col :span="12">
 	    			<el-form-item label="节点名称"><span class="form-item-text">{{ row.flownode.name }}</span></el-form-item>
-	    			<el-form-item label="官方绝限"><span class="form-item-text">{{ row.deadline }}</span></el-form-item>
+	    			<el-form-item label="指定期限"><span class="form-item-text">{{ row.due_time }}</span></el-form-item>
 	    		</el-col>
 	    		<el-col :span="12">
 	    			<el-form-item label="承办人"><span class="form-item-text">{{ row.person_in_charge.name }}</span></el-form-item>
-	    			<el-form-item label="指定期限"><span class="form-item-text">{{ row.due_time }}</span></el-form-item>
+	    			<el-form-item label="官方绝限"><span class="form-item-text">{{ row.deadline }}</span></el-form-item>
 	    		</el-col>
 	    	</el-row>
         <el-row>
@@ -59,13 +59,13 @@
   	    		<el-col :span="12">	    			
   	    			<el-form-item label="发明人"><span class="form-item-text">{{  detailBasePatent.inventors.length ? detailBasePatent.inventors.map(_=>_.name).join(';') : ''}}</span></el-form-item>
   	    			<el-form-item label="技术分类"><span class="form-item-text">{{ detailBasePatent.classification ? detailBasePatent.classification.name : '' }}</span></el-form-item>
-  	    			<el-form-item label="申请地区"><span class="form-item-text">{{ detailBasePatent.area.name }}</span></el-form-item>
+  	    			<el-form-item label="申请地区"><span class="form-item-text">{{ detailBasePatent.area_name }}</span></el-form-item>
               <el-form-item label="专利类型"><span class="form-item-text">{{ detailBasePatent.type.name }}</span></el-form-item>
   	    			<el-form-item label="相关提案"><span class="form-item-text">{{ detailBasePatent.proposals && detailBasePatent.proposals.length? detailBasePatent.proposals.map(_=>_.serial).join(';') : ''}}</span></el-form-item>
   	    		</el-col>
   	    		<el-col :span="12">
   	    			<el-form-item label="产品名称"><span class="form-item-text">{{ detailBasePatent.products && detailBasePatent.products.length ? detailBasePatent.products.map(_=>_.name).join(';') : '' }}</span></el-form-item>
-  	    			<el-form-item label="标签"><span class="form-item-text">{{ detailBasePatent.tags ? detailBasePatent.tags.join(';') : '' }}</span></el-form-item>
+  	    			<el-form-item label="标签"><span class="form-item-text">{{ detailBasePatent.tags ? detailBasePatent.tags.map(_=>_.name).join(';') : '' }}</span></el-form-item>
   	    			<el-form-item label="申请日"><span class="form-item-text">{{ detailBasePatent.apd }}</span></el-form-item>
               <el-form-item label="申请号"><span class="form-item-text">{{ detailBasePatent.apn }}</span></el-form-item>
   	    			<el-form-item label="提案人"><span class="form-item-text">{{ detailBasePatent.proposer.name }}</span></el-form-item>
@@ -97,13 +97,13 @@
               
               <el-form-item label="申请人"><span class="form-item-text">{{ detailBaseCopyright.applicants.length? detailBaseCopyright.applicants.map(_=>_.name).join(';') : '' }}</span></el-form-item>
               <el-form-item label="技术分类"><span class="form-item-text">{{ detailBaseCopyright.classification.name }}</span></el-form-item>
-              <el-form-item label="申请地区"><span class="form-item-text">{{ detailBaseCopyright.area.name }}</span></el-form-item>
+              <el-form-item label="申请地区"><span class="form-item-text">{{ detailBaseCopyright.area_name }}</span></el-form-item>
               <el-form-item label="版权类型"><span class="form-item-text">{{ detailBaseCopyright.type.name }}</span></el-form-item>
               <el-form-item label="IPR"><span class="form-item-text">{{ detailBaseCopyright.ipr.name }}</span></el-form-item>
             </el-col>
             <el-col :span="12">
               <el-form-item label="产品名称"><span class="form-item-text">{{ detailBaseCopyright.products.length ? detailBaseCopyright.products.map(_=>_.name).join(';') : '' }}</span></el-form-item>
-              <el-form-item label="标签"><span class="form-item-text">{{ detailBaseCopyright.tags.join(';') }}</span></el-form-item>
+              <el-form-item label="标签"><span class="form-item-text">{{ detailBaseCopyright.tags.map(_=>_.name).join(';') }}</span></el-form-item>
               <el-form-item label="申请日"><span class="form-item-text">{{ detailBaseCopyright.apd }}</span></el-form-item>
               <el-form-item label="申请号"><span class="form-item-text">{{ detailBaseCopyright.apn }}</span></el-form-item>
               <el-form-item label="提案人"><span class="form-item-text">{{ detailBaseCopyright.proposer.name }}</span></el-form-item>
