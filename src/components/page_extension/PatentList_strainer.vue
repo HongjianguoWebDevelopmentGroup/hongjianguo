@@ -54,7 +54,7 @@
 					<el-form-item label="立案日" prop="create_time">
 						<date-strainer v-model="form.create_time"></date-strainer>				
 					</el-form-item>
-					<el-form-item label="授权日" prop="issue_date">
+					<el-form-item label="授权公告日" prop="issue_date">
 						<date-strainer v-model="form.issue_date"></date-strainer>					
 					</el-form-item>
 					<el-form-item label="公开日" prop="public_date">

@@ -32,7 +32,7 @@
           <el-date-picker type="date" v-model="scope.row.apd" style="width: 100%;" v-show="!!tableData[scope.$index]['show_apd']"></el-date-picker>
         </template>
       </el-table-column>      
-      <el-table-column label="授权日期" prop="issue_date" v-if="config.issue_date" width="200">
+      <el-table-column label="授权公告日期" prop="issue_date" v-if="config.issue_date" width="200">
         <template slot-scope="scope">
           <el-date-picker type="date" v-model="scope.row.issue_date" style="width: 100%;" v-show="!!tableData[scope.$index]['show_issue_date']"></el-date-picker>
         </template>
@@ -307,7 +307,7 @@ export default {
           if(_.issue_date) {
             o.issue_date = this.$tool.getDate( new Date(_.issue_date) );
           }else {
-            return this.$message({type: 'warning', message: '请填写授权日期'}); 
+            return this.$message({type: 'warning', message: '请填写授权公告日期'}); 
           }
         }
         if(_.show_apn) {

@@ -13,8 +13,8 @@ request {
     application_date_end:"2017-07-07", //申请日结束日期
     public_date_start:"2017-07-07", //公开日起始日期
     public_date_end:"2017-07-07", //公开日结束日期
-    issue_date_start:"2017-07-07", //授权日起始日期
-    issue_date_start:"2017-07-07", //授权日起始日期
+    issue_date_start:"2017-07-07", //授权公告日起始日期
+    issue_date_start:"2017-07-07", //授权公告日起始日期
     application_number:"2017302865763",//申请号
     public_number:"CN10452587A",//公开号
     applicant:["1"],//申请人ID数组
@@ -47,7 +47,7 @@ response {
             entrust_date:"2017-07-07",//委案日
             application_date:"2017-07-07",//申请日
             public_date:"2017-07-07",//公开日
-            issue_date:"2017-07-07",//授权日
+            issue_date:"2017-07-07",//授权公告日
             applicaton_number:"2017302865763",//申请号
             public_number:"CN10452587A",//公开号
             issue_number:"CN104566A",授权号
@@ -94,7 +94,7 @@ request {
     //扩展信息
     application_date:"2017-07-07", //申请日
     public_date:"2017-07-07", //公开日
-    issue_date:"2017-07-07", //授权日
+    issue_date:"2017-07-07", //授权公告日
     application_number:"2017302865763",//申请号
     public_number:"CN10452587A",//公开号
     issue_number:"CN1123231",//公告号
@@ -130,7 +130,7 @@ response {
             entrust_date:"2017-07-07",//委案日
             application_date:"2017-07-07",//申请日
             public_date:"2017-07-07",//公开日
-            issue_date:"2017-07-07",//授权日
+            issue_date:"2017-07-07",//授权公告日
             applicaton_number:"2017302865763",//申请号
             public_number:"CN10452587A",//公开号
             issue_number:"CN104566A",授权号

@@ -57,11 +57,11 @@
 		      placeholder="选择公开日期范围">
 		    </el-date-picker>
   		</el-form-item>
-  		<el-form-item label="授权日">
+  		<el-form-item label="授权公告日">
   			<el-date-picker
 		      v-model="issue_date_area"
 		      type="daterange"
-		      placeholder="选择授权日期范围">
+		      placeholder="选择授权公告日期范围">
 		    </el-date-picker>
   		</el-form-item>
   		<el-form-item style="margin-bottom: 0px;">

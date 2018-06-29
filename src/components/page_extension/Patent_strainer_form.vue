@@ -58,8 +58,8 @@
 					<el-form-item label="立案日" prop="create_time">
 						<el-date-picker type="daterange" placeholder="请选择立案时间" v-model="form.create_time"></el-date-picker>
 					</el-form-item>
-					<el-form-item label="授权日" prop="issue_date">
-						<el-date-picker type="daterange" placeholder="请选择授权日" v-model="form.issue_date"></el-date-picker>
+					<el-form-item label="授权公告日" prop="issue_date">
+						<el-date-picker type="daterange" placeholder="请选择授权公告日" v-model="form.issue_date"></el-date-picker>
 					</el-form-item>
 					<el-form-item label="公开日" prop="public_date">
 						<el-date-picker type="daterange" placeholder="请选择公开日" v-model="form.public_date"></el-date-picker>

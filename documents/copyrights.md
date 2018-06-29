@@ -173,7 +173,7 @@ request {
     classification:"1",//技术分类ID，多个分类用逗号隔开
     branch:"1",//部门ID,多个部门ID用逗号隔开
     create_time:"2017-08-01|2017-08-31",//立案时间，或者直接采用过滤器的id:thisweek/lastweek/thismonth/lastmonth/earlier
-    issue_date:"2017-08-01|2017-08-31",//授权日
+    issue_date:"2017-08-01|2017-08-31",//授权公告日
     product:"1",//产品分类ID，多个分类用逗号隔开
     applicants:"1",//申请人ID，多个申请人用逗号隔开
     tags:"tag",//标签，多个标签用逗号隔开
