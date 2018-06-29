@@ -582,12 +582,12 @@ export default {
     finishSuccess (data) {
       this.dialogShrinkVisible = false;
       this.refresh();
-      if(data.is_send_mail) {
-        this.mailVisible = true;
-        this.$nextTick( () => {
-          this.$refs.mailEdit.initForm(data.mail_id);
-        });
-      }
+      // if(data.is_send_mail) {
+      //   this.mailVisible = true;
+      //   this.$nextTick( () => {
+      //     this.$refs.mailEdit.initForm(data.mail_id);
+      //   });
+      // }
     },
     titleRender (h,item,data) {
       const color = colorMap.get(data['color']);
