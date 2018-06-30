@@ -14,7 +14,7 @@
 				<el-form-item label="代理人信息" prop="agent">
 					<remote-select type="agent" v-model="form.agent"></remote-select>
 				</el-form-item>
-        <el-form-item prop="tech_rank" label="技术理解">
+        <el-form-item prop="tech_rank" label="技术理解"  v-if="!menusMap.get('/iprs')">
 <!--           <el-rate 
             v-model="form.tech_rank" 
             style="margin-top: 10px" 
@@ -28,7 +28,7 @@
               show-input
             ></el-slider>
         </el-form-item>
-        <el-form-item prop="draft_rank" label="撰写质量">
+        <el-form-item prop="draft_rank" label="撰写质量"  v-if="!menusMap.get('/iprs')">
           <!-- <el-rate 
             v-model="form.draft_rank" 
             style="margin-top: 10px" 
@@ -42,7 +42,7 @@
               show-input
             ></el-slider>
         </el-form-item>
-        <el-form-item prop="service_rank" label="服务状态">
+        <el-form-item prop="service_rank" label="服务状态"  v-if="!menusMap.get('/iprs')">
         <!--   <el-rate 
             v-model="form.service_rank" 
             style="margin-top: 10px" 
@@ -56,14 +56,14 @@
               disabled
             ></el-slider>
         </el-form-item>
-        <el-form-item prop="negative_flag" label="特别评价">
+        <el-form-item prop="negative_flag" label="特别评价"  v-if="!menusMap.get('/iprs')">
           <el-radio-group v-model="form.negative_flag">
             <el-radio-button label="无"></el-radio-button>
             <el-radio-button label="好评"></el-radio-button>
             <el-radio-button label="差评"></el-radio-button>
           </el-radio-group>
         </el-form-item>
-        <el-form-item prop="negative_comment" label="评价理由" v-show="form.negative_flag !== '无'" >
+        <el-form-item prop="negative_comment" label="评价理由" v-show="form.negative_flag !== '无'"  v-if="!menusMap.get('/iprs')">
           <el-input type="textarea" v-model="form.negative_comment"></el-input>
         </el-form-item>
       </el-form>
@@ -74,6 +74,7 @@
 import AppCollapse from '@/components/common/AppCollapse'
 import RemoteSelect from '@/components/form/RemoteSelect'
 import StaticSelect from '@/components/form/StaticSelect'
+import { mapGetters } from 'vuex'
 
 export default {
   name: 'patentAddAgent',
@@ -120,6 +121,9 @@ export default {
     },
   },
   computed: {
+    ...mapGetters([
+      'menusMap',
+    ]),
   	agency () {
   		return this.form.agency ? this.form.agency.name : '暂无代理机构信息';
   	},

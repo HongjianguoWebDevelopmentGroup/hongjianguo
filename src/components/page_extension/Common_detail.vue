@@ -3,7 +3,7 @@
   <app-shrink :title="title" :visible="visibleAuth" @update:visible="handleVisible">
     <span slot="header" style="float: right">
       <el-button size="small" type="primary" class="table-header-btn" @click="edit" :loading="saveLoading">{{ saveLoading ? '保存中...' : '保存' }}</el-button>
-        <el-dropdown  @command="handleCommandSend" trigger="click" style="margin-left: 5px;" size="small" v-if="type == 'patent'">
+        <el-dropdown  @command="handleCommandSend" trigger="click" style="margin-left: 5px;" size="small" v-if="type == 'patent' && !menusMap.get('/iprs')">
           <el-button size="small">
             主动递交<i class="el-icon-caret-bottom el-icon--right"></i>
           </el-button>
@@ -13,7 +13,7 @@
             <el-dropdown-item command="divide" :disabled="btnDisabled">分案</el-dropdown-item>
           </el-dropdown-menu>
         </el-dropdown>      
-        <el-dropdown @command="handleCommand" trigger="click" style="margin-left: 5px;" size="small" v-if="type == 'patent'">
+        <el-dropdown @command="handleCommand" trigger="click" style="margin-left: 5px;" size="small" v-if="type == 'patent' && !menusMap.get('/iprs')">
           <el-button size="small">
             委案<i class="el-icon-caret-bottom el-icon--right"></i>
           </el-button>
@@ -23,7 +23,7 @@
             <el-dropdown-item command="change" :disabled="btnDisabled">变更</el-dropdown-item>
           </el-dropdown-menu>
         </el-dropdown>  
-      <el-button style="margin-left: 5px;" size="small" type="danger" @click="dialogClosed=true">结案</el-button>
+      <el-button style="margin-left: 5px;" size="small" type="danger" @click="dialogClosed=true" v-if="!menusMap.get('/iprs')">结案</el-button>
     </span>
     <div  v-loading="detailLoading && visibleAuth" :element-loading-text="config.loadingText" :style="divStyle">
       <el-tabs v-model="activeName">
@@ -57,12 +57,12 @@
 <!--         <el-tab-pane label="文档" name="documents">
           <detail-documents></detail-documents>
         </el-tab-pane> -->
-        <el-tab-pane label="群组/专利族" name="group_family" v-if="type == 'patent'&& !menusMap.get('/iprs')">
+        <el-tab-pane label="群组/专利族" name="group_family" v-if="!menusMap.get('/iprs')">
           <div :style="`height: ${innerHeight - 150}px; overflow: auto;`">
             <group-family></group-family>
           </div>
         </el-tab-pane>
-        <!-- <el-tab-pane label="引用" name="quote" v-if="type == 'patent'&& !menusMap.get('/iprs')">
+        <!-- <el-tab-pane label="引用" name="quote" v-if="!menusMap.get('/iprs')">
           <quote></quote>
         </el-tab-pane>
         <el-tab-pane label="评审记录" name="review" v-if="type == 'patent'">
@@ -89,7 +89,7 @@
           <judge :id="id"></judge>
         </div>
         </el-tab-pane>
-        <el-tab-pane label="委案记录" name="history">
+        <el-tab-pane label="委案记录" name="history" v-if=" !menusMap.get('/iprs')">
           <div :style="`height: ${innerHeight - 150}px; overflow: auto;`">
           <agencies></agencies>
           </div>

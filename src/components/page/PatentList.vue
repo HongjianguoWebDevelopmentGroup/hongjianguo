@@ -89,7 +89,7 @@ export default {
         'header_slot': ['download'],
         'columns': [
 
-          // { type: 'selection' },
+          { type: 'selection' },
           // { type: 'text', label: '专利状态', prop: 'status', render: (h,item)=>h('span', item ? '正常' : '暂停处理') },
           { type: 'text', label: '案号', prop: 'serial', is_agency: true, sortable: true, width: '160',render: this.serialRender},
           { type: 'text', label: '事务所案号', prop: 'agency_serial', is_agency: true, sortable: true, width: '150' },
@@ -164,7 +164,36 @@ export default {
           { type: 'text', label: '详细状态', prop: 'flownode', sortable: true, width: '180', is_agency: true, render_simple: 'name'},
           { type: 'text', label: '备注', prop: 'remark', sortable: true, width: '123' },
           { type: 'array', label: '项目/奖项名称', prop: 'awards',  render: _=>{ return _.map(_=>_.name);}, width: '200'},
-          // {
+          { type: 'text', label: '主动修改期限', prop: 'active_supplement_expire_date', sortable: true, width: '145' },
+          { type: 'text', label: '委案类型', prop: 'agency_type', sortable: true, width: '145' },
+          { type: 'text', label: '代理人修改时间', prop: 'agent_amending_period', sortable: true, width: '145' },
+          { type: 'text', label: '立案时间', prop: 'create_time', sortable: true, width: '145' },
+          { type: 'text', label: 'DAS码', prop: 'das', sortable: true, width: '145' },
+          { type: 'text', label: '专利族号', prop: 'family_number', sortable: true, width: '145' },
+          { type: 'text', label: '群组号', prop: 'group_number', sortable: true, width: '145' },
+          { type: 'text', label: 'IPR审核次数', prop: 'ipr_review_times', sortable: true, width: '145' },
+          { type: 'text', label: 'PCT19条修改期限', prop: 'pct_19_expire_date', sortable: true, width: '198' },
+          { type: 'text', label: 'PCT进入国家阶段期限', prop: 'pct_national_stage_expire_date', sortable: true, width: '198' },
+          { type: 'text', label: 'PCT国际初步审查期限', prop: 'pct_pre_exam_expire_date', sortable: true, width: '198' },
+          { type: 'text', label: '国际检索日期', prop: 'pct_search_date', sortable: true, width: '145' },
+          { type: 'text', label: '优先权届满期限', prop: 'priority_expire_date', sortable: true, width: '178' },
+          { type: 'text', label: '项目名称', prop: 'project_name', sortable: true, width: '145' },
+          { type: 'text', label: '项目编号', prop: 'project_serial', sortable: true, width: '145' },
+          { type: 'text', label: '提案标题', prop: 'proposal_title', sortable: true, width: '145' },
+          { type: 'text', label: '首次年费年度', prop: 'start_year', sortable: true, width: '145' },
+          // { type: 'text', label: '详细类型', prop: 'type_name', sortable: true, width: '145' },
+          { type: 'text', label: '是否变更', prop: 'is_amended', sortable: true, width: '178',show: false, render:this.booleanRender},         
+          { type: 'text', label: '是否与生物相关', prop: 'is_biological', sortable: true, width: '198',show: false, render:this.booleanRender},          
+          { type: 'text', label: '是否是分案申请', prop: 'is_division', sortable: true, width: '178',show:false,render:this.booleanRender},         
+          { type: 'text', label: '是否依赖于遗传资源', prop: 'is_genetic', sortable: true, width: '198',show: false, render:this.booleanRender},         
+          { type: 'text', label: '是否不丧失新颖性公开', prop: 'is_leakage', sortable: true, width: '178',show: false, render:this.booleanRender},         
+          { type: 'text', label: '是否许可备案', prop: 'is_licensed', sortable: true, width: '145',show: false,render:this.booleanRender},         
+          { type: 'text', label: '是否提前公开', prop: 'is_pre_public', sortable: true, width: '145',show: false,render:this.booleanRender},          
+          { type: 'text', label: '是否要求优先权', prop: 'is_priority', sortable: true, width: '178',show: false, render:this.booleanRender},          
+          { type: 'text', label: '是否保密审查', prop: 'is_secure_check', sortable: true, width: '145',show: false,render:this.booleanRender},         
+          { type: 'text', label: '是否有序列表', prop: 'is_sequence', sortable: true, width: '145',show: false, render:this.booleanRender},          
+          { type: 'text', label: '是否同日新型/发明', prop: 'is_utility', sortable: true, width: '178',show: false, render:this.booleanRender},  
+        // {
           //   type: 'action',
           //   width: '145',
           //   btns: [
@@ -203,27 +232,6 @@ export default {
         this.$refs.mailEdit.initForm(id);
       });
     },
-    handleColumns() {
-      const url = '/fields';
-      const data = {model:'patent'};
-      const success = d=>{
-      const arr = this.tableOption.columns;
-        let i = arr.length;
-        while(i--) {
-            arr.splice(i, 1);
-        }
-        d.fields.forEach(v => {
-          if (v.render === true) {
-            v.render = renderMap.get(v.prop);
-          // console.log(e.render)
-          }
-          arr.push(v);
-        });
-        console.log(arr)
-        this.$forceUpdate();
-      };
-      this.$axiosGet({url, data, success});
-    },
     mailCallBack() {
       this.mailVisible = false;
       this.refreDetailData();
@@ -251,6 +259,10 @@ export default {
         }
         this.$forceUpdate();
       } 
+    },
+    booleanRender(h,item) {
+      item == 1 ? item = '是' : item = '否';
+      return h('span', item);
     },
     refreshTableData (option) {
       const url = URL;
@@ -350,7 +362,6 @@ export default {
   },
   created () {
     this.ifAgency();
-    this.handleColumns();
   },
   mounted () {
     if(!this.custom) {
