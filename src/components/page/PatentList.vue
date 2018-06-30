@@ -89,7 +89,7 @@ export default {
         'header_slot': ['download'],
         'columns': [
 
-          { type: 'selection' },
+          // { type: 'selection' },
           // { type: 'text', label: '专利状态', prop: 'status', render: (h,item)=>h('span', item ? '正常' : '暂停处理') },
           { type: 'text', label: '案号', prop: 'serial', is_agency: true, sortable: true, width: '160',render: this.serialRender},
           { type: 'text', label: '事务所案号', prop: 'agency_serial', is_agency: true, sortable: true, width: '150' },
@@ -207,17 +207,19 @@ export default {
       const url = '/fields';
       const data = {model:'patent'};
       const success = d=>{
-        const arr = this.tableOption.columns;
+      const arr = this.tableOption.columns;
         let i = arr.length;
         while(i--) {
             arr.splice(i, 1);
         }
-        d.fields.forEach(e => {
-          if (e.render === true) {
-            e.render = renderMap.get(e.prop);
+        d.fields.forEach(v => {
+          if (v.render === true) {
+            v.render = renderMap.get(v.prop);
+          // console.log(e.render)
           }
-          arr.push(e);
+          arr.push(v);
         });
+        console.log(arr)
         this.$forceUpdate();
       };
       this.$axiosGet({url, data, success});

@@ -143,7 +143,6 @@ export default {
 		},
 	},
 	created () {
-		this.refreshFields();
 		this.refreshGroup().then(() => {
 			if(this.groupOptions && this.groupOptions.length != 0){
 				console.log(this.groupOptions[0].id);
@@ -151,6 +150,10 @@ export default {
 			}
 			this.groupOptions.forEach(v => {
 				this.cache[v.id] = {};
+			});
+			this.refreshFields();
+			this.$nextTick(_=>{
+				this.refreshExcept({group_id: this.currentId, model: this.tableType});
 			});
 		});
 	},

@@ -41,6 +41,14 @@ const getters = {
 		const i = user ? user.role : '';
 		return i;
 	},
+	usergroups: state => {
+		const user = state.data;
+		let groups = [];
+		if(user && user.groups) {
+			groups = user.groups.map(v => v.id);
+		}
+		return groups;
+	},	
 	pendingTaskCount: state=>{
 		const user = state.data;
 		const count = user ? user.pendingTaskCount : 0;
