@@ -8,7 +8,7 @@ request {
 	flow_node_id:'任务的流程起始阶段'
 	remark:'任务备注',
 	attachments:[1,2],//提交文件ID数组
-	due_time:'2017-09-09',//承办期限
+	due_time:'2017-09-09',//指定期限
 	deadline:'2017-09-09',//法限，部分任务类型必填，通过/taskDefs接口(尚未完成)获取的列表中，deadline为1则表示该任务类型法限必填
 } 
 response {
@@ -23,7 +23,7 @@ request {
     project_id:'提案/专利/商标/版权/专案ID',
 	person_in_charge:'承办人ID',
 	task_def_id:'任务节点ID',//
-	due_time:'2017-09-09',//承办期限
+	due_time:'2017-09-09',//指定期限
 	flow_node_id:'任务的流程起始阶段'
 	deadline:'2017-09-09',//法限，部分任务类型必填，通过/taskDefs接口(尚未完成)获取的列表中，deadline为1则表示该任务类型法限必填
 	remark:'任务备注',
@@ -229,7 +229,7 @@ method：POST;
 request {
 	person_in_charge:'承办人ID',
 	flow_node_id:'下一个流程节点的ID',//
-	due_time:'2017-09-09',//承办期限
+	due_time:'2017-09-09',//指定期限
 	deadline:'2017-09-09',//法限，部分任务类型必填，通过/taskDefs接口(尚未完成)获取的列表中，deadline为1则表示该任务类型法限必填
 	remark:'任务备注',
 	attachments:[1,2],//提交文件ID数组
