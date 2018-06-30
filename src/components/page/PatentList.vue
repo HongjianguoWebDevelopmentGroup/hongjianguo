@@ -47,6 +47,10 @@ import { mapGetters,mapActions } from 'vuex'
 const URL = '/patents';
 const PATENT_TYPE = ['发明专利', '实用新型', '外观设计']; 
 
+const renderMap = new Map([
+  ['serial', this.serialRender],
+]);
+
 export default {
   name: 'patentList',
   data () {
@@ -199,6 +203,25 @@ export default {
         this.$refs.mailEdit.initForm(id);
       });
     },
+    handleColumns() {
+      const url = '/fields';
+      const data = {model:'patent'};
+      const success = d=>{
+        const arr = this.tableOption.columns;
+        let i = arr.length;
+        while(i--) {
+            arr.splice(i, 1);
+        }
+        d.fields.forEach(e => {
+          if (e.render === true) {
+            e.render = renderMap.get(e.prop);
+          }
+          arr.push(e);
+        });
+        this.$forceUpdate();
+      };
+      this.$axiosGet({url, data, success});
+    },
     mailCallBack() {
       this.mailVisible = false;
       this.refreDetailData();
@@ -325,6 +348,7 @@ export default {
   },
   created () {
     this.ifAgency();
+    this.handleColumns();
   },
   mounted () {
     if(!this.custom) {
