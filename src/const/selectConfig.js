@@ -138,7 +138,7 @@ const config = [
     placeholder: '请选择模块',
     options: [
       { id: 'patent', name: '专利' },
-      { id: 'proposal', name: '提案' },
+      // { id: 'proposal', name: '提案' },
     ]
   }],
   ['case_type', {

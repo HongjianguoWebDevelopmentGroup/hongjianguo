@@ -64,6 +64,8 @@ export default {
 		// },
 		except: {
 			set (val) {
+				console.log('===ceshi');
+				console.log(val);
 				const map = new Map();
 				val.forEach(v => {map.set(v, true)});
 				this.checkedFields = this.fields.filter(v => !map.get(v.value)).map(v => v.value);
@@ -96,6 +98,7 @@ export default {
 			if(group_id == '' || model == '') return;
 			
 			let except = this.cache[group_id][model];
+			console.log(except);
 			if(!except) {
 				this.listLoading = true;
 				try {
@@ -143,19 +146,22 @@ export default {
 		},
 	},
 	created () {
-		this.refreshFields();
 		this.refreshGroup().then(() => {
 			if(this.groupOptions && this.groupOptions.length != 0){
-				console.log(this.groupOptions[0].id);
 				this.currentId = this.groupOptions[0].id;
 			}
 			this.groupOptions.forEach(v => {
 				this.cache[v.id] = {};
 			});
+			this.refreshFields();
+			this.$nextTick(_=>{
+				this.refreshExcept({group_id: this.currentId, model: this.tableType});
+			});
 		});
 	},
 	watch: {
 		tableType (val) {
+			console.log(val);
 			this.refreshExcept({group_id: this.currentId, model: val});
 		}
 	},
