@@ -17,7 +17,7 @@ const taskOptions = [
   { id: 'apd',                   name: '申请日',   date: true },
   { id: 'start_time',            name: '开始时间', date: true },
   { id: 'end_time',              name: '完成时间', date: true },
-  { id: 'due_time',              name: '指定期限', date: true },
+  { id: 'due_time',              name: '内部期限', date: true },
   { id: 'review_deadline',       name: '定稿期限', date: true },
   { id: 'deadline',              name: '官方绝限', date: true },
   { id: 'remark',                name: '备注' },

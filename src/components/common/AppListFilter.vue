@@ -249,6 +249,7 @@ export default {
 		},
 		refreshTable () {
 			this.refresh();
+			this.handleVisible(false);
 		},
 		clear () {
 			this.key = '';
@@ -295,11 +296,11 @@ export default {
 		},
 		confirm () {
 			if(this.key == '') {
-				this.$message({ type: 'warning', message: '属性不能为空' });
+				this.$message({ type: 'warning', message: '筛选字段不能为空' });
 				return; 
 			}
 			if(this.$refs.value.checkNull()) {
-				this.$message({ type: 'warning', message: '值不能为空' });
+				this.$message({ type: 'warning', message: '筛选条件不能为空' });
 				return;
 			}
 

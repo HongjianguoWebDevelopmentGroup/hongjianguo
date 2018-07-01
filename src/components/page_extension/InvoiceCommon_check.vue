@@ -27,7 +27,7 @@
 						<el-option label="拒绝" :value="false">拒绝</el-option>
 					</el-select>
 				</el-form-item>
-				<el-form-item label="企业意见" prop="suggestion">
+				<el-form-item label="审核意见" prop="suggestion">
 					<el-input type="textarea" v-model="form.suggestion"></el-input>		
 				</el-form-item>
 				<el-form-item style="margin-bottom: 0px;">
@@ -70,7 +70,7 @@ export default {
 				{ type: 'text', label: '参考费用', prop: 'amount_reference' },
 				{ 
 					type: 'text', 
-					label: '企业意见', 
+					label: '审核意见', 
 					prop: 'suggestion',
 					width: '200',
 					render: this.suggestionRender,

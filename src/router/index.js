@@ -77,7 +77,7 @@ const router = new Router({
   // mode: 'history',
   routes: [
     //###重定向###
-    { path: '/', redirect: '/statistics' },
+    { path: '/', redirect: '/task/pending' },
     { path: '/proposal', redirect: '/proposal/list' },
     { path: '/task', redirect: '/task/pending' },
     { path: '/patent', redirect: '/patent/list' },
@@ -216,7 +216,7 @@ const router = new Router({
       }
     },
     { 
-      path: '/task/stage/review',
+      path: '/task/stage/reexam',
       name: 'TaskStageReview',
       component: TaskCommon,
       meta: {
@@ -225,7 +225,7 @@ const router = new Router({
       }
     },
     { 
-      path: '/task/stage/authorization',
+      path: '/task/stage/grant',
       name: 'TaskStageAuthorization',
       component: TaskCommon,
       meta: {
@@ -252,7 +252,7 @@ const router = new Router({
       }
     },
     { 
-      path: '/task/stage/procedure',
+      path: '/task/stage/litigation',
       name: 'TaskStageProcedure',
       component: TaskCommon,
       meta: {
@@ -339,7 +339,7 @@ const router = new Router({
       },
     },
     {
-      path: '/proposal/novelty/existent',
+      path: '/proposal/novelty/yes',
       name: 'ProopsalExistent',
       component: Proposal,
       meta: {
@@ -347,7 +347,7 @@ const router = new Router({
       },
     },
     {
-      path: '/proposal/novelty/non-existent',
+      path: '/proposal/novelty/no',
       name: 'ProopsalNonExistent',
       component: Proposal,
       meta: {
@@ -928,6 +928,50 @@ const router = new Router({
         defaultParams: {
           category: 3,
           gov: 'city',
+        }
+      }
+    },
+    {
+      path: '/fee/income/submit',
+      name: 'InvoiceCommonSubmit',
+      component: InvoiceCommon,
+      props: {
+        debit: 1,
+        defaultParams: {
+          status:11
+        }
+      }
+    },
+    {
+      path: '/fee/income/wating_for_payment',
+      name: 'InvoiceCommonWaitingForPayment',
+      component: InvoiceCommon,
+      props: {
+        debit: 1,
+        defaultParams: {
+          status:12
+        }
+      }
+    },
+    {
+      path: '/fee/income/confirmed',
+      name: 'InvoiceCommonconfirmed',
+      component: InvoiceCommon,
+      props: {
+        debit: 1,
+        defaultParams: {
+          status:13
+        }
+      }
+    },
+    {
+      path: '/fee/income/cancelled',
+      name: 'InvoiceCommonCancelled',
+      component: InvoiceCommon,
+      props: {
+        debit: 1,
+        defaultParams: {
+          status:14
         }
       }
     },

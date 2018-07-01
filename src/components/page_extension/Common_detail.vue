@@ -2,7 +2,7 @@
 <div>
   <app-shrink :title="title" :visible="visibleAuth" @update:visible="handleVisible">
     <span slot="header" style="float: right">
-      <el-button size="small" type="primary" class="table-header-btn" @click="edit" :loading="saveLoading">{{ saveLoading ? '保存中...' : '保存' }}</el-button>
+        <el-button size="small" type="primary" class="table-header-btn" @click="edit" :loading="saveLoading" v-if="!menusMap.get('/agency')">{{ saveLoading ? '保存中...' : '保存' }}</el-button>
         <el-dropdown  @command="handleCommandSend" trigger="click" style="margin-left: 5px;" size="small" v-if="type == 'patent' && !menusMap.get('/iprs')">
           <el-button size="small">
             主动递交<i class="el-icon-caret-bottom el-icon--right"></i>

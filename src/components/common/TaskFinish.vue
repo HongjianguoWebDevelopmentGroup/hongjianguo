@@ -56,8 +56,8 @@
     >
       <static-select type="agency_type" key="patent_type" v-model="form.agency_type"></static-select>
     </el-form-item>
-  	<el-form-item prop="due_time" label="指定期限" v-if="fields.due_time">
-			<el-date-picker v-model="form.due_time" type="date" placeholder="选择指定期限"></el-date-picker>
+  	<el-form-item prop="due_time" label="内部期限" v-if="fields.due_time">
+			<el-date-picker v-model="form.due_time" type="date" placeholder="选择内部期限"></el-date-picker>
   	</el-form-item>
     <el-form-item prop="pay_time" label="支付时间" v-if="fields.pay_time">
       <el-date-picker v-model="form.pay_time" type="date" placeholder="选择支付时间"></el-date-picker>

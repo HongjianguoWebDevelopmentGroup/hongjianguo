@@ -37,7 +37,7 @@ export default {
           width: '100',
           btns:  [
             { 
-              label: '发送邮件',
+              label: '编辑&补发',
               btn_type: 'text',
               click: this.sendMail,
             }

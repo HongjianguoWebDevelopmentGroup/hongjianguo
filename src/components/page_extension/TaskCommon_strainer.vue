@@ -41,8 +41,8 @@
         <el-form-item label="完成时间" prop="end_time">
           <el-date-picker type="daterange" placeholder="请选择完成时间" v-model="form.end_time"></el-date-picker>
         </el-form-item>
-        <el-form-item label="指定期限" prop="due_time">
-          <el-date-picker type="daterange" placeholder="请选择指定期限" v-model="form.due_time"></el-date-picker>
+        <el-form-item label="内部期限" prop="due_time">
+          <el-date-picker type="daterange" placeholder="请选择内部期限" v-model="form.due_time"></el-date-picker>
         </el-form-item>
         <el-form-item label="管控期限" prop="inner_deadline">
           <el-date-picker type="daterange" placeholder="请选择管控期限" v-model="form.inner_deadline"></el-date-picker>

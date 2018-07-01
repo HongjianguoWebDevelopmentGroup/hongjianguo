@@ -28,10 +28,10 @@
 
     <el-dialog title="设置任务提醒偏好" :visible.sync="dialogSettingVisible" class="dialog-mini">
       <el-form label-position="top">
-        <el-form-item label="请输入要提前标红色任务到期天数">
+        <el-form-item label="请输入要提前标红色任务超期天数">
           <el-input></el-input>
         </el-form-item>
-        <el-form-item label="请输入要顶部显示的任务到期天数">
+        <el-form-item label="请输入要顶部显示的任务超期天数">
           <el-input></el-input>
         </el-form-item>
         <el-form-item label="编辑任务时的默认案件类型">
@@ -270,7 +270,7 @@ export default {
           // { type: 'expand' },
           { type: 'selection' },
           { type: 'text', label: '案号', prop: 'serial', sortable: true, width: '210',  render: this.titleRender },
-          { type: 'text', label: '事务所案号', prop: 'agency_serial', sortable: true, width: '145' },
+          { type: 'text', label: '事务所案号', prop: 'agency_serial', sortable: true, width: '150' },
           { type: 'text', label: '案件类型', prop: 'category', sortable: true, width: '120', show_option: true,render:this.categoryRender},
           { type: 'text', label: '专利类型', prop: 'type_name', sortable: true, width: '120', overflow: true },
           { type: 'text', label: '案件名称', prop: 'title', sortable: true, width: '180', overflow: true },
@@ -285,36 +285,36 @@ export default {
           { type: 'text', label: '代理机构', prop: 'agency', render_simple: 'name', show: false, sortable: true, width: '130'},
           { type: 'text', label: '代理人', prop: 'agent', render_simple: 'name', sortable: true, width: '118'},
           { type: 'text', label: '申请日', prop: 'apd', sortable: true, width: '118'},
-          { type: 'text', label: '申请号', prop: 'apn', sortable: true, width: '118'},
+          { type: 'text', label: '申请号', prop: 'apn', sortable: true, width: '130'},
           { type: 'text', label: '开始时间', prop: 'start_time', show: false, sortable: true, width: '118'},
           { type: 'text', label: '完成时间', prop: 'end_time', sortable: true, width: '118'},
-          { type: 'text', label: '指定期限', prop: 'due_time', show: false, sortable: true, width: '118'},
+          { type: 'text', label: '内部期限', prop: 'due_time', show: false, sortable: true, width: '118'},
           // { type: 'text', label: '定稿期限', prop: 'review_dealine', show: false, sortable: true, width: '190'},
           // { type: 'text', label: '管控期限', prop: 'inner_dealine', sortable: true, width: '190'},
           { type: 'text', label: '官方绝限', prop: 'deadline', show: false, sortable: true, width: '118'},
-          { type: 'text', label: '到期天数', prop: 'duetime_days', show: true, sortable: false, width: '138'},
+          { type: 'text', label: '超期天数', prop: 'duetime_days', show: true, sortable: true, width: '138'},
           { type: 'text', label: '备注', prop: 'remark', sortable: true, width: '150',overflow: true},
-          { 
-            type: 'action',
-            fixed: false,
-            label: '操作',
-            min_width: '150',
-            align: 'left',
-            btns: [
-              // { 
-              //   type: 'dropdown', 
-              //   label: '发送邮件',
-              //   items: [
-              //     { text: '立案通知' },
-              //     { text: '发明人看稿' },
-              //     { text: 'IPR看稿' },
-              //     { text: '委案处理' },
-              //   ],
-              // },
-              { btn_type: 'text', label: '编辑提案', click: this.proposalEdit, btn_if: _=>_.action == 'proposals/edit' },
-              { btn_type: 'text', label: '编辑专利', click: this.patentEdit, btn_if: _=>_.action == 'patents/edit'},
-            ],
-          }
+          // { 
+          //   type: 'action',
+          //   fixed: false,
+          //   label: '操作',
+          //   min_width: '150',
+          //   align: 'left',
+          //   btns: [
+          //     // { 
+          //     //   type: 'dropdown', 
+          //     //   label: '发送邮件',
+          //     //   items: [
+          //     //     { text: '立案通知' },
+          //     //     { text: '发明人看稿' },
+          //     //     { text: 'IPR看稿' },
+          //     //     { text: '委案处理' },
+          //     //   ],
+          //     // },
+          //     { btn_type: 'text', label: '编辑提案', click: this.proposalEdit, btn_if: _=>_.action == 'proposals/edit' },
+          //     { btn_type: 'text', label: '编辑专利', click: this.patentEdit, btn_if: _=>_.action == 'patents/edit'},
+          //   ],
+          // }
         ],
       },
       tableData: [],
@@ -554,9 +554,9 @@ export default {
       const menusMap = this.menusMap;
 
       if( t === 0 ) {
-        h.header_btn.splice(3,1,{type: 'custom', label: '暂停处理', click: _=>{ this.handleTask('/api/tasks/pause') }});
+        menusMap && !menusMap.get('/tasks/pause_btn') ? h.header_btn.splice(3,1,{type: 'custom', label: '暂停处理', click: _=>{ this.handleTask('/api/tasks/pause') }}) : false;
       }else if( t === -1 ) {
-        h.header_btn.splice(3,1,{type: 'custom', label: '恢复处理', click: _=>{ this.handleTask('/api/tasks/resume') }});
+        menusMap && !menusMap.get('/tasks/resume_btn') ? h.header_btn.splice(3,1,{type: 'custom', label: '恢复处理', click: _=>{ this.handleTask('/api/tasks/resume') }}) : false;
       }
       menusMap && !menusMap.get('/tasks/add_btn') ? h.header_btn.splice(0,1,{ type: 'add', click: this.addPop }) : h.header_btn.splice(0,1,{}); 
       menusMap && !menusMap.get('/tasks/delete_btn') ? h.header_btn.splice(1,1,{ type: 'delete', callback: this.refreshUser }) : h.header_btn.splice(1,1,{});

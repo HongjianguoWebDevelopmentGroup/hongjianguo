@@ -151,7 +151,7 @@ response {
             name:"name",//任务名称
             start_time:"start_time",//开始时间
             end_time:"end_time",//结束时间
-            due_time:"due_time",//指定期限
+            due_time:"due_time",//内部期限
             deadline:"deadlin",//法定期限
             charger:"charger",//负责人
             status:"status",//状态

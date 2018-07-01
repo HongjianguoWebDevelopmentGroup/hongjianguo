@@ -169,7 +169,7 @@ export default {
         'header_slot': ['transfer'],
         'columns': [
           { type: 'selection'},
-          { type: 'text', label: '案号', prop: 'serial', sortable: true, width: '140' },
+          { type: 'text', label: '提案号', prop: 'serial', sortable: true, width: '140' },
           { type: 'text', label: '提案名称', prop: 'title', sortable: true, width: '200' },
           { type: 'text', label: '提案人', prop: 'proposer', render_simple: 'name', sortable: true, width: '118' },
           // { type: 'text', label: '代理人', prop: 'agent', sortable: true, width: '160' },
@@ -178,7 +178,7 @@ export default {
           { type: 'text', label: '产品相关', prop: 'product_relevance',render_simple: 'name', width:'125',sortable: true},
           { type: 'text', label: '提案简介', prop: 'abstract', sortable: true, width: '200' },
           { type: 'text', label: '提案时间', prop: 'create_time', sortable: true, width: '118' },
-          { type: 'text', label: '部门', prop: 'branch', render_simple: 'name', sortable: true, width: '118' },
+          { type: 'text', label: '部门全名', prop: 'branch', render_simple: 'name', sortable: true, width: '118' },
           { type: 'text', label: '部门简称', prop: 'abbr', render_simple: 'abbr', sortable: true, width: '118' },
           { type: 'text', label: '技术分类', prop: 'classification', render_simple: 'name', sortable: true, width: '118' },
           { type: 'array', label: '产品分类', prop: 'products', render: _=>_.map(_=>_.name), width: '118' },

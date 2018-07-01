@@ -30,7 +30,7 @@ export default {
         { type: 'text', label: '管制事项', prop: 'taskdef', render: this.taskdefRender},
         // { type: 'text', label: '流程节点', prop: 'flownode', render_simple: 'name'},
         { type: 'text', label: '开始时间', prop: 'start_time' },
-        { type: 'text', label: '指定期限', prop: 'due_time' },
+        { type: 'text', label: '内部期限', prop: 'due_time' },
         { type: 'text', label: '官方绝限', prop: 'deadline' },
         { type: 'text', label: '完成时间', prop: 'end_time' },
         // { type: 'text', label: '状态', prop: 'status', render_text: v => v ? '已完成' : '未完成' },
@@ -103,7 +103,7 @@ export default {
           btns: [
             { type: 'view', click: ({viewUrl})=>{window.open(viewUrl)}},
             { type: 'download', click: ({downloadUrl})=>{window.open(downloadUrl)}},
-            { type: 'delete', click:this.handleDelete,btn_if:()=>{return this.menusMap && !this.menusMap.get('/flow')? true :false}},  
+            { type: 'delete', click:this.handleDelete,btn_if:()=>{return this.menusMap && !this.menusMap.get('/flows')? true :false}},  
           ]
         }
       ],
@@ -146,7 +146,7 @@ export default {
     handleDelete ({id}) {
       this.$confirm('此操作将删除当前附件，是否继续？', '提示',{type: 'warning'})
       .then(_=>{
-        const url = `/tasks/${this.tableData3['id']}/files/${id}`;
+        const url = `/task/${this.tableData3['id']}/files/${id}`;
         const success = _=>{
           this.$message({type: 'success', message: _.info});
           this.dialogVisible = false;

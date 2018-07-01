@@ -63,7 +63,11 @@ export default {
 	computed: {
 		...mapGetters([
 			'screenValue',
-		])
+		]),
+		defaultParams () {
+			const params = this.$route.meta.params;
+			return params ? params : {};
+		},
 	},
 	methods: {
 		exportClick () {
@@ -75,6 +79,7 @@ export default {
 						data: {
 							...this.filter,
 							...this.screenValue,
+							...this.defaultParams,
 							format: 'excel',
 							documents: this.form.documents,
 							fields: this.form.fields.join(','),

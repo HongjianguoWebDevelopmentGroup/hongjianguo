@@ -49,7 +49,7 @@ export default {
 				{ type: 'text', label: '案件名称', prop: 'title' },
 				{ type: 'text', label: '费用类型', prop: 'code', render_simple: 'name' },
 				{ type: 'text', label: '费用', prop: 'amount' },
-				{ type: 'text', label: '企业意见', prop: 'remark_enterprise', width: '200' },
+				{ type: 'text', label: '审核意见', prop: 'remark_enterprise', width: '200' },
 				{ 
 					type: 'text', 
 					label: '附件',

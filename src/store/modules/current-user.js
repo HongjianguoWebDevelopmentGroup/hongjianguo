@@ -64,6 +64,96 @@ const getters = {
 		const count = user ? user.monitoredTaskCount : 0;
 		return count;
 	},
+	allTaskCount: state=>{
+		const user = state.data;
+		const count = user ? user.allTaskCount : 0;
+		return count;
+	},
+	finishedTaskCount: state=>{
+		const user = state.data;
+		const count = user ? user.finishedTaskCount : 0;
+		return count;
+	},
+	expiredTaskCount: state=>{
+		const user = state.data;
+		const count = user ? user.expiredTaskCount : 0;
+		return count;
+	},
+	weekTaskCount: state=>{
+		const user = state.data;
+		const count = user ? user.weekTaskCount : 0;
+		return count;
+	},
+	nextWeekTaskCount: state=>{
+		const user = state.data;
+		const count = user ? user.nextWeekTaskCount : 0;
+		return count;
+	},
+	monthTaskCount: state=>{
+		const user = state.data;
+		const count = user ? user.monthTaskCount : 0;
+		return count;
+	},
+	nextMonthTaskCount: state=>{
+		const user = state.data;
+		const count = user ? user.nextMonthTaskCount : 0;
+		return count;
+	},
+	laterTaskCount: state=>{
+		const user = state.data;
+		const count = user ? user.laterTaskCount : 0;
+		return count;
+	},
+	applicationTaskCount: state=>{
+		const user = state.data;
+		const count = user ? user.applicationTaskCount : 0;
+		return count;
+	},
+	oaTaskCount: state=>{
+		const user = state.data;
+		const count = user ? user.oaTaskCount : 0;
+		return count;
+	},
+	reexamTaskCount: state=>{
+		const user = state.data;
+		const count = user ? user.reexamTaskCount : 0;
+		return count;
+	},
+	grantTaskCount: state=>{
+		const user = state.data;
+		const count = user ? user.grantTaskCount : 0;
+		return count;
+	},
+	invalidTaskCount: state=>{
+		const user = state.data;
+		const count = user ? user.invalidTaskCount : 0;
+		return count;
+	},
+	annualFeeTaskCount: state=>{
+		const user = state.data;
+		const count = user ? user.annualFeeTaskCount : 0;
+		return count;
+	},
+	litigationTaskCount: state=>{
+		const user = state.data;
+		const count = user ? user.litigationTaskCount : 0;
+		return count;
+	},
+	proposalTaskCount: state=>{
+		const user = state.data;
+		const count = user ? user.proposalTaskCount : 0;
+		return count;
+	},
+	patentTaskCount: state=>{
+		const user = state.data;
+		const count = user ? user.patentTaskCount : 0;
+		return count;
+	},
+	copyrightTaskCount: state=>{
+		const user = state.data;
+		const count = user ? user.copyrightTaskCount : 0;
+		return count;
+	},
 	pendingTask: state=>{
 		const user = state.data;
 		const pendingTask = user && user.pendingTask ? user.pendingTask : null;

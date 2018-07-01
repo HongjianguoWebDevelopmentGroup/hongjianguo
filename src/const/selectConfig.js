@@ -253,6 +253,15 @@ const config = [
     allowCreate: true,
     defaultFirstOption: true,
   }],
+  ['abbr', {
+    placeholder: '请输入或选择部门简称',
+    url: '/abbr',
+    handle (data) {
+      return data.data.map(_=>{return {id: _.abbr, name: _.abbr}});
+    },
+    allowCreate: true,
+    defaultFirstOption: true,
+  }],
   ['area', {
     placeholder: '请选择地区',
     options: 'areaData',
@@ -263,6 +272,10 @@ const config = [
     handle: _=>_.flownodes,
     // set: 'setFlowNodes',
     // refresh: 'refreshFlowNodes',
+  }],
+  ['task_def', {
+    placeholder: '请选择管制事项',
+    options: 'taskDefsData',
   }],
   ['fee_code', {
     placeholder: '请选择费用代码',

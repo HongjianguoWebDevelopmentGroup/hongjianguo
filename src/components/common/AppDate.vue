@@ -8,6 +8,7 @@
 			:label="item.label">
 		</el-option>
 	</el-select>
+	<span v-if="dateType == 'range'">操作提示：请先点击起始时间，然后再次点击结束时间，选择起始时间后可以翻页</span>
 	<keep-alive>
 		<el-date-picker style="width: 100%" key="date" :value="dateValue" type="date" @input="handleInput" v-if="isDate"></el-date-picker>
 		<el-date-picker style="width: 100%" key="daterange" :value="dateValue" type="daterange" @input="handleInput" v-else></el-date-picker>

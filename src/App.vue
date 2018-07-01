@@ -21,7 +21,7 @@
 
     <nav>
         <div style="display: inline-block;vertical-align: top;">
-          <img src="/static/static_img/hjg_logo.png" style=" height: 27px;vertical-align: middle;">
+          <img src="/static/static_img/cvte_logo.png" style=" height: 27px;vertical-align: middle;">
         </div>
         <!-- <span class="logo_name">知识产权管理系统</span> -->
         <div style="display: inline-block;">

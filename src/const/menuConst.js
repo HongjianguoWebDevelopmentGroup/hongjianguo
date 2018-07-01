@@ -4,7 +4,7 @@ const menu = {};
 const map = {};
 const taskMenu = [
 	{ type: 'item', text: '我的待办', path: '/task/pending', icon: 'iconfont el-icon-my-task' },
-	{ type: 'item', text: '我的关注', path: '/task/all', icon: 'iconfont el-icon-my-task' },
+	{ type: 'item', text: '所有待办', path: '/task/all', icon: 'iconfont el-icon-my-task' },
 	{ type: 'item', text: '暂停处理', path: '/task/paused', icon: 'iconfont el-icon-my-task' },
 	{ type: 'item', text: '已完成', path: '/task/finished', icon: 'iconfont el-icon-my-task' },
 	{ type: 'item', text: '期限管控', path: '/task/expiringControl', icon: 'iconfont el-icon-my-task' },
@@ -30,11 +30,11 @@ const taskMenu = [
 		children: [
 			{ type: 'item', text: '新申请', path: '/task/stage/application', icon: '' },
 			{ type: 'item', text: 'OA', path: '/task/stage/oa', icon: '' },
-			{ type: 'item', text: '复审', path: '/task/stage/review', icon: '' },
-			{ type: 'item', text: '授权', path: '/task/stage/authorization', icon: '' },
+			{ type: 'item', text: '复审', path: '/task/stage/reexam', icon: '' },
+			{ type: 'item', text: '授权', path: '/task/stage/grant', icon: '' },
 			{ type: 'item', text: '无效', path: '/task/stage/invalid', icon: '' },
 			{ type: 'item', text: '年费续展', path: '/task/stage/annualFee', icon: '' },
-			{ type: 'item', text: '行政诉讼', path: '/task/stage/procedure', icon: '' },
+			{ type: 'item', text: '行政诉讼', path: '/task/stage/litigation', icon: '' },
 		]
 	},
 	{ 
@@ -77,8 +77,8 @@ const proposalMenu = [
 		path: '/proposal/novelty',
 		icon: 'iconfont el-icon-my-proposal',
 		children: [
-			{ type: 'item', text: '有新颖性', path: '/proposal/novelty/existent', icon: '' },
-			{ type: 'item', text: '无新颖性结案', path: '/proposal/novelty/non-existent', icon: '' },
+			{ type: 'item', text: '有新颖性', path: '/proposal/novelty/yes', icon: '' },
+			{ type: 'item', text: '无新颖性结案', path: '/proposal/novelty/no', icon: '' },
 		]
 	},
 	// {
@@ -293,15 +293,17 @@ const feeMenu = [
 			{ type: 'item', text: '优秀实用新型', path: '/fee/bonus/utility', icon: '' },
 		]
 	},
-	{	
+	{
 		type: 'submenu',
-		text: '黄埔区资助',
-		path: '/fee/huangpu',
+		text: '付款账单',
+		path: '/fee/invoice',
 		icon: 'iconfont el-icon-my-receipt',
 		children: [
-			{ type: 'item', text: '专利', path: '/fee/huangpu/patent', icon: '' },
-			// { type: 'item', text: '商标', path: '/fee/huangpu/trademark', icon: '' },
-			// { type: 'item', text: '著作权', path: '/fee/huangpu/copyright', icon: '' },
+			{ type: 'item', text: '待审核', path: '/fee/invoice/to_be_reviewed', icon: '' },
+			{ type: 'item', text: '待上传凭证', path: '/fee/invoice/voucher_upload', icon: '' },
+			{ type: 'item', text: '待付款', path: '/fee/invoice/paying', icon: '' },
+			{ type: 'item', text: '已付款', path: '/fee/account/paid', icon: '' },
+			{ type: 'item', text: '已退回', path: '/fee/invoice/rejected', icon: '' },
 		]
 	},
 	{
@@ -315,17 +317,27 @@ const feeMenu = [
 			// { type: 'item', text: '著作权', path: '/fee/guangzhou/copyright', icon: '' },
 		]
 	},
-	{
+	{	
 		type: 'submenu',
-		text: '账单',
-		path: '/fee/invoice',
+		text: '黄埔区资助',
+		path: '/fee/huangpu',
 		icon: 'iconfont el-icon-my-receipt',
 		children: [
-			{ type: 'item', text: '待审核', path: '/fee/invoice/to_be_reviewed', icon: '' },
-			{ type: 'item', text: '待上传凭证', path: '/fee/invoice/voucher_upload', icon: '' },
-			{ type: 'item', text: '待付款', path: '/fee/invoice/paying', icon: '' },
-			{ type: 'item', text: '已付款', path: '/fee/account/paid', icon: '' },
-			{ type: 'item', text: '已退回', path: '/fee/invoice/rejected', icon: '' },
+			{ type: 'item', text: '专利', path: '/fee/huangpu/patent', icon: '' },
+			// { type: 'item', text: '商标', path: '/fee/huangpu/trademark', icon: '' },
+			// { type: 'item', text: '著作权', path: '/fee/huangpu/copyright', icon: '' },
+		]
+	},
+	{
+		type: 'submenu',
+		text: '请款单',
+		path: '/fee/income',
+		icon: 'iconfont el-icon-my-receipt',
+		children: [
+			{ type: 'item', text: '待提交', path: '/fee/income/submit', icon: '' },
+			{ type: 'item', text: '待收款', path: '/fee/income/wating_for_payment', icon: '' },
+			{ type: 'item', text: '已收款', path: '/fee/income/confirmed', icon: '' },
+			{ type: 'item', text: '已作废', path: '/fee/income/cancelled', icon: '' },
 		]
 	},
 	{
@@ -396,11 +408,11 @@ const testMenu = [
 ]
 
 menu.source = [
-	{
-		text: '个人中心',
-		key: 'statistics',
-		path: '/home',
-	},
+	// {
+	// 	text: '个人中心',
+	// 	key: 'statistics',
+	// 	path: '/home',
+	// },
 	{
 		text: '任务',
 		key: 'task',
@@ -451,7 +463,7 @@ menu.source = [
 		menu: reportMenu,
 	},
 	{
-		text: '交互',
+		text: '邮件',
 		key: 'news',
 		path: '/news',
 		icon: 'iconfont el-icon-my-email',

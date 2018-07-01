@@ -44,8 +44,8 @@
 
       <el-row> 
         <el-col :span="12"> 
-          <el-form-item label="指定期限" prop="due_time">
-            <el-date-picker type="date" v-model="form.due_time" placeholder="请选择指定期限"></el-date-picker>
+          <el-form-item label="内部期限" prop="due_time">
+            <el-date-picker type="date" v-model="form.due_time" placeholder="请选择内部期限"></el-date-picker>
           </el-form-item>
         </el-col>
         <el-col :span="12">
@@ -190,7 +190,7 @@ export default {
       const arr = [];
 
       this.taskDefsData.forEach(_=>{
-        if(_.flow_id == f) arr.push({label: _.label, value: _.value});
+        if(_.flow_id == f) arr.push({label: _.name, value: _.id});
       });
 
       return arr;

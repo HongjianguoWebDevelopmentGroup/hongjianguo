@@ -106,7 +106,7 @@ export default {
         const data = Object.assign( ...setKeys.map(d=>this.$refs[d].submitForm()) );
         console.log(data);
         const success = _=>{ 
-          this.$message({message: '编辑专利成功', type: 'success'});
+          this.$message({message: '专利更新成功，注意代理机构账号仅能修改代理人与代理所账号', type: 'success'});
           this.$emit('editSuccess');
           // this.$router.push('/patent/list');
         };
