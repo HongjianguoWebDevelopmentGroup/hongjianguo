@@ -157,17 +157,14 @@ export default {
 			this.$refs.pop.show(row);
 		},
 		toGroupPop () {
-			const s = this.$refs.table.tableSelect;
-			if( s.length == 0 ) {
-				this.$message({ message: '请选择需要添加的用户', type: 'warning' });
-				return false;
-			}
-				
+			const s = this.$refs.table.getSelected();
+			console.log(s);
+			if(!s) return;		
 			this.to_group = '';
 			this.dialogVisible = true;
 		},
-		toGroup () {
-			const ids = this.$refs.table.tableSelect.map(_=>_.id);
+		toGroup (flag) {
+			const ids = this.$refs.table.getSelected(flag).map(_=>_.id);
 			const params = this.$tool.getUrlParams({ ids }); 
 			const url = `${URL_GROUP}/${this.to_group}/members?${params}`;
 			const success = _=>{
@@ -179,8 +176,8 @@ export default {
 			this.$axiosPut({url, success});
 
 		},
-		removeGroup () {
-			const s = this.$refs.table.tableSelect;
+		removeGroup (flag) {
+			const s = this.$refs.table.getSelected(flag);
 			if( s.length == 0 ) {
 				this.$message({ message: '请选择需要移除的用户', type: 'warning' });
 				return false;
@@ -189,7 +186,7 @@ export default {
 			this.$confirm('确认将所选用户从当前用户组移出吗？')
 				.then(()=>{
 					const url = `${URL_GROUP}/${this.group_id}/members`;
-					const ids = this.$refs.table.tableSelect.map(_=>_.id);
+					const ids = this.$refs.table.getSelected(flag).map(_=>_.id);
 					const data = { ids };
 					const success = _=>{
 						this.$message({message: '移除成功', type: 'success'});
@@ -249,7 +246,6 @@ export default {
   	},
   },
   mounted () {
-  	console.log(this.groupId);
   	if(this.groupId) {
   		this.$refs.group.handleCurrentChange(this.groupId);
   	}else {

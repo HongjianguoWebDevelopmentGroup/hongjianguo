@@ -99,7 +99,6 @@ export default {
   	},
     groupOptions () {
       let g = this.$store.getters.groupOptions;
-      console.log(g);
       if(g == undefined) {
         this.loading = true
         this.$store.commit('setGroup',[]);

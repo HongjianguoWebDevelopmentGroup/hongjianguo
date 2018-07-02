@@ -74,15 +74,16 @@ export default {
 					}
 				],
 				'import_columns': [
-					{ 
-						type: 'array', 
-						label: '费用', 
-						prop: 'fees', 
-						width: '400',
-						render: _=>{
-							return _.map(_=>`${_.name}(${_.fee})`)
-						},
-					}
+					// { 
+					// 	type: 'array', 
+					// 	label: '费用', 
+					// 	prop: 'fees', 
+					// 	width: '400',
+					// 	render: _=>{
+							
+					// 		return _.map(_=>`${_.name}(${_.fee})`)
+					// 	},
+					// }
 				]
 			},
 			tableData: [],
