@@ -83,10 +83,10 @@ export default {
         'list_type': 'invoice',
         'rowClick': this.handleRowClick,
         'header_btn': [
+          {},
           { type: 'export' },
           { type: 'delete' },
-          {},
-          { type: 'report', click: this.handleReport },
+          // { type: 'report', click: this.handleReport },
           { type: 'control' },
         ],
         'header_slot': ['cur_total', 'all_total'],

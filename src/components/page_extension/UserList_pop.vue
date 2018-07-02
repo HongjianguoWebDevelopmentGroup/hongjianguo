@@ -46,12 +46,12 @@
       <el-form-item label="手机号/座机" prop="mobile">
         <el-input v-model="form.mobile"></el-input> 
       </el-form-item>
-      <el-form-item label="微信号" prop="weixin">
+      <!-- <el-form-item label="微信号" prop="weixin">
         <el-input v-model="form.weixin"></el-input> 
       </el-form-item>
       <el-form-item label="QQ" prop="qq">
         <el-input v-model="form.qq"></el-input>
-      </el-form-item>
+      </el-form-item> -->
 
       <el-form-item style="margin-bottom: 0;">
         <el-button type="primary" @click="add" v-if="popType == 'add'">确定</el-button>
