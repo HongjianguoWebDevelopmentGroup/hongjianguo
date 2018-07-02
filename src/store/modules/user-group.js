@@ -5,7 +5,7 @@ const state = {
 }
 
 const getters = {
-	groupOptions: state => state.data ? state.data : [],
+	groupOptions: state => state.data,
 	groupMap: state => {
 		const map = new Map();
 
@@ -30,7 +30,7 @@ const mutations = {
 }
 
 const actions = {
-	refreshGroup ({state, commit, rootState, getters}, flag=false) {
+	refreshGroup ({state, commit, rootState, getters}, flag=false,callback) {
 		if(!flag && state.data !== null) return false;
 		const promise = rootState.axios.get(url);
 		commit('setGroupLoading', true);
@@ -39,6 +39,7 @@ const actions = {
 			const d = response.data;
 			if(d.status){
 				commit('setGroup', d.groups);
+				if(callback) {callback(d)};
 			}else {
 				console.log(d);
 				// alert('请求用户组数据失败');

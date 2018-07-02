@@ -1,6 +1,6 @@
 <template>
   <div class="main">
-    <el-button type="primary" @click="addPop(0)" style="margin-bottom: 10px;">添加根节点</el-button>
+    <el-button type="primary" @click="addPop(0)" style="margin-bottom: 10px;">添加一级分类</el-button>
     <el-input
       placeholder="输入关键字进行过滤"
       v-model="filterText"

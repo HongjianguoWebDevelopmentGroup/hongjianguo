@@ -100,11 +100,16 @@ export default {
     groupOptions () {
       let g = this.$store.getters.groupOptions;
       console.log(g);
-      if(g && g.length == 0) {
+      if(g == undefined) {
         this.loading = true
-        // this.$store.commit('setGroup',[]);
-        this.$store.dispatch('refreshGroup', _=>{ this.loading = false });
-        // g = [];
+        this.$store.commit('setGroup',[]);
+        const callback = _=>{
+          this.loading = false
+        };
+        this.$store.dispatch('refreshGroup',callback);
+        g = [];
+      }else {
+        this.loading = false;
       }
 
       g = [{name: '全部用户', description: '该用户组用于存放所有的用户，不可编辑，不可删除', id: 0}, ...g];
