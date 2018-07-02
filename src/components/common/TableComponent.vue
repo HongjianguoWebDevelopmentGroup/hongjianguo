@@ -367,8 +367,6 @@ export default {
         if(a) {arr.push(a)};
         if(static_arr.length != 0) {arr = [...static_arr, ...arr]};
         if(s) {arr.unshift(s)};
-        console.log('++++-------------');
-        console.log(arr);
         return arr;
       }else {
         return [];

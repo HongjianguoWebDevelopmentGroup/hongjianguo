@@ -177,7 +177,7 @@ export default {
     ]),
     feeType () {      
       const path = this.$route.path;
-      const type = /income/.test(path) ? 1 : 0;
+      const type = !/bonus/.test(path) ? 1 : 0;
 
       const k = type ? '请款单' : '付款单';
       const o = this.option.header_btn[1];
