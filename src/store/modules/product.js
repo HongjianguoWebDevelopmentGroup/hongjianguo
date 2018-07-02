@@ -27,7 +27,7 @@ const mutations = {
 }
 
 const actions = {
-	refreshProduct ({commit, rootState}) {
+	refreshProduct ({commit, rootState},{success} = {}) {
 		url = rootState.status ? url.replace(/\/api/, '') : url;
 		rootState.axios
 			.get(url)
@@ -35,6 +35,7 @@ const actions = {
 				const d = response.data;
 				if(d.status){
 					commit('setProduct', d.products);
+					if (success) {success(d)};
 				}else {
 					// alert('请求产品分类数据失败');
 				}

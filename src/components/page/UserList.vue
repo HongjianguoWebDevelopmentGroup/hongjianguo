@@ -249,6 +249,7 @@ export default {
   	},
   },
   mounted () {
+  	console.log(this.groupId);
   	if(this.groupId) {
   		this.$refs.group.handleCurrentChange(this.groupId);
   	}else {

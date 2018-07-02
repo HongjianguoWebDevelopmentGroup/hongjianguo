@@ -99,12 +99,12 @@ export default {
   	},
     groupOptions () {
       let g = this.$store.getters.groupOptions;
-      
-      if(g == undefined) {
+      console.log(g);
+      if(g && g.length == 0) {
         this.loading = true
-        this.$store.commit('setGroup',[]);
+        // this.$store.commit('setGroup',[]);
         this.$store.dispatch('refreshGroup', _=>{ this.loading = false });
-        g = [];
+        // g = [];
       }
 
       g = [{name: '全部用户', description: '该用户组用于存放所有的用户，不可编辑，不可删除', id: 0}, ...g];
