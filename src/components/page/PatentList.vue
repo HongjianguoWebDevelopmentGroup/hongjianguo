@@ -165,7 +165,7 @@ export default {
           { type: 'text', label: '备注', prop: 'remark', sortable: true, width: '123' },
           { type: 'array', label: '项目/奖项名称', prop: 'awards',  render: _=>{ return _.map(_=>_.name);}, width: '200'},
           { type: 'text', label: '主动修改期限', prop: 'active_supplement_expire_date', sortable: true, width: '145' },
-          { type: 'text', label: '委案类型', prop: 'agency_type', sortable: true, width: '145' },
+          { type: 'text', label: '委案类型', prop: 'agency_type', sortable: true, width: '145' , render_simple: 'name'},
           { type: 'text', label: '代理人修改时间', prop: 'agent_amending_period', sortable: true, width: '145' },
           { type: 'text', label: '立案时间', prop: 'create_time', sortable: true, width: '145' },
           { type: 'text', label: 'DAS码', prop: 'das', sortable: true, width: '145' },

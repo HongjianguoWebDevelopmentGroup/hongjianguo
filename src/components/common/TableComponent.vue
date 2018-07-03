@@ -121,7 +121,7 @@
         type="primary" 
         icon="my-filter" 
         :style="`float: right; height: 37px; ${filterRadius}`" 
-        @click="filterVisible = true">
+        @click="filterVisible = true">筛选
       </el-button>
     </div>
     
