@@ -46,8 +46,8 @@ import Pop from '@/components/page_extension/UserList_pop'
 import UserRole from '@/components/form/UserRole'
 import StaticSelect from '@/components/form/StaticSelect'
 
-const URL = 'api/members'
-const URL_GROUP = 'api/groups'
+const URL = '/members'
+const URL_GROUP = '/groups'
 
 export default {
   name: 'userList',
@@ -156,7 +156,7 @@ export default {
 			this.$refs.pop.show(row);
 		},
 		toGroupPop () {
-			const s = this.$refs.table.tableSelect;
+			const s = this.$refs.table.getSelected(true);
 			if( s.length == 0 ) {
 				this.$message({ message: '请选择需要添加的用户', type: 'warning' });
 				return false;
@@ -166,20 +166,20 @@ export default {
 			this.dialogVisible = true;
 		},
 		toGroup () {
-			const ids = this.$refs.table.tableSelect.map(_=>_.id);
-			const params = this.$tool.getUrlParams({ ids }); 
-			const url = `${URL_GROUP}/${this.to_group}/members?${params}`;
+			const ids = this.$refs.table.getSelected(true).map(_=>_.id);
+			const data = {ids}; 
+			const url = `${URL_GROUP}/${this.to_group}/members`;
 			const success = _=>{
 				this.$message({message: '添加用户至用户组成功', type: 'success'});
 				this.dialogVisible = false;
 				this.refresh();
 			}
 
-			this.$axiosPut({url, success});
+			this.$axiosPut({url, data, success});
 
 		},
 		removeGroup () {
-			const s = this.$refs.table.tableSelect;
+			const s = this.$refs.table.getSelected(true);
 			if( s.length == 0 ) {
 				this.$message({ message: '请选择需要移除的用户', type: 'warning' });
 				return false;
@@ -188,7 +188,7 @@ export default {
 			this.$confirm('确认将所选用户从当前用户组移出吗？')
 				.then(()=>{
 					const url = `${URL_GROUP}/${this.group_id}/members`;
-					const ids = this.$refs.table.tableSelect.map(_=>_.id);
+					const ids = this.$refs.table.getSelected(true).map(_=>_.id);
 					const data = { ids };
 					const success = _=>{
 						this.$message({message: '移除成功', type: 'success'});
