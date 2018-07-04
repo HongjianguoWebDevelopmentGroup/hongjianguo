@@ -104,6 +104,16 @@
       <template v-if="tableOption.header_slot ? true : false">
         <slot v-for="item in tableOption.header_slot" :name="item"></slot>
       </template>
+
+      <el-button
+        class="table-header-btn"
+        v-if="tableOption.is_list_filter && tableOption.list_type" 
+        title="筛选"
+        style="margin-left: 5px;"
+        type="primary"
+        @click="filterVisible = true">
+        筛选
+      </el-button>
       
       <search-input
         v-model="search_value"
@@ -111,18 +121,9 @@
         class="table-search"
         @click="handleSearch"
         @enter="handleSearch"
-        :input-style="searchRadius"
         v-if="tableOption.is_search == undefined ? true : tableOption.is_search"
       ></search-input>
         
-      <el-button 
-        v-if="tableOption.is_list_filter && tableOption.list_type" 
-        title="高级筛选"
-        type="primary" 
-        icon="my-filter" 
-        :style="`float: right; height: 37px; ${filterRadius}`" 
-        @click="filterVisible = true">筛选
-      </el-button>
     </div>
     
     <app-table
