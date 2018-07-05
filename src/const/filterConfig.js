@@ -116,6 +116,7 @@ const map = new Map([
         { components: 'input',         id: 'project_serial',                name: '项目编号'},//研发项目编号
         { components: 'input',         id: 'remark',                        name: '备注'},
         { components: 'remote_select', id: 'awards',                        name: '专利奖', type: 'award'},
+        { components: 'static_select', id: 'abbr',                          name: '部门简称',       type: 'abbr' },
     ]],
     ['trademark', [
         { components: 'static_select', id: 'type', name: '商标类型', type: "trademark_type" },
