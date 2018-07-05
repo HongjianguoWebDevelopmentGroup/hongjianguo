@@ -3,21 +3,31 @@ const state = {
 	data: [],
 }
 
+const getMap = (data) => {
+	const map = new Map();
+	a(data);
+	return map;
+
+	function a(arr) {
+		for(let d of arr) {
+			map.set(d.id, d);
+			if(d.children && d.children.length) {
+				a(d.children);
+			}
+		}
+	}
+}
+
 const getters = {
 	classificationData: state=>state.data,
-	classificationMap: state=>{
-		const map = new Map();
-		a(state.data);
-		return map;
+	classificationOptions: (state, getters)=>{
+		const map = getMap(state.data);
+		const arr = [...map.values()];
 
-		function a(arr) {
-			for(let d of arr) {
-				map.set(d.id, d);
-				if(d.children && d.children.length) {
-					a(d.children);
-				}
- 			}
-		}
+		return arr;
+	},
+	classificationMap: state=>{
+		return getMap(state.data);
 	}
 }
 

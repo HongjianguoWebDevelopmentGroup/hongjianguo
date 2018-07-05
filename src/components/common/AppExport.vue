@@ -62,12 +62,12 @@ export default {
 	},
 	computed: {
 		...mapGetters([
-			'screenValue',
+			'filterForm'
 		]),
 		defaultParams () {
 			const params = this.$route.meta.params;
 			return params ? params : {};
-		},
+		}
 	},
 	methods: {
 		exportClick () {
@@ -78,7 +78,7 @@ export default {
 						url: this.url,
 						data: {
 							...this.filter,
-							...this.screenValue,
+							...this.filterForm,
 							...this.defaultParams,
 							format: 'excel',
 							documents: this.form.documents,

@@ -169,10 +169,12 @@ export default {
   },
   watch: {
     config () {
-      this.setOptions;
+      this.setOptions();
     },
     options_vuex (val) {
-      this.options = val;
+      if (typeof this.config.options === 'string') {
+        this.options = val;
+      }
     },
     value (val) {
       this.$refs.select.visible = false;

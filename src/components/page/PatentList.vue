@@ -77,7 +77,7 @@ export default {
         'is_list_filter': true,
         'list_type': 'patent',
         'import_type': 'patent',
-        'upload_type': 'patent',
+        // 'upload_type': 'patent',
         'header_btn': [
           { type: 'add', click: this.add, map_if: '/patent/add', },
           { type: 'delete', map_if: '/patent/delete' }, 
@@ -160,13 +160,13 @@ export default {
           { type: 'text', label: '代理人撰稿耗时', prop: 'agent_drafting_period', is_import: true, width: '160', show: false},
           { type: 'text', label: '发明人审核耗时', prop: 'inventor_review_period', is_import: true, width: '160', show: false},
           { type: 'text', label: 'IPR审核耗时', prop: 'ipr_review_period', is_import: true, width: '160', show: false},
-          { type: 'text', label: '代理人修改耗时', prop: 'amending_period', is_import: true, width: '160', show: false},
+          { type: 'text', label: '代理人修改耗时', prop: 'amending_period', is_import: true, width: '170', show: false},
           { type: 'text', label: '详细状态', prop: 'flownode', sortable: true, width: '180', is_agency: true, render_simple: 'name'},
           { type: 'text', label: '备注', prop: 'remark', sortable: true, width: '123' },
           { type: 'array', label: '项目/奖项名称', prop: 'awards',  render: _=>{ return _.map(_=>_.name);}, width: '200'},
           { type: 'text', label: '主动修改期限', prop: 'active_supplement_expire_date', sortable: true, width: '145' },
-          { type: 'text', label: '委案类型', prop: 'agency_type', sortable: true, width: '145' },
-          { type: 'text', label: '代理人修改时间', prop: 'agent_amending_period', sortable: true, width: '145' },
+          { type: 'text', label: '委案类型', prop: 'agency_type', sortable: true, width: '145' , render_simple: 'name'},
+          { type: 'text', label: '代理人修改时间', prop: 'agent_amending_period', sortable: true, width: '160' },
           { type: 'text', label: '立案时间', prop: 'create_time', sortable: true, width: '145' },
           { type: 'text', label: 'DAS码', prop: 'das', sortable: true, width: '145' },
           { type: 'text', label: '专利族号', prop: 'family_number', sortable: true, width: '145' },
@@ -225,6 +225,7 @@ export default {
   methods: {
     ...mapActions([
       'refreDetailData',
+      'initializeSelectorCache'
     ]),
     handleSendMail (id) {
       this.mailVisible = true;
@@ -361,7 +362,8 @@ export default {
     },
   },
   created () {
-    this.ifAgency();
+    this.ifAgency()
+    this.initializeSelectorCache({type: 'file_type_patent_notice'})
   },
   mounted () {
     if(!this.custom) {

@@ -1,22 +1,33 @@
-let url = '/api/products';
+let url = '/products';
 const state = {
 	data: [],
+}
+
+const getMap = (data) => {
+	const map = new Map();
+	a(data);
+	return map;
+
+	function a(arr) {
+		for(let d of arr) {
+			map.set(d.id, d);
+			if(d.children && d.children.length) {
+				a(d.children);
+			}
+		}
+	}
 }
 
 const getters = {
 	productData: state=>state.data,
 	productMap: state=>{
-		const map = new Map();
-		a(state.data);
- 		return map; 
-		function a(arr) {
-			for(let d of arr) {
-				map.set(d.id, d);
-				if(d.children && d.children.length) {
-					a(d.children);
-				}
-			}
-		}
+		return getMap(state.data);
+	},
+	productOptions: (state, getters)=>{
+		const map = getters.productMap;
+		const arr = [...map.values()];
+
+		return arr;
 	}
 }
 

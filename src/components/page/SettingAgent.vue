@@ -42,28 +42,33 @@ export default {
 				],
         'header_slot': ['agent_status','agent_model'],
 				'import_columns':[
-					{ type: 'text', label: '手机号', prop: 'mobile'},
-					{ type: 'text', label: '邮箱', prop: 'email'},
+					// { type: 'text', label: '手机号', prop: 'mobile'},
+					// { type: 'text', label: '邮箱', prop: 'email'},
 				],
 				'columns': [
 					{ type: 'selection' },
-					{ type: 'text', label: '姓名', prop: 'name', width: '150',is_import: true},
-					{ type: 'text', label: '擅长技术领域', prop: 'major', width: '168',is_import: true,},
-					{ type: 'text', label: '工作年限', prop: 'working_experience',width: '145'},
-					{ type: 'text', label: '状态', prop: 'status', width: '80',render:(h,item)=>{
-            item == 1? item = '正常' : item = '禁用';
-            return h('span',item)
-          }},
-					{ type: 'text', label: '简介', prop: 'introduction',width: '198',is_import: true,},
+					{ type: 'text', label: '姓名', prop: 'name', width: '80',is_import: true},
+					{ type: 'text', label: '代理机构名称', prop: 'agency_name', width: '160',is_import: true,},
+					{ type: 'text', label: '手机', prop: 'mobile', width: '135',is_import: true},
+					{ type: 'text', label: '邮箱', prop: 'email', width: '135',is_import: true},
+					{ type: 'text', label: '教育背景', prop: 'education_degree', width: '100',is_import: true,},
+					{ type: 'text', label: '所学专业', prop: 'major', width: '100',is_import: true,},
+					{ type: 'text', label: '简介', prop: 'introduction', width: '200',is_import: true,},
+					{ type: 'text', label: '工作年限', prop: 'working_experience',width: '100',is_import: true,},
 					{ type: 'text', label: '新申请平均评分', prop:'new_application_rank',width: '198'},
 					{ type: 'text', label: 'OA平均评分', prop:'oa_rank', width: '198'},
 					{ type: 'text', label: '正面评价数量', prop:'positive_amount', width: '150' },
-          { type: 'text', label: '负面评价数量', prop:'negative_amount' ,width:'150'},
-          { type: 'text', label: '代理人等级', prop:'level' ,width:'150'},
-          { type: 'text', label: '案件配额（年）', prop:'distributed_year_amount' ,width:'150'},
+					{ type: 'text', label: '负面评价数量', prop:'negative_amount' ,width:'150'},
+					{ type: 'text', label: '代理人等级', prop:'level' ,width:'150'},
+					{ type: 'text', label: '案件配额（年）', prop:'distributed_year_amount' ,width:'150'},
 					{ type: 'text', label: '案件配额（月）', prop:'distributed_month_amount' ,width:'150'},
 					{ type: 'text', label: '新申请平均返稿天数', prop:'new_application_daytime', width: '198' },
 					{ type: 'text', label: 'OA平均返稿天数', prop:'oa_daytime' ,width: '198'},
+					{ type: 'text', label: '备注', prop:'remark' ,width: '80',is_import:true},
+					{ type: 'text', label: '状态', prop: 'status', width: '80',render:(h,item)=>{
+						item == 1? item = '正常' : item = '禁用';
+						return h('span',item)
+					}},
 					{
 						type: 'action',
 						width: '160',

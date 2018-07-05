@@ -36,6 +36,7 @@ const map = new Map([
         { components: 'remote_select', id: 'applicants',                    name: '申请人', type: 'applicant'},
         { components: 'input',         id: 'apn',                           name: '申请号'},
         { components: 'date',          id: 'apd',                           name: '申请日'},
+        { components: 'date',          id: 'entrusting_time',               name: '委案时间'},
         { components: 'static_select', id: 'type',                          name: '专利类型', type: 'patent_type'},
         { components: 'static_select', id: 'area',                          name: '申请地区', type: 'area'},
         { components: 'input',         id: 'title',                         name: '标题'},
@@ -115,6 +116,7 @@ const map = new Map([
         { components: 'input',         id: 'project_serial',                name: '项目编号'},//研发项目编号
         { components: 'input',         id: 'remark',                        name: '备注'},
         { components: 'remote_select', id: 'awards',                        name: '专利奖', type: 'award'},
+        { components: 'static_select', id: 'abbr',                          name: '部门简称',       type: 'abbr' },
     ]],
     ['trademark', [
         { components: 'static_select', id: 'type', name: '商标类型', type: "trademark_type" },

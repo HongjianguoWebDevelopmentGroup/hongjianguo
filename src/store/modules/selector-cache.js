@@ -29,6 +29,7 @@ const mutations = {
 
 const actions = {
 	initializeSelectorCache ({commit, rootState, state, getters}, {type, func, flag=false}) {
+		console.log(type)
 		//类型参数不存在 退出
 		if(type == undefined) return;
 		//该类型不在选择器配置地图中 退出
