@@ -109,8 +109,8 @@
   <el-dialog title="新增任务" :visible.sync="dialogTask">
     <task-edit type="add" :id="id" ref="taskEdit" @addSuccess="addSuccess"></task-edit>
   </el-dialog>  
-  <el-dialog title="申请委案" :visible.sync="dialogAppointVisible">
-    <appoint-case @appiontCase="appiontCase" type="patent" :project-id="id" ref="appiontCase"></appoint-case>
+  <el-dialog title="申请委案" :visible.sync="dialogAppointVisible" @close="$refs.appiontCase.clearForm()">
+    <appoint-case @appointSuccess="appiontCase" type="patent" :project-id="id" ref="appiontCase"></appoint-case>
   </el-dialog>  
 </div>
 </template>

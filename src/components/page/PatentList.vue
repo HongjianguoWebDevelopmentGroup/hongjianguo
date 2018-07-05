@@ -77,7 +77,7 @@ export default {
         'is_list_filter': true,
         'list_type': 'patent',
         'import_type': 'patent',
-        'upload_type': 'patent',
+        // 'upload_type': 'patent',
         'header_btn': [
           { type: 'add', click: this.add, map_if: '/patent/add', },
           { type: 'delete', map_if: '/patent/delete' }, 
@@ -225,6 +225,7 @@ export default {
   methods: {
     ...mapActions([
       'refreDetailData',
+      'initializeSelectorCache'
     ]),
     handleSendMail (id) {
       this.mailVisible = true;
@@ -361,7 +362,8 @@ export default {
     },
   },
   created () {
-    this.ifAgency();
+    this.ifAgency()
+    this.initializeSelectorCache({type: 'file_type_patent_notice'})
   },
   mounted () {
     if(!this.custom) {

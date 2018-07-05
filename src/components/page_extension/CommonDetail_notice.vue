@@ -269,8 +269,7 @@ export default {
         this.$nextTick(_=>{
           this.clear();
           const l = this.tableDatas.length;
-          const lists = [];  
-          this.dialogVisible = true;
+          const lists = [];
           a.data.list.forEach((_, key)=>{ 
             _.time = '';
             _.legal_time = '';
@@ -286,6 +285,7 @@ export default {
             lists.forEach((v,k)=>{
               this.tableDatas.splice(k+l,1,v);
             })
+          this.dialogVisible = true
           this.$nextTick(_=>{
             this.$refs.docupload.show();
            })

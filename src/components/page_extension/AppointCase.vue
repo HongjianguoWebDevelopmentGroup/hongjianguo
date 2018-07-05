@@ -89,9 +89,11 @@ export default {
         }else {
           this.$message({message: '请认真填写申请委案字段', type: 'warning'});
         }
-      })
-      
-    },  	
+      })      
+    },
+    clearForm () {
+      this.$refs.agen.resetFields()
+    }	
   },
   created() {
 

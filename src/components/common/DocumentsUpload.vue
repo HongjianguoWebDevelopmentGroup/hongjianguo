@@ -172,9 +172,6 @@ export default {
       'detailId',
     ]),
     config () {
-      console.log('---------');
-      console.log(this.type);
-      console.log('+++++++++');
       const config = map.get(this.type);
       return config ? config : this.type;
     },
@@ -187,7 +184,9 @@ export default {
         this.$nextTick(_=>{
         if(this.tableData.length!=0) {
           this.form.type = this.tableData[0]['type']['id']?this.tableData[0]['type']['id']-0:'';
-          const  v = this.$refs.static.getSelected(this.form.type);
+          const v = this.$refs.static.getSelected(this.form.type);
+          console.log('----------v---------');
+          console.log(v);
           this.handleTypeChange(v,0);
         }  
        });
@@ -200,7 +199,6 @@ export default {
       this.dialogVisible = false;
     },
     handleTypeChange (selected, index) {
-      console.log(selected, index);
       let f;
       if(!selected) {
         f = {};
@@ -379,13 +377,14 @@ export default {
   },
   created () {
     // console.log(this.tableData[0])
-
   },
   watch: {
     'form.type': {
       handler:function(val,oVal){
-        if(val!=="") {  
+        if(val !== "") {  
           const v =  this.$refs.static.getSelected(val);
+          console.log('-------watch v--------')
+          console.log(v)
           this.handleTypeChange(v,0);
         }
       }
