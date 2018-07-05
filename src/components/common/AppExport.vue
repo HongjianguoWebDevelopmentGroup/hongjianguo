@@ -23,7 +23,7 @@ export default {
 		'url': String,
 		'fields': {
 			type: Array,
-			defult () {
+			default () {
 				return [];
 			}
 		},

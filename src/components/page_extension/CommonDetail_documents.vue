@@ -50,14 +50,21 @@ export default {
   methods: {
      search (keyword) {
       let newArr = [];
+      // let temp = [];
       if(keyword){
         this.detailDocuments.filter((val,i,arr)=>{
           for (let k in arr[i]) {
-            if(typeof arr[i][k] == 'string'&& arr[i][k].indexOf(keyword) != -1 && k == 'type') {
+            if(typeof arr[i][k] == 'string'&& arr[i][k].indexOf(keyword) != -1 && (k == 'type' || k == 'name')) {
               newArr.push(arr[i]);
+              // for (let j = 0;j<newArr.length; j++  ) {
+              //   if(temp.indexOf(newArr[j]==-1)) {
+              //     temp.push(newArr[j])
+              //   }
+              // }
             }
           }
         })
+        console.log(newArr);
         return newArr;
       }
     },

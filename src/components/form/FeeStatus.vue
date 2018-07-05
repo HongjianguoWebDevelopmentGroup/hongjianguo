@@ -22,11 +22,11 @@ export default {
   props: {
   	'feeType': {
   		type: null,
-  		defult: null,
+  		default: null,
   	},
   	'feeAnnual': {
   		type: Boolean,
-  		defult: true,
+  		default: true,
   	}
   },
   computed: {

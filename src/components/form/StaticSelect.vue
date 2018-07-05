@@ -168,6 +168,9 @@ export default {
     this.setOptions();
   },
   watch: {
+    config () {
+      this.setOptions;
+    },
     options_vuex (val) {
       this.options = val;
     },

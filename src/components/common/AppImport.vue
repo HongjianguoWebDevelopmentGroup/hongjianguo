@@ -146,7 +146,7 @@ const config = [
     url: '/agents/import',
     category: '',
     // model: '/static/templates/fee_template.xlsx',
-    // model_name: '账单模板'
+    // model_name: '代理人模板'
   }]
 ]
 const map = new Map(config);
