@@ -4,27 +4,31 @@ const state = {
 	lastUpdate: '',
 }
 
+const getMap = (data) => {
+	const map = new Map();
+	a(data);
+	return map;
+
+	function a(arr) {
+		for(let d of arr) {
+			map.set(d.id, d);
+			if(d.children && d.children.length) {
+				a(d.children);
+			}
+		}
+	}
+}
+
 const getters = {
 	branchData: state=>state.data,
 	branchMap: state=>{
-		const map = new Map();
-		a(state.data);
-		return map;
-
-		function a(arr) {
-			for(let d of arr) {
-				map.set(d.id, d);
-				if(d.children && d.children.length) {
-					a(d.children);
-				}
- 			}
-		}
+		return getMap(state.data);
 	},
 	branchOptions: (state, getters)=>{
-		const map = getters.branchMap;
+		const map = getMap(state.data);
 		const arr = [...map.values()];
 
-		return arr;
+		return arr;		
 	},
 	branchUpdate: (state)=>{
 		const d = state.lastUpdate; 

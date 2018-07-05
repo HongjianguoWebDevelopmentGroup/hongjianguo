@@ -77,7 +77,9 @@ export default {
     },
     map () {
       const map = new Map ();
-      this.options.forEach(_=>{map.set(_.id, _)});
+      if(this.options && Array.isArray(this.options)) {
+        this.options.forEach(_=>{map.set(_.id, _)});
+      }
 
       return map;
     },
@@ -134,10 +136,8 @@ export default {
       return arr;
     },
     setOptions () {
-      let op = this.config.options;
-
-      if(op instanceof Array) {
-        
+      let op = this.config.options
+      if(Array.isArray(op)) {
         //存储在配置项的下拉框数据直接使用
         this.options = op;
 
@@ -168,8 +168,13 @@ export default {
     this.setOptions();
   },
   watch: {
+    config () {
+      this.setOptions();
+    },  
     options_vuex (val) {
-      this.options = val;
+      if( typeof this.config.options === 'string') {
+        this.options = val;
+      }
     },
     value (val) {
       this.$refs.select.visible = false;
@@ -180,7 +185,6 @@ export default {
       }
     },
     filterOptions () {
-
       if(this.multiple) {
         this.$emit('input', []);
       }else {
