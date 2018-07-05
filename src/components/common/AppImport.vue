@@ -11,7 +11,7 @@
       <el-table-column fixed="left" label="序号" width="80">
         <template slot-scope="scope"><span style="color: #20a0ff">{{ scope.$index + 1 }}</span></template>
       </el-table-column>
-			<el-table-column fixed="left" label="内部案号" width="150" prop="serial"></el-table-column>
+			<el-table-column fixed="left" label="内部案号" width="150" prop="serial" v-if="config.control"></el-table-column>
 			
 			<template v-for="(col, index) in columns">
 
@@ -44,7 +44,7 @@
 	      </template>
 			</template>
 
-			<el-table-column label="操作" width="150">
+			<el-table-column label="操作" width="150" v-if="config.control">
 	      <template slot-scope="scope">
 	        <el-button  type="text" size="small" @click="designPop(scope)">指定案号</el-button>
 	        <el-button type="text" size="small" @click="deleteSingle(scope)">删除</el-button>
@@ -92,7 +92,8 @@ const config = [
 		url: '/api/patents/import',
 		category: 1,
     model: '/static/templates/patent_batch_template.xlsx',
-    model_name: '专利导入模板',
+		model_name: '专利导入模板',
+		control:true,
 	}],
 	['copyright', {
 		action: 'getCopyrights',
@@ -100,21 +101,24 @@ const config = [
 		url: '/copyrights/import',
 		category: 3,
     model: '/static/templates/copyright_batch_template.xlsx',
-    model_name: '版权导入模板',
+		model_name: '版权导入模板',
+		control:true,
 	}],
 	['patent_notice', {
 		action: 'getPatentNotices',
     title: '导入专利通知书',
 		url: '/notices/import',
 		category: 1,
-    // model: '',
+		// model: '',
+		control:true,
 	}],
 	['copyright_notice', {
 		action: 'getCopyrightNotices',
     title: '导入版权通知书',
 		url: '/notices/import',
 		category: 3,
-    // model: '',
+		// model: '',
+		control:true,
 	}],
   ['feesIncome', {
     action: 'getFeesIncome',
@@ -122,7 +126,8 @@ const config = [
     url: '/fees/import',
     category: '',
     model: '/static/templates/fee_template.xlsx',
-    model_name: '费用模板'
+		model_name: '费用模板',
+		control:true,
   }],
   ['feesPayable', {
     action: 'getFeesPayable',
@@ -130,7 +135,8 @@ const config = [
     url: '/fees/import',
     category: '',
     model: '/static/templates/fee_template.xlsx',
-    model_name: '费用模板'
+		model_name: '费用模板',
+		control:true,
   }],
   ['invoicePayable', {
     action: 'getFeesPayable',
@@ -138,7 +144,8 @@ const config = [
     url: '/invoices/import',
     category: '',
     model: '/static/templates/fee_template.xlsx',
-    model_name: '账单模板'
+		model_name: '账单模板',
+		control:true,
   }],
   ['agentImport', {
     action: 'getAgentsInfo',
@@ -146,7 +153,8 @@ const config = [
     url: '/agents/import',
     category: '',
     // model: '/static/templates/fee_template.xlsx',
-    // model_name: '账单模板'
+		// model_name: '账单模板'
+		control:false,
   }]
 ]
 const map = new Map(config);
