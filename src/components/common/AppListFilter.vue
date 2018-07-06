@@ -8,6 +8,9 @@
 				<el-button size="small" type="danger" @click="deletePop">删除</el-button>
 			</div>
 			<div class="filter-editor-condition">
+				<template>
+					<slot name="usual_filter"></slot>
+				</template>
 				<div v-for="(item, index) in listFilter" class="filter-editor-condition-cell">
 					<div class="filter-editor-condition-cell-field">
 						<div class="filter-editor-condition-cell-field-operate">{{ item.name }}</div>
@@ -20,7 +23,6 @@
 						<span class="filter-editor-condition-cell-value-in">{{ item.label }}</span>
 					</div>
 				</div>
-			
 				<div @click="addPop" class="filter-editor-condition-add">
 					<el-button style="padding: 0px;" icon="plus" type="text">新增筛选条件</el-button>
 				</div>
@@ -157,6 +159,7 @@ export default {
 			// 'refreshCustomData', //menu-cache
 		]),
 		clearTableFilter () {
+			// this.$refs.usual_filter.resetFields();
 			this.clearFilter(true);
 		},
 		init (type) {
