@@ -11,7 +11,7 @@ import TableComponent from '@/components/common/TableComponent'
 import Pop from '@/components/page_extension/settingAgent_pop'
 import AxiosMixins from '@/mixins/axios-mixins'
 
-const URL = '/api/agencyagent';
+const URL = '/api/agents';
 export default {
   name: 'settingAgent',
   mixins: [ AxiosMixins ],
