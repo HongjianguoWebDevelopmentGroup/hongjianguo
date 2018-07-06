@@ -35,9 +35,9 @@ const map = new Map([
         { components: 'input',         id: 'agency_serial',                 name: '事务所案号'},
         { components: 'remote_select', id: 'applicants',                    name: '申请人', type: 'applicant'},
         { components: 'input',         id: 'apn',                           name: '申请号'},
-        { components: 'date',          id: 'apd',                           name: '申请日'},
+        { components: 'date',          id: 'apd',                           name: '申请日', used: true},
         { components: 'date',          id: 'entrusting_time',               name: '委案时间'},
-        { components: 'static_select', id: 'type',                          name: '专利类型', type: 'patent_type'},
+        { components: 'static_select', id: 'type',                          name: '专利类型', type: 'patent_type', used: true},
         { components: 'static_select', id: 'area',                          name: '申请地区', type: 'area'},
         { components: 'input',         id: 'title',                         name: '标题'},
         { components: 'date',          id: 'create_time',                   name: '立案时间'},
@@ -50,12 +50,12 @@ const map = new Map([
         { components: 'static_select', id: 'branch',                        name: '部门', type: 'branch'},
         { components: 'static_select', id: 'classification',                name: '技术分类', type: 'classification'},
         { components: 'static_select', id: 'products',                      name: '产品', type: 'product'},
-        { components: 'static_select', id: 'ipr',                           name: '负责IPR', type: 'ipr'},
+        { components: 'static_select', id: 'ipr',                           name: '负责IPR', type: 'ipr', used: true},
         { components: 'remote_select', id: 'proposer',                      name: '提案人', type: 'member'},
         { components: 'input',         id: 'priorities',                    name: '优先权'},
         { components: 'patent',        id: 'relates',                       name: '相关专利'},
         { components: 'static_select', id: 'is_support',                    name: '是否已申请资助', type: 'bool', multiple: false}, //是否已申请资助
-        { components: 'remote_select', id: 'agency',                        name: '代理机构', type: 'agency'}, //代理机构
+        { components: 'remote_select', id: 'agency',                        name: '代理机构', type: 'agency', used: true}, //代理机构
         { components: 'remote_select', id: 'agent',                         name: '代理人', type: 'agent'}, //代理人
         { components: 'date',          id: 'pre_exam_ok_date',              name: '初审合格日'},
         { components: 'date',          id: 'sub_exam_start_date',           name: '进入实审日'},
@@ -116,7 +116,7 @@ const map = new Map([
         { components: 'input',         id: 'project_serial',                name: '项目编号'},//研发项目编号
         { components: 'input',         id: 'remark',                        name: '备注'},
         { components: 'remote_select', id: 'awards',                        name: '专利奖', type: 'award'},
-        { components: 'static_select', id: 'abbr',                          name: '部门简称',       type: 'abbr' },
+        { components: 'static_select', id: 'abbr',                          name: '部门简称',       type: 'abbr', used: true },
     ]],
     ['trademark', [
         { components: 'static_select', id: 'type', name: '商标类型', type: "trademark_type" },

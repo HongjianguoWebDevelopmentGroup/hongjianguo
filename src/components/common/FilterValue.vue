@@ -75,7 +75,7 @@ export default {
 		},
 		multiple () {
 			const source = this.source;
-			return source && source.multiple ? source.multiple : true; 
+			return source && source.multiple !== undefined ? source.multiple : true; 
 		},
 		selectType () {
 			const source = this.source;
@@ -85,7 +85,7 @@ export default {
 	methods: {
 		initialValue () {
 			let val = null;
-			if(this.type == 'static_select' || this.type == 'remote_select' || this.type == 'product') {
+			if(this.type == 'static_select' || this.type == 'remote_select') {
 				val = this.multiple ? [] : '';
 			}else if(this.type == 'date' ) {
 				val = ['',''];
