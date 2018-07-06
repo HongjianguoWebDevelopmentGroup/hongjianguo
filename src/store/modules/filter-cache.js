@@ -5,7 +5,7 @@ const state = {
 	shortcutVisible: false,
 	custom: [],
 	type: '',
-	lock: false,
+	lock: false
 }
 
 const getters = {
@@ -46,6 +46,7 @@ const getters = {
 		const data = state.custom.map((v, i) => ({
 			type: 'listFilter',
 			label: `${v['name']}：${v['label']}`,
+			key: v['key'],
 			index: i,
 		}));
 		return data;
@@ -234,7 +235,11 @@ const actions = {
 		if(item.type == 'screen') {
       dispatch('removeScreen', item.index);
     }else if(item.type == 'listFilter') {
-      dispatch('removeListFilter', item.index);
+    	if (window.listFilter.usedFlag && window.listFilter.usedForm[item['key']]) {
+    		window.listFilter.clearUsedFormField(item['key'])
+    	}else {
+      	dispatch('removeListFilter', item.index);
+    	}
     }
 	}
 }
