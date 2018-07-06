@@ -9,7 +9,7 @@
 			</div>
 			<div class="filter-editor-condition">
 
-				<el-form v-if="usedFlag" label-width="80px" :model="usedForm" style="border-bottom: 1px solid #dedede;">
+				<el-form v-if="usedFlag" label-width="80px" :model="usedForm"  ref="usedForm" style="border-bottom: 1px solid #dedede;">
 					<el-form-item v-for="item in usedOptions" :label="item.name" :key="item.id" :prop="item.id">
 						<filter-value :source="item" v-model="usedForm[item.id]" :ref="`usedForm_${item.id}`"></filter-value>
 					</el-form-item>
@@ -186,8 +186,11 @@ export default {
 			// 'getCustomFilter',
 			// 'refreshCustomData', //menu-cache
 		]),
+		clearUsedFormField (key) {
+			this.usedForm[key] = this.getDefaultValue(key)
+		},
 		clearTableFilter () {
-			// this.$refs.usual_filter.resetFields();
+			this.$refs.usedForm.resetFields();
 			this.clearFilter(true);
 		},
 		init (type) {
@@ -352,6 +355,19 @@ export default {
 			// this.$nextTick(() => {
 			// 	this.refresh();
 			// });
+		},
+		getDefaultValue (key) {
+			const item = this.filterSettingMap.get(key)
+			let val = null
+			const multiple = item.multiple !== undefined ? item.multiple : true
+			if (item.components == 'static_select' || item.components == 'remote_select') {
+				val = multiple ? [] : ''
+			} else if(item.components == 'date' ) {
+				val = ['','']
+			} else if(item.components == 'input') {
+				val = ''
+			}
+			return val
 		}
 	},
 	watch: {
@@ -386,15 +402,7 @@ export default {
 		if (this.usedFlag) {
 			const obj = {}
 			this.usedOptions.forEach(item => {
-				let val = null
-				const multiple = item.multiple !== undefined ? item.multiple : true
-				if (item.components == 'static_select' || item.components == 'remote_select') {
-					val = multiple ? [] : ''
-				} else if(item.components == 'date' ) {
-					val = ['','']
-				} else if(item.components == 'input') {
-					val = ''
-				}
+				let val = this.getDefaultValue(item.id)
 				if (val !== null) {
 					obj[item.id] = val;
 				}
@@ -405,6 +413,12 @@ export default {
 	},
 	mounted () {
 		this.init(this.type);
+		if (this.usedFlag) {
+			window.listFilter = this
+		}
+	},
+	destroyed () {
+		window.listFilter = null
 	},
 	components: {
 		StaticSelect,
