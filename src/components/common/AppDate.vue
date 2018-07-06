@@ -1,6 +1,8 @@
 <template>
 <div>
-	<el-select :value="dateType" @input="handleTypeInput">
+	<el-select :value="dateType" @input="
+
+	handleTypeInput">
 		<el-option
 			v-for="item in options"
 			:key="item.value"
@@ -8,14 +10,16 @@
 			:label="item.label">
 		</el-option>
 	</el-select>
-	<span v-if="dateType == 'range'">操作提示：请先点击起始时间，然后再次点击结束时间，选择起始时间后可以翻页</span>
+	<!-- <span v-if="dateType == 'range'">操作提示：请先点击起始时间，然后再次点击结束时间，选择起始时间后可以翻页</span> -->
 	<keep-alive>
 		<el-date-picker style="width: 100%" key="date" :value="dateValue" type="date" @input="handleInput" v-if="isDate"></el-date-picker>
-		<el-date-picker style="width: 100%" key="daterange" :value="dateValue" type="daterange" @input="handleInput" v-else></el-date-picker>
+		<!-- <el-date-picker style="width: 100%" key="daterange" :value="dateValue" type="daterange" @input="handleInput" v-else></el-date-picker> -->
+		<date-picker :value="dateValue" @input="handleInput" v-else key="daterange"></date-picker>
 	</keep-alive>
 </div>	
 </template>
 <script>
+import DatePicker from '@/components/common/DateStrainer'
 export default {
 	name: 'appDate',
 	props: {
@@ -48,7 +52,7 @@ export default {
 
 			this.inRefresh = true;
 			if(!v1 && !v2) {
-				this.dateType = 'equal';
+				this.dateType = 'range';
 				this.dateValue = '';
 			}else if(v1 && !v2) {
 				this.dateType = 'greater';
@@ -134,6 +138,7 @@ export default {
 				range: false,
 			}[this.dateType];
 		}
-	}
+	},
+	components:{ DatePicker }
 }
 </script>

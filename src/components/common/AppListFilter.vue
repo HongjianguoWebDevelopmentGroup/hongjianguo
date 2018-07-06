@@ -9,11 +9,11 @@
 			</div>
 			<div class="filter-editor-condition">
 
-				<el-form v-if="usedFlag" label-width="80px" :model="usedForm">
+				<el-form v-if="usedFlag" label-width="80px" :model="usedForm" style="border-bottom: 1px solid #dedede;">
 					<el-form-item v-for="item in usedOptions" :label="item.name" :key="item.id" :prop="item.id">
 						<filter-value :source="item" v-model="usedForm[item.id]" :ref="`usedForm_${item.id}`"></filter-value>
 					</el-form-item>
-        </el-form>
+        		</el-form>
 
 				<div v-for="(item, index) in listFilterIn" class="filter-editor-condition-cell">
 					<div class="filter-editor-condition-cell-field">
@@ -361,6 +361,7 @@ export default {
 		usedForm: {
 			deep: true,
 			handler (form) {
+				console.log(form);
 				window.setTimeout(() => {
 					const obj = {}
 					for (let key in form) {
