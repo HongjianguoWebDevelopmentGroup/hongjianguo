@@ -53,7 +53,7 @@
     </el-upload>
   </span>
        <span style="display: inline-block;float: right;">
-        <search-input v-model="searchValue2"  placeholder="搜索文件类型" input-style="width:250px;"></search-input>
+        <search-input v-model="searchValue2"  placeholder="搜索文件名称、文件类型" input-style="width:250px;"></search-input>
      </span>
        <documents style="margin-top: 10px;" :search-value="searchValue2"></documents>
      </div>
