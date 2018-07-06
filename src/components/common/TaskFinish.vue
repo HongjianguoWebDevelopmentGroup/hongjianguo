@@ -287,6 +287,7 @@ export default {
       this.next = "";
   		const url = `${URL}/${this.id}/form`;
   		const success = d=>{
+        this.$emit('refreshNext',d.data.next);
   			this.data = d.data;
         this.fields = d.data.fields;
         if(d.data.level){

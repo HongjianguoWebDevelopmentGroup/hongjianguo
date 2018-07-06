@@ -3,6 +3,25 @@
     
     <table-component :tableOption="tableOption" :data="tableData" @refreshTableData="refreshTableData" ref="table" :refresh-proxy="refreshProxy">
       <!-- <el-button v-if="!!(menusMap && !menusMap.get('/patent/download') )" slot="download" :loading="downloadLoading" icon="share" @click="downloadPop" type="primary" style="margin-left: 5px;">批量下载</el-button> -->
+      <template slot="patent_filter">
+        <el-form :model="filterFrom" ref="filterFrom" label-width="80px">
+          <el-form-item label="专利类型">
+              <static-select type="patent_type" v-model="filterFrom.type"></static-select>
+          </el-form-item>
+          <el-form-item label="申请日">
+            <app-date v-model="filterFrom.apd" ref="date"></app-date>
+          </el-form-item>
+           <el-form-item label="部门简称">
+             <static-select type="abbr" v-model="filterFrom.abbr"></static-select>
+          </el-form-item>
+          <el-form-item label="IPR">
+              <static-select type="ipr" v-model="filterFrom.ipr"></static-select>
+          </el-form-item>
+          <el-form-item label="代理机构">
+              <remote-select type="agency" v-model="filterFrom.agency"></remote-select>
+          </el-form-item>
+        </el-form>
+      </template>
     </table-component>
     
     
@@ -41,7 +60,9 @@ import AppDatePicker from '@/components/common/AppDatePicker'
 import AppShrink from '@/components/common/AppShrink'
 import CommonDetail from '@/components/page_extension/Common_detail'
 import StaticSelect from '@/components/form/StaticSelect'
+import RemoteSelect from '@/components/form/RemoteSelect'
 import MailEdit from '@/components/common/MailEditForm'
+import AppDate from '@/components/common/AppDate'
 import { mapGetters,mapActions } from 'vuex'
 
 const URL = '/patents';
@@ -65,7 +86,13 @@ export default {
       downloadFileType: [],
       downloadLoading: false,
       mailVisible: false,
-      
+      filterFrom: {
+        type: '',
+        apd: [],
+        abbr: '',
+        ipr: '',
+        agency: '',
+      },
       tableOption: {
         'name': 'patentList',
         'url': URL,
@@ -77,7 +104,7 @@ export default {
         'is_list_filter': true,
         'list_type': 'patent',
         'import_type': 'patent',
-        'upload_type': 'patent',
+        // 'upload_type': 'patent',
         'header_btn': [
           { type: 'add', click: this.add, map_if: '/patent/add', },
           { type: 'delete', map_if: '/patent/delete' }, 
@@ -225,6 +252,7 @@ export default {
   methods: {
     ...mapActions([
       'refreDetailData',
+      'initializeSelectorCache'
     ]),
     handleSendMail (id) {
       this.mailVisible = true;
@@ -266,7 +294,7 @@ export default {
     },
     refreshTableData (option) {
       const url = URL;
-      const data = Object.assign({}, option, this.defaultParams);
+      const data = Object.assign({}, option, this.defaultParams,this.filterFrom);
       const success = d=>{
         if(data['format'] == 'excel') {
           window.location.href = d.patents.downloadUrl;
@@ -361,7 +389,8 @@ export default {
     },
   },
   created () {
-    this.ifAgency();
+    this.ifAgency()
+    this.initializeSelectorCache({type: 'file_type_patent_notice'})
   },
   mounted () {
     if(!this.custom) {
@@ -376,7 +405,9 @@ export default {
     AppShrink, 
     CommonDetail,
     StaticSelect,
+    RemoteSelect,
     MailEdit,
+    AppDate,
   },
 }
 </script>

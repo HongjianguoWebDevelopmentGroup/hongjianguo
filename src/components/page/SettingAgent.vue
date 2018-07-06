@@ -1,6 +1,17 @@
 <template>
   <div class="main">
 		<table-component :tableOption="option" :data="tableData" @refreshTableData="refreshTableData" ref="table">
+      <template slot-scoped="scoped" slot="agent_status">
+        <el-select v-model="agentStatus" placeholder="请选择" style="width: 130px;margin-left: 6px;">
+          <el-option
+            v-for="item in selectOptions"
+            :key="item.id"
+            :label="item.name"
+            :value="item.id">
+          </el-option>
+        </el-select>
+      </template>
+      <a href="" slot="agent_model" style="margin-left: 6px;font-size: 14px;">代理人模板</a>
 		</table-component>
   	<pop ref="pop" @refresh="update"></pop>
   </div>
@@ -17,15 +28,19 @@ export default {
   mixins: [ AxiosMixins ],
   data () {
 		return {
+      agentStatus: '',
 		  option: {
 			'name': 'agent',
 			'height': 'default2',
 			'import_type': 'agentImport',
+      'url': URL,
 		  	'header_btn': [
 		  		{'type': 'add', click: this.add},
 		  		{'type': 'control'},
 		  		{'type': 'import'},
+          {'type': 'export'},
 				],
+        'header_slot': ['agent_status','agent_model'],
 				'import_columns':[
 					// { type: 'text', label: '手机号', prop: 'mobile'},
 					// { type: 'text', label: '邮箱', prop: 'email'},
@@ -66,6 +81,11 @@ export default {
 				]
 		  },
 		  tableData: [],
+      selectOptions:[
+        {id: '', name: '全部'},
+        {id: 1, name: '正常'},
+        {id: 0, name: '禁用'},
+      ],
 		}
   },
   methods: {
@@ -91,7 +111,8 @@ export default {
   	},
   	refreshTableData (option) {
   		const url = URL;
-  		const data = Object.assign({}, option);
+      const status = this.agentStatus !== ''? {status: this.agentStatus} : {};
+  		const data = Object.assign({}, option, status);
   		const success = _=>{ this.tableData = _.data };
 
   		this.axiosGet({url, data, success});
@@ -104,7 +125,7 @@ export default {
   	}
   },
   watch: {
-  	is_core_partner () {
+  	agentStatus () {
   		this.refresh();
   	}
   },

@@ -184,7 +184,11 @@
       <app-export :url="tableOption.url" :fields="fields" :default="default_choose" :response-key="exportType.key" @success="dialogExport = false" :filter="requesOption" :selected="selected"></app-export>
     </el-dialog>
 
-    <list-filter v-if="tableOption.is_list_filter && tableOption.list_type" :type="tableOption.list_type" :visible.sync="filterVisible" :refresh="refresh" ref="listFilter"></list-filter>
+    <list-filter v-if="tableOption.is_list_filter && tableOption.list_type" :type="tableOption.list_type" :visible.sync="filterVisible" :refresh="refresh" ref="listFilter">
+      <template slot="usual_filter">
+        <slot name="patent_filter"></slot>
+      </template>
+    </list-filter>
   </div>
 </template>
 

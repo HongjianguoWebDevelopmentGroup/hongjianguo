@@ -132,9 +132,9 @@
         <el-button size="small" @click="handleReject" style="margin-left: 0px;" type="danger" v-if="menusMap && !menusMap.get('/tasks/reject')">退回</el-button>
       </span>
       <el-tabs v-model="activeName">   
-        <el-tab-pane label="前往处理" name="finish" v-if="task_status == 0">
+        <el-tab-pane label="前往处理" name="finish" v-if="task_status == 0 && !nextValue">
           <div :style="`height: ${innerHeight - 140}px; overflow-y: auto;overflow-x:hidden;`">  
-            <task-finish :id="currentRow.id" @submitSuccess="finishSuccess" @more="handleMore"></task-finish>
+            <task-finish :id="currentRow.id" @submitSuccess="finishSuccess" @more="handleMore" @refreshNext="handleNext"></task-finish>
           </div>   
         </el-tab-pane>
         <el-tab-pane label="详细信息" name="edit">   
@@ -234,6 +234,7 @@ export default {
       dialogDelayVisible: false,
       dialogCloseVisible: false,
       moreVisible: false,
+      nextValue: false,
       taskIds: '',
       moreType: '',
       filters: {},
@@ -415,6 +416,15 @@ export default {
 
         this.$axiosPost({url, success});
       }).catch(_=>{});
+    },
+    handleNext (val) {
+      console.log('-------next');
+      console.log(val);
+      if(val&&val.length != 0){
+         this.nextValue = false;
+      }else{
+         this.nextValue = true;
+      }
     },
     handleMore (type) {
       this.moreVisible = true;

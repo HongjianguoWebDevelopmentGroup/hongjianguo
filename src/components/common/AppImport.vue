@@ -152,9 +152,9 @@ const config = [
     title: '导入代理人',
     url: '/agents/import',
     category: '',
-    // model: '/static/templates/fee_template.xlsx',
 		// model_name: '账单模板'
 		control:false,
+
   }]
 ]
 const map = new Map(config);
