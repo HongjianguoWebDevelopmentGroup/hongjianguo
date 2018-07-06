@@ -27,7 +27,7 @@
 		</el-form>
 		<div slot="monthly_status_statistics">
 			<template>
-				<el-button type="primary" size="samll" icon="upload2" style="margin-bottom:10px;" @click="handleExport">导出</el-button>
+				<!-- <el-button type="primary" size="samll" icon="upload2" style="margin-bottom:10px;" @click="handleExport">导出</el-button> -->
 				<app-table :columns="statisticsColumns" :data="statisticsData" key="a3"></app-table>
 			</template>
 		</div>
@@ -141,7 +141,7 @@ export default {
 			});
 		},
 		handleExport() {
-			const url = `/agentexport/${this.$route.query.id}`;
+			const url = `/agents/${this.$route.query.id}/excel`;
 			const success = _=>{
 				this.$message({ message: '导出成功', type: 'success'});
 				window.location.href = _.agent.downloadUrl;
@@ -162,24 +162,6 @@ export default {
 
 			this.$store.commit('onLoading');
 			this.$axiosGet({url, success, complete});	
-		},
-		async importSave () {
-			this.saveLoading = true;
-			try {
-				await this.$axiosPost({
-					url: '/partnerfee/batchUpdate',
-					data: {
-						agency_id: this.$route.query.id,
-						data: this.offerData.filter(v => v.flag).map(v => ({code: v.fee_code, amount: v.amount})),
-					},
-					success: () => {
-						this.saveStatus = false;
-						this.refresh();
-					}
-				})
-			}catch(e){}
-			this.saveLoading = false;
-			
 		},
 		importCancel () {
 			this.saveStatus = false;

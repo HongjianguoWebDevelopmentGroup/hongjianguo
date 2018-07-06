@@ -11,7 +11,7 @@
           </el-option>
         </el-select>
       </template>
-      <a href="" slot="agent_model" style="margin-left: 6px;font-size: 14px;">代理人模板</a>
+      <a href="/static/templates/agent.xlsx" target="_blank" slot="agent_model" style="margin-left: 6px;font-size: 14px;">代理人导入模板</a>
 		</table-component>
   	<pop ref="pop" @refresh="update"></pop>
   </div>
@@ -28,12 +28,12 @@ export default {
   mixins: [ AxiosMixins ],
   data () {
 		return {
-      agentStatus: '',
+      agentStatus: 1,
 		  option: {
 			'name': 'agent',
 			'height': 'default2',
 			'import_type': 'agentImport',
-      'url': URL,
+      		'url': URL,
 		  	'header_btn': [
 		  		{'type': 'add', click: this.add},
 		  		{'type': 'control'},
@@ -82,7 +82,6 @@ export default {
 		  },
 		  tableData: [],
       selectOptions:[
-        {id: '', name: '全部'},
         {id: 1, name: '正常'},
         {id: 0, name: '禁用'},
       ],
@@ -111,7 +110,7 @@ export default {
   	},
   	refreshTableData (option) {
   		const url = URL;
-      const status = this.agentStatus !== ''? {status: this.agentStatus} : {};
+        const status = this.agentStatus !== ''? {status: this.agentStatus} : {};
   		const data = Object.assign({}, option, status);
   		const success = _=>{ this.tableData = _.data };
 

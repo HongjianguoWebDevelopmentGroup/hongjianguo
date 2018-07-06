@@ -90,6 +90,7 @@ const router = new Router({
     { path: '/renewal', redirect: '/renewal/fee' },
     { path: '/report', redirect: '/report/task' },
     { path: '/test', redirect: '/test/form' },
+    { path: '/statistics', redirect: '/task/pending' },
     //###重定向###
     {
       path: '/statistics',
