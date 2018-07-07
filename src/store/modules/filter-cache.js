@@ -5,7 +5,7 @@ const state = {
 	shortcutVisible: false,
 	custom: [],
 	type: '',
-	lock: false,
+	lock: false
 }
 
 const getters = {
@@ -46,6 +46,7 @@ const getters = {
 		const data = state.custom.map((v, i) => ({
 			type: 'listFilter',
 			label: `${v['name']}：${v['label']}`,
+			key: v['key'],
 			index: i,
 		}));
 		return data;
@@ -109,15 +110,38 @@ const mutations = {
 		state.custom = data;
 	},
 	addListFilter (state, item) {
-		console.log('--------------willSetCustom------------');
-		state.custom = [...state.custom, item];
-		console.log(state.custom);
-		// state.custom = true;
-		// state.lock = false;
-		// console.log('--------------didSetCustom-------------');
+		if (Array.isArray(item)) {
+			state.custom = [...state.custom, ...item];
+		}else {
+			state.custom = [...state.custom, item]
+		}
 	},
 	editListFilter (state, {index, item}) {
 		state.custom.splice(index, 1, item);
+	},
+	fillListFilter (state, obj) {
+		let arr = [...state.custom]
+
+		// 尝试删除空项
+		arr = arr.filter(item => obj[item.key] !== false)
+		// 对于添加编辑分类处理
+		const map = new Map()
+		arr.forEach((item, index) => {
+			map.set(item.key, index)
+		})
+		for (let key in obj) {
+			const item = obj[key]
+			if (item !== false) {
+				const index = map.get(item.key)
+				if (index === undefined) {
+					arr.push(item)
+				} else {
+					arr[index] = item
+				}
+			}
+		}
+
+		state.custom = arr
 	},
 	removeListFilter (state, index) {
 		state.custom.splice(index, 1);
@@ -172,20 +196,23 @@ const actions = {
 		if(!Array.isArray(data)) return;
 		commit('setListFilter', data);
 	},
-	//添加列表筛选项
+	// 添加列表筛选项
 	addListFilter ({rootState, commit}, item) {
 		if(!item) return;
-		console.log(rootState);
 		// console.log('--------willaddListFilter-------------');
 		commit('addListFilter', item);
 		// console.log('---------------------------didaddListFilter-------------------');
 	},
-	//移除列表筛选项
+	// 移除列表筛选项
 	removeListFilter ({commit}, index) {
 		if(typeof index != 'number') return;
 		commit('removeListFilter', index);
 	},
-	//编辑列表筛选项
+	// 填充列表筛选项
+	fillListFilter ({commit}, obj) {
+		commit('fillListFilter', obj)
+	},
+	// 编辑列表筛选项
 	editListFilter({state, commit}, {key, item}={}) {
 		if(!key || !item) return;
 		
@@ -208,7 +235,11 @@ const actions = {
 		if(item.type == 'screen') {
       dispatch('removeScreen', item.index);
     }else if(item.type == 'listFilter') {
-      dispatch('removeListFilter', item.index);
+    	if (window.listFilter.usedFlag && window.listFilter.usedForm[item['key']]) {
+    		window.listFilter.clearUsedFormField(item['key'])
+    	}else {
+      	dispatch('removeListFilter', item.index);
+    	}
     }
 	}
 }

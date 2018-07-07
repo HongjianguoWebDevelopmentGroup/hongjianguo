@@ -8,10 +8,14 @@
 				<el-button size="small" type="danger" @click="deletePop">删除</el-button>
 			</div>
 			<div class="filter-editor-condition">
-				<template>
-					<slot name="usual_filter"></slot>
-				</template>
-				<div v-for="(item, index) in listFilter" class="filter-editor-condition-cell">
+
+				<el-form v-if="usedFlag" label-width="80px" :model="usedForm"  ref="usedForm" style="border-bottom: 1px solid #dedede;">
+					<el-form-item v-for="item in usedOptions" :label="item.name" :key="item.id" :prop="item.id">
+						<filter-value :source="item" v-model="usedForm[item.id]" :ref="`usedForm_${item.id}`"></filter-value>
+					</el-form-item>
+        		</el-form>
+
+				<div v-for="(item, index) in listFilterIn" class="filter-editor-condition-cell">
 					<div class="filter-editor-condition-cell-field">
 						<div class="filter-editor-condition-cell-field-operate">{{ item.name }}</div>
 						<div class="filter-editor-condition-cell-field-status">
@@ -64,7 +68,7 @@
 import StaticSelect from '@/components/form/StaticSelect'
 import Shrink from '@/components/common/AppShrink'
 import FilterValue from '@/components/common/FilterValue'
-import {listPathMap} from '@/const/filterConfig'
+import {listPathMap, map as filterConfig} from '@/const/filterConfig'
 
 import {mapActions} from 'vuex' //filter-cache
 import {mapGetters} from 'vuex' //filter-cache
@@ -100,14 +104,24 @@ export default {
 			value: '',
 			selectedKey: '',
 			name: '',
+			usedForm: null
 		};
 	},
 	computed: {
 		...mapGetters([
-			'listFilter',
-			'filterSetting',
-			'filterSettingMap', //filter-cache
+			'listFilter'
 		]),
+		filterSetting () { //自定义筛选配置项
+			const data = filterConfig.get(this.type)
+			return data ? data : []
+		},
+		filterSettingMap () { //自定义筛选配置项映射
+			const map = new Map()
+			this.filterSetting.forEach(v => {
+				map.set(v.id, v)
+			})
+			return map
+		},
 		custom () {
 			const custom = this.$route.meta.custom;
 			return custom !== undefined ? custom : false;
@@ -138,12 +152,25 @@ export default {
 		selectType () {
 			return {
 				placeholder: '请选择筛选属性',
-				options: this.filterSetting,
+				options: this.filterSetting.filter(item => !item.used)
 			}
+		},
+		usedOptions () {
+			return this.filterSetting.filter(item => item.used)
+		},
+		usedFlag () {
+			return this.usedOptions.length === 0 ? false : true
 		},
 		source () {
 			const val = this.filterSettingMap.get(this.key);
 			return val ? val : null;
+		},
+		listFilterIn () {
+			if (this.usedForm === null) {
+				return this.listFilter
+			}else {
+				return this.listFilter.filter(item => this.usedForm[item.key] === undefined)
+			}
 		}
 	},
 	methods: {
@@ -151,6 +178,7 @@ export default {
 			'setListFilter',
 			'addListFilter',
 			'removeListFilter',
+			'fillListFilter',
 			'editListFilter',
 			'clearFilter',
 			'setFilterType', //filter-cachef
@@ -158,8 +186,11 @@ export default {
 			// 'getCustomFilter',
 			// 'refreshCustomData', //menu-cache
 		]),
+		clearUsedFormField (key) {
+			this.usedForm[key] = this.getDefaultValue(key)
+		},
 		clearTableFilter () {
-			// this.$refs.usual_filter.resetFields();
+			this.$refs.usedForm.resetFields();
 			this.clearFilter(true);
 		},
 		init (type) {
@@ -308,7 +339,7 @@ export default {
 			}
 
 			const name = this.$refs.key.map.get(this.key).name;
-			const key =  this.key ;
+			const key =  this.key;
 			const label = this.$refs.value.getLabel();
 			const value =  this.value;
 			const item = { name, key, label, value };
@@ -324,16 +355,70 @@ export default {
 			// this.$nextTick(() => {
 			// 	this.refresh();
 			// });
+		},
+		getDefaultValue (key) {
+			const item = this.filterSettingMap.get(key)
+			let val = null
+			const multiple = item.multiple !== undefined ? item.multiple : true
+			if (item.components == 'static_select' || item.components == 'remote_select') {
+				val = multiple ? [] : ''
+			} else if(item.components == 'date' ) {
+				val = ['','']
+			} else if(item.components == 'input') {
+				val = ''
+			}
+			return val
 		}
 	},
 	watch: {
 		type (val) {
 			this.init(val);
 		},
+		usedForm: {
+			deep: true,
+			handler (form) {
+				console.log(form);
+				window.setTimeout(() => {
+					const obj = {}
+					for (let key in form) {
+						const map = this.filterSettingMap.get(key)
+						const value = form[key]
+
+						if (value === '' || value.length === 0 || (value.length === 2 && value[0] === '' && value[1] === '')) {
+							obj[key] = false
+						}else {
+							const name = map['name']
+							const str = 'usedForm_' + key
+							const label = this.$refs[str][0].getLabel()
+							obj[key] = { name, key, label, value }
+						}
+					}
+					this.fillListFilter(obj)
+				}, 0)
+			}
+		}
+	},
+	created () {
+		if (this.usedFlag) {
+			const obj = {}
+			this.usedOptions.forEach(item => {
+				let val = this.getDefaultValue(item.id)
+				if (val !== null) {
+					obj[item.id] = val;
+				}
+			})
+			this.usedForm = obj	
+		}
+			
 	},
 	mounted () {
-		// console.log('mounted');
 		this.init(this.type);
+		if (this.usedFlag) {
+			window.listFilter = this
+		}
+	},
+	destroyed () {
+		window.listFilter = null
 	},
 	components: {
 		StaticSelect,
