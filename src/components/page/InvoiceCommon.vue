@@ -1,14 +1,15 @@
 <template>
   <div class="main">
     <table-component @refreshTableData="refreshTableData" :tableOption="option" :data="tableData" ref="table">
+      <a href="/static/templates/fee_template.xlsx" target="_blank" slot="invoice_template" style="margin-left: 6px;font-size: 14px;">账单导入模板</a>
       <el-tag v-if="curTotal !== ''" slot="cur_total" style="margin-left: 15px;">当前页费用：{{ curTotal }}</el-tag>
       <el-tag v-if="allTotal !== ''" slot="all_total" style="margin-left: 10px;">所有费用：{{ allTotal }}</el-tag>
       <div slot="row_action" slot-scope="scope" class="invoice-action">
         <el-button :disabled="scope.row.status.id != 1" size="mini" type="text" @click="checkClick(scope.row)">审核账单</el-button>
         <i class="el-icon-arrow-right" style="font-size: 12px;"></i>
-        <el-button :disabled="scope.row.status.id != 2" size="mini" type="text" @click="payClick(scope.row)">确认付款</el-button>
-        <i class="el-icon-arrow-right" style="font-size: 12px;"></i>
         <el-button :disabled="scope.row.status.id != 4" size="mini" type="text" @click="uploadClick(scope.row)">上传凭证</el-button>
+        <i class="el-icon-arrow-right" style="font-size: 12px;"></i>
+        <el-button :disabled="scope.row.status.id != 2" size="mini" type="text" @click="payClick(scope.row)">确认付款</el-button>
       </div>
     </table-component>
     
@@ -89,7 +90,18 @@ export default {
           // { type: 'report', click: this.handleReport },
           { type: 'control' },
         ],
-        'header_slot': ['cur_total', 'all_total'],
+        'header_slot': ['invoice_template'],//['cur_total', 'all_total'],
+        'import_columns':[
+          { type: 'text', label: '案号', prop: 'serial'},
+          { type: 'text', label: '案件名称', prop: 'title'},
+          { type: 'text', label: '费用名称', prop: 'name'},
+          { type: 'text', label: '金额', prop: 'amount'},
+					{ type: 'text', label: '货币', prop: 'currency'},
+          { type: 'text', label: '金额', prop: 'amount'},
+          { type: 'text', label: '汇率', prop: 'roe'},
+          { type: 'text', label: '人民币', prop: 'rmb'},
+          { type: 'text', label: '备注', prop: 'remark'},
+				],
         'columns': [
           { type: 'selection' },
           { type: 'text', label: '账单编号', prop: 'serial', width: '200' },
