@@ -132,9 +132,9 @@
         <el-button size="small" @click="handleReject" style="margin-left: 0px;" type="danger" v-if="menusMap && !menusMap.get('/tasks/reject')">退回</el-button>
       </span>
       <el-tabs v-model="activeName">   
-        <el-tab-pane label="前往处理" name="finish" v-if="task_status == 0 && !nextValue">
+        <el-tab-pane label="前往处理" name="finish" v-if="task_status == 0">
           <div :style="`height: ${innerHeight - 140}px; overflow-y: auto;overflow-x:hidden;`">  
-            <task-finish :id="currentRow.id" @submitSuccess="finishSuccess" @more="handleMore" @refreshNext="handleNext"></task-finish>
+            <task-finish :id="currentRow.id" @submitSuccess="finishSuccess" @more="handleMore" @refreshNext="handleNext" v-show="!nextValue"></task-finish>
           </div>   
         </el-tab-pane>
         <el-tab-pane label="详细信息" name="edit">   
