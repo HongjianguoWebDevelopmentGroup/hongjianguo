@@ -62,13 +62,17 @@ export default {
 			},
 			columns: [
 				{ type: 'text', label: '承办人', prop: 'member',render_simple: 'name'},
-				{ type: 'text', label: '新申请', prop: 'new_apply',},
-				{ type: 'text', label: 'OA', prop: 'oa',},
-				{ type: 'text', label: '复审', prop: 'review',},
-				{ type: 'text', label: '其他', prop: 'others',},
-				{ type: 'text', label: '已超期（件数）', prop: 'over_duetime', render:this.changeBgColor},
-				{ type: 'text', label: '已超绝限（件数）', prop: 'over_deadline', render: this.changeBgColor},
-				{ type: 'text', label: '重点案件到期（件数）', prop: 'expiring',},
+				{ type: 'text', label: '代理机构', prop: 'agency',render_simple: 'name'},
+				{ type: 'text', label: '正常处理中', prop: 'processing',},
+				{ type: 'text', label: '已逾期未返稿（1个月内）', prop: 'processing_expired_1_month',},
+				{ type: 'text', label: '已逾期未返稿（1-3个月）', prop: 'processing_expired_1_3_month',},
+				{ type: 'text', label: '已逾期未返稿（3-6个月）', prop: 'processing_expired_3_6_month',},
+				{ type: 'text', label: '已逾期未返稿（6个月以上）', prop: 'processing_expired_gt_6_month',},
+				{ type: 'text', label: '正常核稿中', prop: 'reviewing',},
+				{ type: 'text', label: '已返稿未审核（1个月内）', prop: 'reviewing_expired_1_month',},
+				{ type: 'text', label: '已返稿未审核（1-3个月）', prop: 'reviewing_expired_1_3_month',},
+				{ type: 'text', label: '已返稿未审核（3-6个月）', prop: 'reviewing_expired_3_6_month',},
+				{ type: 'text', label: '已返稿未审核（6个月以上）', prop: 'reviewing_expired_gt_6_month',},
 			],
 			filter: {},
 		}
@@ -77,6 +81,10 @@ export default {
 		...mapGetters([
 			'menusMap',
 		]),
+		defaultParams () {
+			const params = this.$route.meta.params;
+			return params ? params : {};
+		},
 	},
 	methods:{
 		...mapActions([
@@ -145,7 +153,7 @@ export default {
 		refreshTaskExpiring (option) {
 			const url = URL;
 			const obj = this.filterObj(this.form);
-			const data = Object.assign({},this.$tool.shallowCopy(obj,{date:false}));
+			const data = Object.assign({},this.$tool.shallowCopy(obj,{date:false}),this.defaultParams);
 			const success = _=>{
 				this.taskExpiringData = _.data;
 			};

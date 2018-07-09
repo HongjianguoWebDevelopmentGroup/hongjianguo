@@ -294,9 +294,20 @@ const router = new Router({
       component: TaskExpiring,
     },
     {
-      path: '/task/expiringControl',
-      name: 'TaskExpiringControl',
+      path: '/task/expiringControlNew',
+      name: 'TaskExpiringControlNew',
       component: TaskExpiringControl,
+      meta: {
+        params: { stage: 1 },
+      }
+    },
+    {
+      path: '/task/expiringControlOa',
+      name: 'TaskExpiringControlOa',
+      component: TaskExpiringControl,
+      meta: {
+        params: { stage: 2 },
+      }
     },
     {
       path: '/task/custom/:id',

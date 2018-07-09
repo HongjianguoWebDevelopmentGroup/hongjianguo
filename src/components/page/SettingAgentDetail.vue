@@ -41,7 +41,7 @@ import AppPop from '@/components/common/AppPop'
 import AppTag from '@/components/common/AppTag'
 
 
-const URL = '/api/agents';
+const URL = '/api/agent';
 
 export default {
   name: 'settingAgentDetail',

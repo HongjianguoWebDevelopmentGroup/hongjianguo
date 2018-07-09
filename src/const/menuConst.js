@@ -7,7 +7,8 @@ const taskMenu = [
 	{ type: 'item', text: '所有待办', path: '/task/all', icon: 'iconfont el-icon-my-task' },
 	{ type: 'item', text: '暂停处理', path: '/task/paused', icon: 'iconfont el-icon-my-task' },
 	{ type: 'item', text: '已完成', path: '/task/finished', icon: 'iconfont el-icon-my-task' },
-	{ type: 'item', text: '期限管控', path: '/task/expiringControl', icon: 'iconfont el-icon-my-task' },
+	{ type: 'item', text: '期限管控(新申请)', path: '/task/expiringControlNew', icon: 'iconfont el-icon-my-task' },
+	{ type: 'item', text: '期限管控(OA)', path: '/task/expiringControlOA', icon: 'iconfont el-icon-my-task' },
 	{ 
 		type: 'submenu', 
 		text: '按任务期限', 
