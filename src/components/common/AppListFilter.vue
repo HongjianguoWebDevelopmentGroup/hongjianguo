@@ -20,7 +20,7 @@
 						<div class="filter-editor-condition-cell-field-operate">{{ item.name }}</div>
 						<div class="filter-editor-condition-cell-field-status">
 							<el-button icon="edit" type="text" size="mini" @click="(e) => { edit(e, index) }"></el-button>
-							<el-button icon="close" type="text" size="mini" @click="(e) => { remove(e, index); }"></el-button>
+							<el-button icon="close" type="text" size="mini" @click="(e) => {remove(e, item.key); }"></el-button>
 						</div>
 					</div>
 					<div class="filter-editor-condition-cell-value">
@@ -167,8 +167,10 @@ export default {
 		},
 		listFilterIn () {
 			if (this.usedForm === null) {
+
 				return this.listFilter
 			}else {
+				console.log(this.listFilter);
 				return this.listFilter.filter(item => this.usedForm[item.key] === undefined)
 			}
 		}
@@ -317,6 +319,7 @@ export default {
 			}) 
 		},
 		remove (event, index) {
+			console.log(index);
 			this.removeListFilter(index);
 			// this.$nextTick(() => {
 			// 	this.refresh();

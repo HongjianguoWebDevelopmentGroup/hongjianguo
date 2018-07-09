@@ -204,8 +204,19 @@ const actions = {
 		// console.log('---------------------------didaddListFilter-------------------');
 	},
 	// 移除列表筛选项
-	removeListFilter ({commit}, index) {
-		if(typeof index != 'number') return;
+	removeListFilter ({commit}, key) {
+		if(!key) return;
+		let index = '';
+		if(typeof key == 'string') {
+			state.custom.forEach((v, i) => {
+				if(v.key == key) {
+					index = i;
+				}
+			})
+		}else if(typeof key == 'number') {
+			index = key;
+		}
+		if(index === '') return;
 		commit('removeListFilter', index);
 	},
 	// 填充列表筛选项
