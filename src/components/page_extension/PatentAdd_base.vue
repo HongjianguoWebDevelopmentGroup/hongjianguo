@@ -66,7 +66,7 @@
         <remote-select type="applicant" v-model="form.applicants" multiple></remote-select>
       </el-form-item >
 
-      <el-form-item label="发明人" prop="inventors">
+      <el-form-item label="发明人" prop="inventors" v-if="!menusMap.get('/iprs')">
         <inventors v-model="form.inventors" ref="inventors" @addInventor="$refs.form.validateField('inventors')" @deleteInventor="$refs.form.validateField('inventors')"></inventors>
       </el-form-item>
 
@@ -172,6 +172,7 @@ export default {
     ...mapGetters([
       'userid',
       'userrole',
+      'menusMap',
     ]),
     extensionSet () {
       let area = this.form.area;

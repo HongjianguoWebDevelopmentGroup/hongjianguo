@@ -391,8 +391,8 @@ const settingMenu = [
 	{ type: 'item', text: '技术分类管理', path: '/setting/classification', icon: 'iconfont el-icon-my-techonology' },
 	{ type: 'item', text: '产品分类管理', path: '/setting/product', icon: 'iconfont el-icon-my-products' },
 	{ type: 'item', text: '部门管理', path: '/setting/branch', icon: 'iconfont el-icon-my-department' },
-	{ type: 'item', text: '代理人管理', path: '/setting/agent', icon: 'iconfont el-icon-my-proposer'},
 	{ type: 'item', text: '代理机构管理', path: '/setting/agency',icon: 'iconfont el-icon-my-organization' },
+	{ type: 'item', text: '代理人管理', path: '/setting/agent', icon: 'iconfont el-icon-my-proposer'},
 	// { type: 'item', text: '报价管理', path: '/setting/offer', icon: 'iconfont el-icon-my-organization' },
 	{
 		text: '字段权限管理',

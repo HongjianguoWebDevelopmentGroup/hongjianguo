@@ -1,7 +1,7 @@
 <template>
   <div class="main">
   <app-tag :tags="tags" is_static>
-		<!-- <el-form label-width="140px" slot="basic_information">
+		<el-form label-width="140px" slot="basic_information">
 			<el-form-item label="代理人名称">
 				<span class="detail-item">{{ form.name }}</span>
 			</el-form-item>
@@ -21,13 +21,13 @@
 			<el-form-item label="简介">
 				<span class="detail-item">{{ form.introduction}}</span>
 			</el-form-item>
-			<el-form-item label="代理所状态">
+			<el-form-item label="代理人状态">
 				<span class="detail-item">{{ form.status_name }}</span>
 			</el-form-item>
-		</el-form> -->
+		</el-form>
 		<div slot="monthly_status_statistics">
 			<template>
-				<el-button type="primary" size="samll" icon="upload2" style="margin-bottom:10px;" @click="handleExport">导出</el-button>
+				<!-- <el-button type="primary" size="samll" icon="upload2" style="margin-bottom:10px;" @click="handleExport">导出</el-button> -->
 				<app-table :columns="statisticsColumns" :data="statisticsData" key="a3"></app-table>
 			</template>
 		</div>
@@ -41,7 +41,7 @@ import AppPop from '@/components/common/AppPop'
 import AppTag from '@/components/common/AppTag'
 
 
-const URL = '/agencyagent';
+const URL = '/api/agents';
 
 export default {
   name: 'settingAgentDetail',
@@ -61,26 +61,26 @@ export default {
 				status_name: '',
 			},
 			tags: [
-				// { text: '基本信息', key: 'basic_information', default: true },
+				{ text: '基本信息', key: 'basic_information', default: true },
 				{ text: '月度状况统计', key: 'monthly_status_statistics', default: true},
 			],
 			statisticsColumns: [
-				{ type: 'text', label: '月份', prop:'time', width:'80' },
-				{ type: 'text', label: '新申请委案量', prop:'increase_project_amount' , width:'80'},
-				{ type: 'text', label: 'OA新增数量', prop:'oa_increase_amount' , width:80},
-				{ type: 'text', label: '新申请定稿数', prop:'new_application_final_amount' , width:80},
-				{ type: 'text', label: 'OA定稿数', prop: 'oa_final_amount', width:80},
-				{ type: 'text', label: '新申请平均评分', prop:'new_application_rank', width:80 },
-				{ type: 'text', label: 'OA平均评分', prop:'oa_rank', width:80 },
-				{ type: 'text', label: '正面评价数量', prop:'positive_amount' , width:80},
-				{ type: 'text', label: '负面评价数量', prop:'negative_amount', width:80 },
-				{ type: 'text', label: '新申请平均返稿天数', prop:'new_application_daytime', width:80 },
-				{ type: 'text', label: 'OA平均返稿天数', prop:'oa_daytime', width:80 },
-				{ type: 'text', label: '新申请返稿及时率', prop: 'new_application_ontime_rate',width:80, render:(h,item)=>{
+				{ type: 'text', label: '月份', prop:'time', width:'120' },
+				{ type: 'text', label: '新申请委案量', prop:'increase_project_amount' , width:'120'},
+				{ type: 'text', label: 'OA新增数量', prop:'oa_increase_amount' , width:120},
+				{ type: 'text', label: '新申请定稿数', prop:'new_application_final_amount' , width:120},
+				{ type: 'text', label: 'OA定稿数', prop: 'oa_final_amount', width:120},
+				{ type: 'text', label: '新申请平均评分', prop:'new_application_rank', width:120 },
+				{ type: 'text', label: 'OA平均评分', prop:'oa_rank', width:120 },
+				{ type: 'text', label: '正面评价数量', prop:'positive_amount' , width:120},
+				{ type: 'text', label: '负面评价数量', prop:'negative_amount', width:120 },
+				{ type: 'text', label: '新申请平均返稿天数', prop:'new_application_daytime', width:120 },
+				{ type: 'text', label: 'OA平均返稿天数', prop:'oa_daytime', width:120 },
+				{ type: 'text', label: '新申请返稿及时率', prop: 'new_application_ontime_rate',width:120, render:(h,item)=>{
 					item == -1? item = '-': item;
 					return h('span',item); 
 				}},
-				{ type: 'text', label: 'OA返稿及时率', prop: 'oa_ontime_rate', width:80,render:(h,item)=>{
+				{ type: 'text', label: 'OA返稿及时率', prop: 'oa_ontime_rate', width:120,render:(h,item)=>{
 					item == -1? item = '-': item;
 					return h('span',item); 
 				}},
@@ -141,7 +141,7 @@ export default {
 			});
 		},
 		handleExport() {
-			const url = `/agentexport/${this.$route.query.id}`;
+			const url = `/agents/${this.$route.query.id}/excel`;
 			const success = _=>{
 				this.$message({ message: '导出成功', type: 'success'});
 				window.location.href = _.agent.downloadUrl;
@@ -152,7 +152,7 @@ export default {
 			const id = this.$route.query.id;
 			const url = `${URL}/${id}`;
 			const success = _=>{
-				// this.form = _.agency;
+				this.form = _.agent;
 				// this.offerData = _.agency.partner_fee;
 				this.statisticsData =_.agent.agent_statistics;
 			}
@@ -162,24 +162,6 @@ export default {
 
 			this.$store.commit('onLoading');
 			this.$axiosGet({url, success, complete});	
-		},
-		async importSave () {
-			this.saveLoading = true;
-			try {
-				await this.$axiosPost({
-					url: '/partnerfee/batchUpdate',
-					data: {
-						agency_id: this.$route.query.id,
-						data: this.offerData.filter(v => v.flag).map(v => ({code: v.fee_code, amount: v.amount})),
-					},
-					success: () => {
-						this.saveStatus = false;
-						this.refresh();
-					}
-				})
-			}catch(e){}
-			this.saveLoading = false;
-			
 		},
 		importCancel () {
 			this.saveStatus = false;

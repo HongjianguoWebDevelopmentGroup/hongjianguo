@@ -11,7 +11,7 @@
           </el-option>
         </el-select>
       </template>
-      <a href="" slot="agent_model" style="margin-left: 6px;font-size: 14px;">代理人模板</a>
+      <a href="/static/templates/agent.xlsx" target="_blank" slot="agent_model" style="margin-left: 6px;font-size: 14px;">代理人导入模板</a>
 		</table-component>
   	<pop ref="pop" @refresh="update"></pop>
   </div>
@@ -22,18 +22,18 @@ import TableComponent from '@/components/common/TableComponent'
 import Pop from '@/components/page_extension/settingAgent_pop'
 import AxiosMixins from '@/mixins/axios-mixins'
 
-const URL = '/api/agencyagent';
+const URL = '/api/agents';
 export default {
   name: 'settingAgent',
   mixins: [ AxiosMixins ],
   data () {
 		return {
-      agentStatus: '',
+      agentStatus: 1,
 		  option: {
 			'name': 'agent',
 			'height': 'default2',
 			'import_type': 'agentImport',
-      'url': URL,
+      		'url': URL,
 		  	'header_btn': [
 		  		{'type': 'add', click: this.add},
 		  		{'type': 'control'},
@@ -57,8 +57,8 @@ export default {
 					{ type: 'text', label: '工作年限', prop: 'working_experience',width: '100',is_import: true,},
 					{ type: 'text', label: '新申请平均评分', prop:'new_application_rank',width: '198'},
 					{ type: 'text', label: 'OA平均评分', prop:'oa_rank', width: '198'},
-					{ type: 'text', label: '正面评价数量', prop:'positive_amount', width: '150' },
-					{ type: 'text', label: '负面评价数量', prop:'negative_amount' ,width:'150'},
+					{ type: 'text', label: '好评数量', prop:'positive_amount', width: '150' },
+					{ type: 'text', label: '差评数量', prop:'negative_amount' ,width:'150'},
 					{ type: 'text', label: '代理人等级', prop:'level' ,width:'150'},
 					{ type: 'text', label: '案件配额（年）', prop:'distributed_year_amount' ,width:'150'},
 					{ type: 'text', label: '案件配额（月）', prop:'distributed_month_amount' ,width:'150'},
@@ -82,7 +82,6 @@ export default {
 		  },
 		  tableData: [],
       selectOptions:[
-        {id: '', name: '全部'},
         {id: 1, name: '正常'},
         {id: 0, name: '禁用'},
       ],
@@ -111,7 +110,7 @@ export default {
   	},
   	refreshTableData (option) {
   		const url = URL;
-      const status = this.agentStatus !== ''? {status: this.agentStatus} : {};
+        const status = this.agentStatus !== ''? {status: this.agentStatus} : {};
   		const data = Object.assign({}, option, status);
   		const success = _=>{ this.tableData = _.data };
 

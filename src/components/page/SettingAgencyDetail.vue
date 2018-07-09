@@ -33,7 +33,7 @@
 		</el-form> -->
 		<div slot="monthly_status_statistics">
 			<template>
-				<el-button type="primary" size="samll" icon="upload2" style="margin-bottom:10px;" @click="handleExport">导出</el-button>
+				<!-- <el-button type="primary" size="samll" icon="upload2" style="margin-bottom:10px;" @click="handleExport">导出</el-button> -->
 				<app-table :columns="statisticsColumns" :data="statisticsData" key="a3"></app-table>
 			</template>
 		</div>
