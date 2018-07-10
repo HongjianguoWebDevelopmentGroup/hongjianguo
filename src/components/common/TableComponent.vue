@@ -519,9 +519,9 @@ export default {
       }else {
         //合并获得导出请求的请求参数
         if(this.refreshTableData) {
-          this.refreshTableData(Object.assign({}, this.getRequestOption(), {format: 'excel'}));
+          this.refreshTableData(Object.assign({}, this.getRequestOption(),this.filterForm, {format: 'excel'}));
         }
-        this.$emit('refreshTableData', Object.assign({}, this.getRequestOption(), {format: 'excel'} ) );
+        this.$emit('refreshTableData', Object.assign({}, this.getRequestOption(),this.filterForm, {format: 'excel'} ) );
         //Vue Api.
         this.$nextTick(_=>{
           if(this.refreshProxy) {
