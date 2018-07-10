@@ -304,10 +304,11 @@ export default {
           { type: 'text', label: '申请号', prop: 'apn', sortable: true, width: '130'},
           { type: 'text', label: '开始时间', prop: 'start_time', show: false, sortable: true, width: '118'},
           { type: 'text', label: '完成时间', prop: 'end_time', sortable: true, width: '118'},
-          { type: 'text', label: '内部期限', prop: 'due_time', show: false, sortable: true, width: '118'},
+          { type: 'text', label: '内部期限', prop: 'due_time', show: true, sortable: true, width: '118'},
+          { type: 'text', label: '返稿日', prop: 'first_edition_time', show: true, sortable: true, width: '118'},
           // { type: 'text', label: '定稿期限', prop: 'review_dealine', show: false, sortable: true, width: '190'},
           // { type: 'text', label: '管控期限', prop: 'inner_dealine', sortable: true, width: '190'},
-          { type: 'text', label: '官方绝限', prop: 'deadline', show: false, sortable: true, width: '118'},
+          { type: 'text', label: '官方绝限', prop: 'deadline', show: true, sortable: true, width: '118'},
           { type: 'text', label: '超期天数', prop: 'duetime_days', show: true, sortable: true, width: '138'},
           { type: 'text', label: '备注', prop: 'remark', sortable: true, width: '150',overflow: true},
           // { 

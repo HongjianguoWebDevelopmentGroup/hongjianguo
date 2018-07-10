@@ -204,7 +204,7 @@ const actions = {
 		// console.log('---------------------------didaddListFilter-------------------');
 	},
 	// 移除列表筛选项
-	removeListFilter ({commit}, key) {
+	removeListFilter ({commit}, key) {console.log("HERE");
 		if(key === undefined) return;
 		let index = '';
 		if(typeof key == 'string') {
@@ -243,18 +243,15 @@ const actions = {
 	},
 	//关闭筛选标签
 	closeTag ({state, commit, dispatch}, item) {
-
 		if(item.type == 'screen') {
-      dispatch('removeScreen', item.index);
-    }else if(item.type == 'listFilter') {
-    	if (window.listFilter != null) {
-    		if (window.listFilter.usedFlag&& window.listFilter.usedForm[item['key']]) {
-    			window.listFilter.clearUsedFormField(item['key'])
-    		}
-    	}else {
-      		dispatch('removeListFilter', item.index);
-    	}
-    }
+      		dispatch('removeScreen', item.index);
+		}else if(item.type == 'listFilter') {
+			if (window.listFilter != null && window.listFilter.usedFlag && window.listFilter.usedForm[item['key']] ) {
+				window.listFilter.clearUsedFormField(item['key'])
+			}else {
+				dispatch('removeListFilter', item.index);
+			}
+		}
 	}
 }
 

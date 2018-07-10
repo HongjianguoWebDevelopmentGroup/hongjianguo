@@ -62,17 +62,16 @@ export default {
 			},
 			columns: [
 				{ type: 'text', label: '承办人', prop: 'member',render_simple: 'name'},
-				{ type: 'text', label: '代理机构', prop: 'agency',render_simple: 'name'},
-				{ type: 'text', label: '正常处理中', prop: 'processing',},
-				{ type: 'text', label: '已逾期未返稿（1个月内）', prop: 'processing_expired_1_month',},
-				{ type: 'text', label: '已逾期未返稿（1-3个月）', prop: 'processing_expired_1_3_month',},
-				{ type: 'text', label: '已逾期未返稿（3-6个月）', prop: 'processing_expired_3_6_month',},
-				{ type: 'text', label: '已逾期未返稿（6个月以上）', prop: 'processing_expired_gt_6_month',},
-				{ type: 'text', label: '正常核稿中', prop: 'reviewing',},
-				{ type: 'text', label: '已返稿未审核（1个月内）', prop: 'reviewing_expired_1_month',},
-				{ type: 'text', label: '已返稿未审核（1-3个月）', prop: 'reviewing_expired_1_3_month',},
-				{ type: 'text', label: '已返稿未审核（3-6个月）', prop: 'reviewing_expired_3_6_month',},
-				{ type: 'text', label: '已返稿未审核（6个月以上）', prop: 'reviewing_expired_gt_6_month',},
+				{ type: 'text', label: '代理机构', prop: 'agency_name'},
+				{ type: 'text', label: '正常处理中', prop: 'processing_0',},
+				{ type: 'text', label: '已逾期未返稿（1个月内）', prop: 'processing_30',},
+				{ type: 'text', label: '已逾期未返稿（1-3个月）', prop: 'processing_90',},
+				{ type: 'text', label: '已逾期未返稿（3-6个月）', prop: 'processing_180',},
+				{ type: 'text', label: '已逾期未返稿（6个月以上）', prop: 'processing_360',},
+				{ type: 'text', label: '已返稿未审核（1个月内）', prop: 'reviewing_30',},
+				{ type: 'text', label: '已返稿未审核（1-3个月）', prop: 'reviewing_90',},
+				{ type: 'text', label: '已返稿未审核（3-6个月）', prop: 'reviewing_180',},
+				{ type: 'text', label: '已返稿未审核（6个月以上）', prop: 'reviewing_360',},
 			],
 			filter: {},
 		}
@@ -93,20 +92,11 @@ export default {
 		handleCellClick (row, column, cell, event) {
 			if(column.property == 'member') return false;
 				let option = {};
-				if(this.form.role == 6){
-					option['agent'] = row.member.id;
-					this.identity = '代理人';
-				}
-				if (this.form.role == 3)  {
-					option['ipr'] = row.member.id;
-					this.identity = 'IPR';
-				}
-				if(column.property == 'over_deadline' || column.property == 'over_duetime' || column.property == 'expiring'){
-					option[column.property] = map.get(column.property);
-				}else{
-					option['stage'] = map.get(column.property);
-				}
-				const extraOption = Object.assign({},option,this.filterObj(this.form));
+				option['person_in_charge'] = row.member.id;
+				this.identity = '承办人';
+
+				option['monitored'] = column.property;
+				const extraOption = Object.assign({},option,this.filterObj(this.form),this.defaultParams);
 				const name = `期限管控：${this.identity}:${row.member['name']}`;
 				const label = `管控类型：${column.label}`;
 				const key = '';
