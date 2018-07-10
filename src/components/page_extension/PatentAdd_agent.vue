@@ -1,5 +1,6 @@
 <template>
-  <app-collapse col-title="委案信息">
+  <!-- <app-collapse col-title="委案信息"> -->
+    <div>
       <el-form label-width="120px">
         <el-form-item label="代理机构名称">
           <remote-select type="agency" v-model="form.agency"></remote-select>
@@ -14,7 +15,8 @@
           <static-select v-model="form.agency_type" type="agency_type"></static-select>
         </el-form-item>
       </el-form>
-    </app-collapse>
+    </div>  
+    <!-- </app-collapse> -->
 </template>
 
 <script>

@@ -1,13 +1,42 @@
 <template>
   <div class="main">
-    
-    <pa-base ref="base" :type="type" @getArea="getArea"></pa-base>
+     <el-tabs type="border-card">
+      <el-tab-pane>
+        <span slot="label"><i class="el-icon-information"></i> 基本信息</span>
+        <pa-base ref="base" :type="type" @getArea="getArea"></pa-base>
+      </el-tab-pane>
+      <el-tab-pane>
+        <span slot="label"><i class="el-icon-date"></i> 日期&号码</span>
+        <person ref="person" :type="type" :area="area"></person>
+      </el-tab-pane>
+      <el-tab-pane>
+        <span slot="label"><i class="el-icon-menu"></i> 分类信息</span>
+        <classification ref="classification"></classification>
+      </el-tab-pane>
+      <el-tab-pane>
+        <span slot="label"><i class="el-icon-arrow-right"></i> 代理机构</span>
+        <agent ref="agent"></agent>
+      </el-tab-pane>
+      <el-tab-pane>
+        <span slot="label"><i class="el-icon-share"></i> 相关案件</span>
+        <case ref="case"></case>
+      </el-tab-pane>
+      <el-tab-pane>
+        <span slot="label"><i class="el-icon-more"></i> 其它信息</span>
+        <other ref="other" :type="type" ></other>
+      </el-tab-pane>
+      <el-tab-pane>
+        <span slot="label"><i class="el-icon-document"></i> 任务</span>
+        <task ref="task" :type="type" category="1"></task>
+      </el-tab-pane>
+    </el-tabs>   
+<!--     <pa-base ref="base" :type="type" @getArea="getArea"></pa-base>
     <person ref="person" :type="type" :area="area"></person>
     <classification ref="classification"></classification>
     <agent ref="agent"></agent>
     <case ref="case"></case>
-    <other ref="other" :type="type"></other>
-    <div style="margin-bottom: 20px;">
+    <other ref="other" :type="type"></other> -->
+    <div style="margin-bottom: 20px;margin-top: 20px;">
       <el-button @click="add" type="primary" v-if="type == 'add'" :disabled="btn_disabled">添加</el-button>
       <!-- <el-button @click="edit" type="primary" v-if="type == 'edit'" :disabled="btn_disabled">编辑</el-button> -->
       <el-button @click="cancel" v-if="!shrink" :disabled="btn_disabled">取消</el-button>
@@ -24,8 +53,8 @@ const map = new Map([
   ['other', '请正确填写其他信息及附件'],
 ]);
 
-const getKeys = ['base', 'person', 'classification', 'case','agent', 'other'];
-const setKeys = ['base', 'person', 'classification', 'agent', 'case', 'other'];
+const getKeys = ['base', 'person', 'classification', 'case','agent', 'other', 'task'];
+const setKeys = ['base', 'person', 'classification', 'agent', 'case', 'other', 'task'];
 
 const URL = '/patents';
 
@@ -36,6 +65,7 @@ import Classification from '@/components/page_extension/PatentAdd_classification
 import Agent from '@/components/page_extension/PatentAdd_agent'
 import Case from '@/components/page_extension/PatentAdd_case'
 import Other from '@/components/page_extension/PatentAdd_other'
+import Task from '@/components/page_extension/PatentAdd_task'
 import {mapActions} from 'vuex'
 export default {
   name: 'patentAdd',
@@ -183,7 +213,7 @@ export default {
       // }   
     })
   },
-  components: { PaBase, Person, Classification, Agent, Case, Other, AppCollapse }
+  components: { PaBase, Person, Classification, Agent, Case, Other, AppCollapse, Task }
 }
 </script>
 

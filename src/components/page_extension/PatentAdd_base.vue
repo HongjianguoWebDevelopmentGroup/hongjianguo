@@ -1,5 +1,6 @@
 <template>
-  <app-collapse col-title="基本信息">
+  <!-- <app-collapse col-title="基本信息"> -->
+  <div> 
 		<el-form label-width="120px" :model="form" :rules="rules" ref="form">
       <el-form-item label="案号" v-if="type=='edit'">
         {{ serial }}
@@ -7,19 +8,30 @@
 			<el-form-item label="标题" prop="title">
 				<el-input v-model="form.title" placeholder="请填写案件标题" ></el-input>
 			</el-form-item>
-	    <el-form-item label="申请地区" prop="area" :rules="{ type: type=='add' ? 'array' : 'string',required: true, message: '地区不能为空', trigger: 'change'}">
-	    	<region 
-          v-model="form.area" 
-          :multiple="type == 'add'"
-        ></region>
-	    </el-form-item>
-	    <el-form-item label="专利类型" prop="type">
-	      <static-select type="patent_type" v-model="form.type"></static-select>
-	    </el-form-item>
-      <el-form-item label="IPR" prop="ipr" :rules="{type: 'number', required: true, message: 'IPR不能为空', trigger: 'change'}">
-        <!-- <span class="form-item-text" v-if="type == 'add'">{{ user ? user.name : '暂未取得当前用户信息' }}</span> -->
-        <static-select type="ipr" v-model="form.ipr"></static-select>
-      </el-form-item>       
+      <el-row>
+        <el-col :span="8">
+          <el-form-item label="申请地区" prop="area" :rules="{ type: type=='add' ? 'array' : 'string',required: true, message: '地区不能为空', trigger: 'change'}">
+          <region 
+            v-model="form.area" 
+            :multiple="type == 'add'"
+          ></region>
+        </el-form-item>
+        </el-col>
+        <el-col :span="8">
+          <el-form-item label="专利类型" prop="type">
+             <static-select type="patent_type" v-model="form.type"></static-select>
+          </el-form-item>
+        </el-col>
+        <el-col :span="8">
+          <el-form-item label="IPR" prop="ipr" :rules="{type: 'number', required: true, message: 'IPR不能为空', trigger: 'change'}">
+            <!-- <span class="form-item-text" v-if="type == 'add'">{{ user ? user.name : '暂未取得当前用户信息' }}</span> -->
+            <static-select type="ipr" v-model="form.ipr"></static-select>
+          </el-form-item>       
+        </el-col>
+      </el-row>
+       <el-form-item label="提案人">
+          <remote-select type="member" v-model="form.proposer"></remote-select>
+        </el-form-item>
       <el-form-item label="申请人">
         <remote-select type="applicant" v-model="form.applicants" multiple></remote-select>
       </el-form-item >
@@ -46,7 +58,8 @@
           <upload action="/api/files?action=parseDisclosure" @uploadSuccess="handleUploadSuccess" v-model="form.attachments" :file-list="attachments"></upload>
       </el-form-item>             
 	  </el-form>
-  </app-collapse>
+   </div>  
+  <!-- </app-collapse> -->
 </template>
 
 <script>
@@ -85,6 +98,7 @@ export default {
         area: '',
         type: '',
         ipr: '',
+        proposer: '',
         applicants: [],
         inventors: [],
         priorities: [],

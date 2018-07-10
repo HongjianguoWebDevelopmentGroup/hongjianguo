@@ -107,6 +107,8 @@ export default {
   },
   methods: {
     ...mapActions([
+      'refreshTaskDefs',
+      'refreshFlows',
       'initializeSelectorCache',
     ]),
     add () {
@@ -155,6 +157,8 @@ export default {
     this.$refs.table.refresh();
   },
   created () {
+    this.refreshFlows();
+    this.refreshTaskDefs();
     this.initializeSelectorCache({ type: 'file_type_copyright_notice' });
   },
   components: { 

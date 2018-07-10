@@ -460,7 +460,9 @@ nav {
 .el-table {
   /*margin-bottom: 10px;*/
 }
-
+.input-min-width {
+  width: 150px !important;
+}
 .table-header {
   margin-bottom: 10px;
   overflow: hidden;

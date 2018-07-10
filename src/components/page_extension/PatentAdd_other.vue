@@ -1,5 +1,6 @@
 <template>
-  <app-collapse col-title="其他信息及附件">
+  <!-- <app-collapse col-title="其他信息及附件"> -->
+    <div>
       <el-form label-width="120px">
         <el-form-item label="状态" v-if="type == 'edit'">
            <static-select type="patents_status" v-model="form.progress"></static-select>
@@ -11,7 +12,8 @@
           <el-input v-model="form.remark" type="textarea" placeholder="请填写备注信息"></el-input>
         </el-form-item>
       </el-form>
-    </app-collapse>
+     </div> 
+    <!-- </app-collapse> -->
 </template>
 
 <script>

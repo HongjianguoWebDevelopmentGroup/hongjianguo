@@ -1,15 +1,26 @@
 <template>
 	<div class="main" id="trademarkAdd">
 		<el-form :model="form" ref="form" label-width="120px" :rules="rules">
-			<el-form-item label="案号" prop="serial">
-				<el-input v-model="form.serial" placeholder="请填写案号"></el-input>
-			</el-form-item>
-			<el-form-item label="商标名称" prop="title">
-				<el-input v-model="form.title" placeholder="请输入商标名称"></el-input>
-			</el-form-item>
-			<el-form-item label="商标类型" prop="type">
-				<static-select type="type" v-model="form.type"></static-select>
-			</el-form-item>
+		<el-tabs type="border-card">
+      		<el-tab-pane>
+        	<span slot="label"><i class="el-icon-information"></i> 基本信息</span>
+        	<el-row>
+        		<el-col :span="8">
+					<el-form-item label="案号" prop="serial">
+						<el-input v-model="form.serial" placeholder="请填写案号"></el-input>
+					</el-form-item>
+        		</el-col>
+        		<el-col :span="8">
+					<el-form-item label="商标名称" prop="title">
+						<el-input v-model="form.title" placeholder="请输入商标名称"></el-input>
+					</el-form-item>
+        		</el-col>
+        		<el-col :span="8">
+					<el-form-item label="商标类型" prop="type">
+						<static-select type="type" v-model="form.type"></static-select>
+					</el-form-item>
+        		</el-col>
+        	</el-row>
 			<el-form-item label="商标大类" prop="categories">
 				<static-select type="categories" v-model="form.categories" multiple></static-select>
 			</el-form-item>
@@ -64,15 +75,23 @@
 					</div>
 				</el-dialog>
 			</el-form-item>
-			<el-form-item label="申请人" prop="applicants">
-				<remote-select type="applicant" v-model="form.applicants" multiple></remote-select>
-			</el-form-item>
-			<el-form-item label="代理机构" prop="agency">
-				<remote-select type="agency" v-model="form.agency"></remote-select>
-			</el-form-item>
-			<el-form-item label="地区" prop="area" :rules="{ type: pageType=='add' ? 'array' : 'string',required: true, message: '地区不能为空', trigger: 'change'}">
-				<static-select type="area" v-model="form.area" :multiple="pageType == 'add'"></static-select>
-			</el-form-item>			
+			<el-row>
+        		<el-col :span="8">
+					<el-form-item label="申请人" prop="applicants">
+						<remote-select type="applicant" v-model="form.applicants" multiple></remote-select>
+					</el-form-item>
+        		</el-col>
+        		<el-col :span="8">
+					<el-form-item label="代理机构" prop="agency">
+						<remote-select type="agency" v-model="form.agency"></remote-select>
+					</el-form-item>
+        		</el-col>
+        		<el-col :span="8">
+					<el-form-item label="地区" prop="area" :rules="{ type: pageType=='add' ? 'array' : 'string',required: true, message: '地区不能为空', trigger: 'change'}">
+						<static-select type="area" v-model="form.area" :multiple="pageType == 'add'"></static-select>
+					</el-form-item>			
+        		</el-col>
+        	</el-row>			
 			<el-form-item label="状态" prop="progress" v-if="pageType == 'edit'">
 				<static-select type="trademarks_status" v-model="form.progress"></static-select>
 			</el-form-item>
@@ -96,45 +115,78 @@
 			<el-form-item label="优先权" prop="priorities">
 				<priorities v-model="form.priorities"></priorities>
 			</el-form-item>
-			<el-form-item label="申请日" prop="apd">
-				<el-date-picker type="date" v-model="form.apd" placeholder="请选择申请日"></el-date-picker>
-			</el-form-item>
-			<el-form-item label="申请号" prop="apn">
-				<el-input v-model="form.apn" placeholder="请填写申请号"></el-input>
-			</el-form-item>
-			<el-form-item label="初审公告日" prop="public_date">
-				<el-date-picker type="date" v-model="form.public_date" placeholder="请选择初审公告日"></el-date-picker>
-			</el-form-item>
-			<el-form-item label="初审公告期数" prop="public_number">
-				<el-input v-model="form.public_number" placeholder="请填写初审公告期数"></el-input>
-			</el-form-item>
-			<el-form-item label="核准注册日" prop="issue_date">
-				<el-date-picker type="date" v-model="form.issue_date" placeholder="请选择核准注册日"></el-date-picker>
-			</el-form-item>
-			<el-form-item label="核准公告期数" prop="issue_number">
-				<el-input v-model="form.issue_number" placeholder="请填写核准公告期数"></el-input>
-			</el-form-item>
-			<el-form-item label="专用权期限" prop="expiring_date">
-				<el-date-picker type="date" v-model="form.expiring_date" placeholder="请选择专用权期限"></el-date-picker>
-			</el-form-item>
-			<el-form-item label="驳回日期" prop="reject_date">
-				<el-date-picker type="date" v-model="form.reject_date" placeholder="请选择驳回日期"></el-date-picker>
-			</el-form-item>
-			<el-form-item label="立案时间" prop="create_time">
-				<el-date-picker type="date" v-model="form.create_time" placeholder="请选择立案时间"></el-date-picker>
-			</el-form-item>
-
 			<el-form-item label="附件" prop="attachments">
 				<upload v-model="form.attachments" :file-list="attachments"></upload>
 			</el-form-item>
 			<el-form-item label="备注" prop="remark">
 				<el-input type="textarea" v-model="form.remark" placeholder="请填写备注"></el-input>
 			</el-form-item>
-			<el-form-item >
-				<el-button  @click="add" v-if="pageType == 'add'" :disabled="btn_disabled" type="primary">添加</el-button>
-				<!-- <el-button  v-if="type == 'edit'" :disable="btn_disabled" type="primary">编辑</el-button> -->
-			</el-form-item>
+        	</el-tab-pane>
+
+      	<el-tab-pane>
+        	<span slot="label"><i class="el-icon-date"></i> 日期&号码</span>
+        	<el-row>
+        		<el-col :span="8">
+					<el-form-item label="申请日" prop="apd">
+						<el-date-picker type="date" v-model="form.apd" placeholder="请选择申请日" class="input-min-width"></el-date-picker>
+					</el-form-item>
+        		</el-col>
+        		<el-col :span="8">
+					<el-form-item label="申请号" prop="apn">
+						<el-input v-model="form.apn" placeholder="请填写申请号" class="input-min-width"></el-input>
+					</el-form-item>
+        		</el-col>
+        		<el-col :span="8">
+					<el-form-item label="初审公告日" prop="public_date">
+						<el-date-picker type="date" v-model="form.public_date" placeholder="请选择初审公告日" class="input-min-width"></el-date-picker>
+					</el-form-item>        			
+        		</el-col>
+        	</el-row>      	
+        	<el-row>
+        		<el-col :span="8">
+					<el-form-item label="初审公告期数" prop="public_number">
+						<el-input v-model="form.public_number" placeholder="请填写初审公告期数" class="input-min-width"></el-input>
+					</el-form-item>
+        		</el-col>
+        		<el-col :span="8">
+					<el-form-item label="核准注册日" prop="issue_date">
+						<el-date-picker type="date" v-model="form.issue_date" placeholder="请选择核准注册日" class="input-min-width"></el-date-picker>
+					</el-form-item>
+        		</el-col>
+        		<el-col :span="8">
+					<el-form-item label="核准公告期数" prop="issue_number">
+						<el-input v-model="form.issue_number" placeholder="请填写核准公告期数" class="input-min-width"></el-input>
+					</el-form-item>
+        		</el-col>
+        	</el-row>      	
+        	<el-row>
+        		<el-col :span="8">
+					<el-form-item label="专用权期限" prop="expiring_date">
+						<el-date-picker type="date" v-model="form.expiring_date" placeholder="请选择专用权期限" class="input-min-width"></el-date-picker>
+					</el-form-item>
+        		</el-col>
+        		<el-col :span="8">
+					<el-form-item label="驳回日期" prop="reject_date">
+						<el-date-picker type="date" v-model="form.reject_date" placeholder="请选择驳回日期" class="input-min-width"></el-date-picker>
+					</el-form-item>
+        		</el-col>
+        		<el-col :span="8">
+					<el-form-item label="立案时间" prop="create_time">
+						<el-date-picker type="date" v-model="form.create_time" placeholder="请选择立案时间" class="input-min-width"></el-date-picker>
+					</el-form-item>
+        		</el-col>
+        	</el-row>
+			</el-tab-pane>
+			<el-tab-pane>
+				<span slot="label"><i class="el-icon-document"></i> 任务</span>
+				<task :type="pageType" ref="task" category="2"></task>
+			</el-tab-pane>
+		</el-tabs>
 		</el-form>
+		<div style="margin-top: 20px;margin-bottom: 20px;">
+			<el-button  @click="add" v-if="pageType == 'add'" :disabled="btn_disabled" type="primary">添加</el-button>
+			<!-- <el-button  v-if="type == 'edit'" :disable="btn_disabled" type="primary">编辑</el-button> -->
+		</div>
 	</div>
 </template>
 <script>
@@ -143,6 +195,7 @@ import AxiosMixins from '@/mixins/axios-mixins'
 import Classification from '@/components/form/Classification'
 import Product from '@/components/form/Product'
 import Branch from '@/components/form/Branch'
+import Task from '@/components/page_extension/PatentAdd_task'
 
 import Upload from '@/components/form/Upload'
 import RemoteSelect from '@/components/form/RemoteSelect'
@@ -253,7 +306,7 @@ export default {
 
   		this.btn_disabled = true;
   		const url = URL;
-  		const data = this.$tool.shallowCopy(this.form, {'date': true});
+  		const data = Object.assign({},this.$tool.shallowCopy(this.form, {'date': true}),this.$refs.task.submitForm());
 
   		const success = _=>{ 
   			this.$message({message: _.info, type: 'success'});
@@ -383,7 +436,8 @@ export default {
 		Upload, 
 		RemoteSelect, 
 		StaticSelect, 
-		Priorities
+		Priorities,
+		Task
 	},
 }
 </script>
