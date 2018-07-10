@@ -11,7 +11,7 @@
       </el-tab-pane>
       <el-tab-pane>
         <span slot="label"><i class="el-icon-menu"></i> 分类信息</span>
-        <classification ref="classification"></classification>
+        <classification ref="classification" :type="type"></classification>
       </el-tab-pane>
       <el-tab-pane>
         <span slot="label"><i class="el-icon-arrow-right"></i> 代理机构</span>

@@ -38,6 +38,7 @@ import StaticSelect from '@/components/form/StaticSelect'
 
 export default {
   name: 'patentAddClassification',
+  props:['type'],
   data () {
     return {
       branchName: '',
