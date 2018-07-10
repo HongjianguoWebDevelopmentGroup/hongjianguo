@@ -51,6 +51,7 @@ const map = new Map([
   ['classification', '请正确填写分类信息'],
   ['case', '请正确填写相关案件信息'],
   ['other', '请正确填写其他信息及附件'],
+  ['task', '请正确填写任务信息'],
 ]);
 
 const getKeys = ['base', 'person', 'classification', 'case','agent', 'other', 'task'];

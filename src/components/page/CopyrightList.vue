@@ -109,6 +109,7 @@ export default {
     ...mapActions([
       'refreshTaskDefs',
       'refreshFlows',
+      'refreshFlownodes',
       'initializeSelectorCache',
     ]),
     add () {
@@ -159,6 +160,7 @@ export default {
   created () {
     this.refreshFlows();
     this.refreshTaskDefs();
+    this.refreshFlownodes();
     this.initializeSelectorCache({ type: 'file_type_copyright_notice' });
   },
   components: { 

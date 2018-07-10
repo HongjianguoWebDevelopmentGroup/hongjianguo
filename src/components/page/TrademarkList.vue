@@ -280,6 +280,7 @@ export default {
   	...mapActions([
   		'refreshFlows',
   		'refreshTaskDefs',
+  		'refreshFlownodes',
   		'initializeSelectorCache',
   	]),
   	refreshTableData(option) {
@@ -313,6 +314,7 @@ export default {
   created () {
   	this.refreshFlows();
     this.refreshTaskDefs();
+    this.refreshFlownodes();
   	this.initializeSelectorCache({type: 'file_type_trademark_notice'});
   },
   mounted () {

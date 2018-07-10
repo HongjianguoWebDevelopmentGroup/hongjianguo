@@ -182,6 +182,7 @@ export default {
     ...mapActions([
       'refreshFlows',
       'refreshTaskDefs',
+      'refreshFlownodes',
       'initializeSelectorCache'
     ]),    
     add () {
@@ -285,6 +286,7 @@ export default {
   created () {
     this.refreshFlows();
     this.refreshTaskDefs();
+    this.refreshFlownodes();
     this.initializeSelectorCache({type: 'file_type_patent_notice'});
   },
   mounted () {

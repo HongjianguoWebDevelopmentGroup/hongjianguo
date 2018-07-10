@@ -1,5 +1,5 @@
 <template>  
-  	<el-form label-width="100px" :model="form" ref="form">
+  	<el-form label-width="100px" :model="form" ref="taskForm" :rules="rules">
      <!--  <el-form-item label="关联案件" prop="project_id" v-if="type == 'add'">
         <remote-select type="project" v-model="form.project_id" ref="project"></remote-select>
       </el-form-item> -->
@@ -38,6 +38,18 @@
         </el-select>
       </el-form-item>
 
+      <el-form-item label="流程节点" prop="flow_node_id" v-if="type == 'add'&&form.is_task==1">
+        <el-select v-model="form.flow_node_id" placeholder="请选择流程节点">
+          <el-option
+            v-for="item in flownodeOptions"
+            :key="item.value"
+            :label="item.label"
+            :value="item.value"
+          >
+          </el-option>
+        </el-select>
+      </el-form-item>
+
   		<el-form-item label="承办人" prop="person_in_charge" v-if="type == 'add'&&form.is_task==1">
         <remote-select type="member" v-model="form.person_in_charge"></remote-select>
   		</el-form-item>
@@ -59,8 +71,6 @@ import AxiosMixins from '@/mixins/axios-mixins'
 import RemoteSelect from '@/components/form/RemoteSelect'
 import {mapActions} from 'vuex'
 
-const URL = '/api/tasks';
-
 export default {
   name: 'taskEdit',
   mixins: [ AxiosMixins ],
@@ -77,14 +87,18 @@ export default {
       		 return this.$tool.shallowCopy(this.form, { 'date': true });
  		}else {
  			 return this.$tool.shallowCopy(this.form, { 'date': true ,
- 			 	skip:['flow_id','task_def_id','person_in_charge','due_time','deadline'],
+ 			 	skip:['flow_id','task_def_id','person_in_charge','due_time','deadline','flow_node_id'],
  			});
  		}		
     
     },
-    checkForm (callback) {
-      callback(true);
-    },
+  	checkForm (callback) {
+      let flag = true;
+      this.$refs.taskForm.validate(_=>{
+        flag = _;
+        callback(flag);
+      });
+  	},
     clear () {
       this.$refs.form.resetFields();
     }, 
@@ -118,12 +132,21 @@ export default {
   	return {
   	  form: {
   	  	is_task: 0,
-        project_id: '',
+        // project_id: '',
         flow_id: '',
         task_def_id: '',
         person_in_charge: '',
         due_time: '',
+        flow_node_id: '',
         deadline: '',
+      },
+      rules:{
+      	'flow_id': [{type: 'number', required: true, message: '请选择任务流程', trigger:' blur,change'}],
+      	'task_def_id': [{required: true, message: '请选择任务类型', trigger:' blur,change'}],
+      	'flow_node_id': [{required: true, message: '请选择流程节点', trigger:' blur,change'}],
+      	'person_in_charge': [{type: 'number', required: true, message: '请选择承办人', trigger:' blur,change'}],
+      	'due_time': [{type: 'date', required: true, message: '请选择承办期限', trigger:' change'}],
+      	'deadline': [{type: 'date', required: true, message: '请选择法限', trigger:' change'}],
       },
   	}
   },
@@ -134,6 +157,9 @@ export default {
     taskDefsData () {
       return this.$store.getters.taskDefsData;
     },
+    flownodeData () {
+      return this.$store.getters.flownodeData;
+    },    
     flowOptions () {
       const c = this.category;
       this.form.flow_id = '';
@@ -155,7 +181,16 @@ export default {
       });
 
       return arr;
-    }
+    },
+    flownodeOptions () {
+      const f = this.form.flow_id;
+      this.form.flow_node_id = '';
+      const arr = [];
+      this.flownodeData.forEach(_=>{
+        if (_.flow_id == f) arr.push({label: _.name, value: _.id});
+      })
+      return arr;
+    },    
   },
   watch: {
     'row.id': {
