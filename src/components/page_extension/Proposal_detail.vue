@@ -1,6 +1,7 @@
 <template>
 	<el-tabs v-model="activeName">
     <el-tab-pane label="详细信息" name="first">
+      <div :style="`height: ${innerHeight-150}px;overflow: auto;`">
 			<el-form label-width="70px" label-position="left" class="form-information" v-loading="loading" element-loading-text="加载提案信息中..." style="padding: 0 20px;">
 	    	<el-row :gutter="20">
 	    		<el-col :span="12">
@@ -34,9 +35,11 @@
 	    		</el-form-item>
 	    	</el-row>
 	    </el-form>
+      </div>
     </el-tab-pane>
     <el-tab-pane label="提案流程" name="second" >
-    	<div v-loading="loading" style="padding: 0 20px;">
+
+    	<div v-loading="loading" :style="`padding: 0 20px;height:${innerHeight-150}px;overflow: auto;`">
 			<el-steps :space="100" direction="vertical">
 			  <el-step 
 			  	v-for="(item, index) in row.tasks" 
@@ -139,6 +142,11 @@ export default {
   },
   created () {
   	this.refreshProposal();
+  },
+  computed: {
+    innerHeight() {
+     return this.$store.getters.innerHeight;
+    },
   },
   components: {
   	TableComponent,
