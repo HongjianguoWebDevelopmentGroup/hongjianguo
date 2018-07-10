@@ -119,6 +119,7 @@ export default {
       this.$refs.form.resetFields();
     },
     fill (o,f,d) {
+      // console.log(o+'/'+f+'/'+d);
       this.form.project_id = o;
       window.setTimeout(_=>{
         this.form.flow_id = f;

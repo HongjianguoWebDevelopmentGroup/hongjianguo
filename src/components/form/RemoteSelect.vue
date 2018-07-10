@@ -353,7 +353,6 @@ export default {
       this.refreshSelected(val);   
   	},
     para () {
-      console.log('fjaljflafjajf');
       this.remoteMethod('');
     }
   },
