@@ -90,7 +90,7 @@ export default {
 			'addListFilter',
 		]),
 		handleCellClick (row, column, cell, event) {
-			if(column.property == 'member') return false;
+			if(column.property == 'member' || column.property == 'agency_name') return false;
 				let option = {};
 				option['person_in_charge'] = row.member.id;
 				this.identity = '承办人';
@@ -107,7 +107,7 @@ export default {
 			
 		},
 		handleMouseEnter (row, column, cell, event) {
-			if(column.property == 'member') { return false };
+			if(column.property == 'member' || column.property == 'agency_name') { return false };
 				const tbody = cell.parentNode.parentNode;
 
 				cell.style.cursor = 'pointer';
