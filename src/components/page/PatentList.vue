@@ -280,7 +280,8 @@ export default {
       this.refreshProxy = this.$axiosGet({url, data, success});
     },
     refresh () {
-      this.$refs.table.refresh();
+      // this.$refs.table.refresh();
+      this.$refs.table.update();
     },
     deletePatent ({ title, id }) {
       this.$confirm(`删除后不可恢复，确认删除‘${title}’吗？`)
