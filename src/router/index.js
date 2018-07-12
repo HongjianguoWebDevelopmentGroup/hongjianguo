@@ -597,35 +597,67 @@ const router = new Router({
       }
     },
     {
-      path: '/patent/duration/priority',
+      path: '/patent/duration/priority_this_month',
       name: 'PatentDurationProprity',
       component: PatentList,
       meta: {
-        params: { reminder: 'priority_expire_date' },
+        params: { reminder: 'priority_expire_date', period:'this_month' },
       }
     },
     {
-      path: '/patent/duration/modification',
+      path: '/patent/duration/priority_next_month',
+      name: 'PatentDurationProprity',
+      component: PatentList,
+      meta: {
+        params: { reminder: 'priority_expire_date', period:'next_month' },
+      }
+    },
+    {
+      path: '/patent/duration/modification_this_month',
       name: 'PatentDurationModification',
       component: PatentList,
       meta: {
-        params: { reminder: 'active_supplement_expire_date' },
+        params: { reminder: 'active_supplement_expire_date', period:'this_month' },
       }
     },
     {
-      path: '/patent/duration/pct',
+      path: '/patent/duration/modification_next_month',
+      name: 'PatentDurationModification',
+      component: PatentList,
+      meta: {
+        params: { reminder: 'active_supplement_expire_date', period:'next_month' },
+      }
+    },
+    {
+      path: '/patent/duration/pct_this_month',
       name: 'PatentDurationPct',
       component: PatentList,
       meta: {
-        params: { reminder: 'pct_national_stage_expire_date' },
+        params: { reminder: 'pct_national_stage_expire_date',period:'this_month' },
       }
     },
     {
-      path: '/patent/duration/pct19',
+      path: '/patent/duration/pct_next_month',
+      name: 'PatentDurationPct',
+      component: PatentList,
+      meta: {
+        params: { reminder: 'pct_national_stage_expire_date',period:'next_month' },
+      }
+    },
+    {
+      path: '/patent/duration/pct19_this_month',
       name: 'PatentDurationPct19',
       component: PatentList,
       meta: {
-        params: { reminder: 'pct_19_expire_date' },
+        params: { reminder: 'pct_19_expire_date', period:'this_month' },
+      }
+    },
+    {
+      path: '/patent/duration/pct19_next_month',
+      name: 'PatentDurationPct19',
+      component: PatentList,
+      meta: {
+        params: { reminder: 'pct_19_expire_date', period:'next_month' },
       }
     },
     {

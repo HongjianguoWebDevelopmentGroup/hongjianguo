@@ -149,10 +149,14 @@ const patentMenu = [
 		path: '/patent/duration',
 		icon: 'iconfont el-icon-my-patent',
 		children: [
-			{ type: 'item', text: '下月优先权到期', path: '/patent/duration/priority', icon: '' },
-			{ type: 'item', text: '下月主动修改到期', path: '/patent/duration/modification', icon: '' },
-			{ type: 'item', text: '下月PCT进国家到期', path: '/patent/duration/pct', icon: '' },
-			{ type: 'item', text: '下月PCT19条修改到期', path: '/patent/duration/pct19', icon: '' },
+			{ type: 'item', text: '本月月优先权到期', path: '/patent/duration/priority_this_month', icon: '' },
+			{ type: 'item', text: '下月优先权到期', path: '/patent/duration/priority_next_month', icon: '' },
+			{ type: 'item', text: '本月主动修改到期', path: '/patent/duration/modification_this_month', icon: '' },
+			{ type: 'item', text: '下月主动修改到期', path: '/patent/duration/modification_next_month', icon: '' },
+			{ type: 'item', text: '本月PCT进国家到期', path: '/patent/duration/pct_this_month', icon: '' },
+			{ type: 'item', text: '下月PCT进国家到期', path: '/patent/duration/pct_next_month', icon: '' },
+			{ type: 'item', text: '本月PCT19条修改到期', path: '/patent/duration/pct19_this_month', icon: '' },
+			{ type: 'item', text: '下月PCT19条修改到期', path: '/patent/duration/pct19_next_month', icon: '' },
 		]
 	},
 	{ 

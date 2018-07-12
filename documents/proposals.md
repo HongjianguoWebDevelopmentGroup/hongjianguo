@@ -5,7 +5,7 @@ request {
     title:"name",//标题，不能超过150个字符
     abstract:"abstract",//摘要,不能超过1000字符
     attachments:['fileid'],//附件
-    proposer:"1",//提案人
+    proposer:"1",//技术联系人
     inventors:[id:"1",share:"10"],//id 发明人ID，share 发明人贡献占比
     tags:["tag"],//标签
     classification:"1",//技术分类ID
@@ -23,7 +23,7 @@ request {
     title:"name",//标题，不能超过150个字符
     abstract:"abstract",//摘要,不能超过1000字符
     attachments:['fileid'],//附件
-    proposer:"1",//提案人
+    proposer:"1",//技术联系人
     inventors:[{id:"1",share:"10"}],//id 发明人ID，share 发明人贡献占比
     tags:["tag"],//标签
     classification:"1",//技术分类ID
@@ -52,7 +52,7 @@ reponse {
             ext:"ext",//文件格式
             size:"size",//文件大小
         }],//附件
-        proposer:{id:"1",name:"name"},//提案人
+        proposer:{id:"1",name:"name"},//技术联系人
         inventors:[{id:"1",share:"10"}],//id 发明人ID，share 发明人贡献占比
         tags:["tag"],//标签
         classification:{id:"1",name:"name"},//技术分类
@@ -79,7 +79,7 @@ request {
     title:"title",//提案标题
     classification:"1",//技术分类ID，多个分类用逗号隔开
     product:"1",//产品分类ID，多个分类用逗号隔开
-    proposer:"1",//提案人ID，多个提案人ID用逗号隔开
+    proposer:"1",//技术联系人ID，多个技术联系人ID用逗号隔开
 	branch:"1",//部门ID,暂未启用，多个部门ID用逗号隔开
     tags:"tag",//标签，多个标签用逗号隔开
     inventors:"1",//发明人ID，多个发明人ID用逗号隔开
@@ -106,7 +106,7 @@ response {
 			branch:{id:"部门ID",name:"部门名称"},
 			classification:{id:"技术分类ID",name:"技术分类名称",description:"技术分类描述"}
 			products:{id:"产品ID",name:"产品名称",description:"产品描述"}
-			proposer:{id:"用户ID",name:"提案人姓名",mobile:"提案人手机",email:"提案人邮箱"},//提案人
+			proposer:{id:"用户ID",name:"技术联系人姓名",mobile:"技术联系人手机",email:"技术联系人邮箱"},//技术联系人
             inventors:[{id:"发明人ID",name:"发明人姓名",share:"发明人份额",sort:"发明人排序"}],//发明人
 			tags:["tag"],//标签
             attachments:[{id:"文件ID",name:"附件名称",ext:"附件格式",size:"附件大小",viewUrl:"查看地址，为空则不能直接查看",downloadUrl:"下载地址"}]

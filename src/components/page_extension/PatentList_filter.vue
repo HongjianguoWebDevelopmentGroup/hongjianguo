@@ -26,8 +26,8 @@
 					<el-option v-for="item in status_arr" :key="item.value" :label="item.label" :value="item.value"></el-option>
 				</el-select>
   		</el-form-item>
-  		<el-form-item label="提案人">
-				<el-select v-model="form.proposer" placeholder="请选择提案人" multiple>
+  		<el-form-item label="技术联系人">
+				<el-select v-model="form.proposer" placeholder="请选择技术联系人" multiple>
 					<el-option v-for="item in proposer_arr" :key="item.value" :label="item.label" :value="item.value"></el-option>
 				</el-select>
   		</el-form-item>  		
@@ -123,9 +123,9 @@ export default {
 		  	{ label: '案件状态三', value: '3' },
 		  ],
 		  proposer_arr: [
-		  	{ label: '提案人一', value: '1' },
-		  	{ label: '提案人二', value: '2' },
-		  	{ label: '提案人三', value: '3' },
+		  	{ label: '技术联系人一', value: '1' },
+		  	{ label: '技术联系人二', value: '2' },
+		  	{ label: '技术联系人三', value: '3' },
 		  ],
 		  ipr_arr: [
 		  	{ label: 'IPR一', value: '1' },

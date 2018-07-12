@@ -7,7 +7,7 @@
 
   <el-row>  
     <el-col :span="12">
-      <el-form-item label="提案人" prop="proposer">
+      <el-form-item label="技术联系人" prop="proposer">
         <remote-select type="member" v-model="form.proposer" ref="proposer" multiple></remote-select>
       </el-form-item>
     </el-col>

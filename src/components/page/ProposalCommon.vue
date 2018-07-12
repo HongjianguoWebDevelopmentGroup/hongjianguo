@@ -4,7 +4,7 @@
 	  		<el-col :span="18">
 		  		<el-form label-width="160px" :rules="formRules" :model="formData" ref="form">
             
-            <el-form-item label="提案人">{{ proposer_name }}</el-form-item>
+            <!-- <el-form-item label="技术联系人">{{ proposer_name }}</el-form-item> -->
             
             <el-form-item label="案件名称" prop="title">
               <el-input v-model="formData.title" placeholder="请输入案件名称"></el-input>
@@ -22,6 +22,11 @@
             <el-form-item label="证件号码(第一发明人)" prop="identity" class="is-required">
               <el-input v-model="formData.identity" placeholder="请填写第一发明人证件号码"></el-input>
             </el-form-item>
+
+            <el-form-item label="技术联系人" class="is-required">
+                <remote-select type="member" v-model="formData.proposer"></remote-select>
+            </el-form-item>
+
             <el-form-item label="产品相关性" prop="product_relevance">
               <static-select type='product_relevance' v-model="formData.product_relevance"></static-select>
             </el-form-item>
@@ -87,6 +92,7 @@ import Member from '@/components/form/Member'
 import Upload from '@/components/form/Upload'
 import TaskFinish from '@/components/common/TaskFinish'
 import StaticSelect from '@/components/form/StaticSelect'
+import RemoteSelect from '@/components/form/RemoteSelect'
 import { checkInventors } from '@/const/validator.js'
 import { mapGetters } from 'vuex'
 import { mapActions } from 'vuex'
@@ -404,7 +410,8 @@ export default {
     Classification, 
     Product, 
     TaskFinish, 
-    StaticSelect 
+    StaticSelect,
+    RemoteSelect,
   },
 
 }

@@ -19,15 +19,15 @@ const map = new Map([
     ]],
     ['proposal', [
         { components: 'input',         id: 'serial',                        name: '提案号' },
-        { components: 'remote_select', id: 'proposer',                      name: '提案人',         type: 'member' },
-        { components: 'static_select', id: 'ipr',                           name: 'IPR',           type: 'ipr' },
+        { components: 'remote_select', id: 'proposer',                      name: '技术联系人',         type: 'member'  , used: true},
+        { components: 'static_select', id: 'ipr',                           name: 'IPR',           type: 'ipr'  , used: true},
         { components: 'remote_select', id: 'inventors',                     name: '发明人',         type: 'inventor' },
         { components: 'static_select', id: 'branch',                        name: '部门全名',        type: 'branch' },
-        { components: 'static_select', id: 'abbr',                          name: '部门简称',       type: 'abbr' },
+        { components: 'static_select', id: 'abbr',                          name: '部门简称',       type: 'abbr'  , used: true},
         { components: 'static_select', id: 'classification',                name: '技术分类',       type: 'classification' },
         { components: 'static_select', id: 'product',                       name: '产品分类',       type: 'product' },
         { components: 'static_select', id: 'tags',                          name: '标签',           type: 'tag' },
-        { components: 'static_select', id: 'patent_level',                  name: '提案等级',       type: 'case_level' },
+        { components: 'static_select', id: 'patent_level',                  name: '提案等级',       type: 'case_level'  , used: true},
         { components: 'date',          id: 'create_time',                   name: '提案时间' },
     ]],
     ['patent', [
@@ -51,7 +51,7 @@ const map = new Map([
         { components: 'static_select', id: 'classification',                name: '技术分类', type: 'classification'},
         { components: 'static_select', id: 'products',                      name: '产品', type: 'product'},
         { components: 'static_select', id: 'ipr',                           name: '负责IPR', type: 'ipr', used: true},
-        { components: 'remote_select', id: 'proposer',                      name: '提案人', type: 'member'},
+        { components: 'remote_select', id: 'proposer',                      name: '技术联系人', type: 'member'},
         { components: 'input',         id: 'priorities',                    name: '优先权'},
         { components: 'patent',        id: 'relates',                       name: '相关专利'},
         { components: 'static_select', id: 'is_support',                    name: '是否已申请资助', type: 'bool', multiple: false}, //是否已申请资助
@@ -130,7 +130,7 @@ const map = new Map([
     ]],
     ['copyright', [
         { components: 'static_select', id: 'type', name: '版权类型', type: 'copyright_type' },
-        { components: 'remote_select', id: 'proposer', name: '提案人', type: 'member'},
+        { components: 'remote_select', id: 'proposer', name: '技术联系人', type: 'member'},
         { components: 'remote_select', id: 'applicant', name: '申请人', type: 'applicant' },
         { components: 'remote_select', id: 'agent', name: '代理人', type: 'agent' },
         { components: 'remote_select', id: 'agency', name: '代理机构', type: 'agency' },
@@ -140,7 +140,7 @@ const map = new Map([
         { components: 'date',          id: 'issue_date', name: '公告日' },
     ]],
     ['fee', [
-        { components: 'remote_select', id: 'target', name: '费用对象', type: 'member' },
+        { components: 'remote_select', id: 'target', name: '费用对象', type: 'member'  , used: true},
         { components: 'static_select', id: 'code', name: '费用代码', type: 'fee_code' },
         { components: 'date',          id: 'mail_date', name: '通知书发文日' },
         { components: 'date',          id: 'create_time', name: '费用生成日期' },
@@ -154,13 +154,13 @@ const map = new Map([
     ]],
     ['invoice', [
         { components: 'static_select', id: 'status', name: '账单状态', type: 'invoice_type' },
-        { components: 'remote_select', id: 'target', name: '账单对象', type: 'member' },
+        { components: 'remote_select', id: 'target', name: '账单对象', type: 'member'  , used: true},
         { components: 'date',          id: 'create_time', name: '账单生成日期' },
         { components: 'date',          id: 'due_time', name: '费用期限' },
         { components: 'date',          id: 'pay_time', name: '付款时间' },
     ]],
     ['patent_notice',[
-        { components: 'static_select', id: 'file_type_id', name: '通知书名称', type: 'file_type_patent_notice' },
+        { components: 'static_select', id: 'file_type_id', name: '通知书名称', type: 'file_type_patent_notice'  , used: true},
         { components: 'remote_select', id: 'uploader', name: '上传用户', type: 'member' },
         { components: 'date',          id: 'create_time', name: '上传日', },
         { components: 'date',          id: 'apd', name: '申请日', },

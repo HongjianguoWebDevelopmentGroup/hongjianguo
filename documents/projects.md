@@ -23,7 +23,7 @@ request {
     agent:["1"],//代理人ID数组
     agency_serial:"19888",//代理所案号
     status:["1"],//案件状态数组
-    proposer:["1"],//提案人ID数组
+    proposer:["1"],//技术联系人ID数组
     department:"1",//部门ID
     ipr:["1"],//IPR ID数组
     tag:["tag1","tag2"],//标签数组
@@ -56,7 +56,7 @@ response {
             agency:{id:"id",name:"name"},//代理机构
             agent:{id:"id,name:"name"},//代理人
             status:{id:"id",name:"name"},//状态
-            proposer:{id:"id",name:"name"},//提案人
+            proposer:{id:"id",name:"name"},//技术联系人
             department:{id:"id",name:"name"},//所属部门
             ipr:{id:"id",name:"name"},//负责IPR
             tag:["tag1"],//标签
@@ -82,13 +82,13 @@ request {
     attachments:["id"],//文件ID数组
     remark:"remark",//备注信息
 
-    //部分、分类、申请人、发明人、提案人以及IPR
+    //部分、分类、申请人、发明人、技术联系人以及IPR
     department:"1",//部门ID
     tag:["tag1","tag2"],//标签数组
     class:"1",//分类ID
     applicant:["1"],//申请人ID数组
     inventor:["1"],//发明人ID数组
-    proposer:["1"],//提案人ID数组
+    proposer:["1"],//技术联系人ID数组
     ipr:"",//负责IPR ID
 
     //扩展信息
@@ -139,7 +139,7 @@ response {
             agency:{id:"id",name:"name"},//代理机构
             agent:{id:"id,name:"name"},//代理人
             status:{id:"id",name:"name"},//状态
-            proposer:{id:"id",name:"name"},//提案人
+            proposer:{id:"id",name:"name"},//技术联系人
             department:{id:"id",name:"name"},//所属部门
             ipr:{id:"id",name:"name"},//负责IPR
             tag:["tag1"],//标签

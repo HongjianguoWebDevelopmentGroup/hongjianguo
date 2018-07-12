@@ -1,6 +1,9 @@
 <template>
   <!-- <app-collapse col-title="分类信息"> -->
       <el-form label-width="120px">
+        <el-form-item label="技术领域">
+					<static-select type="technical_field" v-model="form.technical_field"></static-select>
+				</el-form-item>
         <el-form-item label="部门">
           <branch v-model="form.branch" count-type="patent" ></branch>
           <!-- <span v-else>{{ branchName ? branchName : '暂未归属某个部门' }}</span> -->
@@ -50,12 +53,13 @@ export default {
         project_name: '',
         project_serial: '',
         product_relevance: '',
+        technical_field: '',
 			}
     }
   },
   methods: {
   	setForm (data) {
-      this.$tool.coverObj(this.form, data, {obj: ['branch', 'products', 'classification','product_relevance','tags']});
+      this.$tool.coverObj(this.form, data, {obj: ['branch', 'products', 'classification','product_relevance','tags','technical_field']});
   	},
     submitForm () {
       return this.form;

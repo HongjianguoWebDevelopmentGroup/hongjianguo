@@ -65,7 +65,7 @@ export default {
           { type: 'text', label: '代理机构案号', prop: 'agency_serial', width: '263', sortable: true },
           { type: 'text', label: '备注', prop: 'remark', is_import: true, width: '285' },
           { type: 'array', label: '申请人', prop: 'applicants', is_import: true, render: _=>_.map(_=>_.name), width: '220' },
-          { type: 'text', label: '提案人', prop: 'proposer', is_import: true, render_simple: 'name', width: '145' },
+          { type: 'text', label: '技术联系人', prop: 'proposer', is_import: true, render_simple: 'name', width: '145' },
           { type: 'array', label: '标签', prop: 'tags', is_import: true, width: '200' },
           { type: 'array', label: '产品名称', prop: 'products', is_import: true, render: _=>_.map(_=>_.name), width: '150' },
           // {

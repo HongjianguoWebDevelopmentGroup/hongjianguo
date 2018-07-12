@@ -296,7 +296,7 @@ export default {
           { type: 'text', label: '提案标题', prop: 'proposal_title', sortable: true, width: '200', overflow: true },
           { type: 'text', label: 'IPR', prop: 'ipr', render_simple: 'name', sortable: true, width: '118'},
           { type: 'text', label: '部门', prop: 'branch',render_simple: 'abbr', sortable: true, width: '160'},
-          { type: 'text', label: '提案人', prop: 'proposer', render_simple: 'name', sortable: true, width: '118'},
+          { type: 'text', label: '技术联系人', prop: 'proposer', render_simple: 'name', sortable: true, width: '130'},
           { type: 'text', label: '承办人', prop: 'person_in_charge', render_simple: 'name', show: true, sortable: true, width: '118'},
           { type: 'text', label: '代理机构', prop: 'agency', render_simple: 'name', show: false, sortable: true, width: '130'},
           { type: 'text', label: '代理人', prop: 'agent', render_simple: 'name', sortable: true, width: '118'},

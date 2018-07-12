@@ -150,6 +150,14 @@ const config = [
       { id: 3, name: '版权' },
     ]
   }],
+  ['technical_field', {
+    placeholder: '请选择技术领域',
+    options: [
+      { id: 1, name: '结构' },
+      { id: 2, name: '软件' },
+      { id: 3, name: '硬件' },
+    ]
+  }],
   ['get_stage',{
     placeholder: '请选择案件状态',
     // url: '/getstage',

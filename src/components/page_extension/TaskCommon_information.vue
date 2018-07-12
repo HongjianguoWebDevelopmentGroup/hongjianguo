@@ -24,7 +24,7 @@
 	    <el-form label-width="70px" label-position="left" class="form-information" v-loading="loading" element-loading-text="加载提案信息中...">
 	    	<el-row :gutter="20">
 	    		<el-col :span="12">
-            <el-form-item label="提案人"><span class="form-item-text">{{ row_p.proposer.name }}</span></el-form-item>
+            <el-form-item label="技术联系人"><span class="form-item-text">{{ row_p.proposer.name }}</span></el-form-item>
             <el-form-item label="技术分类"><span class="form-item-text">{{ row_p.classification.name }}</span></el-form-item>
           </el-col>
           <el-col :span="12">
@@ -68,7 +68,7 @@
   	    			<el-form-item label="标签"><span class="form-item-text">{{ detailBasePatent.tags ? detailBasePatent.tags.map(_=>_.name).join(';') : '' }}</span></el-form-item>
   	    			<el-form-item label="申请日"><span class="form-item-text">{{ detailBasePatent.apd }}</span></el-form-item>
               <el-form-item label="申请号"><span class="form-item-text">{{ detailBasePatent.apn }}</span></el-form-item>
-  	    			<el-form-item label="提案人"><span class="form-item-text">{{ detailBasePatent.proposer.name }}</span></el-form-item>
+  	    			<el-form-item label="技术联系人"><span class="form-item-text">{{ detailBasePatent.proposer.name }}</span></el-form-item>
   	    		</el-col>
   	    	</el-row>
   	    	<el-row>
@@ -106,7 +106,7 @@
               <el-form-item label="标签"><span class="form-item-text">{{ detailBaseCopyright.tags.map(_=>_.name).join(';') }}</span></el-form-item>
               <el-form-item label="申请日"><span class="form-item-text">{{ detailBaseCopyright.apd }}</span></el-form-item>
               <el-form-item label="申请号"><span class="form-item-text">{{ detailBaseCopyright.apn }}</span></el-form-item>
-              <el-form-item label="提案人"><span class="form-item-text">{{ detailBaseCopyright.proposer.name }}</span></el-form-item>
+              <el-form-item label="技术联系人"><span class="form-item-text">{{ detailBaseCopyright.proposer.name }}</span></el-form-item>
             </el-col>
           </el-row>
           <el-row>

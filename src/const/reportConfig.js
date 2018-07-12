@@ -67,7 +67,7 @@ const columns = {
     { id: 'abstract',       name: '摘要'},
     { id: 'create_time',    name: '提案日期', date: true},
     { id: 'ipr',            name: '负责IPR'},
-    { id: 'proposer',       name: '提案人'},
+    { id: 'proposer',       name: '技术联系人'},
     { id: 'inventors',      name: '发明人'},
     { id: 'branch',         name: '部门'},
     { id: 'classification', name: '技术分类'},
@@ -97,7 +97,7 @@ const columns = {
     { id: 'classification',                name: '技术分类'},
     { id: 'products',                      name: '产品'},
     { id: 'ipr',                           name: '负责IPR'},
-    { id: 'proposer',                      name: '提案人'},
+    { id: 'proposer',                      name: '技术联系人'},
     { id: 'priorities',                    name: '优先权'},
     { id: 'relates',             name: '相关专利'},
     { id: 'fees',                          name: '费用'},//费用

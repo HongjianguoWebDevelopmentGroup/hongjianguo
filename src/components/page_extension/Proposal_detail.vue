@@ -16,7 +16,7 @@
           </el-col>
         </el-row>
         <el-row>
-          <el-form-item label="提案人"><span class="form-item-text">{{ row.proposer.name }}</span></el-form-item>
+          <el-form-item label="技术联系人"><span class="form-item-text">{{ row.proposer.name }}</span></el-form-item>
         </el-row>
         <el-row>
             <el-form-item label="备注"><span class="form-item-text">{{ row.remark }}</span></el-form-item>

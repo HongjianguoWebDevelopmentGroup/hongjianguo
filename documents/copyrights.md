@@ -9,7 +9,7 @@ request {
     products:[1,2],//产品ID数组
     tags:["标签1"],//标签数组
     ipr_id:"IPR ID"
-	proposer_id:"提案人ID"
+	proposer_id:"技术联系人ID"
 	branch_id:"部分ID",
     applicants:[1,2],//申请人ID数组
     attachments:[1,2],//附件ID数组
@@ -35,7 +35,7 @@ request {
     products:[1,2],//产品ID数组
     tags:["标签1"],//标签数组
     ipr_id:"IPR ID",
-	proposer_id:"提案人ID"
+	proposer_id:"技术联系人ID"
 	branch_id:"部分ID",
     applicants:[1,2],//申请人ID数组
     attachments:[1,2],//附件ID数组
@@ -168,7 +168,7 @@ request {
     /* 固定参数结束 */
 
     //以下字段动态添加
-    proposer:"1",//提案人ID，多个提案人ID用逗号隔开
+    proposer:"1",//技术联系人ID，多个技术联系人ID用逗号隔开
     ipr:"1",//IPR ID,多个IPR用逗号隔开
     classification:"1",//技术分类ID，多个分类用逗号隔开
     branch:"1",//部门ID,多个部门ID用逗号隔开

@@ -4,6 +4,9 @@
 			<el-form-item label="标题" prop="title">
 				<el-input v-model="form.title" placeholder="请填写案件标题" ></el-input>
 			</el-form-item>
+      <el-form-item label="英文标题" prop="english_title">
+				<el-input v-model="form.english_title" placeholder="请填写案件英文标题" ></el-input>
+			</el-form-item>
       <el-row>
         <el-col :span="8">
           <el-form-item label="案号" prop="serial">
@@ -32,7 +35,7 @@
           </el-form-item>
         </el-col>
         <el-col :span="8">
-          <el-form-item label="提案人">
+          <el-form-item label="技术联系人">
               <remote-select type="member" v-model="form.proposer"></remote-select>
           </el-form-item>
         </el-col>
@@ -134,6 +137,7 @@ export default {
       form: {
         serial: '',
         title: '',
+        english_title:'',
         area: this.type == 'add' ? [] : '',
         type: '',
         ipr: '',
