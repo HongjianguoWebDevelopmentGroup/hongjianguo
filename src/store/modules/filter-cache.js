@@ -113,7 +113,7 @@ const mutations = {
 		if (Array.isArray(item)) {
 			state.custom = [...state.custom, ...item];
 		}else {
-			state.custom = [...state.custom, item]
+			state.custom = [...state.custom, item];
 		}
 	},
 	editListFilter (state, {index, item}) {
@@ -199,7 +199,7 @@ const actions = {
 	// 添加列表筛选项
 	addListFilter ({rootState, commit}, item) {
 		if(!item) return;
-		// console.log('--------willaddListFilter-------------');
+		console.log('--------willaddListFilter-------------');
 		commit('addListFilter', item);
 		// console.log('---------------------------didaddListFilter-------------------');
 	},

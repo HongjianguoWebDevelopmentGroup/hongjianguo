@@ -433,6 +433,11 @@ export default {
         }
       }
     },
+    'form.negative_flag': {
+      handler(val) {
+        this.form.negative_comment = '';
+      }
+    },
 	},
 	computed: {
     ifNext () {

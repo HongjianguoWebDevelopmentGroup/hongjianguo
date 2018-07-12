@@ -7,8 +7,8 @@
 				<el-button size="small" type="success" @click="saveSerialize">保存</el-button>
 				<el-button size="small" type="danger" @click="deletePop">删除</el-button>
 			</div>
-			<div class="filter-editor-condition">
-
+			<div class="filter-editor-condition" :style="`max-height:${innerHeight-178}px;overflow-y: auto;overflow-x: hidden;`">
+				
 				<el-form v-if="usedFlag" label-width="80px" :model="usedForm"  ref="usedForm" style="border-bottom: 1px solid #dedede;">
 					<el-form-item v-for="item in usedOptions" :label="item.name" :key="item.id" :prop="item.id">
 						<filter-value :source="item" v-model="usedForm[item.id]" :ref="`usedForm_${item.id}`"></filter-value>
@@ -31,11 +31,11 @@
 					<el-button style="padding: 0px;" icon="plus" type="text">新增筛选条件</el-button>
 				</div>
 			</div>
-
 			<div class="filter-editor-operate">
 				<el-button @click="refreshTable" class="filter-editor-operate-btn" type="primary">筛选</el-button>
 				<el-button @click="clearTableFilter" class="filter-editor-operate-btn">清空</el-button>
 			</div>
+			
 		</shrink>
 
 		<el-dialog :title="selectedKey ? '编辑筛选条件' : '新增筛选条件'" :visible.sync="dialogVisible" class="dialog-small" @close="clear">
@@ -109,7 +109,8 @@ export default {
 	},
 	computed: {
 		...mapGetters([
-			'listFilter'
+			'listFilter',
+			'innerHeight',
 		]),
 		filterSetting () { //自定义筛选配置项
 			const data = filterConfig.get(this.type)
@@ -167,10 +168,9 @@ export default {
 		},
 		listFilterIn () {
 			if (this.usedForm === null) {
-
 				return this.listFilter
 			}else {
-				console.log(this.listFilter);
+		
 				return this.listFilter.filter(item => this.usedForm[item.key] === undefined)
 			}
 		}

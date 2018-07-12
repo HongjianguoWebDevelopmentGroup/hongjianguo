@@ -45,12 +45,12 @@
       <el-row>
         <el-col :span="8">
           <el-form-item label="群组号">
-              <remote-select  type="group_number" v-model="form.group_number" placeholder="请填写群组号"></remote-select>
+              <static-select  type="group_number" v-model="form.group_number" placeholder="请填写群组号"></static-select>
           </el-form-item>
         </el-col>
         <el-col :span="8">
           <el-form-item label="专利族号">
-          <remote-select type="family_number" v-model="form.family_number" placeholder="请填写专利族号"></remote-select>
+              <static-select type="family_number" v-model="form.family_number" placeholder="请填写专利族号"></static-select>
           </el-form-item>
         </el-col>
         <el-col :span="8">
