@@ -252,6 +252,24 @@ const config = [
     },
     allowCreate: true,
     defaultFirstOption: true,
+  }], 
+  ['group_number', {
+    placeholder: '请输入群组号',
+    url: '/api/gnumbers',
+    handle (data) {
+      return data.data.map(_=>{return {id: _.id, name: _.name}});
+    },
+    allowCreate: true,
+    defaultFirstOption: true,
+  }],  
+  ['family_number', {
+    placeholder: '请输入专利族号',
+    url: '/api/fnumbers',
+    handle (data) {
+      return data.data.map(_=>{return {id: _.id, name: _.name}});
+    },
+    allowCreate: true,
+    defaultFirstOption: true,
   }],
   ['award', {
     placeholder: '请输入或选择奖项名称',

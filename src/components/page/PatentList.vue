@@ -228,7 +228,10 @@ export default {
   methods: {
     ...mapActions([
       'refreDetailData',
-      'initializeSelectorCache'
+      'initializeSelectorCache',
+      'refreshFlows',
+      'refreshTaskDefs',
+      'refreshFlownodes'
     ]),
     handleSendMail (id) {
       this.mailVisible = true;
@@ -367,7 +370,10 @@ export default {
   },
   created () {
     this.ifAgency()
-    this.initializeSelectorCache({type: 'file_type_patent_notice'})
+    this.initializeSelectorCache({type: 'file_type_patent_notice'});
+    this.refreshFlows();
+    this.refreshTaskDefs();
+    this.refreshFlownodes();
   },
   mounted () {
     if(!this.custom) {

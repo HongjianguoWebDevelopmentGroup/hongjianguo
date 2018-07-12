@@ -96,16 +96,16 @@ export default {
   methods: {
   	setForm (data) {
       this.$tool.coverObj(this.form, data, {obj: ['agency_serial','agency_type']}); 
-      if (data.tech_rank == undefined) {
-        this.form.tech_rank = 0;
+      if (data.tech_rank === undefined || data.tech_rank === '') {
+        this.form.tech_rank = data.tech_rank - 0;
       }
-      if (data.draft_rank == undefined) {
-        this.form.draft_rank = 0;
+      if (data.draft_rank === undefined || data.draft_rank === '') {
+        this.form.draft_rank = data.draft_rank - 0;
       }
-      if (data.service_rank == undefined) {
-        this.form.service_rank = 0;
+      if (data.service_rank === undefined || data.service_rank === '') {
+        this.form.service_rank = data.service_rank - 0;
       }
-      if (data.negative_flag == undefined) {
+      if (data.negative_flag === undefined) {
         this.form.negative_flag = '无';
       }
   	},
@@ -133,6 +133,13 @@ export default {
   	agent () {
   		return this.form.agent ? this.form.agent.name : '暂无代理人信息';
   	}
+  },
+  watch:{
+    'form.negative_flag': {
+      handler(val) {
+        this.form.negative_comment = '';
+      }
+    },
   },
   components: {  
     AppCollapse,
