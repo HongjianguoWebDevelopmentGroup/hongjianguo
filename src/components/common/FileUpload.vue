@@ -49,7 +49,7 @@
       </el-table-column>
       <el-table-column label="首次年费年度" prop="start_year" v-if="config.start_year" width="200">
         <template slot-scope="scope">
-          <el-input  v-model="scope.row.pct_search_date" style="width: 100%;" v-show="!!tableData[scope.$index]['show_start_year']"></el-input>
+          <el-input  v-model="scope.row.start_year" style="width: 100%;" v-show="!!tableData[scope.$index]['show_start_year']"></el-input>
         </template>
       </el-table-column>
       <el-table-column label="检索结论摘要" prop="pct_search_result" v-if="config.pct_search_result" width="200">
