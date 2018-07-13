@@ -47,6 +47,11 @@
           <el-date-picker type="date" v-model="scope.row.pct_search_date" style="width: 100%;" v-show="!!tableData[scope.$index]['show_pct_search_date']"></el-date-picker>
         </template>
       </el-table-column>
+      <el-table-column label="首次年费年度" prop="start_year" v-if="config.start_year" width="200">
+        <template slot-scope="scope">
+          <el-input  v-model="scope.row.pct_search_date" style="width: 100%;" v-show="!!tableData[scope.$index]['show_start_year']"></el-input>
+        </template>
+      </el-table-column>
       <el-table-column label="检索结论摘要" prop="pct_search_result" v-if="config.pct_search_result" width="200">
         <template slot-scope="scope">
           <el-input v-model="scope.row.pct_search_result" style="width: 100%;" v-show="!!tableData[scope.$index]['show_pct_search_result']"></el-input>
@@ -133,6 +138,7 @@ const config = [
     apd: true,
     apn: true,
     pct_search_date: true,
+    start_year: true,  
     pct_search_result: true,
     no_zip: true,
   }],
@@ -147,6 +153,7 @@ const config = [
     apd: true,
     apn: true,
     pct_search_date: true,
+    start_year: true,
     pct_search_result: true,
     no_zip: true,
   }],  
@@ -161,6 +168,7 @@ const config = [
     apd: true,
     apn: true,
     pct_search_date: true,
+    start_year: true,
     pct_search_result: true,
     no_zip: true,
   }],
@@ -229,7 +237,8 @@ export default {
       copy['show_deadline'] = f.deadline == 1 && this.config.legal_time ? true : false;
       copy['show_apd'] = f.apd == 1 && this.config.apd ? true : false;
       copy['show_issue_date'] = f.issue_date == 1 && this.config.issue_date ? true : false;
-      copy['show_apn'] = f.apn == 1 && this.config.apn ? true : false;
+      copy['show_apn'] = f.apn == 1 && this.config.apn ? true : false; 
+      copy['show_start_year'] = f.start_year == 1 && this.config.start_year ? true : false;
       copy['show_pct_search_date'] = f.pct_search_date == 1 && this.config.pct_search_date ? true : false;
       copy['show_pct_search_result'] = f.pct_search_result == 1 && this.config.pct_search_result ? true : false;
 
@@ -316,6 +325,13 @@ export default {
           }else {
             return this.$message({type: 'warning', message: '请填写申请号'}); 
           }
+        }        
+        if(_.show_start_year) {
+          if(_.start_year) {
+            o.start_year = _.start_year;
+          }else {
+            return this.$message({type: 'warning', message: '请填写首次年费年度'}); 
+          }
         }
         if(_.show_pct_search_date) {
           if(_.pct_search_date) {
@@ -360,7 +376,8 @@ export default {
           _.issue_date = '';
           _.apn = '';
           _.pct_search_result = '';
-          _.pct_search_date = '';   
+          _.pct_search_date = ''; 
+          _.start_year = '';  
           if(_.type) {
             _.type =  _.type.id;
           }
