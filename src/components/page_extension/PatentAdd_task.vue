@@ -143,7 +143,7 @@ export default {
       rules:{
       	'flow_id': [{type: 'number', required: true, message: '请选择任务流程', trigger:' blur,change'}],
       	'task_def_id': [{required: true, message: '请选择任务类型', trigger:' blur,change'}],
-      	'flow_node_id': [{required: true, message: '请选择流程节点', trigger:' blur,change'}],
+      	'flow_node_id': [{type: 'number',required: true, message: '请选择流程节点', trigger:' blur,change'}],
       	'person_in_charge': [{type: 'number', required: true, message: '请选择承办人', trigger:' blur,change'}],
       	'due_time': [{type: 'date', required: true, message: '请选择承办期限', trigger:' change'}],
       	'deadline': [{type: 'date', required: true, message: '请选择法限', trigger:' change'}],
