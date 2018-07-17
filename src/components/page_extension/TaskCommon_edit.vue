@@ -34,8 +34,8 @@
         <el-date-picker type="date" v-model="form.due_time" placeholder="请选择承办期限"></el-date-picker>
       </el-form-item>
 
-      <el-form-item label="法限" prop="deadline">
-        <el-date-picker type="date" v-model="form.deadline" placeholder="请选择法限"></el-date-picker>
+      <el-form-item label="官方绝限" prop="deadline">
+        <el-date-picker type="date" v-model="form.deadline" placeholder="请选择官方绝限"></el-date-picker>
       </el-form-item>
  
       <el-form-item label="附件" prop="attachments">

@@ -60,8 +60,8 @@
   	<el-form-item prop="due_time" label="承办期限" v-if="fields.due_time">
 			<el-date-picker v-model="form.due_time" type="date" placeholder="选择承办期限"></el-date-picker>
   	</el-form-item>
-  	<el-form-item prop="dealine" label="法限" v-if="fields.deadline">
-			<el-date-picker v-model="form.dealine" type="date" placeholder="选择法限"></el-date-picker>
+  	<el-form-item prop="dealine" label="官方绝限" v-if="fields.deadline">
+			<el-date-picker v-model="form.dealine" type="date" placeholder="选择官方绝限"></el-date-picker>
   	</el-form-item>
     <el-form-item prop="area" label="申请地区" v-if="fields.area" :rules="{type: 'array', required: true, message: '申请地区不能为空'}">
       <static-select type="area" v-model="form.area"  multiple></static-select>

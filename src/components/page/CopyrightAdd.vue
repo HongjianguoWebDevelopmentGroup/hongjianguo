@@ -5,82 +5,86 @@
      <el-tabs type="border-card">
       <el-tab-pane>
         <span slot="label"><i class="el-icon-information"></i> 基本信息</span>  
-        	<el-row>
-        		<el-col :span="8">
-			  		<el-form-item label="案号" prop="serial">
-			  			<el-input v-model="form.serial" placeholder="请填写案号" class="input-min-width"></el-input>
-			  		</el-form-item>        			
-        		</el-col>
-        		<el-col :span="8">
-		        	<el-form-item label="著作权名称" prop="title">
-						<el-input v-model="form.title" placeholder="请填写著作权名称"  class="input-min-width"></el-input>
-					</el-form-item>		
-        		</el-col>
-        		<el-col :span="8">		
-		        	<el-form-item label="著作权类型" prop="type">
-						<el-select v-model="form.type" placeholder="请选择案件类型"  class="input-min-width">
-							<el-option v-for="item in options.type" :key="item.value" :label="item.label" :value="item.value"></el-option>
-						</el-select>
-					</el-form-item>
-        		</el-col>
-        	</el-row>	        	
-        	<el-row>
-        		<el-col :span="8">
-        			<el-form-item label="版本号" prop="version">
-						<el-input v-model="form.version" placeholder="请填写版本号"  class="input-min-width"></el-input>
-					</el-form-item>			
-        		</el-col>
-        		<el-col :span="8">
-		 			<el-form-item label="分类号" prop="main_ipc">
-						<el-input v-model="form.main_ipc" placeholder="请填写分类号"  class="input-min-width"></el-input>
-					</el-form-item>       			
-        		</el-col>
-        		<el-col :span="8">
-					<el-form-item label="申请号" prop="apn">
-						<el-input v-model="form.apn" placeholder="请填写申请号"  class="input-min-width"></el-input>
-					</el-form-item>        			
-        		</el-col>
-        	</el-row>	        	
-        	<el-row>
+			<el-form-item label="案号" prop="serial">
+				<el-input v-model="form.serial" placeholder="请填写案号"></el-input>
+			</el-form-item>        			
+
+			<el-form-item label="著作权名称" prop="title">
+				<el-input v-model="form.title" placeholder="请填写著作权名称"></el-input>
+			</el-form-item>		
+
+			<el-form-item label="著作权类型" prop="type">
+				<el-select v-model="form.type" placeholder="请选择案件类型">
+					<el-option v-for="item in options.type" :key="item.value" :label="item.label" :value="item.value"></el-option>
+				</el-select>
+			</el-form-item>
+			<el-form-item label="著作权人" prop="applicants">
+				<remote-select type="applicant" v-model="form.applicants"  multiple></remote-select>
+			</el-form-item>	
+			<el-form-item label="提案人" prop="proposer">
+				<remote-select type="member" v-model="form.proposer"></remote-select>
+			</el-form-item>
+			<el-form-item label="IPR" prop="ipr">
+				<!-- <span class="form-item-text" v-if="type == 'add'">{{ user ? user.name : '暂未读取到当前用户数据' }}</span> -->
+				<static-select type="ipr" v-model="form.ipr"></static-select>
+			</el-form-item>	
+			<el-form-item label="状态" prop="progress">
+				<static-select type="copyrights_status" v-model="form.progress"></static-select>
+			</el-form-item>	
+			<el-form-item label="附件" prop="attachments">
+				<upload v-model="form.attachments" :file-list="attachments"></upload>
+			</el-form-item>
+			<el-form-item label="备注" prop="remark">
+				<el-input type="textarea" v-model="form.remark" placeholder="请填写备注"></el-input>
+			</el-form-item>
+		</el-tab-pane>
+		<el-tab-pane>
+			<span slot="label"><i class="el-icon-date"></i> 日期&号码</span>
+			<el-row>
         		<el-col :span="8">
         			<el-form-item label="申请日" prop="apd">
 						<el-date-picker type="date" v-model="form.apd" placeholder="请选择申请日"  class="input-min-width"></el-date-picker>
 					</el-form-item>
+        		</el-col>
+				<el-col :span="8">
+					<el-form-item label="申请号" prop="apn">
+						<el-input v-model="form.apn" placeholder="请填写申请号"  class="input-min-width"></el-input>
+					</el-form-item>        			
         		</el-col>
         		<el-col :span="8">
 					<el-form-item label="立案时间" prop="create_time">
 						<el-date-picker type="date" v-model="form.create_time" placeholder="请选择申请日"  class="input-min-width"></el-date-picker>
 					</el-form-item>
         		</el-col>
+        	</el-row>
+			<el-row>
         		<el-col :span="8">
 					<el-form-item label="发证日" prop="issue_date">
 						<el-date-picker type="date" v-model="form.issue_date" placeholder="请选择发证日"  class="input-min-width"></el-date-picker>
 					</el-form-item>
         		</el-col>
-        	</el-row>	        	
-        	<el-row>
         		<el-col :span="8">
 					<el-form-item label="证书号" prop="issue_number">
 						<el-input v-model="form.issue_number" placeholder="请填写证书号"  class="input-min-width"></el-input>
 					</el-form-item>
         		</el-col>
-        		<el-col :span="8">
-					<el-form-item label="状态" prop="progress">
-						<static-select type="copyrights_status" v-model="form.progress"  class="input-min-width"></static-select>
-					</el-form-item>	
-        		</el-col>
-        		<el-col :span="8">
-        			
-        		</el-col>
-        	</el-row>			
-
-
-
-		</el-tab-pane>	
+        		
+        	</el-row>	
+		</el-tab-pane>
 		<!-- </app-collapse> -->
 		<!-- <app-collapse col-title=""> -->
 		 <el-tab-pane>
         	<span slot="label"><i class="el-icon-menu"></i> 著作权信息</span>  
+			<el-col :span="8">
+				<el-form-item label="版本号" prop="version">
+					<el-input v-model="form.version" placeholder="请填写版本号"  class="input-min-width"></el-input>
+				</el-form-item>			
+			</el-col>
+			<el-col :span="8">
+				<el-form-item label="分类号" prop="main_ipc">
+					<el-input v-model="form.main_ipc" placeholder="请填写分类号"  class="input-min-width"></el-input>
+				</el-form-item>       			
+			</el-col>
 			<el-form-item label="原创类型" prop="original_flag">
 				<el-select v-model="form.original_flag" placeholder="请选择原创类型">
 					<el-option v-for="(item, index) in options.original_flag" :key="index" :label="item.name" :value="item.id"></el-option>
@@ -192,46 +196,31 @@
 		</el-tab-pane>
 		<!-- <app-collapse col-title="详细信息"> -->
 		<el-tab-pane>
-        	<span slot="label"><i class="el-icon-more"></i> 详细信息</span>  		
-		<el-form-item label="著作权人" prop="applicants">
-			<remote-select type="applicant" v-model="form.applicants"  multiple></remote-select>
-		</el-form-item>	
-		<el-form-item label="提案人" prop="proposer">
-			<remote-select type="member" v-model="form.proposer"></remote-select>
-		</el-form-item>
-		<el-form-item label="IPR" prop="ipr">
-			<!-- <span class="form-item-text" v-if="type == 'add'">{{ user ? user.name : '暂未读取到当前用户数据' }}</span> -->
-			<static-select type="ipr" v-model="form.ipr"></static-select>
-		</el-form-item>
-		<el-form-item label="代理机构名称">
-          <remote-select type="agency" v-model="form.agency"></remote-select>
-        </el-form-item>
-        <el-form-item label="事务所案号">
-        	<el-input v-model="form.agency_serial" placeholder="请填写事务所案号"></el-input>
-        </el-form-item>
-		<el-form-item label="部门" prop="branch">
-			<branch v-model="form.branch"></branch>
-		</el-form-item>	
-		<el-form-item label="技术分类" prop="classification">
-			<classification v-model="form.classification"></classification>
-		</el-form-item>
-		<el-form-item label="产品分类" prop="products">
-			<product v-model="form.products" multiple></product>
-		</el-form-item>
-		<el-form-item label="标签" prop="tags">
-			<static-select type="tag" v-model="form.tags" multiple></static-select>
-		</el-form-item>
-		
-		
-		<el-form-item label="附件" prop="attachments">
-			<upload v-model="form.attachments" :file-list="attachments"></upload>
-		</el-form-item>
-		<el-form-item label="备注" prop="remark">
-			<el-input type="textarea" v-model="form.remark" placeholder="请填写备注"></el-input>
-		</el-form-item>
+        	<span slot="label"><i class="el-icon-menu"></i> 分类信息</span>  		
+			<el-form-item label="部门" prop="branch">
+				<branch v-model="form.branch"></branch>
+			</el-form-item>	
+			<el-form-item label="技术分类" prop="classification">
+				<classification v-model="form.classification"></classification>
+			</el-form-item>
+			<el-form-item label="产品分类" prop="products">
+				<product v-model="form.products" multiple></product>
+			</el-form-item>
+			<el-form-item label="标签" prop="tags">
+				<static-select type="tag" v-model="form.tags" multiple></static-select>
+			</el-form-item>
 		<!-- </app-collapse> -->
 		</el-tab-pane>
 		<el-tab-pane>
+			<span slot="label"><i class="el-icon-share"></i> 委案信息</span>  
+			<el-form-item label="代理机构名称">
+			<remote-select type="agency" v-model="form.agency"></remote-select>
+			</el-form-item>
+			<el-form-item label="事务所案号">
+				<el-input v-model="form.agency_serial" placeholder="请填写事务所案号"></el-input>
+			</el-form-item>
+		</el-tab-pane>
+		<el-tab-pane v-if="pageType == 'add'">
 			<span slot="label"><i class="el-icon-document"></i> 任务</span>  
 			<task :type="type" ref="task" category="3"></task>
 		</el-tab-pane>
@@ -403,7 +392,8 @@ export default {
 
   		this.btn_disabled = true;
   		const url = URL;
-  		const data = Object.assign({},this.$tool.shallowCopy(this.form, {'date': true}),this.$refs.task.submitForm());
+		const td = typeof(this.$refs.task) != 'undefined' ? this.$refs.task.submitForm() : {};
+		const data = Object.assign({},this.$tool.shallowCopy(this.form, {'date': true}),td);
   		data.ipr = this.user ? this.user.id : '';
   		const success = _=>{ 
   			this.$message({message: '添加版权成功', type: 'success'});

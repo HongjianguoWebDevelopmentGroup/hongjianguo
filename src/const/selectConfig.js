@@ -110,9 +110,10 @@ const config = [
       {id:1, name:"申请及OA阶段"},
       {id:2, name:"OA阶段"},
       {id:3, name:"复审阶段"},
-      {id:4, name:"无效阶段"},
-      {id:5, name:"被无效答复"},
-      {id:6,name:"分析"}
+      {id:4, name:"专利无效阶段"},
+      {id:5, name:"专利被无效答复"},
+      {id:6,name:"专利分析"},
+      {id:7,name:"商标异议"},
     ]
   }],
   ['bonus_level', {

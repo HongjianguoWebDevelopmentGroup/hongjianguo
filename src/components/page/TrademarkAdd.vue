@@ -21,6 +21,20 @@
 					</el-form-item>
         		</el-col>
         	</el-row>
+
+			<el-form-item label="申请人" prop="applicants">
+				<remote-select type="applicant" v-model="form.applicants" multiple></remote-select>
+			</el-form-item>
+
+			<el-form-item label="地区" prop="area" :rules="{ type: pageType=='add' ? 'array' : 'string',required: true, message: '地区不能为空', trigger: 'change'}">
+				<static-select type="area" v-model="form.area" :multiple="pageType == 'add'"></static-select>
+			</el-form-item>			
+
+			<el-form-item label="状态" prop="progress">
+				<static-select type="trademarks_status" v-model="form.progress"></static-select>
+			</el-form-item>
+
+        	</el-row>			
 			<el-form-item label="商标大类" prop="categories">
 				<static-select type="categories" v-model="form.categories" multiple></static-select>
 			</el-form-item>
@@ -75,31 +89,8 @@
 					</div>
 				</el-dialog>
 			</el-form-item>
-			<el-row>
-        		<el-col :span="8">
-					<el-form-item label="申请人" prop="applicants">
-						<remote-select type="applicant" v-model="form.applicants" multiple></remote-select>
-					</el-form-item>
-        		</el-col>
-        		<el-col :span="8">
-					<el-form-item label="代理机构" prop="agency">
-						<remote-select type="agency" v-model="form.agency"></remote-select>
-					</el-form-item>
-        		</el-col>
-        		<el-col :span="8">
-					<el-form-item label="地区" prop="area" :rules="{ type: pageType=='add' ? 'array' : 'string',required: true, message: '地区不能为空', trigger: 'change'}">
-						<static-select type="area" v-model="form.area" :multiple="pageType == 'add'"></static-select>
-					</el-form-item>			
-        		</el-col>
-        	</el-row>			
-			<el-form-item label="状态" prop="progress" v-if="pageType == 'edit'">
-				<static-select type="trademarks_status" v-model="form.progress"></static-select>
-			</el-form-item>
+			
 
-			  <el-form-item label="权利人地址">
-        		<el-input v-model="form.address" placeholder="请填写权利人地址"></el-input>
-      		  </el-form-item>
-			</el-form-item>
 			<el-form-item label="商标图形" prop="figure">
 				<!-- <upload v-model="form.figure" :file-list="figure" :multiple="false"></upload> -->
 				<el-upload
@@ -112,17 +103,12 @@
 				  <i v-else class="el-icon-plus avatar-uploader-icon"></i>
 				</el-upload>
 			</el-form-item>
-			<el-form-item label="优先权" prop="priorities">
-				<priorities v-model="form.priorities"></priorities>
-			</el-form-item>
-			<el-form-item label="附件" prop="attachments">
-				<upload v-model="form.attachments" :file-list="attachments"></upload>
-			</el-form-item>
+			
 			<el-form-item label="备注" prop="remark">
 				<el-input type="textarea" v-model="form.remark" placeholder="请填写备注"></el-input>
 			</el-form-item>
         	</el-tab-pane>
-
+        
       	<el-tab-pane>
         	<span slot="label"><i class="el-icon-date"></i> 日期&号码</span>
         	<el-row>
@@ -178,6 +164,31 @@
         	</el-row>
 			</el-tab-pane>
 			<el-tab-pane>
+				<span slot="label"><i class="el-icon-share"></i> 委案信息</span>
+				<el-row>
+					<el-col>
+						<el-form-item label="代理机构" prop="agency">
+							<remote-select type="agency" v-model="form.agency"></remote-select>
+						</el-form-item>
+					</el-col>
+				</el-row>
+				<el-form-item label="事务所案号">
+					<el-input v-model="form.agency_serial" placeholder="请填写事务所案号"></el-input>
+				</el-form-item>
+			</el-tab-pane>
+			<el-tab-pane>
+				<span slot="label"><i class="el-icon-more"></i> 其他信息</span>
+				<el-form-item label="权利人地址">
+					<el-input v-model="form.address" placeholder="请填写权利人地址"></el-input>
+				</el-form-item>
+				<el-form-item label="优先权" prop="priorities">
+					<priorities v-model="form.priorities"></priorities>
+				</el-form-item>
+				<el-form-item label="附件" prop="attachments">
+					<upload v-model="form.attachments" :file-list="attachments"></upload>
+				</el-form-item>
+			</el-tab-pane>
+			<el-tab-pane v-if="pageType == 'add'">
 				<span slot="label"><i class="el-icon-document"></i> 任务</span>
 				<task :type="pageType" ref="task" category="2"></task>
 			</el-tab-pane>
@@ -220,6 +231,7 @@ export default {
 			id: '',
 			form: {
 				serial: '',
+				agency_serial:'',
 				title: '',
 		  		type: '',
 			  	applicants: [],

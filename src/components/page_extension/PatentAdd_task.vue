@@ -3,7 +3,7 @@
      <!--  <el-form-item label="关联案件" prop="project_id" v-if="type == 'add'">
         <remote-select type="project" v-model="form.project_id" ref="project"></remote-select>
       </el-form-item> -->
-      <el-form-item label="是否可见">
+      <el-form-item label="是否触发任务">
       	<el-switch
       		v-model="form.is_task"
       		on-color="#13ce66"
@@ -58,8 +58,8 @@
         <el-date-picker type="date" v-model="form.due_time" placeholder="请选择承办期限"></el-date-picker>
       </el-form-item>
 
-      <el-form-item label="法限" prop="deadline" v-if="form.is_task==1">
-        <el-date-picker type="date" v-model="form.deadline" placeholder="请选择法限"></el-date-picker>
+      <el-form-item label="官方绝限" prop="deadline" v-if="form.is_task==1">
+        <el-date-picker type="date" v-model="form.deadline" placeholder="请选择官方绝限"></el-date-picker>
       </el-form-item>
  
   	</el-form>  
@@ -146,7 +146,7 @@ export default {
       	'flow_node_id': [{type: 'number',required: true, message: '请选择流程节点', trigger:' blur,change'}],
       	'person_in_charge': [{type: 'number', required: true, message: '请选择承办人', trigger:' blur,change'}],
       	'due_time': [{type: 'date', required: true, message: '请选择承办期限', trigger:' change'}],
-      	'deadline': [{type: 'date', required: true, message: '请选择法限', trigger:' change'}],
+      	// 'deadline': [{type: 'date', required: true, message: '请选择官方绝限', trigger:' change'}],
       },
   	}
   },

@@ -25,7 +25,7 @@
         <span slot="label"><i class="el-icon-more"></i> 其它信息</span>
         <other ref="other" :type="type" ></other>
       </el-tab-pane>
-      <el-tab-pane>
+      <el-tab-pane v-if="pageType == 'add'">
         <span slot="label"><i class="el-icon-document"></i> 任务</span>
         <task ref="task" :type="type" category="1"></task>
       </el-tab-pane>
@@ -53,9 +53,6 @@ const map = new Map([
   ['other', '请正确填写其他信息及附件'],
   ['task', '请正确填写任务信息'],
 ]);
-
-const getKeys = ['base', 'person', 'classification', 'case','agent', 'other', 'task'];
-const setKeys = ['base', 'person', 'classification', 'agent', 'case', 'other', 'task'];
 
 const URL = '/patents';
 
@@ -93,7 +90,7 @@ export default {
       
       this.formCheck(_=>{
         const url = URL;
-        const data = Object.assign( ...getKeys.map(_=>this.$refs[_].submitForm()) );
+        const data = Object.assign( ...this.getKeys.map(_=>this.$refs[_].submitForm()) );
         const success = _=>{ 
           this.$message({message: '添加专利成功', type: 'success'});
           this.refreshUser();
@@ -111,7 +108,7 @@ export default {
     edit () {
       this.formCheck(_=>{
         const url = `${URL}/${this.id}`;
-        const data = Object.assign( ...getKeys.map(d=>this.$refs[d].submitForm()) );
+        const data = Object.assign( ...this.getKeys.map(d=>this.$refs[d].submitForm()) );
         const success = _=>{ 
           this.$message({message: '编辑专利成功', type: 'success'});
           this.$emit('editSuccess');
@@ -130,7 +127,7 @@ export default {
       let flag = false;
 
       const check = (index)=>{
-        const key = getKeys[index];
+        const key = this.getKeys[index];
         if(key) {
           this.$refs[key].checkForm(_=>{
             if(_) {
@@ -154,7 +151,7 @@ export default {
       if( this.type == 'edit' && this.$tool.getObjLength(val) != 0) {
         const copy = this.$tool.deepCopy(val);
         this.id = copy.id;
-        setKeys.map(_=>this.$refs[_].setForm(copy));
+        this.setKeys.map(_=>this.$refs[_].setForm(copy));
       }
     },
     fillForm (val) {
@@ -167,7 +164,7 @@ export default {
         })
         const form = {};  
         Object.assign(form, copy[0], {relative_projects} );
-        setKeys.map(_=>{
+        this.setKeys.map(_=>{
           if(this.$refs[_]) {
 
             this.$refs[_].setForm(form);
@@ -188,6 +185,12 @@ export default {
         this.shrink = false;
         return this.$route.meta.type;
       }
+    },
+    setKeys () {
+      return this.type == 'add' ?  ['base', 'person', 'classification', 'agent', 'case', 'other', 'task'] : ['base', 'person', 'classification', 'agent', 'case', 'other'];
+    },
+    getKeys () {
+      return this.type == 'add' ?  ['base', 'person', 'classification', 'agent', 'case', 'other', 'task'] : ['base', 'person', 'classification', 'agent', 'case', 'other'];
     },
     getParams () {
       const s = this.$route.query.s; 
