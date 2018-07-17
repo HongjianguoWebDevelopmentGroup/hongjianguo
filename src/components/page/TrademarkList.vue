@@ -314,7 +314,7 @@ export default {
   created () {
   	this.refreshFlows();
     this.refreshTaskDefs();
-    this.refreshFlownodes();
+    this.refreshFlownodes('trademarks');
   	this.initializeSelectorCache({type: 'file_type_trademark_notice'});
   },
   mounted () {

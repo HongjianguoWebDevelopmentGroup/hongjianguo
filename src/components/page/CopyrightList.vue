@@ -160,7 +160,7 @@ export default {
   created () {
     this.refreshFlows();
     this.refreshTaskDefs();
-    this.refreshFlownodes();
+    this.refreshFlownodes('copyrights');
     this.initializeSelectorCache({ type: 'file_type_copyright_notice' });
   },
   components: { 

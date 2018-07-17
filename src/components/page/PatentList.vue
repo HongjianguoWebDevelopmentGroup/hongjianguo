@@ -286,7 +286,7 @@ export default {
   created () {
     this.refreshFlows();
     this.refreshTaskDefs();
-    this.refreshFlownodes();
+    this.refreshFlownodes('patents');
     this.initializeSelectorCache({type: 'file_type_patent_notice'});
   },
   mounted () {
