@@ -1284,4 +1284,8 @@ const router = new Router({
     { path: '/setting/user', name: 'SettingUser', component: SettingUser },
   ]
 });
+router.beforeEach((to, from, next) => {
+  router.app.$options.store.dispatch('clearFilter');
+  next();
+})
 export default router

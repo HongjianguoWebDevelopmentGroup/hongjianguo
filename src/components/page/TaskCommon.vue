@@ -511,6 +511,7 @@ export default {
         .catch(()=>{});
     },
     refreshTableData (option) {
+      console.log(option)
       const url = URL;
       const data = Object.assign({}, option, {status: this.task_status}, this.urlParams, this.defaultParams);
       const success = d=>{

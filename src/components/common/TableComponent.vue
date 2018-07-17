@@ -716,7 +716,7 @@ export default {
     }
   },
   beforeDestroy () {
-    this.clearFilter();
+    // this.clearFilter();
   },
   created () {
     this.initOptionColumns();
