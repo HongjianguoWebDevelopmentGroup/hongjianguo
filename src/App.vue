@@ -649,6 +649,8 @@ nav {
   }
   .app-upload {
     .el-upload-list {
+      max-height: 170px;
+      overflow: auto;
       padding: 0;
       list-style: none;
       display: block;
