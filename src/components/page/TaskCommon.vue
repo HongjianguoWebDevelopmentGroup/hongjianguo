@@ -356,6 +356,9 @@ export default {
       'innerHeight',
       'userid',
     ]),
+    expringControl () {
+      return this.$route.params.item;
+    },
     task_status () {
       return this.$route.meta.status;
     },
@@ -397,6 +400,7 @@ export default {
     ...mapActions([
       'refreshUser',
       'refreshTaskDelay',
+      'addListFilter'
     ]),
     appointSuccess() {
       this.dialogAgenVisible = false;
@@ -511,7 +515,6 @@ export default {
         .catch(()=>{});
     },
     refreshTableData (option) {
-      console.log(option)
       const url = URL;
       const data = Object.assign({}, option, {status: this.task_status}, this.urlParams, this.defaultParams);
       const success = d=>{
@@ -728,6 +731,7 @@ export default {
     },
   },
   mounted () {
+    this.addListFilter(this.expringControl);
     if(this.$route.params.id) {
       this.install = this.$route.params.id;
     }
