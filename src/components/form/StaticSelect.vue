@@ -11,6 +11,7 @@
       :allow-create="config.allowCreate !== undefined ? config.allowCreate : false"
       :default-first-option="config.defaultFirstOption !== undefined ? config.defaultFirstOption : false"
       ref="select"
+      @visible-change="handleVisibleChange"
       clearable
       @change="handleChange"
     >
@@ -131,6 +132,9 @@ export default {
     },
     handleChange (val) {
       this.$emit('change', this.map.get(val));
+    },
+    handleVisibleChange (val) {
+      this.$emit('visible-change', [val,this.type]);
     },
     getSelected (value) {
       const arr = [];

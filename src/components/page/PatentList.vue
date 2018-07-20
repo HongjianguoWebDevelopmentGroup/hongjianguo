@@ -13,7 +13,7 @@
         :id="currentRow.id" 
         ref="detail"
         @editSuccess="refresh"
-         @sendEmail="handleSendMail">
+        @sendEmail="handleSendMail">
       </common-detail>
     
     <app-shrink :visible.sync="mailVisible" :modal="true" :modal-click="false" :is-close="false" title="发送邮件">
@@ -234,6 +234,7 @@ export default {
       'refreshFlownodes'
     ]),
     handleSendMail (id) {
+      console.log(id);
       this.mailVisible = true;
       this.$nextTick(() => {
         this.$refs.mailEdit.initForm(id);

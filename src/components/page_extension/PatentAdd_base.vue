@@ -48,12 +48,12 @@
       <el-row>
         <el-col :span="8">
           <el-form-item label="群组号">
-              <static-select  type="group_number" v-model="form.group_number" placeholder="请填写群组号"></static-select>
+              <static-select  type="group_number" v-model="form.group_number" placeholder="请填写群组号" @visible-change="handleVisibleChange"></static-select>
           </el-form-item>
         </el-col>
         <el-col :span="8">
           <el-form-item label="专利族号">
-              <static-select type="family_number" v-model="form.family_number" placeholder="请填写专利族号"></static-select>
+              <static-select type="family_number" v-model="form.family_number" placeholder="请填写专利族号" @visible-change="handleVisibleChange"></static-select>
           </el-form-item>
         </el-col>
         <el-col :span="8">
@@ -111,7 +111,7 @@ import RemoteSelect from '@/components/form/RemoteSelect'
 import Priorities from '@/components/form/Priorities'
 import Inventors from '@/components/form/Inventors'
 import Upload from '@/components/form/Upload'
-import {mapGetters} from 'vuex'
+import {mapGetters,mapActions} from 'vuex'
 import { checkInventors } from '@/const/validator.js'
 
 const extensionHash = [
@@ -214,6 +214,9 @@ export default {
     }
   },
   methods: {
+    ...mapActions([
+      'initializeSelectorCache'
+    ]),
     checkForm (callback) {
       let flag = true;
       this.$refs.form.validate(_=>{
@@ -264,9 +267,12 @@ export default {
     handleUploadSuccess (a, b, c) {
       this.$emit('uploadSuccess', a, b, c);
     },
-    handleUploadRemove () {
-
-    },
+    handleVisibleChange(val) {
+      // console.log(val);
+      if(val[0]) {
+        this.initializeSelectorCache({type: val[1], flag: true});
+      }
+    }  
   },
   created () {
     this.userrole == 3 && this.userid ? this.form.ipr = this.userid : this.form.ipr = ''; 

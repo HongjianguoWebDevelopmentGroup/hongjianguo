@@ -163,6 +163,7 @@
       :title="currentRow.title"
       @editSuccess="editProjectSuccess"
       :refresh-switch="false"
+       @sendEmail="handleSendMail"
       ref="detail">
     </common-detail>
 
@@ -430,6 +431,12 @@ export default {
     handleMore (type) {
       this.moreVisible = true;
     },
+    handleSendMail (id) {
+      this.mailVisible = true;
+      this.$nextTick(() => {
+        this.$refs.mailEdit.initForm(id);
+      });
+    },
     handleShrinkClose () {
       this.$refs.table.setCurrentRow();
     },
@@ -504,6 +511,7 @@ export default {
         .catch(()=>{});
     },
     refreshTableData (option) {
+      console.log(option)
       const url = URL;
       const data = Object.assign({}, option, {status: this.task_status}, this.urlParams, this.defaultParams);
       const success = d=>{
