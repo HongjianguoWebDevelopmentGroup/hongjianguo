@@ -131,7 +131,6 @@ export default {
         if(key) {
           this.$refs[key].checkForm(_=>{
             if(_) {
-              console.log(key);
               check(index+1);
             }else {
               this.$message({message: map.get(key), type: 'warning'})      
