@@ -25,7 +25,7 @@
         <span slot="label"><i class="el-icon-more"></i> 其它信息</span>
         <other ref="other" :type="type" ></other>
       </el-tab-pane>
-      <el-tab-pane v-if="pageType == 'add'">
+      <el-tab-pane v-if="type == 'add'">
         <span slot="label"><i class="el-icon-document"></i> 任务</span>
         <task ref="task" :type="type" category="1"></task>
       </el-tab-pane>
@@ -131,6 +131,7 @@ export default {
         if(key) {
           this.$refs[key].checkForm(_=>{
             if(_) {
+              console.log(key);
               check(index+1);
             }else {
               this.$message({message: map.get(key), type: 'warning'})      
