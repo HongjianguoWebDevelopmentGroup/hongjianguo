@@ -102,8 +102,8 @@ export default {
 				const key = '';
 				const value = '';
 				const item = {name, label, key, value,extraOption};
-				this.addListFilter(item);
-				this.$router.push({path: '/task/all'});
+				// this.addListFilter(item);
+				this.$router.push({name: 'Taskall',params:{item:item}});
 			
 		},
 		handleMouseEnter (row, column, cell, event) {
