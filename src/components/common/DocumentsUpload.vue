@@ -191,6 +191,9 @@ export default {
         }  
        });
     },
+    test(){
+      console.log('调用成功');
+    },
     design() {
       const o = this.$tool.deepCopy(this.tableData[this.$index]);
       o.project_id = this.project_id;
@@ -235,7 +238,6 @@ export default {
       this.dialogVisibleIn = true;
     },
     importData () {
-      
       if(this.tableData.length == 0) {
         return this.$message({message: '上传数据不能为空', type: 'warning'});
       }

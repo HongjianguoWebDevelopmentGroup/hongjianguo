@@ -517,6 +517,9 @@ nav {
 .input-min-width {
   width: 150px !important;
 }
+.upload-width {
+  width: 180px !important;
+}
 /*这里放入重写element-ui样式的内容*/
 #app {
   .el-card__header {
@@ -589,6 +592,8 @@ nav {
     margin: 0 -20px;
   }
   .el-upload-dragger {
+    width: auto;
+    min-width: 180px;
     height: auto;
   }
   textarea {

@@ -41,24 +41,38 @@
        <app-table :columns="columns" :data="detailNoticesSearch" style="margin-top: 10px;" :border="true" height="default6"></app-table>
      </div>
      <div class="documents" style="margin-top: 15px;">
-      <span>
-      <el-upload
-      :action="upload_url"
-      :on-success="handleSuccess"
-      :before-upload="handleBeforeUploads"
-      :show-file-list="false"
-      style="display: inline-block;"
-    >
-      <el-button type="primary" size="small">其他文档上传</el-button>
-    </el-upload>
-  </span>
-       <span style="display: inline-block;float: right;">
+      <div class="header_btn" style="height:36px;line-height: 36px;">
+      <span style="display:inline-block;position: relative;top:-10px;">
+          <el-upload
+          :action="upload_url"
+          :on-success="handleSuccess"
+          :before-upload="handleBeforeUploads"
+          :show-file-list="false"
+        >
+          <el-button type="primary" size="small">其他文档上传</el-button>
+        </el-upload>
+      </span>
+      <span style="display:inline-block;height:28px;line-height: 28px;margin-left:15px;width:180px;">
+          <el-upload
+            drag
+            :action="upload_url"
+            :on-success="handleDragSuccess"
+            multiple
+            :show-file-list="false"
+            style="width:180px;"
+            >
+            <div class="el-upload__text upload-width"></em>其他文件可拖拽上传</div>
+          </el-upload>
+      </span>
+      <span style="float: right;">
         <search-input v-model="searchValue2"  placeholder="搜索文件名称、文件类型" input-style="width:250px;"></search-input>
      </span>
+     </div>
+     <div style="clear: both;"></div>
        <documents style="margin-top: 10px;" :search-value="searchValue2"></documents>
      </div>
     <el-dialog :title="this.isNotice?'通知书上传':'其他文档上传'" :visible.sync="dialogVisible" class="dialog-medium" :modal="false"> 
-     <documents-upload   :type="types" :tableData="tableDatas" :file="file" @dialogVisible="val=>{dialogVisible=val}" @uploadSuccess="refreshDetailData" ref="docupload"></documents-upload>
+     <documents-upload   :type="types" :file-type="fileType" :tableData="tableDatas" :file="file" @dialogVisible="val=>{dialogVisible=val}" @uploadSuccess="refreshDetailData" ref="docupload"></documents-upload>
    </el-dialog>
    <el-dialog title="CPC通知书上传" :visible.sync="dialogPatentVisible" class="dialog-small" :modal="false">
      <el-form :model="patentForm" ref="patentForm" label-width="110px" class="patent_notice">
@@ -111,14 +125,17 @@ const config = [
   ['patent', {
     action: 'getPatentDocuments',
     type: 'patent',
+    url: '/patents/documents',
   }],
   ['trademark', {
     action: 'getTrademarkDocuments',
     type: 'trademark',
+    url: '/trademarks/documents',
   }],
   ['copyright', {
     action: 'getCopyrightDocuments',
     type: 'copyright',
+    url: '/copyrights/documents',
   }],
   ['patent_notice', {
     action: 'getPatentNoticesDocuments',
@@ -146,6 +163,7 @@ export default {
       loading: false,
       isNotice: false,
       tableDatas: [],
+      fileType: '',
       file: [],
       patentForm: {
         agency_serial: '',
@@ -289,6 +307,40 @@ export default {
           this.$nextTick(_=>{
             this.$refs.docupload.show();
            })
+        });
+      }else {
+        this.$message({message: a.info, type: 'warning'});
+      }
+    },
+    handleDragSuccess(a) {
+      if(a.status) {
+        this.$nextTick(_=>{
+          this.clear();
+          // const l = this.tableDatas.length;
+          const lists = [];
+          a.data.list.forEach((_, key)=>{ 
+            _.time = ''; 
+            _.type=830;  
+            _.project = this.detailId;
+            lists.push(this.$tool.deepCopy(_));
+
+          });
+          // this.tableDatas.push(...a.data.list);
+          // this.file.push(a.data.file);
+          //   lists.forEach((v,k)=>{
+          //     this.tableDatas.splice(k+l,1,v);
+          //   })
+           this.$nextTick(_=>{
+              const config = map.get(this.type);
+              const url = config.url;
+              const success = _=>{
+                this.$message({type:'success',message: '上传成功'});
+                this.refreshDetailData();
+              };
+             const data = { file: a.data.file, list: lists };
+              this.$axiosPost({url,data,success});
+
+           }) 
         });
       }else {
         this.$message({message: a.info, type: 'warning'});
