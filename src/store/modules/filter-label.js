@@ -10,7 +10,7 @@ const getters = {
     	const arr = [];
     
     for(let s of screen) {
-      arr.push(s["name"] + "：" + s["items"].map(item=>item.label).join("、"));
+      arr.push({label:s["name"] + "：" + s["items"].map(item=>item.label).join("、"),type: 'screen'});
     }
 
     return arr;
