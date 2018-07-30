@@ -72,7 +72,7 @@
        <documents style="margin-top: 10px;" :search-value="searchValue2"></documents>
      </div>
     <el-dialog :title="this.isNotice?'通知书上传':'其他文档上传'" :visible.sync="dialogVisible" class="dialog-medium" :modal="false"> 
-     <documents-upload   :type="types" :file-type="fileType" :tableData="tableDatas" :file="file" @dialogVisible="val=>{dialogVisible=val}" @uploadSuccess="refreshDetailData" ref="docupload"></documents-upload>
+     <documents-upload   :type="types" :file-type="fileType" :tableDatas="tableDatas" :files="file" @dialogVisible="val=>{dialogVisible=val}" @uploadSuccess="refreshDetailData" ref="docupload"></documents-upload>
    </el-dialog>
    <el-dialog title="CPC通知书上传" :visible.sync="dialogPatentVisible" class="dialog-small" :modal="false">
      <el-form :model="patentForm" ref="patentForm" label-width="110px" class="patent_notice">
