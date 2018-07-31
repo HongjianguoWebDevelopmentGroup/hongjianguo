@@ -5,11 +5,11 @@
 	<div :style="shirnkStyle" class="app-shrink" v-show="visible">
 		<div class="app-shrink-head">
 			<span style="font-size: 18px; font-weight: bold;float: left;max-width: 430px;text-overflow: ellipsis;overflow: hidden;white-space: nowrap;" :title="title" class="fs">{{ title }}</span>
-			<el-button icon="close" style="float: right; border: 0; height: 40px;" @click="close" title="关闭"></el-button>
+			<el-button v-if="isClose" icon="close" style="float: right; border: 0; height: 40px;" @click="close" title="关闭"></el-button>
 			<slot name="header"></slot>
 		</div>
 		<div v-loading="shrinkLoading" :element-loading-text="shrinkLoadingText">
-			<div class="app-shrink-body" :style="`height: ${shrinkHeight}px;`" v-if="rendered" >
+			<div class="app-shrink-body" :style="`height: ${shrinkHeight}px; overflow: auto;`" v-if="rendered" >
 				<slot></slot>
 			</div>
 		</div>
@@ -40,6 +40,14 @@ export default {
 		size: {
 			type: String,
 			default: 'large',
+		},
+		modalClick: {
+			type: Boolean,
+			default: true,
+		},
+		isClose: {
+			type: Boolean,
+			default: true,
 		}
 	},
 	data () {
@@ -49,8 +57,10 @@ export default {
 	},
 	methods: {
 		close () {
-			this.$emit('update:visible', false);
-			this.$emit('close');
+			if(this.modalClick) {
+				this.$emit('update:visible', false);
+				this.$emit('close');	
+			}
 		},
 		// fire (e) {
 		// 	const _con = $('.app-shrink');   // 设置目标区域

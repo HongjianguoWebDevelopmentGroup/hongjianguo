@@ -54,13 +54,11 @@
 import AppTag from '@/components/common/AppTag'
 import RemoteSelect from '@/components/form/RemoteSelect'
 import EditPassword from '@/components/form/EditPassword'
-import AxiosMixins from '@/mixins/axios-mixins'
 
 const URL = '/api/members';
 
 export default {
   name: 'settingIndividual',
-  mixins: [ AxiosMixins ],
   data () {
 		return {
 		  form: {
@@ -103,12 +101,12 @@ export default {
   				window.setTimeout(_=>{this.loading = false}, 300);
   			};
 
-  			this.axiosGet({url, success, complete});
+  			this.$axiosGet({url, success, complete});
   		}
   	},
-  	save () {
+  	async save () {
   		// if(this.checkForm()) return;
-
+  		await this.checkFormFields()
   		const url = `${URL}/${this.id}/config`;
   		const success = _=>{ 
   			this.$message({message: '保存成功', type: 'success'});
@@ -119,10 +117,25 @@ export default {
   		const complete = _=>{ this.btn_disabled = false };
 
   		this.btn_disabled = true;
-  		this.axiosPut({url, data, success, complete});
+  		await this.$axiosPut({url, data, success, complete});
   	},
   	checkForm () {
   		return this.$refs.psd.check();
+  	},
+  	async checkFormFields () {
+  		return new Promise(reject => {
+  			let message = ''
+  			const mobile = this.form.mobile
+  			let mobileReg = /(^[0-9]{3,4}\-[0-9]{7,8})$|(^[0-9]{3,4}\-[0-9]{7,8})(-\d{1,6}?$)|^1[3|4|5|7|8][0-9]{9}$/
+  			if (mobile !== '' && !mobileReg.test(mobile) ) {
+  				message = '手机格式错误！'
+  			}
+  			if (message) {
+  				this.$message({type: 'warning', message})
+  			} else {
+  				reject()
+  			}
+  		})
   	}
   },
   watch: {

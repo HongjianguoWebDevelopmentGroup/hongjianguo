@@ -17,7 +17,7 @@
       :render-content="renderContent"
       :current-node-key="currentNodeKey"
       @current-change="handleCurrentChange"
-      :style="`height: ${innerHeight - 450}px; overflow: auto; font-size: 14px;`"
+      :style="`height: ${innerHeight - 500}px; overflow: auto; font-size: 14px;`"
       :filter-node-method="filterNode"
       :default-expanded-keys="defaultKeys"
       ref="tree"

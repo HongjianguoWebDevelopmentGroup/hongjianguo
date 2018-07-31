@@ -1,5 +1,5 @@
 import menu from '@/const/menuConst'
-import {customPathMap} from '@/const/filterSetting'
+import {customPathMap} from '@/const/filterConfig'
 
 const sources = menu.source;
 const sourceMap = menu.map;

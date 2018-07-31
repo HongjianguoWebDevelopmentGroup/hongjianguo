@@ -55,7 +55,7 @@ export default {
 		}
   },
   components: { AppSwitch, StaticSelect },
-  URL: '/api/agents',
+  URL: '/agents',
   REMINDER_TEXT: '代理人',
 }
 </script>

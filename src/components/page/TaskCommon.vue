@@ -163,7 +163,7 @@
       :title="currentRow.title"
       @editSuccess="editProjectSuccess"
       :refresh-switch="false"
-       @sendEmail="handleSendMail"
+      @sendEmail="handleSendMail"
       ref="detail">
     </common-detail>
 

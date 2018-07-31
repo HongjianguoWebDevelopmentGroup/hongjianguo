@@ -81,7 +81,7 @@ export default {
 		}
   },
   components: { AppSwitch, StaticSelect },
-  URL: '/api/agencies',
+  URL: '/agencies',
   REMINDER_TEXT: '代理机构',
 }
 </script>

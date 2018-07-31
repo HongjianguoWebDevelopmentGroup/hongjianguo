@@ -57,7 +57,7 @@ import StaticSelect from '@/components/form/StaticSelect'
 import ReportForm from '@/components/page_extension/Report_form'
 import ReportView from '@/components/page_extension/Report_view'
 import MailDate from '@/components/form/MailDate'
-import {configs} from '@/const/reportSetting'
+import {configs} from '@/const/reportConfig'
 import {mapGetters} from 'vuex' 
 
 const url = '/api/reports';
