@@ -173,7 +173,7 @@ export default {
   	}
   },
   methods: {
-  	show (row, type='add') {
+  	show (type='add', row) {
   		this.type = type;
   		this.dialogVisible = true;
   		this.$nextTick(()=>{
@@ -237,7 +237,7 @@ export default {
 			handler () {
 				this.$nextTick(_=>{
 					const val = this.$refs.fee_code.getSelected()[0];
-					console.log(val);
+					// console.log(val);
 					if(val) {
 						this.codeChange(val);
 					}	

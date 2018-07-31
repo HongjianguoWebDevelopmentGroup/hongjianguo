@@ -9,7 +9,7 @@ const taskOptions = [
   { id: 'source',                name: '任务来源' },
   { id: 'ipr',                   name: 'IPR' },
   { id: 'branch',                name: '部门' },
-  { id: 'proposer',              name: '部门' },
+  { id: 'proposer',              name: '提案人' },
   { id: 'person_in_charge_name', name: '承办人' },
   { id: 'agency',                name: '代理机构' },
   { id: 'agent',                 name: '代理人' },
@@ -209,6 +209,7 @@ const columns = {
   'task_finish': taskOptions,
   'fee_income': feeOptions,
   'fee_pay': feeOptions,
+  'fee': feeOptions,
   'fee_bill': invoiceOptions,
   'fee_payment': invoiceOptions,
 };
@@ -256,12 +257,12 @@ const configs = {
     data_key: 'fees',
     text: '资助统计',
   },
-  'pay': {
-  	url: '/fees?debit=0',
-  	list_url: '/report/pay',
-  	add_url: '/report/pay/add',
+  'fee': {
+  	url: '/fees',
+  	list_url: '/report/fee',
+  	add_url: '/report/fee/add',
   	data_key: 'fees',
-  	text: '支出统计',
+  	text: '费用统计',
   },
   'invoice': {
     url: '/invoices',
@@ -305,6 +306,7 @@ const strainers = {
 		remote: ['proposer', 'applicant', 'agent', 'agency'],
 	},
 	'task': taskMap,
+  'fee': feeMap,
 	'income': feeMap,
 	'pay': feeMap,
 	'invoice': invoiceMap,
@@ -314,7 +316,7 @@ const strainers = {
 	'fee_income':   feeMap,
 	'fee_pay':      feeMap,
 	'fee_bill':     invoiceMap,
-	'fee_payment':  invoiceMap,
+	'fee_payment':  invoiceMap
 }
 
 export {columns, configs, strainers};

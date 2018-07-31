@@ -1,9 +1,9 @@
 <template>  
   	<el-form label-width="100px" :model="form" ref="form">
-      <el-form-item label="关联案件" prop="project_id" v-if="type == 'add'">
+      <el-form-item label="关联案件" prop="project_id" v-if="type == 'add'" :rules="rules.project_id">
         <remote-select type="project" v-model="form.project_id" ref="project"></remote-select>
       </el-form-item>
-      <el-form-item label="任务流程" prop="flow_id" v-if="type == 'add' && category != ''">
+      <el-form-item label="任务流程" prop="flow_id" v-if="type == 'add' && category != ''" :rules="rules.flow_id">
         <el-select v-model="form.flow_id" placeholder="请选择任务流程">
           <el-option
             v-for="item in flowOptions"
@@ -14,7 +14,7 @@
           </el-option>
         </el-select>
       </el-form-item>
-      <el-form-item label="管制事项" prop="task_def_id" v-if="type == 'add' && category != ''">
+      <el-form-item label="管制事项" prop="task_def_id" v-if="type == 'add' && category != ''" :rules="rules.task_def_id">
         <el-select v-model="form.task_def_id" placeholder="请选择管制事项">
           <el-option
             v-for="item in defOptions"
@@ -26,7 +26,7 @@
         </el-select>
       </el-form-item>
 
-      <el-form-item label="流程节点" prop="flow_node_id" v-if="type == 'add' && category != ''">
+      <el-form-item label="流程节点" prop="flow_node_id" v-if="type == 'add' && category != ''" :rules="rules.flow_node_id">
         <el-select v-model="form.flow_node_id" placeholder="请选择流程节点">
           <el-option
             v-for="item in flownodeOptions"
@@ -38,13 +38,13 @@
         </el-select>
       </el-form-item>
 
-  		<el-form-item label="承办人" prop="person_in_charge" v-if="type == 'add' && category != ''">
+  		<el-form-item label="承办人" prop="person_in_charge" v-if="type == 'add' && category != ''" :rules="rules.person_in_charge">
         <remote-select type="member" v-model="form.person_in_charge"></remote-select>
   		</el-form-item>
 
       <el-row> 
         <el-col :span="12"> 
-          <el-form-item label="内部期限" prop="due_time">
+          <el-form-item label="内部期限" prop="due_time" :rules="rules.due_time">
             <el-date-picker type="date" v-model="form.due_time" placeholder="请选择内部期限"></el-date-picker>
           </el-form-item>
         </el-col>
@@ -92,7 +92,19 @@ export default {
     ...mapActions([
       'refreshUser',
     ]),
-    add () {
+    checkeForm () {
+      return new Promise((reject) => {
+        this.$refs.form.validate(flag => {
+          if (flag) {
+            reject()
+          } else {
+            this.$message({type: 'warning', message: '请正确填写表单'})
+          }
+        })
+      })
+    },
+    async add () {
+      await this.checkeForm()
       const url = URL;
       const data = this.$tool.shallowCopy(this.form, {'date': true});
       const success = _=>{ 
@@ -103,9 +115,10 @@ export default {
       const complete = _=>{ this.btn_disabled = false };
 
       this.btn_disabled = true;
-      this.axiosPost({url, data, success, complete});  
+      await this.$axiosPost({url, data, success, complete});  
     },
-    edit () {
+    async edit () {
+      await this.checkeForm()
       const url = `${URL}/${this.row.id}`;
       const data = this.$tool.shallowCopy(this.form, {'date': true, 'skip': ['project_id', 'flow_id', 'task_def_id']});
       data.person_in_charge = data.person_in_charge.id;
@@ -113,7 +126,7 @@ export default {
       const complete = _=>{ this.btn_disabled = false };
       
       this.btn_disabled = true;
-      this.axiosPut({url, data, success, complete });
+      await this.$axiosPut({url, data, success, complete });
     },
     clear () {
       this.$refs.form.resetFields();
@@ -155,6 +168,7 @@ export default {
     // }
   },
   data () {
+    const getRules = (message, type) => Object.assign({required: true, trigger: 'change'}, {message, type})
   	return {
   	  form: {
         project_id: '',
@@ -171,6 +185,14 @@ export default {
       attachments: [],
       category: '',
       btn_disabled: false,
+      rules: {
+        project_id: getRules('关联案件不能为空', 'number'),
+        person_in_charge: getRules('承办人不能为空', 'number'),
+        flow_id: getRules('任务流程不能为空', 'number'),
+        task_def_id: getRules('管制事项不能为空', 'string'),
+        flow_node_id: getRules('流程节点不能为空', 'string'),
+        due_time: getRules('内部期限不能为空', 'date')
+      }
   	}
   },
   computed: {

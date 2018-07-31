@@ -19,7 +19,7 @@
 				</table-component>
   		</div>
 	
-  	<pop :popType="popType" :group="current_group" @refresh="refresh" ref="pop"></pop>
+  	<pop :popType="popType" :group="current_group" @refresh="refresh" @update="update" ref="pop"></pop>
   	<el-dialog title="将所选用户添加至用户组" :visible.sync="dialogVisible" :close-on-click-modal="false">
 			<el-form label-width="100px">
 				<el-form-item label="用户组">
@@ -53,18 +53,18 @@ export default {
   mixins: [ AxiosMixins ],
   data () { 
 		return {
-          isVisible: false,
 		  lastUpdate: '',
 		  formLabelWidth: '100px',
 		  popType: '',
 		  tableOption: {
+		  	'name': 'userList',
 		  	'header_btn': [
 		  		{ type: 'add', label: '添加用户', click: this.addPop },
 		  		{ type: 'control', label: '字段' },
 		  		{},
 		  	],
 		  	'header_slot': ['last_update'],
-		  	'height': 'default',
+		  	'height': 'userList',
 		  	// 'header_slot': [ 'userRole' ],
 		  	columns: [
 		  		{ type: 'selection' },
@@ -148,12 +148,10 @@ export default {
     },
 		addPop () {
 			this.popType = 'add';
-			this.isVisible = true;
 			this.$refs.pop.show();
 		},
 		editPop (row) {
 			this.popType = 'edit';
-			this.isVisible = true;
 			this.$refs.pop.show(row);
 		},
 		toGroupPop () {
@@ -227,7 +225,7 @@ export default {
 		refresh (str) {
 			// console.log(str);
  			this.$refs.table.refresh();
-			if(str != 'noGroup') {
+			if(str !== 'noGroup') {
 				this.refreshGroup();
 			}
 		},

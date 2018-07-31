@@ -3,7 +3,7 @@
 	<patent ref="form" v-else-if="type == 'patent'"></patent>
 	<copyright ref="form" v-else-if="type == 'copyright'"></copyright>
 	<task ref="form" v-else-if="type == 'task'"></task>
-	<fee ref="form" v-else-if="type == 'income' || type == 'pay' "></fee>
+	<fee ref="form" v-else-if="type == 'income' || type == 'pay' || type === 'fee'"></fee>
 	<invoice ref="form" v-else-if="type == 'invoice'"></invoice>
 </template>
 <script>

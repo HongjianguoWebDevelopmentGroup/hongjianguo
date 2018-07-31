@@ -1,7 +1,7 @@
 <template>
   <div class="main">
 		<table-component :tableOption="option" :data="tableData" ref="table" @refreshTableData="refreshTableData"></table-component>
-		<pop @refresh="refresh" ref="pop"></pop>
+		<pop @addSuccess="update" @editSuccess="update" ref="pop"></pop>
   </div>
 </template>
 
@@ -66,8 +66,7 @@ export default {
 		  	],
 		  },
 		  tableData: [],
-	    filter: {},
-	    popType: '',
+	    filter: {}
 		}
   },
   computed: {
