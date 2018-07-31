@@ -163,7 +163,7 @@ export default {
       const success = _=>{
         this.$message({message: '编辑用户成功', type: 'success'});
         this.dialogVisible = false;
-        // this.$emit('refresh');
+        this.$emit('refresh');
       }
 
       this.$axiosPut({url, data, success});
