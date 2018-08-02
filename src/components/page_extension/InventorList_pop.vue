@@ -23,7 +23,7 @@
 			</el-form-item>
 
 			<el-form-item label="不公开姓名" prop="not_disclose_name">
-				<el-checkbox v-model="form.not_disclose_name" :true-label="1" :false-label="0">不公开姓名</el-checkbox>
+				<el-checkbox v-model="form.not_disclose_name" true-label="是" false-label="否">不公开姓名</el-checkbox>
 			</el-form-item>
 
 			<el-form-item label="英文名" prop="given_name">
@@ -57,7 +57,7 @@ export default {
         citizenship: '',
         mobile: '',
         email: '',
-        not_disclose_name: 0,
+        not_disclose_name: '否',
         given_name: '',
         family_name: '',
       },
