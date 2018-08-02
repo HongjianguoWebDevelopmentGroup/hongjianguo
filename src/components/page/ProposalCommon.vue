@@ -99,7 +99,7 @@ import { mapActions } from 'vuex'
 
 
 const typeMap = new Map([['/proposal/add', 'add'], ['/proposal/edit', 'edit'], ['/proposal/detail', 'detail']]);
-const URL = '/api/proposals';
+const URL = '/proposals';
 
 
 //https://jsonplaceholder.typicode.com/posts/
@@ -117,7 +117,7 @@ export default {
       this.id = data.proposal_id;
       this.refreshUser();
     },
-    save ( callback=_=>{this.$message({message: '保存成功', type: 'success'});}, required=false, showWarning=true ) {
+    save ( callback=_=>{this.$message({message: '保存成功', type: 'success'});}, required=true, showWarning=true ) {
       
       if(!this.$refs.form) return;
 

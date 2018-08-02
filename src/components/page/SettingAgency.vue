@@ -16,7 +16,7 @@ import TableComponent from '@/components/common/TableComponent'
 import Pop from '@/components/page_extension/settingAgency_pop'
 import AxiosMixins from '@/mixins/axios-mixins'
 
-const URL = '/api/agencies';
+const URL = '/agencies';
 export default {
   name: 'settingAgency',
   mixins: [ AxiosMixins ],
@@ -24,7 +24,7 @@ export default {
 		return {
 		  option: {
 			'name': 'agency',
-			'height': 'default2',
+			'height': 'default',
 		  	'header_btn': [
 		  		{'type': 'add', click: this.add},
 		  		{'type': 'control'}
@@ -32,11 +32,11 @@ export default {
 				'header_slot': [ 'is_core_partner',],
 				'columns': [
 					{ type: 'selection' },
-					{ type: 'text', label: '机构名称', prop: 'name', width: '150' },
-					{ type: 'text', label: '联系人', prop: 'contact', width: '84' },
-					{ type: 'text', label: '地址', prop: 'address', width: '120' },
+					{ type: 'text', label: '机构名称', prop: 'name', width: '300' },
+					{ type: 'text', label: '联系人', prop: 'contact', width: '150' },
+					{ type: 'text', label: '地址', prop: 'address', width: '200' },
 					{ type: 'text', label: '联系电话', prop: 'telephone', width: '145' },
-					{ type: 'text', label: '邮箱', prop: 'email', width: '120' },
+					{ type: 'text', label: '邮箱', prop: 'email', width: '200' },
 					{ type: 'text', label: '状态', prop: 'status_name', width: '80' },
 					{ type: 'text', label: '等级', prop: 'level', width: '80' },
 					// { type: 'text', label: '核心合作伙伴', prop: 'is_core_partner_name', width: '133' },
@@ -108,7 +108,7 @@ export default {
   	},
   	refreshTableData (option) {
   		const url = URL;
-  		const is_core_partner = this.is_core_partner !== "" ? { is_core_partner: this.is_core_partner } : {};
+  		const is_core_partner = this.is_core_partner !== "" ? { status: this.is_core_partner } : {};
   		const data = Object.assign({}, option, is_core_partner);
   		const success = _=>{ this.tableData = _.agencies };
 

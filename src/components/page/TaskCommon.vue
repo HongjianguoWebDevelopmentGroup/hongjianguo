@@ -163,7 +163,7 @@
       :title="currentRow.title"
       @editSuccess="editProjectSuccess"
       :refresh-switch="false"
-       @sendEmail="handleSendMail"
+      @sendEmail="handleSendMail"
       ref="detail">
     </common-detail>
 
@@ -414,13 +414,14 @@ export default {
         type: 'warning'
       }).then(_=>{
         const url = `/tasks/${this.currentRow.id}/reject`;
+        const data = {remark: this.remark,};
         const success = _=>{
           this.$message({message: '退回任务成功', type: 'success'});
           this.dialogShrinkVisible = false;
           this.update();
         };
 
-        this.$axiosPost({url, success});
+        this.$axiosPost({url, data, success});
       }).catch(_=>{});
     },
     handleNext (val) {

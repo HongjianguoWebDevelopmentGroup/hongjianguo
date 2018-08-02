@@ -234,7 +234,6 @@ export default {
       'refreshFlownodes'
     ]),
     handleSendMail (id) {
-      console.log(id);
       this.mailVisible = true;
       this.$nextTick(() => {
         this.$refs.mailEdit.initForm(id);

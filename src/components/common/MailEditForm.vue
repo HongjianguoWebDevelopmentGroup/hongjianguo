@@ -98,7 +98,6 @@ export default {
 			this.$refs.form.resetFields();
 		},
 		fillForm (form) {
-			console.log(form)
 			form.to = form.to.map(v => ({id: v.value, name: v.label}));
 			form.cc = form.cc.map(v => ({id: v.value, name: v.label}));
 			this.attachments = form.attachments;

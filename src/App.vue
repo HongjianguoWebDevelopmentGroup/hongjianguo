@@ -423,10 +423,6 @@ nav {
   /*margin-bottom: 10px;*/
 }
 
-.table-header {
-  margin-bottom: 10px;
-  overflow: hidden;
-}
 .table-search {
   width: 130px;
   float: right;
@@ -517,6 +513,9 @@ nav {
 .input-min-width {
   width: 150px !important;
 }
+.upload-width {
+  width: 180px !important;
+}
 /*这里放入重写element-ui样式的内容*/
 #app {
   .el-card__header {
@@ -589,6 +588,8 @@ nav {
     margin: 0 -20px;
   }
   .el-upload-dragger {
+    width: auto;
+    min-width: 180px;
     height: auto;
   }
   textarea {
@@ -613,9 +614,9 @@ nav {
     font-size: 12px;
     min-height: 36px;
   }
-  // .el-select__tags {
-  //   white-space: nowrap;
-  // }
+  /*.el-select__tags {
+    white-space: nowrap;
+  } */
   .no_wrap .el-select__tags {
     white-space: nowrap;
   }

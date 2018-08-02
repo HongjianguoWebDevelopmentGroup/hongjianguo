@@ -3,7 +3,7 @@
   <div class="hjg-table">
     
     <div class="table-header" v-if="tableOption.is_header === undefined ? true : tableOption.is_header">
-      
+      <div class="table-header-left">
       <el-popover
         placement="right"
         width="800"
@@ -114,7 +114,9 @@
         @click="filterVisible = true">
         筛选
       </el-button>
-      
+
+      </div>
+      <div class="table-header-right">
       <search-input
         v-model="search_value"
         :placeholder="tableOption.search_placeholder == undefined ? '搜索...' : tableOption.search_placeholder"
@@ -123,6 +125,7 @@
         @enter="handleSearch"
         v-if="tableOption.is_search == undefined ? true : tableOption.is_search"
       ></search-input>
+      </div>
         
     </div>
     
@@ -778,6 +781,17 @@ export default {
 }*/
 </style>
 <style scoped lang="scss">
+.table-header {
+  margin-bottom: 10px;
+  display: flex;
+}
+.table-header-left {
+  flex: 1;
+  line-height: 40px;
+}
+.table-header-right {
+
+}
 .table-search {
   width: 250px;
 }

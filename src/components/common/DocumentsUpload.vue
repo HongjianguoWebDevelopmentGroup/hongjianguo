@@ -13,7 +13,7 @@
       <el-form-item label="发文日" prop="time" v-if="config.time&&(!!tableData[0]['show_mail_date'])">
         <el-date-picker type="date" v-model="form.time"></el-date-picker>
       </el-form-item>      
-      <el-form-item label="官方绝限" prop="legal_time" v-if="(!!tableData[0]['show_deadline'])&&config.legal_time">
+      <el-form-item label="官方绝限" prop="legal_time" v-if="config.legal_time&&(!!tableData[0]['show_deadline'])">
         <el-date-picker type="date" v-model="form.legal_time"  ></el-date-picker>
       </el-form-item>    
       <el-form-item label="申请日" prop="apd" v-if="config.apd&&(!!tableData[0]['show_apd'])">
@@ -139,8 +139,8 @@ export default {
   mixins: [ AxiosMixins ],
   props: {
     'type': null,
-    'tableData':Array,
-    'file': Array,
+    'tableDatas':Array,
+    'files': Array,
   },
   data () {
     return {
@@ -176,7 +176,27 @@ export default {
       return config ? config : this.type;
     },
     name () {
-      return this.tableData.length!=0?this.tableData[0]['name']:'';
+      return this.tableDatas.length!=0?this.tableDatas[0]['name']:'';
+    },
+    tableData : {
+      get () {
+        return this.tableDatas.length!=0? this.tableDatas : [];
+      },
+      set (v) {
+        if (v) {
+          return v;
+        }
+      }
+    },
+    file : {
+      get () {
+        return this.files.length!=0? this.files : [];
+      },
+      set (v) {
+        if (v) {
+         return v;
+        }
+      }
     },
   },
   methods: {
@@ -190,6 +210,9 @@ export default {
           this.handleTypeChange(v,0);
         }  
        });
+    },
+    test(){
+      console.log('调用成功');
     },
     design() {
       const o = this.$tool.deepCopy(this.tableData[this.$index]);
@@ -235,7 +258,6 @@ export default {
       this.dialogVisibleIn = true;
     },
     importData () {
-      
       if(this.tableData.length == 0) {
         return this.$message({message: '上传数据不能为空', type: 'warning'});
       }

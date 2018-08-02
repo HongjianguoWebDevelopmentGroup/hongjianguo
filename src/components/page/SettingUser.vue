@@ -16,6 +16,7 @@ export default {
   data () {
 		return {
 			option: {
+				'name': 'settingUserList',
 				'handleSearch': this.search,
 				'header_btn': [
 					{ type: 'add',  click: this.add },

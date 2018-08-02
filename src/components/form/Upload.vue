@@ -5,7 +5,7 @@
       action="/api/files"
       :on-preview="onPreview"
       :before-upload="handleUploadBefore"
-      :file-list="fileList"
+      :file-list="uploadList"
       multiple
       ref="upload"
       class="app-upload"
@@ -34,7 +34,9 @@
         'uploadText': String,
       },
       data () {
-        return {};
+        return {
+          uploadList: [],
+        };
       },
       methods: {
         getFileList () {
@@ -52,7 +54,8 @@
             return true;
           }
         },
-        handleUploadSuccess (p, f) {
+        handleUploadSuccess (p, f, fl) {
+          // console.log(fl);
           if(p.status) {
             const id = p.data.file.id;
             const copy = [...this.value];
@@ -60,11 +63,14 @@
             f.id = id;
             f.downloadUrl = p.data.file.downloadUrl;
             copy.push(id);
+            this.uploadList=fl;
             this.$emit('input', copy);
 
           }else {
-            this.$alert(p.info);
-            this.clearFiles();
+            this.$message({message:p.info, type: 'warning'});
+            this.uploadList.splice(fl.length,1);
+            // this.clearFiles();
+            return this.uploadList;
           }
         },
         onPreview (file) {
@@ -83,6 +89,16 @@
           this.$emit('input', copy);
 
         },
+      },
+      ceated () {
+        this.uploadList = this.fileList;
+      },
+      watch:{
+        'fileList':{
+          handler(val){
+            this.uploadList = val;
+          },
+        }
       }
     }
     </script>

@@ -240,7 +240,7 @@ export default {
       }
       if(form['area'] != undefined && t == 'edit') {
         this.form.area = form['area'];
-      }
+      }      
       if(form['extension']) {
         const arr = [];
         for(let d of form['extension']) {

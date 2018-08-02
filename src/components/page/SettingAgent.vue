@@ -22,7 +22,7 @@ import TableComponent from '@/components/common/TableComponent'
 import Pop from '@/components/page_extension/settingAgent_pop'
 import AxiosMixins from '@/mixins/axios-mixins'
 
-const URL = '/api/agent';
+const URL = '/agent';
 export default {
   name: 'settingAgent',
   mixins: [ AxiosMixins ],
@@ -31,7 +31,7 @@ export default {
       agentStatus: 1,
 		  option: {
 			'name': 'agent',
-			'height': 'default2',
+			'height': 'default',
 			'import_type': 'agentImport',
       		'url': URL,
 		  	'header_btn': [
