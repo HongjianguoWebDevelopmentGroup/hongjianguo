@@ -71,6 +71,13 @@
     <el-form-item prop="type" label="专利类型" v-if="fields.type" :rules="{type: 'number', required: true, message: '专利类型不能为空', trigger: 'blur'}">
       <static-select type="patent_type" v-model="form.type" key="patent_type"></static-select>
     </el-form-item>   
+    <el-form-item prop="technical_field" label="技术领域" v-if="fields.technical_field" :rules="{required: true, message: '技术领域必选', trigger: 'change'}">
+      <el-radio-group v-model="form.technical_field">
+        <el-radio-button label="机械"></el-radio-button>
+        <el-radio-button label="电子"></el-radio-button>
+        <el-radio-button label="软件"></el-radio-button>
+      </el-radio-group>
+    </el-form-item>
      <el-form-item prop="original_inventors" label="原发明人" v-if="fields.original_inventors" >
       <remote-select type="inventor" v-model="form.original_inventors"></remote-select>
     </el-form-item>
@@ -115,6 +122,7 @@
         <el-radio-button label="D"></el-radio-button>
       </el-radio-group>
     </el-form-item>
+    
     <!-- <el-form-item prop="rank" label="评分" v-if="fields.rank">
       <el-rate 
         v-model="form.rank" 
@@ -248,6 +256,7 @@ export default {
         issue_review:'',
         opinion:'',
         response:'',
+        technical_field: '',
 			},
 			'defaultVal': '',
       'agencyMap': [],

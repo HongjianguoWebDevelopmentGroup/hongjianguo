@@ -63,7 +63,14 @@
 		>
 		 	<div class="el-upload__text">将文件拖到此处，或<em>点击上传</em></div>
 		</el-upload>
-
+		<el-form v-if="!menusMap.get('/patent/upload')">
+			<el-form-item prop="is_trigger_task" label="是否触发任务" v-if="config.is_trigger_task">
+				<el-radio-group v-model="is_trigger_task">
+					<el-radio-button label="触发"></el-radio-button>
+					<el-radio-button label="不触发"></el-radio-button>
+				</el-radio-group>
+			</el-form-item>
+		</el-form>
 		<el-button style="margin-top: 10px;" type="primary" @click="importData" :disabled="importLoading">导入</el-button>
 		
 		<el-dialog title="指定案件" :visible.sync="dialogVisible" :modal-append-to-body="false" :modal="false">
@@ -111,6 +118,7 @@ const config = [
 		category: 1,
 		// model: '',
 		control:true,
+		is_trigger_task:true,
 	}],
 	['copyright_notice', {
 		action: 'getCopyrightNotices',
@@ -175,12 +183,14 @@ export default {
 		  tableData: [],
 		  serial: '',
 		  dialogVisible: false,
-		  $index: null,
+			$index: null,
+			is_trigger_task: '触发',
 		}
   },
   computed: {
     ...mapGetters([
-      'importLoading',
+			'importLoading',
+			'menusMap',
     ]),
   	config () {
   		const config = map.get(this.type);
@@ -199,7 +209,7 @@ export default {
   methods: {
     ...mapMutations([
       'setImportLoading',
-    ]),
+		]),
     handleVisible (val) {
       this.$emit('update:visible', val);
     },
@@ -233,7 +243,9 @@ export default {
         }
       
   		const url = this.config.url;
-  		const data = this.tableData;
+			const list = this.tableData;
+			const is_trigger_task = this.is_trigger_task == '触发'? 1 : 0;
+			const data = {list:list,is_trigger_task:is_trigger_task}
   		const success = _=>{ 
         this.tableData = [];
         this.$refs.upload.clearFiles();

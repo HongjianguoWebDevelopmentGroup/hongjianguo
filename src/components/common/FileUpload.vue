@@ -75,7 +75,7 @@
     >
       <div class="el-upload__text"><em>单个或多个文件上传</em></div>
     </el-upload>
-    <el-upload
+    <!-- <el-upload
       :action="`${upload_url}Zip`"
       :on-success="handleSuccess"
       drag
@@ -85,8 +85,17 @@
       v-if="!config.no_zip"
     >
       <div class="el-upload__text"><em>压缩包上传</em></div>
-    </el-upload>
-
+    </el-upload> -->
+    <div style="margin:10px;"  v-if="!menusMap.get('/patent/upload')">
+      <el-switch
+        v-if="config.is_add_to_task"
+        v-model="is_add_to_task"
+        on-color="#13ce66"
+        off-color="#ff4949"
+        on-text="添加"
+        off-text="不添加">
+      </el-switch>
+    </div>
     <el-button type="primary" @click="importData" :loading="loading">{{ loading ? '上传中...' : '确认上传' }}</el-button>
     
 <!--    <el-dialog title="指定案件号" :visible.sync="dialogVisibleIn" :modal-append-to-body="false" :modal="false">
@@ -107,6 +116,7 @@ import AxiosMixins from '@/mixins/axios-mixins'
 import RemoteSelect from '@/components/form/RemoteSelect'
 import StaticSelect from '@/components/form/StaticSelect'
 import {mapActions} from 'vuex'
+import {mapGetters} from 'vuex'
 
 const config = [
   ['patent', {
@@ -114,6 +124,7 @@ const config = [
     url: '/patents/documents',
     type: 'patent',
     file_type: 'file_type_patent',
+    is_add_to_task : 1,
   }],
   ['trademark', {
     action: 'getTrademarkDocuments',
@@ -141,6 +152,7 @@ const config = [
     pct_search_date: true,
     pct_search_result: true,
     no_zip: true,
+    is_add_to_task : 1,
   }],
   ['copyright_notice', {
     action: 'getCopyrightNoticesDocuments',
@@ -185,9 +197,14 @@ export default {
       project_id: '',
       $index: null,
       loading: false,
+      is_add_to_task: true,
+      is_apn: 0,
     }
   },
   computed: {
+    ...mapGetters([
+      'menusMap',
+    ]),
     config () {
       const config = map.get(this.type);
       return config ? config : this.type;
@@ -292,59 +309,61 @@ export default {
             return this.$message({type: 'warning', message: '请填写发文日'});
           }
         }
-        if(_.show_deadline) {
-          if(_.legal_time) {
-            o.legal_time = this.$tool.getDate( new Date(_.legal_time) );
-          }else {
-            return this.$message({type: 'warning', message: '请填写官方绝限'}); 
+        if (this.is_add_to_task) {
+          if(_.show_deadline) {
+            if(_.legal_time) {
+              o.legal_time = this.$tool.getDate( new Date(_.legal_time) );
+            }else {
+              return this.$message({type: 'warning', message: '请填写官方绝限'}); 
+            }
           }
+          if(_.show_apd) {
+            if(_.apd) {
+              o.apd = this.$tool.getDate( new Date(_.apd) );
+            }else {
+              return this.$message({type: 'warning', message: '请填写申请日'}); 
+            }
+          }        
+          if(_.show_issue_date) {
+            if(_.issue_date) {
+              o.issue_date = this.$tool.getDate( new Date(_.issue_date) );
+            }else {
+              return this.$message({type: 'warning', message: '请填写授权日'}); 
+            }
+          }
+          if(_.show_apn) {
+            if(_.apn) {
+              o.apn = _.apn;
+            }else {
+              return this.$message({type: 'warning', message: '请填写申请号'}); 
+            }
+          }
+          if(_.show_issue_number) {
+            if(_.issue_number) {
+              o.issue_number = _.issue_number;
+            }else {
+              return this.$message({type: 'warning', message: '请填写授权号'}); 
+            }
+          }
+          if(_.show_pct_search_date) {
+            if(_.pct_search_date) {
+              o.pct_search_date = this.$tool.getDate( new Date(_.pct_search_date) );
+            }else {
+              return this.$message({type: 'warning', message: '请填写国际检索日期'}); 
+            }
+          }
+          if(_.show_pct_search_result) {
+            if(_.pct_search_result) {
+              o.pct_search_result = _.pct_search_result;
+            }else {
+              return this.$message({type: 'warning', message: '请填写检索结论摘要'}); 
+            }
+          }           
         }
-        if(_.show_apd) {
-          if(_.apd) {
-            o.apd = this.$tool.getDate( new Date(_.apd) );
-          }else {
-            return this.$message({type: 'warning', message: '请填写申请日'}); 
-          }
-        }        
-        if(_.show_issue_date) {
-          if(_.issue_date) {
-            o.issue_date = this.$tool.getDate( new Date(_.issue_date) );
-          }else {
-            return this.$message({type: 'warning', message: '请填写授权日'}); 
-          }
-        }
-        if(_.show_apn) {
-          if(_.apn) {
-            o.apn = _.apn;
-          }else {
-            return this.$message({type: 'warning', message: '请填写申请号'}); 
-          }
-        }
-        if(_.show_issue_number) {
-          if(_.issue_number) {
-            o.issue_number = _.issue_number;
-          }else {
-            return this.$message({type: 'warning', message: '请填写授权号'}); 
-          }
-        }
-        if(_.show_pct_search_date) {
-          if(_.pct_search_date) {
-            o.pct_search_date = this.$tool.getDate( new Date(_.pct_search_date) );
-          }else {
-            return this.$message({type: 'warning', message: '请填写国际检索日期'}); 
-          }
-        }
-        if(_.show_pct_search_result) {
-          if(_.pct_search_result) {
-            o.pct_search_result = _.pct_search_result;
-          }else {
-            return this.$message({type: 'warning', message: '请填写检索结论摘要'}); 
-          }
-        }           
         list2.push(o);  
       }
-
-      const data = {file: this.file, list: list2 };
+      
+      const data = {file: this.file, list: list2,is_add_to_task:this.is_add_to_task,is_apn:this.is_apn };
       const success = _=>{
         this.clear();
         this.dialogVisible = false;
@@ -364,7 +383,7 @@ export default {
       if(a.status) {
         
         a.data.list.forEach((_, key)=>{ 
-          _.time = '';
+          // _.time = '';
           _.legal_time = '';
           _.apd = '';
           _.issue_date = '';
