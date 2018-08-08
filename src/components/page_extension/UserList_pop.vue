@@ -3,7 +3,7 @@
     <el-form :key="popType" :model="form" label-width="100px" ref="form" :rules="rules">
       
       <el-form-item label="用户组" prop="group_id" v-if="popType == 'add'" :rules="{ type: 'number', required: true, message: '用户组选择不能为空', trigger: 'change'}">
-        <static-select type="group" v-model="form.group_id"></static-select>
+        <static-select type="group" v-model="form.group_id" :disabled="group.id!=0"></static-select>
       </el-form-item>
 
       <el-form-item label="用户名" prop="username" v-if="popType == 'add'" :rules="[
@@ -31,7 +31,7 @@
         </el-form-item>
       </template>
       
-      <el-form-item label="代理所" v-if="group.id == 6">
+      <el-form-item label="代理所" v-if="group.id == 6 || form.group_id == 6">
         <remote-select type="agency" v-model="form.parent"></remote-select>
       </el-form-item>
 <!--        <el-form-item label="部门">

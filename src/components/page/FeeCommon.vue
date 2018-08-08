@@ -73,7 +73,8 @@ export default {
         'header_slot': [ 'status', 'invoice' ],
         'columns': [
           { type: 'selection' },
-          { type: 'text', label: '案号', prop: 'serial', width: '140' },
+          // { type: 'text', label: '案号', prop: 'serial', width: '140' },
+          { type: 'text', label: '请款单号', prop: 'serial', width: '150' },
           { type: 'text', label: '事务所案号', prop: 'agency_serial', width: '140' },
           { type: 'text', label: '费用对象', prop: 'target', render_simple: 'name', width: '140' },
           { type: 'text', label: '费用名称', prop: 'code', render_simple: 'name', width: '140' },
@@ -142,7 +143,6 @@ export default {
           { type: 'text', label: '费用期限', prop: 'due_time', is_import: true, width: '175' },
           { type: 'text', label: '官方绝限', prop: 'deadline', width: '175' },
           { type: 'text', label: '付款时间', prop: 'pay_time', width: '175' },
-          { type: 'text', label: '请款单号', prop: 'serial', width: '150' },
           { type: 'text', label: '审核意见', prop: 'remark_enterprise', width: '160' },
           { type: 'text', label: '备注', prop: 'remark', is_import: true, width: '160' },
           { 
