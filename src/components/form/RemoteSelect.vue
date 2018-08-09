@@ -14,6 +14,7 @@
   	  :multiple="!single"
   	  ref="select"
   	  @visible-change.once="initialization"
+      style="height: 44px;"
   	>
   		<el-option
   			v-for="item in option_in"
