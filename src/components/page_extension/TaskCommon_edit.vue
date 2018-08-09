@@ -133,6 +133,11 @@ export default {
     },
     fill (o,f,d) {
       // console.log(o+'/'+f+'/'+d);
+      if(typeof this.taskDefsData[0]['id'] === 'string') {
+        d = d + '';
+      }else{
+        d = d - 0;
+      }
       this.form.project_id = o;
       window.setTimeout(_=>{
         this.form.flow_id = f;
@@ -168,7 +173,28 @@ export default {
     // }
   },
   data () {
-    const getRules = (message, type) => Object.assign({required: true, trigger: 'change'}, {message, type})
+    const getRules = (message, type) => Object.assign({required: true, trigger: 'change'}, {message, type});
+    const validateTask_def = (rule, value, callback) => {
+      if(!value) {
+         return callback(new Error('管制事项不能为空'));
+      }
+      if(typeof value === 'string' || typeof value === 'number'){
+        callback();
+      }else {
+        callback(new Error('数据类型应为字符串或者数字'));
+      }
+    };   
+    const validateFlow_node = (rule, value, callback) => {
+      if(!value) {
+         return callback(new Error('流程节点不能为空'));
+      }
+      if(typeof value === 'string' || typeof value === 'number'){
+        callback();
+      }else {
+        // console.log()
+        callback(new Error('数据类型应为字符串或者数字'));
+      }
+    };
   	return {
   	  form: {
         project_id: '',
@@ -189,8 +215,8 @@ export default {
         project_id: getRules('关联案件不能为空', 'number'),
         person_in_charge: getRules('承办人不能为空', 'number'),
         flow_id: getRules('任务流程不能为空', 'number'),
-        task_def_id: getRules('管制事项不能为空', 'string'),
-        flow_node_id: getRules('流程节点不能为空', 'string'),
+        task_def_id: {required: true, trigger: 'change', validator: validateTask_def},
+        flow_node_id: {required: true, trigger: 'change', validator: validateFlow_node},
         due_time: getRules('内部期限不能为空', 'date')
       }
   	}
@@ -224,8 +250,7 @@ export default {
       this.taskDefsData.forEach(_=>{
         if(_.flow_id == f) arr.push({label: _.name, value: _.id});
       });
-
-      return arr;
+      return  arr;
     },
     flownodeOptions () {
       const f = this.form.flow_id;

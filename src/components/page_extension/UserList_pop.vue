@@ -31,7 +31,7 @@
         </el-form-item>
       </template>
       
-      <el-form-item label="代理所" v-if="group.id == 6">
+      <el-form-item label="代理所" v-if="group.id == 6 || form.group_id == 6">
         <remote-select type="agency" v-model="form.parent"></remote-select>
       </el-form-item>
 <!--        <el-form-item label="部门">
