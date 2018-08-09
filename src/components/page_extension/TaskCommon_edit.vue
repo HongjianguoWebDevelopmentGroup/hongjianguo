@@ -133,6 +133,11 @@ export default {
     },
     fill (o,f,d) {
       // console.log(o+'/'+f+'/'+d);
+      if(typeof this.taskDefsData[0]['id'] === 'string') {
+        d = d + '';
+      }else{
+        d = d - 0;
+      }
       this.form.project_id = o;
       window.setTimeout(_=>{
         this.form.flow_id = f;
