@@ -24,7 +24,7 @@
           ></el-rate> -->
             <el-slider 
               v-model="form.tech_rank"
-              disabled
+              
               show-input
             ></el-slider>
         </el-form-item>
@@ -38,11 +38,11 @@
           ></el-rate> -->
             <el-slider 
               v-model="form.draft_rank"
-              disabled
+              
               show-input
             ></el-slider>
         </el-form-item>
-        <el-form-item prop="service_rank" label="服务状态"  v-if="!menusMap.get('/iprs')">
+        <el-form-item prop="service_rank" label="服务评分"  v-if="!menusMap.get('/iprs')">
         <!--   <el-rate 
             v-model="form.service_rank" 
             style="margin-top: 10px" 
@@ -53,7 +53,7 @@
             <el-slider 
               v-model="form.service_rank"
               show-input
-              disabled
+              
             ></el-slider>
         </el-form-item>
         <el-form-item prop="negative_flag" label="特别评价"  v-if="!menusMap.get('/iprs')">
