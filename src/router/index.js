@@ -387,6 +387,22 @@ const router = new Router({
       component: PatentList
     },
     { 
+      path: '/patent/agency/notset',
+      name: 'PatentAgencyNotset',
+      component: PatentList,
+      meta: {
+        params: { isagency: 0 },
+      }
+    },
+    { 
+      path: '/patent/agency/set',
+      name: 'PatentAgencyset',
+      component: PatentList,
+      meta: {
+        params: { isagency: 1 },
+      }
+    },
+    { 
       path: '/patent/stage/application',
       name: 'PatentStageApplication',
       component: PatentList,
@@ -538,6 +554,30 @@ const router = new Router({
       path: '/trademark/list',
       name: 'TrademarkList',
       component: TrademarkList
+    },
+    { 
+      path: '/trademark/dispute',
+      name: 'TrademarkDispute',
+      component: TrademarkList,
+      meta: {
+        params: { dispute: 1 },
+      }
+    },
+    { 
+      path: '/trademark/agency/notset',
+      name: 'TrademarkAgencyNotset',
+      component: TrademarkList,
+      meta: {
+        params: { isagency: 0 },
+      }
+    },
+    { 
+      path: '/trademark/agency/set',
+      name: 'TrademarkAgencyset',
+      component: TrademarkList,
+      meta: {
+        params: { isagency: 1 },
+      }
     },
     { 
       path: '/trademark/stage/application',
@@ -747,6 +787,22 @@ const router = new Router({
       path: '/copyright/list',
       name: 'CopyrightList',
       component: CopyrightList
+    },
+    { 
+      path: '/copyright/agency/notset',
+      name: 'CopyrightAgencyNotset',
+      component: CopyrightList,
+      meta: {
+        params: { isagency: 0 },
+      }
+    },
+    { 
+      path: '/copyright/agency/set',
+      name: 'CopyrightAgencyset',
+      component: CopyrightList,
+      meta: {
+        params: { isagency: 1 },
+      }
     },
     {
       path: '/copyright/stage/application',

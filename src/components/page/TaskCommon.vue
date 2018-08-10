@@ -22,7 +22,7 @@
         <el-form-item label="备注" prop="remark">
           <el-input v-model="agen.remark" type="textarea"></el-input>
         </el-form-item>
-        <el-form-item style="margin-bottom: 0px"><el-button @click="agenSubmit" type="primary" :disabled="btn_disabled">申请委案</el-button></el-form-item>
+        <!-- <el-form-item style="margin-bottom: 0px"><el-button @click="agenSubmit" type="primary" :disabled="btn_disabled">申请委案</el-button></el-form-item> -->
       </el-form>
     </el-dialog>
 
@@ -79,7 +79,7 @@
 
     <app-shrink :visible.sync="dialogShrinkVisible" :title="isCommon ? detailBase.title : shrinkTitle" @close="handleShrinkClose">
       <span slot="header" style="margin-left: 10px;">
-        <el-tag v-if="currentRow.flownode">{{ currentRow.flownode.name }}</el-tag>
+        <el-tag v-if="currentRow.taskdef">{{ currentRow.taskdef.name }}</el-tag>
         <el-tag v-if="currentRow.serial">{{ currentRow.serial }}</el-tag>
       </span>
       <span slot="header" style="float: right">
@@ -456,7 +456,7 @@ export default {
       }
       menusMap && !menusMap.get('/tasks/add_btn') ? h.header_btn.splice(0,1,{ type: 'add', click: this.addPop }) : h.header_btn.splice(0,1,{}); 
       menusMap && !menusMap.get('/tasks/delete_btn') ? h.header_btn.splice(1,1,{ type: 'delete', callback: this.refreshUser }) : h.header_btn.splice(1,1,{});
-      menusMap && !menusMap.get('/tasks/agency_btn') && t != 1 ? h.header_btn.splice(2,1,{type: 'custom', label: '申请委案', click: this.agenPop}) : h.header_btn.splice(2,1,{});
+      // menusMap && !menusMap.get('/tasks/agency_btn') && t != 1 ? h.header_btn.splice(2,1,{type: 'custom', label: '申请委案', click: this.agenPop}) : h.header_btn.splice(2,1,{});
 
       this.$forceUpdate();
     },

@@ -34,8 +34,8 @@ export default {
 		  		{ type: 'text', label: '承办人', prop: 'person_in_charge',render_simple:'name' },
 		  		{ type: 'text', label: '开始时间', prop: 'start_time' },
 		  		{ type: 'text', label: '指定期限', prop: 'due_time' },
-		  		{ type: 'text', label: '代理机构', prop: 'agency' },
-		  		{ type: 'text', label: '代理人', prop: 'agent' },
+		  		{ type: 'text', label: '代理机构', prop: 'agency' ,render_simple:'name' },
+		  		{ type: 'text', label: '代理人', prop: 'agent' ,render_simple:'name' },
 		  		{ 
 		  			type: 'action', 
 		  			label: '操作',

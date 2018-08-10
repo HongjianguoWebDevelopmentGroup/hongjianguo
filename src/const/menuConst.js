@@ -79,6 +79,16 @@ const patentMenu = [
 	{ type: 'item', text: '全部专利', path: '/patent/list', icon: 'iconfont el-icon-my-patent' },
 	{ 
 		type: 'submenu', 
+		text: '专利（按委案）', 
+		path: '/patent/agency',
+		icon: 'iconfont el-icon-my-patent',
+		children: [
+			{ type: 'item', text: '待委案', path: '/patent/agency/notset', icon: '' },
+			{ type: 'item', text: '已委案', path: '/patent/agency/set', icon: '' },
+		]
+	},
+	{ 
+		type: 'submenu', 
 		text: '专利（按阶段）', 
 		path: '/patent/stage',
 		icon: 'iconfont el-icon-my-patent',
@@ -120,6 +130,7 @@ const patentMenu = [
 
 const trademarkMenu = [
 	{ type: 'item', text: '全部商标', path: '/trademark/list', icon : 'iconfont el-icon-my-trademark' },
+	{ type: 'item', text: '争议商标', path: '/trademark/dispute', icon : 'iconfont el-icon-my-trademark' },
 	{ 
 		type: 'submenu', 
 		text: '商标（按阶段）',

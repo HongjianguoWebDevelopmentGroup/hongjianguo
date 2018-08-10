@@ -18,6 +18,7 @@
             委案<i class="el-icon-caret-bottom el-icon--right"></i>
           </el-button>
           <el-dropdown-menu slot="dropdown" class="app-dropdown-menu">
+            <el-dropdown-item command="appiontCase" :disabled="btnDisabled">委案</el-dropdown-item>
             <el-dropdown-item command="cancel" :disabled="btnDisabled">撤回</el-dropdown-item>
             <el-dropdown-item command="change" :disabled="btnDisabled">变更</el-dropdown-item>
           </el-dropdown-menu>
@@ -70,6 +71,9 @@
   <el-dialog title="新增任务" :visible.sync="dialogTask">
     <task-edit type="add" :id="id" ref="taskEdit" @addSuccess="addSuccess"></task-edit>
   </el-dialog>   
+  <el-dialog title="申请委案" :visible.sync="dialogAppointVisible" @close="$refs.appiontCase.clearForm()">
+    <appoint-case @appointSuccess="appiontCase" type="patent" :project-id="id" ref="appiontCase"></appoint-case>
+  </el-dialog>  
   </div>
 </template>
 
@@ -90,6 +94,7 @@ import CloseForm from '@/components/page_extension/CommonDetail_closed'
 import ChangeForm from '@/components/page_extension/CommonDetail_commision_change'
 import DivideForm from '@/components/page_extension/CommonDetail_divide'
 import TaskEdit from '@/components/page_extension/TaskCommon_edit'
+import AppointCase from '@/components/page_extension/AppointCase'
 import { mapGetters } from 'vuex'
 import { mapActions } from 'vuex'
 const config = [
@@ -132,6 +137,7 @@ export default {
       dialogChange: false,
       dialogDivide: false,
       dialogTask: false,
+      dialogAppointVisible: false,
     }
   },
   computed: {
@@ -202,7 +208,14 @@ export default {
       this.dialogClosed = false;
       this.refreshDetailData();
     },
+    appiontCase (val) {
+      this.dialogAppointVisible = false;
+      this.refreshDetailData();
+    }, 
     handleCommand(command) {
+      if(command == 'appiontCase') {
+        this.dialogAppointVisible = true;
+      }
       if(command == 'cancel') {
         this.commisionCancle(); //委案撤回
       }
@@ -283,7 +296,8 @@ export default {
     CloseForm,
     ChangeForm,
     DivideForm,
-    TaskEdit,    
+    TaskEdit,
+    AppointCase,
   }
 }
 </script>
