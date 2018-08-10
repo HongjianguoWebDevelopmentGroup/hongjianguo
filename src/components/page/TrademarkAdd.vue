@@ -178,6 +178,9 @@
 			</el-tab-pane>
 			<el-tab-pane>
 				<span slot="label"><i class="el-icon-more"></i> 其他信息</span>
+				<el-form-item label="权利人">
+					<el-input v-model="form.right_holder" placeholder="请填写权利人"></el-input>
+				</el-form-item>				
 				<el-form-item label="权利人地址">
 					<el-input v-model="form.address" placeholder="请填写权利人地址"></el-input>
 				</el-form-item>
@@ -232,6 +235,7 @@ export default {
 			form: {
 				serial: '',
 				agency_serial:'',
+				right_holder: '',
 				title: '',
 		  		type: '',
 			  	applicants: [],
