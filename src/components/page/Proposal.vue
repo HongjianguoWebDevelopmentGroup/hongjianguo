@@ -182,7 +182,7 @@ export default {
           { type: 'text', label: '部门简称', prop: 'abbr', render_simple: 'abbr', sortable: true, width: '118' },
           { type: 'text', label: '技术分类', prop: 'classification', render_simple: 'name', sortable: true, width: '118' },
           { type: 'array', label: '产品分类', prop: 'products', render: _=>_.map(_=>_.name), width: '118' },
-          { type: 'array', label: '发明人', prop: 'inventors', render: _=>_.map(_=>`${_.name}：${_.share}%；`), overflow: true, width: '118' },
+          { type: 'array', label: '发明人', prop: 'inventors', render: _=>_.map(_=>`${_.name}_${_.email}：${_.share}%；`), overflow: true, width: '118' },
           { type: 'array', label: '标签', prop: 'tags', render: _=>_.map(_=>_.name), width: '118' },
           { type: 'text', label: '提案等级', prop: 'patent_level', width: '100' },
           { type: 'text', label: '备注', prop: 'remark', width: '180' },

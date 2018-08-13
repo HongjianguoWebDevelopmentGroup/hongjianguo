@@ -1,6 +1,6 @@
 <template>
 <div v-loading="loading" element-loading-text="数据加载中" >
-  
+   <!-- <information :row="row" @more="handleMore"></information> -->
   <el-steps :space="150" style="padding: 5px 40px;" v-if="data.tips" align-center>
     <el-step v-for="(item, index) in data.tips" :key="index" :title="item.name" :status="item.current ? 'finish' : 'wait'"></el-step>
   </el-steps>
@@ -210,6 +210,7 @@ import Upload from '@/components/form/Upload'
 import RemoteSelect from '@/components/form/RemoteSelect'
 import StaticSelect from '@/components/form/StaticSelect'
 import AppSwitch from '@/components/form/AppSwitch'
+import Information from '@/components/page_extension/TaskCommon_information'
 
 import {mapMutations} from 'vuex'
 import {mapActions} from 'vuex'
@@ -218,7 +219,7 @@ const URL = `/tasks`;
 
 export default {
   name: 'taskFinish',
-  props: ['id'],
+  props: ['id','row'],
   mixins: [axiosMixins],
   data () {
 		return {
@@ -338,6 +339,9 @@ export default {
   	cancel () {
   		this.$emit('cancel');
   	},
+    handleMore (type) {
+      this.$emit('more',type);
+    },
   	clear () {
   		this.$refs.form.resetFields();
   	},
@@ -462,7 +466,7 @@ export default {
       return {'agency': this.form.agency};
     },
 	},
-	components: { Member, Agent, Agency, Upload, RemoteSelect, StaticSelect, AppSwitch, }
+	components: { Member, Agent, Agency, Upload, RemoteSelect, StaticSelect, AppSwitch,Information, }
 }
 </script>
 

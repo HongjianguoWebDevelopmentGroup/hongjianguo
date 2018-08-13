@@ -14,6 +14,7 @@
       <a href="/static/templates/agent.xlsx" target="_blank" slot="agent_model" style="margin-left: 6px;font-size: 14px;">代理人导入模板</a>
 		</table-component>
   	<pop ref="pop" @refresh="update"></pop>
+    <agent-detail :visible.sync="shrinkVisible" :row="currentRow"></agent-detail>
   </div>
 </template>
 
@@ -21,6 +22,7 @@
 import TableComponent from '@/components/common/TableComponent' 
 import Pop from '@/components/page_extension/settingAgent_pop'
 import AxiosMixins from '@/mixins/axios-mixins'
+import AgentDetail from '@/components/page/SettingAgentDetail'
 
 const URL = '/agent';
 export default {
@@ -29,10 +31,13 @@ export default {
   data () {
 		return {
       agentStatus: 1,
+      shrinkVisible: false,
+      currentRow: {},
 		  option: {
 			'name': 'agent',
 			'height': 'default',
 			'import_type': 'agentImport',
+      'rowClick': this.handleRowClick,
       		'url': URL,
 		  	'header_btn': [
 		  		{'type': 'add', click: this.add},
@@ -74,7 +79,7 @@ export default {
 						width: '160',
 						btns: [
 							{ type: 'edit', click: this.edit },
-							{ type: 'detail', click: this.detail },
+							// { type: 'detail', click: this.detail },
 							// { type: 'delete', click: this.deleteSingle },
 						]
 					}
@@ -97,6 +102,11 @@ export default {
   	detail ({id}) {
 	  	this.$router.push({path: '/setting/agent/detail', query: {id} })
   	},
+    handleRowClick (row) {
+        console.log(row);
+        this.currentRow = row;
+        if(!this.shrinkVisible) this.shrinkVisible = true;
+    },
   	deleteSingle ({id, name}) {
   		this.$confirm(`删除后不可恢复，确认删除‘${name}’？`, '提示' ,{type: 'warning'})
   			.then(_=>{  
@@ -110,9 +120,15 @@ export default {
   	},
   	refreshTableData (option) {
   		const url = URL;
-        const status = this.agentStatus !== ''? {status: this.agentStatus} : {};
+      const status = this.agentStatus !== ''? {status: this.agentStatus} : {};
   		const data = Object.assign({}, option, status);
-  		const success = _=>{ this.tableData = _.data };
+  		const success = _=>{
+        if(data.format == 'excel') {
+          window.location.href = _.data.downloadUrl;
+        }else {
+          this.tableData = _.data;
+        }
+      };
 
   		this.axiosGet({url, data, success});
   	},
@@ -131,7 +147,7 @@ export default {
   mounted () {
   	this.refresh();
   },
-  components: { TableComponent, Pop },
+  components: { TableComponent, Pop, AgentDetail, },
 
 }
 </script>

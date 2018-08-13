@@ -134,7 +134,7 @@
       <el-tabs v-model="activeName">   
         <el-tab-pane label="前往处理" name="finish" v-if="task_status == 0">
           <div :style="`height: ${innerHeight - 140}px; overflow-y: auto;overflow-x:hidden;`">  
-            <task-finish :id="currentRow.id" @submitSuccess="finishSuccess" @more="handleMore" @refreshNext="handleNext" v-show="!nextValue"></task-finish>
+            <task-finish :id="currentRow.id" :row="currentRow" @submitSuccess="finishSuccess" @more="handleMore" @refreshNext="handleNext" v-show="!nextValue"></task-finish>
           </div>   
         </el-tab-pane>
         <el-tab-pane label="详细信息" name="edit">   
