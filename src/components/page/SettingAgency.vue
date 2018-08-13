@@ -8,6 +8,7 @@
 			</template>
 		</table-component>
   	<pop ref="pop" @refresh="update"></pop>
+  	<agency-detail :visible.sync="shrinkVisible" :row="currentRow"></agency-detail>
   </div>
 </template>
 
@@ -15,6 +16,7 @@
 import TableComponent from '@/components/common/TableComponent' 
 import Pop from '@/components/page_extension/settingAgency_pop'
 import AxiosMixins from '@/mixins/axios-mixins'
+import AgencyDetail from '@/components/page/SettingAgencyDetail'
 
 const URL = '/agencies';
 export default {
@@ -22,9 +24,12 @@ export default {
   mixins: [ AxiosMixins ],
   data () {
 		return {
+		  currentRow: {},
+		  shrinkVisible: false,
 		  option: {
 			'name': 'agency',
 			'height': 'default',
+			'rowClick': this.handleRowClick,
 		  	'header_btn': [
 		  		{'type': 'add', click: this.add},
 		  		{'type': 'control'}
@@ -68,7 +73,7 @@ export default {
 						width: '200',
 						btns: [
 							{ type: 'edit', click: this.edit },
-							{ type: 'detail', click: this.detail },
+							// { type: 'detail', click: this.detail },
 							{ type: 'delete', click: this.deleteSingle },
 						]
 					}
@@ -94,6 +99,10 @@ export default {
   	},
   	detail ({id}) {
 	  	this.$router.push({path: '/setting/agency/detail', query: {id} })
+  	},
+  	handleRowClick (row) {
+  		this.currentRow = row;
+  		if(!this.shrinkVisible) this.shrinkVisible = true; 
   	},
   	deleteSingle ({id, name}) {
   		this.$confirm(`删除后不可恢复，确认删除‘${name}’？`, '提示' ,{type: 'warning'})
@@ -129,7 +138,7 @@ export default {
   mounted () {
   	this.refresh();
   },
-  components: { TableComponent, Pop },
+  components: { TableComponent, Pop, AgencyDetail },
 
 }
 </script>

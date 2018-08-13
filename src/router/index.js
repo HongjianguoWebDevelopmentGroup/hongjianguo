@@ -598,7 +598,7 @@ const router = new Router({
     },
     {
       path: '/patent/duration/priority_this_month',
-      name: 'PatentDurationProprity',
+      name: 'PatentDurationProprityThisMonth',
       component: PatentList,
       meta: {
         params: { reminder: 'priority_expire_date', period:'this_month' },
@@ -606,7 +606,7 @@ const router = new Router({
     },
     {
       path: '/patent/duration/priority_next_month',
-      name: 'PatentDurationProprity',
+      name: 'PatentDurationProprityNextMonth',
       component: PatentList,
       meta: {
         params: { reminder: 'priority_expire_date', period:'next_month' },
@@ -614,7 +614,7 @@ const router = new Router({
     },
     {
       path: '/patent/duration/modification_this_month',
-      name: 'PatentDurationModification',
+      name: 'PatentDurationModificationThisMonth',
       component: PatentList,
       meta: {
         params: { reminder: 'active_supplement_expire_date', period:'this_month' },
@@ -622,7 +622,7 @@ const router = new Router({
     },
     {
       path: '/patent/duration/modification_next_month',
-      name: 'PatentDurationModification',
+      name: 'PatentDurationModificationNextMonth',
       component: PatentList,
       meta: {
         params: { reminder: 'active_supplement_expire_date', period:'next_month' },
@@ -630,7 +630,7 @@ const router = new Router({
     },
     {
       path: '/patent/duration/pct_this_month',
-      name: 'PatentDurationPct',
+      name: 'PatentDurationPctThisMonth',
       component: PatentList,
       meta: {
         params: { reminder: 'pct_national_stage_expire_date',period:'this_month' },
@@ -638,7 +638,7 @@ const router = new Router({
     },
     {
       path: '/patent/duration/pct_next_month',
-      name: 'PatentDurationPct',
+      name: 'PatentDurationPctNextMonth',
       component: PatentList,
       meta: {
         params: { reminder: 'pct_national_stage_expire_date',period:'next_month' },
@@ -646,7 +646,7 @@ const router = new Router({
     },
     {
       path: '/patent/duration/pct19_this_month',
-      name: 'PatentDurationPct19',
+      name: 'PatentDurationPct19ThisMonth',
       component: PatentList,
       meta: {
         params: { reminder: 'pct_19_expire_date', period:'this_month' },
@@ -654,7 +654,7 @@ const router = new Router({
     },
     {
       path: '/patent/duration/pct19_next_month',
-      name: 'PatentDurationPct19',
+      name: 'PatentDurationPct19NextMonth',
       component: PatentList,
       meta: {
         params: { reminder: 'pct_19_expire_date', period:'next_month' },
@@ -828,7 +828,7 @@ const router = new Router({
 //################### 费用路由 begin ###################
     {
       path: '/fee/bonus/all',
-      name: 'FeeCommonNP',
+      name: 'FeeCommonAll',
       component: FeeCommon,
       props: {
         debit: 0,

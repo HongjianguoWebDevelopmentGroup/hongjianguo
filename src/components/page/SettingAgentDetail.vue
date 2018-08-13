@@ -1,37 +1,55 @@
 <template>
   <div class="main">
-  <app-tag :tags="tags" is_static>
-		<el-form label-width="140px" slot="basic_information">
-			<el-form-item label="代理人名称">
-				<span class="detail-item">{{ form.name }}</span>
-			</el-form-item>
-			<el-form-item label="代理人邮箱">
-				<span class="detail-item">{{ form.email }}</span>
-			</el-form-item>
-			<el-form-item label="擅长技术领域">
-				<span class="detail-item">{{ form.major }}</span>
-			</el-form-item>
-			<el-form-item label="联系电话">
-				<span class="detail-item">{{ form.mobile }}</span>
-			</el-form-item>
-			
-			<el-form-item label="工作年限">
-				<span class="detail-item">{{ form.working_experience }}</span>
-			</el-form-item>
-			<el-form-item label="简介">
-				<span class="detail-item">{{ form.introduction}}</span>
-			</el-form-item>
-			<el-form-item label="代理人状态">
-				<span class="detail-item">{{ form.status_name }}</span>
-			</el-form-item>
-		</el-form>
-		<div slot="monthly_status_statistics">
+ <app-shrink :title="shrinkTitle" :visible="visible" @update:visible="handleVisible">
+<!--   <app-tag :tags="tags" is_static> -->
+	<el-tabs v-model="active">
+		<el-tab-pane label="基本信息" name="basic_information">
+			<el-row>
+			<el-col :span="12">		
+			  	<el-card  :body-style="{padding:'0px',}">
+			  		<div class="name_card">
+			  			<img src="../../assets/head_img.png">
+			  			<div class="name_email">
+				  			<span class="detail-item">{{ form.name }}</span>
+						</div>
+			  		</div>
+			  		<el-form label-width="110px" label-position="left" style="padding: 0 20px">
+					<el-form-item label="擅长技术领域">
+						<span class="detail-item">{{ form.major }}</span>
+					</el-form-item>
+					<el-form-item label="联系电话">
+						<span class="detail-item">{{ form.mobile }}</span>
+					</el-form-item>			
+					<el-form-item label="邮箱">
+						<span class="detail-item">{{ form.email }}</span>
+					</el-form-item>
+					
+					<el-form-item label="工作年限">
+						<span class="detail-item">{{ form.working_experience }}</span>
+					</el-form-item>
+					<el-form-item label="简介">
+						<span class="detail-item">{{ form.introduction}}</span>
+					</el-form-item>
+					<el-form-item label="代理人状态">
+						<span class="detail-item">{{ form.status_name }}</span>
+					</el-form-item>
+					</el-form>
+				</el-card>	
+			</el-col>
+			</el-row>
+
+	</el-tab-pane>
+	<el-tab-pane label="月度状况统计" name="monthly_status_statistics">
+		<div>
 			<template>
 				<!-- <el-button type="primary" size="samll" icon="upload2" style="margin-bottom:10px;" @click="handleExport">导出</el-button> -->
 				<app-table :columns="statisticsColumns" :data="statisticsData" key="a3"></app-table>
 			</template>
 		</div>
-	</app-tag>
+	</el-tab-pane>	
+	</el-tabs>	
+	<!-- </app-tag> -->
+	</app-shrink>
   </div>
 </template>
 
@@ -39,15 +57,28 @@
 import AppTable from '@/components/common/AppTable'
 import AppPop from '@/components/common/AppPop'
 import AppTag from '@/components/common/AppTag'
-
+import AppShrink from '@/components/common/AppShrink'
 
 const URL = '/api/agent';
 
 export default {
   name: 'settingAgentDetail',
+  props: {
+  	'visible': {
+  		type: Boolean,
+  		default: false,
+  	},
+  	'row': {
+  		type: Object,
+  		default(){
+  			return {}
+  		}
+  	},
+  },
   data () {
 		return {
 			id: '',
+			active: 'basic_information',
 			saveStatus: false,
 			importLoading: false,
 			saveLoading: false,
@@ -60,10 +91,10 @@ export default {
 				major: '',
 				status_name: '',
 			},
-			tags: [
-				{ text: '基本信息', key: 'basic_information', default: true },
-				{ text: '月度状况统计', key: 'monthly_status_statistics', default: true},
-			],
+			// tags: [
+			// 	{ text: '基本信息', key: 'basic_information', default: true },
+			// 	{ text: '月度状况统计', key: 'monthly_status_statistics', default: true},
+			// ],
 			statisticsColumns: [
 				{ type: 'text', label: '月份', prop:'time', width:'120' },
 				{ type: 'text', label: '新申请委案量', prop:'increase_project_amount' , width:'120'},
@@ -96,6 +127,11 @@ export default {
 				{ pattern: /^(0|(([1-9][0-9]*)+(.[0-9]{1,2})?))$/, message: '价格只能为数字,保留至小数后两位', trigger: 'blur' },
 			],
 			
+		}
+	},
+	computed: {
+		shrinkTitle () {
+			return	this.row.name && this.row.email ? `${this.row.name}_${this.row.email}` : this.row.name; 
 		}
 	},
 	methods: {
@@ -140,6 +176,9 @@ export default {
 				this.offerForm.amount = amount + '';
 			});
 		},
+		handleVisible (val) {
+     		 this.$emit('update:visible', val);
+  		},
 		handleExport() {
 			const url = `/agents/${this.$route.query.id}/excel`;
 			const success = _=>{
@@ -149,12 +188,15 @@ export default {
 			this.$axiosPost({url, success});
 		},
 		refresh () {
-			const id = this.$route.query.id;
+			// const id = this.$route.query.id;
+			const id = this.row.id;
 			const url = `${URL}/${id}`;
 			const success = _=>{
 				this.form = _.agent;
 				// this.offerData = _.agency.partner_fee;
-				this.statisticsData =_.agent.agent_statistics;
+				if(_.agent_statistics) {
+					this.statisticsData =_.agent.agent_statistics;
+				}
 			}
 			const complete = _=>{
 				this.$store.commit('cancelLoading');
@@ -170,17 +212,47 @@ export default {
 		},
 	},
 	created () {
-		this.refresh();
+		// this.refresh();
+	},
+	watch: {
+		row(val) {
+			this.refresh();
+		}
 	},
 	components: {
 		AppTag,
 		AppTable,
 		AppPop,
+		AppShrink,
 	}
 }
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
-<style lang="scss">
+<style lang="scss" scoped>
 .agency-fee-red {color: red;}
+.name_card {
+	height: 200px;
+	background: url('../../assets/card.jpg') center center no-repeat;
+	position: relative;
+	text-align: center;
+	width: 100%;
+}
+.name_card img {
+	text-align: center;
+	position: absolute;
+	left: 50%;
+	top: 50%;
+	z-index: 1;
+	margin-left: -50px;
+	margin-top: -50px;
+}
+.name_card .name_email {
+	width: 100%;
+	position: absolute;
+	left: 0px;;
+	bottom: 10%;
+	color: #fff;
+}
+
 </style>

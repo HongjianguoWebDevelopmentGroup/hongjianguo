@@ -1,6 +1,7 @@
 <template>
   <div class="main">
-  <app-tag :tags="tags" is_static>
+   <app-shrink :title="row.name" :visible="visible" @update:visible="handleVisible">	
+  <!-- <app-tag :tags="tags" is_static> -->
 		<!-- <el-form label-width="140px" slot="basic_information">
 			<el-form-item label="代理所名称">
 				<span class="detail-item">{{ form.name }}</span>
@@ -31,13 +32,17 @@
 				<span class="detail-item">{{ form.status_name }}</span>
 			</el-form-item>
 		</el-form> -->
-		<div slot="monthly_status_statistics">
+		<el-tabs v-model="activeName">
+			<el-tab-pane label="月度状况统计" name="monthly_status_statistics">
+		<div >
 			<template>
 				<!-- <el-button type="primary" size="samll" icon="upload2" style="margin-bottom:10px;" @click="handleExport">导出</el-button> -->
 				<app-table :columns="statisticsColumns" :data="statisticsData" key="a3"></app-table>
 			</template>
 		</div>
-		<div slot="statistics">
+	</el-tab-pane>
+	<el-tab-pane label="报价信息" name="statistics">
+		<div>
 			<template v-if="!saveStatus">
 				<el-upload
 					style="margin-bottom: 10px;"
@@ -72,7 +77,10 @@
 				</el-form-item>
 			</app-pop>
 		</div>
-	</app-tag>
+	</el-tab-pane>
+</el-tabs>
+	<!-- </app-tag> -->
+</app-shrink>
   </div>
 </template>
 
@@ -80,16 +88,30 @@
 import AppTable from '@/components/common/AppTable'
 import AppPop from '@/components/common/AppPop'
 import AppTag from '@/components/common/AppTag'
+import AppShrink from '@/components/common/AppShrink'
 
 
 const URL = '/agencies';
 
 export default {
   name: 'settingAgencyDetail',
+  props: {
+  	'visible': {
+  		type: Boolean,
+  		default: false,
+  	},
+  	'row': {
+  		type: Object,
+  		default(){
+  			return {}
+  		}
+  	},
+  },
   data () {
 		return {
 			id: '',
 			saveStatus: false,
+			activeName: 'monthly_status_statistics',
 			importLoading: false,
 			saveLoading: false,
 			form: {
@@ -103,11 +125,11 @@ export default {
 				// scope: [],
 				status_name: '',
 			},
-			tags: [
-				{ text: '月度状况统计', key: 'monthly_status_statistics', default: true},
-				// { text: '基本信息', key: 'basic_information', default: true },
-				{ text: '报价信息', key: 'statistics' },
-			],
+			// tags: [
+			// 	{ text: '月度状况统计', key: 'monthly_status_statistics', default: true},
+			// 	// { text: '基本信息', key: 'basic_information', default: true },
+			// 	{ text: '报价信息', key: 'statistics' },
+			// ],
 			columns: [
 				{ type: 'text', label: '报价名称', prop: 'name' },
 				{ type: 'text', label: '默认报价', prop: 'amount', render_text: item => `${item}元`, width: '200' },
@@ -201,6 +223,9 @@ export default {
 				this.offerForm.amount = amount + '';
 			});
 		},
+		handleVisible (val) {
+     		 this.$emit('update:visible', val);
+  		},
 		handleExport() {
 			const url = `/agencyexport/${this.$route.query.id}`;
 			const success = _=>{
@@ -210,7 +235,8 @@ export default {
 			this.$axiosPost({url,success});
 		},
 		refresh () {
-			const id = this.$route.query.id;
+			// const id = this.$route.query.id;
+			const id = this.row.id;
 			const url = `${URL}/${id}`;
 			const success = _=>{
 				this.form = _.agency;
@@ -249,12 +275,18 @@ export default {
 		},
 	},
 	created () {
-		this.refresh();
+		// this.refresh();
+	},
+	watch: {
+		row (val) {
+			this.refresh();
+		}
 	},
 	components: {
 		AppTag,
 		AppTable,
 		AppPop,
+		AppShrink,
 	}
 }
 </script>
