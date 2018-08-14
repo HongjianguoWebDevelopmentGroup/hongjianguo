@@ -155,9 +155,11 @@ export default {
           if(k == 'attachments') {
             this.form[k] = d.map(_=>_.id);
             this.attachments = d;
+          }else if(k == 'inner_deadline') {
+            this.form[k] = new Date(d);
           }else if(k == 'person_in_charge') {
             this.form[k] = {id: d, name: this.row['person_in_charge_name']};
-            console.log(this.form[k]);
+            // console.log(this.form[k]);
           }else {
             if(d) {
               this.form[k] = d;  
