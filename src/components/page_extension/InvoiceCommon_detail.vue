@@ -25,12 +25,11 @@
 
 <script>
 import TableComponent from '@/components/common/TableComponent'
-import AxiosMixins from '@/mixins/axios-mixins'
+import axios from 'axios'
 
 export default {
 	name: 'invoiceDetail',
 	props: ['id'],
-	mixins: [AxiosMixins],
 	data(){ 
 		return {
 			feeLoading: false,
@@ -124,7 +123,7 @@ export default {
 			const success = _=>{
 				this.$tool.coverObj(this.row, _.invoice);
 			}
-			return this.axiosGet({url, success});
+			return this.$axiosGet({url, success});
 		},
 		feeAxios (id) {
   		const url = '/api/fees';
@@ -136,13 +135,13 @@ export default {
   			this.feeData = [];
   		}
 
-  		return this.axiosGet({url, data, success, error});
+  		return this.$axiosGet({url, data, success, error});
   	},
   	refresh (id) {
   		const id_c = id ? id : this.id;
 			this.feeLoading = true;
-			this.$axios.all([this.invoiceAxios(id_c), this.feeAxios(id_c)])
-				.then(this.$axios.spread((acct, perms)=>{
+			axios.all([this.invoiceAxios(id_c), this.feeAxios(id_c)])
+				.then(axios.spread((acct, perms)=>{
 					this.feeLoading = false;
 				}))
   	}

@@ -194,7 +194,7 @@ export default {
 			const success = _=>{
 				this.form = _.agent;
 				// this.offerData = _.agency.partner_fee;
-				if(_.agent_statistics) {
+				if(_.agent.agent_statistics) {
 					this.statisticsData =_.agent.agent_statistics;
 				}
 			}
