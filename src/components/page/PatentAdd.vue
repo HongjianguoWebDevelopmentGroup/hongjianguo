@@ -165,32 +165,8 @@ export default {
         // })
         const form = {};  
         const data = this.$tool.normalFilter(copy[0],{
-          stay:['serial',
-        'title',
-        'area',
-        'type',
-        'ipr',
-        'level',
-        "applicants",
-        "inventors",
-        'priorities',
-        "extension", 
-        'attachments',
-        'proposer',
-        'group_number',
-        'family_number',
-        'legal_status',
-        'branch',
-        'products',
-        'classification',
-        'tags',
-        'main_ipc',
-        'project_name',
-        'project_serial',
-        "product_relevance"]
+          stay:['serial','title','area','type', 'ipr','level',"applicants","inventors",'priorities',"extension", 'attachments','proposer','group_number','family_number','legal_status','branch','products','classification','tags','main_ipc','project_name','project_serial',"product_relevance"]
         });
-        console.log('__+++++hahah____+++');
-        console.log(data);
         Object.assign(form, data, {relates} );
         setKeys.map(_=>{
           if(this.$refs[_]) {

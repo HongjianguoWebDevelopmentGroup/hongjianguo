@@ -404,6 +404,7 @@ export default {
       return params ? params : {};
     },
     custom () {
+      // 自定义筛选项
       const custom = this.$route.meta.custom;
       return custom !== undefined ? custom : false;
     },
@@ -767,10 +768,10 @@ export default {
       this.install = this.$route.params.id;
     }
 
-    if(!this.custom) {
+    // if(!this.custom) {
 
-      this.refresh();
-    }
+    //   this.refresh();
+    // }
 
     if(this.$store.getters.flowsData === undefined) {
       this.$store.dispatch('refreshFlows');  
