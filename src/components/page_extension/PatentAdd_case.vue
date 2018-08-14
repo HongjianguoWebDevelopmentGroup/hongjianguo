@@ -36,7 +36,12 @@ export default {
       return this.form;
     },
     checkForm (callback) {
-      callback(true);
+      const caseLength = this.form.relates.length;
+      if (caseLength == 0) return callback(true);
+      const checkNull = this.form.relates.every((v,i)=>{
+          return v['id'] !== '' && v['type'] !== '';
+       });   
+      callback(checkNull);
     },
   },
   components: { 
