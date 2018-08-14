@@ -101,6 +101,18 @@
         </el-form-item>
       </el-form>
     </el-dialog>
+    <el-dialog title="重新激活任务" :visible.sync="dialogActivationVisible" class="dialog-medium">
+      <el-form label-width="80px">
+        <el-form-item label="重新激活任务备注">
+          <el-form-item>
+            <el-input v-model="activation_reason"></el-input>
+          </el-form-item>
+        </el-form-item>
+        <el-form-item style="margin-bottom: 0px;">
+          <el-button type="primary" @click="activateTask" style="margin-bottom: 0px;">提交</el-button>
+        </el-form-item>
+      </el-form>
+    </el-dialog>
     
     <el-dialog title="将选中任务转给以下任务处理人" :visible.sync="dialogTurnoutVisible" class="dialog-mini">
       <el-form label-position="top">
@@ -127,7 +139,8 @@
       <span slot="header" style="float: right">
         <el-button size="small" @click="dialogDelayVisible= true" v-if="menusMap && !menusMap.get('/iprs')">延期</el-button>
         <el-button size="small" type="primary" @click="dialogEditVisible = true" v-if="menusMap && !menusMap.get('/tasks/update')" style="margin-left: 0px;">编辑</el-button>
-        <el-button size="small" style="margin-left: 0px;" v-if="menusMap && !menusMap.get('/tasks/close')" @click="dialogCloseVisible = true;">完结</el-button>
+        <el-button size="small" style="margin-left: 0px;" v-if="!currentRow.status && menusMap && !menusMap.get('/tasks/close')" @click="dialogCloseVisible = true;">完结</el-button>
+        <el-button size="small" style="margin-left: 0px;" v-if="currentRow.status && menusMap && !menusMap.get('/tasks/close')" @click="dialogActivationVisible = true;">激活</el-button>
         <el-button size="small" style="margin-left: 0px;" v-if="menusMap && !menusMap.get('/tasks/transfer')" @click="dialogTranserVisible = true; transfer_person = {id: currentRow.person_in_charge, name: currentRow.person_in_charge_name }">移交</el-button>
         <el-button size="small" @click="handleReject" style="margin-left: 0px;" type="danger" v-if="menusMap && !menusMap.get('/tasks/reject')">退回</el-button>
       </span>
@@ -234,6 +247,7 @@ export default {
       dialogShrinkVisible: false,
       dialogDelayVisible: false,
       dialogCloseVisible: false,
+      dialogActivationVisible: false,
       moreVisible: false,
       nextValue: false,
       taskIds: '',
@@ -248,6 +262,7 @@ export default {
       transfer_person: '',
       remark: '',
       close_reason:'',
+      activation_reason:'',
       days:'5',
       tableOption: {
         'name': 'taskList',
@@ -568,6 +583,20 @@ export default {
         this.dialogCloseVisible = false;
         this.dialogShrinkVisible = false;
         this.$message({message: '完结任务成功', type: 'success'});
+        this.refreshUser();
+
+        this.update();        
+      }
+
+      this.$axiosPost({url, data, success});
+    },
+    activateTask () {
+      const url = `${URL}/${this.currentRow.id}/activate`
+      const data = {'remark': this.activation_reason};
+      const success = _=>{
+        this.dialogActivationVisible = false;
+        this.dialogShrinkVisible = false;
+        this.$message({message: '重新激活任务成功', type: 'success'});
         this.refreshUser();
 
         this.update();        

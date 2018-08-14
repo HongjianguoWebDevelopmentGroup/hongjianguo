@@ -44,8 +44,8 @@
 
       <el-row> 
         <el-col :span="12"> 
-          <el-form-item label="内部期限" prop="due_time" :rules="rules.due_time">
-            <el-date-picker type="date" v-model="form.due_time" placeholder="请选择内部期限"></el-date-picker>
+          <el-form-item label="管控期限" prop="inner_deadline" :rules="rules.inner_deadline">
+            <el-date-picker type="date" v-model="form.inner_deadline" placeholder="请选择管控期限"></el-date-picker>
           </el-form-item>
         </el-col>
         <el-col :span="12">
@@ -201,9 +201,8 @@ export default {
         flow_id: '',
         task_def_id: '',
         person_in_charge: '',
-        due_time: '',
-        deadline: '',
         inner_deadline: '',
+        deadline: '',
         remark: '',
         attachments: [],
         flow_node_id:'',
@@ -217,7 +216,7 @@ export default {
         flow_id: getRules('任务流程不能为空', 'number'),
         task_def_id: {required: true, trigger: 'change', validator: validateTask_def},
         flow_node_id: {required: true, trigger: 'change', validator: validateFlow_node},
-        due_time: getRules('内部期限不能为空', 'date')
+        inner_deadline: getRules('管控期限不能为空', 'date')
       }
   	}
   },

@@ -305,7 +305,7 @@ export default {
         if(_.show_mail_date) {
           if(_.time) {
             o.time = this.$tool.getDate( new Date(_.time) );
-          }else {
+          }else if(this.is_add_to_task) {
             return this.$message({type: 'warning', message: '请填写发文日'});
           }
         }
