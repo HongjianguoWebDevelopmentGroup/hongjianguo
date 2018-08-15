@@ -21,7 +21,7 @@ export default {
 		  option: {
         'name': 'applicant',
         'url': '/api/applicants',
-        'height': 'default2',
+        'height': 'default',
 		  	'header_btn': [
 		  		{ type: 'add', click: this.addPopUp },
           { type: 'delete' },

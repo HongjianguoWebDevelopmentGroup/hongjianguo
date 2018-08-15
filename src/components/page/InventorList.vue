@@ -22,7 +22,7 @@ export default {
 		  option: {
         'name': 'inventorList',
         'url': URL,
-        'height': 'default2',
+        'height': 'default',
 		  	'header_btn': [
 		  		{ type: 'add', click: this.addPop },
           { type: 'delete' },
@@ -36,8 +36,11 @@ export default {
           { type: 'text', label: '部门全名', prop: 'branch', sortable: true, render:  (h,item)=>h('span', item.name), width: '178' },
           { type: 'text', label: '部门简称', prop: 'abbr', sortable: true, render_simple: 'abbr', width:'123'},
 		  		{ type: 'text', label: '手机', prop: 'mobile', sortable: true, width: '175' },
-		  		{ type: 'text', label: '邮箱', prop: 'email', sortable: true, min_width: '200' },
-		  		{ type: 'text', label: '不公开姓名', prop: 'not_disclose_name', render: (h,item)=>h('span',item ? '不公开' : '公开'), sortable: true, width: '200' },
+		  		{ type: 'text', label: '邮箱', prop: 'email', sortable: true, min_width: '200' }, 
+
+		  		{ type: 'text', label: '不公开姓名', prop: 'not_disclose_name',  sortable: true, width: '200',render: (h,item)=>{item==='是'?item = '不公平':item='公平';
+            return h('span',item);
+          }},
 		  		{ type: 'text', label: '英文姓名', prop: 'name_en', render: (h,item, row)=>h('span', `${row.given_name} ${row.family_name}`), width: '200' },
 		  		{ 
 		  			type: 'action',
