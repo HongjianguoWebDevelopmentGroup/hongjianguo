@@ -29,7 +29,6 @@
 
 <script>
 import AxiosMixins from '@/mixins/axios-mixins'
-
 const map = new Map([
 	['member', {
 		URL: '/api/members',
@@ -173,7 +172,7 @@ export default {
       }
     },
   	initialization () {
-      this.remoteMethod('');       
+      this.remoteMethod('');
   	},	
   	getSelected () {
   		return this.selected;
@@ -345,10 +344,18 @@ export default {
   },
   watch: {
   	value2 (val) {
+      const pId = document.getElementById('select_list');
+      const hideInput = pId.querySelector('.el-select__input');
       //value类型为对象时，添加静态映射，并将其值转为id
       if( !this.single ) {
       // if( !this.multiple && !this.single && this.$refs.select) {
         this.$refs.select.visible = false;
+      }
+      if(val.length == 0) {
+
+        hideInput.classList.remove('add_position');  
+      }else {
+       hideInput.classList.add('add_position');
       }
       
       this.refreshSelected(val);   
@@ -413,5 +420,10 @@ export default {
     appearance: none;
      height: 16px; 
     background-color: transparent;
+}
+.add_position {
+    position: absolute;
+    top: 10px;
+    right:-28px;
 }
 </style>
