@@ -1,5 +1,5 @@
 <template>
-  <div id="select_list">
+  <div class="select_list">
   	<el-select
   	  :value="value2"
   	  @input="handleInput"
@@ -14,7 +14,6 @@
   	  :multiple="!single"
   	  ref="select"
   	  @visible-change.once="initialization"
-      style="height: 44px;"
   	>
   		<el-option
   			v-for="item in option_in"
@@ -344,20 +343,24 @@ export default {
   },
   watch: {
   	value2 (val) {
-      const pId = document.getElementById('select_list');
-      const hideInput = pId.querySelector('.el-select__input');
+      console.log(this.single)
+      // 通过监听value2的变化来对remote-select因tag文字超出input变大样式的hack
+      var aEle=document.getElementsByTagName('input');
+      for(var i=0;i<aEle.length;i++){
+          if(aEle[i].classList.contains('el-select__input')){
+            if(val && val.length == 0) {
+              aEle[i].classList.remove('add_position');
+            }else {
+              aEle[i].classList.add('add_position');             
+            }
+          }
+      }
+
       //value类型为对象时，添加静态映射，并将其值转为id
       if( !this.single ) {
       // if( !this.multiple && !this.single && this.$refs.select) {
         this.$refs.select.visible = false;
       }
-      if(val.length == 0) {
-
-        hideInput.classList.remove('add_position');  
-      }else {
-       hideInput.classList.add('add_position');
-      }
-      
       this.refreshSelected(val);   
   	},
     para () {
@@ -374,14 +377,13 @@ export default {
 <style scoped lang="scss">
 </style>
 <style>
-#select_list .el-tag {
+.select_list .el-tag {
     min-height: 24px; 
-    white-space: nowrap;
     text-overflow: ellipsis;
     overflow: hidden;
     padding: 0 20px 0 5px;
   }
-#select_list .el-select .el-tag{
+.select_list .el-select .el-tag{
   height: auto;
   min-height: 24px;
   line-height: 24px;
@@ -392,7 +394,7 @@ export default {
   /*word-break: break-all;*/
   position: relative;
 }
-#select_list .el-tag .el-icon-close {
+.select_list .el-tag .el-icon-close {
     border-radius: 50%;
     text-align: center;
     position: absolute;
@@ -407,7 +409,7 @@ export default {
     top: 5px;
     right: 0px;
 }
-#select_list .el-select__input {
+.select_list .el-select__input {
     border: none;
     outline: 0;
     padding: 0;

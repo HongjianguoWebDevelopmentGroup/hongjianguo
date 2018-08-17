@@ -1,5 +1,5 @@
 <template>
-  <div id="static_select">
+  <div class="static_select">
     <el-select
       :value="value"
       @input="handleInput"
@@ -219,14 +219,14 @@ export default {
 <style scoped lang="scss">
 </style>
 <style>
-#static_select .el-tag {
+.static_select .el-tag {
   min-height: 24px; 
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
   padding: 0 20px 0 5px;
 }
-#static_select .el-select .el-tag{
+.static_select .el-select .el-tag{
   height: auto;
   min-height: 24px;
   line-height: 24px;
@@ -237,7 +237,7 @@ export default {
   /*word-break: break-all;*/
   position: relative;
 }
-#static_select .el-tag .el-icon-close {
+.static_select .el-tag .el-icon-close {
     border-radius: 50%;
     text-align: center;
     position: absolute;
@@ -252,7 +252,7 @@ export default {
     top: 5px;
     right: 0px;
 }
-#static_select .el-select__input {
+.static_select .el-select__input {
     border: none;
     outline: 0;
     padding: 0;
