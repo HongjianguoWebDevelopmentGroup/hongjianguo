@@ -196,7 +196,6 @@ export default {
           { type: 'text', label: '是否有序列表', prop: 'is_sequence', sortable: true, width: '145',show: false, render:this.booleanRender},          
           { type: 'text', label: '是否同日新型/发明', prop: 'is_utility', sortable: true, width: '178',show: false, render:this.booleanRender},  
           { type: 'text', label: '技术领域', prop: 'technical_field', sortable: true, width: '130', is_import: true, is_agency: true, render_simple: 'name',},
-          { type: 'text', label: '是否已申请资助', prop: 'is_district_funding', width: '150', },
         // {
           //   type: 'action',
           //   width: '145',
@@ -224,7 +223,11 @@ export default {
     custom () {
       const custom = this.$route.meta.custom;
       return custom !== undefined ? custom : false;
-    }
+    },
+    // certificateParams () {
+    //   const certificate = this.$route.params.id;
+    //   return  certificate !== undefined ? certificate : false; 
+    // }
   },
   methods: {
     ...mapActions([

@@ -1,6 +1,6 @@
 <template>
   <div class="main">
-    <table-component @refreshTableData="refreshTableData" :tableOption="option" :data="tableData" ref="table">
+    <table-component @refreshTableData="refreshTableData" :tableOption="option" :data="tableData" ref="table" :feeBonus="feeBonus">
       <fee-status slot="status" v-model="fee_status" style="width: 150px; margin-left: 5px;" :feeType="feeType"></fee-status>
       <remote-select v-if="fee_invoice_if" slot='invoice' v-model="fee_invoice" style="width: 220px; margin-left: 10px; display: inline-block;" class="pay_search" :type="feeType ? 'bill' : 'pay'"></remote-select>
     </table-component>
@@ -75,7 +75,7 @@ export default {
           { type: 'selection' },
           // { type: 'text', label: '案号', prop: 'serial', width: '140' },
           { type: 'text', label: '请款单号', prop: 'serial', width: '150' },
-          { type: 'text', label: '事务所案号', prop: 'agency_serial', width: '140' },
+          { type: 'text', label: '事务所案号', prop: 'agency_serial', width: '140',is_bonus: true, },
           { type: 'text', label: '费用对象', prop: 'target', render_simple: 'name', width: '140' },
           { type: 'text', label: '费用名称', prop: 'code', render_simple: 'name', width: '140' },
           //{ type: 'text', label: '费用类型', prop: 'type_name', width: '190' },
@@ -85,6 +85,7 @@ export default {
             prop: 'amount', 
             width: '100',
             align: 'right',
+            is_bonus: true,
             render:(h,item,row)=>{
               if( row.roe == 1 ){
                 return h('span','N/A');
@@ -98,6 +99,7 @@ export default {
             label: '汇率', 
             prop: 'roe', 
             width: '80',
+            is_bonus: true,
             align: 'right',
             render:(h,item)=>{
               if( item == 1 ){
@@ -118,7 +120,7 @@ export default {
             }
           },
           { type: 'text', label: '费用状态', prop: 'status', render_simple: 'name', width: '180'},
-          { type: 'text', label: '案件类型', prop: 'category', width: '145' },
+          { type: 'text', label: '案件类型', prop: 'category', width: '145', is_bonus: true, },
           { type: 'text', label: '专利类型', prop: 'patent_type', width: '145' },
           { type: 'text', label: '案件名称', prop: 'title', width: '189' },
           { type: 'text', label: '申请号', prop: 'apn', width: '200' },
@@ -138,13 +140,13 @@ export default {
             }, 
             width: '210' 
           },
-          { type: 'text', label: '发文日', prop: 'mail_date', width: '175' },
-          { type: 'text', label: '创建日期', prop: 'create_time', width: '175' },
-          { type: 'text', label: '费用期限', prop: 'due_time', is_import: true, width: '175' },
-          { type: 'text', label: '官方绝限', prop: 'deadline', width: '175' },
+          { type: 'text', label: '发文日', prop: 'mail_date', width: '175', is_bonus: true, },
+          { type: 'text', label: '创建日期', prop: 'create_time', width: '175' , is_bonus: true,},
+          { type: 'text', label: '费用期限', prop: 'due_time', is_import: true, width: '175', is_bonus: true, },
+          { type: 'text', label: '官方绝限', prop: 'deadline', width: '175', is_bonus: true, },
           { type: 'text', label: '发放时间', prop: 'pay_time', width: '175' },
-          { type: 'text', label: '审核意见', prop: 'remark_enterprise', width: '160' },
-          { type: 'text', label: '备注', prop: 'remark', is_import: true, width: '160',},
+          { type: 'text', label: '审核意见', prop: 'remark_enterprise', width: '160', is_bonus: true, },
+          { type: 'text', label: '备注', prop: 'remark', is_import: true, width: '160', is_bonus: true, },
           { 
             type: 'action',
             width: '80',
@@ -191,6 +193,9 @@ export default {
     },
     feeTypeName () {
       return this.feeType ? '请款单' : '付款单';
+    },
+    feeBonus () {
+     return  this.defaultParams.hasOwnProperty('bonus') && Object.keys(this.defaultParams).length !== 0 ? true : false ;
     },
     dialogTitle () { 
       const str = this.invoicePopType == 'add' ? '新建为' : '添加到已有';

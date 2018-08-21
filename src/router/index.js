@@ -10,6 +10,7 @@ const TaskCommon               = () => import('@/components/page/TaskCommon')
 const TaskExpiring             = () => import('@/components/page/TaskExpiring')
 const TaskExpiringControl      = () => import('@/components/page/TaskExpiringControl')
 const PatentList               = () => import('@/components/page/PatentList')
+const PatentCertificate        = () => import('@/components/page/PatentCertificate')
 const PatentAward              = () => import('@/components/page/PatentAward')
 const ApplyingPatent           = () => import('@/components/page/ApplyingPatent')
 const PatentAdd                = () => import('@/components/page/PatentAdd')
@@ -91,6 +92,7 @@ const router = new Router({
     { path: '/report', redirect: '/report/task' },
     { path: '/test', redirect: '/test/form' },
     { path: '/statistics', redirect: '/task/pending' },
+    { path: '/patent/certificate', redirect: '/patent/certificate/invention' },
     //###重定向###
     {
       path: '/statistics',
@@ -742,10 +744,7 @@ const router = new Router({
     {
       path: '/patent/certificate/:id',
       name: 'PatentCertificate',
-      component: PatentList,
-      meta: {
-        
-      },
+      component: PatentCertificate,
     },
 
 //################### 专利路由 end #####################

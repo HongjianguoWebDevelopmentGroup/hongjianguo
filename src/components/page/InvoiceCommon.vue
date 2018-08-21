@@ -5,9 +5,9 @@
       <el-tag v-if="curTotal !== ''" slot="cur_total" style="margin-left: 15px;">当前页费用：{{ curTotal }}</el-tag>
       <el-tag v-if="allTotal !== ''" slot="all_total" style="margin-left: 10px;">所有费用：{{ allTotal }}</el-tag>
       <div slot="row_action" slot-scope="scope" class="invoice-action">
-        <el-button :disabled="scope.row.status.id != 1" size="mini" type="text" @click="checkClick(scope.row)">审核账单</el-button>
+        <el-button :disabled="scope.row.status.id != 1||scope.row.fee_type == 5" size="mini" type="text" @click="checkClick(scope.row)">审核账单</el-button>
         <i class="el-icon-arrow-right" style="font-size: 12px;"></i>
-        <el-button :disabled="scope.row.status.id != 4" size="mini" type="text" @click="uploadClick(scope.row)">上传凭证</el-button>
+        <el-button :disabled="scope.row.status.id != 4||scope.row.fee_type == 5" size="mini" type="text" @click="uploadClick(scope.row)">上传凭证</el-button>
         <i class="el-icon-arrow-right" style="font-size: 12px;"></i>
         <el-button :disabled="scope.row.status.id != 2" size="mini" type="text" @click="payClick(scope.row)">确认付款</el-button>
       </div>

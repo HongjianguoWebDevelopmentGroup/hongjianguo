@@ -181,7 +181,7 @@ const patentMenu = [
 		children: [
 			{ type: 'item', text: '发明专利', path: '/patent/certificate/invention', icon: '' },
 			{ type: 'item', text: '实用新型', path: '/patent/certificate/utility', icon: '' },
-			{ type: 'item', text: '外观设计', path: '/patent/certificate/apprearance', icon: '' },
+			{ type: 'item', text: '外观设计', path: '/patent/certificate/appearance', icon: '' },
 			{ type: 'item', text: '台湾', path: '/patent/certificate/taiwan', icon: '' },
 			{ type: 'item', text: '国外', path: '/patent/certificate/foreign', icon: '' },
 		]

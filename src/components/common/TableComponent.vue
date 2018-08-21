@@ -211,7 +211,7 @@ import { mapActions } from 'vuex'
 
 export default {
   name: 'tableComponent',
-  props: ['tableOption', 'data', 'tableStyle', 'refreshProxy', 'filter', 'refreshTableData'],
+  props: ['tableOption', 'data', 'tableStyle', 'refreshProxy', 'filter', 'refreshTableData','feeBonus'],
   data () {    
     const data = {
       pageData: [],
@@ -347,7 +347,6 @@ export default {
         let s = '';//暂存selection项
         let a = '';//暂存action项
         const static_arr = [];//暂存不可调控的字段项
-        
         //分离特殊项
         cols.forEach(_=>{
           if(_.prop) {
@@ -407,9 +406,16 @@ export default {
     },
     initControl () {
       const d = this;
-      const cols = this.optionColumns;
+      let cols = this.optionColumns;
       let tableCookie = JSON.parse(this.$tool.getLocal(this.tableOption.name));
-      
+      // if(this.certificate && this.tableOption.certificate_columns) {
+      //     console.log(...this.tableOption.certificate_columns);
+      //     cols.push(...this.tableOption.certificate_columns);
+      // }
+      if(this.feeBonus) {
+         cols =  cols.filter(_=>!_.is_bonus);
+        console.log(cols)
+      }
       //获取控制器
       let control = [[],[]];
       for(let c of cols) {
