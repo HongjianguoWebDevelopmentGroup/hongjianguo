@@ -92,7 +92,7 @@ export default {
 
           { type: 'selection' },
           // { type: 'text', label: '专利状态', prop: 'status', render: (h,item)=>h('span', item ? '正常' : '暂停处理') },
-          { type: 'text', label: '案号', prop: 'serial', is_agency: true, sortable: true, width: '160',render: this.serialRender},
+          { type: 'text', label: '案号', prop: 'serial', is_agency: true, sortable: true, width: '160',render: this.serialRender,},
           { type: 'text', label: '事务所案号', prop: 'agency_serial', is_agency: true, sortable: true, width: '150' },
           { type: 'text', label: '案件名称', prop: 'title', sortable: true, is_import: true, width: '200', is_agency: true },
           { type: 'text', label: '英文名称', prop: 'english_title', sortable: true, is_import: true, width: '200', is_agency: true },
@@ -196,6 +196,7 @@ export default {
           { type: 'text', label: '是否有序列表', prop: 'is_sequence', sortable: true, width: '145',show: false, render:this.booleanRender},          
           { type: 'text', label: '是否同日新型/发明', prop: 'is_utility', sortable: true, width: '178',show: false, render:this.booleanRender},  
           { type: 'text', label: '技术领域', prop: 'technical_field', sortable: true, width: '130', is_import: true, is_agency: true, render_simple: 'name',},
+          { type: 'text', label: '是否已申请资助', prop: 'is_district_funding', width: '150', },
         // {
           //   type: 'action',
           //   width: '145',

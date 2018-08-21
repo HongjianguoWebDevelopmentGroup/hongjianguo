@@ -422,7 +422,10 @@ nav {
 .el-table {
   /*margin-bottom: 10px;*/
 }
-
+.tabel-content__visible {
+  word-wrap: break-word; 
+  overflow:auto;
+}
 .table-search {
   width: 130px;
   float: right;
@@ -451,9 +454,6 @@ nav {
 
 .el-select {
   width: 100%;
-}
-.el-input__inner {
-  height: 37px;
 }
 .table-header-btn .el-icon-menu::before {
   font-size: 12px;
@@ -614,9 +614,9 @@ nav {
     font-size: 12px;
     min-height: 36px;
   }
-  /*.el-select__tags {
-    white-space: nowrap;
-  } */
+  // .el-select__tags {
+  //   min-height: 28px;
+  // } 
   .no_wrap .el-select__tags {
     white-space: nowrap;
   }

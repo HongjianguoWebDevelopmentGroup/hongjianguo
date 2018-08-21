@@ -173,6 +173,20 @@ const patentMenu = [
 			{ type: 'item', text: '更早上传', path: '/patent/notice/earlier', icon: '' },
 		]
 	},
+	{ 
+		type: 'submenu', 
+		text: '专利证书', 
+		path: '/patent/certificate',
+		icon: 'iconfont el-icon-my-patent',
+		children: [
+			{ type: 'item', text: '发明专利', path: '/patent/certificate/invention', icon: '' },
+			{ type: 'item', text: '实用新型', path: '/patent/certificate/utility', icon: '' },
+			{ type: 'item', text: '外观设计', path: '/patent/certificate/apprearance', icon: '' },
+			{ type: 'item', text: '台湾', path: '/patent/certificate/taiwan', icon: '' },
+			{ type: 'item', text: '国外', path: '/patent/certificate/foreign', icon: '' },
+		]
+	},
+
 	// {
 	// 	type: 'submenu',
 	// 	text: '我的搜索项',
@@ -292,10 +306,10 @@ const feeMenu = [
 			{ type: 'item', text: '所有', path: '/fee/bonus/all', icon: '' },
 			{ type: 'item', text: '申请奖', path: '/fee/bonus/application', icon: '' },
 			{ type: 'item', text: '授权奖', path: '/fee/bonus/grant', icon: '' },
-			{ type: 'item', text: '专利实施许可奖', path: '/fee/bonus/license', icon: '' },
-			{ type: 'item', text: '年度专利奖', path: '/fee/bonus/year', icon: '' },
-			{ type: 'item', text: '特别专利奖', path: '/fee/bonus/special', icon: '' },
-			{ type: 'item', text: '优秀实用新型', path: '/fee/bonus/utility', icon: '' },
+			// { type: 'item', text: '专利实施许可奖', path: '/fee/bonus/license', icon: '' },
+			// { type: 'item', text: '年度专利奖', path: '/fee/bonus/year', icon: '' },
+			// { type: 'item', text: '特别专利奖', path: '/fee/bonus/special', icon: '' },
+			// { type: 'item', text: '优秀实用新型', path: '/fee/bonus/utility', icon: '' },
 		]
 	},
 	{

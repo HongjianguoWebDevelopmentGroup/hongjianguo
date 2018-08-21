@@ -336,7 +336,7 @@ export default {
     }
   },
   mounted () {
-    this.refresh();
+    // this.refresh();
   },
   components: { 
     TableComponent, 

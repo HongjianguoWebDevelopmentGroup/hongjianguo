@@ -739,6 +739,15 @@ const router = new Router({
         custom: true,
       },
     },
+    {
+      path: '/patent/certificate/:id',
+      name: 'PatentCertificate',
+      component: PatentList,
+      meta: {
+        
+      },
+    },
+
 //################### 专利路由 end #####################
 
 //################### 版权路由 begin ###################

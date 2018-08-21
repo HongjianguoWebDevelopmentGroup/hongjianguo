@@ -343,7 +343,6 @@ export default {
   },
   watch: {
   	value2 (val) {
-      console.log(this.single)
       // 通过监听value2的变化来对remote-select因tag文字超出input变大样式的hack
       var aEle=document.getElementsByTagName('input');
       for(var i=0;i<aEle.length;i++){

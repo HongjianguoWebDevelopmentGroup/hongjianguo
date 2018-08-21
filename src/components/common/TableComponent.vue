@@ -366,7 +366,6 @@ export default {
             arr.push(item);
           }
         })
-
         //无论论如何调整 selection总在最前 action总在最后 
         //static_arr代表配置限制不可调整顺序的字段(通过show_option控制)
         if(a) {arr.push(a)};
@@ -413,7 +412,6 @@ export default {
       
       //获取控制器
       let control = [[],[]];
-
       for(let c of cols) {
         let show = c.show == undefined ? true : c.show;
         let show_option = c.show_option !== undefined ? c.show_option : true;

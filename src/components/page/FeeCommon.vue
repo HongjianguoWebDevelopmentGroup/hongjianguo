@@ -142,9 +142,9 @@ export default {
           { type: 'text', label: '创建日期', prop: 'create_time', width: '175' },
           { type: 'text', label: '费用期限', prop: 'due_time', is_import: true, width: '175' },
           { type: 'text', label: '官方绝限', prop: 'deadline', width: '175' },
-          { type: 'text', label: '付款时间', prop: 'pay_time', width: '175' },
+          { type: 'text', label: '发放时间', prop: 'pay_time', width: '175' },
           { type: 'text', label: '审核意见', prop: 'remark_enterprise', width: '160' },
-          { type: 'text', label: '备注', prop: 'remark', is_import: true, width: '160' },
+          { type: 'text', label: '备注', prop: 'remark', is_import: true, width: '160',},
           { 
             type: 'action',
             width: '80',
@@ -178,7 +178,6 @@ export default {
     feeType () {      
       const path = this.$route.path;
       const type = !/bonus/.test(path) ? 1 : 0;
-
       const k = type ? '请款单' : '付款单';
       const o = this.option.header_btn[1];
       o.label = k;
