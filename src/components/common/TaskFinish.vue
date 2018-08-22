@@ -90,6 +90,9 @@
     <el-form-item prop="is_amend" label="是否提出变更" v-if="fields.is_amend">
       <app-switch type="is" v-model="form.is_amend"></app-switch>
     </el-form-item>
+    <el-form-item prop="is_reexam" label="是否提出复审" v-if="fields.is_reexam">
+      <app-switch type="is" v-model="form.is_reexam"></app-switch>
+    </el-form-item>
     <template v-if="fields.oa">
       <el-form-item prop="opinion" label="审查要点" :rules="{required: true, message: '请填写审查要点'}">
         <el-input type="textarea" placeholder="请填写审查要点" v-model="form.opinion"></el-input>
@@ -103,6 +106,9 @@
     </el-form-item>
     <el-form-item prop="issue_review" label="授权前评估意见" v-if="fields.issue_review" :rules="{required: true, message: '请填写授权前评估意见'}">
       <el-input type="textarea" v-model="form.issue_review"></el-input>
+    </el-form-item>
+    <el-form-item prop="reexam_opinion" label="复审理由" v-if="fields.reexam_opinion" :rules="{required: true, message: '请填写复审理由'}">
+      <el-input type="textarea" v-model="form.reexam_opinion"></el-input>
     </el-form-item>
     <el-form-item prop="attachments" label="附件" v-if="fields.attachments && !hide_r_a">
       <upload v-model="form.attachments" :file-list="attachments"> 
@@ -258,6 +264,8 @@ export default {
         opinion:'',
         response:'',
         technical_field: '',
+        reexam: 0,
+        reexam_opinion: '',
 			},
 			'defaultVal': '',
       'agencyMap': [],
