@@ -275,6 +275,10 @@ export default {
         ['patent', {
           key: 'patents',
           title: '导出专利',
+        }],
+        ['certificate', {
+          key: 'certificates',
+          title: '导出专利证书',
         }]
       ])
 

@@ -63,6 +63,12 @@ export default {
       default () {
         return [];
       }
+    },    
+    'normalFilter': {
+      type: Array,
+      default () {
+        return [];
+      }
     }
   },
   data () {    
@@ -99,11 +105,18 @@ export default {
     optionsIn () {
       const s = this.skip;
       const f = this.filterOptions;
+      const n = this.normalFilter;
       let options = this.options;
       
       if(s.length != 0) {
         options = options.filter(v => {
           return s.indexOf(v.id) < 0;
+        })
+      }      
+      if(n.length != 0) {
+
+        options = options.filter(d => {
+          return n.indexOf(d.id) == 0;
         })
       }
 

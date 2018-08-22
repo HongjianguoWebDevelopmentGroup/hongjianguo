@@ -425,6 +425,6 @@ export default {
 .add_position {
     position: absolute;
     top: 10px;
-    right:-28px;
+    /*right:-28px;*/
 }
 </style>

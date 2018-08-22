@@ -30,6 +30,17 @@
         </el-form-item>
       </el-form>
     </el-dialog>
+
+    <el-dialog title="案件类型" :visible.sync="caseVisible" size="tiny">
+      <el-form ref="caseForm" :model="caseForm">
+        <el-form-item label="案件类型" prop="caseType" :rules="{type: 'number',required: true, message: '案件类型不能为空', trigger: 'change'}">
+          <static-select type="relative_projects_type" v-model="caseForm.caseType"></static-select>
+        </el-form-item>
+        <el-form-item>
+          <el-button type="primary" @click="dropAdd">保存</el-button>
+        </el-form-item>
+      </el-form>
+    </el-dialog>
   </div>
 </template>
 
@@ -59,9 +70,13 @@ export default {
     return {
       value6: '',
       refreshProxy: '',
+      caseForm:{
+        caseType: '',
+      },
       currentRow: '',
+      selectData: [],
       shrinkVisible: false,
-      
+      caseVisible: false,
       downloadVisible: false,
       downloadIds: [],
       downloadFileType: [],
@@ -246,13 +261,21 @@ export default {
     mailCallBack() {
       this.mailVisible = false;
       this.refreDetailData();
+    },
+    dropAdd () {
+      this.$refs['caseForm'].validate((v)=>{
+        if(v){
+          this.caseVisible = false;
+          this.$router.push({ path: '/patent/add', query: {s:this.selectData,t:this.caseForm.caseType}});
+        }else{
+          this.$message({type: 'warning',message: '案件类型不能为空'});
+        }
+      })
     },    
     add () {
-      const s = this.$refs.table.getSelection();
-      if (s.length != 0) {
-        console.log('----------start-----------');
-          console.log(s);
-          this.$router.push({ path: '/patent/add', query: {s:s}});
+      this.selectData = this.$refs.table.getSelection();
+      if (this.selectData.length != 0) {
+        this.caseVisible = true;
       }else {
         this.$router.push('/patent/add');
       }

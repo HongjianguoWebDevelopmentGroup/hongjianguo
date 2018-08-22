@@ -155,14 +155,16 @@ export default {
         setKeys.map(_=>this.$refs[_].setForm(copy));
       }
     },
-    fillForm (val) {
+    fillForm ([val,type]) {
       if(val instanceof Array && val.length != 0){
         const copy = this.$tool.deepCopy(val);
         // this.id = copy[0].id;
         const relates = [];
-        // val.map(_=>{
-        //   relates.push({id: _.id, name: _.title, type: 1});
-        // })
+        if(type) {
+          val.map(_=>{
+            relates.push({id: _.id, name: _.title, type: type});
+          })
+        }
         const form = {};  
         const data = this.$tool.normalFilter(copy[0],{
           stay:['serial','title','area','type', 'ipr','level',"applicants","inventors",'priorities',"extension", 'attachments','proposer','group_number','family_number','legal_status','branch','products','classification','tags','main_ipc','project_name','project_serial',"product_relevance"]
@@ -221,7 +223,8 @@ export default {
     },
     getQuery () {
       const s = this.$route.query.s; 
-      return s;
+      const t = this.$route.query.t;
+      return [s,t];
     },
     getParams () {
       const d = this.$route.params.dataobj;

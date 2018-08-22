@@ -1,4 +1,16 @@
 const config = [
+  ['relative_projects_type',{
+    placeholder: '请选择案件类型',
+    options: [
+        { name: '仅复制', id: 0 },
+        { name: '要求优先权', id: 1 },
+        { name: '分案申请', id: 2 },
+        { name: '部分连续案', id: 3 },
+        { name: '同套发明与新型', id: 4 },
+        { name: '不同地区同族', id: 5 },
+        { name: '要求同日送件', id: 6 },
+      ]
+  }],
   ['role',{
     placeholder: '请选择统计类型',
     options:[

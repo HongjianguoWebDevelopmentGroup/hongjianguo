@@ -82,14 +82,15 @@ export default {
       downloadLoading: false,
       tableOption: {
         'name': 'patentcertificate',
-        'url': URL,
+        'url': this.URL,
         'height': 'default',
         'search_placeholder': '搜索证书编号、名称、申请号、申请人', 
         'highlightCurrentRow': true,
         'is_list_filter': true,
         'list_type': 'certificate',
+        'import_type': 'certificate',
         'header_btn': [
-          { type: 'export2', map_if: '/patent/export' },
+          { type: 'export2'},
         ],
         'header_slot': ['download'],
         'columns': [
@@ -144,7 +145,7 @@ export default {
       return h('span', item);
     },
     refreshTableData (option) {
-      const url = '/patents';
+      const url = this.URL;
       const data = Object.assign({}, option, this.defaultParams);
       const success = d=>{
         if(data['format'] == 'excel') {
@@ -161,7 +162,7 @@ export default {
       this.$tool.coverObj(this.form,row);
     },
     editSave({id}) {
-      const url = `/patents/${id}`;
+      const url = `${this.URL}/${id}`;
       const data = Object.assign({},this.form);
       const success = _=>{
       	this.dialogVisible = false;
