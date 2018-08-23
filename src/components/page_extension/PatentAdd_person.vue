@@ -9,7 +9,7 @@
           </el-col>
           <el-col :span="8">
             <el-form-item label="委案日">
-              <el-date-picker size="small"  v-model="form.public_date" type="date" placeholder="委案日" class="input-min-width"></el-date-picker>
+              <el-date-picker size="small"  v-model="form.entrusting_time" type="date" placeholder="委案日" class="input-min-width"></el-date-picker>
             </el-form-item>
           </el-col>
           <el-col :span="8">

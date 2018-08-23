@@ -743,7 +743,7 @@ const router = new Router({
     },
     {
       path: '/patent/certificate/:id',
-      name: 'PatentCertificate',
+      name: 'PatentCertificate',         //专利证书
       component: PatentCertificate,
     },
 

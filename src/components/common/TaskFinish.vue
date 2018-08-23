@@ -311,7 +311,7 @@ export default {
         if(d.data.level){
           this.level= d.data.level;
         }
-        if(this.data.next.length != 0) {
+        if(this.data.next.length != 0 ) {
           this.next = d.data.next[0].id;
         }else {
           this.next = "";

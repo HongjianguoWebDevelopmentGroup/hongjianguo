@@ -5,7 +5,7 @@
 			<app-transfer-panel v-model="form.fields" :data="fields" title="导出字段控制" :is-move="false" style="width: 100%;"></app-transfer-panel>
 		</el-form-item>
 		<el-form-item label="文件类型" prop="documents">
-			<static-select type="file_type" v-model="form.documents" v-if="responseKey=='certificates'" :normal-filter='[829]'></static-select>
+			<static-select type="file_type" v-model="form.documents" v-if="responseKey=='certificates'" :normal-filter='[829]' disabled></static-select>
 			<static-select type="file_type" v-model="form.documents" v-else multiple></static-select>
 		</el-form-item>
 		<el-form-item style="margin-bottom: 0px;">
@@ -68,7 +68,7 @@ export default {
 		defaultParams () {
 			const params = this.$route.meta.params;
 			return params ? params : {};
-		}
+		},
 	},
 	methods: {
 		exportClick () {
@@ -84,6 +84,7 @@ export default {
 							format: 'excel',
 							documents: this.form.documents,
 							fields: this.form.fields.join(','),
+
 							ids: this.selected.map(_=>_.id),
 						},
 						success: d=>{	
@@ -98,10 +99,15 @@ export default {
 			})
 		}
 	},
+	created() {
+		if(this.responseKey == 'certificates') {
+			this.form.documents = 829;
+		}
+	},
 	watch: {
 		default (val) {
 			this.form.fields = val;
-		}
+		},
 	},
 	components: {
 		StaticSelect,

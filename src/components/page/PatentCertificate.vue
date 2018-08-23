@@ -5,27 +5,15 @@
 <!--       <el-button v-if="!!(menusMap && !menusMap.get('/patent/download') )" slot="download" :loading="downloadLoading" icon="share" @click="downloadPop" type="primary" style="margin-left: 5px;">批量下载</el-button> -->
     </table-component>
     <el-dialog title="编辑证书" :visible.sync="dialogVisible">
-    	<el-form :model="form">
+    	<el-form :model="form" ref="form">
     		<el-form-item label="备注">
     			<el-input type="textarea" v-model="form.remark"></el-input>
     		</el-form-item>
     		<el-form-item label="是否已申报资助">
-    			<el-switch
-					v-model="form.is_district_funding"
-					on-text="是"
-					off-text="否"
-					on-color="#13ce66"
-					off-color="#ff4949"
-    			></el-switch>
+    			<app-switch v-model="form.is_district_funding" type="is"></app-switch>
     		</el-form-item>    		
     		<el-form-item label="是否已申报资助">
-    			<el-switch
-					v-model="form.is_city_funding"
-					on-text="是"
-					off-text="否"
-					on-color="#13ce66"
-					off-color="#ff4949"
-    			></el-switch>
+    			<app-switch v-model="form.is_city_funding" type="is"></app-switch>
     		</el-form-item>
     		<el-form-item>
     			<el-button type="primary" @click="editSave">保存</el-button>
@@ -51,22 +39,16 @@ import AppFilter from '@/components/common/AppFilter'
 import TableComponent from '@/components/common/TableComponent'
 import StaticSelect from '@/components/form/StaticSelect'
 import RemoteSelect from '@/components/form/RemoteSelect'
+import AppSwitch from '@/components/form/AppSwitch'
 
 import { mapGetters} from 'vuex'
-
-const urlMap = new Map([
-	['invention','/certificate/invention'],
-	['utility','/certificate/utility'],
-	['appearance', '/certificate/appearance'],
-	['taiwan', '/certificate/taiwan'],
-	['foreign', '/certificate/foreign'],
-	]);
-const PATENT_TYPE = ['发明专利', '实用新型', '外观设计']; 
+const URL = '/certificates';
 
 export default {
   name: 'patentCertificate',
   data () {
     return {
+      id: '',			
       value6: '',
       dialogVisible: false,
       refreshProxy: '',
@@ -74,8 +56,8 @@ export default {
       downloadVisible: false,
       form:{
         remark: '',
-        is_district_funding: '',
-        is_city_funding: '',
+        is_district_funding: 0,
+        is_city_funding: 0,
       },
       downloadIds: [],
       downloadFileType: [],
@@ -105,8 +87,14 @@ export default {
           { type: 'text', label: '代理机构', width: '145', prop: 'agency', render_simple: 'name', is_import: true},
           { type: 'text', label: '代理人', width: '145', prop: 'agent', render_simple: 'name', is_import: true},
           { type: 'text', label: '备注', width: '178', prop: 'remark', is_import: true},
-          { type: 'text', label: '是否已申报资助', width: '150', prop: 'is_district_funding', is_import: true},
-          { type: 'text', label: '是否已申报市资助', width: '150', prop: 'is_city_funding', is_import: true},
+          { type: 'text', label: '是否已申报资助', width: '150', prop: 'is_district_funding', is_import: true, render: (h,item)=>{
+          	item ? item = '是' : item = '否';
+          	return h('span',item);
+          }},
+          { type: 'text', label: '是否已申报市资助', width: '150', prop: 'is_city_funding', is_import: true,render: (h,item)=>{
+          	item ? item = '是' : item = '否';
+          	return h('span',item);
+          }},
           {
             type: 'action',
             width: '178',
@@ -133,9 +121,9 @@ export default {
       return params ? params : {};
     },
 
-    URL () {
+    urlName () {
       const certificate = this.$route.params.id;
-      return  certificate !== undefined ? urlMap.get(certificate) : null; 
+ 	  return certificate;
     }
   },
   methods: {
@@ -145,30 +133,34 @@ export default {
       return h('span', item);
     },
     refreshTableData (option) {
-      const url = this.URL;
-      const data = Object.assign({}, option, this.defaultParams);
+      const url = URL;
+      const data = Object.assign({}, option, this.defaultParams,{certificate_type:this.urlName});
       const success = d=>{
         if(data['format'] == 'excel') {
-          window.location.href = d.patents.downloadUrl;
+          window.location.href = d.certificates.downloadUrl;
         }else {
-          this.tableData = d.patents;
+          this.tableData = d.certificates;
         }
       };
 
       this.refreshProxy = this.$axiosGet({url, data, success});
     },
     editShow(row) {
+      this.id = row.id;	
       this.dialogVisible = true;
-      this.$tool.coverObj(this.form,row);
+      this.$nextTick(_=>{
+	    this.$refs.form.resetFields();  
+	    this.$tool.coverObj(this.form,row);
+      });
     },
-    editSave({id}) {
-      const url = `${this.URL}/${id}`;
+    editSave() {
+      const url = `${URL}/${this.id}`;
       const data = Object.assign({},this.form);
       const success = _=>{
       	this.dialogVisible = false;
       	this.$refs.table.update();
       }
-      this.$axiosPost({url, data, success});
+      this.$axiosPut({url, data, success});
     },
     refresh () {
       // this.$refs.table.refresh();
@@ -207,6 +199,7 @@ export default {
     TableComponent,  
     StaticSelect,
     RemoteSelect,
+    AppSwitch,
   },
 }
 </script>
