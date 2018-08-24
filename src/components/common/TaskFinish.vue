@@ -31,7 +31,7 @@
     <el-collapse-item title="任务处理" name="2">
       <el-form :model="form" label-width="100px" ref="form" style="min-height: 150px;" :key="`${id}-${next}`"><!--这里需要给form加key 保证每个form的验证规则互不影响-->
       	<el-form-item :label="data.procedure.label" v-if="data.fields && data.fields.procedure">
-          <el-select v-model="next">
+          <!-- <el-select v-model="next">
             <el-option
               v-for="item in data.procedure.items"
               :key="item.id"
@@ -39,10 +39,20 @@
               :value="item.id"
             >
             </el-option>
-          </el-select>
+          </el-select> -->
+        <app-radio 
+          v-model="next" 
+          v-for="item in data.procedure.items"
+          :value="item.id"
+          :key="item.id"
+          :label="item.name"
+          @change="procedureRadio"
+          >
+          {{ item.name}}
+          </app-radio>
         </el-form-item>
         <el-form-item label="下一节点" v-if="ifNext">
-      		<el-select v-model="next" :disabled="data.fields.procedure ? true : false">
+<!--       		<el-select v-model="next" :disabled="data.fields.procedure ? true : false">
       		 <el-option
     				v-for="item in data.next"
     				:key="item.id"
@@ -50,16 +60,19 @@
     				:value="item.id"
       		 >
       		 </el-option>
-      		</el-select>
- <!--          <ul class="next_point" v-model="next">
-            <li class="next_ponit__child"
-             v-for="item in data.next"
-             :key="item.id"
-            >
-            {{ item.name}}
-          </li>
-          </ul> -->
-          <!-- <app-radio v-model="next" :datas="data.next"></app-radio> -->
+      		</el-select> -->
+          
+          <app-radio 
+          :disabled="data.fields.procedure ? true : false"
+          v-model="next" 
+          v-for="item in data.next"
+          :value="item.id"
+          :key="item.id"
+          :label="item.name"
+          @change="nextRadio"
+          >
+          {{ item.name}}
+          </app-radio>
       	</el-form-item>
       	<el-form-item prop="person_in_charge" label="承办人" v-if="fields.person_in_charge">
       		<remote-select type="member" v-model="form.person_in_charge" v-if="defaultVal == 'sender' || defaultVal =='proposer' || defaultVal == 'reviewer' || defaultVal == 'previous' || !defaultVal "></remote-select>
@@ -266,6 +279,7 @@ export default {
   mixins: [axiosMixins],
   data () {
 		return {
+      allNext: '',
       activeName:['1', '2'],
 			'data': {},
 			'next': '',
@@ -353,6 +367,15 @@ export default {
       'refreshUser',
       'refreshDetailData',
     ]),
+    nextRadio(val) {
+      console.log(val);
+    },
+    procedureRadio(val) {
+      
+      const arr = this.allNext;
+      this.data.next = arr.filter(_ => _.id == val);
+     
+    },
   	refreshData () {
       this.loading = true; 
       this.next = "";
@@ -360,12 +383,15 @@ export default {
   		const success = d=>{
         this.$emit('refreshNext',d.data.next);
   			this.data = d.data;
+        this.allNext = d.data.next;
         this.fields = d.data.fields;
         if(d.data.level){
           this.level= d.data.level;
         }
         if(this.data.next.length != 0 ) {
           this.next = d.data.next[0].id;
+          const arr = this.allNext;
+          this.data.next = arr.filter(_ => _.id == d.data.next[0].id);
         }else {
           this.next = "";
           this.form.agent = this.data.agent;
