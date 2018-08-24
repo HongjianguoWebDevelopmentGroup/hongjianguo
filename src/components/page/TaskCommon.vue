@@ -150,11 +150,11 @@
             <task-finish :id="currentRow.id" :row="currentRow" @submitSuccess="finishSuccess" @more="handleMore" @refreshNext="handleNext" v-show="!nextValue"></task-finish>
           </div>   
         </el-tab-pane>
-        <el-tab-pane label="详细信息" name="edit">   
+<!--         <el-tab-pane label="详细信息" name="edit">   
           <div :style="`height: ${innerHeight - 140}px; overflow-y: auto;overflow-x:hidden;`">         
             <information :row="currentRow" @more="handleMore"></information> 
           </div>         
-        </el-tab-pane>
+        </el-tab-pane> -->
         <el-tab-pane label="相关任务" name="cccc"> 
           <div :style="`height: ${innerHeight - 140}px; overflow-y: auto;overflow-x:hidden;`">           
             <detail :row="currentRow" style="margin: 10px 0;"></detail> 

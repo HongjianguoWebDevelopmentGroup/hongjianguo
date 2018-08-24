@@ -3,6 +3,11 @@
     
     <table-component :tableOption="tableOption" :data="tableData" @refreshTableData="refreshTableData" ref="table" :refresh-proxy="refreshProxy">
 <!--       <el-button v-if="!!(menusMap && !menusMap.get('/patent/download') )" slot="download" :loading="downloadLoading" icon="share" @click="downloadPop" type="primary" style="margin-left: 5px;">批量下载</el-button> -->
+	<template slot='row_action' slot-scope="scope">
+		<el-button type="text"  icon="view" size="mini" @click="viewCertificate(scope.row)" v-if="scope.row.certificate.file.is_view">查看</el-button>
+		<el-button type="text"  icon="my-download" size="mini" @click="downloadCertificate(scope.row)">下载</el-button> 
+		<el-button type="text"  icon="edit" size="mini" @click="editShow(scope.row)">编辑</el-button>
+	</template>
     </table-component>
     <el-dialog title="编辑证书" :visible.sync="dialogVisible">
     	<el-form :model="form" ref="form">
@@ -97,12 +102,13 @@ export default {
           }},
           {
             type: 'action',
-            width: '178',
-            btns: [
-			  { type: 'download', click: ({downloadUrl})=>{ window.location.href = downloadUrl; } },
-			  { type: 'view', click: ({viewUrl})=>{window.open(viewUrl)} },
-			  { type: 'edit', click: this.editShow}
-            ], 
+            width: '198',
+     //        btns: [
+			  // { type: 'download', click: (row)=>{ window.location.href = row.certificate.file.downloadUrl; } },
+			  // { type: 'view', click: (row)=>{ window.open( row.certificate.file.viewUrl)} },
+			  // { type: 'edit', click: this.editShow}
+     //        ],
+     		btns_render:'action', 
           },
         ] 
       },
@@ -127,7 +133,12 @@ export default {
     }
   },
   methods: {
-
+  	viewCertificate(row) {
+  		window.location.href = row.certificate.file.viewUrl;
+  	},
+  	downloadCertificate(row) {
+  		window.open(row.certificate.file.downloadUrl);
+  	},
     booleanRender(h,item) {
       item == 1 ? item = '是' : item = '否';
       return h('span', item);
@@ -146,6 +157,7 @@ export default {
       this.refreshProxy = this.$axiosGet({url, data, success});
     },
     editShow(row) {
+      console.log(row);		
       this.id = row.id;	
       this.dialogVisible = true;
       this.$nextTick(_=>{
