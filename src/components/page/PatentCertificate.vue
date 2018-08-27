@@ -69,7 +69,7 @@ export default {
       downloadLoading: false,
       tableOption: {
         'name': 'patentcertificate',
-        'url': this.URL,
+        'url': '/patents',
         'height': 'default',
         'search_placeholder': '搜索证书编号、名称、申请号、申请人', 
         'highlightCurrentRow': true,

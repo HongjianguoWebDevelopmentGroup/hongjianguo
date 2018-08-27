@@ -163,6 +163,7 @@ export default {
 			return this.usedOptions.length === 0 ? false : true
 		},
 		source () {
+			//  其中一个配置项的值
 			const val = this.filterSettingMap.get(this.key);
 			return val ? val : null;
 		},
@@ -378,6 +379,7 @@ export default {
 			this.init(val);
 		},
 		usedForm: {
+			// 处理默认使用的字段选择直接筛选
 			deep: true,
 			handler (form) {
 				console.log(form);
@@ -403,6 +405,7 @@ export default {
 	},
 	created () {
 		if (this.usedFlag) {
+ 		//初始化使用过得字段的值 相当于在data初次声明
 			const obj = {}
 			this.usedOptions.forEach(item => {
 				let val = this.getDefaultValue(item.id)
@@ -410,7 +413,7 @@ export default {
 					obj[item.id] = val;
 				}
 			})
-			this.usedForm = obj	
+			this.usedForm = obj	   
 		}
 			
 	},
