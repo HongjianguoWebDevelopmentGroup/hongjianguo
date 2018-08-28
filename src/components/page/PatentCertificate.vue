@@ -204,7 +204,8 @@ export default {
       this.$axiosPost({url, data, success, complete})
     },
   },
-  created () {
+  mounted () {
+    this.refresh();
   },
   components: {  
     AppFilter, 

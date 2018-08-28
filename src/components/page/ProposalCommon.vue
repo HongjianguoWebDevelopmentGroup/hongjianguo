@@ -69,7 +69,7 @@
 	  	</el-row>
       <el-dialog title="提交任务" :visible.sync="dialogVisible">
         <task-finish 
-           
+        
           :id="update_id"          
           @submitSuccess="handleSubmitSuccess"
           @cancel="dialogVisible=false"

@@ -168,9 +168,9 @@ const map = new Map([
         { components: 'date',          id: 'mail_date', name: '发文日', },
     ]],
     ['certificate',[
-        { components: 'input',         id: 'certificate_no',                name: '证书编号', },        
+        { components: 'input',         id: 'certificate_no',                name: '证书编号',},        
         { components: 'input',         id: 'remark',                        name: '备注', },
-        { components: 'remote_select', id: 'applicants',                    name: '申请人', type: 'applicant'},
+        { components: 'remote_select', id: 'applicants',                    name: '申请人', type: 'applicant', used: true},
         { components: 'input',         id: 'apn',                           name: '申请号'},
         { components: 'date',          id: 'apd',                           name: '申请日', used: true},
         { components: 'remote_select', id: 'inventors',                     name: '发明人', type: 'inventor'},    
@@ -198,7 +198,7 @@ const listPathMap = new Map([
     ['copyright', '/copyright/list'],
     ['fee', '/fee/income'],
     ['patent_notice', '/news/patent_notice'],
-    ['certificate', 'patent/certificate']
+    ['certificate', '/patent/certificate']
 ])
 
 export {map, customPathMap, listPathMap};
