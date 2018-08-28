@@ -391,8 +391,10 @@ export default {
         }
         if(this.data.next.length != 0 ) {
           this.next = d.data.next[0].id;
-          const arr = this.allNext;
-          this.data.next = arr.filter(_ => _.id == d.data.next[0].id);
+          if(this.data.procedure && this.data.procedure.items.length != 0) {
+            const arr = this.allNext;
+            this.data.next = arr.filter(_ => _.id == d.data.next[0].id);
+          }
         }else {
           this.next = "";
           this.form.agent = this.data.agent;
