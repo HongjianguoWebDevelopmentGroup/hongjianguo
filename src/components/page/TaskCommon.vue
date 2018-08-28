@@ -113,6 +113,17 @@
         </el-form-item>
       </el-form>
     </el-dialog>
+    <el-dialog title="退回任务" :visible.sync="dialogRejectVisible" class="dialog-medium" @close="close">
+      <el-form label-width="80px" ref="reject">
+        <el-form-item label="流程节点">
+          <static-select :type="selectSibling" v-model="taskId" ></static-select>
+        </el-form-item>
+        <el-form-item style="margin-bottom: 0px;">
+          <el-button type="primary" @click="rejectTask" style="margin-bottom: 0px;">提交</el-button>
+          <el-button  @click="dialogRejectVisible = false" style="margin-bottom: 0px;">取消</el-button>
+        </el-form-item>
+      </el-form>
+    </el-dialog>    
     
     <el-dialog title="将选中任务转给以下任务处理人" :visible.sync="dialogTurnoutVisible" class="dialog-mini">
       <el-form label-position="top">
@@ -157,7 +168,7 @@
         </el-tab-pane> -->
         <el-tab-pane label="相关任务" name="cccc"> 
           <div :style="`height: ${innerHeight - 140}px; overflow-y: auto;overflow-x:hidden;`">           
-            <detail :row="currentRow" style="margin: 10px 0;"></detail> 
+            <detail :row="currentRow" style="margin: 10px 0;" @refreshSiblings="handleSiblings"></detail> 
           </div>           
         </el-tab-pane>
         <el-tab-pane label="延期历史" name="delay">
@@ -238,6 +249,7 @@ export default {
     data () {
 
     return {
+      dialogRejectVisible: false,
       dialogScreenVisible: false,
       dialogTurnoutVisible: false,
       dialogAddVisible: false,
@@ -252,6 +264,8 @@ export default {
       nextValue: false,
       taskIds: '',
       moreType: '',
+      historyTasks: [],
+      taskId: '',
       filters: {},
       activeName: 'finish',
       shrinkTitle: '',
@@ -408,6 +422,18 @@ export default {
       const custom = this.$route.meta.custom;
       return custom !== undefined ? custom : false;
     },
+    selectSibling () {
+      if(this.historyTasks && this.historyTasks.length != 0) {
+        const arr = [];
+        this.historyTasks.forEach( v =>{
+          arr.push({'id': v['id'], 'name': `${v['flownode']['name']}_${v['person_in_charge']['name']}`});
+        });
+        return {
+          placeholder: '请选择退回到的流程节点',
+          options: arr
+        }
+      }
+    },
   },
   methods: {
     ...mapMutations([
@@ -426,20 +452,11 @@ export default {
     mailCallBack () {
       this.mailVisible = false;
     },
+    handleSiblings (val) {
+      this.historyTasks = val;
+    },
     handleReject () {
-      this.$confirm('此操作将退回当前任务，是否继续？', '提示', { 
-        type: 'warning'
-      }).then(_=>{
-        const url = `/tasks/${this.currentRow.id}/reject`;
-        const data = {remark: this.remark,};
-        const success = _=>{
-          this.$message({message: '退回任务成功', type: 'success'});
-          this.dialogShrinkVisible = false;
-          this.update();
-        };
-
-        this.$axiosPost({url, data, success});
-      }).catch(_=>{});
+      this.dialogRejectVisible = true;
     },
     handleNext (val) {
       console.log('-------next');
@@ -616,6 +633,22 @@ export default {
       };
       this.$axiosPost({url, data, success });
     },
+    rejectTask() {
+        const url = `/tasks/${this.currentRow.id}/reject`;
+        const data = {
+          remark: this.remark,
+          task_id: this.taskId,
+        };
+        const success = _=>{
+          this.$message({message: '退回任务成功', type: 'success'});
+          this.dialogRejectVisible = false;
+          window.setTimeout(_=>{
+            this.dialogShrinkVisible = false;
+            this.update();
+          },0)
+        };
+        this.$axiosPost({url, data, success});
+    },
     addSuccess () {
       this.dialogAddVisible = false;
       this.$message({message: '添加成功', type: 'success'});
@@ -738,7 +771,10 @@ export default {
     },
     save () {
       this.$refs.detail.edit();
-    }
+    },
+    close () {
+      this.taskId = '';
+    },
   },  
   watch: {
     filter () {

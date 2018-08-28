@@ -88,7 +88,7 @@ export default {
           { type: 'array', label: '申请人', prop: 'applicants', width: '200', is_import: true,render: _=>{ return _.map(_=>_.name);}},
           { type: 'text', label: '申请号', prop: 'apn', sortable: true, is_import: true, width: '140', is_agency: true},
           { type: 'text', label: '申请日', prop: 'apd', sortable: true, is_import: true, width: '123', is_agency: true},
-          { type: 'array', label: '发明人', width: '238', prop: 'inventors', is_import: true, is_agency: true, render: _=>_.map(_=>`${_.name}_${_.email}:${_.share}%`),},          
+          { type: 'array', label: '发明人', width: '238', prop: 'inventors', is_import: true, is_agency: true, render: _=>_.map(_=>_.pivot?`${_.name}_${_.email}:${_.pivot.share}%`:`${_.name}_${_.email}`),},          
           { type: 'text', label: '代理机构', width: '145', prop: 'agency', render_simple: 'name', is_import: true},
           { type: 'text', label: '代理人', width: '145', prop: 'agent', render_simple: 'name', is_import: true},
           { type: 'text', label: '备注', width: '178', prop: 'remark', is_import: true},

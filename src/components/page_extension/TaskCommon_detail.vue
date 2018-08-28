@@ -65,7 +65,7 @@ export default {
     refreshData () {
       this.loading = true;
       const url = `/api/tasks/${this.id}`;
-      const success = _=>{this.collapse = _.task.siblings; console.log(_.task.siblings);};
+      const success = _=>{this.collapse = _.task.siblings; this.$emit('refreshSiblings',this.collapse);};
       const complete = _=>{setTimeout(_=>this.loading = false, 500)};
 
       this.axiosGet({url, success, complete});
