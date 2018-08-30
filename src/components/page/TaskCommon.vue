@@ -166,7 +166,7 @@
             <information :row="currentRow" @more="handleMore"></information> 
           </div>         
         </el-tab-pane> -->
-        <el-tab-pane label="相关任务" name="cccc"> 
+        <el-tab-pane label="相关任务" name="relative_tasks"> 
           <div :style="`height: ${innerHeight - 140}px; overflow-y: auto;overflow-x:hidden;`">           
             <detail :row="currentRow" style="margin: 10px 0;" @refreshSiblings="handleSiblings"></detail> 
           </div>           
@@ -833,7 +833,7 @@ export default {
     }
 
     if(this.task_status == 1 || this.task_status == -1) {
-      this.activeName = 'edit';
+      this.activeName = 'relative_tasks';
     }
 
     this.refreshOption();
