@@ -134,6 +134,8 @@
       :class="tableOption.empty_text_position == 'topLeft' ? 'empty-top-left' : ''"
       :style="tableStyle"
       :data="tableData"
+      :value="testDate"
+      @input="handleInput"
       :type="tableOption.list_type"
       :border="tableOption.is_border != undefined ? tableOption.is_border : true"
       :default-sort="tableOption.default_sort ? tableOption.default_sort : {}"
@@ -215,7 +217,7 @@ export default {
   props: ['tableOption', 'data', 'tableStyle', 'refreshProxy', 'filter', 'refreshTableData','feeBonus'],
   data () {    
     const data = {
-      testDate: '',
+      testDate: [],
       pageData: [],
       pageSize: 5,
       pagesizes: [10, 20, 40, 100, 10000],
@@ -428,7 +430,6 @@ export default {
       // }
       if(this.feeBonus) {
          cols =  cols.filter(_=>!_.is_bonus);
-        console.log(cols)
       }
       //获取控制器
       let control = [[],[]];

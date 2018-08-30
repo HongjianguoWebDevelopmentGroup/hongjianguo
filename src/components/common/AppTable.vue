@@ -123,10 +123,10 @@ import {listPathMap, map as filterConfig} from '@/const/filterConfig'
 export default {
   name: 'appTable',
   props: {
-    // value:{
-    //   type: [String,Number,Boolean,Array],
-    //   required: true,
-    // },
+    value:{
+      type: [String,Number,Boolean,Array],
+      // required: true,
+    },
     border: {
       type: Boolean,
       default: false,
@@ -182,6 +182,7 @@ export default {
     ...mapGetters([
       'innerHeight',
     ]),
+    value2() {},
     filterSetting () { //自定义筛选配置项
       const data = filterConfig.get(this.type);
       return data ? data : []
@@ -316,14 +317,15 @@ export default {
         column.property = column.property.substring(0,sindex);
       }
       const source = this.filterSettingMap.get(column.property);
-      if(source.components == 'static_select' || source.components == 'remote_select') {
-        testDate = source.multiple!==undefined|| !source.multiple? [] : '';
-        console.log(testDate);
-      }else if(source.components == 'date') {
-         testDate = ['','']; 
-      }else if(source.components == 'input') {
-        testDate = ''
-      }
+      // if(source.components == 'static_select' || source.components == 'remote_select') {
+      //   const multiple = source.multiple !== undefined? source.multiple : true;
+      //   testDate = multiple? [] : '' 
+      //   console.log(testDate);
+      // }else if(source.components == 'date') {
+      //    testDate = ['','']; 
+      // }else if(source.components == 'input') {
+      //   testDate = ''
+      // }
       const data = {  
         on: {
           input(val) {
@@ -332,13 +334,13 @@ export default {
         },
         props: {
           source: source,
-          value: testDate,
+          value: this.value,
         },
         ref: 'filterValue',
       }
       return (
         <span>{item}
-         <FilterValue {...data}></FilterValue>
+       <FilterValue {...data}></FilterValue>
         </span>
 
         )

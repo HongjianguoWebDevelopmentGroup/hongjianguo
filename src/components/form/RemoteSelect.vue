@@ -157,7 +157,9 @@ export default {
   },
   methods: {
     handleInput (val) {
+      console.log(this.value);
       console.log('______remote')
+      console.log(val)
       if(!this.multiple && !this.single) {
         let v = '';
         if(val[0] && val[1]) {
@@ -201,6 +203,7 @@ export default {
         }
 
       }else {
+        console.log('jin')
         //selected通过map映射
         const arr = [];
         val.forEach(_=>{
@@ -376,6 +379,7 @@ export default {
     }
   },
   created () {
+    console.log('zhege')
     this.refreshSelected(this.value2);
   }
 }

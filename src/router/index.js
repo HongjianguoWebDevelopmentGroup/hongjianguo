@@ -140,7 +140,7 @@ const router = new Router({
       component: TaskCommon,
       meta: { 
         status: 0,
-        params: { scope: 'all', stage: 2 }, 
+        params: { scope: 'all', stage: '[2,3,4,5,6]' }, 
       },
     },
     {
@@ -149,7 +149,7 @@ const router = new Router({
       component: TaskCommon,
       meta: { 
         status: 0,
-        params: { scope: 'all' , stage: '[1,3,4,5,6]' }, 
+        params: { scope: 'all' , stage: 1 }, 
       },
     },
     {
