@@ -157,16 +157,20 @@ export default {
   },
   methods: {
     handleInput (val) {
+      console.log('______remote')
       if(!this.multiple && !this.single) {
         let v = '';
         if(val[0] && val[1]) {
           v = val[1];
+          console.log('单选')
+
         }
         if(val[0] && !val[1]) {
           v = val[0];
         }
         this.$emit('input', v);  
       }else {
+        console.log('多选')
         this.$emit('input', val);
       }
     },
@@ -189,8 +193,10 @@ export default {
         this.static_map = val;
         const arr = val.map(_=>_.id);
         if(this.multiple) {
+          console.log('fsdfsf')
           this.$emit('input', arr);
         }else {
+          console.log('vvv')
           this.$emit('input', arr[0])
         }
 
@@ -317,7 +323,8 @@ export default {
   	},
     value2 () {
       let val;
-      
+      console.log('___compute')
+      console.log(this.value);
       //将单项统一处理为数组 single时保留原状
       if(!this.multiple && !this.single) {
         // console.log(this.value == "" || (this.value instanceof Object && this.$tool.getObjLength(this.value) == 0 ) ? [] : [ this.value ]);
@@ -343,6 +350,8 @@ export default {
   },
   watch: {
   	value2 (val) {
+      console.log('___watch')
+      console.log(val);
       // 通过监听value2的变化来对remote-select因tag文字超出input变大样式的hack
       var aEle=document.getElementsByTagName('input');
       for(var i=0;i<aEle.length;i++){

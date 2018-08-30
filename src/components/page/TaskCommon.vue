@@ -423,13 +423,20 @@ export default {
       return custom !== undefined ? custom : false;
     },
     selectSibling () {
-      if(this.historyTasks && this.historyTasks.length != 0) {
-        const arr = [];
+      const arr = [];
+      if(this.historyTasks && this.historyTasks.length !=0 ) {
         this.historyTasks.forEach( v =>{
-          arr.push({'id': v['id'], 'name': `${v['flownode']['name']}_${v['person_in_charge']['name']}`});
+          if(v['id'] !== this.currentRow.id) {
+            arr.push({'id': v['id'], 'name': `${v['flownode']['name']}_${v['person_in_charge']['name']}`});
+          }
         });
         return {
-          placeholder: '请选择退回到的流程节点',
+          placeholder: '请选择退回到的历史流程节点',
+          options: arr
+        }
+      }else {
+        return {
+          placeholder: '请选择退回到的历史流程节点',
           options: arr
         }
       }
@@ -456,7 +463,11 @@ export default {
       this.historyTasks = val;
     },
     handleReject () {
-      this.dialogRejectVisible = true;
+      if(this.historyTasks && this.historyTasks.length == 1) {
+          this.$message({'type': 'warning','message': '当前任务是起始任务，不可退回'});
+      }else{
+        this.dialogRejectVisible = true;
+      }
     },
     handleNext (val) {
       console.log('-------next');

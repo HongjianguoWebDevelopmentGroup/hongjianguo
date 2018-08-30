@@ -108,6 +108,7 @@ export default {
 			}
 		},
 		handleInput (val) {
+			console.log(val);
 			this.$emit('input', val);
 		},
 		getLabel () {
