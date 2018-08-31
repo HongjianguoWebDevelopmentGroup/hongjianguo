@@ -119,6 +119,7 @@
 import {mapGetters} from 'vuex'
 import FilterValue from '@/components/common/FilterValue'
 import {listPathMap, map as filterConfig} from '@/const/filterConfig'
+import {mapActions} from 'vuex'
 
 export default {
   name: 'appTable',
@@ -175,7 +176,8 @@ export default {
   data () {
     return {
       selected: [],
-      testDate: ''
+      filters: {
+      }
     };
   },
   computed: {
@@ -255,7 +257,26 @@ export default {
       return height;
     },
   },
+  mounted() {
+    this.handleDynamicData();
+  },
   methods: {
+    ...mapActions([
+      'fillListFilter',
+      'addListFilter',
+      'clearFilter'
+    ]),
+    handleDynamicData () {
+      this.filterSetting.forEach(_=>{
+        // console.log(_)
+        if(_.value!==undefined) {
+          // this.filters[_.id] = _.value;
+          this.$set(this.filters,_.id,_.value);
+        }
+      });
+      console.log(this.filters);
+      return this.filters;
+    },
     handleRowClick (row, event, column) {
       event.stopPropagation();
       if(column.type == 'selection' || column.type == 'action') return false;
@@ -307,44 +328,60 @@ export default {
     handleBtnBoolean (btn, row, key) {
       return btn[key] ? btn[key](row) : false; 
     },
-    handleRenderHeader (h,{column,$index}) {
+    handleRenderHeader (h,{column,$index},context) {
       let self = this;
+      // source={source} value={this.filters[column.property]} onInput={ (val) => {this.filters[column.property] = val}}
       let item = column.label;
-      let testDate = '';
       const sindex =column.property.indexOf('__');
       if(sindex!== -1) {
-        console.log(sindex);
         column.property = column.property.substring(0,sindex);
       }
       const source = this.filterSettingMap.get(column.property);
-      // if(source.components == 'static_select' || source.components == 'remote_select') {
-      //   const multiple = source.multiple !== undefined? source.multiple : true;
-      //   testDate = multiple? [] : '' 
-      //   console.log(testDate);
-      // }else if(source.components == 'date') {
-      //    testDate = ['','']; 
-      // }else if(source.components == 'input') {
-      //   testDate = ''
-      // }
       const data = {  
         on: {
           input(val) {
-            self.$emit('input',val);
+            self.filters[column.property] = val;
           },
         },
         props: {
           source: source,
-          value: this.value,
+          value: self.filters[column.property],
         },
-        ref: 'filterValue',
+        ref: 'filterValue_'+source.id,
+        refInFor: true
       }
       return (
         <span>{item}
-       <FilterValue {...data}></FilterValue>
+        <FilterValue {...data}></FilterValue>
         </span>
 
         )
     },
+  },
+  watch:{
+    filters: {
+      handler(form) {
+        window.setTimeout(() => {
+          const obj = {}
+          for (let key in form) {
+            const map = this.filterSettingMap.get(key)
+            const value = form[key]
+
+            if (value === '' || value.length === 0 || (value.length === 2 && value[0] === '' && value[1] === '')) {
+              obj[key] = false
+            }else {
+              const name = map['name']
+              const str = 'filterValue_' + key;
+              console.log();
+              const label = 'aa'
+              obj[key] = { name, key, label, value }
+            }
+          }
+          this.fillListFilter(obj)
+        }, 0)
+      },
+      deep: true,
+    }   
   },
   components: {
     'TableRender': {

@@ -130,6 +130,7 @@ export default {
 	},
 	created () {
 		this.initialValue();
+		this.$emit('refreshMethod',this.getLabel);
 	},
 	watch: {
 		source () {

@@ -153,7 +153,7 @@
         <el-button size="small" style="margin-left: 0px;" v-if="!currentRow.status && menusMap && !menusMap.get('/tasks/close')" @click="dialogCloseVisible = true;">完结</el-button>
         <el-button size="small" style="margin-left: 0px;" v-if="currentRow.status && menusMap && !menusMap.get('/tasks/close')" @click="dialogActivationVisible = true;">激活</el-button>
         <el-button size="small" style="margin-left: 0px;" v-if="menusMap && !menusMap.get('/tasks/transfer')" @click="dialogTranserVisible = true; transfer_person = {id: currentRow.person_in_charge, name: currentRow.person_in_charge_name }">移交</el-button>
-        <el-button size="small" @click="handleReject" style="margin-left: 0px;" type="danger" v-if="menusMap && !menusMap.get('/tasks/reject')">退回</el-button>
+        <el-button size="small" @click="handleReject" style="margin-left: 0px;" type="danger" v-if="menusMap && !menusMap.get('/iprs')">退回</el-button>
       </span>
       <el-tabs v-model="activeName">   
         <el-tab-pane label="前往处理" name="finish" v-if="task_status == 0">

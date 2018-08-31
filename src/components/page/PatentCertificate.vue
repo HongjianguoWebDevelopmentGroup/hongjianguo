@@ -14,10 +14,10 @@
     		<el-form-item label="备注">
     			<el-input type="textarea" v-model="form.remark"></el-input>
     		</el-form-item>
-    		<el-form-item label="是否已申报资助">
+    		<el-form-item label="是否已申报区资助">
     			<app-switch v-model="form.is_district_funding" type="is"></app-switch>
     		</el-form-item>    		
-    		<el-form-item label="是否已申报资助">
+    		<el-form-item label="是否已申报市资助">
     			<app-switch v-model="form.is_city_funding" type="is"></app-switch>
     		</el-form-item>
     		<el-form-item>
@@ -92,7 +92,7 @@ export default {
           { type: 'text', label: '代理机构', width: '145', prop: 'agency', render_simple: 'name', is_import: true},
           { type: 'text', label: '代理人', width: '145', prop: 'agent', render_simple: 'name', is_import: true},
           { type: 'text', label: '备注', width: '178', prop: 'remark', is_import: true},
-          { type: 'text', label: '是否已申报资助', width: '150', prop: 'is_district_funding', is_import: true, render: (h,item)=>{
+          { type: 'text', label: '是否已申报区资助', width: '150', prop: 'is_district_funding', is_import: true, render: (h,item)=>{
           	item ? item = '是' : item = '否';
           	return h('span',item);
           }},
@@ -134,7 +134,7 @@ export default {
   },
   methods: {
   	viewCertificate(row) {
-  		window.location.href = row.certificate.file.viewUrl;
+  		window.open(row.certificate.file.viewUrl);
   	},
   	downloadCertificate(row) {
   		window.open(row.certificate.file.downloadUrl);
