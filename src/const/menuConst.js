@@ -4,7 +4,16 @@ const menu = {};
 const map = {};
 const taskMenu = [
 	{ type: 'item', text: '我的待办', path: '/task/pending', icon: 'iconfont el-icon-my-task' },
-	{ type: 'item', text: '所有待办', path: '/task/all', icon: 'iconfont el-icon-my-task' },
+	{ 
+		type: 'submenu', 
+		text: '所有待办', 
+		path: '/task/all', 
+		icon: 'iconfont el-icon-my-task',
+		children: [
+			{ type: 'item', text: '新申请', path: '/task/all/newApplication', icon: '' },
+			{ type: 'item', text: 'OA', path: '/task/all/oa', icon: '' },
+		]
+	},	
 	{ type: 'item', text: '暂停处理', path: '/task/paused', icon: 'iconfont el-icon-my-task' },
 	{ type: 'item', text: '已完成', path: '/task/finished', icon: 'iconfont el-icon-my-task' },
 	{ type: 'item', text: '期限管控(新申请)', path: '/task/expiringControlNew', icon: 'iconfont el-icon-my-task' },

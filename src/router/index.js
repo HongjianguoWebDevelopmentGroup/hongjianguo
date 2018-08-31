@@ -135,6 +135,24 @@ const router = new Router({
       },
     },
     {
+      path: '/task/all/oa',
+      name: 'Taskalloa',
+      component: TaskCommon,
+      meta: { 
+        status: 0,
+        params: { scope: 'all', stage: '[2,3,4,5,6]' }, 
+      },
+    },
+    {
+      path: '/task/all/newApplication',
+      name: 'Taskallnewapplication',
+      component: TaskCommon,
+      meta: { 
+        status: 0,
+        params: { scope: 'all' , stage: 1 }, 
+      },
+    },
+    {
       path: '/task/paused',
       name: 'TaskPause',
       component: TaskCommon,

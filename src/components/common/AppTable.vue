@@ -34,7 +34,7 @@
     <template v-else-if="col.type == 'text'">
       
       <template v-if="col.render ? true : false">
-        <el-table-column :label="col.label" :prop="col.prop" :width="col.width ? col.width : ''" :min-width="col.min_width ? col.min_width : ''" :sortable="col.sortable ? 'custom' : false" :show-overflow-tooltip="col.overflow !== undefined ? col.overflow : true" :align="col.align !== undefined ? col.align :'left'" :header-align="col.header_align !== undefined ? col.header_align :'left'" :class-name="col.className? col.className : ''">
+        <el-table-column :label="col.label" :prop="col.prop" :width="col.width ? col.width : ''" :min-width="col.min_width ? col.min_width : ''" :sortable="col.sortable ? 'custom' : false" :show-overflow-tooltip="col.overflow !== undefined ? col.overflow : true" :align="col.align !== undefined ? col.align :'left'" :header-align="col.header_align !== undefined ? col.header_align :'left'" :class-name="col.className? col.className : ''" :render-header="col.render_header !== undefined ?handleRenderHeader:null">
           <template slot-scope="scope">
             <table-render :render="col.render" :scope="scope" :prop="col.prop"></table-render>
           </template>
@@ -42,7 +42,7 @@
       </template>
 
       <template v-else-if="col.render_text ? true : false ">
-        <el-table-column :label="col.label" :prop="col.prop" :width="col.width ? col.width : ''" :min-width="col.min_width ? col.min_width : ''" :sortable="col.sortable ? 'custom' : false" :show-overflow-tooltip="col.overflow !== undefined ? col.overflow : true" :class-name="col.className? col.className : ''">
+        <el-table-column :label="col.label" :prop="col.prop" :width="col.width ? col.width : ''" :min-width="col.min_width ? col.min_width : ''" :sortable="col.sortable ? 'custom' : false" :show-overflow-tooltip="col.overflow !== undefined ? col.overflow : true" :class-name="col.className? col.className : ''" :render-header="col.render_header !== undefined ?handleRenderHeader:null">
           <template slot-scope="scope">
             <span class="table-column-render">{{ col.render_text(scope.row[col.prop]) }}</span>
           </template>
@@ -50,7 +50,7 @@
       </template>
 
       <template v-else-if="col.render_simple ? true : false ">
-        <el-table-column :label="col.label" :prop="col.prop" :width="col.width ? col.width : ''" :min-width="col.min_width ? col.min_width : ''" :sortable="col.sortable ? 'custom' : false" :show-overflow-tooltip="col.overflow !== undefined ? col.overflow : true" :class-name="col.className? col.className : ''">
+        <el-table-column :label="col.label" :prop="col.prop" :width="col.width ? col.width : ''" :min-width="col.min_width ? col.min_width : ''" :sortable="col.sortable ? 'custom' : false" :show-overflow-tooltip="col.overflow !== undefined ? col.overflow : true" :class-name="col.className? col.className : ''" :render-header="col.render_header !== undefined ?handleRenderHeader:null">
           <template slot-scope="scope">
             <span class="table-column-render">{{ handleSimple(scope.row, col) }}</span>
           </template>
@@ -58,7 +58,7 @@
       </template>
 
       <template v-else>
-        <el-table-column :label="col.label" :prop="col.prop" :width="col.width ? col.width : ''" :min-width="col.min_width ? col.min_width : ''" :sortable="col.sortable ? 'custom' : false" :show-overflow-tooltip="col.overflow !== undefined ? col.overflow : true" :class-name="col.className? col.className : ''">
+        <el-table-column :label="col.label" :prop="col.prop" :width="col.width ? col.width : ''" :min-width="col.min_width ? col.min_width : ''" :sortable="col.sortable ? 'custom' : false" :show-overflow-tooltip="col.overflow !== undefined ? col.overflow : true" :class-name="col.className? col.className : ''" :render-header="col.render_header !== undefined ?handleRenderHeader:null">
           <!-- <template v-if="col.default !== undefined" scope="scope">{{ scope.row[col.prop] ? scope.row[col.prop] : col.default }}</template> -->
         </el-table-column>
       </template>
@@ -66,7 +66,7 @@
     </template>
 
     <template v-else-if="col.type == 'array'">
-      <el-table-column :label="col.label" :prop="col.render ? `${col.prop}__render` : col.prop" :width="col.width ? col.width : ''" :min-width="col.min_width ? col.min_width : ''" :sortable="col.sortable ? 'custom' : false" :show-overflow-tooltip="col.overflow !== undefined ? col.overflow : true" :class-name="col.className? col.className : ''">
+      <el-table-column :label="col.label" :prop="col.render ? `${col.prop}__render` : col.prop" :width="col.width ? col.width : ''" :min-width="col.min_width ? col.min_width : ''" :sortable="col.sortable ? 'custom' : false" :show-overflow-tooltip="col.overflow !== undefined ? col.overflow : true" :class-name="col.className? col.className : ''" :render-header="col.render_header !== undefined ?handleRenderHeader:null">
         <template slot-scope="scope">
 
           <el-tag v-for="(item, i) in scope.row[scope.column.property]" style="margin-left: 5px;" close-transition :key="i">{{ item }}</el-tag>
@@ -117,9 +117,17 @@
 </template>
 <script>
 import {mapGetters} from 'vuex'
+import FilterValue from '@/components/common/FilterValue'
+import {listPathMap, map as filterConfig} from '@/const/filterConfig'
+import {mapActions} from 'vuex'
+
 export default {
   name: 'appTable',
   props: {
+    value:{
+      type: [String,Number,Boolean,Array],
+      // required: true,
+    },
     border: {
       type: Boolean,
       default: false,
@@ -159,17 +167,40 @@ export default {
     maxHeight: {
       type: [String, Number],
       default: '',
+    },
+    type: {
+      type: String,
+      default: '',
     }
   },
   data () {
     return {
       selected: [],
+      filters: {
+      }
     };
   },
   computed: {
     ...mapGetters([
       'innerHeight',
     ]),
+    value2() {},
+    filterSetting () { //自定义筛选配置项
+      const data = filterConfig.get(this.type);
+      return data ? data : []
+    },
+    filterSettingMap () { //自定义筛选配置项映射
+      const map = new Map()
+      this.filterSetting.forEach(v => {
+        map.set(v.id, v)
+      })
+      return map
+    }, 
+    source () {
+      //  其中一个配置项的值
+      const val = this.filterSettingMap.get();
+      return val ? val : null;
+    },       
     tableData () {
       //这里对得到的数据进行一些额外的处理,element-ui中难以操控:
       const r = this.data;
@@ -226,7 +257,26 @@ export default {
       return height;
     },
   },
+  mounted() {
+    this.handleDynamicData();
+  },
   methods: {
+    ...mapActions([
+      'fillListFilter',
+      'addListFilter',
+      'clearFilter'
+    ]),
+    handleDynamicData () {
+      this.filterSetting.forEach(_=>{
+        // console.log(_)
+        if(_.value!==undefined) {
+          // this.filters[_.id] = _.value;
+          this.$set(this.filters,_.id,_.value);
+        }
+      });
+      console.log(this.filters);
+      return this.filters;
+    },
     handleRowClick (row, event, column) {
       event.stopPropagation();
       if(column.type == 'selection' || column.type == 'action') return false;
@@ -272,9 +322,66 @@ export default {
       return row[key] ? row[key][col.render_simple] : '';
 
     },
+    handleInput(val) {
+      this.$emit('input',val);
+    },
     handleBtnBoolean (btn, row, key) {
       return btn[key] ? btn[key](row) : false; 
-    }
+    },
+    handleRenderHeader (h,{column,$index},context) {
+      let self = this;
+      // source={source} value={this.filters[column.property]} onInput={ (val) => {this.filters[column.property] = val}}
+      let item = column.label;
+      const sindex =column.property.indexOf('__');
+      if(sindex!== -1) {
+        column.property = column.property.substring(0,sindex);
+      }
+      const source = this.filterSettingMap.get(column.property);
+      const data = {  
+        on: {
+          input(val) {
+            self.filters[column.property] = val;
+          },
+        },
+        props: {
+          source: source,
+          value: self.filters[column.property],
+        },
+        ref: 'filterValue_'+source.id,
+        refInFor: true
+      }
+      return (
+        <span>{item}
+        <FilterValue {...data}></FilterValue>
+        </span>
+
+        )
+    },
+  },
+  watch:{
+    filters: {
+      handler(form) {
+        window.setTimeout(() => {
+          const obj = {}
+          for (let key in form) {
+            const map = this.filterSettingMap.get(key)
+            const value = form[key]
+
+            if (value === '' || value.length === 0 || (value.length === 2 && value[0] === '' && value[1] === '')) {
+              obj[key] = false
+            }else {
+              const name = map['name']
+              const str = 'filterValue_' + key;
+              console.log();
+              const label = 'aa'
+              obj[key] = { name, key, label, value }
+            }
+          }
+          this.fillListFilter(obj)
+        }, 0)
+      },
+      deep: true,
+    }   
   },
   components: {
     'TableRender': {
@@ -294,6 +401,7 @@ export default {
         }
       },
     },
+    FilterValue,
   }
 }
 </script>

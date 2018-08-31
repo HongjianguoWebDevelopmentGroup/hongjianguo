@@ -121,7 +121,6 @@ const mutations = {
 	},
 	fillListFilter (state, obj) {
 		let arr = [...state.custom]
-
 		// 尝试删除空项
 		arr = arr.filter(item => obj[item.key] !== false)
 		// 对于添加编辑分类处理
@@ -140,7 +139,6 @@ const mutations = {
 				}
 			}
 		}
-
 		state.custom = arr
 	},
 	removeListFilter (state, index) {

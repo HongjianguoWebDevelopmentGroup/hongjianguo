@@ -1,11 +1,10 @@
 <template>
 <div v-loading="loading" element-loading-text="数据加载中" >
-   <!-- <information :row="row" @more="handleMore"></information> -->
   <el-steps :space="150" style="padding: 5px 40px;" v-if="data.tips" align-center>
     <el-step v-for="(item, index) in data.tips" :key="index" :title="item.name" :status="item.current ? 'finish' : 'wait'"></el-step>
   </el-steps>
   <el-collapse v-model="activeName">
-    <el-collapse-item  name="1">
+    <el-collapse-item  name="1" v-if="this.row">
        <template slot="title">
         任务详情<el-button size="mini" type="text" style="margin-left: 10px;" v-if="ifMore" @click.stop="dropDetial">更多...</el-button>
       </template>
@@ -357,7 +356,9 @@ export default {
   },
 	created () {
 		this.refreshData(); 
-    this.refreshDetail();
+    if(this.row) {
+      this.refreshDetail();
+    }
 	},
 	methods: {
     ...mapMutations([
@@ -390,8 +391,10 @@ export default {
         }
         if(this.data.next.length != 0 ) {
           this.next = d.data.next[0].id;
-          const arr = this.allNext;
-          this.data.next = arr.filter(_ => _.id == d.data.next[0].id);
+          if(this.data.procedure && this.data.procedure.items.length != 0) {
+            const arr = this.allNext;
+            this.data.next = arr.filter(_ => _.id == d.data.next[0].id);
+          }
         }else {
           this.next = "";
           this.form.agent = this.data.agent;
@@ -565,9 +568,9 @@ export default {
       'menusMap',
     ]),
     ifMore () {
-      if(this.row.category == 1) {
+      if(this.row && this.row.category == 1) {
         return (this.menusMap && !this.menusMap.get('/patent/detail_panel'));
-      }else if(this.row.category == 3){
+      }else if(this.row && this.row.category == 3){
         return (this.menusMap && !this.menusMap.get('/copyright/detail_panel'));
       }else {
         return false;

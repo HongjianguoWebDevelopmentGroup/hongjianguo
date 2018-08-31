@@ -134,6 +134,9 @@
       :class="tableOption.empty_text_position == 'topLeft' ? 'empty-top-left' : ''"
       :style="tableStyle"
       :data="tableData"
+      :value="testDate"
+      @input="handleInput"
+      :type="tableOption.list_type"
       :border="tableOption.is_border != undefined ? tableOption.is_border : true"
       :default-sort="tableOption.default_sort ? tableOption.default_sort : {}"
       :height="tableOption.height"
@@ -214,6 +217,7 @@ export default {
   props: ['tableOption', 'data', 'tableStyle', 'refreshProxy', 'filter', 'refreshTableData','feeBonus'],
   data () {    
     const data = {
+      testDate: [],
       pageData: [],
       pageSize: 5,
       pagesizes: [10, 20, 40, 100, 10000],
@@ -395,6 +399,9 @@ export default {
     ...mapActions([
       'clearFilter',
     ]),
+    handleInput(val) {
+      console.log(val);
+    },
     initOptionColumns () {
       let columns = this.tableOption.columns;
       if(this.tableOption.name) {
@@ -406,6 +413,11 @@ export default {
         //   columns = columns.filter(v => !exceptMap.get(v.prop));
         // }
       }
+      const routerPath = this.$route.path;
+      const task_finish = /finished/.test(routerPath)? 1 : 0;
+      if(task_finish) {
+       columns = columns.filter(v =>!(v.prop === 'flownode'));
+      }  
       this.optionColumns = columns;
     },
     initControl () {
@@ -418,7 +430,6 @@ export default {
       // }
       if(this.feeBonus) {
          cols =  cols.filter(_=>!_.is_bonus);
-        console.log(cols)
       }
       //获取控制器
       let control = [[],[]];

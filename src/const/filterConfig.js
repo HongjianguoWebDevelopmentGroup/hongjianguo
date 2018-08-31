@@ -31,13 +31,13 @@ const map = new Map([
         { components: 'date',          id: 'create_time',                   name: '提案时间' },
     ]],
     ['patent', [
-        { components: 'input',         id: 'serial',                        name: '案号'},
+        { components: 'input',         id: 'serial',               value: '',         name: '案号'},
         { components: 'input',         id: 'agency_serial',                 name: '事务所案号'},
-        { components: 'remote_select', id: 'applicants',                    name: '申请人', type: 'applicant'},
+        { components: 'remote_select', id: 'applicants',           value: [],         name: '申请人', type: 'applicant',},
         { components: 'input',         id: 'apn',                           name: '申请号'},
-        { components: 'date',          id: 'apd',                           name: '申请日', used: true},
+        { components: 'date',          id: 'apd',                  value:['',''],         name: '申请日', used: true},
         { components: 'date',          id: 'entrusting_time',               name: '委案时间'},
-        { components: 'static_select', id: 'type',                          name: '专利类型', type: 'patent_type', used: true},
+        { components: 'static_select', id: 'type',                  value: [],        name: '专利类型', type: 'patent_type', used: true},
         { components: 'static_select', id: 'area',                          name: '申请地区', type: 'area'},
         { components: 'input',         id: 'title',                         name: '标题'},
         { components: 'date',          id: 'create_time',                   name: '立案时间'},
@@ -69,7 +69,7 @@ const map = new Map([
         { components: 'static_select', id: 'pct_public_language',           name: '国际公开语言', type: 'language'},
         { components: 'input',         id: 'pct_public_no',                 name: '国际公开号'},
         { components: 'input',         id: 'board_number',                  name: '复审委内编号'},
-        { components: 'static_select', id: 'is_biological',                 name: '是否与生物相关', type: 'bool', multiple: false},
+        { components: 'static_select', id: 'is_biological',     value: '',            name: '是否与生物相关', type: 'bool', multiple: false},
         { components: 'static_select', id: 'is_division',                   name: '是否是分案申请', type: 'bool', multiple: false},
         { components: 'static_select', id: 'is_exam_request',               name: '是否提出实质审查请求', type: 'bool', multiple: false},
         { components: 'static_select', id: 'is_genetic',                    name: '是否依赖于遗传资源', type: 'bool', multiple: false},
@@ -168,9 +168,9 @@ const map = new Map([
         { components: 'date',          id: 'mail_date', name: '发文日', },
     ]],
     ['certificate',[
-        { components: 'input',         id: 'certificate_no',                name: '证书编号', },        
+        { components: 'input',         id: 'certificate_no',                name: '证书编号',},        
         { components: 'input',         id: 'remark',                        name: '备注', },
-        { components: 'remote_select', id: 'applicants',                    name: '申请人', type: 'applicant'},
+        { components: 'remote_select', id: 'applicants',                    name: '申请人', type: 'applicant', used: true},
         { components: 'input',         id: 'apn',                           name: '申请号'},
         { components: 'date',          id: 'apd',                           name: '申请日', used: true},
         { components: 'remote_select', id: 'inventors',                     name: '发明人', type: 'inventor'},    
@@ -198,7 +198,7 @@ const listPathMap = new Map([
     ['copyright', '/copyright/list'],
     ['fee', '/fee/income'],
     ['patent_notice', '/news/patent_notice'],
-    ['certificate', 'patent/certificate']
+    ['certificate', '/patent/certificate']
 ])
 
 export {map, customPathMap, listPathMap};

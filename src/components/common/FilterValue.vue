@@ -85,6 +85,7 @@ export default {
 	methods: {
 		initialValue () {
 			let val = null;
+			console.log('这里初始化')
 			if(this.type == 'static_select' || this.type == 'remote_select') {
 				val = this.multiple ? [] : '';
 			}else if(this.type == 'date' ) {
@@ -108,6 +109,7 @@ export default {
 			}
 		},
 		handleInput (val) {
+			console.log(val);
 			this.$emit('input', val);
 		},
 		getLabel () {
@@ -128,6 +130,7 @@ export default {
 	},
 	created () {
 		this.initialValue();
+		this.$emit('refreshMethod',this.getLabel);
 	},
 	watch: {
 		source () {
