@@ -105,6 +105,7 @@ export default {
   },
   methods: {
     toPending (id) {
+      console.log(id);
       this.$router.push({name: 'TaskPending', params: {id} });
     },
     toPage(url) {

@@ -109,7 +109,6 @@ export default {
           this.tableData = d.copyrights;  
         }      
       };
-
       return this.$axiosGet({url, data, success});
     },
     refresh () {

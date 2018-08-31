@@ -31,7 +31,6 @@ export default {
       for(let s of screen) {
         arr.push(s["name"] + "：" + s["items"].join("、"));
       }
-
       return arr;
     }
   }

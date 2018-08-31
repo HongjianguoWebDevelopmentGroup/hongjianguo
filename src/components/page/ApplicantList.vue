@@ -102,15 +102,14 @@ export default {
   	refreshTableData (option) {
   		const url = URL;
   		const data = Object.assign({}, option);
-  		const success = _=>{ this.tableData = _.applicants };
-
+			const success = _=>{ this.tableData = _.applicants };
   		this.axiosGet({url, data, success});
   	},
     refresh () {
-    	this.$refs.table.refresh();
+			this.$refs.table.refresh();
     },
     update () {
-    	this.$refs.table.update();
+			this.$refs.table.update();
     }
   },
   mounted () {

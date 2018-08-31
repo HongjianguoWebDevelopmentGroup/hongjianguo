@@ -144,7 +144,6 @@ export default {
           arr.push(item);
         }
       }
-
       return arr;
     },
     sysmesg () {
@@ -276,7 +275,6 @@ export default {
       this.refreshProduct();
       this.refreshBranch();
       this.refreshClassification();
-      
       // this.$store.dispatch('refreshIpr');
       
       //使用localStorage进行本地缓存

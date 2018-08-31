@@ -42,6 +42,22 @@
         <remote-select type="member" v-model="form.person_in_charge"></remote-select>
   		</el-form-item>
 
+      <el-form-item label="流程节点" prop="flow_id" v-if="type == 'edit'" :rules="rules.editFlow_id">
+        <el-select v-model="form.flow_id" placeholder="请选择流程节点">
+          <el-option
+            v-for="item in flownodeEditOptions"
+            :key="item.value"
+            :label="item.label"
+            :value="item.value"
+          >
+          </el-option>
+        </el-select>
+      </el-form-item>
+
+      <el-form-item label="承办人" prop="person_charge" v-if="type == 'edit'" :rules="rules.person_charge">
+        <remote-select type="member" v-model="form.person_charge"></remote-select>
+  		</el-form-item>
+
       <el-row> 
         <el-col :span="12"> 
           <el-form-item label="管控期限" prop="inner_deadline" :rules="rules.inner_deadline">
@@ -55,13 +71,6 @@
         </el-col>
       </el-row>
 
-      <!-- <el-row>
-        <el-col :span="12">
-          <el-form-item label="管控期限" prop="inner_deadline">
-            <el-date-picker type="date" v-model="form.inner_deadline" placeholder="请选择管控期限"></el-date-picker>
-          </el-form-item>
-        </el-col>
-      </el-row> -->
       <el-form-item label="附件" prop="attachments">
         <upload v-model="form.attachments" :file-list="attachments"></upload>
       </el-form-item>
@@ -88,6 +97,7 @@ export default {
   name: 'taskEdit',
   mixins: [ AxiosMixins ],
   props: [ 'type', 'row' ],
+  
   methods: {
     ...mapActions([
       'refreshUser',
@@ -120,11 +130,11 @@ export default {
     async edit () {
       await this.checkeForm()
       const url = `${URL}/${this.row.id}`;
-      const data = this.$tool.shallowCopy(this.form, {'date': true, 'skip': ['project_id', 'flow_id', 'task_def_id']});
+      const data = this.$tool.shallowCopy(this.form, {'date': true});
+      console.log(data);
       data.person_in_charge = data.person_in_charge.id;
       const success = _=>{ this.$emit('editSuccess') };
       const complete = _=>{ this.btn_disabled = false };
-      
       this.btn_disabled = true;
       await this.$axiosPut({url, data, success, complete });
     },
@@ -203,6 +213,7 @@ export default {
         flow_id: '',
         task_def_id: '',
         person_in_charge: '',
+        person_charge: '',
         inner_deadline: '',
         deadline: '',
         remark: '',
@@ -215,7 +226,9 @@ export default {
       rules: {
         project_id: getRules('关联案件不能为空', 'number'),
         person_in_charge: getRules('承办人不能为空', 'number'),
+        person_charge: getRules('承办人不能为空', 'number'),
         flow_id: getRules('任务流程不能为空', 'number'),
+        editFlow_id: getRules('流程节点不能为空', 'number'),
         task_def_id: {required: true, trigger: 'change', validator: validateTask_def},
         flow_node_id: {required: true, trigger: 'change', validator: validateFlow_node},
         inner_deadline: getRules('管控期限不能为空', 'date')
@@ -223,6 +236,7 @@ export default {
   	}
   },
   computed: {
+
     flowsData () {
       return this.$store.getters.flowsData;
     },
@@ -259,6 +273,15 @@ export default {
       const arr = [];
       this.flownodeData.forEach(_=>{
         if (_.flow_id == f) arr.push({label: _.name, value: _.id});
+      })
+      return arr;
+    },
+    flownodeEditOptions () {
+      const f = this.row.flow.id;
+      this.form.editFlow_id = '';
+      const arr = [];
+      this.flownodeData.forEach(_=>{
+        if(_.flow_id == f) arr.push({label: _.name, value: _.id});
       })
       return arr;
     }

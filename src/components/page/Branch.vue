@@ -87,6 +87,7 @@
 </template>
 
 <script>
+// 部门管理组件
 import Pop from '@/components/page_extension/Branch_pop' 
 import RemoteSelect from '@/components/form/RemoteSelect'
 import StaticSelect from '@/components/form/StaticSelect'

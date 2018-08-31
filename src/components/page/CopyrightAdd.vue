@@ -111,7 +111,7 @@ export default {
   		return this.pageType ? this.pageType : this.$route.meta.pageType;
   	},
   	detail () {
-      return this.$store.getters.detailBase;
+        return this.$store.getters.detailBase;
     },
     user () {
     	return this.$store.getters.getUser;
@@ -161,7 +161,6 @@ export default {
   	checkForm () {
   		let flag = false;
   		this.$refs.form.validate(_=>{flag = !_});
-
   		if(flag) {
   			this.$message({message: '请正确填写版权字段', type: 'warning'});
   		}
