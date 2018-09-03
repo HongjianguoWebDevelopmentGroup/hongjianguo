@@ -394,6 +394,7 @@ export default {
 						}else {
 							const name = map['name']
 							const str = 'usedForm_' + key
+							console.log(this.$refs)
 							const label = this.$refs[str][0].getLabel()
 							obj[key] = { name, key, label, value }
 						}

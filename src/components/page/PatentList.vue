@@ -113,7 +113,7 @@ export default {
           { type: 'text', label: '英文名称', prop: 'english_title', sortable: true, is_import: true, width: '200', is_agency: true },
           { type: 'text', label: '专利类型', prop: 'type', render_simple: 'name', is_agency: true,  is_import: true, width: '120',},
           { type: 'text', label: '申请国家', prop: 'area',  is_import: true, width: '120', is_agency: true, },
-          { type: 'array', label: '申请人', prop: 'applicants', width: '200', is_import: true,render: _=>{ return _.map(_=>_.name);},},
+          { type: 'array', label: '申请人', prop: 'applicants', width: '200', is_import: true,render: _=>{ return _.map(_=>_.name);},render_header: true},
           { type: 'text', label: '申请号', prop: 'apn', sortable: true, is_import: true, width: '140', is_agency: true},
           { type: 'text', label: '申请日', prop: 'apd', sortable: true, is_import: true, width: '123', is_agency: true,},
           { type: 'text', label: '提案号', prop: 'proposal_serial', sortable: true, width: '140' },

@@ -1,6 +1,5 @@
 <template>
 <el-table 
-  ref="table"
   stripe
   :data="tableData"
   :border="border" 
@@ -177,7 +176,7 @@ export default {
     return {
       selected: [],
       filters: {
-      }
+      },
     };
   },
   computed: {
@@ -325,10 +324,13 @@ export default {
     handleInput(val) {
       this.$emit('input',val);
     },
+    handleChange() {
+      console.log('aaaaaaaaaaaaaa');
+    },
     handleBtnBoolean (btn, row, key) {
       return btn[key] ? btn[key](row) : false; 
     },
-    handleRenderHeader (h,{column,$index},context) {
+    handleRenderHeader (h,{column,$index}) {
       let self = this;
       // source={source} value={this.filters[column.property]} onInput={ (val) => {this.filters[column.property] = val}}
       let item = column.label;
@@ -341,18 +343,25 @@ export default {
         on: {
           input(val) {
             self.filters[column.property] = val;
-          },
+            console.log(self.$refs)
+          }
+        },
+        nativeOn: {
+          click(e) {
+            // 阻止表头默认点击事件
+            e.stopPropagation();
+          }
         },
         props: {
           source: source,
           value: self.filters[column.property],
         },
-        ref: 'filterValue_'+source.id,
-        refInFor: true
+        ref: 'filterValue' + source.id,
+        refInfor: true
       }
       return (
         <span>{item}
-        <FilterValue {...data}></FilterValue>
+        <FilterValue  {...data}></FilterValue>
         </span>
 
         )
@@ -372,7 +381,9 @@ export default {
             }else {
               const name = map['name']
               const str = 'filterValue_' + key;
-              console.log();
+              this.$nextTick(_=>{
+                console.log(this.$refs);
+              });
               const label = 'aa'
               obj[key] = { name, key, label, value }
             }

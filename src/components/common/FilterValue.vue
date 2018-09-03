@@ -1,7 +1,6 @@
 <template>
 <div>
 	<span v-if="type == ''" class="form-description">请选择需要筛选的字段再输入筛选条件</span>
-	
 	<keep-alive>
 	
 		<span v-if="type == ''"></span>
@@ -63,6 +62,9 @@ export default {
 		value: {
 			type: [String, Number, Date, Array],
 			required: true,
+		},
+		inputRef:{
+			type: [String,Function]
 		}
 	},
 	data () {
@@ -130,12 +132,11 @@ export default {
 	},
 	created () {
 		this.initialValue();
-		this.$emit('refreshMethod',this.getLabel);
 	},
 	watch: {
 		source () {
 			this.initialValue();
-		}
+		},
 	},
 	components: {
 		StaticSelect,
