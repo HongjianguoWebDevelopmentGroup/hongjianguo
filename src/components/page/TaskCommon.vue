@@ -1,10 +1,11 @@
 <template>
   <div class="main" id="task_common">
-    <table-component :tableOption="tableOption" :data="tableData" :refreshTableData="refreshTableData" ref="table">
+    <table-component :tableOption="tableOption" :data="tableData" :refreshTableData="refreshTableData" ref="table" :filterVisibles="filterVisible" v-if="re_render">
 <!--       <el-select v-if="menusMap && !menusMap.get('/tasks/all')" slot="toggle" v-model="task_toggle" style="width: 110px; margin-left: 5px;">
         <el-option key="mine" label="我的任务" value="personal"></el-option>
         <el-option key="all" label="所有任务" value="all"></el-option>
       </el-select> -->
+        <el-button type="primary" slot="test" @click="toggle">测试</el-button>
     </table-component>
  
     <el-dialog title="申请委案" :visible.sync="dialogAgenVisible" class="dialog-small">
@@ -249,6 +250,8 @@ export default {
     data () {
 
     return {
+      re_render: true,
+      filterVisible: false,
       dialogRejectVisible: false,
       dialogScreenVisible: false,
       dialogTurnoutVisible: false,
@@ -299,7 +302,7 @@ export default {
           { type: 'control', label: '字段'},
           // { type: 'custom', label: '设定', icon: '', click: ()=>{ this.dialogSettingVisible = true; } }
         ],
-        'header_slot': [ 'toggle' ],
+        'header_slot': [ 'toggle','test' ],
         'highlightCurrentRow': true, 
         'rowClick': this.handleRowClick,
         // 'expandFun': (row, expanded)=>{ 
@@ -317,10 +320,10 @@ export default {
           { type: 'selection' },
           { type: 'text', label: '案号', prop: 'serial', sortable: true, width: '210',  render: this.titleRender },
           { type: 'text', label: '事务所案号', prop: 'agency_serial', sortable: true, width: '150' },
-          { type: 'text', label: '案件类型', prop: 'category', sortable: true, width: '120', show_option: true,render:this.categoryRender},
-          { type: 'text', label: '专利类型', prop: 'type_name', sortable: true, width: '120', overflow: true },
+          { type: 'text', label: '案件类型', prop: 'category', sortable: true, width: '120', show_option: true,render:this.categoryRender,render_header: true,},
+          { type: 'text', label: '专利类型', prop: 'type_name', sortable: true, width: '120', overflow: true ,},
           { type: 'text', label: '案件名称', prop: 'title', sortable: true, width: '180', overflow: true },
-          { type: 'text', label: '管制事项', prop: 'taskdef', render_simple: 'name', sortable: true, width: '134' },
+          { type: 'text', label: '管制事项', prop: 'taskdef', render_simple: 'name', sortable: true, width: '134' ,},
           { type: 'text', label: '任务来源', prop: 'sender', render_simple: 'name', show: true,sortable: true, width: '118'},
           { type: 'text', label: '流程节点', prop: 'flownode', render_simple: 'name', show:true, sortable: true, width: '120'},
           { type: 'text', label: '提案标题', prop: 'proposal_title', sortable: true, width: '200', overflow: true },
@@ -452,6 +455,11 @@ export default {
       'refreshTaskDelay',
       'addListFilter'
     ]),
+    toggle() {
+      console.log('aa')
+      this.filterVisible = !this.filterVisible;
+      console.log(this.filterVisible)
+    },    
     appointSuccess() {
       this.dialogAgenVisible = false;
       this.update();
@@ -790,6 +798,14 @@ export default {
   watch: {
     filter () {
       this.refresh();
+    },
+     filterVisible () {
+      this.$forceUpdate();
+      console.log('afa')
+      this.re_render = false;
+      this.$nextTick(_=>{
+        this.re_render = true;
+      })
     },
     task_toggle () {
       this.refresh();

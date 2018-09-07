@@ -134,6 +134,7 @@
       :class="tableOption.empty_text_position == 'topLeft' ? 'empty-top-left' : ''"
       :style="tableStyle"
       :data="tableData"
+      :filterVisible="filterVisibles"
       :value="testDate"
       @input="handleInput"
       :type="tableOption.list_type"
@@ -214,7 +215,7 @@ import { mapActions } from 'vuex'
 
 export default {
   name: 'tableComponent',
-  props: ['tableOption', 'data', 'tableStyle', 'refreshProxy', 'filter', 'refreshTableData','feeBonus'],
+  props: ['tableOption', 'data', 'tableStyle', 'refreshProxy', 'filter', 'refreshTableData','feeBonus', 'filterVisibles'],
   data () {    
     const data = {
       testDate: [],
@@ -745,6 +746,8 @@ export default {
     this.initControl();
   },
   mounted () {
+    console.log(this.$refs)
+    
   },
   components: {
     'TableRender': {

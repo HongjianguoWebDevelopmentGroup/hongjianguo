@@ -22,7 +22,7 @@
 
 <script>
 import TableComponent from '@/components/common/TableComponent' 
-import Pop from '@/components/page_extension/feeCommon_pop'
+import Pop from '@/components/page_extension/FeeCommon_pop'
 import FeeStatus from '@/components/form/FeeStatus'
 import RemoteSelect from '@/components/form/RemoteSelect'
 import {mapActions} from 'vuex'

@@ -1,8 +1,9 @@
 <template>
   <div class="main">
     
-    <table-component :tableOption="tableOption" :data="tableData" @refreshTableData="refreshTableData" ref="table" :refresh-proxy="refreshProxy">
+    <table-component :tableOption="tableOption" :data="tableData" @refreshTableData="refreshTableData" ref="table" :refresh-proxy="refreshProxy" :filterVisibles="filterVisible" v-if="re_render">
       <!-- <el-button v-if="!!(menusMap && !menusMap.get('/patent/download') )" slot="download" :loading="downloadLoading" icon="share" @click="downloadPop" type="primary" style="margin-left: 5px;">批量下载</el-button> -->
+      <el-button type="primary" slot="test" @click="toggle">测试</el-button>
     </table-component>
     
     
@@ -73,6 +74,8 @@ export default {
       caseForm:{
         caseType: '',
       },
+      re_render: true,
+      filterVisible: false,
       currentRow: '',
       selectData: [],
       shrinkVisible: false,
@@ -102,20 +105,20 @@ export default {
           { type: 'batch_upload', map_if: '/patent/upload' },
           { type: 'control', label: '字段' },
         ],
-        'header_slot': ['download'],
+        'header_slot': ['download','test'],
         'columns': [
 
           { type: 'selection' },
           // { type: 'text', label: '专利状态', prop: 'status', render: (h,item)=>h('span', item ? '正常' : '暂停处理') },
-          { type: 'text', label: '案号', prop: 'serial', is_agency: true, sortable: true, width: '160',render: this.serialRender, },
+          { type: 'text', label: '案号', prop: 'serial', is_agency: true,sortable: true,  width: '160',render: this.serialRender, render_header: true},
           { type: 'text', label: '事务所案号', prop: 'agency_serial', is_agency: true, sortable: true, width: '150',  },
           { type: 'text', label: '案件名称', prop: 'title', sortable: true, is_import: true, width: '200', is_agency: true },
           { type: 'text', label: '英文名称', prop: 'english_title', sortable: true, is_import: true, width: '200', is_agency: true },
-          { type: 'text', label: '专利类型', prop: 'type', render_simple: 'name', is_agency: true,  is_import: true, width: '120',},
+          { type: 'text', label: '专利类型', prop: 'type', render_simple: 'name', sortable: true,is_agency: true,  is_import: true, width: '120',render_header:true},
           { type: 'text', label: '申请国家', prop: 'area',  is_import: true, width: '120', is_agency: true, },
-          { type: 'array', label: '申请人', prop: 'applicants', width: '200', is_import: true,render: _=>{ return _.map(_=>_.name);},render_header: true},
+          { type: 'array', label: '申请人', prop: 'applicants', sortable: true,width: '200', is_import: true,render: _=>{ return _.map(_=>_.name);},render_header: true},
           { type: 'text', label: '申请号', prop: 'apn', sortable: true, is_import: true, width: '140', is_agency: true},
-          { type: 'text', label: '申请日', prop: 'apd', sortable: true, is_import: true, width: '123', is_agency: true,},
+          { type: 'text', label: '申请日', prop: 'apd', sortable: true, is_import: true, width: '123', is_agency: true,render_header: true},
           { type: 'text', label: '提案号', prop: 'proposal_serial', sortable: true, width: '140' },
           { type: 'text', label: '法律状态', prop: 'legal_status', sortable: true, width: '180', is_agency: true, render_simple: 'name'},
           { type: 'text', label: 'IPR', prop: 'ipr', render_simple: 'name',  is_import: true, width: '90', is_agency: true, },
@@ -152,7 +155,7 @@ export default {
           { type: 'text', label: '案件等级', prop: 'level',width: '100',},
           { type: 'text', label: '部门全名', prop: 'branch', sortable: true, render:  (h,item)=>h('span', item.name), width: '123' },
           { type: 'text', label: '部门简称', prop: 'abbr', sortable: true, render_simple: 'abbr', width:'123'},
-          { type: 'text', label: '技术分类', width: '123' , prop: 'classification', sorable: true, is_import: true, render_simple: 'name',},
+          { type: 'text', label: '技术分类', width: '123' , prop: 'classification', sortable: true, is_import: true, render_simple: 'name',},
           // { type: 'array', label: '优先权', prop: 'priorities', width: '145',render: _=>_.map(_=>_.number),},
           // { type: 'array', label: '产品名称', width: '180', prop: 'products', sortable: true, render: _=>_.map(_=>_.name),},
           // { type: 'array', label: '相关案件', prop: 'relates', width: '200', render: _=>_.map(_=>`${_.title}-${_.serial}`),},
@@ -200,7 +203,7 @@ export default {
           { type: 'text', label: '首次年费年度', prop: 'start_year', sortable: true, width: '145' },
           // { type: 'text', label: '详细类型', prop: 'type_name', sortable: true, width: '145' },
           { type: 'text', label: '是否变更', prop: 'is_amended', sortable: true, width: '178',show: false, render:this.booleanRender},         
-          { type: 'text', label: '是否与生物相关', prop: 'is_biological', sortable: true, width: '198',show: false, render:this.booleanRender,},          
+          { type: 'text', label: '是否与生物相关', prop: 'is_biological', sortable: true, width: '198',show: false, render:this.booleanRender,render_header: true},          
           { type: 'text', label: '是否是分案申请', prop: 'is_division', sortable: true, width: '178',show:false,render:this.booleanRender},         
           { type: 'text', label: '是否依赖于遗传资源', prop: 'is_genetic', sortable: true, width: '198',show: false, render:this.booleanRender},         
           { type: 'text', label: '是否不丧失新颖性公开', prop: 'is_leakage', sortable: true, width: '178',show: false, render:this.booleanRender},         
@@ -211,14 +214,10 @@ export default {
           { type: 'text', label: '是否有序列表', prop: 'is_sequence', sortable: true, width: '145',show: false, render:this.booleanRender},          
           { type: 'text', label: '是否同日新型/发明', prop: 'is_utility', sortable: true, width: '178',show: false, render:this.booleanRender},  
           { type: 'text', label: '技术领域', prop: 'technical_field', sortable: true, width: '130', is_import: true, is_agency: true, render_simple: 'name',},
-        // {
-          //   type: 'action',
-          //   width: '145',
-          //   btns: [
-          //     // { type: 'detail', click: this.detail },
-          //     { type: 'delete', click: this.deletePatent },
-          //   ], 
-          // },
+        {
+            type: 'action',
+            width: '80',
+          },
         ] 
       },
       tableData: [],
@@ -252,6 +251,11 @@ export default {
       'refreshTaskDefs',
       'refreshFlownodes'
     ]),
+    toggle() {
+      console.log('aa')
+      this.filterVisible = !this.filterVisible;
+      console.log(this.filterVisible)
+    },
     handleSendMail (id) {
       this.mailVisible = true;
       this.$nextTick(() => {
@@ -405,6 +409,15 @@ export default {
   mounted () {
     if(!this.custom) {
       this.refresh();
+    }
+  },
+  watch: {
+    filterVisible () {
+      this.$forceUpdate();
+      this.re_render = false;
+      this.$nextTick(_=>{
+        this.re_render = true;
+      })
     }
   },
   components: {  

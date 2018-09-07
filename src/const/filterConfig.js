@@ -1,9 +1,9 @@
 const map = new Map([
     ['task', [
-        { components: 'static_select', id: 'category',                      name: '案件类型', type: 'case_type' },
+        { components: 'static_select', id: 'category',              value: [],         name: '案件类型', type: 'case_type' },
         { components: 'input',         id: 'serial',                        name: '案号'},
         { components: 'input',         id: 'agency_serial',                 name: '事务所案号'},
-        { components: 'static_select', id: 'task_def_id',                   name: '管制事项',    type: 'task_def' , used: true},
+        { components: 'static_select', id: 'task_def_id',                  name: '管制事项',    type: 'task_def' , used: true},
         { components: 'static_select', id: 'flow_node_id',                  name: '流程节点',    type: 'flow_node'},
         { components: 'static_select', id: 'ipr',                           name: 'IPR',        type: 'ipr' , used: true},
         { components: 'remote_select', id: 'agency',                        name: '代理机构',    type: 'agency' , used: true},

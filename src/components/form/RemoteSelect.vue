@@ -13,6 +13,7 @@
       :default-first-option="choose.defaultFirstOption !== undefined ? choose.defaultFirstOption : false"
   	  :multiple="!single"
   	  ref="select"
+      @change="handleChange"
   	  @visible-change.once="initialization"
   	>
   		<el-option
@@ -176,6 +177,9 @@ export default {
         this.$emit('input', val);
       }
     },
+    handleChange (val) {
+      this.$emit('change', this.map.get(val));
+    },    
   	initialization () {
       this.remoteMethod('');
   	},	

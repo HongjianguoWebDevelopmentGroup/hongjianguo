@@ -510,6 +510,9 @@ nav {
   content: "";
   clear: both;
 } 
+.el-date-editor.el-input {
+      width: 100%;
+  }
 .input-min-width {
   width: 150px !important;
 }
@@ -518,6 +521,9 @@ nav {
 }
 /*这里放入重写element-ui样式的内容*/
 #app {
+  .el-table__header-wrapper thead div {
+    background-color: transparent;
+  }  
   .el-card__header {
     padding: 10px 20px;
     font-size: 14px;
@@ -529,6 +535,16 @@ nav {
     margin: 0 auto;
     margin-top: 80px;
   }
+  .el-table .caret-wrapper {
+    cursor: pointer;
+    width: 16px;
+    height: 30px;
+    overflow: visible;
+    overflow: initial;
+    position: absolute;
+    right: 15px;
+    top: 2px;
+}
   .el-tree-node__expand-icon.expanded {
     -ms-transform: rotate(90deg);
     transform: rotate(90deg);

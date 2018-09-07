@@ -168,6 +168,7 @@ export default {
 
       return arr;
     },
+    
     setOptions () {
       let op = this.config.options;
 

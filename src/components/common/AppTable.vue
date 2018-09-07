@@ -1,5 +1,6 @@
 <template>
 <el-table 
+  ref="table"
   stripe
   :data="tableData"
   :border="border" 
@@ -33,7 +34,7 @@
     <template v-else-if="col.type == 'text'">
       
       <template v-if="col.render ? true : false">
-        <el-table-column :label="col.label" :prop="col.prop" :width="col.width ? col.width : ''" :min-width="col.min_width ? col.min_width : ''" :sortable="col.sortable ? 'custom' : false" :show-overflow-tooltip="col.overflow !== undefined ? col.overflow : true" :align="col.align !== undefined ? col.align :'left'" :header-align="col.header_align !== undefined ? col.header_align :'left'" :class-name="col.className? col.className : ''" :render-header="col.render_header !== undefined ?handleRenderHeader:null">
+        <el-table-column :label="col.label" :prop="col.prop" :width="col.width ? col.width : ''" :min-width="col.min_width ? col.min_width : ''" :sortable="col.sortable ? 'custom' : false" :show-overflow-tooltip="col.overflow !== undefined ? col.overflow : true" :align="col.align !== undefined ? col.align :'left'" :header-align="col.header_align !== undefined ? col.header_align :'left'" :class-name="col.className? col.className : ''" :render-header="col.render_header !== undefined  && filterVisible ?handleRenderHeader:null">
           <template slot-scope="scope">
             <table-render :render="col.render" :scope="scope" :prop="col.prop"></table-render>
           </template>
@@ -41,7 +42,7 @@
       </template>
 
       <template v-else-if="col.render_text ? true : false ">
-        <el-table-column :label="col.label" :prop="col.prop" :width="col.width ? col.width : ''" :min-width="col.min_width ? col.min_width : ''" :sortable="col.sortable ? 'custom' : false" :show-overflow-tooltip="col.overflow !== undefined ? col.overflow : true" :class-name="col.className? col.className : ''" :render-header="col.render_header !== undefined ?handleRenderHeader:null">
+        <el-table-column :label="col.label" :prop="col.prop" :width="col.width ? col.width : ''" :min-width="col.min_width ? col.min_width : ''" :sortable="col.sortable ? 'custom' : false" :show-overflow-tooltip="col.overflow !== undefined ? col.overflow : true" :class-name="col.className? col.className : ''" :render-header="col.render_header !== undefined && filterVisible ?handleRenderHeader:null">
           <template slot-scope="scope">
             <span class="table-column-render">{{ col.render_text(scope.row[col.prop]) }}</span>
           </template>
@@ -49,7 +50,7 @@
       </template>
 
       <template v-else-if="col.render_simple ? true : false ">
-        <el-table-column :label="col.label" :prop="col.prop" :width="col.width ? col.width : ''" :min-width="col.min_width ? col.min_width : ''" :sortable="col.sortable ? 'custom' : false" :show-overflow-tooltip="col.overflow !== undefined ? col.overflow : true" :class-name="col.className? col.className : ''" :render-header="col.render_header !== undefined ?handleRenderHeader:null">
+        <el-table-column :label="col.label" :prop="col.prop" :width="col.width ? col.width : ''" :min-width="col.min_width ? col.min_width : ''" :sortable="col.sortable ? 'custom' : false" :show-overflow-tooltip="col.overflow !== undefined ? col.overflow : true" :class-name="col.className? col.className : ''" :render-header="col.render_header !== undefined && filterVisible ?handleRenderHeader:null">
           <template slot-scope="scope">
             <span class="table-column-render">{{ handleSimple(scope.row, col) }}</span>
           </template>
@@ -57,7 +58,7 @@
       </template>
 
       <template v-else>
-        <el-table-column :label="col.label" :prop="col.prop" :width="col.width ? col.width : ''" :min-width="col.min_width ? col.min_width : ''" :sortable="col.sortable ? 'custom' : false" :show-overflow-tooltip="col.overflow !== undefined ? col.overflow : true" :class-name="col.className? col.className : ''" :render-header="col.render_header !== undefined ?handleRenderHeader:null">
+        <el-table-column :label="col.label" :prop="col.prop" :width="col.width ? col.width : ''" :min-width="col.min_width ? col.min_width : ''" :sortable="col.sortable ? 'custom' : false" :show-overflow-tooltip="col.overflow !== undefined ? col.overflow : true" :class-name="col.className? col.className : ''" :render-header="col.render_header !== undefined && filterVisible ?handleRenderHeader:null">
           <!-- <template v-if="col.default !== undefined" scope="scope">{{ scope.row[col.prop] ? scope.row[col.prop] : col.default }}</template> -->
         </el-table-column>
       </template>
@@ -65,7 +66,7 @@
     </template>
 
     <template v-else-if="col.type == 'array'">
-      <el-table-column :label="col.label" :prop="col.render ? `${col.prop}__render` : col.prop" :width="col.width ? col.width : ''" :min-width="col.min_width ? col.min_width : ''" :sortable="col.sortable ? 'custom' : false" :show-overflow-tooltip="col.overflow !== undefined ? col.overflow : true" :class-name="col.className? col.className : ''" :render-header="col.render_header !== undefined ?handleRenderHeader:null">
+      <el-table-column :label="col.label" :prop="col.prop" :width="col.width ? col.width : ''" :min-width="col.min_width ? col.min_width : ''" :sortable="col.sortable ? 'custom' : false" :show-overflow-tooltip="col.overflow !== undefined ? col.overflow : true" :class-name="col.className? col.className : ''" :render-header="col.render_header !== undefined && filterVisible ?handleRenderHeader:null">
         <template slot-scope="scope">
 
           <el-tag v-for="(item, i) in scope.row[scope.column.property]" style="margin-left: 5px;" close-transition :key="i">{{ item }}</el-tag>
@@ -119,10 +120,14 @@ import {mapGetters} from 'vuex'
 import FilterValue from '@/components/common/FilterValue'
 import {listPathMap, map as filterConfig} from '@/const/filterConfig'
 import {mapActions} from 'vuex'
-
+const labelMap = new Map();
 export default {
   name: 'appTable',
   props: {
+    filterVisible: {
+      type: Boolean,
+      default: false,
+    },
     value:{
       type: [String,Number,Boolean,Array],
       // required: true,
@@ -175,8 +180,8 @@ export default {
   data () {
     return {
       selected: [],
-      filters: {
-      },
+      filters: {},
+      reload: false,
     };
   },
   computed: {
@@ -208,7 +213,7 @@ export default {
         if(_.type == 'array' && _.render) {
           r.forEach(d_c=>{
             const p = _.prop;
-            d_c[`${p}__render`] = _.render(d_c[p]);
+            d_c[p] = _.render(d_c[p]);
           })
         }
       })
@@ -258,6 +263,16 @@ export default {
   },
   mounted() {
     this.handleDynamicData();
+    this.reload = true;
+    window.setTimeout(_=>{
+      this.reload = false;
+    },1000);
+    if(this.filterVisible) {
+      window.listHeaderFilter = this;
+    }
+  },
+  destroyed() {
+    window.listHeaderFilter = null;
   },
   methods: {
     ...mapActions([
@@ -314,6 +329,22 @@ export default {
         func(scope.row, event);
       }
     },
+    getDefaultValue (key) {
+      const item = this.filterSettingMap.get(key)
+      let val = null
+      const multiple = item.multiple !== undefined ? item.multiple : true
+      if (item.components == 'static_select' || item.components == 'remote_select') {
+        val = multiple ? [] : ''
+      } else if(item.components == 'date' ) {
+        val = ['','']
+      } else if(item.components == 'input') {
+        val = ''
+      }
+      return val
+    },
+    clearRenderHeaderField (key) {
+      this.filters[key] = this.getDefaultValue(key);
+    },
     handleSimple (row, col) {
       const key = col.render_key ? col.render_key : col.prop;
       const obj = row[key];
@@ -324,47 +355,55 @@ export default {
     handleInput(val) {
       this.$emit('input',val);
     },
-    handleChange() {
-      console.log('aaaaaaaaaaaaaa');
-    },
     handleBtnBoolean (btn, row, key) {
       return btn[key] ? btn[key](row) : false; 
     },
-    handleRenderHeader (h,{column,$index}) {
-      let self = this;
-      // source={source} value={this.filters[column.property]} onInput={ (val) => {this.filters[column.property] = val}}
-      let item = column.label;
-      const sindex =column.property.indexOf('__');
-      if(sindex!== -1) {
-        column.property = column.property.substring(0,sindex);
-      }
-      const source = this.filterSettingMap.get(column.property);
-      const data = {  
-        on: {
-          input(val) {
-            self.filters[column.property] = val;
-            console.log(self.$refs)
-          }
-        },
-        nativeOn: {
-          click(e) {
-            // 阻止表头默认点击事件
-            e.stopPropagation();
-          }
-        },
-        props: {
-          source: source,
-          value: self.filters[column.property],
-        },
-        ref: 'filterValue' + source.id,
-        refInfor: true
-      }
-      return (
-        <span>{item}
-        <FilterValue  {...data}></FilterValue>
-        </span>
+    handleRenderHeader (h,{column,$index},func) {
+      if(func){
+        func();
+      }else {
+        let self = this;
+        let item = column.label;
+        // const sindex =column.property.indexOf('__');
+        // if(sindex!== -1) {
+        //   column.property = column.property.substring(0,sindex);
+        // }
+        const source = this.filterSettingMap.get(column.property);
+        const data = {  
+          on: {
+            input(val) {
+              self.filters[column.property] = val;
+            },
+            labelname(val) {
+              console.log(val);
+              val.forEach(v=>{
+                labelMap.set(v.key,v);
+              });
+            },
+          },
+          nativeOn: {
+            click(e) {
+              // 阻止表头默认点击事件
+              e.stopPropagation();
+            }
+          },
+          props: {
+            source: source,
+            value: self.filters[column.property],
+          },
+          ref: 'filterValue' + source.id,
+          refInfor: true
+        }
+        return (
+          <div>
+            <span style={{width: '100%', height: '30px',position :'relative'}} >{item}</span>
+              <div style={{width: '100%', height: '36px',}}>
+                <FilterValue  {...data}></FilterValue>
+              </div>
+           </div>
 
         )
+      }
     },
   },
   watch:{
@@ -373,26 +412,24 @@ export default {
         window.setTimeout(() => {
           const obj = {}
           for (let key in form) {
-            const map = this.filterSettingMap.get(key)
-            const value = form[key]
+            const map = this.filterSettingMap.get(key);
+            const value = form[key];
 
             if (value === '' || value.length === 0 || (value.length === 2 && value[0] === '' && value[1] === '')) {
-              obj[key] = false
+              obj[key] = false;
             }else {
-              const name = map['name']
-              const str = 'filterValue_' + key;
-              this.$nextTick(_=>{
-                console.log(this.$refs);
-              });
-              const label = 'aa'
-              obj[key] = { name, key, label, value }
+              const name = map['name'];
+              const label = labelMap.get(key)['value'];
+              obj[key] = { name, key, label, value };
             }
           }
-          this.fillListFilter(obj)
+          if(!this.reload){
+           this.fillListFilter(obj);
+          }
         }, 0)
       },
       deep: true,
-    }   
+    },   
   },
   components: {
     'TableRender': {
