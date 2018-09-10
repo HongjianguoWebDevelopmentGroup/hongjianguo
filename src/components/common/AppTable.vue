@@ -282,11 +282,11 @@ export default {
     ]),
     handleDynamicData () {
       this.filterSetting.forEach(_=>{
-        // console.log(_)
-        if(_.value!==undefined) {
+        const item = this.getDefaultValue(_.id);
+        // if(_.value!==undefined) {
           // this.filters[_.id] = _.value;
-          this.$set(this.filters,_.id,_.value);
-        }
+          this.$set(this.filters,_.id,item);
+        // }
       });
       console.log(this.filters);
       return this.filters;
@@ -331,7 +331,7 @@ export default {
     },
     getDefaultValue (key) {
       const item = this.filterSettingMap.get(key)
-      let val = null
+      let val = ''
       const multiple = item.multiple !== undefined ? item.multiple : true
       if (item.components == 'static_select' || item.components == 'remote_select') {
         val = multiple ? [] : ''
@@ -368,7 +368,8 @@ export default {
         // if(sindex!== -1) {
         //   column.property = column.property.substring(0,sindex);
         // }
-        const source = this.filterSettingMap.get(column.property);
+        const source = this.filterSettingMap.get(column.property) !== undefined ?
+        this.filterSettingMap.get(column.property) : null;
         const data = {  
           on: {
             input(val) {
@@ -391,16 +392,18 @@ export default {
             source: source,
             value: self.filters[column.property],
           },
-          ref: 'filterValue' + source.id,
-          refInfor: true
+          // ref: 'filterValue' + source.id,
+          // refInfor: true
         }
         return (
-          <div>
-            <span style={{width: '100%', height: '30px',position :'relative'}} >{item}</span>
+            source!=null?
+            <div>
+              <span style={{width: '100%', height: '30px',position :'relative'}} >{item}</span>
               <div style={{width: '100%', height: '36px',}}>
                 <FilterValue  {...data}></FilterValue>
-              </div>
-           </div>
+              </div> 
+            </div>
+            :<span>{item}</span>
 
         )
       }
