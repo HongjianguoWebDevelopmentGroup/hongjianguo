@@ -182,6 +182,7 @@ export default {
       selected: [],
       filters: {},
       reload: false,
+      headerClass: 'header_wrap',
     };
   },
   computed: {
@@ -371,12 +372,14 @@ export default {
         const source = this.filterSettingMap.get(column.property) !== undefined ?
         this.filterSettingMap.get(column.property) : null;
         const data = {  
+          style: {
+            padding: '10px 18px',
+          },
           on: {
             input(val) {
               self.filters[column.property] = val;
             },
             labelname(val) {
-              console.log(val);
               val.forEach(v=>{
                 labelMap.set(v.key,v);
               });
@@ -397,9 +400,10 @@ export default {
         }
         return (
             source!=null?
-            <div>
-              <span style={{width: '100%', height: '30px',position :'relative'}} >{item}</span>
-              <div style={{width: '100%', height: '36px',}}>
+            <div class={[self.headerClass]}>
+              <span style={{width: '100%', height: '30px',position :'relative',padding: '0 18px'}} >{item}</span>
+              <i style={{borderTop: '1px solid #dfe6ec',height: '1px',lineHeight: '1px',width: '100%',display:'block'}}></i>
+              <div style={{width: '100%',}}>
                 <FilterValue  {...data}></FilterValue>
               </div> 
             </div>
@@ -456,3 +460,11 @@ export default {
   }
 }
 </script>
+<style lang="scss">
+  .header_wrap {
+    background-color: #e1e1e1;
+  }
+  .el-table__header-wrapper  .cell{
+      padding: 0px;
+    }
+</style>

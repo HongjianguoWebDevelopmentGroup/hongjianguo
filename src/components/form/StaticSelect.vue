@@ -141,9 +141,6 @@ export default {
       'initializeSelectorCache'
     ]),
     handleInput (val) {
-      console.log(this.value)
-      console.log('-----select')
-      console.log(val)
       this.$emit('input', val);
     },
     handleChange (val) {

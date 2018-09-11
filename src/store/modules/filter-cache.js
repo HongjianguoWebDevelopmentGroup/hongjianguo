@@ -241,15 +241,12 @@ const actions = {
 	},
 	//关闭筛选标签
 	closeTag ({state, commit, dispatch}, item) {
-		console.log('关闭标签');
-		console.log(item);
 		if(item.type == 'screen') {
       		dispatch('removeScreen', item.index);
 		}else if(item.type == 'listFilter') {
 			if(window.listHeaderFilter != null && window.listHeaderFilter.filterVisible && window.listHeaderFilter.filters[item['key']] ) {
 				window.listHeaderFilter.clearRenderHeaderField(item['key']);
 			}
-			console.log(listFilter);
 			if (window.listFilter != null && window.listFilter.usedFlag && window.listFilter.usedForm[item['key']] ) {
 				window.listFilter.clearUsedFormField(item['key'])
 			}else {
