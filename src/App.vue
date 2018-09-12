@@ -630,9 +630,12 @@ nav {
     font-size: 12px;
     min-height: 36px;
   }
-  // .el-select__tags {
-  //   min-height: 28px;
-  // } 
+  // select组件多选样式超出，待完善修改，这是测试
+  .el-select__tags {
+    max-height: 36px;
+    overflow-x: hidden;
+    overflow-y: auto;
+  } 
   .no_wrap .el-select__tags {
     white-space: nowrap;
   }
