@@ -264,10 +264,10 @@ export default {
   },
   mounted() {
     this.handleDynamicData();
-    this.reload = true;
-    window.setTimeout(_=>{
-      this.reload = false;
-    },1000);
+    // this.reload = true;
+    // window.setTimeout(_=>{
+    //   this.reload = false;
+    // },1000);
     if(this.filterVisible) {
       window.listHeaderFilter = this;
     }
@@ -373,7 +373,7 @@ export default {
         this.filterSettingMap.get(column.property) : null;
         const data = {  
           style: {
-            padding: '10px 18px',
+            padding: '6px 18px',
           },
           on: {
             input(val) {
@@ -430,9 +430,9 @@ export default {
               obj[key] = { name, key, label, value };
             }
           }
-          if(!this.reload){
+          // if(!this.reload){
            this.fillListFilter(obj);
-          }
+          // }
         }, 0)
       },
       deep: true,

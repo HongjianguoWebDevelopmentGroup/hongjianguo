@@ -413,7 +413,6 @@ export default {
   },
   watch: {
     filterVisible () {
-      this.$forceUpdate();
       this.re_render = false;
       this.$nextTick(_=>{
         this.re_render = true;
@@ -434,12 +433,6 @@ export default {
   },
 }
 </script>
-<style>
-
-</style>
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped lang="scss">
-
-
-
 </style>

@@ -345,16 +345,16 @@ export default {
   watch: {
   	value2 (val) {
       // 通过监听value2的变化来对remote-select因tag文字超出input变大样式的hack
-      var aEle=document.getElementsByTagName('input');
-      for(var i=0;i<aEle.length;i++){
-          if(aEle[i].classList.contains('el-select__input')){
-            if(val && val.length == 0) {
-              aEle[i].classList.remove('add_position');
-            }else {
-              aEle[i].classList.add('add_position');             
-            }
-          }
-      }
+      // var aEle=document.getElementsByTagName('input');
+      // for(var i=0;i<aEle.length;i++){
+      //     if(aEle[i].classList.contains('el-select__input')){
+      //       if(val && val.length == 0) {
+      //         aEle[i].classList.remove('add_position');
+      //       }else {
+      //         aEle[i].classList.add('add_position');             
+      //       }
+      //     }
+      // }
 
       //value类型为对象时，添加静态映射，并将其值转为id
       if( !this.single ) {
@@ -377,6 +377,30 @@ export default {
 <style scoped lang="scss">
 </style>
 <style>
+ .header_wrap .select_list   .el-select__tags {
+    max-height: 36px;
+    overflow-x: hidden;
+    overflow-y: auto;
+  } 
+.select_list .el-select__tags::-webkit-scrollbar{
+  width:4px;
+  height:4px;
+}
+.select_list .el-select__tags::-webkit-scrollbar-track{
+  background: #f6f6f6;
+  border-radius:2px;
+  display: none;
+}
+.select_list .el-select__tags::-webkit-scrollbar-thumb{
+  background-color: #EEF1F6;
+  border-radius:2px;
+}
+.select_list .el-select__tags::-webkit-scrollbar-thumb:hover{
+  background: #BEC8D7;
+}
+.select_list .el-select__tags::-webkit-scrollbar-corner{
+  background: #f6f6f6;
+}
 .select_list .el-tag {
     min-height: 24px; 
     text-overflow: ellipsis;

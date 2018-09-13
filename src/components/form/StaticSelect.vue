@@ -233,6 +233,30 @@ export default {
 <style scoped lang="scss">
 </style>
 <style>
+ .header_wrap .static_select  .el-select__tags {
+    max-height: 36px;
+    overflow-x: hidden;
+    overflow-y: auto;
+  } 
+.static_select .el-select__tags::-webkit-scrollbar{
+  width:4px;
+  height:4px;
+}
+.static_select .el-select__tags::-webkit-scrollbar-track{
+  background: #f6f6f6;
+  border-radius:2px;
+  display: none;
+}
+.static_select .el-select__tags::-webkit-scrollbar-thumb{
+  background-color: #EEF1F6;
+  border-radius:2px;
+}
+.static_select .el-select__tags::-webkit-scrollbar-thumb:hover{
+  background: #BEC8D7;
+}
+.static_select .el-select__tags::-webkit-scrollbar-corner{
+  background: #f6f6f6;
+}
 .static_select .el-tag {
   min-height: 24px; 
   white-space: nowrap;
