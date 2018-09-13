@@ -412,11 +412,13 @@ export default {
     }
   },
   watch: {
-    filterVisible () {
-      this.re_render = false;
-      this.$nextTick(_=>{
-        this.re_render = true;
-      })
+    filterVisible: {
+      handler(){
+        this.re_render = false;
+        this.$nextTick(_=>{
+          this.re_render = true;
+        })
+      },
     }
   },
   components: {  
