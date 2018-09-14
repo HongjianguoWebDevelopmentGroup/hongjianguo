@@ -1,9 +1,9 @@
 <template>
   <div class="main">
     
-    <table-component :tableOption="tableOption" :data="tableData" @refreshTableData="refreshTableData" ref="table" :refresh-proxy="refreshProxy" :filterVisibles="filterVisible" v-if="re_render">
+    <table-component :tableOption="tableOption" :data="tableData" @refreshTableData="refreshTableData" ref="table" :refresh-proxy="refreshProxy">
       <!-- <el-button v-if="!!(menusMap && !menusMap.get('/patent/download') )" slot="download" :loading="downloadLoading" icon="share" @click="downloadPop" type="primary" style="margin-left: 5px;">批量下载</el-button> -->
-      <el-button type="primary" slot="test" @click="toggle">测试</el-button>
+      <!-- <el-button type="primary" slot="test" @click="toggle">测试</el-button> -->
     </table-component>
     
     
@@ -74,8 +74,6 @@ export default {
       caseForm:{
         caseType: '',
       },
-      re_render: true,
-      filterVisible: false,
       currentRow: '',
       selectData: [],
       shrinkVisible: false,
@@ -104,8 +102,9 @@ export default {
           { type: 'export2', map_if: '/patent/export' },
           { type: 'batch_upload', map_if: '/patent/upload' },
           { type: 'control', label: '字段' },
+          { type: 'test', label: '测试'}
         ],
-        'header_slot': ['download','test'],
+        'header_slot': ['download',],
         'columns': [
 
           { type: 'selection' },
@@ -251,11 +250,11 @@ export default {
       'refreshTaskDefs',
       'refreshFlownodes'
     ]),
-    toggle() {
-      console.log('aa')
-      this.filterVisible = !this.filterVisible;
-      console.log(this.filterVisible)
-    },
+    // toggle() {
+    //   console.log('aa')
+    //   this.filterVisible = !this.filterVisible;
+    //   console.log(this.filterVisible)
+    // },
     handleSendMail (id) {
       this.mailVisible = true;
       this.$nextTick(() => {
@@ -409,16 +408,6 @@ export default {
   mounted () {
     if(!this.custom) {
       this.refresh();
-    }
-  },
-  watch: {
-    filterVisible: {
-      handler(){
-        this.re_render = false;
-        this.$nextTick(_=>{
-          this.re_render = true;
-        })
-      },
     }
   },
   components: {  

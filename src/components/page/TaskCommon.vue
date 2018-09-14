@@ -1,11 +1,11 @@
 <template>
   <div class="main" id="task_common">
-    <table-component :tableOption="tableOption" :data="tableData" :refreshTableData="refreshTableData" ref="table" :filterVisibles="filterVisible" v-if="re_render">
+    <table-component :tableOption="tableOption" :data="tableData" :refreshTableData="refreshTableData" ref="table">
 <!--       <el-select v-if="menusMap && !menusMap.get('/tasks/all')" slot="toggle" v-model="task_toggle" style="width: 110px; margin-left: 5px;">
         <el-option key="mine" label="我的任务" value="personal"></el-option>
         <el-option key="all" label="所有任务" value="all"></el-option>
       </el-select> -->
-        <el-button type="primary" slot="test" @click="toggle">测试</el-button>
+        <!-- <el-button type="primary" slot="test" @click="toggle">测试</el-button> -->
     </table-component>
  
     <el-dialog title="申请委案" :visible.sync="dialogAgenVisible" class="dialog-small">
@@ -250,8 +250,6 @@ export default {
     data () {
 
     return {
-      re_render: true,
-      filterVisible: false,
       dialogRejectVisible: false,
       dialogScreenVisible: false,
       dialogTurnoutVisible: false,
@@ -300,9 +298,10 @@ export default {
           { type: 'export' },
           // { type: 'custom', label: '转出', icon: '', click: ()=>{ this.dialogTurnoutVisible = true; } },
           { type: 'control', label: '字段'},
+          { type: 'test'}
           // { type: 'custom', label: '设定', icon: '', click: ()=>{ this.dialogSettingVisible = true; } }
         ],
-        'header_slot': [ 'toggle','test' ],
+        'header_slot': [ 'toggle', ],
         'highlightCurrentRow': true, 
         'rowClick': this.handleRowClick,
         // 'expandFun': (row, expanded)=>{ 
@@ -454,12 +453,7 @@ export default {
       'refreshUser',
       'refreshTaskDelay',
       'addListFilter'
-    ]),
-    toggle() {
-      console.log('aa')
-      this.filterVisible = !this.filterVisible;
-      console.log(this.filterVisible)
-    },    
+    ]),   
     appointSuccess() {
       this.dialogAgenVisible = false;
       this.update();

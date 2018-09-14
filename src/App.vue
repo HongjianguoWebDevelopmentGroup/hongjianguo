@@ -81,7 +81,7 @@
             </el-breadcrumb>
           </div>
 
-          <router-view :key="$route.path.split('__')[0]" ></router-view>
+          <router-view :key="$route.path.split('__')[0]" v-if="isRouterAlive"></router-view>
         </div>
       
       </div>
@@ -106,6 +106,12 @@ import { mapActions } from 'vuex'
 
 export default {
   name: 'app',
+  provide(){
+    return {
+      reload: this.reload,
+    }
+
+  },
   computed: {
     ...mapGetters([
       'navLabel',
@@ -182,6 +188,7 @@ export default {
       userinfoLoading: true,
       isCollapse: false,
       leftMenuActive: '',
+      isRouterAlive: true,
     };
   },
   methods: {
@@ -200,6 +207,12 @@ export default {
       'setInnerWidth', //index
       'setUser', //current-user
     ]),
+    reload() {
+      this.isRouterAlive= false;
+      this.$nextTick(()=>{
+        this.isRouterAlive = true;
+      });
+    },
     handleClose (item) {
       this.closeTag(item);
     },

@@ -181,7 +181,6 @@ export default {
     return {
       selected: [],
       filters: {},
-      reload: false,
       headerClass: 'header_wrap',
     };
   },
@@ -263,12 +262,9 @@ export default {
     },
   },
   mounted() {
-    this.handleDynamicData();
-    this.reload = true;
-    window.setTimeout(_=>{
-      this.reload = false;
-    },3000);
+    console.log('渲染开的')
     if(this.filterVisible) {
+      this.handleDynamicData();
       window.listHeaderFilter = this;
     }
   },
@@ -294,6 +290,7 @@ export default {
     },
     handleRowClick (row, event, column) {
       event.stopPropagation();
+      console.log(row);
       if(column.type == 'selection' || column.type == 'action') return false;
           
       this.$emit('row-click', row, event, column);
@@ -395,8 +392,6 @@ export default {
             source: source,
             value: self.filters[column.property],
           },
-          // ref: 'filterValue' + source.id,
-          // refInfor: true
         }
         return (
             source!=null?
@@ -404,7 +399,7 @@ export default {
               <span style={{width: '100%', height: '30px',position :'relative',padding: '0 18px'}} >{item}</span>
               <i style={{borderTop: '1px solid #dfe6ec',height: '1px',lineHeight: '1px',width: '100%',display:'block'}}></i>
               <div style={{width: '100%',}}>
-                <FilterValue  {...data}></FilterValue>
+                  <FilterValue  {...data}></FilterValue>
               </div> 
             </div>
             :<span>{item}</span>
@@ -430,13 +425,12 @@ export default {
               obj[key] = { name, key, label, value };
             }
           }
-          if(!this.reload){
            this.fillListFilter(obj);
-          }
         }, 0)
       },
       deep: true,
-    },   
+    },
+
   },
   components: {
     'TableRender': {

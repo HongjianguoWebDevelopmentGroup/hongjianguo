@@ -96,6 +96,9 @@
 
         <template v-else-if="btn.type == 'report'">
           <el-button class="table-header-btn" type="primary" icon="my-report" @click="handleBatchUpdate(btn.click, $event)">报表</el-button>
+        </template>        
+        <template v-else-if="btn.type == 'test'">
+          <el-button class="table-header-btn" type="primary" icon="my-report" @click="handleFilterValue(btn.click, $event)">测试</el-button>
         </template>
 
       </template>
@@ -134,7 +137,7 @@
       :class="tableOption.empty_text_position == 'topLeft' ? 'empty-top-left' : ''"
       :style="tableStyle"
       :data="tableData"
-      :filterVisible="filterVisibles"
+      :filterVisible="filterValueVisible"
       :value="testDate"
       @input="handleInput"
       :type="tableOption.list_type"
@@ -215,6 +218,7 @@ import { mapActions } from 'vuex'
 
 export default {
   name: 'tableComponent',
+  inject:['reload'],
   props: ['tableOption', 'data', 'tableStyle', 'refreshProxy', 'filter', 'refreshTableData','feeBonus', 'filterVisibles'],
   data () {    
     const data = {
@@ -243,6 +247,7 @@ export default {
       optionColumns: '',
       selected: [],
       filterVisible: false,
+      filterValueVisible: false,
     };
 
     return data;
@@ -583,6 +588,13 @@ export default {
         this.dialogUpdateVisible = true;
       }
     },
+    handleFilterValue (func,e) {
+      if(func) {
+        func(e)
+      }else {
+        this.filterValueVisible = !this.filterValueVisible;
+      }
+    },
     handleBatchUpdateSuccess () {
       this.dialogUpdateVisible = false;
       this.update();
@@ -736,7 +748,20 @@ export default {
     filterForm (val) {
       if(this.filterLock) return;
       this.refresh();    
-    }
+    },
+    filterValueVisible(val) {
+      console.log('重新渲染')
+      console.log(val);
+      if(val == false) {
+        // 因为关闭测试筛选时，视图数据无法及时更新，则强制刷新当前路由加载数据
+         this.reload(); 
+      }
+      // hack 重新渲染tabel
+      this.refreshRender = false;
+      this.$nextTick(_=>{
+        this.refreshRender = true;
+      })
+    },
   },
   beforeDestroy () {
     // this.clearFilter();
@@ -744,10 +769,6 @@ export default {
   created () {
     this.initOptionColumns();
     this.initControl();
-  },
-  mounted () {
-    console.log(this.$refs)
-    
   },
   components: {
     'TableRender': {
