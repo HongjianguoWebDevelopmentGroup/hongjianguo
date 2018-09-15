@@ -81,7 +81,7 @@
             </el-breadcrumb>
           </div>
 
-          <router-view :key="$route.path.split('__')[0]" ></router-view>
+          <router-view :key="$route.path.split('__')[0]" v-if="isRouterAlive"></router-view>
         </div>
       
       </div>
@@ -106,6 +106,12 @@ import { mapActions } from 'vuex'
 
 export default {
   name: 'app',
+  provide(){
+    return {
+      reload: this.reload,
+    }
+
+  },
   computed: {
     ...mapGetters([
       'navLabel',
@@ -181,6 +187,7 @@ export default {
       userinfoLoading: true,
       isCollapse: false,
       leftMenuActive: '',
+      isRouterAlive: true,
     };
   },
   methods: {
@@ -199,6 +206,12 @@ export default {
       'setInnerWidth', //index
       'setUser', //current-user
     ]),
+    reload() {
+      this.isRouterAlive= false;
+      this.$nextTick(()=>{
+        this.isRouterAlive = true;
+      });
+    },
     handleClose (item) {
       this.closeTag(item);
     },
@@ -508,6 +521,9 @@ nav {
   content: "";
   clear: both;
 } 
+.el-date-editor.el-input {
+      width: 100%;
+  }
 .input-min-width {
   width: 150px !important;
 }
@@ -516,6 +532,9 @@ nav {
 }
 /*这里放入重写element-ui样式的内容*/
 #app {
+  .el-table__header-wrapper thead div {
+    background-color: transparent;
+  }  
   .el-card__header {
     padding: 10px 20px;
     font-size: 14px;
@@ -527,6 +546,16 @@ nav {
     margin: 0 auto;
     margin-top: 80px;
   }
+  .el-table .caret-wrapper {
+    cursor: pointer;
+    width: 16px;
+    height: 30px;
+    overflow: visible;
+    overflow: initial;
+    position: absolute;
+    right: 15px;
+    top: 2px;
+}
   .el-tree-node__expand-icon.expanded {
     -ms-transform: rotate(90deg);
     transform: rotate(90deg);
@@ -612,8 +641,11 @@ nav {
     font-size: 12px;
     min-height: 36px;
   }
+  // select组件多选样式超出，待完善修改，这是测试
   // .el-select__tags {
-  //   min-height: 28px;
+  //   max-height: 36px;
+  //   overflow-x: hidden;
+  //   overflow-y: auto;
   // } 
   .no_wrap .el-select__tags {
     white-space: nowrap;

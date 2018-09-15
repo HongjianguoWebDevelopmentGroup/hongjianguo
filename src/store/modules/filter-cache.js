@@ -244,6 +244,9 @@ const actions = {
 		if(item.type == 'screen') {
       		dispatch('removeScreen', item.index);
 		}else if(item.type == 'listFilter') {
+			if(window.listHeaderFilter != null && window.listHeaderFilter.filterVisible && window.listHeaderFilter.filters[item['key']] ) {
+				window.listHeaderFilter.clearRenderHeaderField(item['key']);
+			}
 			if (window.listFilter != null && window.listFilter.usedFlag && window.listFilter.usedForm[item['key']] ) {
 				window.listFilter.clearUsedFormField(item['key'])
 			}else {

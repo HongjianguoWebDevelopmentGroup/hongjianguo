@@ -1,7 +1,6 @@
 <template>
 <div>
 	<span v-if="type == ''" class="form-description">请选择需要筛选的字段再输入筛选条件</span>
-	
 	<keep-alive>
 	
 		<span v-if="type == ''"></span>
@@ -12,7 +11,8 @@
 			:type="selectType"
 			:multiple="multiple"
 			:value="value"
-			@input="handleInput">
+			@input="handleInput"
+			@change="handleChange">
 		</static-select>
 
 		<remote-select 
@@ -22,14 +22,18 @@
 			:type="selectType"
 			:multiple="multiple"
 			:value="value"
-			@input="handleInput">
+			@input="handleInput"
+			@change="handleChange"
+			>
 		</remote-select>
 		
 		<app-date 
 			ref="date"
 			v-else-if="type == 'date'"
 			:value="value"
-			@input="handleInput">
+			@input="handleInput"
+			@change="handleChange"
+			>
 		</app-date>
 
 		<el-input
@@ -37,6 +41,7 @@
 			v-else-if="type == 'input'"
 			:value="value"
 			@input="handleInput"
+			@change="handleChange"
 		></el-input>
 
 	</keep-alive>
@@ -63,10 +68,15 @@ export default {
 		value: {
 			type: [String, Number, Date, Array],
 			required: true,
+		},
+		inputRef:{
+			type: [String,Function]
 		}
 	},
 	data () {
-		return {};
+		return {
+			labelArr: [],
+		};
 	},
 	computed: {
 		type () {
@@ -85,7 +95,7 @@ export default {
 	methods: {
 		initialValue () {
 			let val = null;
-			console.log('这里初始化')
+			// console.log('这里初始化')
 			if(this.type == 'static_select' || this.type == 'remote_select') {
 				val = this.multiple ? [] : '';
 			}else if(this.type == 'date' ) {
@@ -109,8 +119,26 @@ export default {
 			}
 		},
 		handleInput (val) {
-			console.log(val);
 			this.$emit('input', val);
+		},
+		async handleChange (val) {
+			// console.log('_________filterhandlechange')
+			// console.log(val);
+			const label = this.type == 'input' ? val : await this.getLabel();
+			const result = [];
+			const obj = {};
+			if(label) {
+				this.labelArr.push({key: this.source['id'], value: label});
+			} 
+			// console.log(this.labelArr);
+			// 反向去重数组对象
+			for (let i =this.labelArr.length-1;i >= 0; i--) {
+				if(!obj[this.labelArr[i]['key']]) {
+					result.push(this.labelArr[i]);
+					obj[this.labelArr[i]['key']] = true;
+				}
+			}
+			this.$emit('labelname',result);
 		},
 		getLabel () {
 			const t = this.type;
@@ -130,12 +158,11 @@ export default {
 	},
 	created () {
 		this.initialValue();
-		this.$emit('refreshMethod',this.getLabel);
 	},
 	watch: {
 		source () {
 			this.initialValue();
-		}
+		},
 	},
 	components: {
 		StaticSelect,

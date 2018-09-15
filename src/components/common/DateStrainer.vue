@@ -1,8 +1,8 @@
 <template>
   <div class="app-date-picker" style="display: flex;display: -webkit-flex;flex-wrap: nowrap;">
-        <el-date-picker type="date" placeholder="起始日期" :size=size :style="sizeFormate.get(size)" :value="date[0]" @input="startUpdate" :picker-options="startOption"></el-date-picker>
+        <el-date-picker type="date" placeholder="起始日期" :size=size :style="sizeFormate.get(size)" :value="date[0]" @input="startUpdate" @change="startUpdate" :picker-options="startOption"></el-date-picker>
         <span style="padding: 0 5px;">-</span>
-        <el-date-picker type="date" placeholder="结束日期" :size=size :style="sizeFormate.get(size)" :value="date[1]"  @input="endUpdate" :picker-options="endOption"></el-date-picker>
+        <el-date-picker type="date" placeholder="结束日期" :size=size :style="sizeFormate.get(size)" :value="date[1]"  @input="endUpdate" @change="endUpdate" :picker-options="endOption"></el-date-picker>
   </div>
 </template>
 
@@ -19,6 +19,7 @@ export default {
 		const arr = [s, e];
 		// console.log('startUpdate');
 		this.$emit("input", arr);
+    this.$emit("change",arr);
     },
     endUpdate (val) {
     	// console.log(val);
@@ -28,6 +29,7 @@ export default {
     	const arr = [s, e];
     	// console.log('endUpdate');
     	this.$emit("input", arr);
+      this.$emit("change",arr);
     },
     clearDate () {
     	this.startTime = "";
@@ -66,7 +68,7 @@ export default {
 	        if(d.endTime == "") {
 	          flag = time.getTime() > new Date('1970-01-01');  
 	        }else {
-	          flag = time.getTime() < d.endTime.getTime() + 8.64e7; 
+	          flag = time.getTime() <  new Date(d.endTime).getTime() + 8.64e7; 
 	        }
 	        return !flag;
 	      }
@@ -78,7 +80,7 @@ export default {
 	        if(d.startTime == "") {
 	          flag = time.getTime() > new Date('1970-01-01');
 	        }else {
-	          flag = time.getTime() > new Date('1970-01-01') && time.getTime() > d.startTime.getTime() - 8.64e7;
+	          flag = time.getTime() > new Date('1970-01-01') && time.getTime() >new Date(d.startTime).getTime() - 8.64e7;
 	        }
 
 	        return !flag;
