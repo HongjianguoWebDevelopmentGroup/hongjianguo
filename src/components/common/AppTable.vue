@@ -9,6 +9,7 @@
   :highlight-current-row="highlightCurrentRow"
   :height="tableHeight"
   :max-height="maxHeight"
+  v-if="re_render"
 
   @selection-change="handleSelectionChange" 
   @sort-change="_=>{$emit('sort-change', _)}"
@@ -76,7 +77,7 @@
     </template>
 
     <template v-else-if="col.type == 'action'">
-      <el-table-column type="action" :label="col.label ? col.label : '操作'" :align="col.align ? col.align : 'left'" :width="col.width ? col.width : ''" :min-width="col.min_width ? col.min_width : ''" header-align="center" :fixed="col.fixed === false ? false : 'right'" :class-name="col.className? col.className : ''">
+      <el-table-column type="action" :label="col.label ? col.label : '操作'" :align="col.align ? col.align : 'left'" :width="col.width ? col.width : ''" :min-width="col.min_width ? col.min_width : ''" header-align="center" :fixed="col.fixed === false ? false : 'right'" :class-name="col.className? col.className : ''" :render-header="col.render_header !== undefined  ?handleRenderHeader:null">
         <template slot-scope="scope">
           <template v-if="col.btns_render ? true : false">
             <slot name="row_action" :row="scope.row">
@@ -182,6 +183,8 @@ export default {
       selected: [],
       filters: {},
       headerClass: 'header_wrap',
+      // filterVisible: false,
+      re_render: true,
     };
   },
   computed: {
@@ -263,10 +266,10 @@ export default {
   },
   mounted() {
     console.log('渲染开的')
-    if(this.filterVisible) {
+    // if(this.filterVisible) {
       this.handleDynamicData();
       window.listHeaderFilter = this;
-    }
+    // }
   },
   destroyed() {
     window.listHeaderFilter = null;
@@ -357,11 +360,37 @@ export default {
       return btn[key] ? btn[key](row) : false; 
     },
     handleRenderHeader (h,{column,$index},func) {
-      if(func){
-        func();
-      }else {
         let self = this;
         let item = column.label;
+      if(func){
+        func();
+      }else if(column.type == 'action'){
+        return h('span',{},[h('el-button',{
+          style: {
+            float: 'left',
+          },
+          attrs: {
+            type: 'text',
+            icon: 'plus'
+          },
+          on: {
+            click(e) {
+              e.stopPropagation();
+              self.filterVisible = !self.filterVisible;
+              console.log(self.filterVisible)
+            },
+          },
+        },''),h('el-button',{
+           style: {
+            float: 'left',
+            display: 'inline-block'
+          },
+          attrs: {
+            type: 'text',
+            icon: 'edit'
+          },
+        },'')])
+      }else{
         // const sindex =column.property.indexOf('__');
         // if(sindex!== -1) {
         //   column.property = column.property.substring(0,sindex);
@@ -430,7 +459,12 @@ export default {
       },
       deep: true,
     },
-
+    // filterVisible (val) {
+    //   this.re_render = false;
+    //   this.$nextTick(_=>{
+    //     this.re_render = true;
+    //   });
+    // },
   },
   components: {
     'TableRender': {

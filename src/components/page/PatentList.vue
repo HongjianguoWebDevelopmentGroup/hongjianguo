@@ -213,10 +213,11 @@ export default {
           { type: 'text', label: '是否有序列表', prop: 'is_sequence', sortable: true, width: '145',show: false, render:this.booleanRender , render_header: true},          
           { type: 'text', label: '是否同日新型/发明', prop: 'is_utility', sortable: true, width: '178',show: false, render:this.booleanRender , render_header: true},  
           { type: 'text', label: '技术领域', prop: 'technical_field', sortable: true, width: '130', is_import: true, is_agency: true, render_simple: 'name', render_header: true},
-        {
-            type: 'action',
-            width: '80',
-          },
+        // {
+        //     type: 'action',
+        //     width: '90',
+        //     render_header: true
+        //   },
         ] 
       },
       tableData: [],

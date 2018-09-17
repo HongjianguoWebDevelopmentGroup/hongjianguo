@@ -98,7 +98,7 @@
           <el-button class="table-header-btn" type="primary" icon="my-report" @click="handleBatchUpdate(btn.click, $event)">报表</el-button>
         </template>        
         <template v-else-if="btn.type == 'test'">
-          <el-button class="table-header-btn" type="primary" icon="my-report" @click="handleFilterValue(btn.click, $event)">测试</el-button>
+          <el-button class="table-header-btn" type="primary" icon="" @click="handleFilterValue(btn.click, $event)">测试</el-button>
         </template>
 
       </template>
