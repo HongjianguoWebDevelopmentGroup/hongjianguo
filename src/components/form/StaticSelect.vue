@@ -198,6 +198,7 @@ export default {
     }
   },
   created () {
+    console.log('staticselect_create')
     this.setOptions();
   },
   watch: {

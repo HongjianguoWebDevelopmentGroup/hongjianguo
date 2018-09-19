@@ -1,4 +1,4 @@
-<template>
+ <template>
   <div class="main">
     
     <table-component :tableOption="tableOption" :data="tableData" @refreshTableData="refreshTableData" ref="table" :refresh-proxy="refreshProxy">

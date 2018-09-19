@@ -138,8 +138,6 @@
       :style="tableStyle"
       :data="tableData"
       :filterVisible="filterValueVisible"
-      :value="testDate"
-      @input="handleInput"
       :type="tableOption.list_type"
       :border="tableOption.is_border != undefined ? tableOption.is_border : true"
       :default-sort="tableOption.default_sort ? tableOption.default_sort : {}"

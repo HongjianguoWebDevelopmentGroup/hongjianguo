@@ -9,7 +9,6 @@
   :highlight-current-row="highlightCurrentRow"
   :height="tableHeight"
   :max-height="maxHeight"
-  v-if="re_render"
 
   @selection-change="handleSelectionChange" 
   @sort-change="_=>{$emit('sort-change', _)}"
@@ -184,7 +183,7 @@ export default {
       filters: {},
       headerClass: 'header_wrap',
       // filterVisible: false,
-      re_render: true,
+      // re_render: true,
     };
   },
   computed: {
@@ -266,10 +265,10 @@ export default {
   },
   mounted() {
     console.log('渲染开的')
-    // if(this.filterVisible) {
+    if(this.filterVisible) {
       this.handleDynamicData();
       window.listHeaderFilter = this;
-    // }
+    }
   },
   destroyed() {
     window.listHeaderFilter = null;
@@ -283,10 +282,7 @@ export default {
     handleDynamicData () {
       this.filterSetting.forEach(_=>{
         const item = this.getDefaultValue(_.id);
-        // if(_.value!==undefined) {
-          // this.filters[_.id] = _.value;
-          this.$set(this.filters,_.id,item);
-        // }
+        this.$set(this.filters,_.id,item);
       });
       console.log(this.filters);
       return this.filters;
@@ -353,13 +349,11 @@ export default {
       return row[key] ? row[key][col.render_simple] : '';
 
     },
-    handleInput(val) {
-      this.$emit('input',val);
-    },
     handleBtnBoolean (btn, row, key) {
       return btn[key] ? btn[key](row) : false; 
     },
     handleRenderHeader (h,{column,$index},func) {
+      console.log('aaa');
         let self = this;
         let item = column.label;
       if(func){
@@ -403,6 +397,7 @@ export default {
           },
           on: {
             input(val) {
+              if(!val) return;
               self.filters[column.property] = val;
             },
             labelname(val) {
@@ -440,6 +435,7 @@ export default {
   watch:{
     filters: {
       handler(form) {
+        console.log('dfdfdf')
         window.setTimeout(() => {
           const obj = {}
           for (let key in form) {
