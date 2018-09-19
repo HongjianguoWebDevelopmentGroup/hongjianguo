@@ -81,7 +81,7 @@ const router = new Router({
     { path: '/copyright', redirect: '/copyright/list' },
     { path: '/news', redirect: '/news/mailList' },
     { path: '/dispatch', redirect: '/dispatch/administration' },
-    { path: '/fee', redirect: '/fee/account/check'},
+    { path: '/fee', redirect: '/fee/bonus/all' },
     { path: '/setting', redirect: '/setting/individual'},
     { path: '/renewal', redirect: '/renewal/fee' },
     { path: '/report', redirect: '/report/task' },
@@ -884,6 +884,297 @@ const router = new Router({
 //################### 版权路由 end #####################
 
 //################### 费用路由 begin ###################
+    // {
+    //   path: '/fee/nanshan/patent',
+    //   name: 'FeeCommonNP',
+    //   component: FeeCommon,
+    //   props: {
+    //     debit: 1,
+    //     defaultParams: {
+    //       category: 1,
+    //       gov: 'dis',
+    //     }
+    //   }
+    // },
+    // {
+    //   path: '/fee/nanshan/trademark',
+    //   name: 'FeeCommonNT',
+    //   component: FeeCommon,
+    //   props: {
+    //     debit: 1,
+    //     defaultParams: {
+    //       category: 2,
+    //       gov: 'dis',
+    //     }
+    //   }
+    // },
+    // {
+    //   path: '/fee/nanshan/copyright',
+    //   name: 'FeeCommonNC',
+    //   component: FeeCommon,
+    //   props: {
+    //     debit: 1,
+    //     defaultParams: {
+    //       category: 3,
+    //       gov: 'dis',
+    //     }
+    //   }
+    // },
+    // {
+    //   path: '/fee/shenzhen/patent',
+    //   name: 'FeeCommonSP',
+    //   component: FeeCommon,
+    //   props: {
+    //     debit: 1,
+    //     defaultParams: {
+    //       category: 1,
+    //       gov: 'city',
+    //     }
+    //   }
+    // },
+    // {
+    //   path: '/fee/shenzhen/trademark',
+    //   name: 'FeeCommonST',
+    //   component: FeeCommon,
+    //   props: {
+    //     debit: 1,
+    //     defaultParams: {
+    //       category: 2,
+    //       gov: 'city',
+    //     }
+    //   }
+    // },
+    // {
+    //   path: '/fee/shenzhen/copyright',
+    //   name: 'FeeCommonSC',
+    //   component: FeeCommon,
+    //   props: {
+    //     debit: 1,
+    //     defaultParams: {
+    //       category: 3,
+    //       gov: 'city',
+    //     }
+    //   }
+    // },
+    // {
+    //   path: '/fee/account/check',
+    //   name: 'InvoiceCommonAC',
+    //   component: InvoiceCommon,
+    //   props: {
+    //     debit: 0,
+    //     defaultParams: {
+    //       status: 1
+    //     }
+    //   }
+    // },
+    // {
+    //   path: '/fee/account/upload',
+    //   name: 'InvoiceCommonAU',
+    //   component: InvoiceCommon,
+    //   props: {
+    //     debit: 0,
+    //     defaultParams: {
+    //       voucher: 0
+    //     }
+    //   }
+    // },
+    // {
+    //   path: '/fee/account/pay',
+    //   name: 'InvoiceCommonAP',
+    //   component: InvoiceCommon,
+    //   props: {
+    //     debit: 0,
+    //     defaultParams: {
+    //       status: 5
+    //     }
+    //   }
+    // },
+    // {
+    //   path: '/fee/account/paid',
+    //   name: 'InvoiceCommonAPD',
+    //   component: InvoiceCommon,
+    //   props: {
+    //     debit: 0,
+    //     defaultParams: {
+    //       status: 4
+    //     }
+    //   }
+    // },
+    // {
+    //   path: '/fee/account/refuse',
+    //   name: 'InvoiceCommonAR',
+    //   component: InvoiceCommon,
+    //   props: {
+    //     debit: 0,
+    //     defaultParams: {
+    //       status: 3
+    //     }
+    //   }
+    // },
+    // {
+    //   path: '/fee/renewal/pay',
+    //   name: 'RenewalFeeRP',
+    //   component: RenewalFee,
+    //   props: {
+    //     defaultParams: {
+    //       status: 0,
+    //     }
+    //   }
+    // },
+    // {
+    //   path: '/fee/renewal/paid',
+    //   name: 'RenewalFeeRPD',
+    //   component: RenewalFee,
+    //   props: {
+    //     defaultParams: {
+    //       status: 10,
+    //     }
+    //   }
+    // },
+    // {
+    //   path: '/fee/renewal/refuse',
+    //   name: 'RenewalFeeRR',
+    //   component: RenewalFee,
+    //   props: {
+    //     defaultParams: {
+    //       status: 3,
+    //     }
+    //   }
+    // },
+     {
+      path: '/fee/bonus/all',
+      name: 'FeeCommonAll',
+      component: FeeCommon,
+      props: {
+        debit: 0,
+        defaultParams: {
+          bonus: 1
+        }
+      }
+    },
+    {
+      path: '/fee/bonus/application',
+      name: 'FeeCommonApplication',
+      component: FeeCommon,
+      props: {
+        debit: 0,
+        defaultParams: {
+          bonus: 'application'
+        }
+      }
+    },
+    {
+      path: '/fee/bonus/grant',
+      name: 'FeeCommonGrant',
+      component: FeeCommon,
+      props: {
+        debit: 0,
+        defaultParams: {
+          bonus: 'grant'
+        }
+      }
+    },
+    {
+      path: '/fee/bonus/license',
+      name: 'FeeCommonLicense',
+      component: FeeCommon,
+      props: {
+        debit: 0,
+        defaultParams: {
+          bonus: 'license'
+        }
+      }
+    },
+    {
+      path: '/fee/bonus/year',
+      name: 'FeeCommonYear',
+      component: FeeCommon,
+      props: {
+        debit: 0,
+        defaultParams: {
+          bonus: 'year'
+        }
+      }
+    },
+    {
+      path: '/fee/bonus/special',
+      name: 'FeeCommonSpecial',
+      component: FeeCommon,
+      props: {
+        debit: 0,
+        defaultParams: {
+          bonus: 'specical'
+        }
+      }
+    },
+    {
+      path: '/fee/bonus/utility',
+      name: 'FeeCommonUtility',
+      component: FeeCommon,
+      props: {
+        debit: 0,
+        defaultParams: {
+          bonus: 'utility'
+        }
+      }
+    },
+    {
+      path: '/fee/oa/official',
+      name: 'FeeCommonOfficial',
+      component: FeeCommon,
+      props: {
+        debit: 0,
+        defaultParams: {
+          fee_type: 3
+        }
+      }
+    },
+    {
+      path: '/fee/oa/agency',
+      name: 'FeeCommonAgency',
+      component: FeeCommon,
+      props: {
+        debit: 0,
+        defaultParams: {
+          fee_type: 2
+        }
+      }
+    },
+    {
+      path: '/fee/subsidy/nanshan_patent',
+      name: 'FeeCommonsubHP',
+      component: FeeCommon,
+      props: {
+        debit: 1,
+        defaultParams: {
+          category: 1,
+          gov: 'dis',
+        }
+      }
+    },     
+    {
+      path: '/fee/subsidy/nanshan_trademark',
+      name: 'FeeCommonsubHT',
+      component: FeeCommon,
+      props: {
+        debit: 1,
+        defaultParams: {
+          category: 2,
+          gov: 'dis',
+        }
+      }
+    },     {
+      path: '/fee/subsidy/nanshan_copyright',
+      name: 'FeeCommonsubHC',
+      component: FeeCommon,
+      props: {
+        debit: 1,
+        defaultParams: {
+          category: 3,
+          gov: 'dis',
+        }
+      }
+    },    
     {
       path: '/fee/nanshan/patent',
       name: 'FeeCommonNP',
@@ -921,6 +1212,42 @@ const router = new Router({
       }
     },
     {
+      path: '/fee/subsidy/shenzhen_patent',
+      name: 'FeeCommonsubGP',
+      component: FeeCommon,
+      props: {
+        debit: 1,
+        defaultParams: {
+          category: 1,
+          gov: 'city',
+        }
+      }
+    },     
+    {
+      path: '/fee/subsidy/shenzhen_trademark',
+      name: 'FeeCommonsubGT',
+      component: FeeCommon,
+      props: {
+        debit: 1,
+        defaultParams: {
+          category: 2,
+          gov: 'city',
+        }
+      }
+    },     
+    {
+      path: '/fee/subsidy/shenzhen_copyright',
+      name: 'FeeCommonsubGC',
+      component: FeeCommon,
+      props: {
+        debit: 1,
+        defaultParams: {
+          category: 3,
+          gov: 'city',
+        }
+      }
+    },    
+    {
       path: '/fee/shenzhen/patent',
       name: 'FeeCommonSP',
       component: FeeCommon,
@@ -957,7 +1284,51 @@ const router = new Router({
       }
     },
     {
-      path: '/fee/account/check',
+      path: '/fee/income/submit',
+      name: 'InvoiceCommonSubmit',
+      component: InvoiceCommon,
+      props: {
+        debit: 1,
+        defaultParams: {
+          status:1
+        }
+      }
+    },
+    {
+      path: '/fee/income/wating_for_payment',
+      name: 'InvoiceCommonWaitingForPayment',
+      component: InvoiceCommon,
+      props: {
+        debit: 1,
+        defaultParams: {
+          status:5
+        }
+      }
+    },
+    {
+      path: '/fee/income/confirmed',
+      name: 'InvoiceCommonconfirmed',
+      component: InvoiceCommon,
+      props: {
+        debit: 1,
+        defaultParams: {
+          status:4
+        }
+      }
+    },
+    {
+      path: '/fee/income/cancelled',
+      name: 'InvoiceCommonCancelled',
+      component: InvoiceCommon,
+      props: {
+        debit: 1,
+        defaultParams: {
+          status:3
+        }
+      }
+    },
+    {
+      path: '/fee/invoice/to_be_reviewed',
       name: 'InvoiceCommonAC',
       component: InvoiceCommon,
       props: {
@@ -968,18 +1339,19 @@ const router = new Router({
       }
     },
     {
-      path: '/fee/account/upload',
+      path: '/fee/invoice/voucher_upload',
       name: 'InvoiceCommonAU',
       component: InvoiceCommon,
       props: {
         debit: 0,
         defaultParams: {
-          voucher: 0
+          voucher: 0,
+          status: 2
         }
       }
     },
     {
-      path: '/fee/account/pay',
+      path: '/fee/invoice/paying',
       name: 'InvoiceCommonAP',
       component: InvoiceCommon,
       props: {
@@ -1001,7 +1373,7 @@ const router = new Router({
       }
     },
     {
-      path: '/fee/account/refuse',
+      path: '/fee/invoice/rejected',
       name: 'InvoiceCommonAR',
       component: InvoiceCommon,
       props: {
@@ -1032,7 +1404,7 @@ const router = new Router({
       }
     },
     {
-      path: '/fee/renewal/refuse',
+      path: '/fee/renewal/withdrawn',
       name: 'RenewalFeeRR',
       component: RenewalFee,
       props: {

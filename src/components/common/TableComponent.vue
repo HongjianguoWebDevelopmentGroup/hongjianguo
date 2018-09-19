@@ -219,13 +219,22 @@ export default {
     },
     refreshTableData: {
       type: Function,  
+    },
+    feePath:{
+      type: String,
     }
   },
   data () {
     const d = this;
-    const cols = d.tableOption.columns;
+    let cols = d.tableOption.columns;
     let tableCookie = JSON.parse(this.$tool.getLocal(this.tableOption.name));
-    
+    if(/bonus/.test(this.feePath)) {
+       cols =  cols.filter(_=>_.is_bonus);
+    }else if(/subsidy/.test(this.feePath)){
+      cols = cols.filter(_=>_.is_subsidy);
+    }else if(/oa/.test(this.feePath)){
+      cols = cols.filter(_=>_.is_oa);
+    }    
     //获取控制器
     let control = [[],[]];
 

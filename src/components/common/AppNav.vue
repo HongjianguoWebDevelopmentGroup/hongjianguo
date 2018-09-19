@@ -38,9 +38,13 @@ export default{
 				return arr[0] && arr[0]['key'] ? arr[0]['key'] : '';	
 			},
 			set (val) {
-				const arr = this.source.filter(v => val === v.key);
-				if(arr[0] && arr[0]['path']) {
-					this.$router.push(arr[0]['path']);
+				const arr = this.source.filter(v =>val === v.key);
+				const showChildrenMenu= arr[0].menu.filter(d=>!this.menusMap.get(d.path));
+				if(showChildrenMenu[0] && showChildrenMenu[0]['path']) {
+					if(showChildrenMenu[0]['children'] && showChildrenMenu[0]['children'][0]['path']){
+						return	this.$router.push(showChildrenMenu[0]['children'][0]['path']);
+					}
+						this.$router.push(showChildrenMenu[0]['path']);
 				}
 			}
 		},

@@ -197,39 +197,114 @@ const copyrightMenu = [
 ];
 
 const feeMenu = [
+	// {	
+	// 	type: 'submenu',
+	// 	text: '南山区资助',
+	// 	path: '/fee/nanshan',
+	// 	icon: 'iconfont el-icon-my-receipt',
+	// 	children: [
+	// 		{ type: 'item', text: '专利', path: '/fee/nanshan/patent', icon: '' },
+	// 		{ type: 'item', text: '商标', path: '/fee/nanshan/trademark', icon: '' },
+	// 		{ type: 'item', text: '著作权', path: '/fee/nanshan/copyright', icon: '' },
+	// 	]
+	// },
+	// {
+	// 	type: 'submenu',
+	// 	text: '深圳市资助',
+	// 	path: '/fee/shenzhen',
+	// 	icon: 'iconfont el-icon-my-receipt',
+	// 	children: [
+	// 		{ type: 'item', text: '专利', path: '/fee/shenzhen/patent', icon: '' },
+	// 		{ type: 'item', text: '商标', path: '/fee/shenzhen/trademark', icon: '' },
+	// 		{ type: 'item', text: '著作权', path: '/fee/shenzhen/copyright', icon: '' },
+	// 	]
+	// },
+	// {
+	// 	type: 'submenu',
+	// 	text: '账单',
+	// 	path: '/fee/account',
+	// 	icon: 'iconfont el-icon-my-receipt',
+	// 	children: [
+	// 		{ type: 'item', text: '待审核', path: '/fee/account/check', icon: '' },
+	// 		{ type: 'item', text: '待上传凭证', path: '/fee/account/upload', icon: '' },
+	// 		{ type: 'item', text: '待付款', path: '/fee/account/pay', icon: '' },
+	// 		{ type: 'item', text: '已付款', path: '/fee/account/paid', icon: '' },
+	// 		{ type: 'item', text: '已退回', path: '/fee/account/refuse', icon: '' },
+	// 	]
+	// },
+	// {
+	// 	type: 'submenu',
+	// 	text: '年费',
+	// 	path: '/fee/renewal',
+	// 	icon: 'iconfont el-icon-my-renewal-fee',
+	// 	children: [
+	// 		{ type: 'item', text: '待缴纳', path: '/fee/renewal/pay' },
+	// 		{ type: 'item', text: '已缴纳', path: '/fee/renewal/paid' },
+	// 		{ type: 'item', text: '评估放弃', path: '/fee/renewal/refuse' },
+	// 	]
+	// },
 	{	
 		type: 'submenu',
-		text: '南山区资助',
-		path: '/fee/nanshan',
+		text: '发明人奖金',
+		path: '/fee/bonus',
 		icon: 'iconfont el-icon-my-receipt',
 		children: [
-			{ type: 'item', text: '专利', path: '/fee/nanshan/patent', icon: '' },
-			{ type: 'item', text: '商标', path: '/fee/nanshan/trademark', icon: '' },
-			{ type: 'item', text: '著作权', path: '/fee/nanshan/copyright', icon: '' },
+			{ type: 'item', text: '所有', path: '/fee/bonus/all', icon: '' },
+			{ type: 'item', text: '申请奖', path: '/fee/bonus/application', icon: '' },
+			{ type: 'item', text: '授权奖', path: '/fee/bonus/grant', icon: '' },
+			// { type: 'item', text: '专利实施许可奖', path: '/fee/bonus/license', icon: '' },
+			// { type: 'item', text: '年度专利奖', path: '/fee/bonus/year', icon: '' },
+			// { type: 'item', text: '特别专利奖', path: '/fee/bonus/special', icon: '' },
+			// { type: 'item', text: '优秀实用新型', path: '/fee/bonus/utility', icon: '' },
 		]
 	},
 	{
 		type: 'submenu',
-		text: '深圳市资助',
-		path: '/fee/shenzhen',
+		text: '官费&代理费',
+		path: '/fee/oa',
 		icon: 'iconfont el-icon-my-receipt',
 		children: [
-			{ type: 'item', text: '专利', path: '/fee/shenzhen/patent', icon: '' },
-			{ type: 'item', text: '商标', path: '/fee/shenzhen/trademark', icon: '' },
-			{ type: 'item', text: '著作权', path: '/fee/shenzhen/copyright', icon: '' },
+			{ type: 'item', text: '官费', path: '/fee/oa/official', icon: '' },
+			{ type: 'item', text: '代理费', path: '/fee/oa/agency', icon: '' },
 		]
-	},
+	},	
 	{
 		type: 'submenu',
-		text: '账单',
-		path: '/fee/account',
+		text: '付款账单',
+		path: '/fee/invoice',
 		icon: 'iconfont el-icon-my-receipt',
 		children: [
-			{ type: 'item', text: '待审核', path: '/fee/account/check', icon: '' },
-			{ type: 'item', text: '待上传凭证', path: '/fee/account/upload', icon: '' },
-			{ type: 'item', text: '待付款', path: '/fee/account/pay', icon: '' },
+			{ type: 'item', text: '待审核', path: '/fee/invoice/to_be_reviewed', icon: '' },
+			{ type: 'item', text: '待上传凭证', path: '/fee/invoice/voucher_upload', icon: '' },
+			{ type: 'item', text: '待付款', path: '/fee/invoice/paying', icon: '' },
 			{ type: 'item', text: '已付款', path: '/fee/account/paid', icon: '' },
-			{ type: 'item', text: '已退回', path: '/fee/account/refuse', icon: '' },
+			{ type: 'item', text: '已退回', path: '/fee/invoice/rejected', icon: '' },
+		]
+	},
+	{
+		type: 'submenu',
+		text: '资助',
+		path: '/fee/subsidy',
+		icon: 'iconfont el-icon-my-receipt',
+		children: [
+			{ type: 'item', text: '深圳市专利资助', path: '/fee/subsidy/shenzhen_patent', icon: '' },
+			{ type: 'item', text: '深圳市商标资助', path: '/fee/subsidy/shenzhen_trademark', icon: '' },
+			{ type: 'item', text: '深圳市著作权资助', path: '/fee/subsidy/shenzhen_copyright', icon: '' },
+			{ type: 'item', text: '南山区专利资助', path: '/fee/subsidy/nanshan_patent', icon: '' },
+			{ type: 'item', text: '南山区商标资助', path: '/fee/subsidy/nanshan_trademark', icon: '' },
+			{ type: 'item', text: '南山区著作权资助', path: '/fee/subsidy/nanshan_copyright', icon: '' },
+		]
+	},
+	{
+		type: 'submenu',
+		text: '请款单',
+		path: '/fee/income',
+		icon: 'iconfont el-icon-my-receipt',
+		children: [
+			{ type: 'item', text: '待提交', path: '/fee/income/submit', icon: '' },
+			{ type: 'item', text: '待收款', path: '/fee/income/wating_for_payment', icon: '' },
+			{ type: 'item', text: '已收款', path: '/fee/income/confirmed', icon: '' },
+			// { type: 'item', text: '已删除', path: '/fee/income/cancelled', icon: '' },
 		]
 	},
 	{
@@ -240,9 +315,9 @@ const feeMenu = [
 		children: [
 			{ type: 'item', text: '待缴纳', path: '/fee/renewal/pay' },
 			{ type: 'item', text: '已缴纳', path: '/fee/renewal/paid' },
-			{ type: 'item', text: '评估放弃', path: '/fee/renewal/refuse' },
+			{ type: 'item', text: '评估放弃', path: '/fee/renewal/withdrawn' },
 		]
-	},
+	},	
 ];
 
 const renewalMenu = [
