@@ -277,7 +277,7 @@ const feeMenu = [
 			{ type: 'item', text: '待审核', path: '/fee/invoice/to_be_reviewed', icon: '' },
 			{ type: 'item', text: '待上传凭证', path: '/fee/invoice/voucher_upload', icon: '' },
 			{ type: 'item', text: '待付款', path: '/fee/invoice/paying', icon: '' },
-			{ type: 'item', text: '已付款', path: '/fee/account/paid', icon: '' },
+			{ type: 'item', text: '已付款', path: '/fee/invoice/paid', icon: '' },
 			{ type: 'item', text: '已退回', path: '/fee/invoice/rejected', icon: '' },
 		]
 	},

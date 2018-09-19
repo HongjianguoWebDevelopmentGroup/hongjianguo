@@ -1362,7 +1362,7 @@ const router = new Router({
       }
     },
     {
-      path: '/fee/account/paid',
+      path: '/fee/invoice/paid',
       name: 'InvoiceCommonAPD',
       component: InvoiceCommon,
       props: {
