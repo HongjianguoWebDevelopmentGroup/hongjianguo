@@ -84,6 +84,9 @@
     <el-form-item prop="categories" label="分案类别" v-if="fields.categories" v-show="form.is_division" :rules="{required: false, message: '请填写分案类别'}">
       <el-input type="textarea" v-model="form.categories"></el-input>
     </el-form-item>
+    <el-form-item prop="abstract" label="摘要" v-if="fields.abstract"  :rules="{required: true, message: '请填写摘要'}">
+      <el-input type="textarea" v-model="form.abstract"></el-input>
+    </el-form-item>
     <el-form-item prop="attachments" label="附件" v-if="fields.attachments && !hide_r_a">
       <upload v-model="form.attachments" :file-list="attachments"> 
       </upload>
@@ -165,6 +168,7 @@ export default {
         is_division:0,
         is_amend:0,
         categories:'',
+        abstract:'',
 			},
 			'defaultVal': '',
       'agencyMap': [],

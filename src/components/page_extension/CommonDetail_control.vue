@@ -33,9 +33,9 @@ export default {
 		  		{ type: 'text', label: '当前节点', prop: 'flownode',render_simple:'name' },
 		  		{ type: 'text', label: '承办人', prop: 'person_in_charge',render_simple:'name' },
 		  		{ type: 'text', label: '开始时间', prop: 'start_time' },
-		  		{ type: 'text', label: '指定期限', prop: 'due_time' },
-		  		{ type: 'text', label: '代理机构', prop: 'agency' ,render_simple:'name' },
-		  		{ type: 'text', label: '代理人', prop: 'agent' ,render_simple:'name' },
+		  		{ type: 'text', label: '官方绝限', prop: 'deadline' },
+		  		// { type: 'text', label: '代理机构', prop: 'agency' ,render_simple:'name' },
+		  		// { type: 'text', label: '代理人', prop: 'agent' ,render_simple:'name' },
 		  		{ 
 		  			type: 'action', 
 		  			label: '操作',
