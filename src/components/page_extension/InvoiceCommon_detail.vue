@@ -137,6 +137,7 @@ export default {
 			const success = _=>{
 				this.$tool.coverObj(this.row, _.invoice);
 				const fee_id = _.invoice.id;
+				this.feeLoading = false;
 				this.feeAxios(fee_id);
 			}
 			this.$axiosGet({url, success});
