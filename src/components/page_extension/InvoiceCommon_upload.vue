@@ -1,16 +1,10 @@
 <template>
 <div class="invoice-upload">
+	<template>
+		<slot name="fee_tips"></slot>
+	</template>
 	<app-table :columns="columns" :data="data" v-loading="tableLoading" element-loading-text="加载中..."></app-table>
 	<div style="position: relative;">
-		<el-upload
-			style="margin-top: 10px;"
-			:show-file-list="false"
-			:on-success="uploadSuccess"
-			:on-error="uploadError"
-			:before-upload="beforeUpload"
-			:action="action">
-			<el-button size="small" type="primary">点击上传</el-button>
-		</el-upload>
 		<el-dialog :visible.sync="dialogVisible" class="dialog-small" title="附件详情" :modal="false">
 			<app-table :columns="uploadColumns" :data="uploadData"></app-table>
 		</el-dialog>
@@ -21,7 +15,7 @@
 <script>
 import AppTable from '@/components/common/AppTable'
 import Upload from '@/components/form/Upload'
-import {mapMutations} from 'vuex'
+
 export default {
 	name: 'uploadInvoice',
 	data () {
@@ -30,18 +24,19 @@ export default {
 			dialogVisible: false,
 			uploadColumns: [
 				{ type: 'text', label: '文件名称', prop: 'name', min_width: '120'},
-        { type: 'text', label: '上传日期', prop: 'create_time', min_width: '120'},
-        { type: 'text', label: '上传人', prop: 'uploader', min_width: '100'},
-        { type: 'text', label: '大小', prop: 'size', min_width: '80'},
-        { 
-          type: 'action',
-          label: '操作',
-          fixed: false,
-          min_width: '120',
-          btns: [
-            { type: 'download', click: ({downloadUrl})=>{window.open(downloadUrl)}},  
-          ]
-        }
+				{ type: 'text', label: '上传日期', prop: 'create_time', min_width: '120'},
+				{ type: 'text', label: '上传人', prop: 'uploader', min_width: '100', render_simple: 'name'},
+				{ type: 'text', label: '大小', prop: 'size', min_width: '80'},
+				{ 
+				type: 'action',
+				label: '操作',
+				fixed: false,
+				min_width: '120',
+				btns: [
+					{ type: 'download', click: ({downloadUrl})=>{window.open(downloadUrl)}},
+					{ type: 'view', click:({viewUrl})=>{window.open(viewUrl)}}    
+				]
+				}
 			],
 			uploadData: [],
 			columns: [
@@ -49,11 +44,11 @@ export default {
 				{ type: 'text', label: '案件名称', prop: 'title' },
 				{ type: 'text', label: '费用类型', prop: 'code', render_simple: 'name' },
 				{ type: 'text', label: '费用', prop: 'amount' },
-				{ type: 'text', label: '企业意见', prop: 'remark_enterprise', width: '200' },
+				{ type: 'text', label: '审核意见', prop: 'remark_enterprise', width: '188' },
 				{ 
 					type: 'text', 
 					label: '附件',
-					width: '200', 
+					width: '178', 
 					prop: 'attachments',
 					render: this.attachmentsRender,
 				},
@@ -71,34 +66,9 @@ export default {
 		};
 	},
 	computed: {
-		action () {
-			return `/api/tempfile?action=getEvidence&invoice_id=${this.id}`;
-		}
+		
 	},
 	methods: {
-		...mapMutations([
-			'onLoading',
-			'cancelLoading',
-		]),
-		beforeUpload () {
-			this.onLoading('解析中...');
-		},
-		uploadSuccess (response) {
-			const func = () => {
-				this.cancelLoading();
-				if(response.status) {
-					this.$message({type: 'success', message: '解析成功'});
-					this.refresh();
-				}else {
-					this.$message({type: 'warning', message: '解析失败'});
-				}
-			}
-			window.setTimeout(func, 1500);
-		},
-		uploadError () {
-			this.cancelLoading();
-			this.$message({type: 'warning', message: '上传文件失败'})
-		},
 		finish () {
 			const url = `/invoices/${this.id}/complete`;
 			const success = () => {
@@ -160,7 +130,8 @@ export default {
 				body = [];
 				const obj = {
 					attrs: { href: item[0]['downloadUrl'] },
-					style: { width: '120px', display: 'inline-block' },
+					style: { width: '120px', display: 'inline-block',overflow: 'hidden',textOverflow:'ellipsis',
+					whiteSpace : 'nowrap' },
 				};
 
 				body.push(h('a', obj, item[0].name ));
@@ -178,7 +149,7 @@ export default {
 				}, '更多'));
 			}
 
-			return h('span', body);
+			return h('span',{style:{display: 'flex',justifyContent:'flex-start',}}, body);
 		}
 	},
 	components: {

@@ -85,7 +85,7 @@ import {mapMutations} from 'vuex'
 const URL = '/invoices';
 const pathMap = new Map([
   ['/fee/invoice/rejected', true],
-  ['/fee/account/paid', true],  
+  ['/fee/invoice/paid', true],  
   ['/fee/income/submit', true],  
   ['/fee/income/wating_for_payment', true],  
   ['/fee/income/confirmed', true],  
