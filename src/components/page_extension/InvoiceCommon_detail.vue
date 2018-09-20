@@ -133,11 +133,13 @@ export default {
 			}));
 		},
 		invoiceAxios (id) {
-			const url = `/api/invoices/${id}`;
+			const url = `/api/invoices/${id}/task`;
 			const success = _=>{
 				this.$tool.coverObj(this.row, _.invoice);
+				const fee_id = _.invoice.id;
+				this.feeAxios(fee_id);
 			}
-			return this.$axiosGet({url, success});
+			this.$axiosGet({url, success});
 		},
 		feeAxios (id) {
   		const url = '/api/fees';
@@ -149,16 +151,17 @@ export default {
   			this.feeData = [];
   		}
 
-  		return this.$axiosGet({url, data, success, error});
+  		 this.$axiosGet({url, data, success, error});
   	},
   	refresh (id) {
   		const id_c = id ? id : this.id;
 			if(!id_c) return;
 			this.feeLoading = true;
-			axios.all([this.invoiceAxios(id_c), this.feeAxios(id_c)])
-				.then(axios.spread((acct, perms)=>{
-					this.feeLoading = false;
-				}))
+			this.invoiceAxios(id_c);
+			// axios.all([this.invoiceAxios(id_c), this.feeAxios(id_c)])
+			// 	.then(axios.spread((acct, perms)=>{
+			// 		this.feeLoading = false;
+			// 	}))
   	}
 	},
 	created () {

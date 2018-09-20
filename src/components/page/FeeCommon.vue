@@ -24,7 +24,8 @@
 <script>
 import TableComponent from '@/components/common/TableComponent' 
 import Pop from '@/components/page_extension/feeCommon_pop'
-import FeeStatus from '@/components/form/FeeStatus'
+import FeeStatus
+ from '@/components/form/FeeStatus'
 import Strainer from '@/components/page_extension/FeeCommon_strainer'
 import RemoteSelect from '@/components/form/RemoteSelect'
 import {mapActions} from 'vuex'
@@ -76,7 +77,7 @@ export default {
         'columns': [
           { type: 'selection' },
           { type: 'text', label: '案号', prop: 'serial', width: '140', is_subsidy: true,is_oa: true},
-          { type: 'text', label: '请款单号', prop: 'invoice_id', width: '150', is_bonus: true, },
+          { type: 'text', label: '账单编号', prop: 'invoice_id', width: '150', is_bonus: true, },
           { type: 'text', label: '事务所案号', prop: 'agency_serial', width: '140',is_oa: true},          
           { type: 'text', label: '代理机构', prop: 'agency', width: '140', render_simple: 'name', is_oa: true},
           { type: 'text', label: '费用对象', prop: 'target', width: '140', is_bonus: true, is_oa: true,is_subsidy: true,render: (h,item)=>{
