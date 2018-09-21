@@ -288,10 +288,10 @@ const feeMenu = [
 		icon: 'iconfont el-icon-my-receipt',
 		children: [
 			{ type: 'item', text: '深圳市专利资助', path: '/fee/subsidy/shenzhen_patent', icon: '' },
-			{ type: 'item', text: '深圳市商标资助', path: '/fee/subsidy/shenzhen_trademark', icon: '' },
+			{ type: 'item', text: '深圳市境外商标资助', path: '/fee/subsidy/shenzhen_trademark', icon: '' },
 			{ type: 'item', text: '深圳市著作权资助', path: '/fee/subsidy/shenzhen_copyright', icon: '' },
 			{ type: 'item', text: '南山区专利资助', path: '/fee/subsidy/nanshan_patent', icon: '' },
-			{ type: 'item', text: '南山区商标资助', path: '/fee/subsidy/nanshan_trademark', icon: '' },
+			// { type: 'item', text: '南山区商标资助', path: '/fee/subsidy/nanshan_trademark', icon: '' },
 			// { type: 'item', text: '南山区著作权资助', path: '/fee/subsidy/nanshan_copyright', icon: '' },
 		]
 	},
