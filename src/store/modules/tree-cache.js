@@ -1,9 +1,4 @@
 /*对应select和date组件筛选数据*/
-import {map as filterConfig} from '@/const/headerFilterConfig'
-const filterSettingVuex = (type) => {
-  const filterSetting = filterConfig.get(type);
-  return filterSetting;
-}
 const state = {
   data: {},
   URL: '',
@@ -27,17 +22,13 @@ const state = {
 
 const getters = {
   filterData: state=>state.data,
-  filterDataMap:state=>{
-
-  },
   getUrl: state=>state.URL,
   data_key: state=>state.DATA_KEY,
 }
 
 const mutations = {
   setFilterData (state, d) {
-   const data = state.data.
-   return data;
+   const data = state.data
   },
   setUrl (state, d) {
     state.URL = d;
