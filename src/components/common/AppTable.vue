@@ -118,12 +118,17 @@
 <script>
 import {mapGetters} from 'vuex'
 import FilterValue from '@/components/common/FilterValue'
-import {listPathMap, map as filterConfig} from '@/const/filterConfig'
+import ListsFilter from '@/components/common/ListsFilter'
+import { map as filterConfig} from '@/const/headerFilterConfig'
 import {mapActions} from 'vuex'
 const labelMap = new Map();
 export default {
   name: 'appTable',
   props: {
+    listType: {
+      type: String,
+      default: '',
+    },
     filterVisible: {
       type: Boolean,
       default: false,
@@ -182,7 +187,8 @@ export default {
       selected: [],
       filters: {},
       headerClass: 'header_wrap',
-      // filterVisible: false,
+      filterComponentVisible: false,
+      filterConditionVisible: false,
       // re_render: true,
     };
   },
@@ -286,6 +292,9 @@ export default {
       });
       console.log(this.filters);
       return this.filters;
+    },
+    toggle() {
+      this.filterComponentVisible = !this.filterComponentVisible;
     },
     handleRowClick (row, event, column) {
       event.stopPropagation();
@@ -391,20 +400,31 @@ export default {
         // }
         const source = this.filterSettingMap.get(column.property) !== undefined ?
         this.filterSettingMap.get(column.property) : null;
+        console.log('___________apptable检测')
+        console.log(source);
         const data = {  
-          style: {
-            padding: '6px 18px',
+          // style: {
+          //   padding: '6px 18px',
+          // },
+          props:{
+            field: column.property,
+            listType: self.listType,
+            filterConditionVisible: self.filterConditionVisible,
           },
           on: {
-            input(val) {
-              if(!val) return;
-              self.filters[column.property] = val;
-            },
-            labelname(val) {
-              val.forEach(v=>{
-                labelMap.set(v.key,v);
-              });
-            },
+            // input(val) {
+            //   if(!val) return;
+            //   self.filters[column.property] = val;
+            // },
+            // labelname(val) {
+            //   val.forEach(v=>{
+            //     labelMap.set(v.key,v);
+            //   });
+            // },
+            order(val) {
+              console.log(val)
+              self.$emit('order',val);
+            }
           },
           nativeOn: {
             click(e) {
@@ -412,21 +432,18 @@ export default {
               e.stopPropagation();
             }
           },
-          props: {
-            source: source,
-            value: self.filters[column.property],
-          },
         }
         return (
-            source!=null?
-            <div class={[self.headerClass]}>
-              <span style={{width: '100%', height: '30px',position :'relative',padding: '0 18px'}} >{item}</span>
-              <i style={{borderTop: '1px solid #dfe6ec',height: '1px',lineHeight: '1px',width: '100%',display:'block'}}></i>
+
+            source!=null?<span>
+              <span>{item}</span>
+              <el-popover  width='100%' placement='bottom' trigger="click">
               <div style={{width: '100%',}}>
-                  <FilterValue  {...data}></FilterValue>
+                  <ListsFilter {...data}></ListsFilter>
               </div> 
-            </div>
-            :<span>{item}</span>
+              <el-button type="text" icon="setting" slot="reference" onClick={(e)=>{e.stopPropagation();this.filterConditionVisible = !this.filterConditionVisible}}></el-button>
+              </el-popover>
+            </span>:<span>{item}</span>
 
         )
       }
@@ -435,7 +452,6 @@ export default {
   watch:{
     filters: {
       handler(form) {
-        console.log('dfdfdf')
         window.setTimeout(() => {
           const obj = {}
           for (let key in form) {
@@ -455,12 +471,6 @@ export default {
       },
       deep: true,
     },
-    // filterVisible (val) {
-    //   this.re_render = false;
-    //   this.$nextTick(_=>{
-    //     this.re_render = true;
-    //   });
-    // },
   },
   components: {
     'TableRender': {
@@ -481,14 +491,15 @@ export default {
       },
     },
     FilterValue,
+    ListsFilter,
   }
 }
 </script>
 <style lang="scss">
-  .header_wrap {
-    background-color: #e1e1e1;
-  }
+  // .header_wrap {
+  //   background-color: #e1e1e1;
+  // }
   .el-table__header-wrapper  .cell{
-      padding: 0px;
+      padding: 0px 6px;
     }
 </style>

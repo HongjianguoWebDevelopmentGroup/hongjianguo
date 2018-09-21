@@ -137,6 +137,7 @@
       :class="tableOption.empty_text_position == 'topLeft' ? 'empty-top-left' : ''"
       :style="tableStyle"
       :data="tableData"
+      :listType="tableOption.list_type!=undefined?tableOption.list_type: ''"
       :filterVisible="filterValueVisible"
       :type="tableOption.list_type"
       :border="tableOption.is_border != undefined ? tableOption.is_border : true"
@@ -148,6 +149,7 @@
       @sort-change="handleSortChange"
       @row-click="handleRowClick"
       @cell-click="handleCellClick"
+      @order="handleSort"
       ref="table"
     >
       <template slot="row_action" slot-scope="scope">
@@ -233,6 +235,7 @@ export default {
       search_value: '',
       page: 1,
       sort: {field: null, order: null},
+      fieldSort: '',
       dialogImportVisible: false,
       dialogUpdateVisible: false,
       exportLoading: false,
@@ -326,7 +329,9 @@ export default {
         const order = this.sort.order == 'descending' ? 'desc' : 'asc';
         obj.sort = `${field}-${order}`;
       }
-
+      if(this.fieldSort) {
+        obj.sort = this.fieldSort;
+      }
       return obj;
     },
     url () {
@@ -649,6 +654,10 @@ export default {
         func(size);
       }
 
+      this.reset();
+    },
+    handleSort(val) {
+      this.fieldSort = val;
       this.reset();
     },
     handleSortChange ({column, prop, order}) {

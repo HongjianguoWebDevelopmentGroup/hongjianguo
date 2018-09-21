@@ -23,6 +23,7 @@ import tool from '@/const/tool.js'
 import filter from '@/store/modules/filter-cache.js'
 import menuCache from '@/store/modules/menu-cache.js'
 import taskDelay from '@/store/modules/delay.js'
+import treeCache from '@/store/modules/tree-cache.js'
 Vue.use(Vuex);
 
 const store = new Vuex.Store({
@@ -64,6 +65,7 @@ const store = new Vuex.Store({
     cache,
     selectorCache,
     taskDelay,
+    treeCache,
   },
   getters: {
     getDragId: state=>state.dragId,
