@@ -1,4 +1,22 @@
 const config = [
+  ['text_filter_relate',{
+    placeholder: '请选择文本筛选',
+    options: [
+        { name: '等于', id: 1 },
+        { name: '不等于', id: 2 },
+        { name: '包含', id: 3 },
+        { name: '不包含', id: 4 },
+      ]
+  }],    
+  ['date_filter_relate',{
+    placeholder: '请选择日期筛选',
+    options: [
+        { name: '等于', id: 1 },
+        { name: '之前', id: 2 },
+        { name: '之后', id: 3 },
+        { name: '介于', id: 4 },
+      ]
+  }],  
   ['relative_projects_type',{
     placeholder: '请选择案件类型',
     options: [

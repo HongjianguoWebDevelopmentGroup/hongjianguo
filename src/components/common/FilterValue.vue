@@ -119,6 +119,7 @@ export default {
 			}
 		},
 		handleInput (val) {
+			// console.log('filterInput')
 			this.$emit('input', val);
 		},
 		async handleChange (val) {
@@ -157,6 +158,7 @@ export default {
 		}
 	},
 	created () {
+		// console.log('filter_created')
 		this.initialValue();
 	},
 	watch: {

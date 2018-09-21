@@ -1,4 +1,4 @@
-<template>
+ <template>
   <div class="main">
     
     <table-component :tableOption="tableOption" :data="tableData" @refreshTableData="refreshTableData" ref="table" :refresh-proxy="refreshProxy">
@@ -205,7 +205,7 @@ export default {
           { type: 'text', label: '是否与生物相关', prop: 'is_biological', sortable: true, width: '198',show: false, render:this.booleanRender,render_header: true , render_header: true},          
           { type: 'text', label: '是否是分案申请', prop: 'is_division', sortable: true, width: '178',show:false,render:this.booleanRender , render_header: true},         
           { type: 'text', label: '是否依赖于遗传资源', prop: 'is_genetic', sortable: true, width: '198',show: false, render:this.booleanRender , render_header: true},         
-          { type: 'text', label: '是否不丧失新颖性公开', prop: 'is_leakage', sortable: true, width: '178',show: false, render:this.booleanRender , render_header: true},         
+          { type: 'text', label: '是否不丧失新颖性公开', prop: 'is_leakage', sortable: true, width: '198',show: false, render:this.booleanRender , render_header: true},         
           { type: 'text', label: '是否许可备案', prop: 'is_licensed', sortable: true, width: '145',show: false,render:this.booleanRender , render_header: true},         
           { type: 'text', label: '是否提前公开', prop: 'is_pre_public', sortable: true, width: '145',show: false,render:this.booleanRender , render_header: true},          
           { type: 'text', label: '是否要求优先权', prop: 'is_priority', sortable: true, width: '178',show: false, render:this.booleanRender , render_header: true},          
@@ -213,10 +213,11 @@ export default {
           { type: 'text', label: '是否有序列表', prop: 'is_sequence', sortable: true, width: '145',show: false, render:this.booleanRender , render_header: true},          
           { type: 'text', label: '是否同日新型/发明', prop: 'is_utility', sortable: true, width: '178',show: false, render:this.booleanRender , render_header: true},  
           { type: 'text', label: '技术领域', prop: 'technical_field', sortable: true, width: '130', is_import: true, is_agency: true, render_simple: 'name', render_header: true},
-        {
-            type: 'action',
-            width: '80',
-          },
+        // {
+        //     type: 'action',
+        //     width: '90',
+        //     render_header: true
+        //   },
         ] 
       },
       tableData: [],
