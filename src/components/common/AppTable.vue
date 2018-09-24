@@ -400,8 +400,6 @@ export default {
         // }
         const source = this.filterSettingMap.get(column.property) !== undefined ?
         this.filterSettingMap.get(column.property) : null;
-        console.log('___________apptable检测')
-        console.log(source);
         const data = {  
           // style: {
           //   padding: '6px 18px',
@@ -433,6 +431,14 @@ export default {
             }
           },
         }
+        const btnClick = {
+          nativeOn: {
+            click(e) {
+              // 阻止表头默认点击事件
+              e.stopPropagation();
+            }
+          },
+        }
         return (
 
             source!=null?<span>
@@ -441,7 +447,7 @@ export default {
               <div style={{width: '100%',}}>
                   <ListsFilter {...data}></ListsFilter>
               </div> 
-              <el-button type="text" icon="setting" slot="reference" onClick={(e)=>{e.stopPropagation();this.filterConditionVisible = !this.filterConditionVisible}}></el-button>
+              <el-button type="text" icon="setting" slot="reference" {...btnClick}></el-button>
               </el-popover>
             </span>:<span>{item}</span>
 

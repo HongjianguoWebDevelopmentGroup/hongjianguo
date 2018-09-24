@@ -1,25 +1,9 @@
 /*对应select和date组件筛选数据*/
 const state = {
   data: {},
-  URL: '',
-  DATA_KEY: '',
+  URL: {},
+  DATA_KEY: {},
 }
-
-// const getMap = (data) => {
-//   const map = new Map();
-//   a(data);
-//   return map;
-
-//   function a(arr) {
-//     for(let d of arr) {
-//       map.set(d.id, d);
-//       if(d.children && d.children.length) {
-//         a(d.children);
-//       }
-//     }
-//   }
-// }
-
 const getters = {
   filterData: state=>state.data,
   getUrl: state=>state.URL,
@@ -27,37 +11,39 @@ const getters = {
 }
 
 const mutations = {
-  setFilterData (state, d) {
-   const data = state.data
+  setFilterData (state, {key,value}) {
+   state.data = {...state.data,[key]:value}
   },
-  setUrl (state, d) {
-    state.URL = d;
+  setUrl (state, {key,url}) {
+    state.URL = {...state.URL,[key]:url};
   },
-  setDataKey (state, d) {
-    console.log(d);
-    state.DATA_KEY = d;
+  setDataKey (state, {key,data_key}) {
+    state.DATA_KEY = {...state.DATA_KEY,[key]:data_key};
   },
 }
 
 const actions = {
-  refreshFilterData ({commit, rootState, state,getters},{success}={}) {
+  refreshFilterData ({commit, rootState, state,getters},{success,key}={}) {
     console.log(getters.data_key);
-    if(getters.getUrl === '' && getters.data_key === '') return false; 
-    const url = rootState.status ? getters.getUrl.replace(/\/api/, '') : getters.getUrl;
+    if(key == undefined) return;
+    // if(getters.getUrl === '' && getters.data_key === '') return false; 
+    const url = rootState.status ? getters.getUrl[key].replace(/\/api/, '') : getters.getUrl[key];
     rootState.axios
       .get(url)
       .then(response=>{
         const d = response.data;
+        const DATA_KEY = getters.data_key[key];
+        const value = d[DATA_KEY].data!=undefined?d[DATA_KEY].data:d[DATA_KEY];
         if(d.status){
-          commit('setFilterData', d[getters.data_key].data);
+          commit('setFilterData', {key,value});
           if (success) {success(d)};
         }else {}
       })
       .catch(error=>{console.log(error)});
   },
-  setUrl({commit,rootState,state},{url}={}) {
+  setUrl({commit,rootState,state},{key,url}={}) {
     if(url){
-      commit('setUrl',url);
+      commit('setUrl',{key,url});
     }
   },
 

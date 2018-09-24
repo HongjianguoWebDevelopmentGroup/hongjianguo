@@ -13,12 +13,12 @@
 		</el-row>				
 		<el-row class="common">
 			<el-col :span="24">
-				<filter-condition v-if="filterConditionVisible" :source="source"></filter-condition>
+				<filter-condition  :source="source" ref="filterCondition"></filter-condition>
 	  	 	</el-col>
 		</el-row>
 		<el-row>
 			<el-col :span="24">
-				<el-button type="primary">确定</el-button>
+				<el-button type="primary" @click="handleFilter">确定</el-button>
 				<el-button >取消</el-button>
 			</el-col>
 		</el-row>
@@ -28,6 +28,7 @@
 import StaticSelect from '@/components/form/StaticSelect'
 import FilterCondition from '@/components/common/FilterCondition'
 import {map as filterConfig } from '@/const/headerFilterConfig'	
+import {mapActions} from 'vuex'
 
 export default {
   name: 'listsFilter',
@@ -61,7 +62,7 @@ export default {
 		this.filterSetting.forEach(v => {
 			map.set(v.id, v)
 		})
-		console.log(map);
+		// console.log(map);
 		return map
 	},
 	source () {
@@ -71,10 +72,24 @@ export default {
 	},
   },
   methods: {
+  	...mapActions([
+  		'addListFilter',
+  		'fillListFilter',
+  	]),
   	handleSort (order) {
   		const sort = `${this.field}-${order}`;	
   		this.$emit('order',sort);
   	},
+  	handleFilter () {
+  		const obj = {};
+  		const nodeArr =	this.$refs.filterCondition.getCheckedNodes();
+		const name = this.source.name;
+		const key =  this.field;
+		const label = this.$tool.splitObj(nodeArr,'name');
+		const value =  this.$tool.splitObj(nodeArr,'id');
+		 obj[key] = { name, key, label, value };
+		this.fillListFilter(obj);
+	},	
   },
   created () {
 

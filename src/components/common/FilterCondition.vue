@@ -7,14 +7,13 @@
       style="border-radius: 0;">
     </el-input>    
     <el-tree 
-      :data="filterData"
+      :data="cacheData"
       :props="props"
       node-key="id"
       show-checkbox
       highlight-current
       :expand-on-click-node="false"
       :current-node-key="currentNodeKey"
-      @current-change="handleCurrentChange"
       style="height: 160px; overflow: auto; font-size: 14px;border: 1px solid #e1e1e1;"
       :filter-node-method="filterNode"
       :default-expanded-keys="defaultKeys"
@@ -30,7 +29,7 @@ import { mapMutations } from 'vuex'
 import { mapActions } from 'vuex'
 
 export default {
-  name: 'classificationCommon',
+  name: 'filtercondition',
   props: {
     source: Object,
     default() {
@@ -67,15 +66,9 @@ export default {
       'refreshFilterData',
       'setUrl',
     ]),
-    handleCurrentChange(data) {
-      this.setCurrentNode(data.id);
-    },
-    setCurrentNode(id) {
-      this.currentNodeKey = id;
-      const f = this.optionMap.get(id);
-      if(f) {
-        this.$tool.coverObj(this.form, f);  
-      }
+    getCheckedNodes () {
+      const nodeArr = this.$refs.tree.getCheckedNodes();
+      return nodeArr;
     },
     filterNode(value, data) {
       if (!value) return true;
@@ -93,21 +86,27 @@ export default {
     },
     filterDataKey () {
       const source = this.source;
-      console.log(this.source);
+      // console.log(this.source);
       return source!=null && source.data_key? source.data_key : '';
+    },
+    cacheData () {
+      console.log(this.filterData);
+      console.log(this.source.id)
+      console.log(this.filterData[this.source.id]);
+      return this.filterData[this.source.id];
     },
   },
   created() {
     console.log(this.filterDataKey);
     if(this.filterDataKey){
-      this.setDataKey(this.filterDataKey);
+      this.setDataKey({key:this.source.id,data_key:this.filterDataKey});
     }
     if(this.filterUrl) {
-      this.setUrl({url:this.filterUrl});
+      this.setUrl({key:this.source.id,url:this.filterUrl});
     }
-    if(this.filterDataKey && this.filterUrl) {
-      this.refreshFilterData();
-    }
+    // if(this.filterDataKey && this.filterUrl) {
+      this.refreshFilterData({key:this.source.id});
+    // }
   },
    watch: {
     filterText(val) {
