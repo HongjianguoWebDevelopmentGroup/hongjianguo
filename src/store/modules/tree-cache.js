@@ -1,10 +1,15 @@
 /*对应select和date组件筛选数据*/
+import configData from '@/const/selectConfig'
 const state = {
   data: {},
   URL: {},
   DATA_KEY: {},
+  config: configData,
 }
 const getters = {
+  staticFilterMap (state) {
+    return new Map(state.config);
+  },
   filterData: state=>state.data,
   getUrl: state=>state.URL,
   data_key: state=>state.DATA_KEY,

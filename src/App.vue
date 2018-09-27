@@ -53,7 +53,7 @@
       
     <div class="nav-left" :style="`height: ${innerHeight}px; left: ${navLeft}`" v-if="!noMenu">
       <span class="nav-left-btn" :style="`left: ${navLeftBtn};`" @click="navToggle" v-if="!noMenu"><span :class="navLeftBtnClass"></span></span>
-      <el-menu v-if="menusMap != null" theme="dark" router unique-opened :default-active="leftMenuActive" mode="vertical">
+      <el-menu v-if="menusMap != null"  router unique-opened :default-active="leftMenuActive" mode="vertical">
         <app-menu-item v-for="item in menuData" :dd="item" :key="item.path"></app-menu-item>
       </el-menu>
     </div>

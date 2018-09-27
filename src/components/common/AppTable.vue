@@ -8,7 +8,6 @@
   :default-sort="defaultSort"
   :highlight-current-row="highlightCurrentRow"
   :height="tableHeight"
-  :max-height="maxHeight"
 
   @selection-change="handleSelectionChange" 
   @sort-change="_=>{$emit('sort-change', _)}"
@@ -273,12 +272,9 @@ export default {
     console.log('渲染开的')
     if(this.filterVisible) {
       this.handleDynamicData();
-      window.listHeaderFilter = this;
     }
   },
-  destroyed() {
-    window.listHeaderFilter = null;
-  },
+
   methods: {
     ...mapActions([
       'fillListFilter',
@@ -287,8 +283,8 @@ export default {
     ]),
     handleDynamicData () {
       this.filterSetting.forEach(_=>{
-        const item = this.getDefaultValue(_.id);
-        this.$set(this.filters,_.id,item);
+        // const item = this.getDefaultValue(_.id);
+        this.$set(this.filters,_.id,false);
       });
       console.log(this.filters);
       return this.filters;
@@ -358,6 +354,10 @@ export default {
       return row[key] ? row[key][col.render_simple] : '';
 
     },
+    handleHeaderClose(key) {
+      console.log(this.$refs);
+      this.$refs.table.$refs.fixedTableHeader.$refs[`popover-${key}`].doClose();
+    },
     handleBtnBoolean (btn, row, key) {
       return btn[key] ? btn[key](row) : false; 
     },
@@ -401,24 +401,15 @@ export default {
         const source = this.filterSettingMap.get(column.property) !== undefined ?
         this.filterSettingMap.get(column.property) : null;
         const data = {  
-          // style: {
-          //   padding: '6px 18px',
-          // },
           props:{
             field: column.property,
             listType: self.listType,
             filterConditionVisible: self.filterConditionVisible,
           },
           on: {
-            // input(val) {
-            //   if(!val) return;
-            //   self.filters[column.property] = val;
-            // },
-            // labelname(val) {
-            //   val.forEach(v=>{
-            //     labelMap.set(v.key,v);
-            //   });
-            // },
+            popover(val) {
+               self.handleHeaderClose(column.property);
+            },
             order(val) {
               console.log(val)
               self.$emit('order',val);
@@ -436,6 +427,9 @@ export default {
             click(e) {
               // 阻止表头默认点击事件
               e.stopPropagation();
+              // console.log(self.filters);
+              // self.filters[column.property] = !self.filters[column.property];
+              self.$refs.table.$refs.fixedTableHeader.$refs[`popover-${column.property}`].doToggle();
             }
           },
         }
@@ -443,11 +437,11 @@ export default {
 
             source!=null?<span>
               <span>{item}</span>
-              <el-popover  width='100%' placement='bottom' trigger="click">
+              <el-popover  width='100%' placement='bottom'  trigger="manual"  ref={`popover-${column.property}`} >
               <div style={{width: '100%',}}>
                   <ListsFilter {...data}></ListsFilter>
               </div> 
-              <el-button type="text" icon="setting" slot="reference" {...btnClick}></el-button>
+              <el-button type="text" icon="el-icon-setting" slot="reference" {...btnClick}></el-button>
               </el-popover>
             </span>:<span>{item}</span>
 
@@ -456,27 +450,7 @@ export default {
     },
   },
   watch:{
-    filters: {
-      handler(form) {
-        window.setTimeout(() => {
-          const obj = {}
-          for (let key in form) {
-            const map = this.filterSettingMap.get(key);
-            const value = form[key];
 
-            if (value === '' || value.length === 0 || (value.length === 2 && value[0] === '' && value[1] === '')) {
-              obj[key] = false;
-            }else {
-              const name = map['name'];
-              const label = labelMap.get(key)['value'];
-              obj[key] = { name, key, label, value };
-            }
-          }
-           this.fillListFilter(obj);
-        }, 0)
-      },
-      deep: true,
-    },
   },
   components: {
     'TableRender': {
