@@ -269,10 +269,10 @@ export default {
     },
   },
   mounted() {
-    console.log('渲染开的')
-    if(this.filterVisible) {
-      this.handleDynamicData();
-    }
+    // console.log('渲染开的')
+    // if(this.filterVisible) {
+    //   this.handleDynamicData();
+    // }
   },
 
   methods: {
@@ -281,14 +281,14 @@ export default {
       'addListFilter',
       'clearFilter'
     ]),
-    handleDynamicData () {
-      this.filterSetting.forEach(_=>{
-        // const item = this.getDefaultValue(_.id);
-        this.$set(this.filters,_.id,false);
-      });
-      console.log(this.filters);
-      return this.filters;
-    },
+    // handleDynamicData () {
+    //   this.filterSetting.forEach(_=>{
+    //     // const item = this.getDefaultValue(_.id);
+    //     this.$set(this.filters,_.id,false);
+    //   });
+    //   console.log(this.filters);
+    //   return this.filters;
+    // },
     toggle() {
       this.filterComponentVisible = !this.filterComponentVisible;
     },

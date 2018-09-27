@@ -52,9 +52,10 @@ const getters = {
 		return data;
 	},
 	listFilterValue: (state, getters, rootState) => { //自定义筛选项请求参数值
-		// console.log('---------listFilterValue---------');
+		console.log('---------listFilterValue---------');
 		const listFilter = state.custom;
 		let form = {};
+		let arr = [];
 		listFilter.forEach(item => {
 			let value = item['value'];
 			if(Array.isArray(value)) {
@@ -65,9 +66,11 @@ const getters = {
 				form = item['extraOption']; 
 			}
 			form[item['key']] = value;
+			arr.push(form);
 		})
-		return form;
-	},
+		console.log(arr);
+		return {conditon:arr};
+	},	
 	filterLock: state => state.lock, //刷新数据锁,在watch函数中使用(TableComponent)
 	navLabel: (state,getters) => { //合并显示
 		// console.log('---------navlabel---------');
@@ -121,6 +124,7 @@ const mutations = {
 	},
 	fillListFilter (state, obj) {
 		let arr = [...state.custom]
+		console.log(arr);
 		// 尝试删除空项
 		arr = arr.filter(item => obj[item.key] !== false)
 		// 对于添加编辑分类处理

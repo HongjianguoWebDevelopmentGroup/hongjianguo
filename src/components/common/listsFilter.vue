@@ -48,8 +48,7 @@ export default {
   },
   data () {
   	return {
-  	  	contain_relate: '',
-  	  	search: '', 
+  	  	contain_relate: '', 
   	  	value:'',
   	  	filters:{},
   	}
@@ -113,7 +112,12 @@ export default {
 			value = this.$tool.splitObj(nodeArr,'id');
 			label = this.$tool.splitObj(nodeArr,'name');
 		}
-		 obj[key] = { name, key, label, value };
+		if(this.source.type != 'date'){
+			const extraOption = {comparsion:this.contain_relate};
+			obj[key] = { name, key, label, value,extraOption };
+		}else {
+		    obj[key] = { name, key, label, value};
+		}
 		this.fillListFilter(obj);
 	},
     getDefaultValue (key) {
