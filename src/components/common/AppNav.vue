@@ -39,12 +39,16 @@ export default{
 			},
 			set (val) {
 				const arr = this.source.filter(v =>val === v.key);
-				const showChildrenMenu= arr[0].menu.filter(d=>!this.menusMap.get(d.path));
-				if(showChildrenMenu[0] && showChildrenMenu[0]['path']) {
-					if(showChildrenMenu[0]['children'] && showChildrenMenu[0]['children'][0]['path']){
-						return	this.$router.push(showChildrenMenu[0]['children'][0]['path']);
+				if(arr[0].menu !== undefined) {
+					const showChildrenMenu= arr[0].menu.filter(d=>!this.menusMap.get(d.path));
+					if(showChildrenMenu[0] && showChildrenMenu[0]['path']) {
+						if(showChildrenMenu[0]['children'] && showChildrenMenu[0]['children'][0]['path']){
+							return	this.$router.push(showChildrenMenu[0]['children'][0]['path']);
+						}
+							this.$router.push(showChildrenMenu[0]['path']);
 					}
-						this.$router.push(showChildrenMenu[0]['path']);
+				}else{
+					this.$router.push(arr[0]['path']);
 				}
 			}
 		},
